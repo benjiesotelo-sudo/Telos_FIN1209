@@ -1,0 +1,10 @@
+# Inherited third-party source material - never commit
+source-materials/
+*.pptx.orig
+# Answer keys for graded assessments
+**/answer-key*
+**/*answer-key*
+# Build environment
+.venv/
+__pycache__/
+.DS_Store

@@ -25,6 +25,11 @@ That includes the textbook PDF, the publisher's scanned chapters, the FEU course
 Those are third-party copyrighted works and stay outside version control.
 Answer keys for graded assessments are also kept out of this repository.
 
+The textbook figures are third-party copyrighted works too, so they are not committed either.
+The decks place them from `assets/figures/`, which is gitignored and absent here.
+The committed deck is the text version: every figure slide renders a placeholder carrying the figure number, what the figure shows, the credit line and the speaker cue, so the chapter stays complete and rebuildable without the artwork.
+See `chapter-01/README.md` for the command that builds each version.
+
 ## Teaching design
 
 Slides are built for a class that includes students with ADHD:

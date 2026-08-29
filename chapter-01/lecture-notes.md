@@ -1,7 +1,10 @@
 # FIN1209 Chapter 1 - Lecture notes
 
 Introduction to the Art and Science of Technical Analysis.
-Maps to Week 2 of the course booklet. Deck: `FIN1209-Chapter-01.pptx`, 178 slides.
+Maps to Week 2 of the course booklet. 209 slides, 31 of them figures from the
+course text. The committed deck carries placeholders where the figures go, so
+teach from the locally built copy with the artwork in it: `README.md` in this
+folder has the two build commands and explains the split.
 Answers to every in-class check: `in-class-checks.md`.
 
 ## How this deck is meant to be run
@@ -21,18 +24,28 @@ each. Run the deck in Presenter View so you can see them.
 
 ### Timing
 
-| Part | Topic | Planned |
-|---|---|---|
-| 1 | Why anybody analyzes a market | 25 min |
-| 2 | Three ways to forecast a price | 30 min |
-| 3 | Classifying technical analysis | 25 min |
-| 4 | Subjectivity | 30 min |
-| 5 | The assumptions underneath everything | 30 min |
-| 6 | Who is in the market | 25 min |
+| Part | Topic | Slides | Figures | Planned |
+|---|---|---|---|---|
+| 1 | Why anybody analyzes a market | 25 | 1 | 26 min |
+| 2 | Three ways to forecast a price | 42 | 3 | 33 min |
+| 3 | Classifying technical analysis | 27 | 3 | 28 min |
+| 4 | Subjectivity | 39 | 13 | 42 min |
+| 5 | The assumptions underneath everything | 47 | 8 | 38 min |
+| 6 | Who is in the market | 22 | 3 | 28 min |
 
-That is about 165 minutes of material. If the session is shorter, Parts 1 to 3
-are a complete unit and Parts 4 to 6 are a complete unit. Do not split inside
-a part.
+Slide counts are the part divider plus everything up to the recap, which is
+what the progress marker counts. The four opening slides and the three closing
+slides sit outside the parts.
+
+That is about 195 minutes of material, up from 165 before the figures went in.
+The thirty minutes the figures cost are not spread evenly. Part 4 carries
+thirteen of them and takes most of the increase, and the seven-slide chart
+sequence inside it runs faster per slide than any other figure in the deck
+because it is meant to be shown without stopping. Parts 1, 2, 3 and 6 are
+about a minute per figure.
+
+If the session is shorter, Parts 1 to 3 are a complete unit and Parts 4 to 6
+are a complete unit. Do not split inside a part.
 
 ### Running a check
 
@@ -45,6 +58,17 @@ the reason out loud. The letter alone teaches nothing.
 If more than about a third of the room misses an item, go back one slide and
 reteach it. That is what the checks are for. They carry no marks and you
 should say so the first time, or the room will freeze.
+
+### Running a figure slide
+
+Name what they are looking at before you say anything about it. The
+instrument, the timeframe, and what the axes are. Then stop talking and give
+the room a few seconds to actually look at it. Only then make the teaching
+point.
+
+Every figure slide carries its own speaker cue in the PowerPoint notes, one
+line naming what to point at and one line with the point itself. Read the cue,
+do not improvise a second reading of the chart.
 
 ### Before you start
 
@@ -62,6 +86,8 @@ identification, forecasting, go long, liquidate, go short, cover, the four
 profitable scenarios.
 
 **Checks:** 1, 2, 3.
+
+**Figures:** 1.1, the mechanics of profiting from a change.
 
 Open on the instincts. It reads like an odd place to begin a finance subject
 and that is the point: markets are a survival behavior before they are a
@@ -108,6 +134,9 @@ fundamentalist profile, the technical analyst profile, the six streams of
 market action, OHLC.
 
 **Checks:** 4, 5, 6, 7, 8, 9.
+
+**Figures:** 1.2, the three approaches on one page. 1.3 and 1.4, undervalued
+and overvalued against intrinsic value.
 
 This is the longest part and the one with the most examinable content. Keep
 moving.
@@ -161,6 +190,10 @@ the six-stage cycle, preempting.
 
 **Checks:** 10, 11, 12.
 
+**Figures:** 1.6, the four branches on one page. 1.7, mean reverting against
+non-mean reverting. 1.8, the six stages of the self-fulfilling prophecy as one
+loop.
+
 The four branches are a filing system. Every tool in the whole book lands in
 exactly one of them, and students should be able to sort a named technique
 into a branch on demand. That is the examinable skill here, not the contents
@@ -206,6 +239,12 @@ subjective objectivity, price, time and algorithmic filters, practice.
 
 **Checks:** 13, 14, 15, 16.
 
+**Figures:** 1.9 to 1.15, the seven readings of one chart. 1.16, two
+oscillators giving opposite answers. 1.17 and 1.18, conflicting chart patterns
+and then the same patterns agreeing. 1.19, selective perception. 1.20, which
+trendline calls the reversal. 1.21, the three filter families beside the
+trade.
+
 This part makes students uncomfortable and it is supposed to. Say the frame
 early and repeat it: the chart is objective, the reading is subjective. The
 data is not the problem, the reader is.
@@ -213,6 +252,17 @@ data is not the problem, the reader is.
 Most students assume only the inference step is subjective. Step one already
 is, because you chose which two troughs to connect. Make them repeat the
 three activities back: identifying, interpreting, inferring.
+
+**The seven readings are one move, not seven slides.** Figures 1.9 through
+1.15 are the same price chart every time: bare, then trendlines, moving
+averages, chart patterns, regression with divergence, regression with volume,
+and volatility bands with volume and MACD. Run them straight through without
+stopping to teach any single one, naming each reading in a few words as it
+comes up. When the seventh is on screen, ask the room what changed between the
+first slide and this one. The answer is nothing except the analyst, and that
+is the argument of the whole part. It only lands if they have watched all
+seven go past in a row, so do not summarise the sequence, do not skip ahead,
+and do not take questions in the middle of it.
 
 **Complementary signals is the most useful idea in this part.** Walk the
 example slowly. A 20 period reading says slightly overbought and a 100 period
@@ -258,6 +308,13 @@ trends, the challenges of trend following, the four applied assumptions,
 efficacy at various timeframes.
 
 **Checks:** 17, 18, 19, 20, 21, 22.
+
+**Figures:** 1.28 and 1.29, a semi-efficient market absorbing news and the
+same thing on a real chart. 1.27, what a perfectly efficient market would look
+like. 1.30, random walk and EMH and what they would imply. 1.31 and 1.32,
+insider activity ahead of the news and then market inertia and the
+overreaction. 1.25 and 1.26, angular symmetries and the ordered structure of
+price.
 
 The heaviest part of the chapter. Open by writing the three assumptions on
 the board and leaving them there:
@@ -333,6 +390,9 @@ participants by method, the five main markets, derivatives, the five ways to
 participate in gold.
 
 **Checks:** 23, 24, 25.
+
+**Figures:** 1.33, participants by time in the market. 1.34, participants by
+trading methodology. 1.35, the markets and the instruments built on them.
 
 The lightest part, and a good one to end on.
 

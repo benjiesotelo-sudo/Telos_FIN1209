@@ -8,3 +8,7 @@ source-materials/
 .venv/
 __pycache__/
 .DS_Store
+# Third-party textbook artwork - copyrighted, never commit
+assets/figures/
+# The teaching build that embeds that artwork
+*-with-figures.pptx

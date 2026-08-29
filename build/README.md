@@ -44,6 +44,27 @@ The answer sheet is generated from the same question data the deck is built
 from, so the two can never drift apart. `chapter-01/lecture-notes.md` is
 written by hand and is not generated.
 
+## Figures
+
+The chapter places 31 figures from the course text. They are Wiley's, this
+repository is public, so they live in `assets/figures/`, which is gitignored
+and absent on a clean clone. Figures are therefore **off by default**: the
+plain build above renders a placeholder in each figure's place, carrying the
+figure number, what the figure shows, the credit line and the speaker cue, and
+it is what produces the committed deck.
+
+The instructor's deck, with the artwork placed, goes outside the repository:
+
+```
+.venv/bin/python build/build_chapter1.py \
+    --with-figures --out ~/FIN1209-Chapter-01-with-figures.pptx
+```
+
+Both builds produce the same 209 slides with the same progress markers and the
+same checks. The build refuses `--with-figures` aimed at the committed deck
+path, so the artwork cannot reach a commit by accident. See
+`chapter-01/README.md` for the file naming and the full figure list.
+
 ## Smoke test
 
 Confirm the deck opens before committing it:
@@ -79,6 +100,7 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | `build/deckkit.py` | Every slide renderer, the FEU palette, and the design rules. Knows nothing about any chapter. |
 | `build/content_chapter01.py` | Chapter 1 content as plain data. No drawing code. |
 | `build/build_chapter1.py` | Wires the two together and writes the outputs. |
+| `assets/figures/` | Textbook artwork. Gitignored, absent by default. |
 
 ## Adding Chapter 2
 
@@ -97,6 +119,9 @@ that looks wrong in the lecture room:
 - Every check has exactly two questions, each with four options and an
   answer of A, B, C or D.
 - Every teaching slide has speaker cues, and no slide has more than three.
+- Every figure slide names a book figure number and says what the figure
+  shows, because that line is what the placeholder prints when the artwork is
+  absent and it has to stand on its own.
 - No em dashes or en dashes anywhere. Plain dashes only.
 - No slide's content runs past the safe bottom of the page, computed from
   estimated text metrics, so nothing collides with the progress marker.

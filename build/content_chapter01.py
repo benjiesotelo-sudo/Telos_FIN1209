@@ -16,6 +16,7 @@ from deckkit import (
     Check,
     Closing,
     Content,
+    Figure,
     Question,
     Quote,
     Recap,
@@ -294,6 +295,15 @@ PART1 = Section(
                 "Say the only losing pattern is buying high and selling lower, which is not on this list.",
             ),
         ),
+        Figure(
+            title="The mechanics of profiting from a change",
+            number="1.1",
+            shows="The two ways to profit side by side: buy low then sell high, or sell high then buy back low, with the jargon and the demand or supply behind each.",
+            notes=(
+                "Trace the left column with your finger, then the right, saying go long and go short as you land on them.",
+                "Point at the bottom row: every trade on this page is either demand or supply. Nothing else is happening.",
+            ),
+        ),
     ),
     recap=Recap(
         items=(
@@ -344,6 +354,15 @@ PART2 = Section(
                 "Tell them we take each in turn, and that technical analysis gets the longest look.",
             ),
         ),
+        Figure(
+            title="The three approaches on one page",
+            number="1.2",
+            shows="Fundamental analysis using intrinsic value, technical analysis using price, volume and sentiment, information analysis using public and non-public information.",
+            notes=(
+                "Read across the three columns, then stop on the middle one and say the whole course lives under that arrow.",
+                "Point at the eight items under technical analysis and say they meet every one of them by Chapter 10.",
+            ),
+        ),
         Term(
             term="Fundamental analysis",
             plain="Working out what a company is really worth by reading its financial statements, then comparing that to the price.",
@@ -375,6 +394,24 @@ PART2 = Section(
             notes=(
                 "Say the trap out loud: a stock is overvalued when price is ABOVE intrinsic value, not below.",
                 "Ask the room to say which one generates demand before you reveal it.",
+            ),
+        ),
+        Figure(
+            title="Undervalued: price below intrinsic value",
+            number="1.3",
+            shows="Intrinsic value of 25 dollars against a current price of 20 dollars, so the stock is underpriced and the expected reaction is potential demand.",
+            notes=(
+                "Point at the two numbers first, then at the arrow. The gap between them is the whole argument.",
+                "Ask what the fundamentalist expects next, and make them say the word demand.",
+            ),
+        ),
+        Figure(
+            title="Overvalued: price above intrinsic value",
+            number="1.4",
+            shows="The same diagram inverted: a current price of 25 dollars against intrinsic value of 20 dollars, so the stock is overpriced and the expected reaction is potential supply.",
+            notes=(
+                "Say this is the previous slide turned upside down, and let them spot the flip themselves.",
+                "Note the sell or stay in cash line. A fundamentalist waits; a technical analyst can go short.",
             ),
         ),
         Check(
@@ -810,6 +847,15 @@ PART3 = Section(
                 "Warn them the fourth one, behavioral, is about the analyst as much as the market.",
             ),
         ),
+        Figure(
+            title="The four branches on one page",
+            number="1.6",
+            shows="Classical, statistical, sentiment and behavioral analysis, each with its own list of studies, all funnelling into one line at the bottom.",
+            notes=(
+                "Read the bottom line of the diagram aloud: everything above it is interpreted through filters and biases unique to each analyst.",
+                "Say that bottom line is Part 4 arriving early, and that it is the reason Part 4 exists.",
+            ),
+        ),
         Term(
             term="Classical technical analysis",
             plain="The traditional, visual, hand-drawn kind. Patterns on charts, and indicators drawn over or under the price.",
@@ -884,6 +930,15 @@ PART3 = Section(
             notes=(
                 "Ask the room which bet feels more natural to them. Take a show of hands.",
                 "Say neither is right. They are right at different times, which is the whole difficulty.",
+            ),
+        ),
+        Figure(
+            title="Mean reverting against non-mean reverting",
+            number="1.7",
+            shows="The two camps compared column by column: their study preferences, their order types, where each one enters, and the rationale behind each.",
+            notes=(
+                "Do not read all of it. Pick the entry rows and contrast them: cycle extremes against cycle midpoints.",
+                "Land the last row: one is a counter-trend trader, the other is a trend trader. That is the whole difference.",
             ),
         ),
         Term(
@@ -1027,6 +1082,15 @@ PART3 = Section(
                 "Name preempting here, since it returns as a challenge in Part 5.",
             ),
         ),
+        Figure(
+            title="The six stages as one loop",
+            number="1.8",
+            shows="The self-fulfilling prophecy cycle drawn as a circle, with stages one to three bracketed as advantageous entries and stages four to six as disadvantageous.",
+            notes=(
+                "Walk the circle once with your finger, naming each stage, then show them the two brackets down the sides.",
+                "Ask where in the loop they would want to be trading. The answer is the right hand bracket.",
+            ),
+        ),
         Check(
             label="Strengths, weaknesses, and the prophecy",
             questions=(
@@ -1136,6 +1200,69 @@ PART4 = Section(
                 "Say these are the questions that plague novices, and that they are supposed to feel unresolved.",
             ),
         ),
+        Figure(
+            title="One chart, reading one: nothing on it",
+            number="1.9",
+            shows="A plain price chart with no analysis drawn on it at all, the raw record before anybody has interpreted it.",
+            notes=(
+                "Say this is the objective half. Nobody in the room can disagree with this picture.",
+                "Tell them the next six slides are this identical chart, and to watch what people put on it.",
+            ),
+        ),
+        Figure(
+            title="Reading two: trendlines",
+            number="1.10",
+            shows="The same chart with a short-term downtrend line, a longer-term uptrend line, an uptrend line and a downtrend line drawn across it.",
+            notes=(
+                "Say every line on this slide was a human choice about which two points to connect.",
+                "Ask which of the four lines matters most. They will not agree, and that is the lesson.",
+            ),
+        ),
+        Figure(
+            title="Reading three: moving averages",
+            number="1.11",
+            shows="The same chart with a moving average through it, marked where it acts as support with buy points and where it acts as resistance with a short.",
+            notes=(
+                "Point out the buy and short labels, then say the chart never used those words. The reader did.",
+                "Note that a different average length moves every one of those labels.",
+            ),
+        ),
+        Figure(
+            title="Reading four: chart patterns",
+            number="1.12",
+            shows="The same chart annotated with an ascending triangle, a head and shoulders, a parabolic move, a symmetrical triangle breakout and a channel retest.",
+            notes=(
+                "Ask how many patterns they can see before you name them. Usually one or two.",
+                "Say a trained eye sees all six here, and a different trained eye sees a different six.",
+            ),
+        ),
+        Figure(
+            title="Reading five: regression and divergence",
+            number="1.13",
+            shows="The same chart with regression lines showing higher highs in price while the CCI panel below makes lower highs, marked standard bearish divergence.",
+            notes=(
+                "Make them look at the two panels together. Price up, indicator down. That gap is the signal.",
+                "Say this reading forecasts a reversal, which none of the previous four slides did.",
+            ),
+        ),
+        Figure(
+            title="Reading six: regression with volume",
+            number="1.14",
+            shows="The same chart with regression lines and a volume panel underneath, marking a parabolic buying climax with a volume spike at the blow off.",
+            notes=(
+                "Point at the volume spike and the price spike above it and say they happened on the same bar.",
+                "This is the same forecast as the last slide, reached by a completely different route.",
+            ),
+        ),
+        Figure(
+            title="Reading seven: volatility bands, volume and MACD",
+            number="1.15",
+            shows="The same chart again with volatility bands, price exceeding the upper band, the volume spike, and MACD at a historically overbought level.",
+            notes=(
+                "Say it out loud: seven slides, one chart, seven defensible readings, and not one of them was wrong.",
+                "That is the argument of Part 4. Stop here for a moment before you move on.",
+            ),
+        ),
         Check(
             label="Where subjectivity lives",
             questions=(
@@ -1227,6 +1354,15 @@ PART4 = Section(
                 "Define tick volume from the caption: number of transactions, not size of them.",
             ),
         ),
+        Figure(
+            title="Two oscillators, one chart, opposite answers",
+            number="1.16",
+            shows="A daily Alcoa chart with two oscillators below it: the faster one reads overbought at the same moment the slower one reads oversold.",
+            notes=(
+                "Circle the two readings with your hand and ask the room which one to obey.",
+                "Then give them the answer from the last section: different periods, so this is complementary, not contradictory.",
+            ),
+        ),
         Content(
             title="Resolving conflicting chart patterns",
             lines=(
@@ -1239,6 +1375,24 @@ PART4 = Section(
             notes=(
                 "This is review question three from the chapter. Say so, and tell them to write the rule down.",
                 "Give the caution: an upside break of a large bearish formation can be violent, because it is unexpected.",
+            ),
+        ),
+        Figure(
+            title="Conflicting patterns in one formation",
+            number="1.17",
+            shows="An ascending triangle marked bullish, a symmetrical triangle marked neutral, and a complex head and shoulders marked bearish, all in the same stretch of price.",
+            notes=(
+                "Name the three patterns, then ask which one wins. Apply the rule: the largest formation takes precedence.",
+                "The ascending triangle is the largest here, so it stays bullish until the neckline breaks.",
+            ),
+        ),
+        Figure(
+            title="The same patterns, now agreeing",
+            number="1.18",
+            shows="A larger descending triangle and a smaller descending triangle, both bearish, over a complex head and shoulders that is also bearish.",
+            notes=(
+                "Contrast this with the last slide: same shapes, but every one of them points the same way.",
+                "Say this is what confirmation looks like on a chart, and why it feels so comfortable.",
             ),
         ),
         Content(
@@ -1288,6 +1442,15 @@ PART4 = Section(
                 "Give the antidote: a disagreeing signal is the most informative thing on your screen.",
             ),
         ),
+        Figure(
+            title="Selective perception, drawn",
+            number="1.19",
+            shows="A head and shoulders in price with three oscillators below it. MACD is bullish and is crossed out with the word ignore written across it; RSI and stochastics are bearish.",
+            notes=(
+                "Point at the word ignore written across the MACD panel. Somebody drew that, and meant it.",
+                "Ask what that trader actually did: kept two signals, deleted one, and called it analysis.",
+            ),
+        ),
         Content(
             title="Even the entry point is subjective",
             lines=(
@@ -1300,6 +1463,15 @@ PART4 = Section(
             notes=(
                 "This is review question four. Flag it as almost certain to appear.",
                 "Use the program trading point to stop them believing automation escapes the problem.",
+            ),
+        ),
+        Figure(
+            title="Which trendline calls the reversal?",
+            number="1.20",
+            shows="One market top with two different uptrend lines drawn under it, A and B, each penetrated at a different price and a different moment.",
+            notes=(
+                "Make them choose out loud between trendline A and trendline B before you say anything.",
+                "Both are correctly drawn. That is individually objective and collectively subjective, in one picture.",
             ),
         ),
         Term(
@@ -1330,6 +1502,15 @@ PART4 = Section(
             notes=(
                 "Name the three filter families together: price, time, algorithmic.",
                 "Say the choice between them is itself subjective, which is the joke of this whole part.",
+            ),
+        ),
+        Figure(
+            title="The three filter families beside the trade",
+            number="1.21",
+            shows="A trendline penetration on the left with a question mark on the entry, and on the right the full list: price-based, time-based and event-based filters.",
+            notes=(
+                "Read the three headings A, B and C only. Do not read the sub-items; those are Chapter 5.",
+                "Point at the question mark on the chart and say every filter on the right is an answer to it.",
             ),
         ),
         Check(
@@ -1461,6 +1642,24 @@ PART5 = Section(
                 "The caption is the practical payoff. Give a local example if one is fresh.",
             ),
         ),
+        Figure(
+            title="A semi-efficient market absorbing news",
+            number="1.28",
+            shows="Three data releases on a price and time axis, with dashed curves showing price adjusting gradually rather than instantly at each one.",
+            notes=(
+                "Trace one dashed curve with your finger and say that curve is the hour after a jobs report.",
+                "Say the gradual bend is where a technical analyst earns a living. A vertical line would leave nothing to trade.",
+            ),
+        ),
+        Figure(
+            title="The same thing, on a real chart",
+            number="1.29",
+            shows="A EURUSD chart around the non-farm payrolls release of 2 August 2013, annotated with the range before the data, the breakout, the traders buying the news and the early traders exiting into it.",
+            notes=(
+                "Find the labelled release on the chart, then walk the annotations left to right in order.",
+                "Say the market took hours, not milliseconds, to settle. That is the semi-efficient market, observed.",
+            ),
+        ),
         Check(
             label="Discounting",
             questions=(
@@ -1505,6 +1704,15 @@ PART5 = Section(
             notes=(
                 "The caption is the answer to review question two. Dictate it if you have to.",
                 "Say EMH demands perfection; market discounting demands only that the market absorbs what reaches it.",
+            ),
+        ),
+        Figure(
+            title="What a perfectly efficient market would look like",
+            number="1.27",
+            shows="The same three data releases, but price jumps vertically at each one with the time taken to adjust marked as zero.",
+            notes=(
+                "Point at the vertical jumps and say this is what instantaneous means. No slope, no delay, nothing to trade.",
+                "Ask whether any chart they have ever seen looks like this. Their answer is the answer to EMH.",
             ),
         ),
         Content(
@@ -1616,6 +1824,15 @@ PART5 = Section(
                 "Say this is review question five, and the author's answer is no.",
             ),
         ),
+        Figure(
+            title="Random walk, EMH, and what they would imply",
+            number="1.30",
+            shows="Random walk feeding into the three forms of EMH, and both feeding a box listing the consequences: no technical, fundamental or behavioral analysis, no active investing, nobody beats the market.",
+            notes=(
+                "Read the five consequences in the right hand box out loud. They are deliberately uncomfortable.",
+                "Then say the rest of this chapter is an argument that the premises on the left do not hold.",
+            ),
+        ),
         Content(
             title="Random walk is not the same as EMH",
             lines=(
@@ -1641,6 +1858,24 @@ PART5 = Section(
             notes=(
                 "Point back to the herd line from the first section. Close the loop.",
                 "Say this is why a chart looks nothing like a coin flip.",
+            ),
+        ),
+        Figure(
+            title="Insider activity moving price before the news",
+            number="1.31",
+            shows="Accumulation curving up ahead of each bullish release and distribution curving down ahead of the bearish one, in every case before the announcement.",
+            notes=(
+                "Point at where the curve starts moving, then at where the news arrives. Mind the gap between them.",
+                "Say this is why the market discounts non-public information: the trading is visible even when the information is not.",
+            ),
+        ),
+        Figure(
+            title="Market inertia, and the overreaction",
+            number="1.32",
+            shows="The same releases again, with herd behavior carrying price past the level it should have settled at, then inefficient discounting pulling it back.",
+            notes=(
+                "Show them the overshoot above the step, then the fall back. That bulge is the crowd arriving late.",
+                "Name it: this is the herding instinct from Part 1, drawn as a price curve.",
             ),
         ),
         Content(
@@ -1691,6 +1926,24 @@ PART5 = Section(
             notes=(
                 "Use the caption to defend the method: criticizing technical analysis for using past data condemns all forecasting.",
                 "Connect back to the Pring quote from Part 2.",
+            ),
+        ),
+        Figure(
+            title="Repetition you can see: angular symmetries",
+            number="1.25",
+            shows="A four-hourly USDCAD bar chart with a shallow angle of ascent and a steeper one marked, and the correction that followed each.",
+            notes=(
+                "Compare the shallow angle with the steeper one, then compare the two falls that followed them.",
+                "Say the market did not have to behave this way. It did, and it does, and that is assumption two.",
+            ),
+        ),
+        Figure(
+            title="The underlying ordered structure of price",
+            number="1.26",
+            shows="The same USDCAD chart overlaid with a converging channel and a lattice of symmetry lines, labelled visual evidence of the semi-random nature of price behavior.",
+            notes=(
+                "Say the word on the chart is semi-random, not random, and that the difference is this whole course.",
+                "Warn them honestly: you can draw lines on noise too. That is why Part 4 came first.",
             ),
         ),
         Content(
@@ -2009,6 +2262,15 @@ PART6 = Section(
                 "Say the course objective explicitly names categorizing participants by time in markets.",
             ),
         ),
+        Figure(
+            title="Participants by time in the market",
+            number="1.33",
+            shows="Scalpers, day traders, swing traders, position traders and investors laid out left to right, from seconds at one end to buy and hold at the other.",
+            notes=(
+                "Read the five boxes left to right and let the holding period stretch as you go.",
+                "Ask them to place themselves on the diagram. Most will land between swing and investor.",
+            ),
+        ),
         Content(
             title="Sorted by method",
             lines=(
@@ -2025,6 +2287,15 @@ PART6 = Section(
                 "Give the warning on scale trading plainly. It is the one item here with a real hazard.",
             ),
         ),
+        Figure(
+            title="Participants by trading methodology",
+            number="1.34",
+            shows="The same five columns re-sorted by method: scalpers, trend traders, reversal traders, scale traders and investors, each with what it is attempting to do.",
+            notes=(
+                "Hold this beside the previous diagram: the same word scalper, but sorted by method rather than by clock.",
+                "Point at reversal traders and trend traders and say those are the two bets from Part 3.",
+            ),
+        ),
         Content(
             title="The main markets",
             lines=(
@@ -2036,6 +2307,15 @@ PART6 = Section(
             notes=(
                 "Count five. Ask which of the five they have personally participated in.",
                 "Bridge to derivatives on the next slide.",
+            ),
+        ),
+        Figure(
+            title="The markets, and the instruments built on them",
+            number="1.35",
+            shows="Five underlying markets on the right, stocks through real estate, and five derivative instruments on the left, options through exchange traded funds.",
+            notes=(
+                "Read the right hand column first: those are the real things. Then the left: those are claims on them.",
+                "Say both lists run to five, and both are the kind of list a quiz asks you to reproduce.",
             ),
         ),
         Term(

@@ -29,6 +29,14 @@ REPO = Path(__file__).resolve().parent.parent
 DECK_OUT = REPO / "chapter-01" / "FIN1209-Chapter-01.pptx"
 CHECKS_OUT = REPO / "chapter-01" / "in-class-checks.md"
 
+# The textbook figures are Wiley's. They are not in this repository, the folder
+# is gitignored, and figures are OFF by default on purpose: the plain build has
+# to keep reproducing the committed deck exactly, on this machine and on a
+# clean clone alike. Pass --with-figures for the instructor's teaching deck.
+# Either way the slide count, the progress markers and the checks are identical.
+# See chapter-01/README.md for the two commands.
+FIGURES_DIR = REPO / "assets" / "figures"
+
 
 def write_checks(chapter, path: Path, total_checks: int) -> None:
     """The instructor's own answer sheet, generated from the same content the
@@ -78,6 +86,15 @@ def write_checks(chapter, path: Path, total_checks: int) -> None:
     path.write_text("\n".join(out).rstrip() + "\n", encoding="utf-8")
 
 
+def _relative(path: Path) -> str:
+    """Repository relative when it is inside the repository, absolute when the
+    instructor's own deck is written outside it."""
+    try:
+        return str(path.relative_to(REPO))
+    except ValueError:
+        return str(path)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -87,16 +104,55 @@ def main() -> int:
               "identity face; use a serif such as Palatino if it is not installed."),
     )
     parser.add_argument("--out", type=Path, default=DECK_OUT)
+    parser.add_argument(
+        "--with-figures",
+        action="store_true",
+        help=("Place the textbook artwork instead of placeholders. Off by "
+              "default: the figures are Wiley's, they are not committed, and "
+              "the plain build must keep reproducing the committed deck."),
+    )
+    parser.add_argument(
+        "--figures-dir",
+        type=Path,
+        default=FIGURES_DIR,
+        help="Folder holding the artwork, used only with --with-figures.",
+    )
     args = parser.parse_args()
 
+    figures_dir = args.figures_dir if args.with_figures else None
+    if figures_dir is not None and not figures_dir.is_dir():
+        parser.error(
+            f"--with-figures was given but {figures_dir} does not exist. "
+            "The textbook figures are copyrighted and are not in this "
+            "repository; see chapter-01/README.md. Drop the flag to build "
+            "the placeholder deck."
+        )
+    if args.with_figures and args.out == DECK_OUT:
+        parser.error(
+            "the committed deck is the placeholder build and must stay that "
+            "way, because the figures are copyrighted. Give --out a path "
+            "outside this repository for the teaching deck."
+        )
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    slides, checks = deckkit.build(CHAPTER, args.out, display_font=args.display_font)
+    slides, checks = deckkit.build(CHAPTER, args.out,
+                                   display_font=args.display_font,
+                                   figures_dir=figures_dir)
     write_checks(CHAPTER, CHECKS_OUT, checks)
 
-    print(f"deck   : {args.out.relative_to(REPO)}")
-    print(f"checks : {CHECKS_OUT.relative_to(REPO)}")
+    status = deckkit.figure_status(CHAPTER, figures_dir)
+    placed = [n for n, _f, have in status if have]
+    missing = [n for n, _f, have in status if not have]
+
+    print(f"deck   : {_relative(args.out)}")
+    print(f"checks : {_relative(CHECKS_OUT)}")
     print(f"slides : {slides}")
     print(f"checkpoints : {checks} ({checks * 2} multiple choice items)")
+    print(f"figures : {len(placed)} placed, {len(missing)} as placeholders "
+          f"(of {len(status)} figure slides)")
+    if missing:
+        print("        : " + ", ".join(missing))
+    print(f"figure source : {figures_dir or 'none, placeholder build'}")
     print(f"display font : {args.display_font}")
     return 0
 

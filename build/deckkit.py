@@ -12,6 +12,9 @@ Design rules encoded here, from the course teaching brief:
   * Check slides look nothing like teaching slides, so the room knows
     instantly that a question is coming.
   * Two or three speaker cue lines in the notes of every content slide.
+  * A figure is a slide of its own: title, image, credit line. It renders the
+    same with or without the artwork, so the deck built from the public
+    repository keeps its slide count and its progress markers.
 """
 
 from __future__ import annotations
@@ -20,6 +23,7 @@ import os
 import zipfile
 from dataclasses import dataclass, field
 from datetime import datetime
+from pathlib import Path
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
@@ -59,6 +63,13 @@ SLIDE_H = Inches(7.5)
 
 MARGIN = Inches(0.85)
 CONTENT_W = Emu(SLIDE_W - 2 * MARGIN)
+
+# Where render_figure looks for artwork. The textbook figures are Wiley's and
+# are not in this repository, so the folder is gitignored and is usually
+# absent. When a figure file is missing the slide still renders, carrying the
+# figure number, the credit line and the speaker cue, and the deck keeps its
+# slide count and its progress markers. See chapter-01/README.md.
+FIGURES_DIR: Path | None = None
 
 
 # --------------------------------------------------------------------------
@@ -118,6 +129,30 @@ class Quote(Slide):
     text: str = ""
     source: str = ""
     takeaway: str = ""
+
+
+@dataclass
+class Figure(Slide):
+    """A textbook figure, one to a slide.
+
+    ``number`` is the book's own figure number, "1.11". ``shows`` is one line
+    saying what is on the image; it is what the placeholder prints when the
+    artwork is absent, so it has to stand on its own as a description.
+    """
+
+    title: str = ""
+    number: str = ""
+    shows: str = ""
+
+    @property
+    def filename(self) -> str:
+        major, minor = self.number.split(".")
+        return f"figure-{major}-{int(minor):02d}.png"
+
+    @property
+    def credit(self) -> str:
+        return (f"Figure {self.number} - Lim, The Handbook of Technical "
+                "Analysis (Wiley, 2016)")
 
 
 @dataclass
@@ -499,6 +534,76 @@ def render_quote(prs, s: Quote, marker):
     _notes(slide, s.notes)
 
 
+def _png_size(path) -> tuple[int, int]:
+    """Pixel dimensions from a PNG header, without an image library."""
+    with open(path, "rb") as fh:
+        head = fh.read(24)
+    if head[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError(f"{path} is not a PNG")
+    return (int.from_bytes(head[16:20], "big"),
+            int.from_bytes(head[20:24], "big"))
+
+
+# The band a figure is drawn into, between the header rule and the credit line.
+FIGURE_TOP = 1.98
+FIGURE_H = 4.10
+FIGURE_CAPTION_Y = 6.20
+
+
+def render_figure(prs, s: Figure, marker):
+    """A textbook figure, one to a slide, with a credit line under it.
+
+    Renders identically whether or not the artwork is present. When the file
+    is missing the image band carries a placeholder plate naming the figure
+    and saying what it shows, so the deck built from the public repository is
+    complete and the instructor can see exactly what is meant to be there.
+    """
+    slide = _blank(prs)
+    _content_frame(slide, s.title, marker)
+
+    band_w = CONTENT_W.inches
+    path = None if FIGURES_DIR is None else Path(FIGURES_DIR) / s.filename
+
+    if path is not None and path.is_file():
+        px_w, px_h = _png_size(path)
+        pad = 0.13
+        scale = min((band_w - 2 * pad) / px_w, (FIGURE_H - 2 * pad) / px_h)
+        w, h = px_w * scale, px_h * scale
+        x = MARGIN.inches + (band_w - w) / 2.0
+        y = FIGURE_TOP + (FIGURE_H - h) / 2.0
+        # A white plate under the artwork: the figures are scans on white and
+        # the page ground is warm paper, so an unframed image looks like a
+        # patch. The plate makes the edge deliberate.
+        _rect(slide, Inches(x - pad), Inches(y - pad),
+              Inches(w + 2 * pad), Inches(h + 2 * pad), WHITE, line=BORDER)
+        slide.shapes.add_picture(str(path), Inches(x), Inches(y),
+                                 Inches(w), Inches(h))
+    else:
+        plate_w = min(8.2, band_w)
+        x = MARGIN.inches + (band_w - plate_w) / 2.0
+        _rect(slide, Inches(x), Inches(FIGURE_TOP), Inches(plate_w),
+              Inches(FIGURE_H), WHITE, line=BORDER)
+        _rect(slide, Inches(x), Inches(FIGURE_TOP), Inches(plate_w),
+              Pt(4), GOLD)
+
+        frame = _textbox(slide, Inches(x + 0.6), Inches(FIGURE_TOP + 0.7),
+                         Inches(plate_w - 1.2), Inches(FIGURE_H - 1.2))
+        _para(frame, f"FIGURE {s.number}", size=15, color=MUTED, bold=True,
+              first=True, space_after=14)
+        _para(frame, s.shows, size=22, color=INK, font=DISPLAY_FONT,
+              line_spacing=1.2, space_after=18)
+        _para(frame,
+              "The artwork is copyrighted and is not in the public "
+              "repository. Build with assets/figures/ present to place it here.",
+              size=14, color=MUTED, italic=True, line_spacing=1.15)
+
+    frame = _textbox(slide, MARGIN, Inches(FIGURE_CAPTION_Y), CONTENT_W,
+                     Inches(0.34))
+    _para(frame, s.credit, size=13, color=MUTED, first=True)
+
+    _notes(slide, s.notes)
+
+
 def render_check(prs, s: Check, marker, index, total):
     """Question slide. Deliberately unlike any teaching slide: deep green
     ground, gold CHECK chip, two questions side by side."""
@@ -780,6 +885,14 @@ def _validate(chapter: Chapter) -> list[str]:
                 problems.append(
                     f"{where}: {len(slide.lines)} body lines, limit is {MAX_BODY_LINES}"
                 )
+            if isinstance(slide, Figure):
+                if not slide.number or "." not in slide.number:
+                    problems.append(f"{where}: a figure needs a book figure number")
+                if not slide.shows:
+                    problems.append(
+                        f"{where}: figure {slide.number} needs a 'shows' line, "
+                        "which is what the placeholder prints without the artwork"
+                    )
             if isinstance(slide, Check):
                 if len(slide.questions) != 2:
                     problems.append(f"{where}: a check must hold exactly 2 questions")
@@ -838,11 +951,19 @@ def _validate(chapter: Chapter) -> list[str]:
     return problems
 
 
-def build(chapter: Chapter, out_path, *, display_font: str | None = None):
-    """Render the chapter to a .pptx. Deterministic: same input, same deck."""
-    global DISPLAY_FONT
+def build(chapter: Chapter, out_path, *, display_font: str | None = None,
+          figures_dir=None):
+    """Render the chapter to a .pptx. Deterministic: same input, same deck.
+
+    ``figures_dir`` is where render_figure looks for the textbook artwork. Pass
+    None, or a path that does not exist, and every figure slide renders as a
+    placeholder instead. The slide count and the progress markers are the same
+    either way.
+    """
+    global DISPLAY_FONT, FIGURES_DIR
     if display_font:
         DISPLAY_FONT = display_font
+    FIGURES_DIR = Path(figures_dir) if figures_dir else None
 
     problems = _validate(chapter)
     if problems:
@@ -946,6 +1067,8 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None):
                 render_quote(prs, slide, marker)
             elif isinstance(slide, Content):
                 render_content(prs, slide, marker)
+            elif isinstance(slide, Figure):
+                render_figure(prs, slide, marker)
             else:
                 raise TypeError(f"unhandled slide type {type(slide).__name__}")
 
@@ -964,6 +1087,18 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None):
     prs.save(str(out_path))
     _repack_deterministically(out_path)
     return len(prs.slides._sldIdLst), total_checks
+
+
+def figure_status(chapter: Chapter, figures_dir=None):
+    """Every figure the chapter declares, and whether its artwork is present."""
+    root = Path(figures_dir) if figures_dir else None
+    out = []
+    for section in chapter.sections:
+        for slide in section.slides:
+            if isinstance(slide, Figure):
+                have = root is not None and (root / slide.filename).is_file()
+                out.append((slide.number, slide.filename, have))
+    return out
 
 
 def _repack_deterministically(path) -> None:

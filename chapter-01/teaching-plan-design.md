@@ -1,13 +1,21 @@
-# Designing the FIN1209 lecture notes
+# Designing the FIN1209 teaching plan
 
-This file is the record behind `FIN1209-Chapter-01-Notes.pdf`. It exists so that
-Chapter 2 is a content file rather than a fresh argument about layout. It has
-three parts: what was read, what each source contributed, and the decisions that
-follow. The last section is honest about what could not be verified.
+This file is the record behind `FIN1209-Chapter-01-Teaching-Plan.pdf`, the
+**instructor's** document: timing, run plans, cut tiers, what to say, which
+check comes next. Throughout this file, "the notes" means that document. It was
+called `FIN1209-Chapter-01-Notes.pdf` when this was written, which was a
+misleading name, because a teaching plan is not lecture notes. The students'
+document is a separate artifact with a separate design file,
+`lecture-notes-design.md`.
 
-The notes are generated. `build/build_notes.py` is the entry point,
+It exists so that Chapter 2 is a content file rather than a fresh argument
+about layout. It has three parts: what was read, what each source contributed,
+and the decisions that follow. The last section is honest about what could not
+be verified.
+
+The plan is generated. `build/build_plan.py` is the entry point,
 `build/notekit.py` is the chapter-agnostic renderer, and
-`build/notes_chapter01.py` is the Chapter 1 content. Nothing in the PDF is
+`build/plan_chapter01.py` is the Chapter 1 content. Nothing in the PDF is
 hand-set.
 
 ## Why this was rebuilt
@@ -22,7 +30,7 @@ character per line: a full A4 sheet of single letters running down the page.
 The content was never the problem. The failure was that the artefact was
 produced and committed without anyone rendering it back to an image and looking
 at it. That is the process defect this rebuild is designed around, which is why
-`build/build_notes.py` renders through headless Chrome and why every page of the
+`build/build_plan.py` renders through headless Chrome and why every page of the
 committed PDF was rendered to PNG and viewed before commit.
 
 ## What a set of teaching notes is
@@ -426,7 +434,7 @@ paragraph and recognising a phrase.
 The build now resolves every reference against the real deck. The notes content
 module names slides by stable key (`fig:1.11`, `check:13`, `term:Price`,
 `slide:The four ways a trade actually makes money`, `part:3`, `recap:3`), and
-`build/build_notes.py` walks `build/content_chapter01.py` with the same traversal
+`build/build_plan.py` walks `build/content_chapter01.py` with the same traversal
 `deckkit.build` uses to number slides, then substitutes the real numbers. A key
 that does not resolve fails the build.
 
@@ -485,7 +493,7 @@ triage summary sitting above it in a fixed position.
 ## How it is built, and the two things that fought back
 
 ```
-.venv/bin/python build/build_notes.py
+.venv/bin/python build/build_plan.py
 ```
 
 HTML with real print CSS, rendered by headless Chrome. Two mechanics are worth
@@ -511,7 +519,7 @@ terminates Chrome. Build time went from over two minutes to six seconds.
 
 ```
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Notes.pdf /tmp/notes $(seq 1 23)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 23)
 ```
 
 This is not a formality, and doing it caught real defects that no amount of

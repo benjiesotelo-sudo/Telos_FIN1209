@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Renderer for the FIN1209 lecture notes. Knows nothing about any chapter.
+"""Renderer for the FIN1209 teaching plan. Knows nothing about any chapter.
 
 The counterpart of deckkit.py: deckkit draws slides, notekit lays out the
-printed teaching notes that the instructor holds while those slides are on the
-screen. Chapter content is plain data in a module of its own, exactly as
-content_chapter01.py is plain data for the deck.
+printed teaching plan the instructor holds while those slides are on the
+screen. The students' lecture notes are a different document with a different
+renderer, build/lecturekit.py, which takes the palette and the paginator here
+and nothing else. Chapter content is plain data in a module of its own,
+exactly as content_chapter01.py is plain data for the deck.
 
 Output is HTML carrying real print CSS, rendered to PDF by headless Chrome in
-build_notes.py. The design rationale, with sources, is chapter-01/notes-design.md.
+build_plan.py. The design rationale, with sources, is
+chapter-01/teaching-plan-design.md.
 
 Two things in here are worth knowing before changing anything.
 
@@ -18,10 +21,15 @@ own pagination will happily split a table or strand a heading at the foot of a
 sheet. Doing it in the document buys a real running footer, blocks that are
 never split, and headings that are always followed by their content.
 
+``paginator_js`` is shared with lecturekit, so it carries three behaviours the
+teaching plan deliberately does not use: floated blocks, sections that flow on
+rather than opening a fresh sheet, and paragraphs that split between sentences.
+All three are opt-in through attributes the plan never sets.
+
 **Slide numbers are resolved against the deck, never typed.** Content refers to
-slides by stable key. build_notes.py walks the deck's own chapter data with the
+slides by stable key. build_plan.py walks the deck's own chapter data with the
 same traversal deckkit.build uses to number slides, and hands the resolved map
-in here. A key that does not resolve fails the build, so the notes cannot drift
+in here. A key that does not resolve fails the build, so the plan cannot drift
 away from the deck.
 """
 
@@ -63,6 +71,10 @@ MARGIN_BOTTOM_MM = 16.0
 RAIL_MM = 34.0
 GUTTER_MM = 6.0
 FOOTER_MM = 11.0
+
+# A flowed section opener needs at least this much of a sheet left, otherwise
+# it starts the next one. See the paginator.
+SECTION_MIN_MM = 78.0
 
 CONTENT_W_MM = PAGE_W_MM - 2 * MARGIN_X_MM
 MAIN_MM = CONTENT_W_MM - RAIL_MM - GUTTER_MM
@@ -536,7 +548,7 @@ def _cover(n: Notes, deck: "DeckFacts") -> str:
 
 
 # --------------------------------------------------------------------------
-# Deck facts, computed from the deck's own content by build_notes.py
+# Deck facts, computed from the deck's own content by build_plan.py
 # --------------------------------------------------------------------------
 
 
@@ -847,7 +859,14 @@ table.tbl tr.rule-row td {{ border-top: 1pt solid {GREEN}; font-weight: 700; }}
 """
 
 
-_PAGINATOR = f"""
+def paginator_js(body_h_mm: float) -> str:
+    """The in-page paginator, parameterised by the sheet's body height.
+
+    Shared with build/lecturekit.py, which lays out the student lecture notes
+    on the same machinery with a different page geometry. Keep it here: there
+    is one paginator in this repository and both documents use it.
+    """
+    return f"""
 (function () {{
   var MM = 1 / 25.4;
   var src = document.getElementById('source');
@@ -857,9 +876,12 @@ _PAGINATOR = f"""
   document.body.appendChild(probe);
   var PX_PER_MM = probe.getBoundingClientRect().height / 100;
   document.body.removeChild(probe);
-  var BODY_H = {BODY_H_MM} * PX_PER_MM;
+  var BODY_H = {body_h_mm} * PX_PER_MM;
 
   var page = null, body = null, footer = null;
+
+  // How much of a sheet a flowed section opener needs before it is worth
+  // starting there rather than on the next sheet.
 
   function newPage(footerText) {{
     page = document.createElement('div');
@@ -878,6 +900,35 @@ _PAGINATOR = f"""
 
   function overflows() {{ return body.scrollHeight > Math.ceil(BODY_H); }}
 
+  // How much of the current sheet the blocks on it actually occupy.
+  function used() {{
+    var last = body.lastElementChild;
+    if (!last) return 0;
+    return last.getBoundingClientRect().bottom
+           - body.getBoundingClientRect().top;
+  }}
+
+  // Break a paragraph into sentence sized pieces without disturbing the
+  // markup inside it: text nodes are cut after a sentence ending, elements
+  // move whole.
+  function explode(p) {{
+    var out = [];
+    var kids = Array.prototype.slice.call(p.childNodes);
+    for (var i = 0; i < kids.length; i++) {{
+      var n = kids[i];
+      p.removeChild(n);
+      if (n.nodeType === 3) {{
+        var parts = n.nodeValue.split(/(?<=[.?!]\s)/);
+        for (var j = 0; j < parts.length; j++) {{
+          if (parts[j]) out.push(document.createTextNode(parts[j]));
+        }}
+      }} else {{
+        out.push(n);
+      }}
+    }}
+    return out;
+  }}
+
   // Try to place a node. Returns true when it landed on the current page.
   function place(node) {{
     body.appendChild(node);
@@ -892,7 +943,45 @@ _PAGINATOR = f"""
   for (var si = 0; si < sections.length; si++) {{
     var sec = sections[si];
     var foot = sec.getAttribute('data-footer') || '';
-    newPage(foot);
+    var deferred = [];
+    var sinceDefer = 0;
+
+    // A block marked data-float="1" that will not fit at the foot of a sheet
+    // waits instead of forcing a page break, and the blocks after it fill the
+    // space it could not use. It is then laid down at the top of the next
+    // sheet. Without this a tall figure leaves the rest of its page empty,
+    // which cost the lecture notes six pages of white paper. Only the lecture
+    // notes mark blocks this way; the teaching plan floats nothing.
+    function drain(fresh) {{
+      if (fresh) newPage(foot);
+      while (deferred.length) {{
+        var d = deferred[0];
+        if (place(d)) {{ deferred.shift(); continue; }}
+        if (!body.firstChild) {{
+          body.appendChild(d); overflowed.push(d); deferred.shift(); continue;
+        }}
+        newPage(foot);
+      }}
+      sinceDefer = 0;
+    }}
+    function turnPage() {{ drain(true); }}
+
+    // A section normally opens a fresh sheet. A section marked data-flow="1"
+    // may instead carry on down the current one, so long as enough of the
+    // sheet is left to be worth it. The teaching plan flows nothing: an
+    // instructor turns to a part and expects it at the top of a page. The
+    // lecture notes flow, because six forced breaks in a document this size
+    // were costing four pages of white paper and stranding single paragraphs
+    // on sheets of their own.
+    var flow = sec.getAttribute('data-flow') === '1';
+    // Not scrollHeight: on an underfull sheet that returns the height of the
+    // box, not the height of what is in it, so the sheet always looks full.
+    var room = page ? BODY_H - used() : 0;
+    if (!flow || page === null || room < {SECTION_MIN_MM} * PX_PER_MM) {{
+      newPage(foot);
+    }} else {{
+      footer.querySelector('.ff-left').textContent = foot;
+    }}
     var blocks = Array.prototype.slice.call(sec.children);
 
     for (var bi = 0; bi < blocks.length; bi++) {{
@@ -907,19 +996,62 @@ _PAGINATOR = f"""
           if (place(next)) {{ bi++; continue; }}
           body.removeChild(blk);
         }}
-        newPage(foot);
+        turnPage();
         place(blk);
         if (!place(next)) {{ body.appendChild(next); overflowed.push(next); }}
         bi++;
         continue;
       }}
 
-      if (place(blk)) continue;
+      if (place(blk)) {{
+        // A float cannot drift far from the paragraph that refers to it.
+        if (deferred.length && ++sinceDefer >= 6) turnPage();
+        continue;
+      }}
 
-      // Splittable prose splits between its own paragraphs and nowhere else.
+      // Only defer when enough blocks follow to fill the space the float
+      // gave up. Deferring the last figure in a section strands it alone on a
+      // sheet, which is worse than the gap it was avoiding.
+      if (blk.getAttribute('data-float') === '1' && deferred.length < 2
+          && bi + 3 < blocks.length) {{
+        deferred.push(blk);
+        sinceDefer = 0;
+        continue;
+      }}
+
+      // Splittable prose splits between its own paragraphs, and, when it is
+      // a single paragraph with nowhere else to break, between its sentences.
+      // Without the second case the last paragraph of a part lands alone on a
+      // sheet of its own, which is what put one sentence on page 23.
       if (blk.getAttribute('data-split') === '1') {{
         var main = blk.querySelector('.main');
         var paras = Array.prototype.slice.call(main.children);
+
+        if (paras.length === 1) {{
+          var solo = blk.cloneNode(true);
+          var soloP = solo.querySelector('.main').children[0];
+          var pieces = explode(soloP);
+          if (pieces.length > 1) {{
+            body.appendChild(solo);
+            var took = 0;
+            for (var k = 0; k < pieces.length; k++) {{
+              soloP.appendChild(pieces[k]);
+              if (overflows()) {{ soloP.removeChild(pieces[k]); break; }}
+              took++;
+            }}
+            if (took > 0 && took < pieces.length) {{
+              turnPage();
+              var rest = blk.cloneNode(true);
+              var restP = rest.querySelector('.main').children[0];
+              while (restP.firstChild) restP.removeChild(restP.firstChild);
+              for (var m = took; m < pieces.length; m++) restP.appendChild(pieces[m]);
+              if (!place(rest)) {{ body.appendChild(rest); overflowed.push(rest); }}
+              continue;
+            }}
+            body.removeChild(solo);
+          }}
+        }}
+
         if (paras.length > 1) {{
           var head = blk.cloneNode(true);
           var headMain = head.querySelector('.main');
@@ -933,7 +1065,7 @@ _PAGINATOR = f"""
           }}
           if (moved === 0) {{ body.removeChild(head); }}
           if (moved >= paras.length) continue;
-          newPage(foot);
+          turnPage();
           var tail = blk.cloneNode(true);
           var tailMain = tail.querySelector('.main');
           var tailRail = tail.querySelector('.rail');
@@ -945,9 +1077,13 @@ _PAGINATOR = f"""
         }}
       }}
 
-      newPage(foot);
+      turnPage();
       if (!place(blk)) {{ body.appendChild(blk); overflowed.push(blk); }}
     }}
+
+    // Whatever is still waiting goes on this sheet if it fits, and only opens
+    // a new one when it does not.
+    drain(false);
   }}
 
   // Page numbers, once the sheet count is final.
@@ -964,6 +1100,9 @@ _PAGINATOR = f"""
   document.documentElement.classList.add('laid-out');
 }})();
 """
+
+
+_PAGINATOR = paginator_js(BODY_H_MM)
 
 
 def render(notes: Notes, res: Resolver, deck: DeckFacts) -> str:

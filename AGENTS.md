@@ -24,23 +24,44 @@ path. Before committing a deck, confirm it embeds no artwork:
 Every chapter after this one inherits the constraint. See
 `chapter-01/README.md` for the two build commands and the figure file naming.
 
-## The teaching notes are generated too
+## Two print documents, for two different readers
 
-`chapter-01/FIN1209-Chapter-01-Notes.pdf` is built by `build/build_notes.py`
-from `build/notes_chapter01.py` (content) and `build/notekit.py` (layout). The
-old hand-written `chapter-01/lecture-notes.md` is retired.
+Do not merge them, and do not let content leak between them.
 
-The notes never store a slide number. They name slides by key and the build
-resolves them against `build/content_chapter01.py`, so **rebuild the notes
-whenever you rebuild the deck**. `build/README.md` covers the two sharp edges:
-headless Chrome writes the PDF and then never exits, so the build polls for the
-file instead of waiting on the process; and pagination is done by a script
-inside the page, not by Chrome.
+| Document | Reader | Built by | Content |
+|---|---|---|---|
+| `chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | `build/build_plan.py` | `build/plan_chapter01.py` |
+| `chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | `build/build_lecture_notes.py` | `build/lecture_chapter01.py` |
 
-**Render the finished PDF back to images and look at every page before you
-commit it.** The previous notes PDF was committed without anyone viewing a
-rendered page, and two of its pages were unusable. `chapter-01/notes-design.md`
-records the research the design came from.
+The **teaching plan** is a run card: timing, run plans, cut tiers, speaker
+cues, check answers, slide numbers. The **lecture notes** are the student
+facing record of the content: prose, the figures, every term defined once, the
+review questions. A slide number or a minute count in the lecture notes means
+it is in the wrong document.
+
+Layout lives in `build/notekit.py` and `build/lecturekit.py`, which know
+nothing about any chapter; lecturekit takes the FEU palette and the paginator
+from notekit rather than copying either. `build/chrome.py` renders both.
+
+Both PDFs are checked against the deck, which is the authority on scope, so
+**rebuild both whenever you rebuild the deck**. The plan names slides by key
+and resolves them. The notes name figures and terms, and the build fails if
+the notes reference a figure the deck does not place, if a figure is never
+mentioned in the prose, or if the deck teaches a term the notes never define.
+
+`build/README.md` covers the sharp edges: headless Chrome writes the PDF and
+then never exits, so the build polls for the file instead of waiting on the
+process; pagination is done by a script inside the page, not by Chrome; and
+the notes turn on three paginator behaviours the plan deliberately does not.
+
+**Render every finished PDF back to images and look at every page before you
+commit it**, and for the lecture notes look at both the placeholder build and
+the figure build. An earlier notes PDF was committed without anyone viewing a
+rendered page and two of its pages were unusable; later, the figure build
+overflowed every image on top of its own caption while the placeholder build
+looked perfect. `chapter-01/teaching-plan-design.md` and
+`chapter-01/lecture-notes-design.md` record the research each design came
+from, with sources.
 
 ## The closing slides are not validated
 

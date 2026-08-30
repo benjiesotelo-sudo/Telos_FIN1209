@@ -12,5 +12,7 @@ __pycache__/
 assets/figures/
 # The teaching build that embeds that artwork
 *-with-figures.pptx
-# Intermediate output of build/build_notes.py --keep-html
+# Intermediate output of the two PDF builds run with --keep-html
 *-Notes.html
+*-Teaching-Plan.html
+*-Lecture-Notes.html

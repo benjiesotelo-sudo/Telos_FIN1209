@@ -1571,9 +1571,11 @@ PART6 = Part(
             cue="",
             title="Two of them are worth a sentence beyond the definition",
             items=(
-                "**Supply side and demand side cuts across retail and "
-                "institutional.** The supply side gets paid whether the demand "
-                "side wins or loses.",
+                "**The book lists supply side and demand side and defines "
+                "neither.** Give the common industry reading, the supply side "
+                "provides the market service and the demand side consumes it, "
+                "then name the second reading, producers hedging output "
+                "against consumers hedging input. Do not rule between them.",
                 "**Novice is a stage, not a verdict.** Everyone in the room is "
                 "one today, and Part 4 already said that subjectivity in "
                 "pattern recognition falls with practice.",

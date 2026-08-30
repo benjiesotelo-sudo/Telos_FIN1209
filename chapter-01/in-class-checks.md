@@ -515,14 +515,14 @@ Answer: **C**. Eight: retail, institutional, speculator, supply side, demand sid
 
 Answer: **A**. Nondiscretionary means following the predefined rules without discretionary intervention.
 
-**Q2.** Which pair is distinguished mainly by who provides and who consumes market services?
+**Q2.** Which pair is distinguished mainly by holding period and by who is paid for taking on price risk?
 
 - A. Retail and institutional
-- **B. Supply side and demand side**
+- **B. Speculator and investor**
 - C. Professional and novice
-- D. Speculator and investor
+- D. Discretionary and nondiscretionary
 
-Answer: **B**. Supply side provides access, liquidity and services; demand side consumes them.
+Answer: **B**. A speculator is paid for assuming price risk over a shorter horizon; an investor commits capital for the longer term return from the asset itself.
 
 
 ### Check 25 - Markets and instruments

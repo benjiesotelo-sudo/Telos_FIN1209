@@ -24,6 +24,24 @@ path. Before committing a deck, confirm it embeds no artwork:
 Every chapter after this one inherits the constraint. See
 `chapter-01/README.md` for the two build commands and the figure file naming.
 
+## The teaching notes are generated too
+
+`chapter-01/FIN1209-Chapter-01-Notes.pdf` is built by `build/build_notes.py`
+from `build/notes_chapter01.py` (content) and `build/notekit.py` (layout). The
+old hand-written `chapter-01/lecture-notes.md` is retired.
+
+The notes never store a slide number. They name slides by key and the build
+resolves them against `build/content_chapter01.py`, so **rebuild the notes
+whenever you rebuild the deck**. `build/README.md` covers the two sharp edges:
+headless Chrome writes the PDF and then never exits, so the build polls for the
+file instead of waiting on the process; and pagination is done by a script
+inside the page, not by Chrome.
+
+**Render the finished PDF back to images and look at every page before you
+commit it.** The previous notes PDF was committed without anyone viewing a
+rendered page, and two of its pages were unusable. `chapter-01/notes-design.md`
+records the research the design came from.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

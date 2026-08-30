@@ -88,7 +88,7 @@ turn them on:
 
 - `data-float="1"` on a block: it waits for the next sheet rather than forcing
   a break and leaving the rest of this one empty. Figures use it.
-- `data-flow="1"` on a section: it may carry on down the current sheet if 78mm
+- `data-flow="1"` on a section: it may carry on down the current sheet if 66mm
   of it is left, instead of always opening a fresh one.
 - A single paragraph with nowhere else to break breaks between its sentences.
 
@@ -115,6 +115,11 @@ deck is the authority on scope, so three of the five checks are drift checks:
   mentions is decoration.
 - Every term the deck teaches must be defined exactly once in the notes, and
   the notes may not define a term the deck does not teach.
+- The summary and the review questions must be present. They are not written
+  in the content module at all: `deck_closing()` lifts them from the deck's own
+  closing slides, so editing those slides moves the notes with them. The audit
+  that changed the review questions from six to all eight is exactly the drift
+  this closes.
 - No em dashes or en dashes, and the same measure band.
 
 ### Then look at them

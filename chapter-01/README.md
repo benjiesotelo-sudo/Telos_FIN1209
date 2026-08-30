@@ -50,7 +50,9 @@ tiers, no speaker cues, no answer letters and no slide numbers.
 on scope and both PDFs are checked against it. The plan resolves every slide
 reference against the deck. The notes resolve every figure number and every
 term against it, and the build fails if the notes name a figure the deck does
-not place, or if the deck teaches a term the notes never define.
+not place, or if the deck teaches a term the notes never define. The notes also
+take their summary and their review questions straight from the deck's closing
+slides rather than keeping a copy, so those cannot go stale either.
 
 ## The lecture notes
 

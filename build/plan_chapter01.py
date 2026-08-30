@@ -1577,10 +1577,9 @@ PART6 = Part(
             title="Two of them are worth a sentence beyond the definition",
             items=(
                 "**The book lists supply side and demand side and defines "
-                "neither.** Give the common industry reading, the supply side "
-                "provides the market service and the demand side consumes it, "
-                "then name the second reading, producers hedging output "
-                "against consumers hedging input. Do not rule between them.",
+                "neither.** Teach the gap, not a ruling. Say the book never "
+                "defines either one, give the two readings as an aside, and "
+                "tell them plainly that no quiz item is set on it.",
                 "**Novice is a stage, not a verdict.** Everyone in the room is "
                 "one today, and Part 4 already said that subjectivity in "
                 "pattern recognition falls with practice.",

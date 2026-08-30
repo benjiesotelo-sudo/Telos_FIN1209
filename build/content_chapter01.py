@@ -2199,12 +2199,17 @@ PART6 = Section(
         ),
         Term(
             term="Supply side and demand side",
-            plain="The common industry reading is that the supply side provides the market service and the demand side consumes it.",
-            example="On that reading brokers, exchanges, market makers and data vendors are supply side, and the funds and traders who use them are demand side.",
-            formal="The textbook lists both categories among its eight and defines neither. A second reading is equally available: the supply side as producers hedging their output, the demand side as consumers hedging their input.",
+            # The book lists these two among its eight categories and defines
+            # neither, anywhere. The deck teaches only what the text teaches,
+            # so the gap is the lesson and the readings are an aside. There is
+            # deliberately no formal definition row: render_term skips an empty
+            # one, and its absence is the point.
+            plain="The book lists both of these among its eight categories of market participant, and then defines neither of them anywhere in the book.",
+            example="Aside, not examinable. Two readings circulate outside the text. One makes the supply side the providers of the market service, brokers, exchanges, market makers and data vendors, and the demand side the funds and traders who use them. The other makes the supply side producers hedging their output and the demand side consumers hedging their input.",
+            formal="",
             notes=(
-                "Say plainly that this is the one pair in the chapter the book leaves undefined, and that we are not going to invent a ruling.",
-                "Give the industry reading first, then the producer and consumer reading, and tell them to say which one they mean.",
+                "Say plainly that this is the one pair in the chapter the book leaves undefined, so we teach the gap and not a ruling.",
+                "Read the aside once, name both readings, and tell them no quiz item is set on either.",
             ),
         ),
         Term(
@@ -2235,7 +2240,7 @@ PART6 = Section(
                     options=("Nondiscretionary",
                              "Discretionary",
                              "A hedger",
-                             "Supply side"),
+                             "A scalper"),
                     answer="A",
                     reason="Nondiscretionary means following the predefined rules without discretionary intervention.",
                 ),

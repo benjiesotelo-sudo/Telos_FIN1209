@@ -754,7 +754,15 @@ def validate(document: str, notes: LectureNotes, deck_figures: dict,
             f"the notes define {t!r} and the deck does not teach it"
         )
 
-    # 4. House style.
+    # 4. The closing the deck supplies.
+    if not notes.summary:
+        problems.append("the summary is empty; the build fills it from the deck")
+    if not notes.review_questions:
+        problems.append(
+            "the review questions are empty; the build fills them from the deck"
+        )
+
+    # 5. House style.
     for ch, name in BANNED.items():
         if ch in document:
             where = document.find(ch)
@@ -763,7 +771,7 @@ def validate(document: str, notes: LectureNotes, deck_figures: dict,
                 f"{document[max(0, where - 60):where + 60]!r}"
             )
 
-    # 5. Measure.
+    # 6. Measure.
     chars = MAIN_MM / (BODY_PT * 0.5 * 25.4 / 72)
     if not (MIN_MEASURE <= chars <= MAX_MEASURE):
         problems.append(

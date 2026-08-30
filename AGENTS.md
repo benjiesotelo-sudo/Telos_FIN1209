@@ -48,6 +48,8 @@ Both PDFs are checked against the deck, which is the authority on scope, so
 and resolves them. The notes name figures and terms, and the build fails if
 the notes reference a figure the deck does not place, if a figure is never
 mentioned in the prose, or if the deck teaches a term the notes never define.
+The notes take their summary and review questions from the deck's closing
+slides instead of holding a copy.
 
 `build/README.md` covers the sharp edges: headless Chrome writes the PDF and
 then never exits, so the build polls for the file instead of waiting on the

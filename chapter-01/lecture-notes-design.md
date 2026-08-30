@@ -412,7 +412,7 @@ What is specific to this document:
   paginator the plan uses, because Chrome cannot produce a running footer and
   will happily split a figure across a sheet.
 - **Sections do not force a fresh page.** They open with a full width band and
-  carry on down the current sheet, so long as 78mm of it is left. Forcing six
+  carry on down the current sheet, so long as 66mm of it is left. Forcing six
   page breaks was the first thing tried, because that is what 18.05 does and
   what the teaching plan does. On this document it cost four pages of white
   paper and stranded single paragraphs on sheets of their own. Cambridge's
@@ -454,7 +454,11 @@ below travel with it:
 3. Every figure carries the book's number, a caption sentence, a credit line,
    and at least one reference from the prose. The build checks the last one.
 4. Sections are the deck's parts, in the deck's order.
-5. The document ends with Summary, Review questions, Key terms, Sources.
+5. The document ends with Summary, Review questions, Sources, Key terms. The
+   first two are lifted from the deck's own closing slides by the build, not
+   retyped: they are the book's questions, the deck is where they are
+   maintained, and a copy here goes stale the moment somebody edits that
+   slide. It already did once.
 6. Render every page of both builds to PNG and look at every one before
    committing. The figure build is not the placeholder build with pictures in
    it: an early cut of this document put the artwork in an `<img>` inside a

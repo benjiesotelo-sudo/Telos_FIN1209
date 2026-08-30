@@ -127,7 +127,8 @@ SECTION1 = Section(
             term="Forecasting",
             text="Forecasting is the inferential function of technical "
                  "analysis: it interprets identified market action to infer "
-                 "potential future price behaviour.",
+                 "potential future price behaviour, especially the start of a "
+                 "new trend.",
         ),
         Para(text=(
             "Identification alone hands you a great deal before you risk a "
@@ -141,7 +142,10 @@ SECTION1 = Section(
             "Forecasting rests on an assumption, that price behaviour repeats "
             "to some reasonable degree, and Section 5 tests it. For now: "
             "prices bouncing off 100 pesos four times is a fact, expecting "
-            "buyers a fifth time is an opinion."
+            "buyers a fifth time is an opinion. **The forecast worth most is "
+            "the one that catches a new trend starting**, which is what Pring "
+            "means in 2.4 by identifying a reversal at a relatively early "
+            "stage."
         )),
 
         Head(number="1.5", text="Four words, and four ways to make money"),
@@ -274,8 +278,11 @@ SECTION2 = Section(
         Para(text=(
             "The route from accounts to a number runs through ratios: price "
             "to earnings, price to earnings growth, price to book, price to "
-            "sales, debt to equity, earnings per share. Analysts reach them "
-            "from two directions."
+            "sales, debt to equity, earnings per share. Asset pricing models "
+            "sit beside them, the best known being the **capital asset "
+            "pricing model**, or CAPM, which seeks the best balance between "
+            "risk and expected returns over a risk free rate. Analysts reach "
+            "all of it from two directions."
         )),
         Define(
             term="The top-down approach",
@@ -514,15 +521,16 @@ SECTION3 = Section(
         Define(
             term="The mean reverting or contrarian approach",
             text="A mean reverting approach expects price to return to an "
-                 "average or to a balance between supply and demand, and "
-                 "favours studies that pinpoint overbought and oversold "
-                 "activity.",
+                 "average or to a balance between supply and demand, enters "
+                 "at cycle extremes, and acts on the overbought and oversold "
+                 "conditions its studies pinpoint.",
         ),
         Define(
             term="The non-mean reverting or momentum approach",
             text="A non-mean reverting approach expects trends to continue "
-                 "through a positive feedback cycle, and favours breakout and "
-                 "continuation studies.",
+                 "through a positive feedback cycle, enters at cycle "
+                 "midpoints, and acts on the crossover of the oscillator "
+                 "equilibrium level.",
         ),
         Fig(
             panels=(Panel(number="1.7"),),
@@ -533,13 +541,15 @@ SECTION3 = Section(
         ),
         Para(text=(
             "Figure 1.7 is a useful page to keep. The contrarian buys at "
-            "support and sells at resistance, using divergence, regression "
-            "lines, moving average bands and Bollinger bands. The momentum "
-            "trader does the exact opposite at the same levels, going long on "
-            "the breach of resistance and short on the breach of support, "
-            "using chart pattern, moving average, Darvas Box and Donchian "
-            "channel breakouts. **The line in the figure that gives away the "
-            "belief is the order type.**"
+            "support and sells at resistance, entering at cycle extremes, "
+            "using divergence, regression lines, moving average bands and "
+            "Bollinger bands. The momentum trader does the exact opposite at "
+            "the same levels, going long on the breach of resistance and short "
+            "on the breach of support, entering at cycle midpoints on the "
+            "crossover of the oscillator equilibrium level, using chart "
+            "pattern, moving average, Darvas Box and Donchian channel "
+            "breakouts. **The line in the figure that gives away the belief is "
+            "the order type.**"
         )),
         Define(
             term="Limit and stop entry orders",
@@ -792,8 +802,8 @@ SECTION4 = Section(
             panels=(
                 Panel(number="1.17", label="Conflicting: bullish, neutral and "
                                            "bearish at once."),
-                Panel(number="1.18", label="Agreeing: every formation "
-                                           "bearish."),
+                Panel(number="1.18", label="Patterns that agree: every "
+                                           "formation bearish."),
             ),
             cols=2,
             height_mm=54.0,
@@ -894,9 +904,12 @@ SECTION4 = Section(
             "answers beside it. A price filter is cheap but accepts some "
             "false breaks; a time filter costs you price and buys certainty; "
             "an algorithmic filter demands a whole sequence. Chapter 5 treats "
-            "all three properly. **Choosing between them is itself "
-            "subjective**, which is the joke this section has been building "
-            "towards."
+            "all three properly. One honest wrinkle: the book's prose calls "
+            "the third family algorithmic and its own Figure 1.21 calls it "
+            "event-based, and it never resolves the disagreement. Use either "
+            "name and know they are the same thing. **Choosing between the "
+            "three is itself subjective**, which is the joke this section has "
+            "been building towards."
         )),
 
         Head(number="4.7", text="Subjectivity shrinks with practice"),
@@ -1312,14 +1325,22 @@ SECTION6 = Section(
         )),
         Define(
             term="Supply side and demand side",
-            text="Supply side participants provide market access, liquidity "
-                 "and services; demand side participants consume those "
-                 "services in order to take positions.",
+            text="The book lists both of these among its eight categories of "
+                 "market participant, and then defines neither of them "
+                 "anywhere in the book. There is no definition here to learn.",
         ),
         Para(text=(
-            "Brokers, exchanges, market makers and data vendors are supply "
-            "side. The funds and traders who use them are demand side. **The "
-            "supply side gets paid whether the demand side wins or loses.**"
+            "This is the one pair in the chapter the text leaves open, and the "
+            "course is not going to invent a ruling for it. **The paragraph "
+            "below is an aside, and it is not examinable.**"
+            "\n\n"
+            "Two readings circulate outside the text. One makes the supply "
+            "side the providers of the market service, brokers, exchanges, "
+            "market makers and data vendors, and the demand side the funds and "
+            "traders who use them. The other makes the supply side producers "
+            "hedging their output and the demand side consumers hedging their "
+            "input. Both are defensible, neither is the book's, and no quiz "
+            "item is set on either."
         )),
         Define(
             term="Professionals and novices",
@@ -1456,23 +1477,12 @@ NOTES = LectureNotes(
         "Identify the various styles and approaches in technical analysis.",
     ),
     sections=(SECTION1, SECTION2, SECTION3, SECTION4, SECTION5, SECTION6),
-    summary=(
-        "Technical analysis is the study of market action.",
-        "It identifies what has happened, and it forecasts what might.",
-        "It rests on discounting, repetition, and trends.",
-        "It is subjective, and so is every other kind of analysis.",
-        "It deals in probabilities, never in certainties.",
-    ),
-    review_questions=(
-        "What are the challenges to technical analysis?",
-        "How does market discounting differ from the Efficient Market "
-        "Hypothesis?",
-        "How may an analyst resolve conflicting signals or chart patterns?",
-        "Why is identifying a trend change largely subjective?",
-        "Is random walk a true reflection of the markets?",
-        "Describe the three levels of discounting under the Efficient Market "
-        "Hypothesis.",
-    ),
+    # The summary and the review questions are the book's, and the deck's
+    # closing slides are where they are maintained. build_lecture_notes.py
+    # reads them from there and fills these in, so editing the closing slide
+    # moves the notes with it. Do not retype them here.
+    summary=(),
+    review_questions=(),
     sources=(
         "Lim, M. (2016). The Handbook of Technical Analysis. Wiley. "
         "Chapter 1, and the source of every figure here.",

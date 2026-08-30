@@ -73,8 +73,11 @@ GUTTER_MM = 6.0
 FOOTER_MM = 11.0
 
 # A flowed section opener needs at least this much of a sheet left, otherwise
-# it starts the next one. See the paginator.
-SECTION_MIN_MM = 78.0
+# it starts the next one. See the paginator. Section openers are also glued to
+# their first block, so this is the coarse guard and not the only one; 66mm
+# sits in the middle of a plateau where the lecture notes hold 24 pages at 95
+# percent fill, rather than on the edge of one.
+SECTION_MIN_MM = 66.0
 
 CONTENT_W_MM = PAGE_W_MM - 2 * MARGIN_X_MM
 MAIN_MM = CONTENT_W_MM - RAIL_MM - GUTTER_MM

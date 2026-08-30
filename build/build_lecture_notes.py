@@ -36,6 +36,7 @@ does, and for the research it came from.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import shutil
 import sys
 import tempfile
@@ -72,6 +73,35 @@ def deck_facts(chapter) -> tuple[dict[str, str], dict[str, str], list[str]]:
             elif isinstance(slide, deckkit.Term):
                 terms.append(slide.term)
     return shows, files, terms
+
+
+# The two closing slides the notes reproduce verbatim, by title.
+SUMMARY_SLIDE = "Chapter 1 in five sentences"
+REVIEW_SLIDE = "The review questions to prepare"
+
+
+def deck_closing(chapter) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """The summary and the review questions, taken from the deck's own closing.
+
+    These are the book's, not ours, and the deck is where they are maintained.
+    Reading them here rather than retyping them in the content module is what
+    stops the notes shipping last term's review questions after somebody edits
+    the closing slide: when the audit changed that slide from six questions to
+    six lines carrying all eight, the notes went stale silently.
+    """
+    found: dict[str, tuple[str, ...]] = {}
+    for slide in chapter.closing:
+        title = getattr(slide, "title", "")
+        if title in (SUMMARY_SLIDE, REVIEW_SLIDE):
+            found[title] = tuple(getattr(slide, "lines", ()))
+    missing = [t for t in (SUMMARY_SLIDE, REVIEW_SLIDE) if not found.get(t)]
+    if missing:
+        raise SystemExit(
+            "the deck's closing no longer carries " + " and ".join(missing)
+            + ". The lecture notes reproduce those slides, so rename them here "
+            "and in build_lecture_notes.py together."
+        )
+    return found[SUMMARY_SLIDE], found[REVIEW_SLIDE]
 
 
 def main() -> int:
@@ -114,15 +144,20 @@ def main() -> int:
         )
 
     shows, files, terms = deck_facts(CHAPTER)
+    summary, review = deck_closing(CHAPTER)
     figures = lecturekit.FigureFacts(
         shows=shows,
         files=files,
         directory=args.figures_dir if args.with_figures else None,
     )
 
-    document = lecturekit.render(NOTES, figures)
+    # The summary and the review questions are the deck's, not the content
+    # module's. See deck_closing.
+    notes = dataclasses.replace(NOTES, summary=summary, review_questions=review)
 
-    problems = lecturekit.validate(document, NOTES, shows, terms)
+    document = lecturekit.render(notes, figures)
+
+    problems = lecturekit.validate(document, notes, shows, terms)
     if problems:
         raise SystemExit(
             "Lecture notes design rules violated:\n  " + "\n  ".join(problems)
@@ -139,16 +174,18 @@ def main() -> int:
             print(f"html   : {kept}")
 
     pages = chrome.page_count(args.out)
-    words = len(NOTES.prose().split())
+    words = len(notes.prose().split())
     placed = figures.placed() if args.with_figures else 0
 
     print(f"notes  : {_relative(args.out)}")
     print(f"pages  : {pages}")
     print(f"words  : {words} of body prose")
-    print(f"figures: {len(NOTES.figure_numbers())} placed in "
-          f"{sum(1 for s in NOTES.sections for b in s.blocks if isinstance(b, lecturekit.Fig))}"
-          f" blocks, artwork {placed} of {len(NOTES.figure_numbers())}")
-    print(f"terms  : {len(NOTES.terms())} defined, checked against the deck")
+    print(f"figures: {len(notes.figure_numbers())} placed in "
+          f"{sum(1 for s in notes.sections for b in s.blocks if isinstance(b, lecturekit.Fig))}"
+          f" blocks, artwork {placed} of {len(notes.figure_numbers())}")
+    print(f"terms  : {len(notes.terms())} defined, checked against the deck")
+    print(f"closing: {len(summary)} summary lines and {len(review)} review "
+          f"questions, taken from the deck")
     print(f"source : {args.figures_dir if args.with_figures else 'placeholders, no artwork'}")
     print("look at it: every page, as an image, before you commit it.")
     return 0

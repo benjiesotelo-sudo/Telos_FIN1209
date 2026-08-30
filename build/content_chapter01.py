@@ -172,9 +172,9 @@ PART1 = Section(
         ),
         Term(
             term="Forecasting",
-            plain="The opinion job. You take what the chart recorded and make a claim about what comes next.",
+            plain="The opinion job. You take what the chart recorded and make a claim about what comes next, and the claim worth most is where a new trend begins.",
             example="Prices bounced off 100 pesos four times, so you expect buyers to show up there again.",
-            formal="Forecasting is the inferential function of technical analysis: it interprets identified market action to infer potential future price behavior.",
+            formal="Forecasting is the inferential function of technical analysis: it interprets identified market action to infer potential future price behavior, especially the start of a new trend.",
             notes=(
                 "Say the forecasting half rests entirely on one assumption: that price behavior repeats to some reasonable degree.",
                 "Promise them we will test that assumption properly in Part 5.",
@@ -440,15 +440,17 @@ PART2 = Section(
         Content(
             title="How a fundamentalist turns accounts into a number",
             lines=(
-                "Price to earnings, or P/E.",
-                "Price to earnings growth, or PEG.",
+                "Price to earnings, or P/E. Price to earnings growth, or PEG.",
                 "Price to book, and price to sales.",
                 "Debt to equity, and earnings per share.",
+                "Asset pricing models like the capital asset pricing model, or CAPM.",
+                "CAPM seeks the best balance between risk and expected returns over a risk free rate.",
             ),
-            accent="All of these are ratios. None of them tells you what to do at 9:31 tomorrow morning.",
+            accent="None of this tells you what to do at 9:31 tomorrow morning.",
             notes=(
                 "Do not teach the ratios here. Name them and move. They belong to another subject.",
-                "Land the accent: ratios have no time axis.",
+                "Say CAPM out loud and repeat the phrase over a risk free rate. The department has quizzed it.",
+                "Land the accent: none of these has a time axis.",
             ),
         ),
         Term(
@@ -468,7 +470,7 @@ PART2 = Section(
             formal="A bottom-up approach relies primarily on a specific company's own fundamental performance rather than on sector or market conditions.",
             notes=(
                 "Contrast in one sentence with top-down. Do not belabor it.",
-                "Mention the capital asset pricing model here as the formal attempt to balance risk against expected return over a risk free rate.",
+                "Call back to CAPM from the ratios slide: it is the formal attempt to balance risk against expected return over a risk free rate.",
             ),
         ),
         Content(
@@ -945,7 +947,7 @@ PART3 = Section(
             term="The mean reverting or contrarian approach",
             plain="You expect price to snap back to an average. You do not expect it to travel far.",
             example="You buy at support and short at resistance, using divergence, regression lines, moving average bands and Bollinger bands.",
-            formal="A mean reverting approach expects price to return to an average or to a balance between supply and demand, and favours studies that pinpoint overbought and oversold activity.",
+            formal="A mean reverting approach expects price to return to an average or to a balance between supply and demand, enters at cycle extremes, and acts on the overbought and oversold conditions its studies pinpoint.",
             notes=(
                 "Say contrarians prefer consolidations to trends, and limit entry orders to stop orders.",
                 "List two tools only, then move. The tools get their own chapters later.",
@@ -955,7 +957,7 @@ PART3 = Section(
             term="The non-mean reverting or momentum approach",
             plain="You expect price to keep travelling. Demand creates more demand, supply creates more supply.",
             example="You buy the breakout of a chart pattern, a moving average, a Darvas Box or a Donchian channel.",
-            formal="A non-mean reverting approach expects trends to continue through a positive feedback cycle, and favours breakout and continuation studies.",
+            formal="A non-mean reverting approach expects trends to continue through a positive feedback cycle, enters at cycle midpoints, and acts on the crossover of the oscillator equilibrium level.",
             notes=(
                 "Say this trader longs the breach of resistance and shorts the breach of support, the exact opposite of the contrarian.",
                 "Name Darvas Box out loud; the department has quizzed it as a momentum example.",
@@ -1387,11 +1389,11 @@ PART4 = Section(
             ),
         ),
         Figure(
-            title="The same patterns, now agreeing",
+            title="Patterns that agree",
             number="1.18",
             shows="A larger descending triangle and a smaller descending triangle, both bearish, over a complex head and shoulders that is also bearish.",
             notes=(
-                "Contrast this with the last slide: same shapes, but every one of them points the same way.",
+                "Contrast this with the last slide: different shapes, but every one of them points the same way.",
                 "Say this is what confirmation looks like on a chart, and why it feels so comfortable.",
             ),
         ),
@@ -1511,6 +1513,7 @@ PART4 = Section(
             notes=(
                 "Read the three headings A, B and C only. Do not read the sub-items; those are Chapter 5.",
                 "Point at the question mark on the chart and say every filter on the right is an answer to it.",
+                "Name the disagreement honestly: the book's prose calls the third family algorithmic, this diagram of its own calls it event-based, and the book never resolves it.",
             ),
         ),
         Check(
@@ -2196,12 +2199,12 @@ PART6 = Section(
         ),
         Term(
             term="Supply side and demand side",
-            plain="Supply side participants provide the market service. Demand side participants consume it.",
-            example="Brokers, exchanges, market makers and data vendors are supply side. The funds and traders who use them are demand side.",
-            formal="Supply side participants provide market access, liquidity and services; demand side participants consume those services in order to take positions.",
+            plain="The common industry reading is that the supply side provides the market service and the demand side consumes it.",
+            example="On that reading brokers, exchanges, market makers and data vendors are supply side, and the funds and traders who use them are demand side.",
+            formal="The textbook lists both categories among its eight and defines neither. A second reading is equally available: the supply side as producers hedging their output, the demand side as consumers hedging their input.",
             notes=(
-                "Say the supply side gets paid whether the demand side wins or loses. Let that land.",
-                "Point out that this categorization cuts across retail and institutional.",
+                "Say plainly that this is the one pair in the chapter the book leaves undefined, and that we are not going to invent a ruling.",
+                "Give the industry reading first, then the producer and consumer reading, and tell them to say which one they mean.",
             ),
         ),
         Term(
@@ -2237,13 +2240,13 @@ PART6 = Section(
                     reason="Nondiscretionary means following the predefined rules without discretionary intervention.",
                 ),
                 Q(
-                    stem="Which pair is distinguished mainly by who provides and who consumes market services?",
+                    stem="Which pair is distinguished mainly by holding period and by who is paid for taking on price risk?",
                     options=("Retail and institutional",
-                             "Supply side and demand side",
+                             "Speculator and investor",
                              "Professional and novice",
-                             "Speculator and investor"),
+                             "Discretionary and nondiscretionary"),
                     answer="B",
-                    reason="Supply side provides access, liquidity and services; demand side consumes them.",
+                    reason="A speculator is paid for assuming price risk over a shorter horizon; an investor commits capital for the longer term return from the asset itself.",
                 ),
             ),
         ),
@@ -2411,16 +2414,17 @@ CLOSING = (
     Content(
         title="The review questions to prepare",
         lines=(
+            "What is a good definition of technical analysis?",
+            "List as many advantages and disadvantages of technical analysis as you can.",
             "What are the challenges to technical analysis?",
-            "How does market discounting differ from EMH?",
-            "How may an analyst resolve conflicting signals or chart patterns?",
-            "Why is identifying a trend change largely subjective?",
+            "How does market discounting differ from EMH, and what are its three levels?",
+            "How are conflicting signals resolved, and why is a trend change subjective?",
             "Is random walk a true reflection of the markets?",
-            "Describe the three levels of discounting under EMH.",
         ),
-        accent="Every one of these was answered somewhere in today's six parts.",
+        accent="All eight of the book's review questions, answered today.",
         notes=(
-            "Tell them where each answer sits: Part 3, Part 5, Part 4, Part 4, Part 5, Part 5.",
+            "Tell them where each answer sits: Part 2, Part 3, Part 3, Part 5, Part 4, Part 5.",
+            "Say lines four and five each carry two of the book's eight questions.",
             "Set the expectation that these appear on the quiz in the department's four statement format.",
         ),
     ),

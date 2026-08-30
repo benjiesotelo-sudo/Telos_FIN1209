@@ -42,6 +42,16 @@ commit it.** The previous notes PDF was committed without anyone viewing a
 rendered page, and two of its pages were unusable. `chapter-01/notes-design.md`
 records the research the design came from.
 
+## The closing slides are not validated
+
+`deckkit.validate()` walks `chapter.sections` only, so the `CLOSING` tuple in
+`build/content_chapter01.py` escapes every design rule: the six line limit, the
+em dash ban and the safe bottom check. A closing slide that overflows the page
+builds clean and then collides with the progress marker in the room. When you
+edit one, call `deckkit._content_bottom()` on it by hand and compare against
+`deckkit.SAFE_BOTTOM`. The review questions slide already sits at 6.53in
+against a 6.50in limit, so it has no headroom at all.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

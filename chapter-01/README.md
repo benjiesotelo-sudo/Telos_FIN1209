@@ -3,11 +3,60 @@
 209 slides, six parts, 25 in-class checks carrying 50 multiple choice items,
 and 31 figure slides from the course text.
 
-| File | What it is |
-|---|---|
-| `FIN1209-Chapter-01.pptx` | The committed deck. **Text version**, placeholders where the figures go. |
-| `in-class-checks.md` | The instructor's answer sheet, generated with the deck. |
-| `lecture-notes.md` | Written by hand. Not generated. |
+| File | What it is | Generated from |
+|---|---|---|
+| `FIN1209-Chapter-01.pptx` | The committed deck. **Text version**, placeholders where the figures go. | `build/content_chapter01.py` |
+| `in-class-checks.md` | The instructor's answer sheet. | `build/content_chapter01.py` |
+| `FIN1209-Chapter-01-Notes.pdf` | The printed teaching notes. 23 pages, A4. | `build/notes_chapter01.py` |
+| `notes-design.md` | Why the notes look the way they do, with the sources. | Written by hand |
+
+**Nothing in this folder is hand-edited except `notes-design.md` and this file.**
+The deck, the answer sheet and the notes PDF are all build output, and the next
+build overwrites them.
+
+## Which file do I edit?
+
+| To change | Edit | Then run |
+|---|---|---|
+| A slide, a term, a check, a figure | `build/content_chapter01.py` | `build/build_chapter1.py`, then `build/build_notes.py` |
+| Anything in the teaching notes | `build/notes_chapter01.py` | `build/build_notes.py` |
+| How a slide is drawn | `build/deckkit.py` | both builds |
+| How a notes page is laid out | `build/notekit.py` | `build/build_notes.py` |
+
+The old hand-written `lecture-notes.md` is gone. Its content lives in
+`build/notes_chapter01.py` and it is no longer a markdown file, because the
+notes are now a designed print document rather than prose that happens to be
+converted.
+
+## The teaching notes
+
+```
+.venv/bin/python build/build_notes.py
+```
+
+23 A4 pages: a one-page run card, the standing instructions, what the
+department examines, the four run plans with a mark-the-deck table, one page
+per part keyed to the deck's own slide numbers, and the review crib.
+
+The notes never contain a typed slide number. They name slides by key
+(`{s:fig:1.11}`, `{s:check:13}`, `{s:term:Price}`) and the build resolves those
+against `build/content_chapter01.py` using the same traversal that numbers the
+deck. Change the deck and the notes follow; break a reference and the build
+fails rather than printing a wrong number.
+
+**Rebuild the notes whenever you rebuild the deck.** The slide numbers, the
+check answer letters and the per-part slide counts in the notes all come from
+the deck's content file.
+
+**Then look at the PDF.** Every page, as an image. That instruction is in
+`build/build_notes.py` and in `notes-design.md` because the previous notes PDF
+was committed without anyone ever viewing a rendered page, and two of its pages
+were unusable.
+
+```
+DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Notes.pdf /tmp/notes $(seq 1 23)
+```
 
 ## Two decks, and why
 

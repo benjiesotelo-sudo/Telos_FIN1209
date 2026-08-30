@@ -41,8 +41,60 @@ It writes two files:
 | `chapter-01/in-class-checks.md` | The instructor's answer sheet |
 
 The answer sheet is generated from the same question data the deck is built
-from, so the two can never drift apart. `chapter-01/lecture-notes.md` is
-written by hand and is not generated.
+from, so the two can never drift apart.
+
+## Build the teaching notes
+
+```
+.venv/bin/python build/build_notes.py
+```
+
+Writes `chapter-01/FIN1209-Chapter-01-Notes.pdf`, 23 A4 pages. Add
+`--keep-html` to also write the intermediate HTML beside it for inspection;
+that file is gitignored.
+
+The notes are HTML with real print CSS rendered by headless Chrome
+(`--headless=new --print-to-pdf`). **Do not route them through LibreOffice.**
+That path is what collapsed every table in the previous notes PDF to one
+character per column.
+
+Two things about this build are not obvious:
+
+**Chrome writes the PDF and then does not exit.** On this machine, Chrome 151
+in `--headless=new --print-to-pdf` mode finishes the file in about five seconds
+and then hangs indefinitely. `render_pdf` therefore does not wait on the
+process. It polls until the file appears, its size settles, and it ends in
+`%%EOF`, then terminates Chrome. Waiting on the exit code instead takes over
+two minutes and usually times out.
+
+**Pagination happens inside the page, not in Chrome.** A script in the document
+measures each block and distributes blocks into fixed A4 sheets. That is what
+buys a running footer carrying the part name and the page number, blocks that
+are never split across a break, and headings that are always followed by their
+content. Chrome's own pagination can do none of the three.
+
+### The rules the notes build enforces
+
+`notekit.validate()` refuses to write notes that break the design:
+
+- Every slide reference must resolve against the deck. The notes name slides by
+  key, never by number, so a stale reference fails the build instead of
+  printing a wrong number in front of a class.
+- No em dashes or en dashes, checked on the rendered HTML.
+- The main column measure must stay inside 45 to 90 characters.
+
+### Then look at it
+
+Render the finished PDF back to images and look at every page. This is not
+optional and it is not a formality: the previous notes PDF was committed
+without anyone viewing a rendered page, and two of its pages were unusable.
+
+```
+DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Notes.pdf /tmp/notes $(seq 1 23)
+```
+
+`chapter-01/notes-design.md` records the research the design came from.
 
 ## Figures
 
@@ -98,8 +150,11 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | File | Role |
 |---|---|
 | `build/deckkit.py` | Every slide renderer, the FEU palette, and the design rules. Knows nothing about any chapter. |
-| `build/content_chapter01.py` | Chapter 1 content as plain data. No drawing code. |
-| `build/build_chapter1.py` | Wires the two together and writes the outputs. |
+| `build/content_chapter01.py` | Chapter 1 deck content as plain data. No drawing code. |
+| `build/build_chapter1.py` | Wires the two together and writes the deck outputs. |
+| `build/notekit.py` | Every notes block renderer, the print CSS, the paginator. Knows nothing about any chapter. |
+| `build/notes_chapter01.py` | Chapter 1 teaching notes as plain data. No layout code. |
+| `build/build_notes.py` | Resolves the notes against the deck and renders the PDF. |
 | `assets/figures/` | Textbook artwork. Gitignored, absent by default. |
 
 ## Adding Chapter 2
@@ -108,6 +163,11 @@ Copy the shape of `content_chapter01.py` into `content_chapter02.py`, then
 copy `build_chapter1.py` and point it at the new module. The renderers do not
 change. Sections, terms, quotes, checks, recaps and closings are all declared
 as dataclasses in `deckkit.py`.
+
+The notes are the same move: copy `notes_chapter01.py` into
+`notes_chapter02.py` and copy `build_notes.py`. Sheets, parts, ladders, flags,
+boards, check cards and tables are all dataclasses in `notekit.py`. Chapter 2
+is a content file, not a redesign.
 
 ## The rules the build enforces
 

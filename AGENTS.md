@@ -23,6 +23,20 @@ not. The worked example is `Supply side and demand side` in
 teaches the gap, marks the outside readings non-examinable, and sets no
 question on either.
 
+## The deck ships in two editions from one content file
+
+`build/build_chapter1.py` takes `--edition teaching` (the default, 218 slides,
+everything) or `--edition student` (168 slides, every check and reveal dropped
+and no speaker notes). One content module feeds both; nothing is forked and
+nothing is deleted from `build/content_chapter01.py`. The switch lives in
+`deckkit.build()` and knows nothing about any chapter, so a later chapter
+inherits it by copying the build script.
+
+The one rule this puts on content: **never write a slide that refers back to a
+check.** "As the last question showed" is true in one edition and false in the
+other, and no build check catches it. `build/README.md` has the mechanics and
+`chapter-01/README.md` the two commands.
+
 ## The decks are generated, never hand-edited
 
 Editing a `.pptx` is a dead end; the next build overwrites it. Change
@@ -36,12 +50,12 @@ The textbook, the publisher's scans, the previous course holder's decks, and
 **the book's figures** are third-party copyrighted works. None of them may be
 committed. Figure artwork lives in the gitignored `assets/figures/`, and
 figures are off by default so the plain build always reproduces the committed
-text deck. `--with-figures` is refused when it is aimed at a committed deck
-path. Before committing a deck, confirm it embeds no artwork:
+text decks. `--with-figures` is refused anywhere inside the repository, for
+either edition. Before committing a deck, confirm it embeds no artwork:
 `unzip -l <deck>.pptx | grep ppt/media` must be empty.
 
 Every chapter after this one inherits the constraint. See
-`chapter-01/README.md` for the two build commands and the figure file naming.
+`chapter-01/README.md` for the build commands and the figure file naming.
 
 ## Two print documents, for two different readers
 
@@ -93,6 +107,14 @@ builds clean and then collides with the progress marker in the room. When you
 edit one, call `deckkit._content_bottom()` on it by hand and compare against
 `deckkit.SAFE_BOTTOM`. The review questions slide already sits at 6.53in
 against a 6.50in limit, so it has no headroom at all.
+
+## The two PDFs are not byte-reproducible; the decks are
+
+A deck rebuild with no content change leaves `git status` clean. A rebuild of
+either PDF does not: headless Chrome stamps its own identifiers into the file,
+so the bytes move while the content does not. Before committing a PDF churn,
+compare the text (`pdftotext old.pdf - | diff - <(pdftotext new.pdf -)`) and
+revert the file if only the bytes changed.
 
 ## Maintaining this file
 

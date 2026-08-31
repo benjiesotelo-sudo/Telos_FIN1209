@@ -5,7 +5,17 @@ Deterministic and re-runnable: it regenerates both outputs from scratch on
 every run, so the committed artefacts are always exactly what this script
 produces from build/content_chapter01.py.
 
+Two editions come out of that one content file:
+
     .venv/bin/python build/build_chapter1.py
+    .venv/bin/python build/build_chapter1.py --edition student
+
+The teaching edition is the whole deck, checks and reveals and speaker cues
+included, and it also writes the instructor's answer sheet. The student
+edition is the same deck with every check and every reveal dropped and no
+speaker cues, which is the file that can safely be handed out. Neither
+edition is a copy of the other: both are rendered from the same content, so
+the progress markers are recomputed for whichever slides the edition holds.
 
 See build/README.md for environment setup.
 
@@ -27,7 +37,11 @@ from content_chapter01 import CHAPTER  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
 DECK_OUT = REPO / "chapter-01" / "FIN1209-Chapter-01.pptx"
+STUDENT_OUT = REPO / "chapter-01" / "FIN1209-Chapter-01-Student-Edition.pptx"
 CHECKS_OUT = REPO / "chapter-01" / "in-class-checks.md"
+
+# The committed file each edition writes when --out is not given.
+DEFAULT_OUT = {deckkit.TEACHING: DECK_OUT, deckkit.STUDENT: STUDENT_OUT}
 
 # The textbook figures are Wiley's. They are not in this repository, the folder
 # is gitignored, and figures are OFF by default on purpose: the plain build has
@@ -103,7 +117,21 @@ def main() -> int:
         help=("Typeface for titles and section dividers. Defaults to the FEU "
               "identity face; use a serif such as Palatino if it is not installed."),
     )
-    parser.add_argument("--out", type=Path, default=DECK_OUT)
+    parser.add_argument(
+        "--edition",
+        choices=deckkit.EDITIONS,
+        default=deckkit.TEACHING,
+        help=("teaching (default) is the full deck with the checks, the "
+              "reveals and the speaker cues. student drops all of those and "
+              "is the file that can be handed out."),
+    )
+    parser.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help=("Where to write the deck. Defaults to the committed file for "
+              "the chosen edition."),
+    )
     parser.add_argument(
         "--with-figures",
         action="store_true",
@@ -118,6 +146,8 @@ def main() -> int:
         help="Folder holding the artwork, used only with --with-figures.",
     )
     args = parser.parse_args()
+    if args.out is None:
+        args.out = DEFAULT_OUT[args.edition]
 
     figures_dir = args.figures_dir if args.with_figures else None
     if figures_dir is not None and not figures_dir.is_dir():
@@ -127,27 +157,43 @@ def main() -> int:
             "repository; see chapter-01/README.md. Drop the flag to build "
             "the placeholder deck."
         )
-    if args.with_figures and args.out == DECK_OUT:
+    # Both committed decks are placeholder builds, so the guard is the whole
+    # repository and not just one filename: neither edition may take the
+    # artwork inside it.
+    if args.with_figures and (args.out.resolve() == REPO
+                              or REPO in args.out.resolve().parents):
         parser.error(
-            "the committed deck is the placeholder build and must stay that "
-            "way, because the figures are copyrighted. Give --out a path "
-            "outside this repository for the teaching deck."
+            "the committed decks are the placeholder builds and must stay "
+            "that way, because the figures are copyrighted. Give --out a "
+            "path outside this repository for a deck with the artwork."
         )
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     slides, checks = deckkit.build(CHAPTER, args.out,
                                    display_font=args.display_font,
-                                   figures_dir=figures_dir)
-    write_checks(CHAPTER, CHECKS_OUT, checks)
+                                   figures_dir=figures_dir,
+                                   edition=args.edition)
+    # The answer sheet belongs to the instructor and is generated from the
+    # chapter, not from the deck that was just rendered, so the student build
+    # neither writes it nor can stale it.
+    total_checks = sum(1 for _ in deckkit.iter_checks(CHAPTER))
+    if args.edition == deckkit.TEACHING:
+        write_checks(CHAPTER, CHECKS_OUT, total_checks)
 
     status = deckkit.figure_status(CHAPTER, figures_dir)
     placed = [n for n, _f, have in status if have]
     missing = [n for n, _f, have in status if not have]
 
     print(f"deck   : {_relative(args.out)}")
-    print(f"checks : {_relative(CHECKS_OUT)}")
+    print(f"edition : {args.edition}")
+    if args.edition == deckkit.TEACHING:
+        print(f"checks : {_relative(CHECKS_OUT)}")
     print(f"slides : {slides}")
-    print(f"checkpoints : {checks} ({checks * 2} multiple choice items)")
+    if checks:
+        print(f"checkpoints : {checks} ({checks * 2} multiple choice items)")
+    else:
+        print(f"checkpoints : 0, and no speaker notes. "
+              f"{total_checks} checks and {total_checks} reveals omitted.")
     print(f"figures : {len(placed)} placed, {len(missing)} as placeholders "
           f"(of {len(status)} figure slides)")
     if missing:

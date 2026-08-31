@@ -1,14 +1,17 @@
 # Chapter 1 - Introduction to the Art and Science of Technical Analysis
 
 218 slides, six parts, 25 in-class checks carrying 50 multiple choice items,
-49 terms, and 35 figures from the course text.
+49 terms, and 35 figures from the course text. It ships in two editions: the
+teaching edition at 218 slides, and the student edition at 168, which is the
+same deck without the checks, the reveals and the speaker notes.
 
-Three documents come out of the same chapter data, and they are for three
+Four documents come out of the same chapter data, and they are for four
 different people:
 
 | File | Who it is for | What it is | Generated from |
 |---|---|---|---|
-| `FIN1209-Chapter-01.pptx` | The room | The committed deck. **Text version**, placeholders where the figures go. | `build/content_chapter01.py` |
+| `FIN1209-Chapter-01.pptx` | The room | The committed deck, teaching edition. **Text version**, placeholders where the figures go. | `build/content_chapter01.py` |
+| `FIN1209-Chapter-01-Student-Edition.pptx` | The students | 168 slides. The same deck with the checks, the reveals and the speaker cues removed. | `build/content_chapter01.py` |
 | `FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | 23 pages. Timing, cut tiers, what to say, which check comes next. | `build/plan_chapter01.py` |
 | `FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | 26 pages. What the lesson covered, in prose, with the figures. | `build/lecture_chapter01.py` |
 | `in-class-checks.md` | The instructor | The answer sheet. | `build/content_chapter01.py` |
@@ -16,8 +19,35 @@ different people:
 | `lecture-notes-design.md` | Whoever writes Chapter 2 | The research behind the lecture notes, with sources. | Written by hand |
 
 **Nothing in this folder is hand-edited except the two design files and this
-one.** The deck, the answer sheet and the two PDFs are all build output, and
-the next build overwrites them.
+one.** The two decks, the answer sheet and the two PDFs are all build output,
+and the next build overwrites them.
+
+## Two editions of the deck, one content file
+
+The instructor presents from the teaching edition and hands out the student
+edition. Neither is a copy of the other and neither is hand-edited: both are
+rendered from `build/content_chapter01.py`, which holds everything.
+
+```
+.venv/bin/python build/build_chapter1.py                     # teaching, 218 slides
+.venv/bin/python build/build_chapter1.py --edition student   # student, 168 slides
+```
+
+The student edition drops all 25 checks and all 25 reveals, which is the 50
+slide difference, and carries no speaker notes. The checks are for reading the
+room live, and a student who has already seen the questions and the answers
+tells the instructor nothing. The speaker cues are written to the instructor
+about the room, so they are not a handout either.
+
+Everything else is the same deck: the same terms, the same 35 figures, the
+same six parts, the same identity. The progress markers are regenerated for
+whichever slides the edition holds rather than carried across, and the one
+generated line that named the checks, the accent on the roadmap slide, is
+reworded rather than replaced with new teaching content. `build/README.md`
+has the mechanics.
+
+Only the teaching build writes `in-class-checks.md`. The answer sheet is the
+instructor's, and the student build cannot touch it.
 
 ## A teaching plan is not lecture notes
 
@@ -39,7 +69,7 @@ tiers, no speaker cues, no answer letters and no slide numbers.
 
 | To change | Edit | Then run |
 |---|---|---|
-| A slide, a term, a check, a figure | `build/content_chapter01.py` | all three builds |
+| A slide, a term, a check, a figure | `build/content_chapter01.py` | both deck editions and both PDF builds |
 | Anything in the teaching plan | `build/plan_chapter01.py` | `build/build_plan.py` |
 | Anything in the lecture notes | `build/lecture_chapter01.py` | `build/build_lecture_notes.py` |
 | How a slide is drawn | `build/deckkit.py` | the deck build |
@@ -105,39 +135,43 @@ The chapter's figures are Wiley's, reproduced from Lim, *The Handbook of
 Technical Analysis* (Wiley, 2016). This repository is public, so the artwork
 is not in it: `assets/figures/` is gitignored and is absent on a clean clone.
 
-That gives two builds of the deck and two of the lecture notes. Same content,
-same page and slide counts, same order. The only difference is what sits in
-the figure band.
+That gives two builds of each deck edition and two of the lecture notes. Same
+content, same page and slide counts, same order. The only difference is what
+sits in the figure band.
 
 **The committed versions are the placeholder builds.** This is what is in the
 repository and what a plain build produces on any machine:
 
 ```
 .venv/bin/python build/build_chapter1.py
+.venv/bin/python build/build_chapter1.py --edition student
 .venv/bin/python build/build_lecture_notes.py
 ```
 
 Every figure keeps its number, a line saying what it shows, and the credit
 line, so the chapter stays readable and rebuildable by anyone.
 
-**The teaching versions have the artwork placed**, and they must be written
-outside the repository:
+**The versions with the artwork placed** must be written outside the
+repository. There are three of them, one per document that carries figures:
 
 ```
 .venv/bin/python build/build_chapter1.py \
     --with-figures --out ~/FIN1209-Chapter-01-with-figures.pptx
+.venv/bin/python build/build_chapter1.py --edition student \
+    --with-figures --out ~/FIN1209-Chapter-01-Student-Edition.pptx
 .venv/bin/python build/build_lecture_notes.py \
     --with-figures --out ~/FIN1209-Chapter-01-Lecture-Notes.pdf
 ```
 
-The second one is what goes to students through Canvas.
+The first is what the instructor presents from. The last two are what go to
+students through Canvas.
 
-Figures are off by default, and both builds refuse `--with-figures` pointed at
-a committed path or anywhere inside the repository. That is deliberate: the
-copyrighted artwork must never reach a commit, and the plain builds have to
-keep reproducing the committed files.
+Figures are off by default, and both builds refuse `--with-figures` pointed
+anywhere inside the repository, whichever edition is being built. That is
+deliberate: the copyrighted artwork must never reach a commit, and the plain
+builds have to keep reproducing the committed files.
 
-Before committing a deck, confirm it embeds no artwork:
+Before committing either deck, confirm it embeds no artwork:
 `unzip -l <deck>.pptx | grep ppt/media` must be empty. For the notes PDF, the
 same check is that it contains no image objects at all.
 
@@ -182,4 +216,5 @@ week.
 
 ```
 soffice --headless --convert-to pdf --outdir /tmp/smoke chapter-01/FIN1209-Chapter-01.pptx
+soffice --headless --convert-to pdf --outdir /tmp/smoke chapter-01/FIN1209-Chapter-01-Student-Edition.pptx
 ```

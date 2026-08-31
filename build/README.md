@@ -43,6 +43,49 @@ It writes two files:
 The answer sheet is generated from the same question data the deck is built
 from, so the two can never drift apart.
 
+## Two editions of the deck
+
+The same content file produces both. There is no second content module and
+nothing is deleted from the first one.
+
+```
+.venv/bin/python build/build_chapter1.py                     # teaching, 218 slides
+.venv/bin/python build/build_chapter1.py --edition student   # student, 168 slides
+```
+
+| Edition | Output | Holds |
+|---|---|---|
+| `teaching` (default) | `chapter-01/FIN1209-Chapter-01.pptx` | Everything: 25 checks, 25 reveals, speaker cues. Also writes the answer sheet. |
+| `student` | `chapter-01/FIN1209-Chapter-01-Student-Edition.pptx` | The same deck with all 50 check and reveal slides dropped and no speaker cues. |
+
+The student edition exists because the checks only work while the room has
+not seen them. A student holding the questions and the answers tells the
+instructor nothing, and the speaker cues are written to the instructor about
+the room, not to a reader.
+
+Three things follow, and `deckkit.build` handles all three:
+
+- **The progress markers are recomputed, not inherited.** Each marker is
+  generated during the traversal from the slides that edition actually
+  renders. The denominator has always counted the section body and never the
+  checks, so a body slide's marker reads the same in both editions; the
+  `| Check N` markers simply do not exist in the student edition.
+- **The speaker cues are suppressed at the single place they are written.**
+  `deckkit._notes` returns early when `INCLUDE_NOTES` is false, so the
+  student `.pptx` carries no notes parts at all.
+- **Any generated line that names the checks is reworded.** The roadmap
+  slide's accent is the only one; it drops the clause about the checks rather
+  than gaining new teaching content. Nothing in the content module refers
+  back to a check, and nothing should: a slide that says "as the last
+  question showed" cannot survive this switch.
+
+Everything else is identical, and that is verifiable. Extract the text of
+every slide from both decks, drop the 50 check and reveal slides from the
+teaching one, and the two lists differ only at the roadmap slide.
+
+Adding an edition to a later chapter takes no work: the switch lives in
+`deckkit.py` and `build_chapter1.py` and knows nothing about Chapter 1.
+
 ## Build the two PDFs
 
 The chapter ships two print documents from the same chapter data, for two
@@ -160,18 +203,20 @@ The versions with the artwork placed go outside the repository:
 ```
 .venv/bin/python build/build_chapter1.py \
     --with-figures --out ~/FIN1209-Chapter-01-with-figures.pptx
+.venv/bin/python build/build_chapter1.py --edition student \
+    --with-figures --out ~/FIN1209-Chapter-01-Student-Edition.pptx
 .venv/bin/python build/build_lecture_notes.py \
     --with-figures --out ~/FIN1209-Chapter-01-Lecture-Notes.pdf
 ```
 
-The second one is what students get through Canvas.
+The last two are what students get through Canvas.
 
-Both builds produce identical pagination either way: the same 218 slides, and
-the same 26 pages, because a placeholder occupies exactly the height its
-artwork would. Both refuse `--with-figures` aimed at a committed path, and the
-notes build refuses it aimed anywhere inside the repository at all, so the
-artwork cannot reach a commit by accident. See `chapter-01/README.md` for the
-file naming and the full figure list.
+Both builds produce identical pagination either way: the same slide count for
+the edition, and the same 26 pages, because a placeholder occupies exactly the
+height its artwork would. Both builds refuse `--with-figures` aimed anywhere
+inside the repository, so the artwork cannot reach a commit by accident,
+whichever edition is being built. See `chapter-01/README.md` for the file
+naming and the full figure list.
 
 ## Smoke test
 

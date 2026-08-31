@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
-"""FIN1209 Chapter 1 teaching notes, as plain data.
+"""FIN1209 Chapter 1 teaching plan, as plain data.
+
+This is the instructor's document: timing, cut tiers, what to say, which check
+comes next. The student-facing document is a different artifact built by
+build/build_lecture_notes.py from build/lecture_chapter01.py. Both exist on
+purpose; see chapter-01/README.md for the split.
 
 This is the file a contributor edits. There is no markdown source any more:
-the notes PDF is generated from here the same way the deck is generated from
+the plan PDF is generated from here the same way the deck is generated from
 content_chapter01.py.
 
-    .venv/bin/python build/build_notes.py
+    .venv/bin/python build/build_plan.py
 
 No drawing code lives here. Layout is build/notekit.py, and the reasoning
-behind the layout, with sources, is chapter-01/notes-design.md.
+behind the layout, with sources, is chapter-01/teaching-plan-design.md.
 
 Slides are never referred to by number. They are named by stable key and the
 build resolves them against the deck's own content, so the numbers cannot drift
@@ -1572,10 +1577,9 @@ PART6 = Part(
             title="Two of them are worth a sentence beyond the definition",
             items=(
                 "**The book lists supply side and demand side and defines "
-                "neither.** Give the common industry reading, the supply side "
-                "provides the market service and the demand side consumes it, "
-                "then name the second reading, producers hedging output "
-                "against consumers hedging input. Do not rule between them.",
+                "neither.** Teach the gap, not a ruling. Say the book never "
+                "defines either one, give the two readings as an aside, and "
+                "tell them plainly that no quiz item is set on it.",
                 "**Novice is a stage, not a verdict.** Everyone in the room is "
                 "one today, and Part 4 already said that subjectivity in "
                 "pattern recognition falls with practice.",
@@ -1730,7 +1734,7 @@ CLOSE_OUT = Sheet(
 )
 
 
-NOTES = Notes(
+PLAN = Notes(
     course="Technical Analysis in Investment",
     code="FIN1209",
     chapter="Chapter 1",

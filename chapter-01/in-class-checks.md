@@ -511,7 +511,7 @@ Answer: **C**. Eight: retail, institutional, speculator, supply side, demand sid
 - **A. Nondiscretionary**
 - B. Discretionary
 - C. A hedger
-- D. Supply side
+- D. A scalper
 
 Answer: **A**. Nondiscretionary means following the predefined rules without discretionary intervention.
 

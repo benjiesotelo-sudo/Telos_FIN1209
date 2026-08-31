@@ -15,8 +15,13 @@ Official delivery runs on Canvas; this repository is the preparation workspace.
 
 | Path | What it is |
 |---|---|
-| `chapter-01/` | Lecture deck, lecture notes, and in-class checks for Chapter 1 |
-| `build/` | The scripts that generate the decks |
+| `chapter-01/` | The Chapter 1 deck, the instructor's teaching plan, the students' lecture notes, and the in-class checks |
+| `build/` | The scripts that generate all four |
+
+The deck, the teaching plan and the lecture notes are three views of one
+chapter, generated from the same content files. The teaching plan is the
+instructor's run card; the lecture notes are what students read to revise or
+to catch up. See `chapter-01/README.md`.
 
 ## What is deliberately not here
 

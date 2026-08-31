@@ -43,58 +43,105 @@ It writes two files:
 The answer sheet is generated from the same question data the deck is built
 from, so the two can never drift apart.
 
-## Build the teaching notes
+## Build the two PDFs
+
+The chapter ships two print documents from the same chapter data, for two
+different readers. Keeping them apart is the point.
 
 ```
-.venv/bin/python build/build_notes.py
+.venv/bin/python build/build_plan.py             # instructor, 23 pages
+.venv/bin/python build/build_lecture_notes.py    # students, 24 pages
 ```
 
-Writes `chapter-01/FIN1209-Chapter-01-Notes.pdf`, 23 A4 pages. Add
-`--keep-html` to also write the intermediate HTML beside it for inspection;
-that file is gitignored.
+| Output | Who it is for | What is in it |
+|---|---|---|
+| `chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | Timing, four run plans, cut tiers, speaker cues, check answers, slide numbers |
+| `chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | Readable prose, the figures, every term defined once, summary and review questions |
 
-The notes are HTML with real print CSS rendered by headless Chrome
-(`--headless=new --print-to-pdf`). **Do not route them through LibreOffice.**
-That path is what collapsed every table in the previous notes PDF to one
-character per column.
+Neither one carries the other's content. If a slide number or a minute count
+appears in the lecture notes, it is in the wrong document.
 
-Two things about this build are not obvious:
+Both take `--keep-html` to write the intermediate HTML beside the PDF for
+inspection; those files are gitignored.
+
+Both are HTML with real print CSS rendered by headless Chrome
+(`--headless=new --print-to-pdf`), through `build/chrome.py`. **Do not route
+either through LibreOffice.** That path is what collapsed every table in an
+earlier notes PDF to one character per column.
+
+Two things about these builds are not obvious:
 
 **Chrome writes the PDF and then does not exit.** On this machine, Chrome 151
 in `--headless=new --print-to-pdf` mode finishes the file in about five seconds
-and then hangs indefinitely. `render_pdf` therefore does not wait on the
+and then hangs indefinitely. `chrome.render_pdf` therefore does not wait on the
 process. It polls until the file appears, its size settles, and it ends in
 `%%EOF`, then terminates Chrome. Waiting on the exit code instead takes over
 two minutes and usually times out.
 
 **Pagination happens inside the page, not in Chrome.** A script in the document
 measures each block and distributes blocks into fixed A4 sheets. That is what
-buys a running footer carrying the part name and the page number, blocks that
-are never split across a break, and headings that are always followed by their
-content. Chrome's own pagination can do none of the three.
+buys a running footer, blocks that are never split across a break, and headings
+that are always followed by their content. Chrome's own pagination can do none
+of the three. `notekit.paginator_js()` is that script and both documents use
+it. Three of its behaviours are opt-in per document, and only the lecture notes
+turn them on:
 
-### The rules the notes build enforces
+- `data-float="1"` on a block: it waits for the next sheet rather than forcing
+  a break and leaving the rest of this one empty. Figures use it.
+- `data-flow="1"` on a section: it may carry on down the current sheet if 66mm
+  of it is left, instead of always opening a fresh one.
+- A single paragraph with nowhere else to break breaks between its sentences.
 
-`notekit.validate()` refuses to write notes that break the design:
+Together those took the lecture notes from 29 pages at 79 percent page fill to
+24 at 94 percent with identical content. The teaching plan uses none of them:
+an instructor turning to a part expects it at the top of a page.
 
-- Every slide reference must resolve against the deck. The notes name slides by
+### The rules the two builds enforce
+
+`notekit.validate()` refuses to write a teaching plan that breaks the design:
+
+- Every slide reference must resolve against the deck. The plan names slides by
   key, never by number, so a stale reference fails the build instead of
   printing a wrong number in front of a class.
 - No em dashes or en dashes, checked on the rendered HTML.
 - The main column measure must stay inside 45 to 90 characters.
 
-### Then look at it
+`lecturekit.validate()` refuses to write lecture notes that break theirs. The
+deck is the authority on scope, so three of the five checks are drift checks:
 
-Render the finished PDF back to images and look at every page. This is not
-optional and it is not a formality: the previous notes PDF was committed
-without anyone viewing a rendered page, and two of its pages were unusable.
+- Every figure number must be one the deck places.
+- Every figure must be referenced from the prose, by number, in a sentence
+  that says what to look at. Captions do not count. A figure no paragraph
+  mentions is decoration.
+- Every term the deck teaches must be defined exactly once in the notes, and
+  the notes may not define a term the deck does not teach.
+- The summary and the review questions must be present. They are not written
+  in the content module at all: `deck_closing()` lifts them from the deck's own
+  closing slides, so editing those slides moves the notes with them. The audit
+  that changed the review questions from six to all eight is exactly the drift
+  this closes.
+- No em dashes or en dashes, and the same measure band.
+
+### Then look at them
+
+Render the finished PDFs back to images and look at every page. This is not
+optional and it is not a formality: an earlier notes PDF was committed without
+anyone viewing a rendered page, and two of its pages were unusable.
+
+For the lecture notes, look at **both** builds. The figure build is not the
+placeholder build with pictures in it. An early cut of it put the artwork in an
+`<img>` inside a flex column, every image overflowed its box and printed on top
+of its own caption, and the placeholder build looked perfect throughout.
 
 ```
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Notes.pdf /tmp/notes $(seq 1 23)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 23)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 24)
+$DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 24)
 ```
 
-`chapter-01/notes-design.md` records the research the design came from.
+`chapter-01/teaching-plan-design.md` and `chapter-01/lecture-notes-design.md`
+record the research each design came from.
 
 ## Figures
 
@@ -105,17 +152,25 @@ plain build above renders a placeholder in each figure's place, carrying the
 figure number, what the figure shows, the credit line and the speaker cue, and
 it is what produces the committed deck.
 
-The instructor's deck, with the artwork placed, goes outside the repository:
+The same policy applies to the lecture notes, which place the same 31 figures.
+
+The versions with the artwork placed go outside the repository:
 
 ```
 .venv/bin/python build/build_chapter1.py \
     --with-figures --out ~/FIN1209-Chapter-01-with-figures.pptx
+.venv/bin/python build/build_lecture_notes.py \
+    --with-figures --out ~/FIN1209-Chapter-01-Lecture-Notes.pdf
 ```
 
-Both builds produce the same 209 slides with the same progress markers and the
-same checks. The build refuses `--with-figures` aimed at the committed deck
-path, so the artwork cannot reach a commit by accident. See
-`chapter-01/README.md` for the file naming and the full figure list.
+The second one is what students get through Canvas.
+
+Both builds produce identical pagination either way: the same 209 slides, and
+the same 24 pages, because a placeholder occupies exactly the height its
+artwork would. Both refuse `--with-figures` aimed at a committed path, and the
+notes build refuses it aimed anywhere inside the repository at all, so the
+artwork cannot reach a commit by accident. See `chapter-01/README.md` for the
+file naming and the full figure list.
 
 ## Smoke test
 
@@ -152,9 +207,13 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | `build/deckkit.py` | Every slide renderer, the FEU palette, and the design rules. Knows nothing about any chapter. |
 | `build/content_chapter01.py` | Chapter 1 deck content as plain data. No drawing code. |
 | `build/build_chapter1.py` | Wires the two together and writes the deck outputs. |
-| `build/notekit.py` | Every notes block renderer, the print CSS, the paginator. Knows nothing about any chapter. |
-| `build/notes_chapter01.py` | Chapter 1 teaching notes as plain data. No layout code. |
-| `build/build_notes.py` | Resolves the notes against the deck and renders the PDF. |
+| `build/notekit.py` | Every teaching plan block renderer, its print CSS, and the paginator both PDFs share. Knows nothing about any chapter. |
+| `build/plan_chapter01.py` | Chapter 1 teaching plan as plain data. No layout code. |
+| `build/build_plan.py` | Resolves the plan against the deck and renders the PDF. |
+| `build/lecturekit.py` | Every lecture notes block renderer, its print CSS, and the figure plate machinery. Takes the palette and the paginator from notekit. Knows nothing about any chapter. |
+| `build/lecture_chapter01.py` | Chapter 1 lecture notes as plain data. No layout code. |
+| `build/build_lecture_notes.py` | Checks the notes against the deck and renders the PDF. |
+| `build/chrome.py` | Headless Chrome, shared by both PDF builds. |
 | `assets/figures/` | Textbook artwork. Gitignored, absent by default. |
 
 ## Adding Chapter 2
@@ -164,10 +223,13 @@ copy `build_chapter1.py` and point it at the new module. The renderers do not
 change. Sections, terms, quotes, checks, recaps and closings are all declared
 as dataclasses in `deckkit.py`.
 
-The notes are the same move: copy `notes_chapter01.py` into
-`notes_chapter02.py` and copy `build_notes.py`. Sheets, parts, ladders, flags,
-boards, check cards and tables are all dataclasses in `notekit.py`. Chapter 2
-is a content file, not a redesign.
+Both PDFs are the same move. Copy `plan_chapter01.py` into
+`plan_chapter02.py`, and `lecture_chapter01.py` into `lecture_chapter02.py`,
+then point copies of the two builders at them. Sheets, parts, ladders, flags,
+boards, check cards and tables are dataclasses in `notekit.py`; sections,
+prose, definitions, figures, plates, quotations and self checks are
+dataclasses in `lecturekit.py`. Chapter 2 is two content files, not a
+redesign.
 
 ## The rules the build enforces
 

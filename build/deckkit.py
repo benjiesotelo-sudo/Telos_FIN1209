@@ -71,6 +71,31 @@ CONTENT_W = Emu(SLIDE_W - 2 * MARGIN)
 # slide count and its progress markers. See chapter-01/README.md.
 FIGURES_DIR: Path | None = None
 
+# --------------------------------------------------------------------------
+# Editions
+# --------------------------------------------------------------------------
+# One chapter module, two decks. The content file is written once and holds
+# everything; the edition decides what reaches the .pptx.
+#
+#   TEACHING  everything the chapter declares: the checks, their reveals and
+#             the speaker cues. This is what the instructor presents from.
+#   STUDENT   the same deck with every Check dropped, which removes both the
+#             question slide and the reveal slide, and with the speaker cues
+#             left out. The cues are written to the instructor, not to a
+#             reader, and the checks stop working the moment a student has
+#             already seen the questions and the answers.
+#
+# Nothing else differs: same terms, same figures, same sections, same
+# identity. The progress markers are regenerated from the slides the edition
+# actually renders, never carried over from the other edition.
+TEACHING = "teaching"
+STUDENT = "student"
+EDITIONS = (TEACHING, STUDENT)
+
+# Set by build(). Read by _notes, which is the single place speaker cues are
+# written, so one flag suppresses them everywhere.
+INCLUDE_NOTES = True
+
 
 # --------------------------------------------------------------------------
 # Content model - what a chapter module hands to the builder
@@ -309,8 +334,12 @@ def _para(frame, text, *, size, color, font=BODY_FONT, bold=False,
 
 
 def _notes(slide, cues):
-    """Speaker cues, so the instructor always knows the next sentence."""
-    if not cues:
+    """Speaker cues, so the instructor always knows the next sentence.
+
+    The student edition carries none of them: they are addressed to the
+    instructor and say things about the room that a handout should not.
+    """
+    if not cues or not INCLUDE_NOTES:
         return
     frame = slide.notes_slide.notes_text_frame
     frame.text = ""
@@ -952,18 +981,30 @@ def _validate(chapter: Chapter) -> list[str]:
 
 
 def build(chapter: Chapter, out_path, *, display_font: str | None = None,
-          figures_dir=None):
+          figures_dir=None, edition: str = TEACHING):
     """Render the chapter to a .pptx. Deterministic: same input, same deck.
 
     ``figures_dir`` is where render_figure looks for the textbook artwork. Pass
     None, or a path that does not exist, and every figure slide renders as a
     placeholder instead. The slide count and the progress markers are the same
     either way.
+
+    ``edition`` is TEACHING or STUDENT. The student edition drops every check
+    slide and its reveal, and carries no speaker cues. See the Editions block
+    at the top of this file.
+
+    Returns ``(slide_count, checks_rendered)``. ``checks_rendered`` is 0 for
+    the student edition, which is the number the caller should report.
     """
-    global DISPLAY_FONT, FIGURES_DIR
+    global DISPLAY_FONT, FIGURES_DIR, INCLUDE_NOTES
+    if edition not in EDITIONS:
+        raise ValueError(f"unknown edition {edition!r}, expected one of "
+                         + ", ".join(EDITIONS))
     if display_font:
         DISPLAY_FONT = display_font
     FIGURES_DIR = Path(figures_dir) if figures_dir else None
+    INCLUDE_NOTES = edition == TEACHING
+    with_checks = edition == TEACHING
 
     problems = _validate(chapter)
     if problems:
@@ -1026,7 +1067,11 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
     render_content(prs, Content(
         title="How today is laid out",
         lines=chapter.roadmap,
-        accent="Six parts, a check every few terms, and a clean stop at every boundary.",
+        # The only line in the generated frame that names the checks. The
+        # student edition has none, so it says what is left that is true.
+        accent=("Six parts, a check every few terms, and a clean stop at "
+                "every boundary." if with_checks else
+                "Six parts, and a clean stop at every boundary."),
         notes=(
             "Say the shape of the session out loud: six parts, roughly twenty "
             "five minutes each.",
@@ -1048,10 +1093,15 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
             ),
         ))
 
+        # The marker denominator has always counted the body of the section,
+        # never the checks, so it is computed here from the slides this
+        # edition renders rather than being carried across from the other one.
         position = 0
         body = [s for s in section.slides if not isinstance(s, Check)]
         for slide in section.slides:
             if isinstance(slide, Check):
+                if not with_checks:
+                    continue
                 check_index += 1
                 marker = (f"Part {section.number} of {total_sections} - "
                           f"{section.short}  |  Check {check_index}")
@@ -1086,7 +1136,7 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
 
     prs.save(str(out_path))
     _repack_deterministically(out_path)
-    return len(prs.slides._sldIdLst), total_checks
+    return len(prs.slides._sldIdLst), (total_checks if with_checks else 0)
 
 
 def figure_status(chapter: Chapter, figures_dir=None):

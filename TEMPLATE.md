@@ -2,8 +2,9 @@
 
 Read this before you touch anything. Chapter 1 is the template: it is 218
 slides, 25 in-class checks carrying 50 items, 49 terms and 35 figures, and it
-ships as three documents built from the same data. Chapter 2 is three content
-files and nothing else. You should not need to open a renderer.
+ships as four documents built from the same data, one of them a second edition
+of the deck. Chapter 2 is three content files and nothing else. You should not
+need to open a renderer.
 
 The two design documents behind the print documents are
 `chapter-01/teaching-plan-design.md` and
@@ -52,7 +53,7 @@ Copy these and change the chapter number. They are wiring, not content:
 
 | Copy | To | Then |
 |---|---|---|
-| `build/build_chapter1.py` | `build/build_chapter2.py` | point it at the new content module |
+| `build/build_chapter1.py` | `build/build_chapter2.py` | point it at the new content module; the `--edition` switch comes with it |
 | `build/build_plan.py` | `build/build_plan2.py` | point it at the new plan module |
 | `build/build_lecture_notes.py` | `build/build_lecture_notes2.py` | point it at the new lecture module |
 
@@ -196,10 +197,10 @@ assets/figures/figure-1-09.png    ->    Figure 1.9
 assets/figures/figure-2-14.png    ->    Figure 2.14
 ```
 
-That gives two builds of the deck and two of the lecture notes. Same content,
-same slide and page counts, same order; the only difference is what sits in the
-figure band, because a placeholder occupies exactly the height its artwork
-would.
+That gives two builds of each deck edition and two of the lecture notes. Same
+content, same slide and page counts, same order; the only difference is what
+sits in the figure band, because a placeholder occupies exactly the height its
+artwork would.
 
 - **The committed versions are the placeholder builds**, and they are what a
   plain build produces on any machine. Every figure keeps its number, its
@@ -208,15 +209,15 @@ would.
 - **The teaching versions have the artwork placed** and are written outside the
   repository, to the instructor's home directory.
 
-Both builds refuse `--with-figures` aimed at a committed path, and the notes
-build refuses it aimed anywhere inside the repository at all. A missing PNG is
-not an error: that one figure renders as a placeholder and the rest of the
-document is unaffected.
+Both builds refuse `--with-figures` aimed anywhere inside the repository, for
+either deck edition. A missing PNG is not an error: that one figure renders as
+a placeholder and the rest of the document is unaffected.
 
-Before committing a deck, confirm it embeds no artwork:
+Before committing a deck, confirm it embeds no artwork. Both editions:
 
 ```
 unzip -l chapter-02/FIN1209-Chapter-02.pptx | grep ppt/media    # must be empty
+unzip -l chapter-02/FIN1209-Chapter-02-Student-Edition.pptx | grep ppt/media
 pdfimages -list chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf # must list none
 ```
 
@@ -224,31 +225,59 @@ Answer keys for graded assessments stay out of the repository too.
 
 ---
 
-## The three build commands
+## The four build commands
 
 From the repository root, in this order, every time:
 
 ```
-.venv/bin/python build/build_chapter2.py             # the deck, and the answer sheet
-.venv/bin/python build/build_plan2.py                # the instructor, 23 pages for ch. 1
-.venv/bin/python build/build_lecture_notes2.py       # the students, 26 pages for ch. 1
+.venv/bin/python build/build_chapter2.py                   # teaching deck, and the answer sheet
+.venv/bin/python build/build_chapter2.py --edition student # student deck
+.venv/bin/python build/build_plan2.py                      # the instructor, 23 pages for ch. 1
+.venv/bin/python build/build_lecture_notes2.py             # the students, 26 pages for ch. 1
 ```
 
-**Rebuild all three whenever you change the content module.** The deck is the
+**Rebuild all four whenever you change the content module.** The deck is the
 authority on scope and both PDFs are checked against it. The plan resolves
 every slide reference against the deck; the notes resolve every figure number
 and every term against it.
 
-Then the two teaching versions, outside the repository:
+Then the three versions with the artwork, outside the repository:
 
 ```
 .venv/bin/python build/build_chapter2.py \
     --with-figures --out ~/FIN1209-Chapter-02-with-figures.pptx
+.venv/bin/python build/build_chapter2.py --edition student \
+    --with-figures --out ~/FIN1209-Chapter-02-Student-Edition.pptx
 .venv/bin/python build/build_lecture_notes2.py \
     --with-figures --out ~/FIN1209-Chapter-02-Lecture-Notes.pdf
 ```
 
-The second one is what students get through Canvas.
+The last two are what students get through Canvas.
+
+### The edition switch, which you inherit for free
+
+`--edition` lives in `deckkit.build()` and `build_chapter1.py` and knows
+nothing about any chapter, so Chapter 2 gets it by copying the build script.
+`teaching` is the default and renders everything. `student` drops every
+`Check`, which removes both the question slide and its reveal, and writes no
+speaker notes at all.
+
+Three consequences, all handled for you, and all worth understanding before
+you write content:
+
+- The progress markers are **regenerated** for the slides the edition renders.
+  The denominator has always counted the section body and never the checks, so
+  a body slide reads the same in both editions.
+- Speaker cues are suppressed at the one place they are written, so the
+  student `.pptx` carries no notes parts.
+- **Do not write a slide that refers back to a check.** "As the last question
+  showed" is true in one edition and false in the other, and nothing in the
+  build can fix it for you. Chapter 1 has no such slide. The only line that
+  named the checks is generated, not authored: the roadmap accent, which the
+  student edition rewords.
+
+Only the teaching build writes the answer sheet, so the student build can
+never stale it.
 
 Environment, fonts and the sharp edges of the PDF pipeline are in
 `build/README.md`. The two that will bite you: headless Chrome writes the PDF
@@ -310,11 +339,15 @@ Look at **both** builds of the lecture notes. The figure build is not the
 placeholder build with pictures in it.
 
 For the deck, convert it and look at every slide you added or changed, in the
-build with the artwork in it, because that is what the room sees:
+build with the artwork in it, because that is what the room sees. Do the
+student edition too, at least the first and last slide of every part, because
+that is where a dropped check could have left a wrong marker or a broken
+transition:
 
 ```
 soffice --headless --convert-to pdf --outdir /tmp/smoke chapter-02/FIN1209-Chapter-02.pptx
 soffice --headless --convert-to pdf --outdir ~ ~/FIN1209-Chapter-02-with-figures.pptx
+soffice --headless --convert-to pdf --outdir ~ ~/FIN1209-Chapter-02-Student-Edition.pptx
 ```
 
 What to look for, in order:
@@ -327,14 +360,21 @@ What to look for, in order:
 3. **No page carrying a single orphaned sentence.** Trim a few words upstream
    rather than shipping the extra sheet.
 4. **Every stated number.** Slide count, part names, figure count, page counts,
-   minute totals and each run plan's arithmetic, in all three documents and in
+   minute totals and each run plan's arithmetic, in all four documents and in
    the two READMEs. Nothing checks these for you.
+5. **Both editions' counts.** The student edition must come out at the
+   teaching count minus twice the number of checks, hold no check or reveal
+   slide, and carry no notes part:
+   `unzip -l <student deck>.pptx | grep notesSlide` must be empty.
 
 Then the paperwork:
 
 - `git status --short` after a plain rebuild must be empty on a second run. The
-  deck build is deterministic and a clean rebuild is byte-identical.
-- `unzip -l <deck>.pptx | grep ppt/media` must be empty.
+  deck build is deterministic and a clean rebuild is byte-identical, for both
+  editions. The two PDF builds are not: Chrome stamps its own identifiers, so
+  a rebuild with no content change still moves those bytes. Check them by
+  their text (`pdftotext`), and revert them if only the bytes changed.
+- `unzip -l <deck>.pptx | grep ppt/media` must be empty, for both editions.
 - **No image file may be committed**, in any form.
 - Update `chapter-02/README.md` and the counts in `build/README.md`.
 
@@ -343,5 +383,5 @@ Then the paperwork:
 ## What Chapter 2 inherits, in one line
 
 Six parts, a check every two or three terms, a figure only where the book has
-one, every term defined once in each document in the same words, and no ruling
-the book does not make.
+one, every term defined once in each document in the same words, two editions
+of the deck from one content file, and no ruling the book does not make.

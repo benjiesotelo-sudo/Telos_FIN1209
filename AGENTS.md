@@ -4,6 +4,25 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+## Start at TEMPLATE.md if you are building a chapter
+
+`TEMPLATE.md` at the repository root is what whoever writes Chapter 2 reads
+first: which files to copy and which to write fresh, the content module's
+structure, the non-negotiable teaching design rules, the copyright split, the
+three build commands, and the verification steps. This file carries only the
+sharp edges; that one carries the method.
+
+## Teach only what the textbook teaches
+
+The instructor's standing rule, and it outranks everything else here. Where
+Lim's chapter defines a term, use the book's definition. Where the book is
+silent, ambiguous, or contradicts itself, say so plainly on the slide and in
+the notes rather than importing a definition or narrating events the book does
+not. The worked example is `Supply side and demand side` in
+`build/content_chapter01.py`: the book never defines the pair, so the deck
+teaches the gap, marks the outside readings non-examinable, and sets no
+question on either.
+
 ## The decks are generated, never hand-edited
 
 Editing a `.pptx` is a dead end; the next build overwrites it. Change
@@ -54,7 +73,7 @@ slides instead of holding a copy.
 `build/README.md` covers the sharp edges: headless Chrome writes the PDF and
 then never exits, so the build polls for the file instead of waiting on the
 process; pagination is done by a script inside the page, not by Chrome; and
-the notes turn on three paginator behaviours the plan deliberately does not.
+the notes turn on three paginator behaviors the plan deliberately does not.
 
 **Render every finished PDF back to images and look at every page before you
 commit it**, and for the lecture notes look at both the placeholder build and

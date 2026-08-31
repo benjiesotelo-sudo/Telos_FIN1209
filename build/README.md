@@ -50,7 +50,7 @@ different readers. Keeping them apart is the point.
 
 ```
 .venv/bin/python build/build_plan.py             # instructor, 23 pages
-.venv/bin/python build/build_lecture_notes.py    # students, 24 pages
+.venv/bin/python build/build_lecture_notes.py    # students, 26 pages
 ```
 
 | Output | Who it is for | What is in it |
@@ -83,7 +83,7 @@ measures each block and distributes blocks into fixed A4 sheets. That is what
 buys a running footer, blocks that are never split across a break, and headings
 that are always followed by their content. Chrome's own pagination can do none
 of the three. `notekit.paginator_js()` is that script and both documents use
-it. Three of its behaviours are opt-in per document, and only the lecture notes
+it. Three of its behaviors are opt-in per document, and only the lecture notes
 turn them on:
 
 - `data-float="1"` on a block: it waits for the next sheet rather than forcing
@@ -93,7 +93,8 @@ turn them on:
 - A single paragraph with nowhere else to break breaks between its sentences.
 
 Together those took the lecture notes from 29 pages at 79 percent page fill to
-24 at 94 percent with identical content. The teaching plan uses none of them:
+24 at 94 percent with identical content, before the self test and the central
+bank example took them to 26. The teaching plan uses none of them:
 an instructor turning to a part expects it at the top of a page.
 
 ### The rules the two builds enforce
@@ -136,8 +137,8 @@ of its own caption, and the placeholder build looked perfect throughout.
 ```
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
 $DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 23)
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 24)
-$DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 24)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 26)
+$DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 26)
 ```
 
 `chapter-01/teaching-plan-design.md` and `chapter-01/lecture-notes-design.md`
@@ -145,14 +146,14 @@ record the research each design came from.
 
 ## Figures
 
-The chapter places 31 figures from the course text. They are Wiley's, this
+The chapter places 35 figures from the course text. They are Wiley's, this
 repository is public, so they live in `assets/figures/`, which is gitignored
 and absent on a clean clone. Figures are therefore **off by default**: the
 plain build above renders a placeholder in each figure's place, carrying the
 figure number, what the figure shows, the credit line and the speaker cue, and
 it is what produces the committed deck.
 
-The same policy applies to the lecture notes, which place the same 31 figures.
+The same policy applies to the lecture notes, which place the same 35 figures.
 
 The versions with the artwork placed go outside the repository:
 
@@ -165,8 +166,8 @@ The versions with the artwork placed go outside the repository:
 
 The second one is what students get through Canvas.
 
-Both builds produce identical pagination either way: the same 209 slides, and
-the same 24 pages, because a placeholder occupies exactly the height its
+Both builds produce identical pagination either way: the same 218 slides, and
+the same 26 pages, because a placeholder occupies exactly the height its
 artwork would. Both refuse `--with-figures` aimed at a committed path, and the
 notes build refuses it aimed anywhere inside the repository at all, so the
 artwork cannot reach a commit by accident. See `chapter-01/README.md` for the

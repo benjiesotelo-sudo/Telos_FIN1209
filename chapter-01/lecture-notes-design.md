@@ -160,13 +160,17 @@ Real per lecture notes cluster in a band:
 So one lecture is 4 to 21 pages, 1,500 to 7,300 words, and the median is
 around 6 pages and 2,700 words.
 
-FIN1209 Chapter 1 is not one lecture. The deck is 209 slides and 195 minutes
+FIN1209 Chapter 1 is not one lecture. The deck is 218 slides and 205 minutes
 of teaching, which is about two and a half standard 80 minute lectures. Scaled
 on the MIT 14.03 figure, a faithful set of notes would be 40 pages. Scaled on
 Cambridge, 10.
 
 **The decision: about 6,900 words of body text, which came out at 24 A4
-pages.**
+pages.** The chapter has grown since: restoring the book's self test and the
+central bank example took the deck to 218 slides and 35 figures, and the notes
+to 7,725 words and 26 pages. The rule below is what set the length, and it is
+still the rule. The measurements in the table are the ones taken on the 24 page
+cut.
 
 The first draft of this file budgeted 14 to 18 pages, and that number was
 wrong. It was written before anything had been measured, and it ignored the
@@ -187,12 +191,12 @@ already at the short end of real practice: MIT 18.05 spends 3,400 words on one
 spends 3,900 to 7,300 on a single lecture, which scales to 12,000 or more.
 
 So the length is what carrying every figure and every term costs, and the
-reasons to accept 24 rather than cut into that:
+reasons to accept it rather than cut into that:
 
 1. It is a quarter of what a transcript of the same session would be. Yale's
    transcript is 9,229 words for 75 minutes, so 195 minutes is roughly 24,000
    words of talking. The notes are the compression, not the record.
-2. It is half the deck. 209 slides at the deck's own density is about 13,600
+2. It is half the deck. The deck at its own density is about 14,000
    words of fragments. The notes are shorter than the slides and are the only
    one of the two that can be read on their own.
 3. The instructor's two requirements were short and **still has the graphs**.
@@ -209,7 +213,7 @@ the built document is 94 percent, and no page is emptier than 74 percent.
 
 **The budget for Chapters 2 to 10** is therefore not a page count. It is:
 every figure the deck places, every term the deck teaches, and prose at about
-35 words per minute of teaching. Chapter 1 comes out at 24 pages on that rule.
+35 words per minute of teaching. Chapter 1 comes out at 26 pages on that rule.
 A chapter with half the figures will come out much shorter, and that is
 correct.
 

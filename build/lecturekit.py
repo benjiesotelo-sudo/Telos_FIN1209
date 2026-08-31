@@ -526,7 +526,7 @@ h3 .hnum {{
 .rq h3:first-child, .kx h3:first-child, .src h3:first-child {{ margin-top: 0; }}
 
 /* ---- definitions ------------------------------------------------------ */
-/* One compact run-in rather than a labelled card. Forty nine of these sit in
+/* One compact run-in rather than a labeled card. Forty nine of these sit in
    the chapter, so four millimetres saved on each is four pages saved. */
 .define {{
   background: rgba(0,122,51,0.05); border-left: 2.4pt solid {GREEN};

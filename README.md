@@ -15,6 +15,7 @@ Official delivery runs on Canvas; this repository is the preparation workspace.
 
 | Path | What it is |
 |---|---|
+| `TEMPLATE.md` | How to build the next chapter. Read it first. |
 | `chapter-01/` | The Chapter 1 deck, the instructor's teaching plan, the students' lecture notes, and the in-class checks |
 | `build/` | The scripts that generate all four |
 

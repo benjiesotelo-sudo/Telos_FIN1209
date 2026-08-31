@@ -43,7 +43,7 @@ RUN_CARD = Sheet(
         Prose(
             cue="Why this exists",
             text=(
-                "The deck is 195 minutes at full length and most sessions are "
+                "The deck is 205 minutes at full length and most sessions are "
                 "not. Nobody has confirmed how long this one is, so choose a "
                 "plan now rather than discovering the problem at the 90 minute "
                 "mark. All four plans below cover the same chapter and all "
@@ -69,15 +69,15 @@ RUN_CARD = Sheet(
             align=("l", "n", "n", "n", "n", "n", "n"),
             rows=(
                 ("1  Why we analyze", "25", "1", "26", "22", "13", "10"),
-                ("2  Forecasting", "42", "3", "33", "24", "22", "15"),
+                ("2  Forecasting", "44", "4", "35", "26", "22", "15"),
                 ("3  Classifications", "27", "3", "28", "23", "15", "12"),
-                ("4  Subjectivity", "39", "13", "42", "34", "20", "15"),
+                ("4  Subjectivity", "46", "16", "50", "42", "25", "20"),
                 ("5  Assumptions", "47", "8", "38", "26", "22", "16"),
                 ("6  Participants", "22", "3", "28", "21", "13", "7"),
-                ("Whole chapter", "202", "31", "195", "150", "105", "75"),
+                ("Whole chapter", "211", "35", "205", "160", "110", "80"),
                 ("Checks kept, of 25", "", "", "25", "25", "25", "19"),
                 ("Minutes that are checks", "", "", "50", "50", "50", "38"),
-                ("Minutes that are teaching", "", "", "145", "100", "55", "37"),
+                ("Minutes that are teaching", "", "", "155", "110", "60", "42"),
             ),
             note=(
                 "Slide counts run from the part divider to the recap, which is "
@@ -100,7 +100,9 @@ RUN_CARD = Sheet(
                 "**A live chart in a second window**, because Parts 1, 4 and 5 "
                 "all want one. **The board free**, because Parts 1 and 5 both "
                 "want writing that stays up for the rest of the session. "
-                "**Nothing else.** No handouts, no printing."
+                "**Nothing else.** No handouts and no printing: in the Part "
+                "4 self test the students draw on their own paper or on a "
+                "photo of the screen."
             ),
         ),
     ),
@@ -116,7 +118,7 @@ HOW_TO_RUN = Sheet(
             cue="Which deck",
             text=(
                 "Teach from the locally built deck with the artwork in it, "
-                "not the committed one, which carries placeholders where the 31 "
+                "not the committed one, which carries placeholders where the 35 "
                 "figures go. `README.md` here has both build commands, and "
                 "`in-class-checks.md` has every question in full."
             ),
@@ -142,12 +144,12 @@ HOW_TO_RUN = Sheet(
             numbered=True,
             items=(
                 "**The progress marker.** Bottom left of every slide: "
-                "`Part 3 of 6 - Classifications | 7 of 16`. Students always "
+                "`Part 3 of 6 - Classifications | 7 of 19`. Students always "
                 "know where they are. If someone asks how much is left, point "
                 "at it rather than answering.",
                 "**The checks.** Twenty five of them, two questions each, fifty "
                 "items. A dark green slide with a gold CHECK chip means a "
-                "question is coming. The room learns that colour within the "
+                "question is coming. The room learns that color within the "
                 "first twenty minutes.",
                 "**The section boundaries.** Six parts. Each opens with what it "
                 "covers and closes with a you-now-know recap. Any boundary is a "
@@ -187,7 +189,7 @@ HOW_TO_RUN = Sheet(
             ),
         ),
         Heading(cue="", text="Running a figure slide",
-                sub="31 of them, and 13 are in Part 4 alone."),
+                sub="35 of them, and 16 are in Part 4 alone."),
         Prose(
             cue="Every figure",
             text=(
@@ -254,9 +256,11 @@ EVIDENCE = Sheet(
                 "showing different trends, draw trendlines, interpret. That "
                 "makes the price-time chart in Part 1 (slide "
                 "{s:term:The price-time chart}) and the trendline material in "
-                "Part 4 **Core, including at 75 minutes.** It is also the "
-                "closing exercise of Part 4, so setting that exercise today is "
-                "preparation for it."
+                "Part 4 **Core, including at 80 minutes.** Part 4 now runs the "
+                "book's own version of it in the room, "
+                "s{s:slide:An exercise: read the chart yourself} to "
+                "s{s:slide:Were there differences? Good.}, so the homework is "
+                "the same three steps on a live platform."
             ),
         ),
         Table(
@@ -294,7 +298,8 @@ EVIDENCE = Sheet(
             text=(
                 "That is not permission to drop them. Objectives 4, 6 and 7 "
                 "live there, review questions 3 and 4 are answered in Part 4, "
-                "and Homework 1 is Part 4's closing exercise. The old "
+                "and Homework 1 is Part 4's self test done again on a live "
+                "platform. The old "
                 "\"Parts 1 to 3 are a complete unit\" escape hatch threw away "
                 "three objectives, which is why it is gone."
             ),
@@ -342,26 +347,26 @@ RUN_PLANS = Sheet(
                  "for, because a check or a quiz item hangs off it. **Folding "
                  "is how you lose slides without losing content.**",
         ),
-        Heading(cue="195 min", text="Full",
+        Heading(cue="205 min", text="Full",
                 sub="Everything, in the order it is built."),
         Prose(
             cue="",
             text=(
                 "All 25 checks. All seven objectives, at full depth. Skip "
                 "nothing. Use this only if you have a genuine three and a "
-                "quarter hours of teaching time after attendance and setup."
+                "half hours of teaching time after attendance and setup."
             ),
         ),
-        Heading(cue="150 min", text="Long",
+        Heading(cue="160 min", text="Long",
                 sub="Drop every Enrichment block, plus every figure that only "
                     "redraws a slide you have already taught."),
         Prose(
             cue="Why figures",
             text=(
-                "The figures are what took this deck from 165 minutes to 195, "
+                "The figures are what took this deck from 170 minutes to 205, "
                 "so they are the cheapest 21 minutes in the chapter to hand "
-                "back. Ten of the 31 survive. The slides that come off are in "
-                "the table at the end of this section."
+                "back. Fourteen of the 35 survive. The slides that come off "
+                "are in the table at the end of this section."
             ),
         ),
         Table(
@@ -372,20 +377,22 @@ RUN_PLANS = Sheet(
                 ("Skip these 21",
                  "1.1, 1.2, 1.3, 1.4, 1.6, 1.7, 1.8, 1.16, 1.18, 1.19, 1.21, "
                  "1.25, 1.26, 1.27, 1.29, 1.30, 1.31, 1.32, 1.33, 1.34, 1.35"),
-                ("Keep these 10",
+                ("Keep these 14",
                  "**1.9 through 1.15 as one unbroken sequence** "
-                 "(slides {s:fig:1.9} to {s:fig:1.15}), plus 1.17, 1.20 and 1.28"),
+                 "(slides {s:fig:1.9} to {s:fig:1.15}), plus 1.17, 1.20 and "
+                 "1.28, plus **1.5** and the exercise set **1.22, 1.23, "
+                 "1.24**, which are not redraws of anything"),
             ),
         ),
         Prose(cue="Checks", text="All 25. No exceptions. All seven objectives, fully covered."),
 
-        Heading(cue="105 min", text="Standard",
+        Heading(cue="110 min", text="Standard",
                 sub="Core only, with the folds done so no check is stranded."),
         Prose(
             cue="The point",
             text=(
                 "Everything marked Reinforcement or Enrichment comes out. Fifty "
-                "of the 105 minutes are checks, which is the whole point of this "
+                "of the 110 minutes are checks, which is the whole point of this "
                 "plan: **it is the shortest run that still teaches the chapter "
                 "properly rather than mentioning it.**"
             ),
@@ -415,7 +422,7 @@ RUN_PLANS = Sheet(
         Prose(cue="Checks",
               text="All 25. All seven objectives, fully covered. Nothing degrades."),
 
-        Heading(cue="75 min", text="Short",
+        Heading(cue="80 min", text="Short",
                 sub="The floor. Core only, run hard, and six checks come out."),
         Prose(
             cue="What it costs",
@@ -452,7 +459,9 @@ RUN_PLANS = Sheet(
                 ("4", "The sequence 1.9 to 1.15 runs exactly as written, at "
                       "full speed, with the closing question. Everything around "
                       "it goes to one pass. The oil example gets 60 seconds, "
-                      "not three minutes."),
+                      "not three minutes. The self test keeps five minutes: two "
+                      "to draw, no peer compare, then 1.23 and 1.24 back to "
+                      "back."),
                 ("5", "Teach the three forms of EMH off the ladder table on the "
                       "Part 5 page rather than the three term slides "
                       "(s{s:term:The weak form of EMH} to "
@@ -488,7 +497,8 @@ RUN_PLANS = Sheet(
                 "The survival instinct and its four components, and Figure 1.1 "
                 "on the mechanics of profiting from a change.",
                 "The financial ratios, the top-down and bottom-up approaches, "
-                "and all six definitions of technical analysis.",
+                "the central bank example on printed page 6 with Figure "
+                "1.5, and all six definitions of technical analysis.",
                 "The second list of advantages of technical analysis.",
                 "Figures 1.16, 1.18, 1.19 and 1.21, and the price, time and "
                 "algorithmic filters.",
@@ -529,6 +539,11 @@ RUN_PLANS = Sheet(
                  "Top-down and bottom-up", "**Long**",
                  "Name the pair in one sentence, or check 5 loses its first "
                  "question."),
+                ("{s:slide:When a policy decision becomes a price level}, "
+                 "{s:fig:1.5}",
+                 "The SNB ceiling on the franc", "Standard",
+                 "A central bank can put a technical level on a chart by "
+                 "policy. Nothing downstream needs it."),
                 ("{s:quote:2:2}", "Edwards and Magee, recorded history and the "
                  "word probable", "**Long**", ""),
                 ("{s:quote:2:4}", "Pring, the art of catching a reversal early",
@@ -566,9 +581,8 @@ RUN_PLANS = Sheet(
                  "A gold backed exchange traded fund is a derivative, because "
                  "check 25 asks for exactly that."),
             ),
-            note="Fifteen rows, and six of them cost you nothing but the "
-                 "slide. The Short plan cuts on top of all of this; the Short "
-                 "section above says how.",
+            note="Sixteen rows, six of which cost you nothing but the slide. "
+                 "Short cuts on top of all of it.",
         ),
     ),
 )
@@ -600,7 +614,7 @@ PART1 = Part(
               "four verb slides. The four ways a trade actually makes money. "
               "Quiz 1 opens with the four scenarios and its second item is the "
               "dual function, so none of this moves. Homework 1 is a charting "
-              "exercise, which is why the price-time chart survives even at 75 "
+              "exercise, which is why the price-time chart survives even at 80 "
               "minutes."),
         reinforcement=("What identification hands you before you risk a peso, "
                        "s{s:slide:What identification hands you before you risk a peso}, "
@@ -666,7 +680,7 @@ PART1 = Part(
             text=(
                 "Homework 1 is a charting exercise on live charts with "
                 "trendlines drawn and interpreted, so this slide is Core at "
-                "every plan length including 75 minutes."
+                "every plan length including 80 minutes."
             ),
         ),
         Prose(
@@ -741,20 +755,22 @@ PART2 = Part(
     number=2,
     title="Three ways to forecast a price",
     short="Forecasting",
-    minutes=(33, 24, 22, 15),
+    minutes=(35, 26, 22, 15),
     terms=("Fundamental analysis, intrinsic value, undervalued and overvalued, "
            "the ratios, top-down, bottom-up, CAPM in passing, information "
            "analysis, non-public material information, technical analysis, the "
            "six famous definitions, technically and fundamentally based market "
            "timing, the fundamentalist profile, the technical analyst profile, "
-           "the six streams of market action, OHLC."),
+           "the six streams of market action, OHLC. Central bank policy as a "
+           "source of a technical level."),
     open_line=("Three approaches, one question. Not three rivals: three answers "
                "to the same question."),
     close_line=("The fundamentalist is cause, company, value. The technical "
                 "analyst is effect, price, timing. Most professionals use both."),
     figures=(FigureRef("1.2", "cut at Long"),
              FigureRef("1.3", "cut at Long"),
-             FigureRef("1.4", "cut at Long")),
+             FigureRef("1.4", "cut at Long"),
+             FigureRef("1.5", "cut at Standard")),
     ladder=Ladder(
         core=("Three approaches, one question. Fundamental analysis. Intrinsic "
               "value. Undervalued and overvalued. Where fundamental analysis "
@@ -776,7 +792,11 @@ PART2 = Part(
                        "fundamentalist turns accounts into a number, "
                        "s{s:slide:How a fundamentalist turns accounts into a number}. "
                        "Pring on the art of catching a reversal early, "
-                       "s{s:quote:2:4}."),
+                       "s{s:quote:2:4}. The Swiss National Bank ceiling and "
+                       "Figure 1.5, "
+                       "s{s:slide:When a policy decision becomes a price level} "
+                       "and s{s:fig:1.5}, which show a second time how "
+                       "supply and demand set a level."),
         enrichment=("Edwards and Magee on recorded history and the word "
                     "probable, and Pring on people continuing to make the same "
                     "mistakes, which Part 5 says again on the behavior repeats "
@@ -794,7 +814,7 @@ PART2 = Part(
         Flag(
             kind="rule",
             cue="Whole part",
-            title="This is the longest part and the one with the most examinable content",
+            title="This part carries the most examinable content in the chapter",
             text="Keep moving. Nothing here is safe to linger on.",
         ),
         Prose(
@@ -837,6 +857,22 @@ PART2 = Part(
             cue="s{s:check:5}, reveal s{s:reveal:5}",
             text="Q1 asks for top-down, so the fold sentence has to be said "
                  "even when the two term slides come out. Cut at Short.",
+        ),
+        Prose(
+            cue="s{s:slide:When a policy decision becomes a price level}, "
+                "s{s:fig:1.5}",
+            text=(
+                "Two minutes, and they are worth it at Full and Long. The "
+                "Swiss National Bank held a ceiling on the franc, so EURCHF "
+                "sat at or above 1.2000, and traders bought every approach to "
+                "that level with stops below it. **A policy decision put a "
+                "technical level on a chart.** It is the one place in the "
+                "chapter where the two kinds of analysis are on the same "
+                "picture, so say that rather than leaving it implied.\n\n"
+                "The book writes as though the ceiling still stands and never "
+                "says what happened afterwards. Say that plainly if you are "
+                "asked. We teach what the book teaches."
+            ),
         ),
         Prose(
             cue="s{s:term:Information analysis} to "
@@ -892,7 +928,13 @@ PART2 = Part(
             text=(
                 "Make them notice for themselves that every fundamental line "
                 "ends with \"no precise price or time\". **Do not point it out "
-                "first.** Ask what the three lines have in common."
+                "first.** Ask what the three lines have in common.\n\n"
+                "Then say the counterweight off the caption, twice: **a "
+                "precise entry level is not a predicted reversal price.** "
+                "Technical analysis says where you will act, not where the "
+                "market will turn. Quiz 1 item 2 asks them to reject exactly "
+                "that claim, and this part is where they are most likely to "
+                "pick it up by mistake."
             ),
         ),
         CheckCard(
@@ -1079,18 +1121,18 @@ PART4 = Part(
     number=4,
     title="Subjectivity",
     short="Subjectivity",
-    minutes=(42, 34, 20, 15),
+    minutes=(50, 42, 25, 20),
     terms=("Objective and subjective aspects, the three activities, "
            "subjectivity, the twofold problem, contradictory, confirmatory and "
            "complementary signals, why indicators disagree, tick volume, the "
            "pattern size rule, interpretational and inferential subjectivity, "
            "selective perception, subjective objectivity, price, time and "
-           "algorithmic filters, practice."),
+           "algorithmic filters, the book's own self test, practice."),
     open_line=("The chart is objective, the reading is subjective. The data is "
                "not the problem, the reader is."),
     close_line=("Subjectivity is not a technical analysis problem, it is an "
-                "analysis problem. Set the two-student trendline exercise "
-                "before they leave."),
+                "analysis problem. They prove it themselves in the self test "
+                "that closes the part."),
     figures=(FigureRef("1.9", "keep, all plans"),
              FigureRef("1.10", "keep, all plans"),
              FigureRef("1.11", "keep, all plans"),
@@ -1103,17 +1145,22 @@ PART4 = Part(
              FigureRef("1.18", "cut at Long"),
              FigureRef("1.19", "cut at Long"),
              FigureRef("1.20", "keep to Standard"),
-             FigureRef("1.21", "cut at Long")),
+             FigureRef("1.21", "cut at Long"),
+             FigureRef("1.22", "keep, all plans"),
+             FigureRef("1.23", "keep, all plans"),
+             FigureRef("1.24", "keep, all plans")),
     ladder=Ladder(
         core=("Objective and subjective at the same time. Analysis is three "
               "separate activities. Subjectivity. The problem is twofold. "
               "**Figures 1.9 through 1.15, the whole sequence, in every plan "
-              "including the 75 minute one.** Contradictory, confirmatory and "
+              "including the 80 minute one.** Contradictory, confirmatory and "
               "complementary signals. Why indicators disagree in the first "
               "place. Resolving conflicting chart patterns, with Figure 1.17. "
               "The same fact, read two ways. Selective perception. Even the "
-              "entry point is subjective, with Figure 1.20. Subjectivity "
-              "shrinks with practice."),
+              "entry point is subjective, with Figure 1.20. **The self test, "
+              "Figures 1.22 to 1.24, in every plan**, because it is objective "
+              "4 done rather than said and it is Homework 1 rehearsed. "
+              "Subjectivity shrinks with practice."),
         reinforcement=("Figure 1.16, s{s:fig:1.16}. Figure 1.18, "
                        "s{s:fig:1.18}. Figure 1.19, s{s:fig:1.19}. Figure "
                        "1.21, s{s:fig:1.21}. The price, time and algorithmic "
@@ -1125,7 +1172,11 @@ PART4 = Part(
               "rather than losing them, because check 16 asks for the time "
               "filter. At Short the sequence still runs exactly as written, at "
               "full speed, with the closing question; everything around it goes "
-              "to one pass and the oil example gets 60 seconds."),
+              "to one pass and the oil example gets 60 seconds. The self test "
+              "compresses rather than folds: two minutes to draw, no peer "
+              "compare, then 1.23 and 1.24 back to back. **Never drop "
+              "s{s:fig:1.22} itself**, because without the blank chart there "
+              "is nothing to compare against."),
     ),
     blocks=(
         Flag(
@@ -1136,7 +1187,7 @@ PART4 = Part(
                 "Booklet objective 4 is this part by name, review questions 3 "
                 "and 4 are answered here, and Homework 1 asks for trendlines "
                 "drawn on a live chart and interpreted, which is Figure 1.20's "
-                "argument and the closing exercise. **Part 4 is the last thing "
+                "argument and the self test. **Part 4 is the last thing "
                 "you cut, not the first.**"
             ),
         ),
@@ -1169,7 +1220,7 @@ PART4 = Part(
                 "between the first slide and this one. The answer is nothing "
                 "except the analyst, and that is the argument of the whole "
                 "part. It only lands if they have watched all seven go past in "
-                "a row, so do not summarise the sequence, do not skip ahead, "
+                "a row, so do not summarize the sequence, do not skip ahead, "
                 "and **do not take questions in the middle of it.**"
             ),
         ),
@@ -1251,13 +1302,69 @@ PART4 = Part(
             text="Q2 asks for the time filter, so the three filters have to be "
                  "named even when their term slides are folded. Cut at Short.",
         ),
+        Heading(
+            cue="s{s:slide:An exercise: read the chart yourself} to "
+                "s{s:slide:Were there differences? Good.}",
+            text="The book's self test, run in the room",
+            sub="Seven slides and about eight minutes at Full. This is the "
+                "hands-on segment of the week and it is where objective 4 "
+                "stops being something you said.",
+        ),
+        Flag(
+            kind="rule",
+            cue="s{s:fig:1.22}",
+            title="Four minutes of silence, and you do not advance",
+            text=(
+                "Put the blank chart up, say the task once, then stop talking. "
+                "**The exercise fails if you narrate over it.** Walk the room "
+                "and look at what they are drawing, but correct nobody: there "
+                "is nothing to correct.\n\n"
+                "Say twice that it carries no marks. Half the room will not "
+                "put a pen on paper until they believe you."
+            ),
+        ),
+        Prose(
+            cue="s{s:slide:Now compare with the person beside you}, "
+                "s{s:fig:1.23}",
+            text=(
+                "Two minutes on the peer compare, then two pairs report what "
+                "differed. **Do not adjudicate.** Picking a winner teaches the "
+                "opposite of this part.\n\n"
+                "Only then show the book's lines. Ask for a show of hands on "
+                "who drew a line the book does not have; almost every hand "
+                "goes up, and that is the moment the part lands. Say out loud "
+                "that Figure 1.23 is not an answer key, it is one more "
+                "analyst."
+            ),
+        ),
+        Prose(
+            cue="s{s:slide:Second pass: find the chart patterns}, "
+                "s{s:fig:1.24}",
+            text=(
+                "Second pass, on the same blank chart. Pattern names are not "
+                "examinable today and you should say so, or the students who "
+                "have read ahead will dominate it. If the room has no "
+                "vocabulary at all, ask instead where price paused and where "
+                "it accelerated. Then read the six labels off Figure 1.24 and "
+                "stop; naming patterns properly is a later chapter."
+            ),
+        ),
+        Prose(
+            cue="s{s:slide:Were there differences? Good.}",
+            text=(
+                "Land the book's own sentence: **do not worry if there are "
+                "differences, it is merely a consequence of subjectivity.** "
+                "Then bridge: Homework 1 is these same three steps on a live "
+                "platform, so they have now done the homework once already, on "
+                "paper."
+            ),
+        ),
         Prose(
             cue="s{s:slide:Subjectivity shrinks with practice}",
             text=(
-                "Close on practice, and set the exercise before they leave: "
-                "**two students, one chart, draw trendlines separately, then "
-                "compare.** The point is to be comfortable with the difference, "
-                "not to find a winner. This is Homework 1 in miniature."
+                "Close on practice. Tell them to run the same exercise again "
+                "in a month: their lines will change and the chart will not. "
+                "**Nothing in this part can be achieved by reading.**"
             ),
         ),
         Prose(
@@ -1717,17 +1824,17 @@ CLOSE_OUT = Sheet(
         Prose(
             cue="Homework 1",
             text=(
-                "Homework 1 is a charting exercise, not multiple choice. It "
-                "asks for a live chart with trendlines drawn and the trend "
-                "interpreted, which is exactly the Part 4 closing exercise. "
-                "**Setting that exercise today is preparation for it.**"
+                "Homework 1 is a charting exercise, not multiple choice: a "
+                "live chart, trendlines drawn, the trend interpreted. That is "
+                "the Part 4 self test again. **Say so: they have already done "
+                "the homework once, on paper.**"
             ),
         ),
         Prose(
             cue="s{s:slide:Next: Dow Theory}",
             text=(
-                "Close by naming what comes next. Dow Theory is Chapter 2 and "
-                "the other half of Quiz 1, so the preview is not a courtesy."
+                "Close by naming what comes next. Dow Theory is Chapter 2 "
+                "and the other half of Quiz 1."
             ),
         ),
     ),

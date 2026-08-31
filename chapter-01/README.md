@@ -1,7 +1,7 @@
 # Chapter 1 - Introduction to the Art and Science of Technical Analysis
 
-209 slides, six parts, 25 in-class checks carrying 50 multiple choice items,
-49 terms, and 31 figures from the course text.
+218 slides, six parts, 25 in-class checks carrying 50 multiple choice items,
+49 terms, and 35 figures from the course text.
 
 Three documents come out of the same chapter data, and they are for three
 different people:
@@ -10,7 +10,7 @@ different people:
 |---|---|---|---|
 | `FIN1209-Chapter-01.pptx` | The room | The committed deck. **Text version**, placeholders where the figures go. | `build/content_chapter01.py` |
 | `FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | 23 pages. Timing, cut tiers, what to say, which check comes next. | `build/plan_chapter01.py` |
-| `FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | 24 pages. What the lesson covered, in prose, with the figures. | `build/lecture_chapter01.py` |
+| `FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | 26 pages. What the lesson covered, in prose, with the figures. | `build/lecture_chapter01.py` |
 | `in-class-checks.md` | The instructor | The answer sheet. | `build/content_chapter01.py` |
 | `teaching-plan-design.md` | Whoever edits the plan | Why the plan looks the way it does. | Written by hand |
 | `lecture-notes-design.md` | Whoever writes Chapter 2 | The research behind the lecture notes, with sources. | Written by hand |
@@ -60,13 +60,13 @@ slides rather than keeping a copy, so those cannot go stale either.
 .venv/bin/python build/build_lecture_notes.py
 ```
 
-24 A4 pages: a masthead and the chapter's learning objectives, then the deck's
+26 A4 pages: a masthead and the chapter's learning objectives, then the deck's
 six parts as six numbered sections in the same order, then a summary, the
-book's six review questions, a key terms index and the sources.
+book's review questions, a key terms index and the sources.
 
 `lecture-notes-design.md` records the research the design came from, with real
 URLs, and the length arithmetic. The short version: the page count is what
-carrying all 31 figures and all 49 definitions costs, and the prose runs at
+carrying all 35 figures and all 49 definitions costs, and the prose runs at
 about 35 words per minute of teaching.
 
 ## The teaching plan
@@ -94,8 +94,8 @@ placeholder build looked perfect.
 
 ```
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 24)
-$DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 24)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 26)
+$DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 26)
 $DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 23)
 ```
 
@@ -151,9 +151,8 @@ assets/figures/figure-1-09.png    ->    Figure 1.9
 assets/figures/figure-1-21.png    ->    Figure 1.21
 ```
 
-The 31 figures the chapter places are 1.1, 1.2, 1.3, 1.4, 1.6, 1.7, 1.8,
-1.9 through 1.21, 1.25, 1.26, 1.27, 1.28, 1.29, 1.30, 1.31, 1.32, 1.33, 1.34
-and 1.35. A missing file is not an error: that figure renders as a placeholder
+The 35 figures the chapter places are 1.1 through 1.35, complete, with no
+gaps. A missing file is not an error: that figure renders as a placeholder
 and the rest of the document is unaffected.
 
 ## The figures that carry the most weight
@@ -161,7 +160,7 @@ and the rest of the document is unaffected.
 Part 4 runs Figures 1.9 to 1.15 as a sequence, one to a slide. It is the same
 price chart seven times: bare, then trendlines, moving averages, chart
 patterns, regression with divergence, regression with volume, and finally
-volatility bands with volume and MACD. Do not summarise it and do not skip
+volatility bands with volume and MACD. Do not summarize it and do not skip
 ahead. The room has to watch one chart get read seven defensible ways, because
 that sequence *is* the argument that analysis is subjective. Everything else in
 Part 4 depends on the room having seen it happen.
@@ -169,6 +168,15 @@ Part 4 depends on the room having seen it happen.
 In the lecture notes the same seven figures are one plate on a single page,
 walked through in order by the paragraph underneath it, which is how a
 textbook handles a sequence a reader is meant to compare at a glance.
+
+Part 4 then closes on the book's own self test, Figures 1.22, 1.23 and 1.24.
+It is an activity, not a set of slides: a blank USDCAD chart, four minutes of
+silence while the room draws its own trendlines, a comparison with the person
+beside them, then the book's lines, then a second pass for chart patterns.
+**Do not narrate over it and do not skip Figure 1.22**, because without the
+blank chart there is nothing to compare against. It is also Homework 1
+rehearsed on paper, and the bridge into the charting platform half of the
+week.
 
 ## Smoke test
 

@@ -509,6 +509,30 @@ PART2 = Section(
                 ),
             ),
         ),
+        Content(
+            title="When a policy decision becomes a price level",
+            lines=(
+                "Interest rate announcements and central bank policy move supply and demand too.",
+                "The Swiss National Bank held a ceiling on the franc: EURCHF at or above 1.2000.",
+                "That decision created a technical demand for the euro right at 1.2000.",
+                "Traders bought each time the rate neared it, with stops a reasonable distance below.",
+            ),
+            accent="A policy decision, read off a chart as a price level.",
+            caption="The ceiling holds only for as long as the bank defends it.",
+            notes=(
+                "This is the one place in the chapter where fundamental and technical analysis sit on the same chart. Say so.",
+                "The book writes as though the ceiling still stands and does not tell us what came after, so neither will we.",
+            ),
+        ),
+        Figure(
+            title="The ceiling, drawn as a line",
+            number="1.5",
+            shows="A long term EURCHF chart with a horizontal line at 1.2000 labeled the SNB exchange rate ceiling on the CHF, and the shaded period from September 2011 in which price sits above that line.",
+            notes=(
+                "Point at the flat floor under price and say that is a central bank, not a chart pattern.",
+                "Ask which kind of analyst could have traded that level. Both could, and that is the point.",
+            ),
+        ),
         Term(
             term="Information analysis",
             plain="Forecasting from what you read: newspapers, bulletins, online reports, company announcements.",
@@ -661,9 +685,11 @@ PART2 = Section(
                 "Entries and exits timed to volatility behavior and to market order flow.",
             ),
             accent="Notice how many of these contain the word precise.",
+            caption="A precise entry level is not a predicted reversal price. It says where you will act, not where the market will turn.",
             notes=(
                 "Do not read all four aloud. Read two and let them read the rest.",
                 "Land the accent: precision is the technician's whole claim.",
+                "Then say the caption twice. Quiz 1 asks them to reject the claim that technical analysis gives the exact price at which a reversal will occur.",
             ),
         ),
         Content(
@@ -1147,7 +1173,7 @@ PART4 = Section(
     number=4,
     title="Subjectivity",
     short="Subjectivity",
-    minutes="About 30 minutes",
+    minutes="About 35 minutes",
     covers=(
         "Which half of technical analysis is objective, and which half is not.",
         "Why two honest analysts read the same chart differently.",
@@ -1540,6 +1566,87 @@ PART4 = Section(
             ),
         ),
         Content(
+            title="An exercise: read the chart yourself",
+            lines=(
+                "1.  You get a plain four hourly chart of USDCAD with nothing drawn on it.",
+                "2.  Draw the trendlines you think mark the trend changes.",
+                "3.  Compare with the person beside you, then compare with the book.",
+            ),
+            accent="No marks and no right answer. The differences are the lesson.",
+            caption="This is the book's own exercise, on printed pages 27 to 29. You can run it again at home.",
+            notes=(
+                "Set the rules before the chart goes up: paper or a phone photo, four minutes, no talking on the first pass.",
+                "Say the exercise carries no marks, twice if you have to, or half the room will not draw anything.",
+            ),
+        ),
+        Figure(
+            title="The chart. Draw your trendlines now.",
+            number="1.22",
+            shows="A plain four hourly bar chart of USDCAD with no lines, no indicators and no annotations, captioned a basic bar chart and asking what the technical analyst can see.",
+            notes=(
+                "Stay on this slide for four minutes. Do not advance early, even when the room goes quiet.",
+                "Walk the room and look. Do not correct anybody's lines.",
+            ),
+        ),
+        Content(
+            title="Now compare with the person beside you",
+            lines=(
+                "Put the two charts side by side.",
+                "Find one trendline you both drew, and one that only one of you drew.",
+                "Neither of you has made a mistake.",
+            ),
+            accent="Two honest analysts, one chart, two readings. You have just produced the argument of this part.",
+            notes=(
+                "Two minutes. Then ask two pairs to say out loud what differed.",
+                "Do not adjudicate. If you pick a winner you have taught the opposite of this part.",
+            ),
+        ),
+        Figure(
+            title="Now compare with the book",
+            number="1.23",
+            shows="The same four hourly USDCAD chart carrying the book's own trendline analysis: a rising line under the first advance, a falling line from the high, a second rising line, and a final falling line down the right hand side.",
+            notes=(
+                "Show of hands: who drew a line the book does not have? Almost every hand goes up.",
+                "Say plainly that the book's lines are not an answer key. They are one more analyst's reading.",
+            ),
+        ),
+        Content(
+            title="Second pass: find the chart patterns",
+            lines=(
+                "Go back to your own chart, the one with no lines on it.",
+                "Mark any chart pattern you can name.",
+                "If you cannot name any yet, that is expected. We learn them properly later in the course.",
+            ),
+            accent="Two minutes, then we compare again.",
+            notes=(
+                "Be explicit that pattern names are not examinable today. This is a look, not a test.",
+                "If the room has no vocabulary at all, ask instead where price paused and where it accelerated.",
+            ),
+        ),
+        Figure(
+            title="The book's patterns, for comparison",
+            number="1.24",
+            shows="The same USDCAD chart with six named formations marked: an expanding triangle for uncertainty, a bearish rising wedge, two bearish downtrending channels, a bullish inverted head and shoulders, and a bearish symmetrical triangle at a resistance zone.",
+            notes=(
+                "Read the six labels off the chart and stop there. Naming patterns properly is a later chapter.",
+                "Ask who found the head and shoulders. Somebody usually did, without knowing what it was called.",
+            ),
+        ),
+        Content(
+            title="Were there differences? Good.",
+            lines=(
+                "The book's own answer is that differences here are not errors.",
+                "They are merely a consequence of subjectivity.",
+                "The fact that you can draw alternate trendlines at all is where subjectivity enters.",
+            ),
+            accent="You have just watched identification, interpretation and inference happen to one chart, twice.",
+            caption="Homework 1 is this exercise on a live platform: find charts showing different trends, draw the trendlines, interpret them.",
+            notes=(
+                "Land the book's own sentence: do not worry if there are differences, it is merely a consequence of subjectivity.",
+                "Bridge forward. The same three steps on a real charting platform is the homework, and the platform session follows this one.",
+            ),
+        ),
+        Content(
             title="Subjectivity shrinks with practice",
             lines=(
                 "A novice cannot see the trendlines, the patterns or the angles at first.",
@@ -1547,10 +1654,10 @@ PART4 = Section(
                 "The subjectivity never reaches zero, but it falls a long way.",
             ),
             accent="Nothing on this slide can be achieved by reading. Only by looking at charts.",
-            caption="Draw trendlines on the same chart as a classmate. Differences are not errors, they are a consequence of subjectivity.",
+            caption="Run the exercise again in a month. Your lines will change. The chart will not.",
             notes=(
-                "Set the exercise: two students, one chart, draw trendlines separately and compare.",
-                "Say the point of the exercise is to be comfortable with the difference, not to find a winner.",
+                "Point back at the exercise they just did and say the second pass will look different in a month.",
+                "Say that the point of all of it was to be comfortable with the difference, not to find a winner.",
             ),
         ),
     ),
@@ -1568,6 +1675,7 @@ PART4 = Section(
             "Selective perception",
             "Individually objective, collectively subjective",
             "Price, time and algorithmic filters",
+            "Your own trendlines, against a classmate's and against the book's",
         ),
         notes=(
             "Ask for the three kinds of signal and the rule for resolving pattern conflicts.",
@@ -1659,7 +1767,7 @@ PART5 = Section(
             number="1.29",
             shows="A EURUSD chart around the non-farm payrolls release of 2 August 2013, annotated with the range before the data, the breakout, the traders buying the news and the early traders exiting into it.",
             notes=(
-                "Find the labelled release on the chart, then walk the annotations left to right in order.",
+                "Find the labeled release on the chart, then walk the annotations left to right in order.",
                 "Say the market took hours, not milliseconds, to settle. That is the semi-efficient market, observed.",
             ),
         ),
@@ -1943,7 +2051,7 @@ PART5 = Section(
         Figure(
             title="The underlying ordered structure of price",
             number="1.26",
-            shows="The same USDCAD chart overlaid with a converging channel and a lattice of symmetry lines, labelled visual evidence of the semi-random nature of price behavior.",
+            shows="The same USDCAD chart overlaid with a converging channel and a lattice of symmetry lines, labeled visual evidence of the semi-random nature of price behavior.",
             notes=(
                 "Say the word on the chart is semi-random, not random, and that the difference is this whole course.",
                 "Warn them honestly: you can draw lines on noise too. That is why Part 4 came first.",
@@ -2156,7 +2264,7 @@ PART6 = Section(
         ),
         Term(
             term="Retail and institutional participants",
-            plain="Retail means individuals trading their own money. Institutional means organisations trading other people's money at scale.",
+            plain="Retail means individuals trading their own money. Institutional means organizations trading other people's money at scale.",
             example="You with a 20,000 peso account are retail. A pension fund moving 200 million pesos is institutional.",
             formal="Retail participants trade their own capital in comparatively small size; institutional participants deploy pooled or corporate capital in size sufficient to move markets.",
             notes=(

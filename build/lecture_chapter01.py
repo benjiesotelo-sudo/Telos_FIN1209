@@ -28,19 +28,19 @@ from lecturekit import (Define, Fig, Head, LectureNotes, Panel, Para, Points,
 
 
 # ==========================================================================
-# Section 1 - Why anybody analyses a market
+# Section 1 - Why anybody analyzes a market
 # ==========================================================================
 
 SECTION1 = Section(
     number=1,
-    title="Why Anybody Analyses a Market",
+    title="Why Anybody Analyzes a Market",
     standfirst="Where the urge to make a profit comes from, the one rule "
                "every trade in the world is trying to obey, and the two jobs "
                "technical analysis actually does.",
     blocks=(
         Head(number="1.1", text="The instincts underneath a market"),
         Para(text=(
-            "A market looks like an institution, but the behaviour running "
+            "A market looks like an institution, but the behavior running "
             "underneath it is older than any institution. The chapter opens "
             "on three human instincts: to survive, to seek comfort, and to "
             "propagate. Survival is the strongest and usually comes first, "
@@ -48,7 +48,7 @@ SECTION1 = Section(
             "satisfying hunger, seeking safety by staying with the group or "
             "the herd, and avoiding danger. Hold on to the third one. "
             "**Herding explains more charts in this course than any other "
-            "single behaviour**, and it returns in Section 5."
+            "single behavior**, and it returns in Section 5."
             "\n\n"
             "Profit needs one more ingredient: something has to change. You "
             "cannot profit from a thing whose value never moves, so you need "
@@ -81,7 +81,7 @@ SECTION1 = Section(
         Define(
             term="The buy low, sell high principle",
             text="The buy low, sell high principle is the mechanical rule "
-                 "that profit is realised by acquiring at a lower price and "
+                 "that profit is realized by acquiring at a lower price and "
                  "disposing at a higher one.",
         ),
         Para(text=(
@@ -103,7 +103,7 @@ SECTION1 = Section(
         )),
         Define(
             term="The price-time chart",
-            text="A price-time chart is a two dimensional visualisation that "
+            text="A price-time chart is a two dimensional visualization that "
                  "plots price on the vertical axis against time on the "
                  "horizontal axis.",
         ),
@@ -127,7 +127,7 @@ SECTION1 = Section(
             term="Forecasting",
             text="Forecasting is the inferential function of technical "
                  "analysis: it interprets identified market action to infer "
-                 "potential future price behaviour, especially the start of a "
+                 "potential future price behavior, especially the start of a "
                  "new trend.",
         ),
         Para(text=(
@@ -139,7 +139,7 @@ SECTION1 = Section(
             "is a forecast, and all of it is homework worth doing before any "
             "trade."
             "\n\n"
-            "Forecasting rests on an assumption, that price behaviour repeats "
+            "Forecasting rests on an assumption, that price behavior repeats "
             "to some reasonable degree, and Section 5 tests it. For now: "
             "prices bouncing off 100 pesos four times is a fact, expecting "
             "buyers a fifth time is an opinion. **The forecast worth most is "
@@ -248,7 +248,7 @@ SECTION2 = Section(
             term="Intrinsic value",
             text="Intrinsic value is the worth of a security in light of all "
                  "its holdings, debt, earnings, dividends, income, balance "
-                 "sheet activity and cash flow.",
+                 "sheet activity, and cash flow.",
         ),
         Para(text=(
             "Comparing the two gives the pair of words most often reversed "
@@ -307,6 +307,36 @@ SECTION2 = Section(
             "already old by the time it is published. And it never gives a "
             "precise price or a precise moment to act. **None of those ratios "
             "tells you what to do at 9:31 tomorrow morning.**"
+            "\n\n"
+            "On a broader scale, fundamental data is about the economy rather "
+            "than the company. Supply and demand react to data released at "
+            "regular intervals: interest rate announcements, central bank "
+            "monetary policy, intervention. The chapter's own example is the "
+            "Swiss National Bank's decision to hold a ceiling on the value of "
+            "the franc, keeping EURCHF at or above 1.2000. That decision "
+            "created a technical demand for the euro at that exact level, and "
+            "traders acted on it, buying every time the rate approached "
+            "1.2000 with stops a reasonable distance below. The level held "
+            "for as long as the bank defended it."
+        )),
+        Fig(
+            panels=(Panel(number="1.5"),),
+            cols=1,
+            height_mm=52.0,
+            caption="A policy decision, drawn as a price level: EURCHF held "
+                    "at or above 1.2000 by the Swiss National Bank.",
+        ),
+        Para(text=(
+            "Figure 1.5 is worth more attention than its size suggests. Look "
+            "at the flat line under price from September 2011 onwards: that "
+            "is not a chart pattern, it is a central bank, and it is the one "
+            "place in this chapter where fundamental analysis and technical "
+            "analysis appear on the same picture. A fundamentalist reasons "
+            "from the policy to the level; a technician reads the level off "
+            "the chart without needing to know the policy. **Both of them "
+            "trade the same line.** The chapter stops there and does not tell "
+            "us what became of the ceiling afterwards, so neither will these "
+            "notes."
         )),
 
         Head(number="2.3", text="Information analysis"),
@@ -334,19 +364,19 @@ SECTION2 = Section(
 
         Head(number="2.4", text="Technical analysis, in six definitions"),
         Para(text=(
-            "The third approach reads the market's own behaviour. You do not "
+            "The third approach reads the market's own behavior. You do not "
             "know why the buyers came, only that they came at 250 pesos, "
             "three times."
         )),
         Define(
             term="Technical analysis",
             text="Technical analysis is the identification and forecasting of "
-                 "potential market behaviour based largely on the action and "
+                 "potential market behavior based largely on the action and "
                  "dynamics of the market itself.",
         ),
         Para(text=(
             "Six short definitions from the standard authorities are worth "
-            "memorising, because each adds something the others leave out."
+            "memorizing, because each adds something the others leave out."
         )),
         Quote(text="Technical analysis is the study of market action, "
                    "primarily through the use of charts, for the purpose of "
@@ -404,12 +434,25 @@ SECTION2 = Section(
             "it more broadly; and forecast peaks and troughs from cycle and "
             "seasonality analysis. **Count how many of those contain the word "
             "precise.**"
-            "\n\n"
+        )),
+        Para(text=(
+            "Be careful with that word, because it claims less than it looks "
+            "like it claims. **A precise entry level is not a predicted "
+            "reversal price.** It is the price at which you have decided to "
+            "act, chosen in advance so that your risk is defined. Technical "
+            "analysis cannot tell you the exact level at which the market "
+            "will turn, and any account of it that says otherwise has "
+            "contradicted Pring's line about probabilities two paragraphs "
+            "above. Precision is a property of your own order, not a "
+            "prediction about the market."
+        )),
+        Para(text=(
             "Fundamentally based timing gives undervalued stocks that could "
             "appreciate, overvalued stocks that could depreciate, and strong "
             "stocks to rotate into. All three arrive without a precise price "
             "and without a precise time."
-            "\n\n"
+        )),
+        Para(text=(
             "So the fundamentalist works from intrinsic value, wants the "
             "underlying cause of a move, focuses on which company to hold, "
             "and can say what to buy but not when. The technical analyst "
@@ -431,8 +474,9 @@ SECTION2 = Section(
         )),
         Define(
             term="OHLC",
-            text="OHLC denotes the opening, high, low and closing prices of a "
-                 "bar over any chosen interval, from one minute to one year.",
+            text="OHLC denotes the opening, high, low, and closing prices of "
+                 "a bar over any chosen interval, from one minute to one "
+                 "year.",
         ),
         Para(text=(
             "A daily bar for Globe might open at 1,800, reach 1,845, fall to "
@@ -442,7 +486,7 @@ SECTION2 = Section(
             "makes."
         )),
         SelfCheck(text=(
-            "Your classmate says a stock is undervalued and therefore he is "
+            "Your classmate says a stock is undervalued and is therefore "
             "buying it this morning. Which half of that sentence does "
             "fundamental analysis support, and which half does it not?"
         )),
@@ -470,7 +514,7 @@ SECTION3 = Section(
             term="Classical technical analysis",
             text="Classical technical analysis uses conventional bar, chart "
                  "and candlestick patterns, oscillator and overlay "
-                 "indicators, market breadth, relative strength and cycle "
+                 "indicators, market breadth, relative strength, and cycle "
                  "analysis.",
         ),
         Define(
@@ -504,7 +548,7 @@ SECTION3 = Section(
             "sentiment analysis measures what the crowd currently feels, "
             "using put to call ratios, short interest, margin debt and "
             "bullish percent readings, while behavioral analysis studies how "
-            "people react, including herd behaviour, loss aversion, "
+            "people react, including herd behavior, loss aversion, "
             "confirmation bias and the gambler's fallacy. **Read the line "
             "across the bottom of the figure.** Whichever branch you use, the "
             "output is still interpreted through filters and biases unique to "
@@ -671,7 +715,7 @@ SECTION4 = Section(
         )),
         Define(
             term="Subjectivity",
-            text="Subjectivity is the dependence of analysis on behavioural "
+            text="Subjectivity is the dependence of analysis on behavioral "
                  "traits, filters and biases unique to each analyst or "
                  "observer.",
         ),
@@ -747,7 +791,7 @@ SECTION4 = Section(
         Define(
             term="Complementary signals",
             text="Complementary signals are apparently opposing indications "
-                 "that, once their differing time horizons are recognised, "
+                 "that, once their differing time horizons are recognized, "
                  "combine into a fuller reading of the market.",
         ),
         Para(text=(
@@ -813,7 +857,7 @@ SECTION4 = Section(
             "Figure 1.17 is the hard case: an ascending triangle marked "
             "bullish, a symmetrical triangle neutral, and a complex head and "
             "shoulders bearish, all inside the same stretch of price. Figure "
-            "1.18 is the idealised case where two descending triangles and a "
+            "1.18 is the idealized case where two descending triangles and a "
             "complex head and shoulders all point the same way. Real charts "
             "look like the first more often than the second."
         )),
@@ -877,7 +921,7 @@ SECTION4 = Section(
         Define(
             term="The price filter",
             text="A price-based filter validates a breakout by requiring a "
-                 "specified absolute, relative or volatility-scaled price "
+                 "specified absolute, relative, or volatility-scaled price "
                  "excursion beyond the trigger level.",
         ),
         Define(
@@ -912,16 +956,76 @@ SECTION4 = Section(
             "been building towards."
         )),
 
-        Head(number="4.7", text="Subjectivity shrinks with practice"),
+        Head(number="4.7", text="A self test: read the chart yourself"),
+        Para(text=(
+            "The chapter now stops explaining and hands the chart over, and "
+            "so does this section. Do it properly, with a pen, before you "
+            "read on. **Everything above is an argument. This is the "
+            "evidence.**"
+        )),
+        Fig(
+            panels=(Panel(number="1.22"),),
+            cols=1,
+            height_mm=52.0,
+            caption="A plain four hourly bar chart of USDCAD, with nothing "
+                    "drawn on it.",
+        ),
+        Para(text=(
+            "Figure 1.22 is a four hourly bar chart of USDCAD with nothing "
+            "added. Without looking ahead, draw the trendlines you think mark "
+            "the trend changes on it. Take four minutes over it, and if you "
+            "can, compare with somebody else in the class before you turn to "
+            "the next figure. Their lines will not be your lines."
+        )),
+        Fig(
+            panels=(Panel(number="1.23"),),
+            cols=1,
+            height_mm=52.0,
+            caption="The same chart with the book's own trendline analysis on "
+                    "it.",
+        ),
+        Para(text=(
+            "Figure 1.23 is the same chart with the book's trendlines drawn "
+            "in. There will almost certainly be a difference in the points "
+            "chosen. **That is not a mark against you or against the book.** "
+            "The very fact that alternate trendlines can be drawn is where "
+            "subjectivity enters identification, interpretation and "
+            "forecasting, which is the claim this whole section has been "
+            "making. Figure 1.23 is not an answer key. It is one more "
+            "analyst's reading."
+            "\n\n"
+            "Now go back to Figure 1.22 and try a second pass, this time "
+            "marking any chart pattern you can name. If you cannot name any "
+            "yet, that is expected; the formations get their own treatment "
+            "later in the course, and the useful exercise for now is to mark "
+            "where price paused and where it accelerated."
+        )),
+        Fig(
+            panels=(Panel(number="1.24"),),
+            cols=1,
+            height_mm=52.0,
+            caption="The same chart with the book's chart pattern analysis on "
+                    "it.",
+        ),
+        Para(text=(
+            "Figure 1.24 gives the book's patterns: an expanding triangle "
+            "marking uncertainty, a bearish rising wedge, two bearish "
+            "downtrending channels, a bullish inverted head and shoulders, "
+            "and a bearish symmetrical triangle at a resistance zone. Were "
+            "there differences in the patterns you drew? The chapter's own "
+            "answer is the one to remember: **do not worry if there are "
+            "differences, it is merely a consequence of subjectivity.**"
+        )),
+
+        Head(number="4.8", text="Subjectivity shrinks with practice"),
         Para(text=(
             "None of this is an argument for giving up. A novice cannot see "
             "the trendlines, the patterns or the angles at first; with enough "
             "chart hours they become obvious. Subjectivity never reaches "
             "zero, but it falls a long way. **Nothing in this section can be "
-            "achieved by reading, only by looking at charts.** Draw "
-            "trendlines on the same chart as a classmate and compare. The "
-            "differences are not errors. They are the consequence of "
-            "everything above."
+            "achieved by reading, only by looking at charts.** Run the self "
+            "test again in a month and compare it against the lines you drew "
+            "today. Your lines will have changed. The chart will not have."
         )),
     ),
 )
@@ -941,7 +1045,7 @@ SECTION5 = Section(
         Head(number="5.1", text="Three assumptions"),
         Para(text=(
             "Technical analysis rests on three assumptions: that the market "
-            "discounts everything, that market behaviour tends to repeat "
+            "discounts everything, that market behavior tends to repeat "
             "itself, and that the market tends to move in trends. **Remove "
             "any one and the subject stops making sense.** This section takes "
             "them in order."
@@ -980,7 +1084,7 @@ SECTION5 = Section(
             panels=(
                 Panel(number="1.28", label="Three releases, absorbed "
                                            "gradually."),
-                Panel(number="1.29", label="The same behaviour on EURUSD."),
+                Panel(number="1.29", label="The same behavior on EURUSD."),
             ),
             cols=2,
             height_mm=54.0,
@@ -990,7 +1094,7 @@ SECTION5 = Section(
         Para(text=(
             "Figure 1.28 draws three data releases with dashed curves "
             "showing price adjusting gradually rather than instantly. Figure "
-            "1.29 is the same behaviour on a real chart: EURUSD around the "
+            "1.29 is the same behavior on a real chart: EURUSD around the "
             "non-farm payrolls release of 2 August 2013, with the range "
             "before the data, the breakout, the traders buying the news, and "
             "the early traders selling into them."
@@ -1089,7 +1193,7 @@ SECTION5 = Section(
             "the annual report on publication day would gain you nothing. The "
             "strong form kills everything, including the insider with "
             "genuinely secret information. **That escalation is the pattern "
-            "to memorise**, and the strong form is the hardest to believe, "
+            "to memorize**, and the strong form is the hardest to believe, "
             "because reality disagrees with it daily."
         )),
 
@@ -1118,7 +1222,7 @@ SECTION5 = Section(
         ),
         Para(text=(
             "Figure 1.30 lays out what would follow if either theory held "
-            "completely: no technical, fundamental or behavioural analysis, "
+            "completely: no technical, fundamental or behavioral analysis, "
             "no active investing, and nobody beating the market. Notice that "
             "**random walk and EMH are not the same claim**. Under EMH prices "
             "do adjust, just instantly. Under random walk prices do not "
@@ -1155,7 +1259,7 @@ SECTION5 = Section(
             "Figure 1.31 shows accumulation curving up ahead of each bullish "
             "release and distribution curving down ahead of the bearish one, "
             "in every case before the announcement. Figure 1.32 shows the "
-            "other half: herd behaviour carrying price past the level it "
+            "other half: herd behavior carrying price past the level it "
             "should have settled at, then inefficient discounting pulling it "
             "back."
             "\n\n"
@@ -1167,14 +1271,14 @@ SECTION5 = Section(
             "its participants."
         )),
 
-        Head(number="5.7", text="Assumption two: behaviour repeats"),
+        Head(number="5.7", text="Assumption two: behavior repeats"),
         Para(text=(
             "The second assumption is that past price and chart patterns "
             "give a reasonable basis for forecasting. The reason is human "
             "psychology, which changes very slowly. Fear, greed, hope, anger "
             "and regret do not get software updates. **Patterns repeat "
             "because people repeat.** Nor is this peculiar to technical "
-            "analysis: accounting, regression and behavioural finance all "
+            "analysis: accounting, regression and behavioral finance all "
             "forecast from past data."
         )),
         Fig(
@@ -1193,7 +1297,7 @@ SECTION5 = Section(
             "on a four-hourly USDCAD bar chart, with the correction that "
             "followed each. Figure 1.26 overlays the same chart with a "
             "converging channel and a lattice of symmetry lines, offered as "
-            "visual evidence of the semi-random nature of price behaviour."
+            "visual evidence of the semi-random nature of price behavior."
             "\n\n"
             "Three things erode repeatability. Preempting, where traders "
             "outbid each other ahead of the trigger, which is stage four of "
@@ -1231,15 +1335,15 @@ SECTION5 = Section(
         )),
         Define(
             term="Applied assumption one: persistence",
-            text="Price behaviour is expected to persist until there is "
+            text="Price behavior is expected to persist until there is "
                  "evidence to the contrary. Persistence is the assumed status "
                  "quo.",
         ),
         Define(
             term="Applied assumption two: equal and opposite",
-            text="For every bullish indication or interpretation there exists "
+            text="For every bullish indication or interpretation, there exists "
                  "an equal and opposite bearish indication or interpretation "
-                 "for the same price behaviour.",
+                 "for the same price behavior.",
         ),
         Define(
             term="Applied assumption three: extremes invert",
@@ -1472,8 +1576,8 @@ NOTES = LectureNotes(
         "Identify the different forms of chart analysis.",
         "Describe the objectives of technical analysis.",
         "Understand what subjectivity means in technical analysis.",
-        "Recognise the strengths and weaknesses of technical analysis.",
-        "Categorise market participants by style and time in markets.",
+        "Recognize the strengths and weaknesses of technical analysis.",
+        "Categorize market participants by style and time in markets.",
         "Identify the various styles and approaches in technical analysis.",
     ),
     sections=(SECTION1, SECTION2, SECTION3, SECTION4, SECTION5, SECTION6),

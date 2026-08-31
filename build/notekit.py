@@ -21,7 +21,7 @@ own pagination will happily split a table or strand a heading at the foot of a
 sheet. Doing it in the document buys a real running footer, blocks that are
 never split, and headings that are always followed by their content.
 
-``paginator_js`` is shared with lecturekit, so it carries three behaviours the
+``paginator_js`` is shared with lecturekit, so it carries three behaviors the
 teaching plan deliberately does not use: floated blocks, sections that flow on
 rather than opening a fresh sheet, and paragraphs that split between sentences.
 All three are opt-in through attributes the plan never sets.
@@ -538,7 +538,7 @@ def _cover(n: Notes, deck: "DeckFacts") -> str:
     return f"""
 <div class="blk cover full">
   <span class="cov-code">{html.escape(n.code)}  {html.escape(n.course)}</span>
-  <h1 class="cov-title">{html.escape(n.chapter)} teaching notes</h1>
+  <h1 class="cov-title">{html.escape(n.chapter)} teaching plan</h1>
   <p class="cov-sub">{html.escape(n.title)}</p>
   <div class="cov-facts">
     <span><b>{deck.total_slides}</b> slides</span>
@@ -771,7 +771,7 @@ table.ladder tr:last-child th, table.ladder tr:last-child td {{
 }}
 .fbody {{ flex: 1 1 auto; min-width: 0; }}
 .ftitle {{ display: block; font-weight: 700; margin-bottom: 1.4mm; }}
-/* Degani rule 15: black over yellow. The one field colour under body text. */
+/* Degani rule 15: black over yellow. The one field color under body text. */
 .flag-trap {{ background: {GOLD}; padding: 2.2mm 2.6mm; border-radius: 1mm; }}
 .flag-trap .flabel {{ background: {INK}; color: {GOLD}; }}
 .flag-rule {{
@@ -863,7 +863,7 @@ table.tbl tr.rule-row td {{ border-top: 1pt solid {GREEN}; font-weight: 700; }}
 
 
 def paginator_js(body_h_mm: float) -> str:
-    """The in-page paginator, parameterised by the sheet's body height.
+    """The in-page paginator, parameterized by the sheet's body height.
 
     Shared with build/lecturekit.py, which lays out the student lecture notes
     on the same machinery with a different page geometry. Keep it here: there

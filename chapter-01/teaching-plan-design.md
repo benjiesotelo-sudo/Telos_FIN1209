@@ -427,7 +427,7 @@ breaks, so re-render and look at the pages again if you do that.
 
 ### Keyed to the deck
 
-The deck has 209 numbered slides and a progress marker on every one. The notes
+The deck has 218 numbered slides and a progress marker on every one. The notes
 had no slide numbers at all, so matching a page to the screen meant reading a
 paragraph and recognising a phrase.
 

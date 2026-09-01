@@ -130,6 +130,24 @@ looked perfect. `chapter-01/teaching-plan-design.md` and
 `chapter-01/lecture-notes-design.md` record the research each design came
 from, with sources.
 
+## A run plan has to exist on the part pages
+
+The teaching plan has five run plans, and the instructor reads one of them
+while standing in a room. **A plan that appears only in the summary table and
+on its own two pages is invisible where it is used.** The sixteen part pages
+are the working document.
+
+Two things carry a plan onto them, and both are in `build/plan_chapter01.py`:
+the `keep` label on every `FigureRef`, which names the first plan that drops
+that picture, and the `plan=` row on every `Ladder`, which says what comes off
+in that part. `Notes.plan_row` names the plan those rows are written for.
+
+The rule underneath: **`OFF AT` and `cut at` always name the first plan that
+drops the item, and every shorter plan drops it too.** An audit found the plan
+had a 180 minute column in its table while every cut marker still said "cut at
+Long", so reading a part page told the instructor to run 31 minutes of material
+in a 25 minute box.
+
 ## A check must be answerable from the slides alone
 
 The student edition carries no speaker notes, so a fact that lives only in a

@@ -13,7 +13,7 @@ different people:
 |---|---|---|---|
 | `FIN1209-Chapter-01.pptx` | The room | The committed deck, teaching edition. Placeholders where the book's figures go; our own nine charts are really in it. | `build/content_chapter01.py` |
 | `FIN1209-Chapter-01-Student-Edition.pptx` | The students | 177 slides. The same deck with the checks, the reveals and the speaker cues removed. | `build/content_chapter01.py` |
-| `FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | 27 pages. Timing, cut tiers, what to say, which check comes next. | `build/plan_chapter01.py` |
+| `FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | 26 pages. Timing, cut tiers, what to say, which check comes next. | `build/plan_chapter01.py` |
 | `FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | 29 pages. What the lesson covered, in prose, with the figures and the charts. | `build/lecture_chapter01.py` |
 | `in-class-checks.md` | The instructor | The answer sheet. | `build/content_chapter01.py` |
 | `check-answerability-audit.md` | The instructor | Whether every check item can be answered from the slides alone. | Written by hand |
@@ -110,11 +110,11 @@ own charts, and unlike the book's figures those are in the committed build.
 .venv/bin/python build/build_plan.py
 ```
 
-27 A4 pages: a one-page run card, the standing instructions, what the
+26 A4 pages: a one-page run card, the standing instructions, what the
 department examines, the five run plans with a mark-the-deck table, one page
 per part keyed to the deck's own slide numbers, and the review crib. The five
 plans are Full at 210 minutes, Discussion at 180, Long at 163, Standard at 111
-and Short at 81; `check-answerability-audit.md` records which slide answers
+and Short at 81, all of them content time with the openers' five minutes on top; `check-answerability-audit.md` records which slide answers
 each of the 50 check items.
 
 The plan never contains a typed slide number. It names slides by key
@@ -135,7 +135,7 @@ placeholder build looked perfect.
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
 $DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 29)
 $DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 29)
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 27)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 26)
 ```
 
 ## Two builds of everything, and why

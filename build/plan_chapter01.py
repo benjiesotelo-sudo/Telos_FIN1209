@@ -123,12 +123,10 @@ HOW_TO_RUN = Sheet(
             cue="Which deck",
             text=(
                 "Teach from the locally built deck with the artwork in it, "
-                "not the committed one, which carries placeholders where the 35 "
-                "figures go. The nine charts in Part 1 are the exception: "
-                "those are ours, so they are already in both committed decks "
-                "and need no special build. `README.md` here has both build "
-                "commands, and "
-                "`in-class-checks.md` has every question in full."
+                "not the committed one, which carries placeholders where the "
+                "35 figures go. The nine Part 1 charts are ours, so they are "
+                "in both committed decks already. `README.md` here has both "
+                "build commands and `in-class-checks.md` every question."
             ),
         ),
         Prose(
@@ -197,8 +195,8 @@ HOW_TO_RUN = Sheet(
             ),
         ),
         Heading(cue="", text="Running a figure slide",
-                sub="35 of them, and 16 are in Part 4 alone. The nine charts "
-                    "in Part 1 are run exactly the same way."),
+                sub="35 of them, 16 in Part 4 alone, plus the nine Part 1 "
+                    "charts, which run the same way."),
         Prose(
             cue="Every figure",
             text=(
@@ -419,6 +417,34 @@ RUN_PLANS = Sheet(
                  "slides. Charts C, F, G, H and I stay, because they are not "
                  "redraws of the slide before them.",
         ),
+        Prose(
+            cue="The 21 figures",
+            text=(
+                "The figures are what took this deck from 170 minutes to 205, "
+                "so they are the cheapest 21 minutes in the chapter to hand "
+                "back, and they are the bulk of this plan's 30. Fourteen of "
+                "the 35 survive. **Charts A, B, D and E go with them** "
+                "(s{s:chart:A}, s{s:chart:B}, s{s:chart:D}, s{s:chart:E}), "
+                "because each redraws the term slide immediately before it, "
+                "and they are two minutes more. Charts C, F, G, H and I stay: "
+                "Chart C is Core, and F to I come off at Standard."
+            ),
+        ),
+        Table(
+            cue="Figures",
+            headers=("", "Figures"),
+            compact=False,
+            rows=(
+                ("Skip these 21",
+                 "1.1, 1.2, 1.3, 1.4, 1.6, 1.7, 1.8, 1.16, 1.18, 1.19, 1.21, "
+                 "1.25, 1.26, 1.27, 1.29, 1.30, 1.31, 1.32, 1.33, 1.34, 1.35"),
+                ("Keep these 14",
+                 "**1.9 through 1.15 as one unbroken sequence** "
+                 "(slides {s:fig:1.9} to {s:fig:1.15}), plus 1.17, 1.20 and "
+                 "1.28, plus **1.5** and the exercise set **1.22, 1.23, "
+                 "1.24**, which are not redraws of anything"),
+            ),
+        ),
         Flag(
             kind="fold",
             cue="Say these anyway",
@@ -439,54 +465,56 @@ RUN_PLANS = Sheet(
             ),
         ),
         Prose(
-            cue="Honest note",
+            cue="Where the 30 comes from",
             text=(
                 "**180 does not land on a tier, so this plan is built rather "
-                "than chosen.** The two plans that use a single marker are "
-                "Full minus the redraws, which is 185, and Full minus the "
-                "Enrichment, which is 188. Neither is 180. Dropping both "
-                "together is what makes the number, and it is the cheapest 30 "
-                "minutes in the chapter: every slide that leaves either "
-                "redraws one you kept or is marked as depending on nothing "
-                "downstream. **If the session runs long, do not start cutting "
-                "Part 4.** Take the time out of Part 2, which has the most "
-                "Reinforcement left standing at this length."
+                "than chosen, and here is the arithmetic in full.** The 21 "
+                "redraw figures are 21 minutes, priced at the one minute each "
+                "the Long plan has always priced them at. Charts A, B, D and E "
+                "are two more, at the thirty seconds each the Part 1 page "
+                "prices them at. The five Enrichment slides are the remaining "
+                "seven. That is 30, and 210 minus 30 is 180.\n\n"
+                "**The check on it is the column above, not this paragraph.** "
+                "The per-part figures are derived part by part from the same "
+                "two rules, and they sum: 25 + 29 + 25 + 46 + 30 + 25 = 180. "
+                "If a number here and a number there ever disagree, the "
+                "per-part column is the one to trust."
+            ),
+        ),
+        Prose(
+            cue="Content time",
+            text=(
+                "**180 is content time, not session time.** Like every plan in "
+                "this document, the number is the sum of the six parts and "
+                "excludes the seven opener and closer slides, which are five "
+                "minutes in every plan. **Discussion is 185 minutes in the "
+                "room**, before attendance and setup.\n\n"
+                "If you have a hard 180, take the five out of Part 2: drop the "
+                "ratios slide s{s:slide:How a fundamentalist turns accounts into a number} "
+                "and the two approach terms s{s:term:The top-down approach} "
+                "and s{s:term:The bottom-up approach}, which is three minutes "
+                "and both carry a fold sentence in the tables below; then fold "
+                "s{s:slide:Five ways to own gold} into "
+                "s{s:term:Derivative} in one sentence for the last two. "
+                "**Do not take it out of Part 4.**"
             ),
         ),
 
         Heading(cue="163 min", text="Long",
-                sub="Drop every Enrichment block, plus every figure or chart "
-                    "that only redraws a slide you have already taught."),
+                sub="Everything Discussion drops, plus the Reinforcement "
+                    "slides marked Long in the two tables at the end of this "
+                    "section. Charts F to I survive; they go at Standard."),
         Prose(
-            cue="Why figures",
+            cue="What Long costs",
             text=(
-                "The figures are what took this deck from 170 minutes to 205, "
-                "so they are the cheapest 21 minutes in the chapter to hand "
-                "back. Fourteen of the 35 survive. The slides that come off "
-                "are in the table at the end of this section.\n\n"
-                "The nine charts in Part 1 are the other five minutes, and "
-                "they cut on the same rule. **Charts A, B, D and E come off "
-                "here** (s{s:chart:A}, s{s:chart:B}, s{s:chart:D}, "
-                "s{s:chart:E}), "
-                "because each redraws the term slide immediately before it. "
-                "Charts F to I survive Long and come off at Standard. Chart C "
-                "is Core and never comes off: it is the only place the price "
-                "axis and the time axis are actually drawn."
-            ),
-        ),
-        Table(
-            cue="Figures",
-            headers=("", "Figures"),
-            compact=False,
-            rows=(
-                ("Skip these 21",
-                 "1.1, 1.2, 1.3, 1.4, 1.6, 1.7, 1.8, 1.16, 1.18, 1.19, 1.21, "
-                 "1.25, 1.26, 1.27, 1.29, 1.30, 1.31, 1.32, 1.33, 1.34, 1.35"),
-                ("Keep these 14",
-                 "**1.9 through 1.15 as one unbroken sequence** "
-                 "(slides {s:fig:1.9} to {s:fig:1.15}), plus 1.17, 1.20 and "
-                 "1.28, plus **1.5** and the exercise set **1.22, 1.23, "
-                 "1.24**, which are not redraws of anything"),
+                "Long is Discussion minus the Reinforcement prose: the ratios "
+                "slide, top-down and bottom-up, the advantages continued "
+                "slide, the three filter terms, the four applied assumption "
+                "terms, the cast of a market, and five ways to own gold. That "
+                "is the 17 minutes between 180 and 163, and every one of them "
+                "is a row marked Long in the two tables below. **The figures "
+                "and Charts A, B, D and E have already gone at Discussion**; "
+                "Long does not cut them a second time."
             ),
         ),
         Prose(cue="Checks", text="All 25. No exceptions. All seven objectives, fully covered."),
@@ -505,11 +533,11 @@ RUN_PLANS = Sheet(
         Prose(
             cue="Skip",
             text=(
-                "The same 21 figures as Long, plus every Reinforcement and "
-                "Enrichment slide, which takes out the last four charts, "
-                "s{s:chart:F} to s{s:chart:I}. Only Chart C stays. The table "
-                "below is the whole list for both plans, in deck order, so "
-                "you can mark the deck once."
+                "Everything Discussion and Long drop, plus every remaining "
+                "Reinforcement slide, which takes out the last four charts, "
+                "s{s:chart:F} to s{s:chart:I}. Only Chart C stays. The two "
+                "tables below are the whole list, in deck order, so you can "
+                "mark the deck once for whichever plan you are running."
             ),
         ),
         Flag(
@@ -618,14 +646,17 @@ RUN_PLANS = Sheet(
         ),
         Heading(
             cue="Mark the deck",
-            text="What comes off at Long and at Standard",
+            text="What comes off, and at which plan",
             sub="Every slide that leaves the deck, in deck order, with the "
                 "sentence to say when one is folded rather than dropped. "
-                "Standard removes everything in these two tables; Long "
-                "removes only the rows marked Long; Discussion removes only "
-                "the Enrichment among them, which is named on the Discussion "
-                "page. They are split at the Part 2 boundary because one table "
-                "no longer fits a page.",
+                "**The OFF AT column names the first plan that drops the row, "
+                "and every shorter plan drops it too.** Discussion drops the "
+                "rows marked Discussion; Long drops those and the rows marked "
+                "Long; Standard drops everything in both tables. The 21 redraw "
+                "figures are not listed here because they come off as a block "
+                "at Discussion; they are listed in the Long section above. The "
+                "two tables split at the Part 2 boundary because one no longer "
+                "fits a page.",
         ),
         Table(
             cue="Parts 1 and 2",
@@ -634,15 +665,15 @@ RUN_PLANS = Sheet(
             compact=False,
             rows=(
                 ("{s:slide:What the survival instinct contains}",
-                 "What the survival instinct contains", "**Long**",
+                 "What the survival instinct contains", "**Discussion**",
                  "The herd line, off s{s:slide:Markets run on three instincts}, "
                  "because Part 5 closes that loop."),
                 ("{s:chart:A}, {s:chart:B}",
                  "Charts A and B, the companions to price and to buy low, "
-                 "sell high", "**Long**", ""),
+                 "sell high", "**Discussion**", ""),
                 ("{s:chart:D}, {s:chart:E}",
                  "Charts D and E, the companions to identification and "
-                 "forecasting", "**Long**", ""),
+                 "forecasting", "**Discussion**", ""),
                 ("{s:slide:What identification hands you before you risk a peso}",
                  "What identification hands you before you risk a peso",
                  "Standard", ""),
@@ -667,19 +698,20 @@ RUN_PLANS = Sheet(
                  "A central bank can put a technical level on a chart by "
                  "policy. Nothing downstream needs it."),
                 ("{s:quote:2:2}", "Edwards and Magee, recorded history and the "
-                 "word probable", "**Long**", ""),
+                 "word probable", "**Discussion**", ""),
                 ("{s:quote:2:4}", "Pring, the art of catching a reversal early",
                  "Standard",
                  "Say the takeaway aloud, or check 7 loses its second question."),
                 ("{s:quote:2:6}", "Pring, people continue to make the same "
-                 "mistakes", "**Long**",
+                 "mistakes", "**Discussion**",
                  "Part 5 says it again on "
                  "s{s:slide:Assumption two: behavior repeats}."),
                 ("{s:slide:What technically based timing gives you, continued}",
                  "What technically based timing gives you, continued",
-                 "**Long**", ""),
+                 "**Discussion**", ""),
             ),
-            note="Twelve rows, five of which cost you nothing but the slide.",
+            note="Twelve rows: six come off at Discussion, two more at "
+                 "Long, four at Standard.",
         ),
         Table(
             cue="Parts 3 to 6",
@@ -704,7 +736,7 @@ RUN_PLANS = Sheet(
                  "s{s:slide:Four assumptions you apply at the chart} as a set. "
                  "Check 22 still works."),
                 ("{s:slide:Where technical analysis works best}",
-                 "Where technical analysis works best", "**Long**", ""),
+                 "Where technical analysis works best", "**Discussion**", ""),
                 ("{s:slide:The cast of a market}", "The cast of a market",
                  "**Long**", ""),
                 ("{s:slide:Five ways to own gold}", "Five ways to own gold",
@@ -712,9 +744,9 @@ RUN_PLANS = Sheet(
                  "A gold backed exchange traded fund is a derivative, because "
                  "check 25 asks for exactly that."),
             ),
-            note="Seven rows. Nineteen in the two tables together, nine of "
-                 "which cost you nothing but the slide. Short cuts on top of "
-                 "all of it.",
+            note="Seven rows: one comes off at Discussion, four more at "
+                 "Long, two at Standard. Nineteen rows across the two tables, "
+                 "and Short cuts on top of all of it.",
         ),
     ),
 )
@@ -738,12 +770,12 @@ PART1 = Part(
     close_line=("You cannot profit from something that never moves. Leave the "
                 "four-verb square on the board."),
     figures=(
-        FigureRef("1.1", "cut at Long"),
-        FigureRef("A", "cut at Long", kind="chart"),
-        FigureRef("B", "cut at Long", kind="chart"),
+        FigureRef("1.1", "cut at Discussion"),
+        FigureRef("A", "cut at Discussion", kind="chart"),
+        FigureRef("B", "cut at Discussion", kind="chart"),
         FigureRef("C", "every plan", kind="chart"),
-        FigureRef("D", "cut at Long", kind="chart"),
-        FigureRef("E", "cut at Long", kind="chart"),
+        FigureRef("D", "cut at Discussion", kind="chart"),
+        FigureRef("E", "cut at Discussion", kind="chart"),
         FigureRef("F", "cut at Standard", kind="chart"),
         FigureRef("G", "cut at Standard", kind="chart"),
         FigureRef("H", "cut at Standard", kind="chart"),
@@ -760,13 +792,19 @@ PART1 = Part(
               "exercise, which is why the price-time chart survives even at 80 "
               "minutes, and with it Chart C, s{s:chart:C}, which is the only "
               "place in the chapter the two axes are ever actually drawn."),
+        plan=("Comes off: Figure 1.1, s{s:fig:1.1}, Charts A, B, D and E "
+              "(s{s:chart:A}, s{s:chart:B}, s{s:chart:D}, s{s:chart:E}), and "
+              "the survival instinct slide "
+              "s{s:slide:What the survival instinct contains}. **Everything "
+              "else stays**, including Chart C and all four verb charts "
+              "s{s:chart:F} to s{s:chart:I}. 31 minutes becomes 25."),
         reinforcement=("What identification hands you before you risk a peso, "
                        "s{s:slide:What identification hands you before you risk a peso}, "
                        "which is the Identification slide told a second time. "
                        "Figure 1.1, s{s:fig:1.1}, which redraws the four "
                        "scenarios. Then the eight remaining charts, the only "
                        "block in this part that can be cut whole: Charts A, "
-                       "B, D and E go at Long (s{s:chart:A}, s{s:chart:B}, "
+                       "B, D and E go at Discussion (s{s:chart:A}, s{s:chart:B}, "
                        "s{s:chart:D}, s{s:chart:E}), and Charts F to I go at "
                        "Standard (s{s:chart:F} to s{s:chart:I}). Each costs "
                        "about thirty seconds, so all nine together are five "
@@ -944,9 +982,9 @@ PART2 = Part(
                "to the same question."),
     close_line=("The fundamentalist is cause, company, value. The technical "
                 "analyst is effect, price, timing. Most professionals use both."),
-    figures=(FigureRef("1.2", "cut at Long"),
-             FigureRef("1.3", "cut at Long"),
-             FigureRef("1.4", "cut at Long"),
+    figures=(FigureRef("1.2", "cut at Discussion"),
+             FigureRef("1.3", "cut at Discussion"),
+             FigureRef("1.4", "cut at Discussion"),
              FigureRef("1.5", "cut at Standard")),
     ladder=Ladder(
         core=("Three approaches, one question. Fundamental analysis. Intrinsic "
@@ -962,6 +1000,12 @@ PART2 = Part(
               "items 3, 4, 5, 6 and 7 on this material, more than any other "
               "part gets**, which is why Part 2 loses the least between Long "
               "and Standard of any part in the chapter."),
+        plan=("Comes off: Figures 1.2, 1.3 and 1.4 (s{s:fig:1.2}, "
+              "s{s:fig:1.3}, s{s:fig:1.4}), the two Enrichment quotes "
+              "s{s:quote:2:2} and s{s:quote:2:6}, and "
+              "s{s:slide:What technically based timing gives you, continued}. "
+              "**The ratios slide and the two approach terms stay**, which "
+              "Long drops. 35 minutes becomes 29."),
         reinforcement=("Figure 1.2, s{s:fig:1.2}. Figures 1.3 and 1.4, "
                        "s{s:fig:1.3} and s{s:fig:1.4}. The top-down approach "
                        "and the bottom-up approach, s{s:term:The top-down approach} "
@@ -1170,9 +1214,9 @@ PART3 = Part(
     close_line=("The crowd destroys the edge it created, and once everyone "
                 "abandons it, the edge comes back. Part 5 answers the other two "
                 "objections."),
-    figures=(FigureRef("1.6", "cut at Long"),
-             FigureRef("1.7", "cut at Long"),
-             FigureRef("1.8", "cut at Long")),
+    figures=(FigureRef("1.6", "cut at Discussion"),
+             FigureRef("1.7", "cut at Discussion"),
+             FigureRef("1.8", "cut at Discussion")),
     ladder=Ladder(
         core=("Four branches, one subject, and all four branch terms, because "
               "booklet objective 2 is naming the forms of chart analysis. Two "
@@ -1186,6 +1230,10 @@ PART3 = Part(
               "set and names limit entry orders, and item 10 is random walk, "
               "which the room meets on the three objections slide. Objectives 5 "
               "and 7 both live here."),
+        plan=("Comes off: Figures 1.6, 1.7 and 1.8 only (s{s:fig:1.6}, "
+              "s{s:fig:1.7}, s{s:fig:1.8}). Part 3 has no Enrichment, so "
+              "nothing else moves. **The advantages continued slide stays**, "
+              "which Long drops. 28 minutes becomes 25."),
         reinforcement=("Figure 1.6, s{s:fig:1.6}. Figure 1.7, s{s:fig:1.7}. "
                        "Figure 1.8, s{s:fig:1.8}. What technical analysis is "
                        "genuinely good at, continued, "
@@ -1317,12 +1365,12 @@ PART4 = Part(
              FigureRef("1.13", "keep, all plans"),
              FigureRef("1.14", "keep, all plans"),
              FigureRef("1.15", "keep, all plans"),
-             FigureRef("1.16", "cut at Long"),
+             FigureRef("1.16", "cut at Discussion"),
              FigureRef("1.17", "keep to Standard"),
-             FigureRef("1.18", "cut at Long"),
-             FigureRef("1.19", "cut at Long"),
+             FigureRef("1.18", "cut at Discussion"),
+             FigureRef("1.19", "cut at Discussion"),
              FigureRef("1.20", "keep to Standard"),
-             FigureRef("1.21", "cut at Long"),
+             FigureRef("1.21", "cut at Discussion"),
              FigureRef("1.22", "keep, all plans"),
              FigureRef("1.23", "keep, all plans"),
              FigureRef("1.24", "keep, all plans")),
@@ -1338,6 +1386,12 @@ PART4 = Part(
               "Figures 1.22 to 1.24, in every plan**, because it is objective "
               "4 done rather than said and it is Homework 1 rehearsed. "
               "Subjectivity shrinks with practice."),
+        plan=("Comes off: Figures 1.16, 1.18, 1.19 and 1.21 only "
+              "(s{s:fig:1.16}, s{s:fig:1.18}, s{s:fig:1.19}, s{s:fig:1.21}). "
+              "**Nothing else in Part 4 moves.** The sequence 1.9 to 1.15 runs "
+              "whole, the three filter term slides stay, and the self test "
+              "keeps its four minutes of drawing and its peer compare. 50 "
+              "minutes becomes 46, the largest share of the 180."),
         reinforcement=("Figure 1.16, s{s:fig:1.16}. Figure 1.18, "
                        "s{s:fig:1.18}. Figure 1.19, s{s:fig:1.19}. Figure "
                        "1.21, s{s:fig:1.21}. The price, time and algorithmic "
@@ -1577,13 +1631,13 @@ PART5 = Part(
     close_line=("An indicator that is badly designed will still become reliable "
                 "if enough capital follows it. That closes the Part 3 loop."),
     figures=(FigureRef("1.28", "keep to Standard"),
-             FigureRef("1.29", "cut at Long"),
-             FigureRef("1.27", "cut at Long"),
-             FigureRef("1.30", "cut at Long"),
-             FigureRef("1.31", "cut at Long"),
-             FigureRef("1.32", "cut at Long"),
-             FigureRef("1.25", "cut first"),
-             FigureRef("1.26", "cut first")),
+             FigureRef("1.29", "cut at Discussion"),
+             FigureRef("1.27", "cut at Discussion"),
+             FigureRef("1.30", "cut at Discussion"),
+             FigureRef("1.31", "cut at Discussion"),
+             FigureRef("1.32", "cut at Discussion"),
+             FigureRef("1.25", "cut at Discussion"),
+             FigureRef("1.26", "cut at Discussion")),
     ladder=Ladder(
         core=("Three assumptions hold the subject up. Market discounting. What "
               "the market can and cannot discount. What the market is really "
@@ -1599,6 +1653,12 @@ PART5 = Part(
               "item 10 is random walk, review questions 2, 5 and 6 all live "
               "here, and review question 1 needs the erosion slide for the "
               "shocks and algorithmic trading half of its answer."),
+        plan=("Comes off: Figures 1.25, 1.26, 1.27, 1.29, 1.30, 1.31 and "
+              "1.32, and s{s:slide:Where technical analysis works best}. "
+              "**The four applied assumption term slides stay**, which Long "
+              "drops, and so does "
+              "s{s:slide:Price is not the same as value}. 38 minutes becomes "
+              "30."),
         reinforcement=("Figure 1.27, s{s:fig:1.27}. Figure 1.29, "
                        "s{s:fig:1.29}. Figure 1.30, s{s:fig:1.30}. Figures "
                        "1.31 and 1.32, s{s:fig:1.31} and s{s:fig:1.32}. Price "
@@ -1609,11 +1669,12 @@ PART5 = Part(
                        "s{s:term:Applied assumption four: significance is attributed}, "
                        "which restate the four numbered lines on the summary "
                        "slide one at a time."),
-        enrichment=("Figures 1.25 and 1.26, s{s:fig:1.25} and s{s:fig:1.26}, "
-                    "the angular symmetries and the ordered structure of price. "
-                    "Where technical analysis works best, "
-                    "s{s:slide:Where technical analysis works best}. **These two "
-                    "are the first things to leave the chapter.**"),
+        enrichment=("Where technical analysis works best, "
+                    "s{s:slide:Where technical analysis works best}. **It is "
+                    "the first thing in this part to leave the chapter**, and "
+                    "it goes at Discussion. Figures 1.25 and 1.26 deepen "
+                    "rather than carry as well, but they are redraws, so they "
+                    "are counted with the 21 figures and not twice here."),
         fold=("Teach the applied assumptions as a set off the summary slide "
               "s{s:slide:Four assumptions you apply at the chart} and you lose "
               "four slides and no content, and check 22 still works. At Short, "
@@ -1800,9 +1861,9 @@ PART6 = Part(
                "on a number. Every price on every chart is that disagreement."),
     close_line=("One underlying, five instruments, five different risk "
                 "profiles, and only the first one needs a vault."),
-    figures=(FigureRef("1.33", "cut at Long"),
-             FigureRef("1.34", "cut at Long"),
-             FigureRef("1.35", "cut at Long")),
+    figures=(FigureRef("1.33", "cut at Discussion"),
+             FigureRef("1.34", "cut at Discussion"),
+             FigureRef("1.35", "cut at Discussion")),
     ladder=Ladder(
         core=("The four contrast pair slides that carry the eight categories: "
               "retail and institutional, speculators and investors, supply side "
@@ -1815,6 +1876,10 @@ PART6 = Part(
               "old \"Parts 1 to 3 are a complete unit\" escape hatch threw "
               "away, and it is a stated objective, so it does not get thrown "
               "away again."),
+        plan=("Comes off: Figures 1.33, 1.34 and 1.35 only (s{s:fig:1.33}, "
+              "s{s:fig:1.34}, s{s:fig:1.35}). **The cast of a market and five "
+              "ways to own gold both stay**, which Long drops. 28 minutes "
+              "becomes 25."),
         reinforcement=("Figure 1.33, s{s:fig:1.33}. Figure 1.34, "
                        "s{s:fig:1.34}. Figure 1.35, s{s:fig:1.35}. The cast of "
                        "a market, s{s:slide:The cast of a market}. Five ways to "
@@ -2026,6 +2091,7 @@ PLAN = Notes(
     presenter="Benjamin C. Sotelo, Institute of Accounts, Business and Finance, "
               "FEU Manila",
     plans=("Full", "Discussion", "Long", "Standard", "Short"),
+    plan_row=("At Discussion", "The 180 minute plan, and what it drops here"),
     front=(RUN_CARD, HOW_TO_RUN, EVIDENCE, RUN_PLANS),
     parts=(PART1, PART2, PART3, PART4, PART5, PART6),
     back=(CLOSE_OUT,),

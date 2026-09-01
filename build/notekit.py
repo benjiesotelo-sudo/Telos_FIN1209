@@ -186,13 +186,20 @@ class Bullets(Block):
 
 @dataclass
 class Ladder(Block):
-    """The Core / Reinforcement / Enrichment / Fold triage for one part.
+    """The triage for one part: Core, the chosen plan, then the cut tiers.
 
     Sits directly under the masthead because the never-cut material has to be
     the first thing found, which is Degani and Wiener's guideline (10).
+
+    ``plan`` is the row for whichever run plan the instructor is actually
+    running, and it names what comes off in this part. The other four rows are
+    a classification; this one is an instruction. A plan that exists only in
+    the summary table is a plan the instructor cannot see while teaching, and
+    the part pages are the pages held in the hand.
     """
 
     core: str = ""
+    plan: str = ""
     reinforcement: str = ""
     enrichment: str = ""
     fold: str = ""
@@ -265,7 +272,11 @@ class Notes:
     chapter: str = ""
     title: str = ""
     presenter: str = ""
-    plans: tuple[str, ...] = ()   # names of the four run plans, longest first
+    plans: tuple[str, ...] = ()   # names of the run plans, longest first
+    # Which plan this term's session runs, and the hint printed beside it on
+    # every part page. The chapter names it, because a plan chosen once at the
+    # top of the document is a plan the instructor cannot see in the room.
+    plan_row: tuple[str, str] = ("Plan", "")
     front: tuple[Sheet, ...] = ()
     parts: tuple[Part, ...] = ()
     back: tuple[Sheet, ...] = ()
@@ -448,19 +459,24 @@ def _table_html(t: Table, res: Resolver) -> str:
             f"<tbody>{''.join(body)}</tbody></table>{note}")
 
 
+# The name and the hint on the plan row come from Notes.plan_row, so the
+# ladder does not have to know which plan this term's session runs.
 _TIERS = (
     ("core", "Core", "Never cut"),
+    ("plan", "", ""),
     ("reinf", "Reinforcement", "Cut when short"),
     ("enrich", "Enrichment", "Cut first"),
     ("fold", "Fold", "Say it, do not show it"),
 )
 
 
-def _ladder_html(l: Ladder, res: Resolver) -> str:
-    values = {"core": l.core, "reinf": l.reinforcement,
+def _ladder_html(l: Ladder, res: Resolver, plan_row=("Plan", "")) -> str:
+    values = {"core": l.core, "plan": l.plan, "reinf": l.reinforcement,
               "enrich": l.enrichment, "fold": l.fold}
     rows = []
     for key, name, hint in _TIERS:
+        if key == "plan":
+            name, hint = plan_row
         text = values[key]
         if not text:
             text = "None."
@@ -789,6 +805,9 @@ table.ladder tr:last-child th, table.ladder tr:last-child td {{
   padding: 0.6mm 1.6mm; border-radius: 0.8mm;
 }}
 .tier-core {{ background: {GREEN}; color: #ffffff; }}
+/* The plan row is the one instruction among four classifications, so it is
+   the one chip that is neither green structure nor a gold marker. */
+.tier-plan {{ background: {GREEN_DEEP}; color: #ffffff; }}
 .tier-reinf {{ background: {GOLD}; color: {INK}; }}
 .tier-enrich {{ background: #ffffff; color: {MUTED}; border: 0.8pt solid {BORDER}; }}
 .tier-fold {{ background: #ffffff; color: {GREEN_DEEP}; border: 0.8pt solid {GREEN}; }}
@@ -1157,7 +1176,7 @@ def render(notes: Notes, res: Resolver, deck: DeckFacts) -> str:
 
     for p in notes.parts:
         mast = _masthead(p, res, notes.plans, deck)
-        ladder = _ladder_html(p.ladder, res)
+        ladder = _ladder_html(p.ladder, res, notes.plan_row)
         blocks = "".join(render_block(b, res) for b in p.blocks)
         foot = f"Part {p.number} of 6  |  {p.short}"
         sections.append(

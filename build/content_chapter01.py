@@ -803,29 +803,6 @@ PART2 = Section(
                 "Be fair to the fundamentalist: they answer what, we answer when.",
             ),
         ),
-        Check(
-            label="Timing, and who answers which question",
-            questions=(
-                Q(
-                    stem="Which is offered by technically based market timing but not by fundamentally based market timing?",
-                    options=("Identifying an undervalued stock",
-                             "An estimate of intrinsic value",
-                             "A precise price and time of entry",
-                             "A view on a company's debt level"),
-                    answer="C",
-                    reason="Precise entry and exit price and time is exactly what fundamental timing lacks.",
-                ),
-                Q(
-                    stem="Pick the accurate statements. I. A technical analyst is more concerned with effects than causes. II. A fundamentalist is mainly concerned with intrinsic value. III. A technical analyst usually cannot determine intrinsic value. IV. A fundamentalist can tell you the most advantageous moment to enter.",
-                    options=("Only I, II, and III are correct",
-                             "Only I and II are correct",
-                             "Only II and IV are correct",
-                             "All are correct"),
-                    answer="A",
-                    reason="Statement IV is false: the fundamentalist can tell you which company, not the best moment.",
-                ),
-            ),
-        ),
         Content(
             title="The fundamentalist, in four lines",
             lines=(
@@ -853,6 +830,29 @@ PART2 = Section(
             notes=(
                 "Put the two three word summaries side by side out loud: cause, company, value against effect, price, timing.",
                 "Say the honest professional position is that these are complements, not rivals.",
+            ),
+        ),
+        Check(
+            label="Timing, and who answers which question",
+            questions=(
+                Q(
+                    stem="Which is offered by technically based market timing but not by fundamentally based market timing?",
+                    options=("Identifying an undervalued stock",
+                             "An estimate of intrinsic value",
+                             "A precise price and time of entry",
+                             "A view on a company's debt level"),
+                    answer="C",
+                    reason="Precise entry and exit price and time is exactly what fundamental timing lacks.",
+                ),
+                Q(
+                    stem="Pick the accurate statements. I. A technical analyst is more concerned with effects than causes. II. A fundamentalist is mainly concerned with intrinsic value. III. A technical analyst usually cannot determine intrinsic value. IV. A fundamentalist can tell you the most advantageous moment to enter.",
+                    options=("Only I, II, and III are correct",
+                             "Only I and II are correct",
+                             "Only II and IV are correct",
+                             "All are correct"),
+                    answer="A",
+                    reason="Statement IV is false: the fundamentalist can tell you which company, not the best moment.",
+                ),
             ),
         ),
         Content(
@@ -2010,11 +2010,11 @@ PART5 = Section(
         ),
         Term(
             term="Random walk",
-            plain="The claim that prices move purely by chance, so nothing that happened before tells you anything.",
+            plain="The claim that prices move purely by chance, so nothing that happened before tells you anything. Its second half, that current price has no influence over future price, is the Markovian condition.",
             example="Flipping a coin every minute and plotting the running total. It will look like a chart, and it will mean nothing.",
             formal="Random walk suggests that prices move in a purely random manner, that past prices do not influence current price, and that current price does not influence future price.",
             notes=(
-                "Name the Markovian condition: current price has no influence on future price.",
+                "Point at the Markovian condition on the slide and say it is the half the exam asks about.",
                 "Say this is review question five, and the author's answer is no.",
             ),
         ),

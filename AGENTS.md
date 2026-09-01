@@ -130,6 +130,22 @@ looked perfect. `chapter-01/teaching-plan-design.md` and
 `chapter-01/lecture-notes-design.md` record the research each design came
 from, with sources.
 
+## A check must be answerable from the slides alone
+
+The student edition carries no speaker notes, so a fact that lives only in a
+cue is a fact the student never meets, and nothing in the room guarantees the
+instructor said it anyway. The same goes for the lecture notes and the book.
+**When you add or move a check item, the slide that supplies its answer has to
+come before the check**, and no build check enforces either half of that.
+
+`chapter-01/check-answerability-audit.md` is the item by item record and the
+two failures it found: a check that sat in front of the slide it examined, and
+a term the question named that only the speaker note ever said out loud. Both
+failure modes are invisible to `deckkit.validate()`.
+
+The answer key rules are enforced: no letter over 35 percent or under 15, and
+no three identical answers in a row. Those cannot regress silently.
+
 ## The closing slides are not validated
 
 `deckkit.validate()` walks `chapter.sections` only, so the `CLOSING` tuple in

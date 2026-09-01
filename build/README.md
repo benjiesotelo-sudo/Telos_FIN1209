@@ -95,13 +95,13 @@ The chapter ships two print documents from the same chapter data, for two
 different readers. Keeping them apart is the point.
 
 ```
-.venv/bin/python build/build_plan.py             # instructor, 26 pages
+.venv/bin/python build/build_plan.py             # instructor, 27 pages
 .venv/bin/python build/build_lecture_notes.py    # students, 29 pages
 ```
 
 | Output | Who it is for | What is in it |
 |---|---|---|
-| `chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | Timing, four run plans, cut tiers, speaker cues, check answers, slide numbers |
+| `chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | Timing, five run plans, cut tiers, speaker cues, check answers, slide numbers |
 | `chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | Readable prose, the figures, every term defined once, summary and review questions |
 
 Neither one carries the other's content. If a slide number or a minute count
@@ -184,7 +184,7 @@ of its own caption, and the placeholder build looked perfect throughout.
 
 ```
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 26)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 27)
 $DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 29)
 $DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 29)
 ```

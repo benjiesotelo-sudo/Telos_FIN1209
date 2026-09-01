@@ -642,6 +642,10 @@ code {{ font-family: {MONO_FONT}; font-size: 9.2pt; }}
 /* ---- the rail and the main column ------------------------------------ */
 .blk {{ display: flex; align-items: flex-start; margin-bottom: 2.6mm; }}
 .blk.full {{ display: block; }}
+/* full means span the rail as well, so the inner column has to give up its
+   fixed width too. Without this a full block only moved its cue above the
+   content and left the content itself at the main column's 120mm. */
+.blk.full .main {{ width: 100%; }}
 .rail {{
   flex: 0 0 {RAIL_MM}mm; width: {RAIL_MM}mm;
   margin-right: {GUTTER_MM}mm;

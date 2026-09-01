@@ -44,11 +44,12 @@ RUN_CARD = Sheet(
             cue="Why this exists",
             text=(
                 "The deck is 210 minutes at full length and most sessions are "
-                "not. Nobody has confirmed how long this one is, so choose a "
-                "plan now rather than discovering the problem at the 90 minute "
-                "mark. All four plans below cover the same chapter and all "
-                "seven booklet objectives. They differ in how much of it you "
-                "say out loud."
+                "not. **This session is three hours, so the plan is "
+                "Discussion, at 180.** Choose it before you open the deck "
+                "rather than discovering the problem at the 90 minute mark. "
+                "All five plans below cover the same chapter and all seven "
+                "booklet objectives. They differ in how much of it you say out "
+                "loud."
             ),
         ),
         Flag(
@@ -64,28 +65,29 @@ RUN_CARD = Sheet(
         Table(
             cue="The decision",
             title="Minutes per part, by plan",
-            headers=("Part", "Slides", "Figs", "Charts", "Full", "Long",
-                     "Standard", "Short"),
-            align=("l", "n", "n", "n", "n", "n", "n", "n"),
+            full=True,
+            compact=False,
+            headers=("Part", "Slides", "Figs", "Charts", "Full", "Disc.",
+                     "Long", "Standard", "Short"),
+            align=("l", "n", "n", "n", "n", "n", "n", "n", "n"),
             rows=(
-                ("1  Why we analyze", "34", "1", "9", "31", "25", "14", "11"),
-                ("2  Forecasting", "44", "4", "", "35", "26", "22", "15"),
-                ("3  Classifications", "27", "3", "", "28", "23", "15", "12"),
-                ("4  Subjectivity", "46", "16", "", "50", "42", "25", "20"),
-                ("5  Assumptions", "47", "8", "", "38", "26", "22", "16"),
-                ("6  Participants", "22", "3", "", "28", "21", "13", "7"),
-                ("Whole chapter", "220", "35", "9", "210", "163", "111", "81"),
-                ("Checks kept, of 25", "", "", "", "25", "25", "25", "19"),
-                ("Minutes that are checks", "", "", "", "50", "50", "50", "38"),
-                ("Minutes that are teaching", "", "", "", "160", "113", "61",
-                 "43"),
+                ("1  Why we analyze", "34", "1", "9", "31", "25", "25", "14", "11"),
+                ("2  Forecasting", "44", "4", "", "35", "29", "26", "22", "15"),
+                ("3  Classifications", "27", "3", "", "28", "25", "23", "15", "12"),
+                ("4  Subjectivity", "46", "16", "", "50", "46", "42", "25", "20"),
+                ("5  Assumptions", "47", "8", "", "38", "30", "26", "22", "16"),
+                ("6  Participants", "22", "3", "", "28", "25", "21", "13", "7"),
+                ("Whole chapter", "220", "35", "9", "210", "180", "163", "111", "81"),
+                ("Checks kept, of 25", "", "", "", "25", "25", "25", "25", "19"),
+                ("Minutes that are checks", "", "", "", "50", "50", "50", "50", "38"),
+                ("Minutes that are teaching", "", "", "", "160", "130", "113", "61", "43"),
             ),
             note=(
                 "Slide counts run from the part divider to the recap, which is "
                 "what the progress marker counts. The other seven slides are "
                 "the openers and closers: five minutes, in every plan. Figs "
-                "are the book's figures and Charts are the nine this course "
-                "drew for itself, which exist only in Part 1 so far."
+                "are the book's figures, Charts are the nine this course drew "
+                "for itself, and Disc. is Discussion, the 180 minute plan."
             ),
         ),
         Prose(
@@ -316,7 +318,7 @@ EVIDENCE = Sheet(
 
 
 RUN_PLANS = Sheet(
-    title="The four run plans in detail",
+    title="The five run plans in detail",
     kicker="Mark the deck before the session, not during it",
     footer="Run plans",
     blocks=(
@@ -364,6 +366,94 @@ RUN_PLANS = Sheet(
                 "half hours of teaching time after attendance and setup."
             ),
         ),
+        Heading(cue="180 min", text="Discussion",
+                sub="Full, minus every figure or chart that only redraws a "
+                    "slide already taught, minus every Enrichment block. "
+                    "Nothing else comes out."),
+        Prose(
+            cue="What it is for",
+            text=(
+                "**A three hour session spent discussing the slides.** It is "
+                "the plan this term's session runs on. It is built from the "
+                "markers already in this document and nothing was invented to "
+                "fill the time: take Full, hand back the 21 figures and the "
+                "four charts that only redraw a slide you have already taught, "
+                "and drop the Enrichment blocks in Parts 1, 2 and 5. That is "
+                "30 minutes and it lands exactly on 180."
+            ),
+        ),
+        Prose(
+            cue="What stays",
+            text=(
+                "**Everything Core and everything Reinforcement, and all 25 "
+                "checks.** In particular Part 4 loses nothing but four redraw "
+                "figures: the sequence 1.9 to 1.15 runs whole, and the self "
+                "test keeps its four minutes of drawing and its peer compare, "
+                "which is the step that produces the argument of the part. "
+                "Part 4 gets 46 of the 180 minutes, which is the right shape "
+                "for a session spent discussing rather than presenting."
+            ),
+        ),
+        Table(
+            cue="What comes out",
+            headers=("Part", "Redraw figures and charts", "Enrichment"),
+            align=("l", "l", "l"),
+            compact=False,
+            rows=(
+                ("1", "Figure 1.1, and Charts A, B, D and E",
+                 "What the survival instinct contains, "
+                 "s{s:slide:What the survival instinct contains}"),
+                ("2", "Figures 1.2, 1.3, 1.4",
+                 "The two quotes at s{s:quote:2:2} and s{s:quote:2:6}, and "
+                 "what technically based timing gives you, continued, "
+                 "s{s:slide:What technically based timing gives you, continued}"),
+                ("3", "Figures 1.6, 1.7, 1.8", "None. Part 3 has no Enrichment."),
+                ("4", "Figures 1.16, 1.18, 1.19, 1.21",
+                 "None. Nothing in Part 4 is decorative."),
+                ("5", "Figures 1.25, 1.26, 1.27, 1.29, 1.30, 1.31, 1.32",
+                 "Where technical analysis works best, "
+                 "s{s:slide:Where technical analysis works best}"),
+                ("6", "Figures 1.33, 1.34, 1.35", "None."),
+            ),
+            note="Twenty five redraw figures and charts, and five Enrichment "
+                 "slides. Charts C, F, G, H and I stay, because they are not "
+                 "redraws of the slide before them.",
+        ),
+        Flag(
+            kind="fold",
+            cue="Say these anyway",
+            title="Four sentences to say out loud, because the slide is gone",
+            text=(
+                "**The herd line**, off "
+                "s{s:slide:Markets run on three instincts}, because Part 5 "
+                "closes that loop.\n\n"
+                "**Edwards and Magee on recorded history and the word "
+                "probable**, and **Pring on people repeating their mistakes**, "
+                "in one sentence each on the definitions run, because Part 5 "
+                "says the second one again at "
+                "s{s:slide:Assumption two: behavior repeats}.\n\n"
+                "**Technical analysis is generally more reliable at lower "
+                "timeframes**, off the trend following slide "
+                "s{s:slide:Trend following is not free}, which is the one line "
+                "the cut Part 5 slide existed for."
+            ),
+        ),
+        Prose(
+            cue="Honest note",
+            text=(
+                "**180 does not land on a tier, so this plan is built rather "
+                "than chosen.** The two plans that use a single marker are "
+                "Full minus the redraws, which is 185, and Full minus the "
+                "Enrichment, which is 188. Neither is 180. Dropping both "
+                "together is what makes the number, and it is the cheapest 30 "
+                "minutes in the chapter: every slide that leaves either "
+                "redraws one you kept or is marked as depending on nothing "
+                "downstream. **If the session runs long, do not start cutting "
+                "Part 4.** Take the time out of Part 2, which has the most "
+                "Reinforcement left standing at this length."
+            ),
+        ),
+
         Heading(cue="163 min", text="Long",
                 sub="Drop every Enrichment block, plus every figure or chart "
                     "that only redraws a slide you have already taught."),
@@ -532,8 +622,10 @@ RUN_PLANS = Sheet(
             sub="Every slide that leaves the deck, in deck order, with the "
                 "sentence to say when one is folded rather than dropped. "
                 "Standard removes everything in these two tables; Long "
-                "removes only the rows marked Long. They are split at the "
-                "Part 2 boundary because one table no longer fits a page.",
+                "removes only the rows marked Long; Discussion removes only "
+                "the Enrichment among them, which is named on the Discussion "
+                "page. They are split at the Part 2 boundary because one table "
+                "no longer fits a page.",
         ),
         Table(
             cue="Parts 1 and 2",
@@ -636,7 +728,7 @@ PART1 = Part(
     number=1,
     title="Why anybody analyzes a market",
     short="Why we analyze",
-    minutes=(31, 25, 14, 11),
+    minutes=(31, 25, 25, 14, 11),
     terms=("The three motivational instincts, variable of change, price, the "
            "buy low sell high principle, the price-time chart, the dual "
            "function, identification, forecasting, go long, liquidate, go "
@@ -840,7 +932,7 @@ PART2 = Part(
     number=2,
     title="Three ways to forecast a price",
     short="Forecasting",
-    minutes=(35, 26, 22, 15),
+    minutes=(35, 29, 26, 22, 15),
     terms=("Fundamental analysis, intrinsic value, undervalued and overvalued, "
            "the ratios, top-down, bottom-up, CAPM in passing, information "
            "analysis, non-public material information, technical analysis, the "
@@ -1067,7 +1159,7 @@ PART3 = Part(
     number=3,
     title="Classifying technical analysis",
     short="Classifications",
-    minutes=(28, 23, 15, 12),
+    minutes=(28, 25, 23, 15, 12),
     terms=("Classical, statistical, sentiment and behavioral analysis, the mean "
            "reverting or contrarian approach, the non-mean reverting or "
            "momentum approach, limit and stop entry orders, Darvas Box and "
@@ -1206,7 +1298,7 @@ PART4 = Part(
     number=4,
     title="Subjectivity",
     short="Subjectivity",
-    minutes=(50, 42, 25, 20),
+    minutes=(50, 46, 42, 25, 20),
     terms=("Objective and subjective aspects, the three activities, "
            "subjectivity, the twofold problem, contradictory, confirmatory and "
            "complementary signals, why indicators disagree, tick volume, the "
@@ -1471,7 +1563,7 @@ PART5 = Part(
     number=5,
     title="The assumptions underneath everything",
     short="Assumptions",
-    minutes=(38, 26, 22, 16),
+    minutes=(38, 30, 26, 22, 16),
     terms=("Market discounting, what markets can and cannot discount, what "
            "markets are really discounting, EMH, instantaneous and rational, "
            "the semi-efficient market, the weak, semi-strong and strong forms, "
@@ -1698,7 +1790,7 @@ PART6 = Part(
     number=6,
     title="Who is in the market",
     short="Participants",
-    minutes=(28, 21, 13, 7),
+    minutes=(28, 25, 21, 13, 7),
     terms=("The eight categories, retail and institutional, speculator and "
            "investor, supply side and demand side, professional and novice, "
            "discretionary and nondiscretionary, participants by time in the "
@@ -1933,7 +2025,7 @@ PLAN = Notes(
     title="Introduction to the Art and Science of Technical Analysis",
     presenter="Benjamin C. Sotelo, Institute of Accounts, Business and Finance, "
               "FEU Manila",
-    plans=("Full", "Long", "Standard", "Short"),
+    plans=("Full", "Discussion", "Long", "Standard", "Short"),
     front=(RUN_CARD, HOW_TO_RUN, EVIDENCE, RUN_PLANS),
     parts=(PART1, PART2, PART3, PART4, PART5, PART6),
     back=(CLOSE_OUT,),

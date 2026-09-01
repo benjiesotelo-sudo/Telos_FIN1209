@@ -65,7 +65,7 @@ plan during class, and that the prioritised list is what lets you "make decision
 on the spot".
 
 **What this contributed.** The existing Core / Reinforcement / Enrichment / Fold
-markers and the four run plans are not an eccentricity of this course. They are
+markers and the run plans are not an eccentricity of this course. They are
 the CRLT triage step, already done, written down before the session rather than
 improvised at the 90 minute mark. That promoted them from body text to the most
 prominent element on every part page.
@@ -449,10 +449,10 @@ and figure counts from the deck rather than trusting the prose.
 
 | Pages | What | Why there |
 |---|---|---|
-| 1 | The run card: the four plans as one table, the two standing rules, the pre-flight | The triage decision, made before the deck opens (CRLT step 1) |
+| 1 | The run card: the plans as one table, the two standing rules, the pre-flight | The triage decision, made before the deck opens (CRLT step 1) |
 | 2 | Standing instructions: which deck, the three carriers, running a check, running a figure slide | Read once a semester, not during a session |
 | 3 | What the department examines: the Quiz 1 item map, Homework 1, the seven objectives, all with slide numbers | The stated basis for every cut marker |
-| 4 to 7 | The four run plans, and one mark-the-deck table | Marking the deck is a task of its own, done before the session |
+| 4 to 7 | The run plans, and one mark-the-deck table | Marking the deck is a task of its own, done before the session |
 | 8 to 22 | One part per opening, six parts | The working document, read while teaching |
 | 23 | The review question crib and the quiz preparation to mention | Read at the end of the session |
 
@@ -477,7 +477,7 @@ plan: the entry carries the value, not a pointer to it.
 
 ### What was kept from the old notes
 
-Everything that earns its place, which is nearly all of it: the four run plans
+Everything that earns its place, which is nearly all of it: the run plans
 with their skip, keep and fold lists, the Core / Reinforcement / Enrichment /
 Fold markers for all six parts, the per-part figure lists, the evidence section
 on Quiz 1, Homework 1 and the seven booklet objectives, the guidance on running a

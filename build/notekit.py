@@ -220,8 +220,26 @@ class Sheet:
 
 @dataclass
 class FigureRef:
-    number: str = ""       # the book's own figure number, "1.11"
+    """A picture in this part, and the shortest plan that still shows it.
+
+    ``kind`` decides which namespace ``number`` is in and how it is named on
+    the page. ``fig`` is one of the book's, "1.11". ``chart`` is one this
+    course drew, "C", printed as "Chart C". They are listed on separate rows
+    of the masthead because they are not the same kind of thing and a run
+    plan cuts them for different reasons.
+    """
+
+    number: str = ""       # the book's own figure number, or a chart letter
     keep: str = ""         # shortest plan that still shows it, or a note
+    kind: str = "fig"      # fig or chart
+
+    @property
+    def key(self) -> str:
+        return f"{self.kind}:{self.number}"
+
+    @property
+    def label(self) -> str:
+        return self.number if self.kind == "fig" else f"Chart {self.number}"
 
 
 @dataclass
@@ -488,15 +506,23 @@ def _masthead(p: Part, res: Resolver, plans: tuple[str, ...],
     else:
         chips = '<span class="none">none in this part</span>'
 
-    if p.figures:
-        figs = "".join(
-            f'<span class="fchip"><b>{html.escape(f.number)}</b>'
-            f'<span class="fchip-s">s{res.slide(f"fig:{f.number}")}</span>'
+    def _chips(refs) -> str:
+        if not refs:
+            return '<span class="none">none in this part</span>'
+        return "".join(
+            f'<span class="fchip"><b>{html.escape(f.label)}</b>'
+            f'<span class="fchip-s">s{res.slide(f.key)}</span>'
             f'<span class="fchip-k">{html.escape(f.keep)}</span></span>'
-            for f in p.figures
+            for f in refs
         )
-    else:
-        figs = '<span class="none">none in this part</span>'
+
+    figs = _chips([f for f in p.figures if f.kind == "fig"])
+    ours = [f for f in p.figures if f.kind == "chart"]
+    # The charts row is printed only where there are charts, so the five parts
+    # that have none do not gain an empty row saying so.
+    charts_row = (
+        f'<div class="mrow"><span class="mkey">Charts</span>'
+        f'<span class="mval">{_chips(ours)}</span></div>' if ours else "")
 
     return f"""
 <div class="blk mast full">
@@ -514,6 +540,7 @@ def _masthead(p: Part, res: Resolver, plans: tuple[str, ...],
       <span class="mval">{chips}</span></div>
     <div class="mrow"><span class="mkey">Figures</span>
       <span class="mval">{figs}</span></div>
+    {charts_row}
     <div class="mrow"><span class="mkey">Open</span>
       <span class="mval mtext">{_inline(p.open_line, res)}</span></div>
     <div class="mrow"><span class="mkey">Close</span>
@@ -544,6 +571,7 @@ def _cover(n: Notes, deck: "DeckFacts") -> str:
     <span><b>{deck.total_slides}</b> slides</span>
     <span><b>{deck.total_checks}</b> checks, {deck.total_checks * 2} items</span>
     <span><b>{deck.total_figures}</b> figures</span>
+    <span><b>{deck.total_charts}</b> charts</span>
     <span><b>6</b> parts</span>
   </div>
   <p class="cov-by">{html.escape(n.presenter)}</p>
@@ -560,6 +588,7 @@ class DeckFacts:
     total_slides: int = 0
     total_checks: int = 0
     total_figures: int = 0
+    total_charts: int = 0     # the charts this course drew for itself
     part_checks: dict = field(default_factory=dict)   # part number -> [indices]
 
     def checks_in_part(self, number: int) -> list[int]:

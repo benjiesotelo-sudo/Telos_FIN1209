@@ -86,6 +86,7 @@ def index_deck(chapter) -> tuple[dict[str, int], dict[int, str],
 
     check_index = 0
     figures = 0
+    charts = 0
     for section in chapter.sections:
         n += 1
         put(f"part:{section.number}")
@@ -106,6 +107,13 @@ def index_deck(chapter) -> tuple[dict[str, int], dict[int, str],
             if isinstance(slide, deckkit.Figure):
                 figures += 1
                 put(f"fig:{slide.number}")
+            elif isinstance(slide, deckkit.Chart):
+                # Our own charts have their own namespace in the deck, so
+                # they get their own key space here too. {s:chart:C} is the
+                # slide carrying Chart C, and it can never collide with a
+                # book figure number.
+                charts += 1
+                put(f"chart:{slide.letter}")
             elif isinstance(slide, deckkit.Term):
                 put(f"term:{slide.term}")
             elif isinstance(slide, deckkit.Quote):
@@ -129,6 +137,7 @@ def index_deck(chapter) -> tuple[dict[str, int], dict[int, str],
         total_slides=n,
         total_checks=check_index,
         total_figures=figures,
+        total_charts=charts,
         part_checks=part_checks,
     )
     return slides, answers, facts, collisions
@@ -172,7 +181,7 @@ def main() -> int:
     print(f"plan   : {args.out.relative_to(REPO)}")
     print(f"pages  : {pages}")
     print(f"deck   : {facts.total_slides} slides, {facts.total_checks} checks, "
-          f"{facts.total_figures} figures")
+          f"{facts.total_figures} figures, {facts.total_charts} charts")
     print(f"keys   : {len(slides)} slide references resolvable")
     print("look at it: every page, as an image, before you commit it.")
     return 0

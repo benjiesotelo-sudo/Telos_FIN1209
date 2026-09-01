@@ -12,10 +12,13 @@ environment; nothing goes system-wide. `.venv/` is gitignored.
 ```
 python3 -m venv .venv
 .venv/bin/pip install --upgrade pip
-.venv/bin/pip install python-pptx
+.venv/bin/pip install python-pptx matplotlib
 ```
 
-`python-pptx` 1.0.2 is what the committed deck was built with.
+`python-pptx` 1.0.2 and `matplotlib` 3.9.4 are what the committed deck was
+built with. matplotlib draws the nine charts this course owns; see **Charts**
+below for why they are generated rather than committed as images, and for the
+one consequence that has for reproducibility.
 
 ## Build
 
@@ -49,8 +52,8 @@ The same content file produces both. There is no second content module and
 nothing is deleted from the first one.
 
 ```
-.venv/bin/python build/build_chapter1.py                     # teaching, 218 slides
-.venv/bin/python build/build_chapter1.py --edition student   # student, 168 slides
+.venv/bin/python build/build_chapter1.py                     # teaching, 227 slides
+.venv/bin/python build/build_chapter1.py --edition student   # student, 177 slides
 ```
 
 | Edition | Output | Holds |
@@ -92,8 +95,8 @@ The chapter ships two print documents from the same chapter data, for two
 different readers. Keeping them apart is the point.
 
 ```
-.venv/bin/python build/build_plan.py             # instructor, 23 pages
-.venv/bin/python build/build_lecture_notes.py    # students, 26 pages
+.venv/bin/python build/build_plan.py             # instructor, 26 pages
+.venv/bin/python build/build_lecture_notes.py    # students, 29 pages
 ```
 
 | Output | Who it is for | What is in it |
@@ -153,10 +156,12 @@ an instructor turning to a part expects it at the top of a page.
 `lecturekit.validate()` refuses to write lecture notes that break theirs. The
 deck is the authority on scope, so three of the five checks are drift checks:
 
-- Every figure number must be one the deck places.
-- Every figure must be referenced from the prose, by number, in a sentence
-  that says what to look at. Captions do not count. A figure no paragraph
-  mentions is decoration.
+- Every figure number, and every chart letter, must be one the deck places.
+  The two namespaces are checked separately, so a chart can never be looked up
+  as a figure.
+- Every figure and every chart must be referenced from the prose, by name, in
+  a sentence that says what to look at. Captions do not count. A picture no
+  paragraph mentions is decoration.
 - Every term the deck teaches must be defined exactly once in the notes, and
   the notes may not define a term the deck does not teach.
 - The summary and the review questions must be present. They are not written
@@ -179,9 +184,9 @@ of its own caption, and the placeholder build looked perfect throughout.
 
 ```
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 23)
-$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 26)
-$DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 26)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf /tmp/plan $(seq 1 26)
+$DATA/pdfpng chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/ln $(seq 1 29)
+$DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 29)
 ```
 
 `chapter-01/teaching-plan-design.md` and `chapter-01/lecture-notes-design.md`
@@ -212,11 +217,56 @@ The versions with the artwork placed go outside the repository:
 The last two are what students get through Canvas.
 
 Both builds produce identical pagination either way: the same slide count for
-the edition, and the same 26 pages, because a placeholder occupies exactly the
+the edition, and the same 29 pages, because a placeholder occupies exactly the
 height its artwork would. Both builds refuse `--with-figures` aimed anywhere
 inside the repository, so the artwork cannot reach a commit by accident,
 whichever edition is being built. See `chapter-01/README.md` for the file
 naming and the full figure list.
+
+## Charts
+
+The nine charts in Part 1 are the exact opposite of the figures and none of
+the policy above applies to them. **They are ours.** They are drawn by
+`chartkit.py`, which knows nothing about any chapter, from the data in
+`charts_chapter01.py`, which carries no drawing code. Every build of the deck
+and of the lecture notes redraws all nine into `build/generated/charts/`
+before it starts, so a fresh clone produces the real slide and the real page
+rather than a placeholder, and the folder is gitignored because it is output.
+
+Three things about them are deliberate and should not be quietly undone.
+
+**They are a separate slide type.** `deckkit.Chart` is not a subclass of
+`deckkit.Figure`. A Figure is Wiley's, numbered in the book's scheme, credited
+to Wiley by a hard coded line, and absent from this repository; a Chart is
+ours, lettered, credited to us, and committed. Keeping them apart is what
+stops one being credited as the other, which the hard coded line on
+`Figure.credit` would otherwise do the first time an authored chart is placed.
+`deckkit.chart_credit()` is the single place the namespace and the credit
+wording are written, and both the deck and the lecture notes read it from
+there.
+
+**The data is invented, and every chart says so.** We hold no market data
+licence, so nothing is fetched and no price file exists. The series come from
+`chartkit.walk()` with fixed seeds. A definitional graphic makes no claim
+about markets that being real would support, and the credit line under every
+chart says the data is illustrative.
+
+**The images have to be byte reproducible**, because the committed deck
+embeds them and a deck rebuild with no content change has to leave `git
+status` clean. Two things buy that: the series use only `random.Random` and
+`uniform()`, whose stream is stable, and `savefig` is told to write no
+`Software` metadata, which otherwise stamps the matplotlib version into the
+PNG. A matplotlib upgrade will still move the bytes, exactly the way a
+python-pptx upgrade does, and the fix is the same: rebuild, look at it,
+commit the churn deliberately.
+
+Before committing a deck, confirm the only images in it are those nine:
+
+```
+unzip -o -d /tmp/media chapter-01/FIN1209-Chapter-01.pptx 'ppt/media/*'
+diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
+     <(shasum -a256 build/generated/charts/*.png | awk '{print $1}' | sort)
+```
 
 ## Smoke test
 
@@ -290,6 +340,11 @@ that looks wrong in the lecture room:
 - Every figure slide names a book figure number and says what the figure
   shows, because that line is what the placeholder prints when the artwork is
   absent and it has to stand on its own.
+- Every chart slide is lettered with one capital letter in our own namespace,
+  never a book figure number; says what it shows, which the lecture notes
+  reuse; and claims a cut tier the teaching plan recognises, so the plan's
+  ladder and the deck cannot disagree about what is safe to drop. No letter is
+  used twice.
 - No em dashes or en dashes anywhere. Plain dashes only.
 - No slide's content runs past the safe bottom of the page, computed from
   estimated text metrics, so nothing collides with the progress marker.

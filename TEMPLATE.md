@@ -1,10 +1,10 @@
 # Building the next chapter
 
-Read this before you touch anything. Chapter 1 is the template: it is 218
-slides, 25 in-class checks carrying 50 items, 49 terms and 35 figures, and it
-ships as four documents built from the same data, one of them a second edition
-of the deck. Chapter 2 is three content files and nothing else. You should not
-need to open a renderer.
+Read this before you touch anything. Chapter 1 is the template: it is 227
+slides, 25 in-class checks carrying 50 items, 49 terms, 35 book figures and 9
+charts of our own, and it ships as four documents built from the same data,
+one of them a second edition of the deck. Chapter 2 is four content files and
+nothing else. You should not need to open a renderer.
 
 The two design documents behind the print documents are
 `chapter-01/teaching-plan-design.md` and
@@ -64,12 +64,13 @@ Write these three fresh, using the Chapter 1 file beside you as the shape:
 | `build/content_chapter02.py` | `build/content_chapter01.py` | the deck, as plain data |
 | `build/plan_chapter02.py` | `build/plan_chapter01.py` | the instructor's run card, as plain data |
 | `build/lecture_chapter02.py` | `build/lecture_chapter01.py` | the students' notes, as plain data |
+| `build/charts_chapter02.py` | `build/charts_chapter01.py` | the charts this course draws, as plain data |
 
 **Never copy or edit these.** They are chapter-agnostic renderers and a change
 here changes every chapter:
 
 `build/deckkit.py`, `build/notekit.py`, `build/lecturekit.py`,
-`build/chrome.py`.
+`build/chartkit.py`, `build/chrome.py`.
 
 If a chapter seems to need a new kind of slide or block, add the dataclass and
 its renderer to the kit, not a special case to the content file. Content files
@@ -88,7 +89,7 @@ It is pure data, in this shape:
 ```
 SECTION = Section(
     number, title, short, minutes, covers=(...),
-    slides=( ...Content / Term / Quote / Figure / Check... ),
+    slides=( ...Content / Term / Quote / Figure / Chart / Check... ),
     recap=Recap(items=(...)),
 )
 
@@ -112,6 +113,14 @@ The slide types are dataclasses in `build/deckkit.py`:
   book's own figure number. `shows` is one line saying what is in the artwork;
   it is what the placeholder prints when the artwork is absent **and** what the
   lecture notes use, so it has to stand on its own.
+- `Chart(title, letter, shows, tier, notes)` - one chart this course drew.
+  Deliberately not a `Figure`: a Figure is the book's, is numbered in the
+  book's scheme, is credited to Wiley and is absent from this repository; a
+  Chart is ours, is lettered A, B, C in our own namespace, carries our own
+  credit and is generated at build time from `charts_chapterNN.py`. `tier` is
+  the cut tier the teaching plan will triage it into. A chart slide carries a
+  picture and nothing else and goes immediately after the slide it
+  illustrates; see **Charts of our own** below.
 - `Check(label, questions)` - exactly two `Question(stem, options, answer,
   reason)`. Renders as a question slide plus a reveal slide, so a check always
   costs two slides.
@@ -120,7 +129,8 @@ The slide types are dataclasses in `build/deckkit.py`:
 
 `minutes` on a `Section` is the Full-plan time minus one minute per figure in
 that part. The teaching plan's Full column is the number including the figures.
-Keep the two consistent; nothing checks it for you.
+Charts are about half a minute each. Keep the two consistent; nothing checks
+it for you.
 
 **The `CLOSING` tuple escapes validation.** `deckkit.validate()` walks
 `chapter.sections` only, so a closing slide that overflows the page builds
@@ -183,14 +193,55 @@ chapter has one of these, say so in the plan and mark it uncuttable.
 
 ---
 
+## Charts of our own
+
+Chapter 1 draws nine. They are the answer to the standing want that a term
+being explained should have a picture beside it, and they are the one part of
+the deck whose artwork is committed.
+
+**Write them as data.** `build/chartkit.py` holds the chart forms and the deck
+palette and knows nothing about any chapter; `build/charts_chapterNN.py` holds
+the series, the labels and the letters and holds no drawing code. If a chapter
+wants a shape chartkit has not got, add the form to chartkit rather than a
+special case to the chapter file.
+
+**One idea, one slide.** The term slide layout already shrinks its own text to
+fit three blocks and has no room for a picture, so a chart goes on a companion
+slide immediately after the term, never squeezed onto it.
+
+**Never write a slide that refers back to a chart that can be cut.** Charts
+are cut as a block by the shorter run plans, exactly the way a slide must
+never refer back to a check, and for the same reason.
+
+**Synthetic data only, and say so.** We hold no market data licence. Series
+come from `chartkit.walk()` with a fixed seed, offline, and the credit line
+under every chart says the data is illustrative. Where a chart uses a price
+from a worked example that names a real company, its footnote says the price
+is the example's and the path between is not.
+
+**Teach only what the textbook teaches**, which bites hardest here, because a
+chart can smuggle in a convention nobody taught. Chapter 1's charts carry no
+support or resistance levels, no OHLC bars in Part 1 (OHLC is a Part 2 term),
+and no rule for what counts as a peak or a trough. Where the chapter names a
+thing and never defines it, the chart may point at it and must not explain it.
+
+**The images have to be byte reproducible**, because the deck embeds them and
+a rebuild with no content change has to leave `git status` clean.
+`build/README.md` has the two things that buy that and the one thing that will
+still move the bytes.
+
 ## The copyright split for figures
 
 The textbook, the publisher's scans, the previous course holder's decks and
 **the book's figure artwork** are third-party copyrighted works. This
 repository is public. None of them may be committed, ever.
 
-The artwork lives in `assets/figures/`, which is gitignored and absent on a
-clean clone. One PNG per figure, named by the book's own figure number:
+None of this applies to the charts above. Those are ours, they are generated
+from committed code on every build, and they are in the committed deck and the
+committed lecture notes.
+
+The book's artwork lives in `assets/figures/`, which is gitignored and absent
+on a clean clone. One PNG per figure, named by the book's own figure number:
 
 ```
 assets/figures/figure-1-09.png    ->    Figure 1.9
@@ -299,8 +350,9 @@ past the safe bottom; an answer key outside the spread rule.
 `notekit.validate()` (the plan): a slide reference that does not resolve; em or
 en dashes; a main column measure outside 45 to 90 characters.
 
-`lecturekit.validate()` (the notes): a figure number the deck does not place; a
-figure the prose never mentions by number in a sentence saying what to look at;
+`lecturekit.validate()` (the notes): a figure number or a chart letter the deck
+does not place; a figure or chart the prose never mentions by name in a
+sentence saying what to look at;
 a term the deck teaches that the notes never define, or a term the notes define
 that the deck does not teach; a missing summary or review questions; em or en
 dashes; the same measure band.

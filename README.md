@@ -33,8 +33,14 @@ Answer keys for graded assessments are also kept out of this repository.
 
 The textbook figures are third-party copyrighted works too, so they are not committed either.
 The decks place them from `assets/figures/`, which is gitignored and absent here.
-The committed deck is the text version: every figure slide renders a placeholder carrying the figure number, what the figure shows, the credit line and the speaker cue, so the chapter stays complete and rebuildable without the artwork.
+In the committed deck every figure slide renders a placeholder carrying the figure number, what the figure shows, the credit line and the speaker cue, so the chapter stays complete and rebuildable without the artwork.
 See `chapter-01/README.md` for the command that builds each version.
+
+The charts this course draws for itself are a different matter. They are ours,
+so they are generated from code in this repository on every build and they are
+in the committed deck and the committed lecture notes with their artwork in
+place. They are lettered and credited separately from the book's figures, and
+their data is invented rather than taken from any market.
 
 ## Teaching design
 
@@ -44,3 +50,4 @@ Slides are built for a class that includes students with ADHD:
 - Every new term glossed in plain language, with a concrete example before the formal definition.
 - A visible progress marker so students always know where they are.
 - A two-question multiple choice check after every two or three new terms, with the answer revealed on the following slide.
+- Where a term is being explained, a chart of it on the slide immediately after. Chapter 1 Part 1 is the pilot: nine terms, nine charts.

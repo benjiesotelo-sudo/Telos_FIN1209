@@ -30,6 +30,10 @@ Drawing rules, taken from the deck:
     thing per chart, never two.
   * Two hairline spines, muted labels, and no grid loud enough to fight the
     line.
+  * **No title inside the image.** The slide already carries one above the
+    band and the lecture notes carry a caption below it, so a third heading
+    in the artwork said the same thing twice on the same page. The chart's
+    subject is named by whatever places it.
 
 Determinism: the .pptx build is byte reproducible and these images are
 embedded in it, so the images have to be byte reproducible too. Two things
@@ -178,11 +182,6 @@ def _dress(ax, *, ylabel="Price (PHP)", xlabel="Time", grid=True):
     ax.set_xticks([])
 
 
-def _heading(ax, text, display_font):
-    ax.set_title(text, fontsize=13, color=GREEN, loc="left",
-                 fontname=display_font, pad=9)
-
-
 def _footnote(fig, text):
     """The honest small print: what the chart does and does not claim.
 
@@ -275,7 +274,7 @@ class Reading:
     dy: float = 0.0
 
 
-def readings(path: Path, series, marks: tuple[Reading, ...], *, heading,
+def readings(path: Path, series, marks: tuple[Reading, ...], *,
              xlabel, footnote="", display_font=None) -> Path:
     """A price line with the number read off it at two or three moments.
 
@@ -284,10 +283,9 @@ def readings(path: Path, series, marks: tuple[Reading, ...], *, heading,
     """
     display_font = display_font or deckkit.DISPLAY_FONT
     fig = _new(display_font)
-    ax = fig.add_axes([0.062, 0.20, 0.918, 0.63])
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
     ax.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
     _dress(ax, xlabel=xlabel)
-    _heading(ax, heading, display_font)
     ax.set_xlim(-2, len(series) + 1)
     _headroom(ax, series, top=0.22, bottom=0.26)
 
@@ -331,7 +329,7 @@ class Leg:
     dim: bool = False
 
 
-def trade(path: Path, series, legs: tuple[Leg, ...], *, heading, xlabel,
+def trade(path: Path, series, legs: tuple[Leg, ...], *, xlabel,
           direction="", gain=None, footnote="", display_font=None) -> Path:
     """A position drawn on a price-time chart.
 
@@ -343,10 +341,9 @@ def trade(path: Path, series, legs: tuple[Leg, ...], *, heading, xlabel,
     """
     display_font = display_font or deckkit.DISPLAY_FONT
     fig = _new(display_font)
-    ax = fig.add_axes([0.062, 0.20, 0.918, 0.63])
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
     ax.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
     _dress(ax, xlabel=xlabel)
-    _heading(ax, heading, display_font)
     ax.set_xlim(-2, len(series) + 1)
     _headroom(ax, series, top=0.24, bottom=0.30)
 
@@ -387,7 +384,7 @@ def trade(path: Path, series, legs: tuple[Leg, ...], *, heading, xlabel,
     return _save(fig, path)
 
 
-def axes_lesson(path: Path, series, *, heading, price_label, time_label,
+def axes_lesson(path: Path, series, *, price_label, time_label,
                 footnote="", display_font=None) -> Path:
     """The price-time chart itself: what the two axes are.
 
@@ -396,10 +393,9 @@ def axes_lesson(path: Path, series, *, heading, price_label, time_label,
     """
     display_font = display_font or deckkit.DISPLAY_FONT
     fig = _new(display_font)
-    ax = fig.add_axes([0.105, 0.235, 0.865, 0.60])
+    ax = fig.add_axes([0.105, 0.235, 0.865, 0.68])
     ax.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
     _dress(ax, ylabel="", xlabel="")
-    _heading(ax, heading, display_font)
     ax.set_xlim(-2, len(series) + 1)
     _headroom(ax, series, top=0.14)
 
@@ -443,7 +439,7 @@ class Span:
 
 
 def record(path: Path, series, marks: tuple[Mark, ...],
-           spans: tuple[Span, ...] = (), *, heading, xlabel, footnote="",
+           spans: tuple[Span, ...] = (), *, xlabel, footnote="",
            display_font=None) -> Path:
     """The descriptive half: facts read off the record, with no opinion.
 
@@ -452,14 +448,13 @@ def record(path: Path, series, marks: tuple[Mark, ...],
     """
     display_font = display_font or deckkit.DISPLAY_FONT
     fig = _new(display_font)
-    ax = fig.add_axes([0.062, 0.20, 0.918, 0.63])
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
 
     for s in spans:
         ax.axvspan(s.x0, s.x1, color=GREY_WASH if s.tone == "quiet"
                    else GOLD_WASH, zorder=0)
     ax.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
     _dress(ax, xlabel=xlabel)
-    _heading(ax, heading, display_font)
     ax.set_xlim(-2, len(series) + 1)
     _headroom(ax, series, top=0.24, bottom=0.30)
 
@@ -479,7 +474,7 @@ def record(path: Path, series, marks: tuple[Mark, ...],
 
 
 def claim(path: Path, series, *, level: float, level_label: str,
-          touches: tuple[int, ...], future: int, heading, xlabel,
+          touches: tuple[int, ...], future: int, xlabel,
           record_label: str, claim_label: str, footnote="",
           display_font=None) -> Path:
     """The inferential half: the record, and then the claim made from it.
@@ -490,7 +485,7 @@ def claim(path: Path, series, *, level: float, level_label: str,
     """
     display_font = display_font or deckkit.DISPLAY_FONT
     fig = _new(display_font)
-    ax = fig.add_axes([0.062, 0.20, 0.918, 0.63])
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
     end = len(series) + int(len(series) * 0.30)
 
     ax.axvspan(future, end, color=PAPER, zorder=0)
@@ -500,7 +495,6 @@ def claim(path: Path, series, *, level: float, level_label: str,
             transform=ax.get_yaxis_transform(), color=GREEN, va="bottom",
             ha="left", fontweight="bold", zorder=4)
     _dress(ax, xlabel=xlabel)
-    _heading(ax, heading, display_font)
     ax.set_xlim(-2, end)
     _headroom(ax, series, top=0.24, bottom=0.14)
 

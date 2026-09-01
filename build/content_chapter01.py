@@ -13,6 +13,7 @@ Technical Analysis, chapter 1, which students have in the course text.
 
 from deckkit import (
     Chapter,
+    Chart,
     Check,
     Closing,
     Content,
@@ -91,6 +92,15 @@ PART1 = Section(
                 "Tell them price is the single most important input in this subject, followed by volume.",
             ),
         ),
+        Chart(
+            title="Price is a number that will not sit still",
+            letter="A",
+            shows="One price line over several months, with the number read off it on four different days, so the same public figure is a different figure every time you look.",
+            notes=(
+                "Point at the four readings and say each one was public, free and correct on the day it was read.",
+                "Land it: this is what a variable of change looks like. Nothing here is anyone's opinion yet.",
+            ),
+        ),
         Term(
             term="The buy low, sell high principle",
             plain="A simple mechanical rule that would guarantee a profit every single time: buy when the price is low and sell when it is higher.",
@@ -99,6 +109,15 @@ PART1 = Section(
             notes=(
                 "Say the rule out loud and let it sound obvious, because it is.",
                 "Then set the trap: ask them how they know today's price is a low one.",
+            ),
+        ),
+        Chart(
+            title="Buy low, sell high, drawn once",
+            letter="B",
+            shows="A buy marked at 40 pesos, a sell marked at 52, and the 12 pesos a share kept between them shaded on the chart.",
+            notes=(
+                "Trace it with a finger: in here, out there, that block is the profit. It really is that simple.",
+                "Then ask the question the chart cannot answer: standing at the buy marker, how did you know 40 was low?",
             ),
         ),
         Check(
@@ -147,6 +166,16 @@ PART1 = Section(
                 "Tell them a fundamental analyst can give them the price axis but rarely the time axis.",
             ),
         ),
+        Chart(
+            title="The two axes, drawn",
+            letter="C",
+            shows="The price-time chart itself: price up the vertical axis, time along the horizontal axis, and one price line plotted against both.",
+            tier="core",
+            notes=(
+                "Say the two axis names out loud while pointing at each one. Price up the side, time along the bottom.",
+                "Tell them Homework 1 is drawn on exactly this object, so it is worth a second look now.",
+            ),
+        ),
         Content(
             title="Technical analysis does exactly two jobs",
             lines=(
@@ -170,6 +199,15 @@ PART1 = Section(
                 "List two or three things a chart tells you before you interpret anything: volatility, extremes, liquidity.",
             ),
         ),
+        Chart(
+            title="Four facts, and not one of them is an opinion",
+            letter="D",
+            shows="One chart with the highest and the lowest price in the window marked, the calmest stretch shaded, and the one day price gapped picked out.",
+            notes=(
+                "Point at each of the four in turn and ask the room whether anyone could disagree with it. Nobody can.",
+                "Name the gap and move on. The chapter names gapping too and never explains it, and neither will we today.",
+            ),
+        ),
         Term(
             term="Forecasting",
             plain="The opinion job. You take what the chart recorded and make a claim about what comes next, and the claim worth most is where a new trend begins.",
@@ -178,6 +216,15 @@ PART1 = Section(
             notes=(
                 "Say the forecasting half rests entirely on one assumption: that price behavior repeats to some reasonable degree.",
                 "Promise them we will test that assumption properly in Part 5.",
+            ),
+        ),
+        Chart(
+            title="Four bounces are the record. A fifth is the claim.",
+            letter="E",
+            shows="Four times price fell to 100 pesos and turned, marked on the record, and then the edge of the record, with the forecast left as an empty band because nobody has seen it yet.",
+            notes=(
+                "Cover the right hand band with your hand, then take it away. Left of the line is Chart D again; right of it is new.",
+                "Say why nothing is drawn in the empty band: a line there would be the one thing nobody actually knows.",
             ),
         ),
         Check(
@@ -227,6 +274,15 @@ PART1 = Section(
                 "Say that long simply means you profit if price rises.",
             ),
         ),
+        Chart(
+            title="Going long: a buy that opens",
+            letter="F",
+            shows="One price line with a single buy marked at 620 pesos, and an arrow saying the holder now profits if price rises.",
+            notes=(
+                "Say the next three charts are this same price line with different marks on it, so watch the marks and not the line.",
+                "One dot so far. Nothing has been closed and nothing has been made yet.",
+            ),
+        ),
         Term(
             term="To liquidate",
             plain="To sell in order to close a position you already held. It is the exit from a long.",
@@ -235,6 +291,15 @@ PART1 = Section(
             notes=(
                 "Stress that liquidating is not the same as going short. It only closes what you had.",
                 "Pair it visually with go long on the board.",
+            ),
+        ),
+        Chart(
+            title="Liquidating: a sell that closes the long",
+            letter="G",
+            shows="The same price line, with the buy at 620 now greyed out and a sell marked at 660, and the 40 pesos a share kept shaded between them.",
+            notes=(
+                "Point at the grey dot and say the position is now gone. The block is what it was worth.",
+                "Ask what would have happened if they had sold at 605 instead. The verb does not change; only the number does.",
             ),
         ),
         Term(
@@ -247,6 +312,15 @@ PART1 = Section(
                 "Note that in the Philippine market short selling is restricted, but the concept is examinable.",
             ),
         ),
+        Chart(
+            title="Going short: a sell that opens",
+            letter="H",
+            shows="The same price line with a single sell marked at 660 pesos, and an arrow saying the holder now profits if price falls.",
+            notes=(
+                "Say the two words that matter: sell, and open. This is the only sell in the course that starts something.",
+                "Compare it to Chart F on the same line: same object, opposite direction, one dot each.",
+            ),
+        ),
         Term(
             term="To cover",
             plain="To buy in order to close a position you had shorted. It is the exit from a short.",
@@ -255,6 +329,15 @@ PART1 = Section(
             notes=(
                 "Complete the square on the board: long and liquidate, short and cover.",
                 "Say buying is not always bullish. Covering is a buy that ends a bearish position.",
+            ),
+        ),
+        Chart(
+            title="Covering: a buy that closes the short",
+            letter="I",
+            shows="The same price line, with the sell at 660 now greyed out and a buy marked at 610, and the 50 pesos a share kept shaded between them.",
+            notes=(
+                "This is the slide that fixes the misconception. A buy, and the position it ends was a bearish one.",
+                "Put Charts F to I side by side in one sentence: open, close, open, close, and only the direction changed.",
             ),
         ),
         Check(

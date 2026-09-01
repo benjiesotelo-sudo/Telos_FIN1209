@@ -120,7 +120,6 @@ CHARTS = (
                 Reading(x=108, label="Yesterday, 240", dx=-56, dy=-34),
                 Reading(x=109, label="Today, 244", dx=-46, dy=30),
             ),
-            heading="One price, read on four different days",
             xlabel="Time, one point per trading day",
             footnote=("The last two closes are the slide's own worked "
                       "example. The path between them is illustrative."),
@@ -139,7 +138,6 @@ CHARTS = (
             ),
             gain=Gain(low=40.0, high=52.0, x0=22, x1=78,
                       label="12 pesos a share, kept"),
-            heading="Buy low, sell high, drawn once",
             xlabel="Time, one point per trading day",
             footnote=("Knowing that 40 was the low one is the part the rule "
                       "does not give you."),
@@ -150,7 +148,6 @@ CHARTS = (
         draw=ck.axes_lesson,
         kwargs=dict(
             series=C_SERIES,
-            heading="Two dimensions, and every chart in this course is this",
             price_label="PRICE",
             time_label="TIME",
             footnote=("Nothing is marked on it. The two axes are the whole "
@@ -170,7 +167,6 @@ CHARTS = (
             spans=(
                 Span(x0=54, x1=78, label="the calmest stretch"),
             ),
-            heading="Four facts, and not one of them is an opinion",
             xlabel="Time, one point per trading day",
             footnote=("The chapter names gapping and does not define it. "
                       "This chart points at one and leaves it there."),
@@ -185,7 +181,6 @@ CHARTS = (
             level_label="100 pesos",
             touches=(12, 40, 70, 96),
             future=108,
-            heading="Four bounces are the record. A fifth is the claim.",
             xlabel="Time, one point per trading day",
             record_label="What happened",
             claim_label="What you are claiming",
@@ -203,7 +198,6 @@ CHARTS = (
                     dx=44, dy=42),
             ),
             direction=(True, "you profit if price rises"),
-            heading="Going long: a buy that opens a position",
             xlabel=VERB_XLABEL,
             footnote=VERB_FOOTNOTE,
         ),
@@ -221,7 +215,6 @@ CHARTS = (
             ),
             gain=Gain(low=620.0, high=660.0, x0=18, x1=62,
                       label="40 pesos a share, kept"),
-            heading="Liquidating: a sell that closes the long",
             xlabel=VERB_XLABEL,
             footnote=VERB_FOOTNOTE,
         ),
@@ -236,7 +229,6 @@ CHARTS = (
                     dx=-44, dy=22),
             ),
             direction=(False, "you profit if price falls"),
-            heading="Going short: a sell that opens a position",
             xlabel=VERB_XLABEL,
             footnote=VERB_FOOTNOTE,
         ),
@@ -256,7 +248,6 @@ CHARTS = (
             # sits exactly on the falling line and hides it.
             gain=Gain(low=610.0, high=660.0, x0=62, x1=102, label_y=620.0,
                       label="50 pesos a share, kept"),
-            heading="Covering: a buy that closes the short",
             xlabel=VERB_XLABEL,
             footnote=VERB_FOOTNOTE,
         ),

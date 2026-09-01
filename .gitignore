@@ -16,3 +16,6 @@ assets/figures/
 *-Notes.html
 *-Teaching-Plan.html
 *-Lecture-Notes.html
+# Build output: the charts this course draws for itself.
+# Generated from build/charts_chapter01.py on every build, not authored here.
+build/generated/

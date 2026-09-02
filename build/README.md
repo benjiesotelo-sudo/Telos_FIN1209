@@ -16,9 +16,10 @@ python3 -m venv .venv
 ```
 
 `python-pptx` 1.0.2 and `matplotlib` 3.9.4 are what the committed deck was
-built with. matplotlib draws the nine charts this course owns; see **Charts**
-below for why they are generated rather than committed as images, and for the
-one consequence that has for reproducibility.
+built with. matplotlib draws the charts this course owns, nine in Chapter 1
+and eight in Chapter 2; see **Charts** below for why they are generated
+rather than committed as images, and for the one consequence that has for
+reproducibility.
 
 ## Build
 
@@ -91,18 +92,30 @@ Adding an edition to a later chapter takes no work: the switch lives in
 
 ## Build the two PDFs
 
-The chapter ships two print documents from the same chapter data, for two
+Each chapter ships two print documents from the same chapter data, for two
 different readers. Keeping them apart is the point.
 
 ```
-.venv/bin/python build/build_plan.py             # instructor, 26 pages
-.venv/bin/python build/build_lecture_notes.py    # students, 29 pages
+.venv/bin/python build/build_plan.py              # ch. 1 instructor, 26 pages
+.venv/bin/python build/build_lecture_notes.py     # ch. 1 students, 29 pages
+.venv/bin/python build/build_plan2.py             # ch. 2 instructor, 3 pages
+.venv/bin/python build/build_lecture_notes2.py    # ch. 2 students, 22 pages
 ```
 
 | Output | Who it is for | What is in it |
 |---|---|---|
 | `chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | Timing, five run plans, cut tiers, speaker cues, check answers, slide numbers |
 | `chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | Readable prose, the figures, every term defined once, summary and review questions |
+| `chapter-02/FIN1209-Chapter-02-Run-Card.pdf` | The instructor | Three pages: minutes per part, what to cut first, what must never be cut |
+| `chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf` | The students | The same shape as Chapter 1's |
+
+**The instructor document is not the same length in every chapter, and that
+is deliberate.** Chapter 1 shipped a 26 page teaching plan and the instructor
+said, after teaching from it, that he did not really use it: what he needed
+was pacing, and he had run out of time at Part 4 of 6. Chapter 2 therefore
+ships three pages from the same renderer, with `Notes.doc_kind` naming what
+the document is. `chapter-02/README.md` has the reasoning and the minute
+arithmetic behind it.
 
 Neither one carries the other's content. If a slide number or a minute count
 appears in the lecture notes, it is in the wrong document.
@@ -229,9 +242,14 @@ The nine charts in Part 1 are the exact opposite of the figures and none of
 the policy above applies to them. **They are ours.** They are drawn by
 `chartkit.py`, which knows nothing about any chapter, from the data in
 `charts_chapter01.py`, which carries no drawing code. Every build of the deck
-and of the lecture notes redraws all nine into `build/generated/charts/`
-before it starts, so a fresh clone produces the real slide and the real page
-rather than a placeholder, and the folder is gitignored because it is output.
+and of the lecture notes redraws them into `build/generated/` before it
+starts, so a fresh clone produces the real slide and the real page rather
+than a placeholder, and the folder is gitignored because it is output.
+
+**One output folder per chapter.** The letters restart at A in every chapter,
+so a shared folder would have Chapter 2's Chart A overwrite Chapter 1's and
+break the hash check below for both. Chapter 1 writes to `charts`; every
+chapter after it is numbered, `charts-02` and so on.
 
 Three things about them are deliberate and should not be quietly undone.
 
@@ -306,26 +324,37 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | `build/notekit.py` | Every teaching plan block renderer, its print CSS, and the paginator both PDFs share. Knows nothing about any chapter. |
 | `build/plan_chapter01.py` | Chapter 1 teaching plan as plain data. No layout code. |
 | `build/build_plan.py` | Resolves the plan against the deck and renders the PDF. |
+| `build/content_chapter02.py`, `build/charts_chapter02.py`, `build/plan_chapter02.py`, `build/lecture_chapter02.py` | Chapter 2, the same four files. |
+| `build/build_chapter2.py`, `build/build_plan2.py`, `build/build_lecture_notes2.py` | Chapter 2's three builders, each a copy of Chapter 1's with the names changed. |
 | `build/lecturekit.py` | Every lecture notes block renderer, its print CSS, and the figure plate machinery. Takes the palette and the paginator from notekit. Knows nothing about any chapter. |
 | `build/lecture_chapter01.py` | Chapter 1 lecture notes as plain data. No layout code. |
 | `build/build_lecture_notes.py` | Checks the notes against the deck and renders the PDF. |
 | `build/chrome.py` | Headless Chrome, shared by both PDF builds. |
 | `assets/figures/` | Textbook artwork. Gitignored, absent by default. |
 
-## Adding Chapter 2
+## Adding a chapter
 
-Copy the shape of `content_chapter01.py` into `content_chapter02.py`, then
-copy `build_chapter1.py` and point it at the new module. The renderers do not
-change. Sections, terms, quotes, checks, recaps and closings are all declared
-as dataclasses in `deckkit.py`.
+`TEMPLATE.md` at the repository root is the guide, and Chapter 2 is the
+worked example of following it: four content files, four one line edits to
+copies of the build scripts, and no change to any renderer.
 
-Both PDFs are the same move. Copy `plan_chapter01.py` into
-`plan_chapter02.py`, and `lecture_chapter01.py` into `lecture_chapter02.py`,
-then point copies of the two builders at them. Sheets, parts, ladders, flags,
-boards, check cards and tables are dataclasses in `notekit.py`; sections,
-prose, definitions, figures, plates, quotations and self checks are
-dataclasses in `lecturekit.py`. Chapter 2 is two content files, not a
-redesign.
+Copy the shape of `content_chapter02.py`, then copy `build_chapter2.py` and
+point it at the new module. The renderers do not change. Sections, terms,
+quotes, checks, recaps and closings are all declared as dataclasses in
+`deckkit.py`.
+
+The two PDFs and the charts are the same move: copy `plan_chapter02.py`,
+`lecture_chapter02.py` and `charts_chapter02.py`, then point copies of the
+two builders at them. Sheets, parts, ladders, flags, boards, check cards and
+tables are dataclasses in `notekit.py`; sections, prose, definitions,
+figures, plates, quotations and self checks are dataclasses in
+`lecturekit.py`; chart forms are in `chartkit.py`. A chapter is four content
+files, not a redesign.
+
+If a chapter needs a shape a kit has not got, **add the form to the kit** and
+leave the existing ones alone. Chapter 2 added seven chart forms and two data
+generators to `chartkit.py` that way, and both Chapter 1 decks still rebuild
+byte for byte.
 
 ## The rules the build enforces
 

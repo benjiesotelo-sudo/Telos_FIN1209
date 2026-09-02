@@ -16,13 +16,19 @@ Official delivery runs on Canvas; this repository is the preparation workspace.
 | Path | What it is |
 |---|---|
 | `TEMPLATE.md` | How to build the next chapter. Read it first. |
-| `chapter-01/` | The Chapter 1 deck, the instructor's teaching plan, the students' lecture notes, and the in-class checks |
-| `build/` | The scripts that generate all four |
+| `chapter-01/` | Chapter 1: both deck editions, the instructor's 26 page teaching plan, the students' lecture notes, and the in-class checks |
+| `chapter-02/` | Chapter 2: both deck editions, the instructor's three page run card, the students' lecture notes, and the in-class checks |
+| `build/` | The scripts that generate all of them |
 
-The deck, the teaching plan and the lecture notes are three views of one
-chapter, generated from the same content files. The teaching plan is the
-instructor's run card; the lecture notes are what students read to revise or
-to catch up. See `chapter-01/README.md`.
+The deck, the instructor's document and the lecture notes are three views of
+one chapter, generated from the same content files. The lecture notes are what
+students read to revise or to catch up.
+
+**The instructor's document changed shape between the two chapters.** Chapter
+1 has a 26 page teaching plan and it went unused; what the instructor needed
+was pacing, and he ran out of time at Part 4 of 6. Chapter 2 ships three pages
+instead: what each part costs in minutes, what to cut first, and what must
+never be cut. See `chapter-02/README.md`.
 
 ## What is deliberately not here
 
@@ -34,7 +40,7 @@ Answer keys for graded assessments are also kept out of this repository.
 The textbook figures are third-party copyrighted works too, so they are not committed either.
 The decks place them from `assets/figures/`, which is gitignored and absent here.
 In the committed deck every figure slide renders a placeholder carrying the figure number, what the figure shows, the credit line and the speaker cue, so the chapter stays complete and rebuildable without the artwork.
-See `chapter-01/README.md` for the command that builds each version.
+See each chapter's own `README.md` for the command that builds each version.
 
 The charts this course draws for itself are a different matter. They are ours,
 so they are generated from code in this repository on every build and they are
@@ -50,4 +56,5 @@ Slides are built for a class that includes students with ADHD:
 - Every new term glossed in plain language, with a concrete example before the formal definition.
 - A visible progress marker so students always know where they are.
 - A two-question multiple choice check after every two or three new terms, with the answer revealed on the following slide.
-- Where a term is being explained, a chart of it on the slide immediately after. Chapter 1 Part 1 is the pilot: nine terms, nine charts.
+- Where a term is being explained, a chart of it on the slide immediately after. Chapter 1 Part 1 is the pilot at nine charts; Chapter 2 draws eight across six parts, because that chapter comes with twenty six figures of its own.
+- Every check answerable from the slides alone, with the answering slide ahead of the question. Each chapter carries the audit that proves it.

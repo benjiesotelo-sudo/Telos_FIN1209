@@ -73,6 +73,19 @@ SECTION1 = Section(
                  "analysis.",
         ),
         Para(text=(
+            "Chart A reads that number off a price line on four different "
+            "days. Every reading was public and free on the day it was taken, "
+            "and every one of them is a different number. **That is what "
+            "makes price a variable of change rather than a fact about a "
+            "company**, and it is why this subject watches price and not the "
+            "accounts."
+        )),
+        Fig(
+            panels=(Panel(number="A"),), kind="chart", height_mm=57.0,
+            caption="One price line, with the number read off it on four "
+                    "different days.",
+        ),
+        Para(text=(
             "Once you have a variable that moves, one mechanical rule would "
             "guarantee a profit every time. Buy at 40 pesos, sell at 52, keep "
             "12 a share. Nothing clever has happened, and yet the rule is "
@@ -84,7 +97,15 @@ SECTION1 = Section(
                  "that profit is realized by acquiring at a lower price and "
                  "disposing at a higher one.",
         ),
+        Fig(
+            panels=(Panel(number="B"),), kind="chart", height_mm=57.0,
+            caption="A buy at 40, a sell at 52, and the 12 pesos a share kept "
+                    "between them.",
+        ),
         Para(text=(
+            "Chart B draws that rule once, and it is worth looking at what "
+            "the picture does not contain. Standing at the buy marker, "
+            "nothing on the chart tells you that 40 is a low price. "
             "The rule is easy. Obeying it is not. To buy low you must know "
             "that today's price is a low one, and to sell high that today's "
             "is a high one. Both are statements about the future, not the "
@@ -107,6 +128,16 @@ SECTION1 = Section(
                  "plots price on the vertical axis against time on the "
                  "horizontal axis.",
         ),
+        Fig(
+            panels=(Panel(number="C"),), kind="chart", height_mm=57.0,
+            caption="Price up the vertical axis, time along the horizontal, "
+                    "and one price line plotted against both.",
+        ),
+        Para(text=(
+            "Chart C is that object with nothing else on it. Every chart in "
+            "the rest of this course, and every chart in the textbook, is "
+            "this picture with something added to it."
+        )),
 
         Head(number="1.4", text="The two jobs technical analysis does"),
         Para(text=(
@@ -137,16 +168,34 @@ SECTION1 = Section(
             "the levels where the market stalls and drifts sideways, how much "
             "trading actually happens, and how often price gaps. None of that "
             "is a forecast, and all of it is homework worth doing before any "
-            "trade."
-            "\n\n"
+            "trade. Chart D marks four of those facts on one record: the "
+            "highest price, the lowest, the calmest stretch, and the single "
+            "day the price gapped. **Nobody can disagree with any of them**, "
+            "which is what makes this half of the subject the objective half."
+        )),
+        Fig(
+            panels=(Panel(number="D"),), kind="chart", height_mm=57.0,
+            caption="Four facts read off one record, and not one of them is "
+                    "an opinion.",
+        ),
+        Para(text=(
             "Forecasting rests on an assumption, that price behavior repeats "
             "to some reasonable degree, and Section 5 tests it. For now: "
             "prices bouncing off 100 pesos four times is a fact, expecting "
-            "buyers a fifth time is an opinion. **The forecast worth most is "
+            "buyers a fifth time is an opinion. Chart E puts both on one "
+            "page, with a line down the middle where the record stops. "
+            "**Nothing is drawn to the right of that line**, because a drawn "
+            "line there would assert the one thing nobody yet knows. "
+            "**The forecast worth most is "
             "the one that catches a new trend starting**, which is what Pring "
             "means in 2.4 by identifying a reversal at a relatively early "
             "stage."
         )),
+        Fig(
+            panels=(Panel(number="E"),), kind="chart", height_mm=57.0,
+            caption="Left of the line is the record. Right of it is the "
+                    "claim, and it is left empty on purpose.",
+        ),
 
         Head(number="1.5", text="Four words, and four ways to make money"),
         Para(text=(
@@ -169,7 +218,37 @@ SECTION1 = Section(
             "market, but the concept is examinable and standard elsewhere. "
             "Note that **buying is not always bullish**: covering is a "
             "purchase that ends a bearish position."
+            "\n\n"
+            "Charts F to I are one price line drawn four times, with a "
+            "different mark on it each time, and the four marks are that "
+            "whole vocabulary. Chart F is the buy that opens a long at 620. "
+            "Chart G is the sell that closes it at 660, with the 40 pesos a "
+            "share kept shaded in. Chart H is the sell that opens a short at "
+            "660, the opposite bet on the same line. Chart I is the buy that "
+            "closes it at 610. **Compare F with H, and G with I**: the shape "
+            "of a chart never tells you which verb you are looking at. Only "
+            "whether the trade opened or closed does."
         )),
+        Fig(
+            panels=(Panel(number="F"),), kind="chart", height_mm=57.0,
+            caption="Going long: a buy that opens, and the holder now profits "
+                    "if price rises.",
+        ),
+        Fig(
+            panels=(Panel(number="G"),), kind="chart", height_mm=57.0,
+            caption="Liquidating: a sell that closes the long, and the 40 "
+                    "pesos a share kept.",
+        ),
+        Fig(
+            panels=(Panel(number="H"),), kind="chart", height_mm=57.0,
+            caption="Going short: a sell that opens, and the holder now "
+                    "profits if price falls.",
+        ),
+        Fig(
+            panels=(Panel(number="I"),), kind="chart", height_mm=57.0,
+            caption="Covering: a buy that closes the short, and the 50 pesos "
+                    "a share kept.",
+        ),
         Fig(
             panels=(Panel(number="1.1"),),
             cols=1,

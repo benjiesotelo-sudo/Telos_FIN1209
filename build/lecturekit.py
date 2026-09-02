@@ -58,6 +58,12 @@ BODY_PT = 10.6
 
 CREDIT = "Lim, The Handbook of Technical Analysis (Wiley, 2016)"
 
+# There is no chart credit constant here on purpose. deckkit owns that line,
+# so the slide and this page cannot disagree about who drew a chart, and
+# changing the wording stays a one line edit in one file.
+# build_lecture_notes.py reads it from deckkit and passes it in as
+# FigureFacts.chart_credit_line.
+
 
 # --------------------------------------------------------------------------
 # Blocks
@@ -113,28 +119,39 @@ class Panel:
 
 @dataclass
 class Fig(Block):
-    """A figure, or a plate of figures making one argument.
+    """A figure, a plate of figures, or one of our own charts.
 
     ``height_mm`` is the height of the artwork band and is the same whether the
     artwork is present or a placeholder stands in its place, so the placeholder
     build and the teaching build paginate identically.
+
+    ``kind`` says which namespace the panels are in. ``figure`` is the book's,
+    numbered 1.11, credited to Wiley, and absent from the public build.
+    ``chart`` is one this course drew, lettered C, credited to us, and always
+    present. One block holds one kind; they are never mixed, because the
+    distinction is the whole point of having two namespaces.
     """
 
     panels: tuple[Panel, ...] = ()
     caption: str = ""
     cols: int = 1
     height_mm: float = 56.0
+    kind: str = "figure"
 
     @property
     def numbers(self) -> tuple[str, ...]:
         return tuple(p.number for p in self.panels)
 
     @property
+    def noun(self) -> str:
+        return "Figure" if self.kind == "figure" else "Chart"
+
+    @property
     def label(self) -> str:
         n = self.numbers
         if len(n) == 1:
-            return f"Figure {n[0]}"
-        return f"Figures {n[0]} to {n[-1]}"
+            return f"{self.noun} {n[0]}"
+        return f"{self.noun}s {n[0]} to {n[-1]}"
 
 
 @dataclass
@@ -200,11 +217,11 @@ class LectureNotes:
                     found.append((b.term, where))
         return found
 
-    def figure_numbers(self) -> list[str]:
+    def figure_numbers(self, kind: str = "figure") -> list[str]:
         out: list[str] = []
         for s in self.sections:
             for b in s.blocks:
-                if isinstance(b, Fig):
+                if isinstance(b, Fig) and b.kind == kind:
                     out.extend(b.numbers)
         return out
 
@@ -310,8 +327,8 @@ def render_block(b: Block, figures: "FigureFacts") -> str:
 def _figure_html(f: Fig, figures: "FigureFacts") -> str:
     cells = []
     for p in f.panels:
-        art = figures.art(p.number)
-        label = (f'<span class="plabel">Figure {html.escape(p.number)}. '
+        art = figures.art(p.number, f.kind)
+        label = (f'<span class="plabel">{f.noun} {html.escape(p.number)}. '
                  f'{_inline(p.label)}</span>') if len(f.panels) > 1 else ""
         cells.append(f'<div class="panel">{art}{label}</div>')
 
@@ -325,7 +342,7 @@ def _figure_html(f: Fig, figures: "FigureFacts") -> str:
         f'<div class="blk fig" data-float="1"><div class="main">{grid}'
         f'<p class="figcap"><span class="fignum">{html.escape(f.label)}</span>'
         f'{_inline(f.caption)}'
-        f'<span class="figcredit">Reproduced from {html.escape(CREDIT)}</span>'
+        f'<span class="figcredit">{html.escape(figures.credit(f.kind))}</span>'
         f'</p></div></div>'
     )
 
@@ -348,34 +365,55 @@ class FigureFacts:
     files: dict = field(default_factory=dict)      # number -> filename
     directory: Path | None = None
 
-    def path(self, number: str) -> Path | None:
-        if self.directory is None:
+    # The same three things for the charts this course drew, kept apart so a
+    # chart letter can never be looked up as a figure number. The chart
+    # directory is not optional the way the figure one is: the charts are
+    # ours, the build generates them, and they are in every build.
+    chart_shows: dict = field(default_factory=dict)
+    chart_files: dict = field(default_factory=dict)
+    chart_directory: Path | None = None
+    chart_credit_line: str = ""
+
+    def credit(self, kind: str = "figure") -> str:
+        return (f"Reproduced from {CREDIT}" if kind == "figure"
+                else self.chart_credit_line)
+
+    def path(self, number: str, kind: str = "figure") -> Path | None:
+        root = self.directory if kind == "figure" else self.chart_directory
+        if root is None:
             return None
-        p = self.directory / self.files.get(number, "")
+        files = self.files if kind == "figure" else self.chart_files
+        p = root / files.get(number, "")
         return p if p.is_file() else None
 
-    def art(self, number: str) -> str:
-        p = self.path(number)
+    def art(self, number: str, kind: str = "figure") -> str:
+        p = self.path(number, kind)
         if p is not None:
             # A background image, not an <img>. Inside a flex column whose
             # height comes from the grid row, an <img> with max-height:100%
             # has no definite height to resolve against, so it renders at its
             # natural size and spills over the caption and the paragraph
             # underneath. A background sized to contain cannot overflow.
+            noun = "Figure" if kind == "figure" else "Chart"
             return (f'<div class="art" role="img" '
-                    f'aria-label="Figure {html.escape(number)}" '
+                    f'aria-label="{noun} {html.escape(number)}" '
                     f'style="background-image:url({p.resolve().as_uri()})">'
                     f'</div>')
         # No figure number here: the caption below a single figure names it,
         # and a panel inside a plate carries its own label. Printing it in the
         # placeholder as well said "Figure 1.9" twice on the same figure.
+        shows = self.shows if kind == "figure" else self.chart_shows
         return (f'<div class="art placeholder">'
-                f'<span class="phtext">{_inline(self.shows.get(number, ""))}</span>'
+                f'<span class="phtext">{_inline(shows.get(number, ""))}</span>'
                 f'<span class="phfoot">Artwork not reproduced in the public '
                 f'build</span></div>')
 
     def placed(self) -> int:
         return sum(1 for n in self.files if self.path(n) is not None)
+
+    def charts_placed(self) -> int:
+        return sum(1 for n in self.chart_files
+                   if self.path(n, "chart") is not None)
 
 
 # --------------------------------------------------------------------------
@@ -705,7 +743,8 @@ MAX_MEASURE = 90
 
 
 def validate(document: str, notes: LectureNotes, deck_figures: dict,
-             deck_terms: list[str]) -> list[str]:
+             deck_terms: list[str], deck_charts: dict | None = None
+             ) -> list[str]:
     """Refuse to write notes that break the design.
 
     The three checks that matter are the drift checks. The notes are a second
@@ -715,27 +754,31 @@ def validate(document: str, notes: LectureNotes, deck_figures: dict,
     """
     problems: list[str] = []
 
-    # 1. Figures the deck does not have.
-    numbers = notes.figure_numbers()
-    for n in numbers:
-        if n not in deck_figures:
-            problems.append(
-                f"figure {n} is not in the deck. The deck is the authority on "
-                "scope; either the number is wrong or the deck no longer "
-                "places it."
-            )
-    dupes = {n for n in numbers if numbers.count(n) > 1}
-    for n in sorted(dupes):
-        problems.append(f"figure {n} appears in more than one figure block")
-
-    # 2. Figures nothing points at.
+    # 1 and 2, run over both namespaces. The checks are the same and the
+    # reason is the same: the deck is the authority on scope, and a picture
+    # no paragraph points at is decoration.
     prose = notes.prose()
-    for n in sorted(set(numbers)):
-        if not re.search(rf"Figure {re.escape(n)}\b", prose):
+    for kind, noun, known in (("figure", "Figure", deck_figures),
+                              ("chart", "Chart", deck_charts or {})):
+        numbers = notes.figure_numbers(kind)
+        for n in numbers:
+            if n not in known:
+                problems.append(
+                    f"{noun.lower()} {n} is not in the deck. The deck is the "
+                    "authority on scope; either the name is wrong or the deck "
+                    "no longer places it."
+                )
+        dupes = {n for n in numbers if numbers.count(n) > 1}
+        for n in sorted(dupes):
             problems.append(
-                f"figure {n} is never referenced from the prose. A figure no "
-                "paragraph mentions is decoration; say what to look at in it."
-            )
+                f"{noun.lower()} {n} appears in more than one figure block")
+        for n in sorted(set(numbers)):
+            if not re.search(rf"{noun} {re.escape(n)}\b", prose):
+                problems.append(
+                    f"{noun.lower()} {n} is never referenced from the prose. "
+                    "A picture no paragraph mentions is decoration; say what "
+                    "to look at in it."
+                )
 
     # 3. Terms, against the deck, in both directions.
     defined = [t for t, _ in notes.terms()]

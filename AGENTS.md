@@ -25,8 +25,8 @@ question on either.
 
 ## The deck ships in two editions from one content file
 
-`build/build_chapter1.py` takes `--edition teaching` (the default, 218 slides,
-everything) or `--edition student` (168 slides, every check and reveal dropped
+`build/build_chapter1.py` takes `--edition teaching` (the default, 227 slides,
+everything) or `--edition student` (177 slides, every check and reveal dropped
 and no speaker notes). One content module feeds both; nothing is forked and
 nothing is deleted from `build/content_chapter01.py`. The switch lives in
 `deckkit.build()` and knows nothing about any chapter, so a later chapter
@@ -44,6 +44,35 @@ Editing a `.pptx` is a dead end; the next build overwrites it. Change
 in `build/deckkit.py`, which knows nothing about any chapter. `build/README.md`
 has the environment, the design rules the build enforces, and the fonts.
 
+## Our own charts are committed. The book's figures never are.
+
+Part 1 carries nine charts this course drew, one on a companion slide after
+each of its term slides. They are the opposite case to the textbook figures in
+every respect, and the two must not be conflated:
+
+| | Book figure | Our chart |
+|---|---|---|
+| Type | `deckkit.Figure` | `deckkit.Chart`, not a subclass |
+| Named | `1.11`, the book's scheme | `Chart C`, our namespace |
+| Credit | Wiley, hard coded on `Figure.credit` | `deckkit.chart_credit()`, one place |
+| In the repo | Never. `assets/figures/` is gitignored | Always, drawn at build time |
+| Committed build | Placeholder | The real artwork |
+
+`build/chartkit.py` draws them and knows nothing about any chapter;
+`build/charts_chapter01.py` is the data. Every build of the deck and of the
+lecture notes redraws all nine first, so a fresh clone gets the real slide.
+The data is invented from fixed seeds, because we hold no market data licence,
+and every chart says so in its credit line.
+
+The one trap: the committed decks now embed nine PNGs, so the artwork check
+before a commit is no longer "empty". `build/README.md` has the two commands
+that confirm the nine images in a deck are exactly the nine we drew, and
+`chapter-01/README.md` the same for the notes PDF.
+
+Charts are also the only block a run plan can cut whole, so **never write a
+slide that refers back to a chart**, the same rule and the same reason as for
+a check.
+
 ## This repository is public and the course text is not ours
 
 The textbook, the publisher's scans, the previous course holder's decks, and
@@ -51,8 +80,10 @@ The textbook, the publisher's scans, the previous course holder's decks, and
 committed. Figure artwork lives in the gitignored `assets/figures/`, and
 figures are off by default so the plain build always reproduces the committed
 text decks. `--with-figures` is refused anywhere inside the repository, for
-either edition. Before committing a deck, confirm it embeds no artwork:
-`unzip -l <deck>.pptx | grep ppt/media` must be empty.
+either edition. Before committing a deck, confirm it embeds no artwork that is
+not ours: `unzip -l <deck>.pptx | grep ppt/media` must list exactly the nine
+charts and nothing else. See the section above for the hash check that proves
+which nine they are.
 
 Every chapter after this one inherits the constraint. See
 `chapter-01/README.md` for the build commands and the figure file naming.
@@ -78,9 +109,10 @@ from notekit rather than copying either. `build/chrome.py` renders both.
 
 Both PDFs are checked against the deck, which is the authority on scope, so
 **rebuild both whenever you rebuild the deck**. The plan names slides by key
-and resolves them. The notes name figures and terms, and the build fails if
-the notes reference a figure the deck does not place, if a figure is never
-mentioned in the prose, or if the deck teaches a term the notes never define.
+and resolves them. The notes name figures, charts and terms, and the build
+fails if the notes reference a figure or a chart the deck does not place, if
+either is never mentioned in the prose, or if the deck teaches a term the
+notes never define.
 The notes take their summary and review questions from the deck's closing
 slides instead of holding a copy.
 
@@ -97,6 +129,40 @@ overflowed every image on top of its own caption while the placeholder build
 looked perfect. `chapter-01/teaching-plan-design.md` and
 `chapter-01/lecture-notes-design.md` record the research each design came
 from, with sources.
+
+## A run plan has to exist on the part pages
+
+The teaching plan has five run plans, and the instructor reads one of them
+while standing in a room. **A plan that appears only in the summary table and
+on its own two pages is invisible where it is used.** The sixteen part pages
+are the working document.
+
+Two things carry a plan onto them, and both are in `build/plan_chapter01.py`:
+the `keep` label on every `FigureRef`, which names the first plan that drops
+that picture, and the `plan=` row on every `Ladder`, which says what comes off
+in that part. `Notes.plan_row` names the plan those rows are written for.
+
+The rule underneath: **`OFF AT` and `cut at` always name the first plan that
+drops the item, and every shorter plan drops it too.** An audit found the plan
+had a 180 minute column in its table while every cut marker still said "cut at
+Long", so reading a part page told the instructor to run 31 minutes of material
+in a 25 minute box.
+
+## A check must be answerable from the slides alone
+
+The student edition carries no speaker notes, so a fact that lives only in a
+cue is a fact the student never meets, and nothing in the room guarantees the
+instructor said it anyway. The same goes for the lecture notes and the book.
+**When you add or move a check item, the slide that supplies its answer has to
+come before the check**, and no build check enforces either half of that.
+
+`chapter-01/check-answerability-audit.md` is the item by item record and the
+two failures it found: a check that sat in front of the slide it examined, and
+a term the question named that only the speaker note ever said out loud. Both
+failure modes are invisible to `deckkit.validate()`.
+
+The answer key rules are enforced: no letter over 35 percent or under 15, and
+no three identical answers in a row. Those cannot regress silently.
 
 ## The closing slides are not validated
 

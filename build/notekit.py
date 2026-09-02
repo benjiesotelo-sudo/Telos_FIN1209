@@ -186,13 +186,20 @@ class Bullets(Block):
 
 @dataclass
 class Ladder(Block):
-    """The Core / Reinforcement / Enrichment / Fold triage for one part.
+    """The triage for one part: Core, the chosen plan, then the cut tiers.
 
     Sits directly under the masthead because the never-cut material has to be
     the first thing found, which is Degani and Wiener's guideline (10).
+
+    ``plan`` is the row for whichever run plan the instructor is actually
+    running, and it names what comes off in this part. The other four rows are
+    a classification; this one is an instruction. A plan that exists only in
+    the summary table is a plan the instructor cannot see while teaching, and
+    the part pages are the pages held in the hand.
     """
 
     core: str = ""
+    plan: str = ""
     reinforcement: str = ""
     enrichment: str = ""
     fold: str = ""
@@ -220,8 +227,26 @@ class Sheet:
 
 @dataclass
 class FigureRef:
-    number: str = ""       # the book's own figure number, "1.11"
+    """A picture in this part, and the shortest plan that still shows it.
+
+    ``kind`` decides which namespace ``number`` is in and how it is named on
+    the page. ``fig`` is one of the book's, "1.11". ``chart`` is one this
+    course drew, "C", printed as "Chart C". They are listed on separate rows
+    of the masthead because they are not the same kind of thing and a run
+    plan cuts them for different reasons.
+    """
+
+    number: str = ""       # the book's own figure number, or a chart letter
     keep: str = ""         # shortest plan that still shows it, or a note
+    kind: str = "fig"      # fig or chart
+
+    @property
+    def key(self) -> str:
+        return f"{self.kind}:{self.number}"
+
+    @property
+    def label(self) -> str:
+        return self.number if self.kind == "fig" else f"Chart {self.number}"
 
 
 @dataclass
@@ -247,7 +272,11 @@ class Notes:
     chapter: str = ""
     title: str = ""
     presenter: str = ""
-    plans: tuple[str, ...] = ()   # names of the four run plans, longest first
+    plans: tuple[str, ...] = ()   # names of the run plans, longest first
+    # Which plan this term's session runs, and the hint printed beside it on
+    # every part page. The chapter names it, because a plan chosen once at the
+    # top of the document is a plan the instructor cannot see in the room.
+    plan_row: tuple[str, str] = ("Plan", "")
     front: tuple[Sheet, ...] = ()
     parts: tuple[Part, ...] = ()
     back: tuple[Sheet, ...] = ()
@@ -430,19 +459,24 @@ def _table_html(t: Table, res: Resolver) -> str:
             f"<tbody>{''.join(body)}</tbody></table>{note}")
 
 
+# The name and the hint on the plan row come from Notes.plan_row, so the
+# ladder does not have to know which plan this term's session runs.
 _TIERS = (
     ("core", "Core", "Never cut"),
+    ("plan", "", ""),
     ("reinf", "Reinforcement", "Cut when short"),
     ("enrich", "Enrichment", "Cut first"),
     ("fold", "Fold", "Say it, do not show it"),
 )
 
 
-def _ladder_html(l: Ladder, res: Resolver) -> str:
-    values = {"core": l.core, "reinf": l.reinforcement,
+def _ladder_html(l: Ladder, res: Resolver, plan_row=("Plan", "")) -> str:
+    values = {"core": l.core, "plan": l.plan, "reinf": l.reinforcement,
               "enrich": l.enrichment, "fold": l.fold}
     rows = []
     for key, name, hint in _TIERS:
+        if key == "plan":
+            name, hint = plan_row
         text = values[key]
         if not text:
             text = "None."
@@ -488,15 +522,23 @@ def _masthead(p: Part, res: Resolver, plans: tuple[str, ...],
     else:
         chips = '<span class="none">none in this part</span>'
 
-    if p.figures:
-        figs = "".join(
-            f'<span class="fchip"><b>{html.escape(f.number)}</b>'
-            f'<span class="fchip-s">s{res.slide(f"fig:{f.number}")}</span>'
+    def _chips(refs) -> str:
+        if not refs:
+            return '<span class="none">none in this part</span>'
+        return "".join(
+            f'<span class="fchip"><b>{html.escape(f.label)}</b>'
+            f'<span class="fchip-s">s{res.slide(f.key)}</span>'
             f'<span class="fchip-k">{html.escape(f.keep)}</span></span>'
-            for f in p.figures
+            for f in refs
         )
-    else:
-        figs = '<span class="none">none in this part</span>'
+
+    figs = _chips([f for f in p.figures if f.kind == "fig"])
+    ours = [f for f in p.figures if f.kind == "chart"]
+    # The charts row is printed only where there are charts, so the five parts
+    # that have none do not gain an empty row saying so.
+    charts_row = (
+        f'<div class="mrow"><span class="mkey">Charts</span>'
+        f'<span class="mval">{_chips(ours)}</span></div>' if ours else "")
 
     return f"""
 <div class="blk mast full">
@@ -514,6 +556,7 @@ def _masthead(p: Part, res: Resolver, plans: tuple[str, ...],
       <span class="mval">{chips}</span></div>
     <div class="mrow"><span class="mkey">Figures</span>
       <span class="mval">{figs}</span></div>
+    {charts_row}
     <div class="mrow"><span class="mkey">Open</span>
       <span class="mval mtext">{_inline(p.open_line, res)}</span></div>
     <div class="mrow"><span class="mkey">Close</span>
@@ -544,6 +587,7 @@ def _cover(n: Notes, deck: "DeckFacts") -> str:
     <span><b>{deck.total_slides}</b> slides</span>
     <span><b>{deck.total_checks}</b> checks, {deck.total_checks * 2} items</span>
     <span><b>{deck.total_figures}</b> figures</span>
+    <span><b>{deck.total_charts}</b> charts</span>
     <span><b>6</b> parts</span>
   </div>
   <p class="cov-by">{html.escape(n.presenter)}</p>
@@ -560,6 +604,7 @@ class DeckFacts:
     total_slides: int = 0
     total_checks: int = 0
     total_figures: int = 0
+    total_charts: int = 0     # the charts this course drew for itself
     part_checks: dict = field(default_factory=dict)   # part number -> [indices]
 
     def checks_in_part(self, number: int) -> list[int]:
@@ -613,6 +658,10 @@ code {{ font-family: {MONO_FONT}; font-size: 9.2pt; }}
 /* ---- the rail and the main column ------------------------------------ */
 .blk {{ display: flex; align-items: flex-start; margin-bottom: 2.6mm; }}
 .blk.full {{ display: block; }}
+/* full means span the rail as well, so the inner column has to give up its
+   fixed width too. Without this a full block only moved its cue above the
+   content and left the content itself at the main column's 120mm. */
+.blk.full .main {{ width: 100%; }}
 .rail {{
   flex: 0 0 {RAIL_MM}mm; width: {RAIL_MM}mm;
   margin-right: {GUTTER_MM}mm;
@@ -756,6 +805,9 @@ table.ladder tr:last-child th, table.ladder tr:last-child td {{
   padding: 0.6mm 1.6mm; border-radius: 0.8mm;
 }}
 .tier-core {{ background: {GREEN}; color: #ffffff; }}
+/* The plan row is the one instruction among four classifications, so it is
+   the one chip that is neither green structure nor a gold marker. */
+.tier-plan {{ background: {GREEN_DEEP}; color: #ffffff; }}
 .tier-reinf {{ background: {GOLD}; color: {INK}; }}
 .tier-enrich {{ background: #ffffff; color: {MUTED}; border: 0.8pt solid {BORDER}; }}
 .tier-fold {{ background: #ffffff; color: {GREEN_DEEP}; border: 0.8pt solid {GREEN}; }}
@@ -1124,7 +1176,7 @@ def render(notes: Notes, res: Resolver, deck: DeckFacts) -> str:
 
     for p in notes.parts:
         mast = _masthead(p, res, notes.plans, deck)
-        ladder = _ladder_html(p.ladder, res)
+        ladder = _ladder_html(p.ladder, res, notes.plan_row)
         blocks = "".join(render_block(b, res) for b in p.blocks)
         foot = f"Part {p.number} of 6  |  {p.short}"
         sections.append(

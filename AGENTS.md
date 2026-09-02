@@ -6,11 +6,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## Start at TEMPLATE.md if you are building a chapter
 
-`TEMPLATE.md` at the repository root is what whoever writes Chapter 2 reads
-first: which files to copy and which to write fresh, the content module's
-structure, the non-negotiable teaching design rules, the copyright split, the
-three build commands, and the verification steps. This file carries only the
-sharp edges; that one carries the method.
+`TEMPLATE.md` at the repository root is what whoever writes the next chapter
+reads first: which files to copy and which to write fresh, the content
+module's structure, the non-negotiable teaching design rules, the copyright
+split, the build commands, and the verification steps. This file carries only
+the sharp edges; that one carries the method.
 
 ## Teach only what the textbook teaches
 
@@ -23,14 +23,20 @@ not. The worked example is `Supply side and demand side` in
 teaches the gap, marks the outside readings non-examinable, and sets no
 question on either.
 
+## Two chapters are built, and the newer one is the shape to copy
+
+Chapter 1 is 227 slides and Chapter 2 is 175. Chapter 2 is the same design
+done a second time and it is the fresher worked example; `TEMPLATE.md` says
+which files to copy from it and what changed since Chapter 1.
+
 ## The deck ships in two editions from one content file
 
-`build/build_chapter1.py` takes `--edition teaching` (the default, 227 slides,
-everything) or `--edition student` (177 slides, every check and reveal dropped
-and no speaker notes). One content module feeds both; nothing is forked and
-nothing is deleted from `build/content_chapter01.py`. The switch lives in
-`deckkit.build()` and knows nothing about any chapter, so a later chapter
-inherits it by copying the build script.
+`build/build_chapterN.py` takes `--edition teaching` (the default, everything)
+or `--edition student` (every check and reveal dropped and no speaker notes).
+One content module feeds both; nothing is forked and nothing is deleted from
+`build/content_chapterNN.py`. The switch lives in `deckkit.build()` and knows
+nothing about any chapter, so a later chapter inherits it by copying the build
+script.
 
 The one rule this puts on content: **never write a slide that refers back to a
 check.** "As the last question showed" is true in one edition and false in the
@@ -40,15 +46,16 @@ other, and no build check catches it. `build/README.md` has the mechanics and
 ## The decks are generated, never hand-edited
 
 Editing a `.pptx` is a dead end; the next build overwrites it. Change
-`build/content_chapter01.py` (pure data) and rebuild. Drawing code lives only
+`build/content_chapterNN.py` (pure data) and rebuild. Drawing code lives only
 in `build/deckkit.py`, which knows nothing about any chapter. `build/README.md`
 has the environment, the design rules the build enforces, and the fonts.
 
 ## Our own charts are committed. The book's figures never are.
 
-Part 1 carries nine charts this course drew, one on a companion slide after
-each of its term slides. They are the opposite case to the textbook figures in
-every respect, and the two must not be conflated:
+Chapter 1 carries nine charts this course drew and Chapter 2 carries eight,
+each on a companion slide after the term it illustrates. They are the opposite
+case to the textbook figures in every respect, and the two must not be
+conflated:
 
 | | Book figure | Our chart |
 |---|---|---|
@@ -59,17 +66,25 @@ every respect, and the two must not be conflated:
 | Committed build | Placeholder | The real artwork |
 
 `build/chartkit.py` draws them and knows nothing about any chapter;
-`build/charts_chapter01.py` is the data. Every build of the deck and of the
-lecture notes redraws all nine first, so a fresh clone gets the real slide.
-The data is invented from fixed seeds, because we hold no market data licence,
-and every chart says so in its credit line.
+`build/charts_chapterNN.py` is the data. Every build of the deck and of the
+lecture notes redraws them first, so a fresh clone gets the real slide. The
+data is invented from fixed seeds, because we hold no market data licence, and
+every chart says so in its credit line.
 
-The one trap: the committed decks now embed nine PNGs, so the artwork check
-before a commit is no longer "empty". `build/README.md` has the two commands
-that confirm the nine images in a deck are exactly the nine we drew, and
-`chapter-01/README.md` the same for the notes PDF.
+**One output folder per chapter**, `build/generated/charts` for Chapter 1 and
+`charts-02` for Chapter 2. The letters restart at A in every chapter and a
+shared folder would have one chapter's Chart A overwrite another's.
 
-Charts are also the only block a run plan can cut whole, so **never write a
+If a chapter needs a chart shape chartkit has not got, **add the form** rather
+than editing an existing one; Chapter 2 added seven. After any kit change,
+rebuild every earlier chapter and confirm the decks are byte identical.
+
+The one trap: the committed decks embed those PNGs, so the artwork check
+before a commit is not "empty". Each chapter's own README has the two commands
+that confirm the images in its deck are exactly the ones it drew, and the same
+for its notes PDF.
+
+Charts are also the only block a run card can cut whole, so **never write a
 slide that refers back to a chart**, the same rule and the same reason as for
 a check.
 
@@ -81,12 +96,12 @@ committed. Figure artwork lives in the gitignored `assets/figures/`, and
 figures are off by default so the plain build always reproduces the committed
 text decks. `--with-figures` is refused anywhere inside the repository, for
 either edition. Before committing a deck, confirm it embeds no artwork that is
-not ours: `unzip -l <deck>.pptx | grep ppt/media` must list exactly the nine
-charts and nothing else. See the section above for the hash check that proves
-which nine they are.
+not ours: `unzip -l <deck>.pptx | grep ppt/media` must list exactly that
+chapter's own charts and nothing else. See the section above for the hash
+check that proves which ones they are.
 
-Every chapter after this one inherits the constraint. See
-`chapter-01/README.md` for the build commands and the figure file naming.
+Every chapter inherits the constraint. See the chapter's own `README.md` for
+the build commands and the figure file naming.
 
 ## Two print documents, for two different readers
 
@@ -96,12 +111,28 @@ Do not merge them, and do not let content leak between them.
 |---|---|---|---|
 | `chapter-01/FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | `build/build_plan.py` | `build/plan_chapter01.py` |
 | `chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | `build/build_lecture_notes.py` | `build/lecture_chapter01.py` |
+| `chapter-02/FIN1209-Chapter-02-Run-Card.pdf` | The instructor | `build/build_plan2.py` | `build/plan_chapter02.py` |
+| `chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf` | The students | `build/build_lecture_notes2.py` | `build/lecture_chapter02.py` |
 
-The **teaching plan** is a run card: timing, run plans, cut tiers, speaker
-cues, check answers, slide numbers. The **lecture notes** are the student
-facing record of the content: prose, the figures, every term defined once, the
-review questions. A slide number or a minute count in the lecture notes means
-it is in the wrong document.
+The **instructor's document** carries timing, cuts, speaker cues, check
+answers and slide numbers. The **lecture notes** are the student facing record
+of the content: prose, the figures, every term defined once, the review
+questions. A slide number or a minute count in the lecture notes means it is
+in the wrong document.
+
+**The instructor's document is three pages from Chapter 2 onwards, not
+twenty six.** The captain taught from Chapter 1's 26 page teaching plan on
+2026-09-02 and said plainly that he did not really use it, and the problem it
+was built to solve happened anyway: 180 minutes, and he reached the end of
+Part 4 of 6. Do not build another one. `build/plan_chapter02.py` is the shape
+and `TEMPLATE.md` has the three things a run card does.
+
+**Cost the minutes rather than guessing them, and print the honest total.**
+The rate is calibrated on what happened in the room: Chapter 1's openers plus
+its first four parts is 155 slides, and 155 slides is what 180 minutes bought.
+Chapter 2 comes to 202 minutes at that rate and its run card says so, then
+names exactly which twenty three minutes come out to land it at 180.
+`chapter-02/README.md` has the arithmetic.
 
 Layout lives in `build/notekit.py` and `build/lecturekit.py`, which know
 nothing about any chapter; lecturekit takes the FEU palette and the paginator
@@ -130,23 +161,23 @@ looked perfect. `chapter-01/teaching-plan-design.md` and
 `chapter-01/lecture-notes-design.md` record the research each design came
 from, with sources.
 
-## A run plan has to exist on the part pages
+## A cut has to be executable while standing up
 
-The teaching plan has five run plans, and the instructor reads one of them
-while standing in a room. **A plan that appears only in the summary table and
-on its own two pages is invisible where it is used.** The sixteen part pages
-are the working document.
+This is what Chapter 1's teaching plan got wrong twice, and what the Chapter 2
+run card is built to get right.
 
-Two things carry a plan onto them, and both are in `build/plan_chapter01.py`:
-the `keep` label on every `FigureRef`, which names the first plan that drops
-that picture, and the `plan=` row on every `Ladder`, which says what comes off
-in that part. `Notes.plan_row` names the plan those rows are written for.
+**A cut nobody can act on is not a cut.** Chapter 1 spread five run plans
+across sixteen part pages, and an audit still found the plan carrying a 180
+minute column while every cut marker said "cut at Long", so a part page told
+the instructor to run 31 minutes of material in a 25 minute box. Chapter 2
+names every cut slide by slide instead, resolved against the deck, so the card
+cannot print a wrong number.
 
-The rule underneath: **`OFF AT` and `cut at` always name the first plan that
-drops the item, and every shorter plan drops it too.** An audit found the plan
-had a 180 minute column in its table while every cut marker still said "cut at
-Long", so reading a part page told the instructor to run 31 minutes of material
-in a 25 minute box.
+**Nothing on the floor may be cuttable, and nothing cuttable may carry a
+check.** Before you write a run card, confirm it: no check item may rest on a
+chart or on any figure the first cut drops.
+`chapter-02/check-answerability-audit.md` is that confirmation for Chapter 2
+and it is why the card can drop all eight charts as one block.
 
 ## A check must be answerable from the slides alone
 
@@ -160,6 +191,9 @@ come before the check**, and no build check enforces either half of that.
 two failures it found: a check that sat in front of the slide it examined, and
 a term the question named that only the speaker note ever said out loud. Both
 failure modes are invisible to `deckkit.validate()`.
+`chapter-02/check-answerability-audit.md` is the same audit run before the
+chapter shipped rather than after, which is the order to work in. Its 42 items
+all pass. Write one for every chapter.
 
 The answer key rules are enforced: no letter over 35 percent or under 15, and
 no three identical answers in a row. Those cannot regress silently.

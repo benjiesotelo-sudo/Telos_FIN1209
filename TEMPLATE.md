@@ -1,16 +1,29 @@
 # Building the next chapter
 
-Read this before you touch anything. Chapter 1 is the template: it is 227
-slides, 25 in-class checks carrying 50 items, 49 terms, 35 book figures and 9
-charts of our own, and it ships as four documents built from the same data,
-one of them a second edition of the deck. Chapter 2 is four content files and
-nothing else. You should not need to open a renderer.
+Read this before you touch anything. Two chapters are built.
+
+- **Chapter 1** is the original template: 227 slides, 25 checks carrying 50
+  items, 49 terms, 35 book figures and 9 charts of our own.
+- **Chapter 2** is the same design done a second time: 175 slides, 21 checks
+  carrying 42 items, 27 terms, 26 book figures and 8 charts. It is the fresher
+  worked example and it is the one to copy.
+
+**The next chapter is four content files and nothing else.** You should not
+need to open a renderer, and if you think you do, read the last paragraph of
+the next section first.
 
 The two design documents behind the print documents are
 `chapter-01/teaching-plan-design.md` and
 `chapter-01/lecture-notes-design.md`. They record the research each layout came
 from, with sources. This file does not repeat them; when you want to know why a
 page looks the way it does, go there.
+
+One thing Chapter 2 changed, and it is the most important line in this file
+for whoever is writing Chapter 3: **the instructor's document is a three page
+run card, not a twenty six page teaching plan.** The captain taught from
+Chapter 1's plan and said plainly that he did not use it, and the problem it
+was meant to solve happened anyway: he had 180 minutes and reached the end of
+Part 4 of 6. See **The instructor's document** below.
 
 ---
 
@@ -49,40 +62,53 @@ disagreement in one sentence and move on.
 
 ## Which files to copy, and which to write fresh
 
-Copy these and change the chapter number. They are wiring, not content:
+Copy these and change the chapter number in four places each: the module it
+imports, the output paths, the chart folder, and the docstring. They are
+wiring, not content.
 
 | Copy | To | Then |
 |---|---|---|
-| `build/build_chapter1.py` | `build/build_chapter2.py` | point it at the new content module; the `--edition` switch comes with it |
-| `build/build_plan.py` | `build/build_plan2.py` | point it at the new plan module |
-| `build/build_lecture_notes.py` | `build/build_lecture_notes2.py` | point it at the new lecture module |
+| `build/build_chapter2.py` | `build/build_chapter3.py` | point it at the new content and chart modules; the `--edition` switch comes with it |
+| `build/build_plan2.py` | `build/build_plan3.py` | point it at the new plan module |
+| `build/build_lecture_notes2.py` | `build/build_lecture_notes3.py` | point it at the new lecture module, and set `SUMMARY_SLIDE` to the new chapter number |
 
-Write these three fresh, using the Chapter 1 file beside you as the shape:
+Write these four fresh, using the Chapter 2 file beside you as the shape:
 
 | Write | From the shape of | What it is |
 |---|---|---|
-| `build/content_chapter02.py` | `build/content_chapter01.py` | the deck, as plain data |
-| `build/plan_chapter02.py` | `build/plan_chapter01.py` | the instructor's run card, as plain data |
-| `build/lecture_chapter02.py` | `build/lecture_chapter01.py` | the students' notes, as plain data |
-| `build/charts_chapter02.py` | `build/charts_chapter01.py` | the charts this course draws, as plain data |
+| `build/content_chapter03.py` | `build/content_chapter02.py` | the deck, as plain data |
+| `build/charts_chapter03.py` | `build/charts_chapter02.py` | the charts this course draws, as plain data |
+| `build/lecture_chapter03.py` | `build/lecture_chapter02.py` | the students' notes, as plain data |
+| `build/plan_chapter03.py` | `build/plan_chapter02.py` | the instructor's run card, as plain data |
 
-**Never copy or edit these.** They are chapter-agnostic renderers and a change
-here changes every chapter:
+**One chart output folder per chapter.** `build_chapter2.py` writes to
+`build/generated/charts-02`. The letters restart at A in every chapter, so a
+shared folder would have one chapter's Chart A overwrite another's and break
+the hash check that proves a committed deck holds only our own artwork.
+
+**Never edit what is already in these.** They are chapter-agnostic renderers
+and a change to an existing function changes every chapter:
 
 `build/deckkit.py`, `build/notekit.py`, `build/lecturekit.py`,
 `build/chartkit.py`, `build/chrome.py`.
 
-If a chapter seems to need a new kind of slide or block, add the dataclass and
-its renderer to the kit, not a special case to the content file. Content files
-carry no drawing code and no HTML.
+**Adding to them is different, and it is the sanctioned path.** If a chapter
+needs a kind of slide, block or chart the kit has not got, add the dataclass
+and its renderer to the kit rather than a special case to the content file.
+Chapter 2 added seven chart forms and two data generators to `chartkit.py`
+that way and both Chapter 1 decks still rebuild byte for byte, which is the
+test: after any kit change, rebuild every earlier chapter and confirm the
+decks are byte identical and the two PDFs are identical by text.
+
+Content files carry no drawing code and no HTML.
 
 ---
 
 ## The content module's structure
 
-`build/content_chapter01.py` is the authority on scope. The plan and the notes
-are both checked against it, so build it first and finish it before you write
-the other two.
+`build/content_chapterNN.py` is the authority on scope. The run card and the
+notes are both checked against it, so build it first and finish it before you
+write the other two. `build/content_chapter02.py` is the shape.
 
 It is pure data, in this shape:
 
@@ -195,9 +221,14 @@ chapter has one of these, say so in the plan and mark it uncuttable.
 
 ## Charts of our own
 
-Chapter 1 draws nine. They are the answer to the standing want that a term
-being explained should have a picture beside it, and they are the one part of
-the deck whose artwork is committed.
+Chapter 1 draws nine and Chapter 2 draws eight. They are the answer to the
+standing want that a term being explained should have a picture beside it, and
+they are the one part of the deck whose artwork is committed.
+
+**How many is a judgement, not a quota.** Chapter 1 gave every term slide in
+its first part a companion. Chapter 2 has twenty six figures of its own, so a
+chart earns its place only where the book asserts something its own figures do
+not actually show, and there are eight across six parts.
 
 **Write them as data.** `build/chartkit.py` holds the chart forms and the deck
 palette and knows nothing about any chapter; `build/charts_chapterNN.py` holds
@@ -267,48 +298,83 @@ a placeholder and the rest of the document is unaffected.
 Before committing a deck, confirm it embeds no artwork. Both editions:
 
 ```
-unzip -l chapter-02/FIN1209-Chapter-02.pptx | grep ppt/media    # must be empty
+unzip -l chapter-02/FIN1209-Chapter-02.pptx | grep ppt/media    # only our charts
 unzip -l chapter-02/FIN1209-Chapter-02-Student-Edition.pptx | grep ppt/media
-pdfimages -list chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf # must list none
+pdfimages -list chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf # only our charts
 ```
+
+The committed decks are not empty of images any more: they hold this
+chapter's own charts and nothing else. `chapter-02/README.md` has the two
+commands that prove which images are in there.
 
 Answer keys for graded assessments stay out of the repository too.
 
 ---
 
+## The instructor's document
+
+Chapter 1 shipped a 26 page teaching plan: five run plans, a cut tier for
+every block, speaker cues, check answers and one page per part. The captain
+taught from it on 2026-09-02 and said plainly that he did not really use it.
+The problem it was built to solve happened anyway: he had 180 minutes and
+reached the end of Part 4 of 6.
+
+**So do not build another one.** Chapter 2 ships three pages from the same
+renderer, and `build/plan_chapter02.py` is the shape to copy. It does three
+things and nothing else:
+
+1. **The clock.** Minutes per part in two columns, full and cut, each with
+   the wall clock time to be starting that part at.
+2. **What to cut, first and second**, named slide by slide, with the minutes
+   each cut buys.
+3. **The emergency cut, and the floor**: what carries a check, a past paper
+   item or the homework and is never on the table.
+
+**Cost the minutes rather than guessing them**, and say the honest total even
+when it is over the session. The rate is calibrated on what actually happened
+in a room: Chapter 1's openers plus its first four parts is 155 slides, and
+155 slides is what 180 minutes bought. `chapter-02/README.md` records the
+arithmetic and Chapter 2's answer, which is 202 minutes, one session only with
+the first two cuts taken before the session starts.
+
+`Notes.doc_kind` is what the cover calls the document. Set it.
+
+---
+
 ## The four build commands
 
-From the repository root, in this order, every time:
+From the repository root, in this order, every time, with `NN` the chapter:
 
 ```
-.venv/bin/python build/build_chapter2.py                   # teaching deck, and the answer sheet
-.venv/bin/python build/build_chapter2.py --edition student # student deck
-.venv/bin/python build/build_plan2.py                      # the instructor, 23 pages for ch. 1
-.venv/bin/python build/build_lecture_notes2.py             # the students, 26 pages for ch. 1
+.venv/bin/python build/build_chapterN.py                   # teaching deck, and the answer sheet
+.venv/bin/python build/build_chapterN.py --edition student # student deck
+.venv/bin/python build/build_planN.py                      # the instructor's run card
+.venv/bin/python build/build_lecture_notesN.py             # the students' notes
 ```
 
 **Rebuild all four whenever you change the content module.** The deck is the
-authority on scope and both PDFs are checked against it. The plan resolves
+authority on scope and both PDFs are checked against it. The run card resolves
 every slide reference against the deck; the notes resolve every figure number
 and every term against it.
 
-Then the three versions with the artwork, outside the repository:
+Then the three versions with the artwork, outside the repository. Chapter 2's
+names, which the instructor's Drive expects, are the pattern:
 
 ```
 .venv/bin/python build/build_chapter2.py \
-    --with-figures --out ~/FIN1209-Chapter-02-with-figures.pptx
+    --with-figures --out ~/FIN1209-Chapter-02-with-figures-and-charts.pptx
 .venv/bin/python build/build_chapter2.py --edition student \
-    --with-figures --out ~/FIN1209-Chapter-02-Student-Edition.pptx
+    --with-figures --out ~/FIN1209-Chapter-02-Student-Edition-with-charts.pptx
 .venv/bin/python build/build_lecture_notes2.py \
-    --with-figures --out ~/FIN1209-Chapter-02-Lecture-Notes.pdf
+    --with-figures --out ~/FIN1209-Chapter-02-Lecture-Notes-with-charts.pdf
 ```
 
 The last two are what students get through Canvas.
 
 ### The edition switch, which you inherit for free
 
-`--edition` lives in `deckkit.build()` and `build_chapter1.py` and knows
-nothing about any chapter, so Chapter 2 gets it by copying the build script.
+`--edition` lives in `deckkit.build()` and the build script and knows
+nothing about any chapter, so a new chapter gets it by copying the script.
 `teaching` is the default and renders everything. `student` drops every
 `Check`, which removes both the question slide and its reveal, and writes no
 speaker notes at all.
@@ -382,9 +448,9 @@ placeholder build looked perfect throughout.
 
 ```
 DATA=/Users/benjie/benjie-agent-workspace/data/fin1209-notes-rebuild
-$DATA/pdfpng chapter-02/FIN1209-Chapter-02-Teaching-Plan.pdf   /tmp/plan  $(seq 1 23)
-$DATA/pdfpng chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf   /tmp/ln    $(seq 1 26)
-$DATA/pdfpng ~/FIN1209-Chapter-02-Lecture-Notes.pdf            /tmp/lnfig $(seq 1 26)
+$DATA/pdfpng chapter-02/FIN1209-Chapter-02-Run-Card.pdf         /tmp/card  1 2 3
+$DATA/pdfpng chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf    /tmp/ln    $(seq 1 22)
+$DATA/pdfpng ~/FIN1209-Chapter-02-Lecture-Notes-with-charts.pdf /tmp/lnfig $(seq 1 22)
 ```
 
 Look at **both** builds of the lecture notes. The figure build is not the
@@ -398,8 +464,8 @@ transition:
 
 ```
 soffice --headless --convert-to pdf --outdir /tmp/smoke chapter-02/FIN1209-Chapter-02.pptx
-soffice --headless --convert-to pdf --outdir ~ ~/FIN1209-Chapter-02-with-figures.pptx
-soffice --headless --convert-to pdf --outdir ~ ~/FIN1209-Chapter-02-Student-Edition.pptx
+soffice --headless --convert-to pdf --outdir ~ ~/FIN1209-Chapter-02-with-figures-and-charts.pptx
+soffice --headless --convert-to pdf --outdir ~ ~/FIN1209-Chapter-02-Student-Edition-with-charts.pptx
 ```
 
 What to look for, in order:
@@ -426,13 +492,16 @@ Then the paperwork:
   editions. The two PDF builds are not: Chrome stamps its own identifiers, so
   a rebuild with no content change still moves those bytes. Check them by
   their text (`pdftotext`), and revert them if only the bytes changed.
-- `unzip -l <deck>.pptx | grep ppt/media` must be empty, for both editions.
+- `unzip -l <deck>.pptx | grep ppt/media` must list exactly this chapter's
+  own charts and nothing else, for both editions.
 - **No image file may be committed**, in any form.
-- Update `chapter-02/README.md` and the counts in `build/README.md`.
+- Update the chapter's own `README.md` and the counts in `build/README.md`,
+  and add what the next session needs to know to `TEMPLATE.md` and
+  `AGENTS.md`.
 
 ---
 
-## What Chapter 2 inherits, in one line
+## What the next chapter inherits, in one line
 
 Six parts, a check every two or three terms, a figure only where the book has
 one, every term defined once in each document in the same words, two editions

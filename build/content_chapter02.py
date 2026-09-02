@@ -1067,7 +1067,7 @@ PART4 = Section(
                     reason="The reaction ends when the peak it formed is penetrated.",
                 ),
                 Q(
-                    stem="Figure 2.12 shows a reaction of about 75 percent that was still a secondary reaction. What does that tell you?",
+                    stem="A reaction retraces about 75 percent, and the primary bull trend then resumes. What does that tell you?",
                     options=("The one third to two thirds guide is a rule with no exceptions",
                              "Depth alone does not settle what a move is",
                              "Retracements are always measured on weekly charts",
@@ -1786,7 +1786,7 @@ PART6 = Section(
             ),
             accent="A twenty three year bear trend is not a trade anybody can actually hold.",
             notes=(
-                "Point back at Figure 2.7 in Part 3. Twenty three years, and now say stop loss out loud.",
+                "Read the accent line and then say stop loss out loud. Twenty three years of it.",
                 "This is the criticism about faster markets and lower timeframes.",
             ),
         ),
@@ -1862,7 +1862,7 @@ PART6 = Section(
             accent="Many practitioners prefer large cap against small cap, such as the S&P500 and the Russell 2000.",
             notes=(
                 "The original logic is worth stating: confirmation was an economic argument, not a chart one.",
-                "That is why Figure 2.24 in this part used two indices instead of the two averages.",
+                "That is why practitioners now pair a large cap index with a small cap one instead.",
             ),
         ),
         Check(

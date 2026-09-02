@@ -259,7 +259,7 @@ Answer: **D**. Past two thirds on high volume, the book stops calling it a react
 
 Answer: **A**. The reaction ends when the peak it formed is penetrated.
 
-**Q2.** Figure 2.12 shows a reaction of about 75 percent that was still a secondary reaction. What does that tell you?
+**Q2.** A reaction retraces about 75 percent, and the primary bull trend then resumes. What does that tell you?
 
 - A. The one third to two thirds guide is a rule with no exceptions
 - **B. Depth alone does not settle what a move is**

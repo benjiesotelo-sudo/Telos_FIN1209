@@ -6,8 +6,9 @@ It ships in two editions: the teaching edition at 227 slides, and the student
 edition at 177, which is the same deck without the checks, the reveals and the
 speaker notes.
 
-Four documents come out of the same chapter data, and they are for four
-different people:
+Six documents come out of this chapter, and they are for different people. The
+first four are rendered from one chapter file; the activity has a content file
+of its own, because a take-home is not the lecture.
 
 | File | Who it is for | What it is | Generated from |
 |---|---|---|---|
@@ -15,14 +16,16 @@ different people:
 | `FIN1209-Chapter-01-Student-Edition.pptx` | The students | 177 slides. The same deck with the checks, the reveals and the speaker cues removed. | `build/content_chapter01.py` |
 | `FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | 26 pages. Timing, cut tiers, what to say, which check comes next. | `build/plan_chapter01.py` |
 | `FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | 29 pages. What the lesson covered, in prose, with the figures and the charts. | `build/lecture_chapter01.py` |
+| `activity/FIN1209-Chapter-01-Activity-1.pdf` | The students | 17 pages. The take-home that replaces Homework 1: build two price charts in Google Sheets, identify, then forecast. | `build/activity_chapter01.py` |
+| `activity/FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | 20 pages. Every answer, the 20 point rubric, and the reveal. | `build/activity_chapter01.py` |
 | `in-class-checks.md` | The instructor | The answer sheet. | `build/content_chapter01.py` |
 | `check-answerability-audit.md` | The instructor | Whether every check item can be answered from the slides alone. | Written by hand |
 | `teaching-plan-design.md` | Whoever edits the plan | Why the plan looks the way it does. | Written by hand |
 | `lecture-notes-design.md` | Whoever writes Chapter 2 | The research behind the lecture notes, with sources. | Written by hand |
 
 **Nothing in this folder is hand-edited except the two design files, the check
-audit and this one.** The two decks, the answer sheet and the two PDFs are all
-build output, and the next build overwrites them.
+audit, `activity/README.md` and this one.** The two decks, the answer sheet and
+the four PDFs are all build output, and the next build overwrites them.
 
 ## Two editions of the deck, one content file
 
@@ -79,6 +82,9 @@ tiers, no speaker cues, no answer letters and no slide numbers.
 | How a slide is drawn | `build/deckkit.py` | the deck build |
 | How a teaching plan page is laid out | `build/notekit.py` | both PDF builds |
 | How a lecture notes page is laid out | `build/lecturekit.py` | `build/build_lecture_notes.py` |
+| Anything in the take-home activity | `build/activity_chapter01.py` | `build/build_activity.py` |
+| Which prices the activity uses | `build/activity_data.py` and `activity/data/` | `build/build_activity.py` |
+| How an activity page is laid out | `build/activitykit.py` | `build/build_activity.py` |
 
 **Rebuild both PDFs whenever you rebuild the deck.** The deck is the authority
 on scope and both PDFs are checked against it. The plan resolves every slide
@@ -247,6 +253,24 @@ beside them, then the book's lines, then a second pass for chart patterns.
 blank chart there is nothing to compare against. It is also Homework 1
 rehearsed on paper, and the bridge into the charting platform half of the
 week.
+
+## The take-home activity
+
+```
+.venv/bin/python build/build_activity.py
+```
+
+Two PDFs from one content module: the students' worksheet and the instructor's
+answer key. It is the fourth document this chapter produces and the only one a
+student works through rather than reads, so it has a renderer of its own,
+`build/activitykit.py`, and a folder of its own. `activity/README.md` has the
+data source and its licence, the one live Google Drive dependency and how to
+rebuild it, and why the screenshots are committed when the book's figures are
+not.
+
+Rebuilding the deck does not require rebuilding the activity. It is checked
+against the chapter's vocabulary by hand, not by the build, so if you change
+what Chapter 1 defines, read the activity again.
 
 ## Smoke test
 

@@ -192,6 +192,50 @@ $DATA/pdfpng ~/FIN1209-Chapter-01-Lecture-Notes.pdf /tmp/lnfig $(seq 1 29)
 `chapter-01/teaching-plan-design.md` and `chapter-01/lecture-notes-design.md`
 record the research each design came from.
 
+## Build the take-home activity
+
+```
+.venv/bin/python build/build_activity.py         # both, about 40 seconds
+```
+
+Two more PDFs, from a content module of their own. The worksheet and the
+answer key are the same `Activity` rendered twice, with `key=True` turning on
+the answers, the marking notes and the reveal, so a printed answer cannot
+drift from the question it answers.
+
+| Output | Who it is for | What is in it |
+|---|---|---|
+| `chapter-01/activity/FIN1209-Chapter-01-Activity-1.pdf` | The students | 20 numbered steps, 19 of them with a real screenshot, 32 identification questions, the 20 point rubric |
+| `chapter-01/activity/FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | The same, with every answer, the two reveal charts and how to run the session |
+
+Three things happen in this build that happen in no other.
+
+**The screenshots are prepared, never edited in place.** `chapter-01/activity/screens/`
+holds nineteen unaltered 1440 by 900 captures. The crop and any highlight are
+declared beside the step that places them, and the build applies those into
+`build/generated/activity/shots/`.
+
+**Two reveal charts are drawn from real prices**, by
+`build/activity_charts.py`, into `build/generated/activity/charts/`. Two
+folders, not one, because `prepare_shots` empties the folder it writes into
+and pointing both at the same place silently deleted the charts after they had
+been drawn.
+
+**Every picture gets a height in millimetres before the paginator runs.** An
+`<img>` with no declared height measures zero until it loads, so the paginator
+packs a page it thinks is empty and the printed sheet clips whatever came
+last. `activitykit.Shots.height_mm` computes the height from the file's own
+aspect ratio. If you add a picture to any of these documents, give it a
+height.
+
+The build refuses to write a worksheet a student cannot finish: a step naming
+a screenshot that is not there, a question with no answer in the key, or an em
+dash anywhere in the copy.
+
+`chapter-01/activity/README.md` has the data source and its licence, the one
+live Google Drive dependency and the command that rebuilds it, and why the
+Google Sheets captures are committed when the book's figures are not.
+
 ## Figures
 
 The chapter places 35 figures from the course text. They are Wiley's, this
@@ -326,6 +370,14 @@ boards, check cards and tables are dataclasses in `notekit.py`; sections,
 prose, definitions, figures, plates, quotations and self checks are
 dataclasses in `lecturekit.py`. Chapter 2 is two content files, not a
 redesign.
+
+The activity is the same move again and a little more work, because its
+numbers are real. Copy `activity_chapter01.py`, and copy `activity_data.py`
+pointed at new price files with new windows. Steps, questions, callouts,
+tables, ruled writing space and figures are dataclasses in `activitykit.py`.
+Choosing the window is the part that is not mechanical: it has to end
+somewhere a reasonable person could read two ways, and what happened next has
+to be worth showing.
 
 ## The rules the build enforces
 

@@ -407,10 +407,10 @@ CHARTS = (
         draw=ck.annotated,
         kwargs=dict(
             series=B_SERIES,
-            size=PAIR,
+            size=TERM,
             notes=(
-                Note(x=34, label="Correction or pullback:\nshallow, usually "
-                     "no more\nthan a few percent", dx=-22, dy=52),
+                Note(x=34, label="Correction or\npullback: shallow,\n"
+                     "usually no more than\na few percent", dx=-4, dy=56),
                 Note(x=84, label="Reversal or retracement:\nmay be of any "
                      "amount\nor degree", dx=-34, dy=-34, notice=True),
             ),
@@ -445,7 +445,7 @@ CHARTS = (
         draw=ck.annotated,
         kwargs=dict(
             series=D_SERIES,
-            size=PAIR,
+            size=TERM,
             xlabel="One trading day",
             ylabel="Pips from the day's low",
             price_ticks=(0, 60, 120),
@@ -457,8 +457,8 @@ CHARTS = (
                        dx=4, dy=11),
             ),
             notes=(
-                Note(x=58, label="Beyond the average range\nbefore the day "
-                     "completes:\npotential exhaustion", dx=-60, dy=-78,
+                Note(x=58, label="Beyond the average\nrange before the day\n"
+                     "completes: potential\nexhaustion", dx=-70, dy=-33,
                      notice=True),
                 Note(x=96, label="The day\nends", dx=-10, dy=-46, dot=False),
             ),
@@ -561,7 +561,7 @@ CHARTS = (
         draw=ck.annotated,
         kwargs=dict(
             series=I_SERIES,
-            size=TERM,
+            size=PAIR,
             ylabel="Price (PHP)",
             price_ticks=(48, 50, 52),
             extend=44,
@@ -622,7 +622,7 @@ CHARTS = (
         draw=ck.annotated,
         kwargs=dict(
             series=K_SERIES,
-            size=TERM,
+            size=PAIR,
             ylabel="Price (PHP)",
             price_ticks=(47, 50, 53),
             extend=44,
@@ -735,18 +735,18 @@ CHARTS = (
         draw=ck.annotated,
         kwargs=dict(
             series=O_SERIES,
-            size=PAIR,
+            size=TERM,
             strokes=(
                 Stroke(points=O_SHORT, tone="structure",
                        label="Shorter average", at=len(O_SHORT) - 1, dx=-6,
-                       dy=-26, width=1.8),
+                       dy=-19, width=1.8),
                 Stroke(points=O_LONG, tone="notice", label="Longer average",
-                       at=len(O_LONG) - 1, dx=-6, dy=30, width=1.8),
+                       at=len(O_LONG) - 1, dx=-6, dy=70, width=1.8),
             ),
             notes=(
                 Note(x=O_UP[0], y=O_UP[1],
                      label="Shorter crosses above the\nlonger: a potential "
-                           "uptrend", dx=26, dy=-34),
+                           "uptrend", dx=26, dy=-26),
                 Note(x=O_DOWN[0], y=O_DOWN[1],
                      label="Shorter crosses below:\na potential downtrend",
                      dx=-34, dy=52, notice=True),

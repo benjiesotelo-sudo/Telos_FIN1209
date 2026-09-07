@@ -1,7 +1,7 @@
 # Chapter 5 - Trend Analysis
 
 138 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
-items, 8 terms, all 59 of the book's figures, and 26 charts of our own.
+items, 32 terms, all 59 of the book's figures, and 26 charts of our own.
 
 **This chapter is built to the lean form the instructor approved in Chapter
 4**: the content decides the length, each question is followed by its own
@@ -79,6 +79,85 @@ picture shows, because the committed build prints a placeholder where a book
 figure goes. All 42 items were checked against that by hand, and each is
 answered by the text of a slide that comes before its check.
 
+## The new-term marker
+
+**A term slide is a term's first teaching in the course, and nothing else.**
+The instructor's review of the first build: the uptrend carried the marker
+though Chapter 2 introduced it, and HWC and MWC, which are new, did not.
+Every name in the chapter was then checked against
+`build/content_chapter01.py` to `content_chapter04.py`. `TEMPLATE.md` has
+the rule. This is the result: 32 terms, where the first build had 8.
+
+**Three lost the marker.** Each is now an ordinary slide, and its speaker
+cue says it is a recall:
+
+| Was a term here | Already a term in | Now |
+|---|---|---|
+| Uptrend | Chapter 2, *Uptrend* | An uptrend: higher highs and higher lows |
+| Stop order | Chapter 1, *Limit and stop entry orders* | Stop orders: execution, but not the price |
+| Limit order | Chapter 1, *Limit and stop entry orders* | Limit orders: the price, but not execution |
+
+**Twenty seven gained it.** Each was an ordinary slide in the first build,
+and each is a name the book introduces in this chapter:
+
+| Section | Terms that gained the marker |
+|---|---|
+| 5.1 | Wave cycles: HWC, MWC and LWC. Wave-degree convergence. Correction and pullback. |
+| 5.2 | 1 Cycle amplitude. 2 Cycle period. 3 Bar retracement symmetry. 4 Average bar range. 7 Real body to range ratio, BRR. 8 Angular symmetry and momentum. 9 Barrier proximity. 12 Third gap exhaustion. 13 Average period range. |
+| 5.5 | Support and resistance role reversal. Trend filter. |
+| 5.6 | Internal line. Continuation and reversal trendlines. Channel, and its return line. Nested channels. Sperandeo trendlines. DeMark trendlines. Standard fan lines. Fibonacci fan lines. Speed lines. Andrew's Pitchfork. |
+| 5.8 | Common, breakaway, runaway and exhaustion gaps. |
+| 5.9 | Unidirectional and bidirectional entries. |
+| 5.10 | Drummond geometry. |
+
+**Five kept it:** Bar stochastic, Slippage, Inflection point of strength N,
+Proportional stopsizing and Trendline.
+
+**A word only used earlier is still new.** Eight of the terms above were
+met before without being taught, and each cue says where: slippage,
+correction and inflection point were words in a sentence; trendlines,
+channels and angular symmetry were drawn in earlier figures; the cycle
+period was named in Chapter 4 as Chapter 20's; and the four gaps were named
+in Chapter 3 "for later" and three of them met in Chapter 4 as Sakata's San
+Ku. This chapter is the first to say what each one means.
+
+**Left on ordinary slides, and why:**
+
+| Slide | Why it carries no marker |
+|---|---|
+| Dow's three trends, the downtrend | Chapter 2 terms. |
+| The three categories of filter | The price, time and algorithmic filters were Chapter 1 terms. |
+| To go long, go short, liquidate, cover | Chapter 1 terms. |
+| Failure swing, double top, non-failure swing | Chapter 2 terms. |
+| 5 Price persistence | Persistence was Chapter 1's first applied assumption. |
+| A trendline's minimum price target | Chapter 4's minimum measuring objective, measured from a trendline. |
+| 6 The average bar stochastic ratio | Its term, bar stochastic, has the slide before it. |
+| 10, 11 and 14 of the sixteen | The book's heading describes what to watch and names nothing. |
+| 15 Volume spread action | Four cases. The squat bar is named as one of them. |
+| 16 Divergence | One sentence, and the book defers it to Chapter 9. |
+| Two-stage filtering | The book calls it two-stage, double and double-stage filtering in three sentences and settles on no name. |
+| Reversal and retracement | In use since Chapter 2. They share the slide that teaches correction and pullback. |
+| The other orders, the five entry modes, the exit orders, the three retracement approaches | Lists the book gives one line each. A term slide teaches one idea. |
+
+**What the three rows cost.** A term slide has no accent and no caption, so
+on eight converted slides a detail moved from the slide to its speaker cue.
+None of them carries a check:
+
+- 4 Average bar range: that the true range was Chapter 3 and its averaging
+  is Chapter 8.
+- Trend filter: that the three filters are by no means exhaustive. That
+  moving averages are Chapter 11 is still on the slide, in the chart's
+  footnote.
+- Channel: that trough 6 violating the uptrend line may be an early
+  indication of a trend change, and that other constructions are Chapter 13.
+- Sperandeo trendlines: that the book gives only this much and advises
+  reading Sperandeo's own.
+- Standard fan lines: where the accelerating set ends, at gradually rising
+  lower peaks, and that the book says to draw only three.
+- Drummond geometry: that the inter-bar trendlines join highs and lows.
+- Stop orders and limit orders: the peso example of each, which the chart
+  beside each now carries.
+
 ## What each section teaches
 
 Every section is taught as fully as the book teaches it.
@@ -120,17 +199,17 @@ where it appears, and no check rests on any of them:
 
 | Used | Where the slide says so | Taught in |
 |---|---|---|
-| Typical price | 5.1 and 5.10, caption and cue | not said |
+| Typical price | 5.1 caption, 5.10 cue | not said |
 | The CCI and Floor Trader's Pivot Points | 5.1, caption | not said |
-| How the true range is averaged into the ATR | 5.2, caption | Chapter 8; the true range was Chapter 3 |
-| The cycle-tuned stochastic | 5.2, caption | Chapter 8 is oscillators |
+| How the true range is averaged into the ATR | 5.2, cue | Chapter 8; the true range was Chapter 3 |
+| The cycle-tuned stochastic | 5.2, on the slide | Chapter 8 is oscillators |
 | Divergence | 5.2, characteristic 16 | Chapter 9 |
 | MACD and the stochastic | 5.5, caption | not said |
-| Moving averages | 5.5, caption | Chapter 11 |
+| Moving averages | 5.5, the chart's footnote and the cue | Chapter 11 |
 | Candlestick patterns, the shooting star | 5.8, caption | Chapter 14 |
 | Elliott waves | 5.1, caption | Chapter 18 |
-| How DeMark qualifies a trough | 5.6, caption | DeMark's own book |
-| Alternative channel constructions | 5.6, caption | Chapter 13 |
+| How DeMark qualifies a trough | 5.6, on the slide | DeMark's own book |
+| Alternative channel constructions | 5.6, cue | Chapter 13 |
 | Tradesizing in general | 5.5, cue | Chapter 28 |
 
 ## The twenty six charts
@@ -141,24 +220,24 @@ figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
 | Chart | Beside | What it shows |
 |---|---|---|
 | A | Dow sorts trends by how long they last | Primary, secondary and minor on one line |
-| B | Reversal, retracement, correction, pullback | A shallow dip beside a turn of any amount |
+| B | Correction and pullback | A shallow dip beside a turn of any amount |
 | C | 11 Size and duration of a consolidation | A small interruption and a large one |
-| D | 13 Completion of the average period range | A day that completes its 120 pips early |
+| D | 13 Average period range | A day that completes its 120 pips early |
 | E | 15 Volume spread action | The book's four cases, as bars over their volume |
 | F | Three categories of filter | One breakout, entered three ways |
 | G | Two-stage filtering | A close inside the allowed distance, and one beyond it |
 | H | Buying low and selling high, four ways | Two longs and two shorts on one swing |
-| I | Stop order | A buystop above the market and a sellstop below |
+| I | Stop orders | A buystop above the market and a sellstop below |
 | J | Slippage | A gap through a stoploss, in pesos |
-| K | Limit order | A sell limit above the market and a buy limit below |
+| K | Limit orders | A sell limit above the market and a buy limit below |
 | L | Exits, and orders at the market | The four exit orders around the current price |
 | M | Ways of initiating an entry | Barrier, breakout and failed breakout entries |
 | N | Inflection point of strength N | Strength 2 beside strength 10 |
-| O | Trend filters | A double moving average crossover |
+| O | Trend filter | A double moving average crossover |
 | P | The trouble with a varying stopsize | Tradesize against stopsize, for a fixed risk |
 | Q | Proportional stopsizing | The same, capped at the proportional stopsize |
 | R | Five steps to the proportional tradesize | The percentage risk that results |
-| S | Trendline | Drawn, tentative, confirmed at the third contact |
+| S | 5.6 Trendline | Drawn, tentative, confirmed at the third contact |
 | T | Why a trendline holds: behavior | One line met from above, then from below |
 | U | What counts as a valid penetration? | An intraday low through the line, and a close back above |
 | V | A reliable trendline: angle and duration | Too steep, about right, too shallow |
@@ -186,13 +265,22 @@ plot, so a line that runs past the last price loses its label silently; end
 it inside. And a `Note` whose offset is negative is right aligned, so near
 the left edge it runs off the picture.
 
+**A chart is drawn for the slide type it sits beside.** The picture column
+beside a term starts lower and is narrower than the one beside a teaching
+slide, so `charts_chapter05.py` draws at two sizes, `PAIR` and `TERM`.
+When the marker moved, charts B, D and O went to the term size and I and K
+to the teaching size, and three of the five needed a label moved: B ran off
+the left edge, D covered its own price line and an axis label, and O sat on
+the time axis.
+
 ## How long the chapter takes
 
-**238 minutes at the calibrated rate, against a 180 minute session.** That is
+**245 minutes at the calibrated rate, against a 180 minute session.** That is
 information, not a target: nothing was cut to reach a length, and nothing was
-added. It is 58 minutes more than one session holds. No run card exists for
+added. It is 65 minutes more than one session holds. No run card exists for
 this chapter, so nothing here says what to cut; that is a decision for
-whoever writes one.
+whoever writes one. The first build cost 238: the slide count has not moved,
+and the seven minutes are the 24 more slides now costed as terms.
 
 The rate is the one written down in `chapter-03/README.md`: a content slide
 1, a term 1.25, a figure 0.75, a chart 0.5, a check with its reveal 2.5,
@@ -203,20 +291,20 @@ with a picture beside it is costed as the sum of its two parts.
 | Part | Slides | Minutes |
 |---|---|---|
 | Title, objectives, roadmap | 3 | 3.4 |
-| 5.1 Definitions | 18 | 32.5 |
-| 5.2 Quality of trend | 34 | 60.4 |
+| 5.1 Definitions | 18 | 33.1 |
+| 5.2 Quality of trend | 34 | 63.0 |
 | 5.3 Filters | 5 | 8.3 |
-| 5.4 Participation | 12 | 19.3 |
-| 5.5 Inflection points | 19 | 33.6 |
-| 5.6 Trendlines | 29 | 51.5 |
+| 5.4 Participation | 12 | 18.7 |
+| 5.5 Inflection points | 19 | 34.2 |
+| 5.6 Trendlines | 29 | 54.3 |
 | 5.7 Retracements | 2 | 3.7 |
-| 5.8 Gaps | 5 | 8.9 |
-| 5.9 Directionality | 1 | 2.0 |
-| 5.10 Drummond | 3 | 4.9 |
+| 5.8 Gaps | 5 | 9.2 |
+| 5.9 Directionality | 1 | 2.3 |
+| 5.10 Drummond | 3 | 5.2 |
 | 5.11 Reversals | 4 | 5.8 |
 | Closing | 3 | 3.4 |
 
-The weights sum to 206.75 and 206.75 times 1.150 is 237.8. The chapter is 47
+The weights sum to 212.75 and 212.75 times 1.150 is 244.7. The chapter is 47
 pages of the book against Chapter 4's 26, and comes to 138 slides against
 79, so it is the same density.
 
@@ -326,7 +414,7 @@ four limit cases, the buy limits included. The slide quotes it and teaches
 **The stop order sentence.** The book writes that a stop order "cannot
 guarantee that an order will be executed, or filled at the specified price,
 but it can guarantee execution". Its later sentences say three times that a
-stop exit is guaranteed and its exact price unknown. The term slide teaches
+stop exit is guaranteed and its exact price unknown. The slide teaches
 that reading and the speaker cue quotes the sentence.
 
 **Ninety percent.** The book says ninety percent of period ranges stay
@@ -334,4 +422,7 @@ below the two standard deviation value. The slide gives it as the book's
 figure.
 
 **Cycle amplitude and cycle period** are never defined in words. The two
-figures define them by where they put their arrows, and the slide says that.
+figures define them by where they put their arrows. Each is a term slide
+whose plain line is the figure's measure and says so, whose formal row is
+the book's statement of how to read it, and whose cue says the book gives
+no definition.

@@ -17,10 +17,12 @@ Read this before you touch anything. Five chapters are built.
   audit are written outside the repository. See **The lean form** below
   before you copy it.
 - **Chapter 5** is the lean form done a second time, and only the teaching
-  deck so far: 138 slides, 21 checks carrying 42 items, 8 terms, all 59 of
+  deck so far: 138 slides, 21 checks carrying 42 items, 32 terms, all 59 of
   the book's figures and 26 charts. `chapter-05/README.md` has what it
   found: the 26 chart limit, a figure whose labels are not in its image,
-  and a reveal slide that overflows in the PDF.
+  and a reveal slide that overflows in the PDF. Its first build was sent
+  back for where it put the new-term marker; see **The new-term marker**
+  below before you write a `Term`.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -156,7 +158,8 @@ The slide types are dataclasses in `build/deckkit.py`:
 - `Content(title, lines, accent, caption, notes)` - a teaching slide. Six body
   lines maximum, three preferred. `accent` is the one gold line, the thing to
   notice. `caption` is the small muted line under it.
-- `Term(term, plain, example, formal, notes)` - a new term. The three fields
+- `Term(term, plain, example, formal, notes)` - a new term, and only a new
+  one; see **The new-term marker** below. The three fields
   are the teaching order and they are not interchangeable; see below. An empty
   `formal` renders no formal row, which is how a term the book leaves
   undefined is taught.
@@ -218,6 +221,55 @@ CHECK chip, followed by a reveal slide carrying the letter, the option text and
 a one-line reason. The reason is not decoration: the letter alone teaches
 nothing. Checks carry no marks and the instructor says so out loud the first
 time, or the room freezes.
+
+**The new-term marker is for a new term, and for every one.** A `Term`
+slide carries the gold NEW TERM chip, and the instructor reads the chip
+literally: this word is new today. Chapter 5's first build marked *Uptrend*,
+which Chapter 2 introduced, and left *HWC* and *MWC*, which are new, on an
+ordinary slide. He sent it back for both. Three rules, and nothing in the
+build checks any of them:
+
+1. **First teaching only.** A term gets the marker on the first slide in
+   the course that says what it means, and nowhere else. If an earlier
+   chapter gave it a `Term` slide it is a recall: an ordinary `Content`
+   slide, with the chapter it came from in the speaker cue.
+2. **Every new name gets it.** Go through the book's chapter section by
+   section and list every name it introduces: an abbreviation, a "referred
+   to as", a named method, a named item in a numbered list. Each one that
+   is the subject of its slide is a `Term`. Names the book introduces
+   together as one idea share one slide and one marker: *HWC, MWC and LWC*,
+   or the four kinds of gap.
+3. **A word that was only used earlier is still new.** A word an earlier
+   chapter used in a sentence, printed in a figure or named "for later" has
+   not been taught. The slide that first says what it means gets the
+   marker, and its cue says where the word was met before.
+
+What stays an ordinary slide: a statement, a question, a worked example, a
+comparison, and a list of things the book gives one line each, such as the
+other order types in 5.4. A new name inside such a list is taught there,
+unmarked, because a term slide teaches one idea in three steps.
+
+**Check it against the earlier content modules, not against memory.** This
+prints every term the course has marked so far. Then search the earlier
+modules for each candidate word, because rule 3 turns on how it was used:
+
+```
+.venv/bin/python - <<'EOF'
+import sys, importlib
+sys.path.insert(0, "build")
+import deckkit
+for n in range(1, 6):
+    for sec in importlib.import_module(f"content_chapter{n:02d}").CHAPTER.sections:
+        for s in sec.slides:
+            s = s.left if isinstance(s, deckkit.Pair) else s
+            if isinstance(s, deckkit.Term):
+                print(n, s.term)
+EOF
+grep -n -i "slippage" build/content_chapter0[1-4].py
+```
+
+`chapter-05/README.md` has the worked result: the 27 terms that gained the
+marker, the three that lost it, and what was left alone and why.
 
 The answer key must be spread. No letter may hold more than 35 percent or fewer
 than 15 percent of the items, and no three consecutive items may share an
@@ -316,9 +368,18 @@ does not explain, and sets no question on the unexplained part.
   Keep one `text_w` for every chart beside a teaching slide and one for
   every chart beside a term, so the charts are all drawn at two sizes.
 
+- A `Term` beside a picture holds about nine wrapped lines at 17pt across
+  its three rows, and has no accent and no caption. To turn a teaching
+  slide into a term, the book's own statement goes in the formal row, its
+  example in the example row, and a note of ours that sat in the caption
+  goes to the speaker cue. Its picture column also starts lower, so a chart
+  beside it is drawn at the term size; switch `size=` in the chart module
+  and look at the chart again.
+
 **Look at every chart at full size before placing it.** A callout is placed
 as an offset in points, so labels collide with each other and run off the
-edge of the plot, and nothing fails. Chapter 4's eighteen took three rounds.
+edge of the plot, and nothing fails. Chapter 4's eighteen took three rounds,
+and three of the five charts Chapter 5 redrew at the other size collided.
 
 **Cost the minutes honestly.** Putting two things on one slide saves a click
 and not the talking, so a `Pair` is costed as the sum of its two parts. The

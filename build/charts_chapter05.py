@@ -96,8 +96,8 @@ at all: four shapes, and one bar drawn three times.
 from __future__ import annotations
 
 import chartkit as ck
-from chartkit import (Bar, Box, Bracket, ChartArt, Note, Sketch, Span, Stroke,
-                      Trace)
+from chartkit import (Addend, Bar, Box, Bracket, ChartArt, Note, Ruler, Sketch,
+                      Span, Stroke, Trace)
 
 # Every chart sits in the picture column of a Pair. Beside a teaching slide
 # the text column is 5.6in wide; beside a term it is 6.2in, because a formal
@@ -170,7 +170,7 @@ B_SERIES = _line(
 C_SERIES = _line(
     ((0, 30), (14, 43), (17, 40.6), (20, 43.2), (23, 40.8), (26, 43.4),
      (46, 62), (52, 54), (59, 64), (66, 54.4), (73, 63.6), (80, 54),
-     (87, 64), (94, 55), (100, 62)),
+     (87, 64), (93, 55)),
     seed=521)
 
 # --------------------------------------------------------------------------
@@ -215,11 +215,11 @@ def _vsa(name, note, last_bar, last_volume):
 
 
 VSA = (
-    _vsa("Large range, large volume", "trend promoting",
+    _vsa("Large range, large volume", "trend promoting; close near high: bullish",
          (14.6, 25.0, 14.0, 24.4), 9.0),
     _vsa("Large range, low volume", "trend inhibiting: lack of commitment",
          (14.6, 25.0, 14.0, 24.4), 1.0),
-    _vsa("Small range, large volume", "the squat bar: a potential reversal",
+    _vsa("Small range, large volume", "squat bar: much capital, no extension in price",
          (14.6, 15.6, 14.2, 15.0), 9.0),
     _vsa("Small range, low volume", "trend inhibiting",
          (14.6, 15.6, 14.2, 15.0), 1.0),
@@ -275,7 +275,7 @@ L_SERIES = _line(
 
 M_SERIES = _line(
     ((0, 47), (18, 59.6), (30, 52.5), (44, 59.4), (50, 63.6), (58, 59.5),
-     (72, 53)),
+     (70, 53), (82, 59.5), (92, 54)),
     seed=577, noise=0.002, wobble=0.03)
 
 # --------------------------------------------------------------------------
@@ -285,9 +285,27 @@ M_SERIES = _line(
 # and the third bar out is higher; the large one has ten.
 # --------------------------------------------------------------------------
 
-N_SERIES = _straight(
-    ((0, 40), (6, 46), (8, 49), (10, 47.2), (11, 49.6), (20, 60),
-     (30, 78), (40, 62), (46, 66), (56, 60)))
+def _strength_bars():
+    """Thirty three bars: a small peak on bar 6 with two lower bars on
+    either side, and a large peak on bar 22 with ten on either side."""
+    import random
+    rng = random.Random(593)
+    highs = ([56.0, 54.5, 53.0, 51.6]            # falling into the picture
+             + [48.0, 49.5, 51.0, 49.6, 48.4]    # the small peak, on bar 6
+             + [52.0, 54.0, 56.0]
+             + [57.5 + 2.0 * i for i in range(10)]   # ten lower bars
+             + [80.0]                                # the large peak, bar 22
+             + [77.0 - 2.1 * i for i in range(10)])  # ten lower bars
+    bars = []
+    for x, h in enumerate(highs):
+        low = h - rng.uniform(2.2, 3.0)
+        up = x == 0 or highs[x] >= highs[x - 1]
+        o, c = (low + 0.6, h - 0.6) if up else (h - 0.6, low + 0.6)
+        bars.append(Bar(open=o, high=h, low=low, close=c))
+    return tuple(bars)
+
+
+N_BARS = _strength_bars()
 
 # --------------------------------------------------------------------------
 # Chart O. A double moving average crossover as a trend filter.
@@ -372,8 +390,10 @@ U_SERIES = _line(
 # three slopes can be compared honestly.
 V_STEEP = _straight(((0, 40), (4, 52), (6, 49), (10, 61), (12, 58),
                      (16, 70), (18, 67), (22, 79)))
-V_MID = _straight(((0, 40), (7, 47.5), (10, 43.5), (17, 51.5), (20, 47.5),
-                   (27, 55.5), (30, 51.5), (34, 57)))
+# The middle one is drawn so that its line stands at about 40 degrees on the
+# slide itself: 0.524 pesos a point, at this chart's size and scales.
+V_MID = _straight(((0, 40), (7, 49.8), (10, 44.6), (17, 55.1), (20, 49.8),
+                   (27, 60.3), (30, 55.1), (34, 62.3)))
 V_FLAT = _straight(((0, 40), (7, 44), (10, 41.5), (17, 45.5), (20, 43),
                     (27, 47), (30, 44.5), (34, 48)))
 # The three are laid end to end with a few idle points between them. The
@@ -458,39 +478,63 @@ WAVES = (
 
 
 # --------------------------------------------------------------------------
-# Charts AB and AC. One price as bars, with its two larger waves drawn on it.
+# Charts AJ, AB and AC. One invented price: how it is built, how its three
+# wave cycles are drawn, and how they are told apart.
 # --------------------------------------------------------------------------
-# The price is three waves added together, like Chart AA's third drawing,
-# with a little seeded noise, and turned into open, high, low and close.
-# The largest wave swings once across the chart in 96 bars, the medium one
-# every 32 bars and the smallest every 8, so three medium swings fit inside
-# the largest and four small ones inside a medium one. The sizes were picked
-# for the picture, each wave three or four times as long as the next and
-# twice as tall, and the slides say so: the instructor asked where the
-# numbers came from. The two smooth lines are the waves the price was built from: the
-# thick one is the largest alone and the dotted one is the largest plus the
-# medium, which is why each runs through the middle of the smaller swings.
-# The book gives no rule for drawing either line, so where they sit is our
-# drawing choice and both slides say so.
+# The price is three waves added together bar by bar, like Chart AA's third
+# drawing, with a little seeded noise, and turned into open, high, low and
+# close. One swing of the big wave, up and back down, takes 96 bars and is
+# PHP 24 from bottom to top; the medium wave takes 32 bars and PHP 12; the
+# small one 8 bars and PHP 6. So three medium swings fit in the big one and
+# four small swings in a medium one. The sizes were picked for the picture
+# and the slides say so: the instructor asked where the numbers came from.
+#
+# All three waves start at a low, so a swing on every one of them runs from
+# one low to the next and the lows line up: every fourth small low is a
+# medium low, and every third medium low a big one. That is what lets Chart
+# AJ rule one upright line through all three and Chart AC number the swings.
+#
+# AJ sets the sum out the way a sum is set out in arithmetic: the three
+# waves one under another to one scale, each with the length and height of
+# one swing measured on it, and the total under a rule, drawn as bars.
+# AB is that total with two lines over it: the thick one is the big wave
+# alone and the dotted one the big wave plus the medium, which is why each
+# runs through the middle of the smaller swings. The book gives no rule for
+# drawing either line, so where they sit is our drawing choice and the
+# slides say so. AC is AB with a counted ruler under it for each cycle.
 
 AB_BARS = 97
 AB_HIGH = (12.0, 96)    # half the swing in pesos, and bars in one swing
 AB_MEDIUM = (6.0, 32)
 AB_LOW = (3.0, 8)
+AB_MIDDLE = 60.0        # the price the big wave swings around
+
+
+def _big(x):
+    import math
+    return -AB_HIGH[0] * math.cos(2 * math.pi * x / AB_HIGH[1])
+
+
+def _medium(x):
+    import math
+    return -AB_MEDIUM[0] * math.cos(2 * math.pi * x / AB_MEDIUM[1])
+
+
+def _small(x):
+    import math
+    return -AB_LOW[0] * math.cos(2 * math.pi * x / AB_LOW[1])
 
 
 def _degree_waves():
-    import math
     import random
     rng = random.Random(977)
     higher, medium, closes = [], [], []
     for x in range(AB_BARS):
-        h = 60.0 - AB_HIGH[0] * math.cos(2 * math.pi * x / AB_HIGH[1])
-        m = h + AB_MEDIUM[0] * math.sin(2 * math.pi * x / AB_MEDIUM[1])
-        low = AB_LOW[0] * math.sin(2 * math.pi * (x + 0.5) / AB_LOW[1])
+        h = AB_MIDDLE + _big(x)
+        m = h + _medium(x)
         higher.append(h)
         medium.append(m)
-        closes.append(m + low + rng.uniform(-0.3, 0.3))
+        closes.append(m + _small(x) + rng.uniform(-0.3, 0.3))
     bars = []
     for x, c in enumerate(closes):
         o = closes[x - 1] if x else c - 0.6
@@ -506,51 +550,17 @@ AB_TRACES = (
     Trace(values=AB_MWC, tone="structure", dotted=True, width=2.6),
 )
 
-
-# --------------------------------------------------------------------------
-# Chart AJ. The three waves Charts AB and AC are built from, and their sum.
-# --------------------------------------------------------------------------
-# The same three waves as _degree_waves, each drawn alone and then added,
-# with no noise and no bars, so the slide that says the price is invented
-# can show what it was invented from. All four cells share one scale: a
-# gallery fits every shape to its own cell, so each one carries two lone
-# points at the top and bottom of the tallest, which draw nothing and hold
-# the scale.
-
-AJ_REACH = 22.0
-
-
-def _ingredient(name, note, wave):
-    import math
-    points = tuple((x, wave(x, math)) for x in range(AB_BARS))
-    return Sketch(
-        name=name, note=note,
-        points=points + ((0, AJ_REACH), (0, -AJ_REACH)),
-        breaks=(len(points), len(points) + 1),
-        sides=(((0, 0.0), (AB_BARS - 1, 0.0)),))
-
-
-def _aj_big(x, math):
-    return -AB_HIGH[0] * math.cos(2 * math.pi * x / AB_HIGH[1])
-
-
-def _aj_medium(x, math):
-    return AB_MEDIUM[0] * math.sin(2 * math.pi * x / AB_MEDIUM[1])
-
-
-def _aj_small(x, math):
-    return AB_LOW[0] * math.sin(2 * math.pi * (x + 0.5) / AB_LOW[1])
-
-
-INGREDIENTS = (
-    _ingredient("1  The big wave", "one swing: 96 bars, PHP 24 tall", _aj_big),
-    _ingredient("2  The medium wave", "one swing: 32 bars, PHP 12 tall",
-                _aj_medium),
-    _ingredient("3  The small wave", "one swing: 8 bars, PHP 6 tall",
-                _aj_small),
-    _ingredient("4  Added together", "the invented price, before its noise",
-                lambda x, math: (_aj_big(x, math) + _aj_medium(x, math)
-                                 + _aj_small(x, math))),
+SUM_ROWS = (
+    Addend(name="1  Big wave", values=tuple(_big(x) for x in range(AB_BARS)),
+           swing=AB_HIGH[1], long="one swing: 96 bars", tall="PHP 24"),
+    Addend(sign="+", name="2  Medium wave",
+           values=tuple(_medium(x) for x in range(AB_BARS)),
+           swing=AB_MEDIUM[1], long="one swing: 32 bars", tall="PHP 12"),
+    Addend(sign="+", name="3  Small wave",
+           values=tuple(_small(x) for x in range(AB_BARS)),
+           swing=AB_LOW[1], long="one swing: 8 bars", tall="PHP 6"),
+    Addend(sign="=", name="4  The price", note="drawn as bars",
+           bars=AB_PRICE, total=True),
 )
 
 
@@ -596,12 +606,15 @@ LEVELS = (
 # --------------------------------------------------------------------------
 # Chart AF. The three breakouts of Figure 5.8, on price bars.
 # --------------------------------------------------------------------------
-# The same three waves as Chart AB with a slow rise added, so that the
+# Three waves of the same lengths as Chart AB's on a slow rise, so that the
 # largest wave peaks, falls back and then passes its own peak, which is what
-# Figure 5.8 draws. Each level is the high of a prior peak, read off the
+# Figure 5.8 draws. The three are set to peak together on bar 28, so the top
+# of the whole move is a top of all three, as the book's wave-degree
+# convergence has it. Each level is the high of a prior peak, read off the
 # bars, and each breakout is the first bar that closes above it.
 
-AF_BARS = 121
+AF_BARS = 125
+AF_TOP = 28
 
 
 def _breakout_waves():
@@ -610,9 +623,9 @@ def _breakout_waves():
     rng = random.Random(431)
     higher, medium, closes = [], [], []
     for x in range(AF_BARS):
-        h = 55.0 + 0.10 * x + 10.0 * math.sin(2 * math.pi * x / 96)
-        m = h + 5.0 * math.sin(2 * math.pi * x / 32)
-        low = 2.5 * math.sin(2 * math.pi * (x + 0.5) / 8)
+        h = 55.0 + 0.10 * x + 10.0 * math.cos(2 * math.pi * (x - AF_TOP) / 96)
+        m = h + 5.0 * math.cos(2 * math.pi * (x - AF_TOP) / 32)
+        low = 2.5 * math.cos(2 * math.pi * (x - AF_TOP) / 8)
         higher.append(h)
         medium.append(m)
         closes.append(m + low + rng.uniform(-0.3, 0.3))
@@ -639,9 +652,9 @@ AF_TRACES = (
     Trace(values=AF_HWC, tone="deep", width=3.0),
     Trace(values=AF_MWC, tone="structure", dotted=True, width=2.4),
 )
-AF_HIGH = _level(AF_PRICE, 20, 50)      # the top of the whole move
-AF_MED = _level(AF_PRICE, 68, 78)       # the last medium peak before it
-AF_LOW = _level(AF_PRICE, 79, 85)       # the last small peak before that
+AF_HIGH = _level(AF_PRICE, 20, 40)      # the top of the whole move
+AF_MED = _level(AF_PRICE, 88, 96)       # the last medium peak before it
+AF_LOW = _level(AF_PRICE, 80, 88)       # the last small peak before that
 
 # --------------------------------------------------------------------------
 # Chart AG. The bar stochastic, measured on three bars.
@@ -749,12 +762,15 @@ CHARTS = (
                        label="Primary trend: months to years", at=0,
                        dx=74, dy=6),
             ),
+            boxes=(Box(x0=22.5, x1=29.5, lo=51.0, hi=58.0, tone="notice"),),
             notes=(
-                Note(x=26, label="Minor trends:\ndays to weeks", dx=-16,
-                     dy=46),
+                Note(x=24, y=58.0, label="A minor trend:\none small swing,\n"
+                     "days to weeks", dx=-14, dy=40, dot=False),
             ),
             top=0.10, bottom=0.20,
-            footnote=INVENTED + " One line holds all three of Dow's trends.",
+            footnote=INVENTED + " Arrow: the primary trend. Grey band: the "
+                     "one secondary reaction.\nGold box: one minor trend. "
+                     "Every small swing on the line is another.",
         ),
     ),
     ChartArt(
@@ -786,13 +802,23 @@ CHARTS = (
                     label="Taller and wider: a more significant\ninterruption "
                           "of the trend"),
             ),
+            strokes=(
+                Stroke(points=((93, 55), (101, 45)), dashed=True, arrow=True,
+                       tone="notice"),
+            ),
             notes=(
                 Note(x=24, y=39.8, label="Shorter and narrower:\na lesser "
-                     "interruption", dx=26, dy=-26, dot=False),
+                     "interruption.\nThe trend carries on", dx=26, dy=-34,
+                     dot=False),
+                Note(x=97, y=50, label="After the larger one,\na reversal "
+                     "is more\nprobable", dx=-30, dy=-34, dot=False,
+                     notice=True),
             ),
-            top=0.26, bottom=0.10,
+            extend=8,
+            top=0.26, bottom=0.30,
             footnote=INVENTED + " The same kind of sideways movement, at two "
-                     "sizes.",
+                     "sizes. Dashed: what the larger\none makes more "
+                     "probable, not what must happen.",
         ),
     ),
     ChartArt(
@@ -827,8 +853,10 @@ CHARTS = (
         letter="E",
         draw=ck.gallery,
         kwargs=dict(sketches=VSA, cols=2, size=PAIR,
-                    footnote="Each drawing: three bars over their volume. "
-                             "The third bar is the extreme one."),
+                    footnote="Each drawing: three bars over their volume, "
+                             "the green boxes. The third bar is the extreme "
+                             "one.\nHad the first drawing's big bar closed "
+                             "near its low, it would be very bearish."),
     ),
     ChartArt(
         letter="F",
@@ -1045,45 +1073,57 @@ CHARTS = (
             series=M_SERIES,
             size=PAIR,
             strokes=(
-                Stroke(points=((0, 60), (74, 60)), dashed=True, tone="quiet",
-                       label="A barrier: resistance", at=0, dx=4, dy=10),
+                Stroke(points=((0, 60), (94, 60)), dashed=True, tone="quiet",
+                       label="A barrier: resistance", at=0, dx=4, dy=-11),
             ),
             notes=(
-                Note(x=18, label="Barrier entry: short\nat the resistance",
-                     dx=-22, dy=-66),
-                Note(x=47, label="Breakout entry: buy as\nprice breaks "
-                     "above", dx=-70, dy=52),
-                Note(x=60, label="Failed breakout entry:\nshort as price "
-                     "falls back", dx=-14, dy=-70, notice=True),
+                Note(x=18, label="1  Barrier entry: short\nat the "
+                     "resistance", dx=4, dy=66),
+                Note(x=47, label="2  Breakout entry: buy\nas price breaks "
+                     "above", dx=30, dy=30),
+                Note(x=60, label="3  Failed breakout entry:\nshort as "
+                     "price falls back", dx=-58, dy=-74, notice=True),
+                Note(x=82, label="4  Barrier entry at\na retest: short",
+                     dx=-2, dy=-70),
             ),
-            top=0.46, bottom=0.44,
-            footnote=INVENTED + " Random and pattern-based entries have "
-                     "nothing to mark on one line.",
+            top=0.46, bottom=0.50,
+            footnote=INVENTED + " Here the breakout fails, which sets up "
+                     "entry 3; one that held would carry on up.\nRandom and "
+                     "pattern-based entries have nothing to mark on a line.",
         ),
     ),
     ChartArt(
         letter="N",
-        draw=ck.annotated,
+        draw=ck.bar_waves,
         kwargs=dict(
-            series=N_SERIES,
-            size=TERM,
-            spans=(
-                Span(x0=6, x1=10, label="2 bars\neach side"),
-                Span(x0=20, x1=40, label="10 bars on either side",
-                     tone="notice"),
-            ),
+            bars=N_BARS, size=TERM,
             strokes=(
-                Stroke(points=((30, 78), (58, 78)), dashed=True,
-                       tone="notice", label="Its resistance level", at=1,
-                       dx=-4, dy=10),
+                Stroke(points=((22, 80.0), (33, 80.0)), dashed=True,
+                       tone="notice"),
+                Stroke(points=((6, 51.0), (10, 51.0)), dashed=True,
+                       tone="quiet"),
+            ),
+            rulers=(
+                Ruler(y=39.0, x0=3.5, x1=5.5, parts=2, repeat=2),
+                Ruler(y=39.0, x0=6.5, x1=8.5, parts=2, repeat=2),
+                Ruler(y=39.0, x0=11.5, x1=21.5, parts=10, numbered=False,
+                      label="10 lower bars before"),
+                Ruler(y=39.0, x0=22.5, x1=32.5, parts=10, numbered=False,
+                      label="10 lower bars after"),
             ),
             notes=(
-                Note(x=8, label="Strength 2", dx=14, dy=-34),
-                Note(x=30, label="Strength 10:\na significant\npeak", dx=-40,
-                     dy=0, notice=True),
+                Note(x=6, y=51.0, label="Strength 2: two\nbars each side",
+                     dx=2, dy=64),
+                Note(x=22, y=80.0, label="Strength 10: a significant\n"
+                     "peak. Its level, dashed, is\nthe stronger resistance",
+                     dx=-8, dy=34, notice=True),
             ),
-            top=0.16, bottom=0.30,
-            footnote="An invented line. One point is one bar.",
+            xlabel="Time, one bar at a time", ylabel="Price",
+            top=0.42, bottom=0.10,
+            footnote="Invented bars. Counted: the bars on each side whose "
+                     "highs stay below the peak's high.\nThe book does not "
+                     "say where the count stops; this is our reading of 'N "
+                     "bars on either side'.",
         ),
     ),
     ChartArt(
@@ -1209,7 +1249,8 @@ CHARTS = (
             ),
             top=0.12, bottom=0.34,
             footnote=INVENTED + " The dashed part is the line projected "
-                     "into the future.",
+                     "into the future.\nAs drawn, the line touches its two "
+                     "troughs and cuts through no price.",
         ),
     ),
     ChartArt(
@@ -1243,20 +1284,27 @@ CHARTS = (
                 Stroke(points=((0, _on(0)), (70, _on(70)))),
                 Stroke(points=((0, _on(0) - 5), (70, _on(70) - 5)),
                        dashed=True, tone="notice",
-                       label="A price-based filter:\nvalid only beyond here",
-                       at=1, dx=-4, dy=-26),
+                       label="The price-based filter line",
+                       at=1, dx=-2, dy=-34),
                 Stroke(points=((40, _on(40) + 1.0), (40, _on(40) - 3.4)),
+                       tone="quiet", width=2.6),
+                Stroke(points=((60, _on(60) + 0.8), (60, _on(60) - 6.6)),
                        tone="quiet", width=2.6),
             ),
             notes=(
-                Note(x=40, y=_on(40) - 3.4, label="The intraday low:\nwell "
-                     "through the line", dx=-30, dy=-46, dot=False),
-                Note(x=40, label="The close: back above.\nSignificant, but "
-                     "invalid.", dx=-30, dy=62, notice=True),
+                Note(x=40, y=_on(40) - 3.4, label="1  Low through the line,\n"
+                     "short of the filter:\ninvalid by both rules", dx=-62,
+                     dy=-60, dot=False),
+                Note(x=60, y=_on(60) - 6.6, label="2  Low beyond the filter:\n"
+                     "valid by the price filter,\ninvalid by the close",
+                     dx=-2, dy=-76, dot=False, notice=True),
+                Note(x=40, label="Both days close\nback above the line",
+                     dx=-30, dy=62),
             ),
-            top=0.22, bottom=0.26,
+            top=0.22, bottom=0.52,
             footnote=INVENTED + " Black: closing prices. Green: the uptrend "
-                     "line. Grey bar: one day's low.",
+                     "line. Dashed: a price-based\nfilter, a set distance "
+                     "below it. Grey bars: two days' intraday lows.",
         ),
     ),
     ChartArt(
@@ -1272,7 +1320,7 @@ CHARTS = (
                 Stroke(points=((0, 40), (22, 73)),
                        label="Above 45 degrees:\nsteep, less stable", at=1,
                        dx=8, dy=20, tone="quiet"),
-                Stroke(points=((V_X1, 39.5), (V_X1 + 34, 53.1)),
+                Stroke(points=((V_X1, 39.5), (V_X1 + 34, 57.3)),
                        label="About 35 to 45\ndegrees: the\nmost reliable",
                        at=1, dx=-4, dy=62),
                 Stroke(points=((V_X2, 40), (V_X2 + 34, 45.1)),
@@ -1280,8 +1328,10 @@ CHARTS = (
                        dx=-6, dy=38, tone="quiet"),
             ),
             top=0.12, bottom=0.06,
-            footnote="Three invented uptrends on one pair of axes. The "
-                     "angle of a line depends on the scaling used.",
+            footnote="Three invented uptrends on one pair of axes; the "
+                     "middle line stands at about 40 degrees here.\nAn angle "
+                     "depends on the scaling used, and the book does not say "
+                     "which scaling it means.",
         ),
     ),
     ChartArt(
@@ -1298,13 +1348,14 @@ CHARTS = (
                 Note(x=30, label="2", dx=4, dy=-22),
                 Note(x=48, label="3", dx=4, dy=-22),
                 Note(x=66, label="4", dx=4, dy=-22),
-                Note(x=48, label="Four retests, each\none precise: price "
-                     "touches\nthe line and is rejected", dx=-84, dy=78,
-                     notice=True),
+                Note(x=48, label="1 and 2 draw the line.\n3 and 4 retest "
+                     "it, each one\nprecise: price touches the\nline and is "
+                     "rejected", dx=-84, dy=84, notice=True),
             ),
             top=0.34, bottom=0.20,
             footnote=INVENTED + " The green line is the trendline. More and "
-                     "cleaner retests: more orders at it.",
+                     "cleaner retests: more orders at it.\nNo other indicator "
+                     "is drawn, so confluence is not shown here.",
         ),
     ),
     ChartArt(
@@ -1326,8 +1377,8 @@ CHARTS = (
                      dx=-126, dy=26),
             ),
             top=0.14, bottom=0.14,
-            footnote=INVENTED + " The failed test comes first, and the "
-                     "breakout is on the other side.",
+            footnote=INVENTED + " Price fails to reach the bottom first, "
+                     "and the breakout is on the other side.",
         ),
     ),
     ChartArt(
@@ -1400,11 +1451,14 @@ CHARTS = (
     ),
     ChartArt(
         letter="AJ",
-        draw=ck.gallery,
-        kwargs=dict(sketches=INGREDIENTS, cols=2, size=PAIR,
-                    footnote="Not a market: the three waves this course added "
-                             "together, all four drawn to one scale.\nIn "
-                             "green, the level each one swings around."),
+        draw=ck.wave_sum,
+        kwargs=dict(
+            rows=SUM_ROWS, size=PAIR, guides=(0, 32, 64, 96), label_w=1.52,
+            footnote="Invented, not a market. All four rows are drawn to one "
+                     "scale. Gold arrows: one swing of each wave.\nRow 4 is "
+                     "rows 1 to 3 added bar by bar, plus a small random "
+                     "wobble so the bars look traded.",
+        ),
     ),
     ChartArt(
         letter="AB",
@@ -1412,12 +1466,12 @@ CHARTS = (
         kwargs=dict(
             bars=AB_PRICE, traces=AB_TRACES, size=PAIR,
             notes=(
-                Note(x=33, label="LWC: the price\nitself, here\nas bars",
-                     dx=-24, dy=40),
-                Note(x=57, y=AB_MWC[57], label="MWC: the dotted line",
-                     dx=-30, dy=-92),
-                Note(x=84, y=AB_HWC[84], label="HWC: the\nthick line",
-                     dx=-4, dy=118),
+                Note(x=20, label="The bars: the price.\nIts small zigzags\n"
+                     "are the LWC", dx=-22, dy=58),
+                Note(x=32, y=AB_MWC[32], label="MWC: the dotted line\n"
+                     "= big + medium wave", dx=14, dy=-58),
+                Note(x=60, y=AB_HWC[60], label="HWC: the thick\n"
+                     "line = the big\nwave alone", dx=26, dy=44),
             ),
             price_ticks=(40, 50, 60, 70, 80),
             top=0.12, bottom=0.08,
@@ -1431,21 +1485,20 @@ CHARTS = (
         draw=ck.bar_waves,
         kwargs=dict(
             bars=AB_PRICE, traces=AB_TRACES, size=PAIR,
-            strokes=(
-                Stroke(points=((0, 33.0), (8, 33.0)), width=3.0,
-                       label="One LWC swing: 8 bars, about PHP 6", at=1,
-                       dx=8, dy=0),
-                Stroke(points=((0, 27.5), (32, 27.5)), width=3.0,
-                       label="One MWC swing: 32 bars, about PHP 12", at=1,
-                       dx=8, dy=0),
-                Stroke(points=((0, 22.0), (96, 22.0)), width=3.0,
-                       label="The HWC swing: 96 bars, PHP 24", at=1,
-                       dx=-8, dy=-12),
+            guides=(0, 32, 64, 96),
+            rulers=(
+                Ruler(y=29.0, x0=0, x1=96, parts=12, repeat=4,
+                      label="LWC: 12 swings, 8 bars each"),
+                Ruler(y=17.0, x0=0, x1=96, parts=3,
+                      label="MWC: 3 swings, 32 bars each"),
+                Ruler(y=5.0, x0=0, x1=96, parts=1,
+                      label="HWC: 1 swing of 96 bars"),
             ),
             price_ticks=(40, 50, 60, 70, 80),
-            top=0.05, bottom=0.12,
-            footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC. The "
-                     "rulers show the sizes we built in.",
+            top=0.04, bottom=0.10,
+            footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC.\n"
+                     "Each ruler counts the swings of one cycle, from one "
+                     "low to the next.",
         ),
     ),
     ChartArt(
@@ -1479,7 +1532,9 @@ CHARTS = (
         draw=ck.gallery,
         kwargs=dict(sketches=LEVELS, cols=2, size=PAIR,
                     footnote="Not prices: four shapes. In green, the level "
-                             "that price gets through."),
+                             "that price gets through. A level may slope.\n"
+                             "A channel has two lines; price here gets "
+                             "through its upper one."),
     ),
     ChartArt(
         letter="AF",
@@ -1498,22 +1553,27 @@ CHARTS = (
                        tone="notice", width=2.0),
             ),
             notes=(
+                Note(x=AF_HIGH[0], y=AF_HIGH[1],
+                     label="HWC peak: the top\nof the whole move",
+                     dx=14, dy=34),
+                Note(x=AF_LOW[0], y=AF_LOW[1],
+                     label="LWC peak:\na small one", dx=-24, dy=-84),
+                Note(x=AF_MED[0], y=AF_MED[1],
+                     label="MWC peak: a peak\nof the dotted line",
+                     dx=-40, dy=14),
                 Note(x=AF_LOW[2], y=AF_LOW[1],
-                     label="LWC breakout:\nprice passes the\nlast small peak",
-                     dx=10, dy=-70),
+                     label="1  LWC\nbreakout", dx=22, dy=-44, notice=True),
                 Note(x=AF_MED[2], y=AF_MED[1],
-                     label="MWC breakout:\nprice passes the\n"
-                     "last medium peak", dx=-40, dy=28),
+                     label="2  MWC\nbreakout", dx=30, dy=-30, notice=True),
                 Note(x=AF_HIGH[2], y=AF_HIGH[1],
-                     label="HWC breakout: price passes\n"
-                     "the top of the whole move", dx=-36, dy=46,
-                     notice=True),
+                     label="3  HWC\nbreakout", dx=-26, dy=36, notice=True),
             ),
             price_ticks=(50, 60, 70, 80),
-            top=0.22, bottom=0.34,
-            footnote="Invented: the same three waves, on a slow rise. Gold "
-                     "lines: three breakout levels,\neach the high of a prior "
-                     "peak on this chart. Our drawing.",
+            top=0.26, bottom=0.36,
+            footnote="Invented: three waves on a slow rise, set to peak "
+                     "together at the first top. Gold lines: three\n"
+                     "breakout levels, each the high of a prior peak. Gold "
+                     "dots: the first bar to close above each.",
         ),
     ),
     ChartArt(

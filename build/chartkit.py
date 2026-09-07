@@ -1644,14 +1644,38 @@ class Trace:
 _TRACE_TONES = {"structure": GREEN, "deep": GREEN_DEEP, "notice": GOLD}
 
 
+@dataclass
+class Ruler:
+    """A counted measure laid under the bars.
+
+    A line from bar ``x0`` to bar ``x1`` at the price ``y``, cut into
+    ``parts`` equal lengths with a tick at every cut. Each length carries
+    its number, and ``repeat`` starts the count again after that many, so
+    twelve lengths can read 1 2 3 4 three times over. ``label`` sits under
+    the line at its left end.
+    """
+
+    y: float = 0.0
+    x0: float = 0.0
+    x1: float = 0.0
+    parts: int = 1
+    label: str = ""
+    numbered: bool = True
+    repeat: int = 0
+    notice: bool = False
+
+
 def bar_waves(path: Path, bars, *, size, traces=(), strokes=(), brackets=(),
-              notes=(), xlabel="Time", ylabel="Price", price_ticks=None,
-              top=0.20, bottom=0.14, footnote="", display_font=None) -> Path:
+              notes=(), rulers=(), guides=(), xlabel="Time", ylabel="Price",
+              price_ticks=None, top=0.20, bottom=0.14, footnote="",
+              display_font=None) -> Path:
     """Price bars, and the larger waves they add up to drawn over them.
 
     ``bars`` is one Bar for each period, drawn thin so that a hundred of
     them read as a price path. Each Trace is a line through the bars. A
-    Note with no ``y`` points at the close of the bar at its ``x``.
+    Note with no ``y`` points at the close of the bar at its ``x``. Each
+    Ruler is a counted measure laid under the bars, and ``guides`` are the
+    bars at which a faint upright line joins the rulers to the price.
     """
     display_font = display_font or deckkit.DISPLAY_FONT
     # _new sets the deck's type and colours; its own figure is the band's
@@ -1688,12 +1712,45 @@ def bar_waves(path: Path, bars, *, size, traces=(), strokes=(), brackets=(),
     reach = [v for b in bars for v in (b.low, b.high)]
     reach += [p[1] for st in strokes for p in st.points]
     reach += [v for br in brackets for v in (br.lo, br.hi)]
+    reach += [r.y for r in rulers]
     _headroom(ax, reach, top=top, bottom=bottom)
     if price_ticks:
         ax.set_yticks(list(price_ticks))
         ax.tick_params(labelsize=9)
     else:
         ax.set_yticks([])
+
+    if guides:
+        foot_y = min([r.y for r in rulers] or [ax.get_ylim()[0]])
+        for g in guides:
+            ax.plot([g, g], [foot_y, ax.get_ylim()[1]], color=MUTED, lw=0.8,
+                    ls=(0, (3, 3)), zorder=1)
+
+    for r in rulers:
+        color = GOLD if r.notice else GREEN
+        ax.plot([r.x0, r.x1], [r.y, r.y], color=color, lw=2.4, zorder=5,
+                solid_capstyle="butt")
+        step = (r.x1 - r.x0) / r.parts
+        for k in range(r.parts + 1):
+            ax.annotate("", xy=(r.x0 + k * step, r.y), xytext=(0, 9),
+                        textcoords="offset points",
+                        arrowprops=dict(arrowstyle="-", color=color, lw=1.6,
+                                        shrinkA=0, shrinkB=0), zorder=5)
+        if r.numbered:
+            for k in range(r.parts):
+                number = (k % r.repeat if r.repeat else k) + 1
+                ax.annotate(str(number), xy=(r.x0 + (k + 0.5) * step, r.y),
+                            xytext=(0, 3), textcoords="offset points",
+                            ha="center", va="bottom", fontsize=8.5,
+                            color=GOLD if r.notice else GREEN_DEEP,
+                            fontweight="bold", zorder=7)
+        if r.label:
+            ax.annotate(r.label, xy=(r.x0, r.y), xytext=(0, -4),
+                        textcoords="offset points", ha="left", va="top",
+                        fontsize=9, color=GOLD if r.notice else GREEN_DEEP,
+                        fontweight="bold", zorder=7,
+                        bbox=dict(boxstyle="square,pad=0.12", facecolor=WHITE,
+                                  edgecolor="none"))
 
     _strokes(ax, strokes)
 
@@ -1718,6 +1775,162 @@ def bar_waves(path: Path, bars, *, size, traces=(), strokes=(), brackets=(),
             _dot(ax, note.x, y, tone=GOLD if note.notice else GREEN, size=7)
         _callout(ax, note.x, y, note.label, dx=note.dx, dy=note.dy,
                  tone=GREEN_DEEP if note.notice else INK, size=10)
+
+    if footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
+    return _save(fig, path)
+
+
+# --------------------------------------------------------------------------
+# A form added for Chapter 5's final pass: waves set out like a sum in
+# arithmetic, one under another to one scale, and their total under a rule.
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class Addend:
+    """One row of a wave_sum: a wave on its own, or the total of the rows.
+
+    ``values`` is one number for every bar and is drawn as a line; ``bars``
+    is one Bar for every bar and is drawn as price bars instead. ``sign``
+    is printed before the name, the way a plus sign stands before a number
+    in a column. ``swing`` is how many bars one swing takes: the first one
+    is measured under the wave and labelled ``long``. ``tall`` labels the
+    measure from the lowest point of the row to its highest. ``total``
+    rules a line above the row.
+    """
+
+    name: str = ""
+    note: str = ""
+    sign: str = ""
+    values: tuple = ()
+    bars: tuple = ()
+    swing: int = 0
+    long: str = ""
+    tall: str = ""
+    total: bool = False
+
+
+def wave_sum(path: Path, rows, *, size, guides=(), label_w=1.30,
+             footnote="", display_font=None) -> Path:
+    """Waves added like a column of figures, every row to one scale.
+
+    Each row is an Addend. Because every row shares one price scale and one
+    time scale, a wave that is half as tall or a third as long as another
+    is drawn so. ``guides`` are the bars at which a faint upright line runs
+    down through every row, so the swings of one row can be counted against
+    the swings of another.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    # _new sets the deck's type and colours; its own figure is the band's
+    # size, so it is closed and one of the size asked for is opened.
+    plt.close(_new(display_font))
+    fig = plt.figure(figsize=size, dpi=DPI)
+    w_in, h_in = size
+    foot_lines = footnote.count("\n") + 1 if footnote else 0
+    foot = 0.08 + 0.16 * foot_lines
+    head = 0.06
+    right = 0.74
+    ax = fig.add_axes([0, foot / h_in, 1, (h_in - foot - head) / h_in])
+    ax.set_axis_off()
+    plot_h = h_in - foot - head
+    ax.set_xlim(0, w_in)
+    ax.set_ylim(0, plot_h)
+
+    def reach(row):
+        if row.bars:
+            return (min(b.low for b in row.bars), max(b.high for b in row.bars))
+        return (min(row.values), max(row.values))
+
+    # Every row keeps a little room above it, and room under it for the
+    # measure of one swing. What is left is shared out by height in price.
+    gap_top, gap_swing, gap_rule = 0.10, 0.25, 0.07
+    fixed = sum(gap_top + (gap_swing if r.swing else 0.04)
+                + (gap_rule if r.total else 0.0) for r in rows)
+    spans = [reach(r) for r in rows]
+    scale = (plot_h - fixed) / sum(hi - lo for lo, hi in spans)
+    n = max(len(r.bars) or len(r.values) for r in rows)
+    x_scale = (w_in - label_w - right) / (n - 1)
+
+    def px(x):
+        return label_w + x * x_scale
+
+    tops, y = [], plot_h
+    for row, (lo, hi) in zip(rows, spans):
+        if row.total:
+            y -= gap_rule
+            ax.plot([0.08, w_in - 0.08], [y + 0.02, y + 0.02], color=INK,
+                    lw=1.2, zorder=4, solid_capstyle="butt")
+        y -= gap_top
+        top_y = y
+        base = y - (hi - lo) * scale
+        tops.append((top_y, base))
+
+        def py(v, base=base, lo=lo):
+            return base + (v - lo) * scale
+
+        if row.bars:
+            for x, b in enumerate(row.bars):
+                ax.plot([px(x), px(x)], [py(b.low), py(b.high)], color=INK,
+                        lw=1.0, zorder=3, solid_capstyle="butt")
+                ax.plot([px(x - 0.40), px(x)], [py(b.open), py(b.open)],
+                        color=INK, lw=1.0, zorder=3, solid_capstyle="butt")
+                ax.plot([px(x), px(x + 0.40)], [py(b.close), py(b.close)],
+                        color=INK, lw=1.0, zorder=3, solid_capstyle="butt")
+        else:
+            ax.plot([px(x) for x in range(len(row.values))],
+                    [py(v) for v in row.values], color=INK, lw=1.7, zorder=3,
+                    solid_capstyle="round", solid_joinstyle="round")
+
+        mid = (top_y + base) / 2
+        if row.sign:
+            ax.text(0.10, mid, row.sign, ha="left", va="center", fontsize=15,
+                    color=INK, fontweight="bold", zorder=6)
+        ax.text(0.34, mid + (0.07 if row.note else 0.0), row.name, ha="left",
+                va="center", fontsize=10, color=GREEN_DEEP, fontweight="bold",
+                zorder=6, linespacing=1.05)
+        if row.note:
+            ax.text(0.34, mid - 0.10, row.note, ha="left", va="center",
+                    fontsize=8, color=MUTED, style="italic", zorder=6)
+
+        if row.tall:
+            tx = px(n - 1) + 0.12
+            ax.annotate("", xy=(tx, top_y), xytext=(tx, base),
+                        arrowprops=dict(arrowstyle="<->", color=GOLD, lw=1.5,
+                                        mutation_scale=8, shrinkA=0,
+                                        shrinkB=0), zorder=5)
+            ax.text(tx + 0.07, mid, row.tall, ha="left", va="center",
+                    fontsize=9, color=GREEN_DEEP, fontweight="bold", zorder=6)
+        y = base
+        if row.swing:
+            sy = base - 0.10
+            ax.annotate("", xy=(px(row.swing), sy), xytext=(px(0), sy),
+                        arrowprops=dict(arrowstyle="<->", color=GOLD, lw=1.5,
+                                        mutation_scale=8, shrinkA=0,
+                                        shrinkB=0), zorder=5)
+            if row.swing > 0.6 * n:
+                ax.text(px(row.swing / 2), sy, row.long, ha="center",
+                        va="center", fontsize=9, color=GREEN_DEEP,
+                        fontweight="bold", zorder=6,
+                        bbox=dict(boxstyle="square,pad=0.15", facecolor=WHITE,
+                                  edgecolor="none"))
+            else:
+                ax.text(px(row.swing) + 0.07, sy, row.long, ha="left",
+                        va="center", fontsize=9, color=GREEN_DEEP,
+                        fontweight="bold", zorder=6,
+                        bbox=dict(boxstyle="square,pad=0.15", facecolor=WHITE,
+                                  edgecolor="none"))
+            y -= gap_swing
+        else:
+            y -= 0.04
+
+    if guides:
+        top_y = tops[0][0]
+        bottom_y = tops[-1][1]
+        for g in guides:
+            ax.plot([px(g), px(g)], [bottom_y, top_y], color=MUTED, lw=0.8,
+                    ls=(0, (3, 3)), zorder=1)
 
     if footnote:
         fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,

@@ -1,7 +1,7 @@
 # Chapter 5 - Trend Analysis
 
-141 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
-items, 32 terms, all 59 of the book's figures, and 29 charts of our own.
+147 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
+items, 32 terms, all 59 of the book's figures, and 35 charts of our own.
 
 **This chapter is built to the lean form the instructor approved in Chapter
 4**: the content decides the length, each question is followed by its own
@@ -48,7 +48,7 @@ and 5.10.
 
 ## Every idea has a picture
 
-Of the 93 teaching slides, 88 carry a picture: 87 with the picture beside
+Of the 99 teaching slides, 94 carry a picture: 93 with the picture beside
 the text and one, Figure 5.32, on a slide of its own. The other 48 slides are
 the 21 checks, at two slides each, and the six slides of the frame.
 
@@ -56,9 +56,13 @@ the 21 checks, at two slides each, and the six slides of the frame.
   what the book says about it. Figure 5.32 stands alone because it is a wide
   table of small type, and a slide of its own is the only size it can be
   read at.
-- **One of our own charts otherwise.** 29 of them, lettered A to Z and then
-  AA, AB and AC. See the
-  table below.
+- **One of our own charts otherwise.** 35 of them, lettered A to Z and then
+  AA to AI. See the table below.
+- **And one of our own beside a book sketch that does not carry the idea on
+  its own.** Six of the 35 are companions of that kind, added in the third
+  and fourth reviews: AB and AC after Figure 5.5, AH after 5.7, AF after
+  5.8, AI after 5.9, and AG, which took Figure 5.18's place beside the bar
+  stochastic so the figure could sit beside the characteristic it draws.
 
 **Five slides carry no picture, and no two of them are next to each other.**
 Each is a list the book gives without a figure:
@@ -158,6 +162,82 @@ appears.
 held. Three of the flags above were first written longer and cost a size, so
 they were shortened or moved to a chart footnote.
 
+## A term from an earlier chapter means what it meant, or the slide says what changed
+
+The instructor's fourth review, on reaching the breakout slide: "we defined
+breakouts previously as a trend after a consolidation but now it seems to be
+something else, the graphs from the book are probably not enough".
+
+**What the earlier decks said.** No chapter gave *breakout* a term slide,
+and neither does the book. It was taught by use. Chapter 2 (slides 98 to
+100, 116) and Chapter 4 (slides 10, 20, 21) used it of price leaving a
+sideways range, which is what he remembered. Chapter 1 (slides 95, 141) and
+Chapter 3 (slides 124 to 126) had already used it of price getting past a
+level of any kind. Chapter 5 uses it of a prior peak at each wave degree
+(book page 130, Figure 5.8), a trendline (143, 158, 159), a channel (160),
+and any price overlay (148).
+
+**What the deck says now.** Four slides where there was one:
+
+| Slide | What it does |
+|---|---|
+| Breakout, as Chapters 2 and 4 used it | The recall, by chapter, with Chart AD: Chapter 4's own PHP 40 to PHP 44 range and the breakout through its top |
+| Chapter 5: a breakout is through a level | The edge of a range is one kind of level; this chapter adds a prior peak or trough, a trendline, a channel line and any overlay. Chart AE draws the four |
+| A breakout for every wave degree | The book's three sentences and Figure 5.8, with a caption saying each B/OUT LEVEL is a line across a prior peak |
+| One price passes three breakout levels | Chart AF: the three levels on price bars. Its last line joins the two uses: the stretch under the top is a consolidation at a higher degree |
+
+The join between the two uses is ours and the slide says so. The book says
+a market may trend at one degree and consolidate at another (Figure 5.7),
+and never says in a sentence that a breakout from a range is a breakout
+through a level.
+
+**Then every term of Chapters 1 to 4 was checked against this deck**: the
+121 terms those four decks mark, and the words they taught by use without a
+marker. The speaker cue used to carry the recall. The instructor studies
+from the PDF, which has no cues, so the chapter is now named on the slide.
+
+| Term, and where it was taught | How Chapter 5 uses it | On the slide now |
+|---|---|---|
+| Breakout, by use in Ch. 1 to 4 | Wider: any level, at every wave degree | The four slides above |
+| Primary trend, secondary reaction, minor trend, Ch. 2 | The same | 5.1, caption |
+| Uptrend, downtrend, Ch. 2 | The same | "The same definition as Chapter 2" |
+| Wave cycle, cycle degree, by use in Ch. 3 and 4 | First explained here | What a wave degree is, caption |
+| Elliott's waves, Ch. 4 | Named only | Know which wave cycle, caption |
+| Consolidation phase, Ch. 4 | Wider: trending and consolidating at once, by wave cycle | "Chapter 4: ... Chapter 5 adds: ...", and 11 of the sixteen |
+| Convergence, Ch. 3, of futures on spot | A different thing: wave degrees turning together | Lower degrees turn alone, caption |
+| Line chart, Ch. 3 | The same | A trend in the closes |
+| Persistence, Ch. 1 | The same, applied to quality of price | 5, caption |
+| Penetration, Ch. 2, of a peak or trough | Wider: of a line | Breakout slide 2, and 14 of the sixteen |
+| Divergence, by use in Ch. 4 | Still not taught; Chapter 9 | 6 and 16 of the sixteen |
+| Price, time and algorithmic filters, Ch. 1 | Regrouped: algorithmic is a branch of event-based | Both 5.3 slides |
+| To go long, go short, liquidate, cover, Ch. 1 | The same | 5.4, caption |
+| Buy low, sell high principle, Ch. 1 | The same, four ways | "Chapter 1's one principle" |
+| Limit and stop entry orders, Ch. 1 | The same, plus the exits and the guarantees | Stop orders, caption |
+| Failure swing, non-failure swing, double top, Ch. 2 | The same | 5.5, caption |
+| Inflection point, by use in Ch. 2 | Defined here | The term's plain row: a peak or trough |
+| MACD, by use in Ch. 4 | Still not taught | A filter and a trigger, caption |
+| Whipsaw, undefined in Ch. 4 | Still undefined | A reliable trendline, caption |
+| Minimum measuring objective, Ch. 4 | The same idea, from a trendline | A trendline's minimum price target, caption |
+| Linear and ratio scaling, Ch. 3 | The same | Strengths and weaknesses |
+| Secondary reaction's one third to two thirds, Ch. 2 | The same | 5.7, Dow's line |
+| Gap and its four kinds, Ch. 3 | Each kind defined here | The term's example row |
+
+Used the same way and left as they were, because the slide's own words
+already carry the meaning: price rejection, the real body, the true range,
+Point and Figure and Renko, the selling and buying climax, confluence,
+accumulation and distribution (on Figure 5.56 only), and overlay. Not used
+in this chapter at all: Dow's *line* outside the recall, the bid-ask terms,
+the futures terms, the EMH terms and the participant terms.
+
+**Trend filter is the one name that could mislead.** Section 5.3's filters
+validate a breakout and section 5.5's trend filter says whether a trend is
+on. The term's plain row now says it is not one of 5.3's.
+
+**Barrier proximity was tried and put back.** A plain row saying a barrier
+is a support or a resistance cost the term slide two type sizes. Its
+example already says the barrier is a support level, and Figure 5.25 labels
+it.
+
 ## The new-term marker
 
 **A term slide is a term's first teaching in the course, and nothing else.**
@@ -167,8 +247,9 @@ Every name in the chapter was then checked against
 `build/content_chapter01.py` to `content_chapter04.py`. `TEMPLATE.md` has
 the rule. This is the result: 32 terms, where the first build had 8.
 
-**Three lost the marker.** Each is now an ordinary slide, and its speaker
-cue says it is a recall:
+**Three lost the marker.** Each is now an ordinary slide, and the chapter
+it recalls is named on the slide: on the uptrend, and once for the two
+orders, on the stop order slide that comes first:
 
 | Was a term here | Already a term in | Now |
 |---|---|---|
@@ -243,8 +324,8 @@ Every section is taught as fully as the book teaches it.
 
 | Section | Slides | Checks | Figures | Our charts |
 |---|---|---|---|---|
-| 5.1 Definitions of a trend | 21 | 3 | 5.1 to 5.10 | A, AA, AB, AC, B |
-| 5.2 Quality of trend: 16 price characteristics | 34 | 5 | 5.11 to 5.29 | C, D, E |
+| 5.1 Definitions of a trend | 26 | 3 | 5.1 to 5.10 | A, AA to AF, AH, AI, B |
+| 5.2 Quality of trend: 16 price characteristics | 35 | 5 | 5.11 to 5.29 | AG, C, D, E |
 | 5.3 Price and trend filters | 5 | 1 | 5.30 | F, G |
 | 5.4 Trend participation | 12 | 2 | 5.31, 5.32 | H to L |
 | 5.5 Price inflection points | 19 | 3 | 5.33 to 5.39 | M to R |
@@ -282,8 +363,8 @@ where it appears, and no check rests on any of them:
 | The CCI and Floor Trader's Pivot Points | 5.1, caption | not said |
 | How the true range is averaged into the ATR | 5.2, cue | Chapter 8; the true range was Chapter 3 |
 | The cycle-tuned stochastic | 5.2, on the slide | Chapter 8 is oscillators |
-| Divergence | 5.2, characteristic 16 | Chapter 9 |
-| MACD and the stochastic | 5.5, caption | not said |
+| Divergence | 5.2, characteristics 6 and 16 | Chapter 9; Chapter 4 showed one |
+| MACD and the stochastic | 5.5, caption | not said; Chapter 4 used the MACD |
 | Moving averages | 5.5, the chart's footnote and the cue | Chapter 11 |
 | Candlestick patterns, the shooting star | 5.8, caption | Chapter 14 |
 | Elliott waves | 5.1, caption | Chapter 18 |
@@ -291,7 +372,7 @@ where it appears, and no check rests on any of them:
 | Alternative channel constructions | 5.6, cue | Chapter 13 |
 | Tradesizing in general | 5.5, cue | Chapter 28 |
 
-## The twenty nine charts
+## The thirty five charts
 
 A chart is drawn where the book makes a point in words that none of its own
 figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
@@ -327,6 +408,12 @@ figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
 | AA | What a wave degree is | One wave alone, with its subwaves, then with theirs |
 | AB | How the three cycles are drawn | One price as bars, the LWC, with the MWC dotted and the HWC thick |
 | AC | Telling the three cycles apart | The same chart, with a ruler for one swing of each cycle |
+| AD | Breakout, as Chapters 2 and 4 used it | Chapter 4's PHP 40 to PHP 44 range, and price leaving it through its top |
+| AE | Chapter 5: a breakout is through a level | Four levels: the top of a range, a prior peak, a trendline, a channel line |
+| AF | One price passes three breakout levels | Figure 5.8 on price bars: a level at a prior peak of each wave cycle |
+| AG | Bar stochastic | One bar with three closes: 0.80, 0.50 and 0.20 |
+| AH | One market, three modes, on price bars | Figure 5.7 on price bars: flat, ranging and trending at once |
+| AI | Lower degrees turn alone. The highest does not. | Figure 5.9 on price bars, with two places only the smaller cycles turn |
 
 **Charts P, Q and R are the book's five steps with pesos put in.** An
 average stopsize of PHP 2.00, a two standard deviation value of PHP 1.00,
@@ -350,6 +437,15 @@ identical. Where the two smooth lines sit is our drawing choice, because
 the book gives no rule, and the rulers on Chart AC are read off our own
 chart. Both charts say so in their small print.
 
+**Charts AF, AH and AI are built the same way**, each with its three waves
+arranged to show one thing: a slow rise added so the largest wave passes
+its own peak, the largest wave left flat, and the three set to peak on one
+bar. Chart AF's levels are the highs of its own bars and each breakout is
+the first bar to close above one, so nothing printed on it is a guess.
+Chart AD is a seeded line and Charts AE and AG are `gallery` shapes, not
+prices. None of the six needed a new form, so no earlier chapter was
+rebuilt.
+
 Every other chart's data is invented from a fixed seed, and each says so.
 
 **Two things about drawing them, both found by looking.** A label on a
@@ -368,14 +464,16 @@ the time axis.
 
 ## How long the chapter takes
 
-**250 minutes at the calibrated rate, against a 180 minute session.** That is
+**260 minutes at the calibrated rate, against a 180 minute session.** That is
 information, not a target: nothing was cut to reach a length, and nothing was
-added to reach one. It is 70 minutes more than one session holds. No run card exists for
+added to reach one. It is 80 minutes more than one session holds. No run card exists for
 this chapter, so nothing here says what to cut; that is a decision for
 whoever writes one. The first build cost 238 and the second 245: seven
 minutes for the 24 more slides costed as terms, then under two for the wave
 degree slide and its chart, then three and a half for the two slides on how
-the cycles are drawn and told apart.
+the cycles are drawn and told apart, then ten for the six slides of the
+fourth review: three on breakout, two that put Figures 5.7 and 5.9 on price
+bars, and one that gives Figure 5.18 a slide beside its own characteristic.
 
 The rate is the one written down in `chapter-03/README.md`: a content slide
 1, a term 1.25, a figure 0.75, a chart 0.5, a check with its reveal 2.5,
@@ -386,8 +484,8 @@ with a picture beside it is costed as the sum of its two parts.
 | Part | Slides | Minutes |
 |---|---|---|
 | Title, objectives, roadmap | 3 | 3.4 |
-| 5.1 Definitions | 21 | 38.2 |
-| 5.2 Quality of trend | 34 | 63.0 |
+| 5.1 Definitions | 26 | 46.9 |
+| 5.2 Quality of trend | 35 | 64.7 |
 | 5.3 Filters | 5 | 8.3 |
 | 5.4 Participation | 12 | 18.7 |
 | 5.5 Inflection points | 19 | 34.2 |
@@ -399,8 +497,8 @@ with a picture beside it is costed as the sum of its two parts.
 | 5.11 Reversals | 4 | 5.8 |
 | Closing | 3 | 3.4 |
 
-The weights sum to 217.25 and 217.25 times 1.150 is 249.8. The chapter is 47
-pages of the book against Chapter 4's 26, and comes to 141 slides against
+The weights sum to 226.25 and 226.25 times 1.150 is 260.2. The chapter is 47
+pages of the book against Chapter 4's 26, and comes to 147 slides against
 79, so it is the same density.
 
 ## Building it
@@ -408,10 +506,10 @@ pages of the book against Chapter 4's 26, and comes to 141 slides against
 From the repository root:
 
 ```
-.venv/bin/python build/build_chapter5.py      # teaching, 141 slides
+.venv/bin/python build/build_chapter5.py      # teaching, 147 slides
 ```
 
-The build draws the 29 charts and is deterministic: a second run leaves
+The build draws the 35 charts and is deterministic: a second run leaves
 `git status` clean. It writes no answer sheet; see `build_chapter5.py` for
 why that was taken out of the script it was copied from.
 
@@ -426,17 +524,17 @@ soffice --headless --convert-to pdf --outdir ~ \
 ```
 
 Before committing the deck, confirm it embeds no artwork that is not ours.
-It must hold exactly 29 images, and their hashes must match this chapter's
+It must hold exactly 35 images, and their hashes must match this chapter's
 own chart folder:
 
 ```
-unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 29
+unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 35
 unzip -o -d /tmp/media chapter-05/FIN1209-Chapter-05.pptx 'ppt/media/*'
 diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
      <(shasum -a256 build/generated/charts-05/*.png | awk '{print $1}' | sort)
 ```
 
-The deck with the book's artwork in it holds 88: the 29 charts and one for
+The deck with the book's artwork in it holds 94: the 35 charts and one for
 each of the 59 figures.
 
 Then look at every page, as an image, in the build with the artwork, because

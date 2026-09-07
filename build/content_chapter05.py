@@ -58,6 +58,18 @@ left him asking what the three lines are and what they are drawn from:
     gives no rule for either, and each slide says which part is the book's
     and which is our drawing choice.
 
+And one from his fourth, when the breakout slide read as a contradiction of
+Chapters 2 and 4, which had used the word only of price leaving a range:
+
+  * **A word from an earlier chapter means what it meant there, or the
+    slide says what changed.** Breakout is recalled by chapter, then
+    widened to any level, then shown at each wave degree, on four slides
+    with three charts of our own. Every other term of Chapters 1 to 4 was
+    checked the same way, and each recall names its chapter on the slide
+    and not only in the cue, because the instructor studies from a PDF that
+    has no cues. Three more book sketches got a companion chart on price
+    bars: Figures 5.7, 5.8 and 5.9. chapter-05/README.md has the table.
+
 What is lean, against Chapters 1 to 3:
 
   * The parts are the book's own sections, 5.1 to 5.11. Section 5.12 is the
@@ -158,6 +170,7 @@ SECTION1 = Section(
                     "Minor trends are shorter term: days to weeks.",
                 ),
                 accent="In Dow Theory, trends are classified and defined by their duration and extent.",
+                caption="Chapter 2 taught all three: the primary trend, the secondary reaction and the minor trend.",
             ),
             picture=Chart(
                 letter="A",
@@ -177,7 +190,7 @@ SECTION1 = Section(
                     "Each rally carries above the last peak: a higher high, HH.",
                     "Each dip holds above the last trough: a higher low, HL.",
                 ),
-                accent="In Dow Theory an uptrend is defined using peak and trough analysis.",
+                accent="The same definition as Chapter 2: Dow's peak and trough analysis.",
                 caption="A share peaks at PHP 50, dips to 46, peaks at 54, dips to 49: higher highs and higher lows.",
             ),
             picture=Figure(
@@ -285,7 +298,7 @@ SECTION1 = Section(
                     "Degree is the rank of a wave by size: the bigger swing is of a higher degree, its subwaves of a lower one.",
                     "The book: any trend or consolidation can be described in wave cycles, which exist at various wave degrees.",
                 ),
-                caption="The book defines neither word in a sentence. This reading is from its figures and its words larger, smaller and subwave.",
+                caption="Chapters 3 and 4 said wave cycle and cycle degree in passing. The book defines neither; this reading is from its figures.",
             ),
             picture=Chart(
                 letter="AA",
@@ -295,7 +308,7 @@ SECTION1 = Section(
             notes=(
                 "Teach this slide before anything is named. Left drawing: one wave. Middle: the same wave, in green, with smaller waves riding along it. Right: smaller ones again riding along those.",
                 "Each added wave is a subwave of the one it rides on, and one degree lower. Two drawings are two degrees, three are three.",
-                "A degree is not a number of degrees of angle and not a fixed size. It only says which of two waves is the bigger.",
+                "A degree is not an angle and not a fixed size: it only says which of two waves is the bigger. The reading rests on the book's figures and its words larger, smaller and subwave; Chapters 3 and 4 used the words and explained neither.",
             ),
         ),
         Pair(
@@ -370,7 +383,7 @@ SECTION1 = Section(
                     "Distinguish between trend and consolidation mode.",
                     "Determine the direction of the predominant trend.",
                 ),
-                caption="Stoploss: section 5.4. Stopsizing: section 5.5. The Elliott count in Figure 5.6 is Chapter 18.",
+                caption="Breakout levels: later in 5.1. Stoploss: 5.4. Stopsizing: 5.5. Elliott, met in Chapter 4, is Chapter 18.",
             ),
             picture=Figure(
                 number="5.6",
@@ -386,8 +399,8 @@ SECTION1 = Section(
             left=Content(
                 title="Trending and consolidating at once",
                 lines=(
-                    "A market may be in trend mode and in consolidation mode at the same time.",
-                    "It depends on the wave cycle being observed.",
+                    "Chapter 4: a market is either trending or consolidating.",
+                    "Chapter 5 adds: it may be both at the same time, depending on the wave cycle being observed.",
                     "In the figure the small LWC climbs each swing: trend mode. The MWC swings across one level: ranging mode. The large HWC is flat: flatline mode.",
                 ),
                 accent="Ask at which wave degree before asking whether it is trending.",
@@ -396,10 +409,32 @@ SECTION1 = Section(
                 number="5.7",
                 shows="A flat thick arrow, the higher wave cycle in flatline mode; a dashed wave swinging above and below it, the medium wave cycle in ranging mode; and a thin jagged line climbing each swing, the lower wave cycle in trend mode.",
             ),
-            text_w=5.0,
+            text_w=5.8,
             notes=(
-                "Three answers to one question on one chart: flat, ranging, trending. Ranging and flatline are the figure's labels; the text says only trend and consolidation.",
-                "This is why the last slide matters: the same price is a trend to one trader and a range to another.",
+                "Three answers to one question on one chart: flat, ranging, trending. Ranging and flatline are the figure's labels; the text says only trend and consolidation, and says mode where Chapter 4 said phase.",
+                "Chapter 4's consolidation phase was the sideways stretch, one of only two basic phases. Nothing there is withdrawn; this chapter adds that the phase depends on the wave being read.",
+            ),
+        ),
+        Pair(
+            left=Content(
+                title="One market, three modes, on price bars",
+                lines=(
+                    "The bars are the LWC. Bar by bar they climb, then fall: trend mode, up and then down.",
+                    "The dotted MWC swings between about PHP 54 and PHP 66 and gets nowhere: ranging mode.",
+                    "The thick HWC stays at PHP 60: flatline mode.",
+                ),
+                accent="One chart. Whether it is trending depends on which wave is read.",
+                caption="The three modes are the book's. The bars and the pesos are our invented chart.",
+            ),
+            picture=Chart(
+                letter="AH",
+                shows="One invented price drawn as bars that rise and fall three times between about 54 and 66 pesos. A gold arrow under one rise marks the lower wave cycle in trend mode, the dotted medium wave cycle swings across one level in ranging mode, and the thick higher wave cycle is a flat line at 60 pesos in flatline mode.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "The same idea as the book's sketch, on bars. Point at the gold arrow first: along it every small swing ends higher than the last, an uptrend to anyone trading the bars.",
+                "Then the dotted line: up to 66, down to 54, three times over. To the trader of that wave nothing has happened.",
+                "Then the thick line. Three traders, one chart, three true answers.",
             ),
         ),
         Check(
@@ -427,6 +462,50 @@ SECTION1 = Section(
         ),
         Pair(
             left=Content(
+                title="Breakout, as Chapters 2 and 4 used it",
+                lines=(
+                    "Chapter 2: a line, a narrow sideways range, usually results in a strong breakout.",
+                    "Chapter 4: most call a consolidation over on a clear technical breakout from the range, and the trend phase follows.",
+                    "In both, price leaves a sideways range through its top or its bottom.",
+                ),
+                accent="So far, a breakout has been price getting out of a range.",
+                caption="No chapter gave breakout a definition of its own, and neither does the book. This is how the word has been used.",
+            ),
+            picture=Chart(
+                letter="AD",
+                shows="An invented share that falls, then ranges between 40 and 44 pesos, the consolidation, boxed. A gold line marks the top of the range at 44. Price leaves the range through that top, the breakout, and the trend that follows carries it to 56.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "A recall, not a new term, and it is here because the word is about to be used more widely. Chapter 2's line and Chapter 4's consolidation both ended in a breakout from a range.",
+                "The chart is Chapter 4's own example again: a share ranging between PHP 40 and PHP 44. The gold line is the top of the range, and the breakout is where price gets through it.",
+                "Ask the room what the breakout was a breakout of. The answer to hold on to is a level: the top of the range.",
+            ),
+        ),
+        Pair(
+            left=Content(
+                title="Chapter 5: a breakout is through a level",
+                lines=(
+                    "The edge of a range is one kind of level. Chapter 5 breaks out of others:",
+                    "a prior peak or trough, a trendline, a channel line, any price overlay.",
+                    "Each time, a level holds price and then price gets through it.",
+                ),
+                accent="Same word, wider use: the level need not be the edge of a range.",
+                caption="The book never defines breakout. Chapter 2 called price going through a previous peak or trough a penetration.",
+            ),
+            picture=Chart(
+                letter="AE",
+                shows="Four small drawings, each with the level price gets through in green: the top of a range, from Chapters 2 and 4; a prior peak, of which there is one at every wave degree, section 5.1; a trendline, sections 5.2 and 5.6; and a channel line, section 5.6.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "This is the slide that reconciles the two uses. A breakout is price getting through a level that was holding it. The top of a range is such a level, and so is a prior peak, a trendline or a channel line.",
+                "It is not new to this chapter either. Chapter 1's price filter asked price to move a set distance past the level, and Chapter 3's breakout level was 10.00.",
+                "Be straight that the definition is ours, from use. The book says breakout, penetration, violation and breach of a level and never sets one against another; in Chapter 2 it wrote inflection point breakouts for what it had called penetration.",
+            ),
+        ),
+        Pair(
+            left=Content(
                 title="A breakout for every wave degree",
                 lines=(
                     "Breakouts can be defined by the degree of the wave cycle: lower, medium or higher.",
@@ -434,16 +513,40 @@ SECTION1 = Section(
                     "Knowing the degree lets the trader size the stoploss to that degree's average wave amplitude and volatility.",
                 ),
                 accent="Volatility at one wave degree may not manifest at a higher or lower degree.",
-                caption="Amplitude: section 5.2. Stoploss: section 5.4.",
+                caption="In the figure each B/OUT LEVEL is a line across a prior peak of one wave cycle. Amplitude: 5.2. Stoploss: 5.4.",
             ),
             picture=Figure(
                 number="5.8",
                 shows="One price path with breakout levels drawn at three sizes: short LWC breakout levels on the small swings, two MWC breakout levels on the medium swings, and one HWC breakout level across the top of the whole move.",
             ),
-            text_w=5.0,
+            text_w=5.4,
             notes=(
-                "Count the levels in the figure: several small ones, two medium, one large. Each is a breakout to somebody.",
+                "Count the levels in the figure: several small ones, two medium, one large. Each is a horizontal line across a peak, and each is a breakout to somebody.",
+                "Each wave cycle has peaks of its own, so each has levels of its own. That is read off the figure; the three lines are the book's sentences.",
                 "Stopsizing comes back in section 5.5. For now: a stop sized for one degree is the wrong size for another.",
+            ),
+        ),
+        Pair(
+            left=Content(
+                title="One price passes three breakout levels",
+                lines=(
+                    "LWC: passes the last small peak, PHP 57.",
+                    "MWC: passes the last medium peak, PHP 60.",
+                    "HWC: passes the top of the whole move, PHP 71.",
+                    "The 67 bars under that top are a consolidation at a higher degree, and this is its breakout.",
+                ),
+                accent="Chapter 4's breakout from a range is one of these.",
+                caption="Levels are read off our invented chart. The last line is our reading; the book does not join the two uses.",
+            ),
+            picture=Chart(
+                letter="AF",
+                shows="One invented price drawn as bars that rises to a top near 71 pesos, falls to about 48 and climbs back through it. Three gold lines mark breakout levels, each across a prior peak: a short one at about 57, the lower wave cycle; a longer one at about 60, the medium wave cycle; and the longest at about 71, the higher wave cycle, across the top of the whole move.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "Three traders watch one price. Each is waiting for a different gold line, and each calls a different bar the breakout.",
+                "Then the link back. This section has just said a market can trend at one degree and consolidate at another. The long stretch under the top is that: a fall and a recovery to one trader, a sideways range to a trader of a larger wave.",
+                "So nothing taught in Chapters 2 and 4 is withdrawn. A breakout from a range is a breakout through a level, at the degree where the range can be seen.",
             ),
         ),
         Pair(
@@ -461,6 +564,28 @@ SECTION1 = Section(
             notes=(
                 "The arrow at the top of the figure marks the one moment all three degrees turn at once.",
                 "It runs one way only: the small waves reverse many times on the way up without the large one turning.",
+            ),
+        ),
+        Pair(
+            left=Content(
+                title="Lower degrees turn alone. The highest does not.",
+                lines=(
+                    "On the way up the LWC turns down again and again, and the rise goes on.",
+                    "The MWC turns down as well, with the LWC, and the HWC still rises.",
+                    "At the top the HWC turns down, and the MWC and the LWC turn with it.",
+                ),
+                accent="A turn of the largest wave is a turn of every wave. That is why it is the significant one.",
+                caption="Convergence in Chapter 3 was a futures price meeting the spot price. Here it is wave degrees turning together.",
+            ),
+            picture=Chart(
+                letter="AI",
+                shows="One invented price drawn as bars that rises to a single top and falls, with the dotted medium wave cycle and the thick higher wave cycle over it. Three points are marked: on the way up, a place where the medium and lower wave cycles turn down and the higher does not; a place where only the lower wave cycle turns down; and the top, where the higher wave cycle turns down and both smaller cycles turn with it.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "The book's two sentences, one after the other on the same bars: all subwaves of the largest wave reverse together, and waves of higher degrees need not reverse when waves of lower degrees do.",
+                "Left mark: the dotted line and the bars turn down and the thick line keeps rising. Middle mark: only the bars turn. Gold mark: all three.",
+                "Chapter 3 used convergence for futures and spot prices at expiry. Same word, a different thing, and the caption says so.",
             ),
         ),
         Pair(
@@ -486,7 +611,7 @@ SECTION1 = Section(
                 lines=(
                     "Trend may also be defined on individual open, high, low and close data.",
                     "Peak and trough analysis can show a flat market while the closes rise bar after bar.",
-                    "Rising closes are an uptrend as far as close prices are concerned: a line chart in action.",
+                    "Rising closes are an uptrend as far as close prices are concerned: Chapter 3's line chart in action.",
                     "The same holds for the highs, the lows, and the mid or typical prices.",
                 ),
                 caption="The book names typical price, and the CCI oscillator and Floor Trader's Pivot Points that are based on it, and defines none of them here.",
@@ -697,7 +822,7 @@ SECTION2 = Section(
                     "Price then moves predictably. Trends and reversals are clear and decisive.",
                 ),
                 accent="In this mode prices exhibit relatively low volatility.",
-                caption="Persistence is the continuity of trend action.",
+                caption="Chapter 1's first applied assumption: price behavior persists. Here persistence is the continuity of trend action.",
             ),
             picture=Figure(
                 number="5.17",
@@ -717,13 +842,14 @@ SECTION2 = Section(
                 example="A bar with a low of PHP 40, a high of PHP 50 and a close of PHP 48: (48 - 40) / (50 - 40) = 0.80. It closed near its high.",
                 formal="The relative position of the closing price within the bar itself, measured as a ratio: (C - L) / (H - L). The book calls it essentially a one-period %K, and does not explain %K here.",
             ),
-            picture=Figure(
-                number="5.18",
-                shows="A rising run of bars whose closes sit lower and lower within each bar, labelled declining closing prices with respect to the bar range, with the formula bar stochastic = (C - L) / (H - L) and a lower panel in which the bar stochastic declines.",
+            picture=Chart(
+                letter="AG",
+                shows="One bar drawn three times with a low of 40 pesos and a high of 50, and only the close moved. Close 48: a bar stochastic of 0.80, near the high of the bar. Close 45: 0.50, the middle of the bar. Close 42: 0.20, near the low of the bar.",
             ),
-            text_w=6.6,
+            text_w=TERM_CHART_W,
             notes=(
-                "The text gives the words and Figure 5.18 prints the formula. The pesos are ours.",
+                "The text gives the words and the book's next figure prints the formula. The pesos are ours.",
+                "Read the three bars left to right. The bar is the same height each time; only the right tick, the close, moves down it, and the ratio falls from 0.80 to 0.20.",
                 "The standard stochastic oscillator compares the close with the last N periods. This one looks inside a single bar. %K is named, not taught.",
             ),
         ),
@@ -733,10 +859,28 @@ SECTION2 = Section(
                 lines=(
                     "In an uptrend, a gradual decline in closes with respect to the bar is an early indication of potential weakness.",
                     "In a downtrend, a gradual increase is an early indication of potential bullishness.",
-                    "It is monitored with a simple moving average of the ratio.",
                 ),
-                accent="Figure 5.19: a 3-period SMA marks bearish and bullish divergences.",
-                caption="Divergence is Chapter 9.",
+                accent="In the figure the bars climb while each close sits lower within its bar.",
+            ),
+            picture=Figure(
+                number="5.18",
+                shows="A rising run of bars whose closes sit lower and lower within each bar, labelled declining closing prices with respect to the bar range, with the formula bar stochastic = (C - L) / (H - L) and a lower panel in which the bar stochastic declines.",
+            ),
+            text_w=6.2,
+            notes=(
+                "Price keeps rising while the closes sink within their bars. That is the characteristic: the ratio falling in an uptrend.",
+                "The lower panel is the ratio itself, bar by bar, sliding down.",
+            ),
+        ),
+        Pair(
+            left=Content(
+                title="The ratio, averaged, on a real chart",
+                lines=(
+                    "The ratio is monitored with a simple moving average of it.",
+                    "Weekly EURUSD: a 3-period SMA of the bar stochastic, in the panel under the price.",
+                    "The figure marks bearish divergences at three tops and bullish divergences at three bottoms.",
+                ),
+                caption="Divergence: met in Chapter 4, on the MACD. Taught in Chapter 9.",
             ),
             picture=Figure(
                 number="5.19",
@@ -744,8 +888,8 @@ SECTION2 = Section(
             ),
             text_w=5.2,
             notes=(
-                "Price keeps rising while the closes sink within their bars. The average of the ratio makes that visible.",
-                "Read the figure's labels and stop. What divergence is, formally, waits for Chapter 9.",
+                "Read the figure's labels and stop. Chapter 4 showed one divergence and did not define it. What divergence is, formally, waits for Chapter 9.",
+                "A simple moving average is used here and not built. Moving averages are Chapter 11.",
             ),
         ),
         Pair(
@@ -953,7 +1097,7 @@ SECTION2 = Section(
             left=Content(
                 title="11  Size and duration of a consolidation",
                 lines=(
-                    "A trend interruption is more significant if the price formation is of greater magnitude: a taller chart pattern.",
+                    "A trend interruption, Chapter 4's consolidation, is more significant the greater its magnitude: a taller chart pattern.",
                     "And if it develops over a longer period: a wider chart pattern.",
                     "Larger trend interruptions normally lead to a greater probability of a reversal.",
                 ),
@@ -1037,12 +1181,13 @@ SECTION2 = Section(
                     "Short term penetrations below an uptrending line, or above a downtrending one, are usually regarded as false breakouts.",
                 ),
                 accent="With the line's slope: exhaustion. Against it: a false breakout.",
+                caption="Chapter 2: penetration of a peak or trough. Here: of a line.",
             ),
             picture=Figure(
                 number="5.29",
                 shows="Four small charts. Top: price spiking above an uptrending line, and price spiking below a downtrending line, each circled as price exhaustion. Bottom: price dipping below an uptrending line, and price poking above a downtrending line, each circled as a false breakout.",
             ),
-            text_w=5.4,
+            text_w=5.6,
             notes=(
                 "Top row of the figure is overextension, bottom row is the false breakout. The lines are the same; the side differs.",
                 "The book's caption for this figure is simply price exhaustion.",
@@ -1075,12 +1220,13 @@ SECTION2 = Section(
             lines=(
                 "Standard or reverse divergence may appear between price and volume, or between price and any oscillator.",
                 "It may give an early indication of potential reversals or continuations in the market.",
+                "Chapter 4 showed one: price made a higher peak while the MACD made a lower one.",
             ),
             accent="The book gives divergence this one sentence here and refers to Chapter 9 for more.",
             caption="That completes the sixteen. The chapter summary advises paying particular attention to all of them.",
             notes=(
                 "No picture on this slide: the book explains nothing about divergence here and sends the reader to Chapter 9.",
-                "Figures 5.19 and 5.27 have already labelled divergences. That is as far as this chapter takes it.",
+                "Two of this chapter's figures have already labelled divergences, and Chapter 4 showed one on the MACD. That is as far as the book has taken it.",
             ),
         ),
         Check(
@@ -1129,7 +1275,7 @@ SECTION3 = Section(
                     "Event-based filters indicate neither, until an event has occurred.",
                 ),
                 accent="The type of filter, and the extent to which it is employed, sets the exact point of entry and exit.",
-                caption="With no filter, intraday breakouts are virtually impossible to backtest, a word the book does not define.",
+                caption="Chapter 1: filters validate breakouts. Unfiltered intraday ones are virtually impossible to backtest, an undefined word.",
             ),
             picture=Chart(
                 letter="F",
@@ -1137,7 +1283,7 @@ SECTION3 = Section(
             ),
             text_w=CHART_W,
             notes=(
-                "Chapter 1 met filters on a breakout. This section sorts them by what each one pins down: the price, the time, or neither.",
+                "Chapter 1 taught the price, time and algorithmic filters as terms. This section sorts them by what each one pins down: the price, the time, or neither.",
                 "Without a filter a profitable performance is unrepeatable, the book says, because it cannot be backtested.",
             ),
         ),
@@ -1149,7 +1295,7 @@ SECTION3 = Section(
                     "Time-based: a duration of N closed bars.",
                     "Event-based. Algorithmic: a specific sequence of closed bars, or of new highs or lows. Event-based measure: a closing price violation, or a barrier retest after a confirmed breakout.",
                 ),
-                caption="Review question 8 says 'time and algorithmic filters'. Here algorithmic is one branch of event-based.",
+                caption="Chapter 1 and review question 8 call the third family algorithmic. Here algorithmic is one branch of event-based.",
             ),
             picture=Figure(
                 number="5.30",
@@ -1229,7 +1375,7 @@ SECTION4 = Section(
                     "To cover: buying to close an old short position.",
                 ),
                 accent="In the figure: long from $50 to $70 is $20. Short from $70 to $40 is $30.",
-                caption="A trader holding no open positions is said to be in cash. To square a position is to exit it.",
+                caption="Chapter 1's four terms, unchanged. New: in cash, holding no open positions; to square a position, to exit it.",
             ),
             picture=Figure(
                 number="5.31",
@@ -1250,7 +1396,7 @@ SECTION4 = Section(
                     "Selling high and buying back lower.",
                     "Selling low and buying back even lower.",
                 ),
-                accent="Two are longs and two are shorts. All four follow the one principle.",
+                accent="Two are longs and two are shorts. All four follow Chapter 1's one principle.",
                 caption="Hedging: equal and opposite positions, to reduce or neutralize all directional risk. Buying at the current price is buying at the market.",
             ),
             picture=Chart(
@@ -1273,6 +1419,7 @@ SECTION4 = Section(
                     "The stop exit is the stoploss.",
                 ),
                 accent="It can guarantee execution, but not the fill price.",
+                caption="Chapter 1 taught stop and limit entry orders. New: the exits.",
             ),
             picture=Chart(
                 letter="I",
@@ -1441,7 +1588,7 @@ SECTION5 = Section(
                     "Failed breakout entries: in the opposite direction, after a failed breakout.",
                     "Random entries, and pattern or sequence-based entries.",
                 ),
-                caption="The book announces four simple ways and lists five. Each may or may not be in the direction of the predominant trend.",
+                caption="Overlays include channels, trendlines, pivot points and price envelopes. Four ways are announced and five listed; each may be with or against the predominant trend.",
             ),
             picture=Chart(
                 letter="M",
@@ -1462,7 +1609,7 @@ SECTION5 = Section(
                     "Non-failure swing: the second peak succeeds in penetrating the previous peak.",
                     "Bottoms are the mirror: a failure swing, a double bottom and a non-failure swing, read on the second trough.",
                 ),
-                caption="More complex tops and bottoms: a head and shoulders, a broadening formation, an island, a diamond, a rounding top or bottom.",
+                caption="All three were Chapter 2 terms, unchanged. More complex: a head and shoulders, a broadening formation, an island, a diamond, a rounding top or bottom.",
             ),
             picture=Figure(
                 number="5.33",
@@ -1477,7 +1624,7 @@ SECTION5 = Section(
         Pair(
             left=Term(
                 term="Inflection point of strength N",
-                plain="A peak or trough counts for more the more bars flank it on either side.",
+                plain="An inflection point, a peak or trough, counts for more the more bars flank it.",
                 example="A peak with ten bars on either side of its highest bar is of strength 10. One with only two is of strength 2.",
                 formal="N bars on either side of the highest peak or lowest trough is an inflection point of strength N. The more bars, the more significant the peak and the stronger its resistance level.",
             ),
@@ -1595,7 +1742,7 @@ SECTION5 = Section(
         Pair(
             left=Term(
                 term="Trend filter",
-                plain="A rule that says whether a trend is on.",
+                plain="Says whether a trend is on. Not 5.3's filters.",
                 example="A double moving average crossover. Shorter above longer: a potential uptrend starts. Shorter below longer: a potential downtrend.",
                 formal="It helps to identify a trend amidst the market noise and price volatility. Two more: a longer-term oscillator crossing its signal line, and price contained above or below an overlay barrier, such as a moving average or trendline.",
             ),
@@ -1619,7 +1766,7 @@ SECTION5 = Section(
                     "Stops: just below the previous trough for a long, just above the previous peak for a short, trailing price.",
                 ),
                 accent="Divergence in the MACD helps to warn of a potential reversal.",
-                caption="MACD and the stochastic are used here and not taught.",
+                caption="MACD (Chapter 4) and the stochastic are not taught here.",
             ),
             picture=Figure(
                 number="5.38",
@@ -1903,7 +2050,7 @@ SECTION6 = Section(
                     "The most reliable uptrend line rises at approximately 35 to 45 degrees.",
                     "Duration: longer-term trendlines are generally more reliable than shorter-term ones.",
                 ),
-                caption="A longer-term line is more obvious to all participants and attracts more and larger orders, institutions included.",
+                caption="A longer-term line is more obvious to all participants and attracts more and larger orders, institutions included. Whipsaw: still undefined, as in Chapter 4.",
             ),
             picture=Chart(
                 letter="V",
@@ -1912,7 +2059,7 @@ SECTION6 = Section(
             text_w=CHART_W,
             notes=(
                 "This and the next slide are review question 6: the factors that impact trendline reliability. Six of them, two here.",
-                "The steep trend may not be able to sustain itself over the longer term. Whipsaw is still used without a definition.",
+                "The steep trend may not be able to sustain itself over the longer term. Chapter 4 said the book uses whipsaw without defining it, and it still does.",
             ),
         ),
         Pair(
@@ -1945,12 +2092,13 @@ SECTION6 = Section(
                     "Farthest distance PHP 6, breakout at PHP 50: the minimum target is 50 - 6 = PHP 44.",
                 ),
                 accent="In the figure prices bottom very close to the minimum projected target.",
+                caption="Chapter 4's minimum measuring objective, from a trendline.",
             ),
             picture=Figure(
                 number="5.42",
                 shows="A 30 minute EURUSD chart: the maximum distance of price from the uptrend line measured as a vertical arrow, the same height projected one to one down from the breakout point, and profit-taking activity around the minimum target projection.",
             ),
-            text_w=4.8,
+            text_w=5.0,
             notes=(
                 "The same idea as Chapter 4's minimum measuring objective, measured from a trendline and not from a range.",
                 "The pesos are ours. The figure shows the method on EURUSD: one arrow up, the same arrow down.",
@@ -1962,7 +2110,7 @@ SECTION6 = Section(
                 "Strength: straight lines catch any trend change effectively, with no need to identify price patterns.",
                 "Strength: simple to construct, and applied and viewable across all timeframes and markets.",
                 "Weakness: subject to whipsaws, like moving averages, and less effective in erratic, volatile or ranging markets.",
-                "Weakness: affected by the type of scaling used, ratio or linear.",
+                "Weakness: affected by the type of scaling used, Chapter 3's ratio or linear.",
                 "Weakness: a consolidation may breach a line without a legitimate reversal.",
             ),
             notes=(
@@ -2272,7 +2420,7 @@ SECTION7 = Section(
                 title="5.7  Three ways to measure a retracement",
                 lines=(
                     "Fibonacci retracements are based on various ratios related to the Fibonacci Phi ratio.",
-                    "Dow paid particular attention to the one-third and two-thirds retracements.",
+                    "Dow, as in Chapter 2, paid particular attention to the one-third and two-thirds retracements.",
                     "Gann employed one-third and one-eighth retracement ranges.",
                 ),
                 accent="Gann and Dow both regarded 50 percent as the most significant, with most major tops and bottoms forming around it.",
@@ -2284,7 +2432,7 @@ SECTION7 = Section(
             ),
             text_w=6.2,
             notes=(
-                "Read the table across, not down: each row is one zone and three ways of naming it.",
+                "A retracement percentage is a share of the move being retraced, as in Chapter 2. Read the table across, not down: each row is one zone and three ways of naming it.",
                 "The Gann column is in eighths: 12.5 percent is one-eighth. Nothing here is derived; that waits for the later chapters.",
             ),
         ),
@@ -2327,7 +2475,7 @@ SECTION8 = Section(
             left=Term(
                 term="5.8  Common, breakaway, runaway and exhaustion gaps",
                 plain="Each is named for where in the trend it opens.",
-                example="Weekly Wheat shows all four.",
+                example="Weekly Wheat shows all four of Chapter 3's gaps.",
                 formal="Common: within a trading range, considered insignificant. Breakaway: as price breaks away from a consolidation or chart pattern. Runaway, measuring, midway or continuation: in a strong trend phase; there may be more than one. Exhaustion: at the end of a trend, before a consolidation or reversal.",
             ),
             picture=Figure(
@@ -2639,7 +2787,7 @@ CLOSING = (
     Content(
         title="What the book uses, and where it says two things",
         lines=(
-            "Used and not taught here: typical price, the cycle-tuned stochastic, MACD, candlestick patterns.",
+            "Never defined here: breakout, wave cycle, wave degree. Used, not taught: typical price, the cycle-tuned stochastic, MACD, candlesticks.",
             "Sent ahead: divergence, Chapter 9. Channels, Chapter 13. Elliott, Chapter 18. Tradesizing, Chapter 28.",
             "Sixteen characteristics in 5.2, twelve in review question 4. Four entry modes announced, five listed.",
             "Figure 5.24: $3.30 a day in the text, $3.80 on the figure.",

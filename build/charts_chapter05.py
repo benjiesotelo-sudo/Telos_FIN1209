@@ -1,8 +1,8 @@
 """Chapter 5 teaching charts for FIN1209, as plain data.
 
-Twenty nine charts, A to Z and then AA, AB and AC: the three wave degree
-charts were added after the alphabet was used up, and deckkit letters a
-twenty seventh chart the way a spreadsheet letters its columns.
+Thirty five charts, A to Z and then AA to AI: the nine after Z were added
+in review, once the alphabet was used up, and deckkit letters a twenty
+seventh chart the way a spreadsheet letters its columns.
 This file carries no drawing code: the three forms it uses, annotated,
 gallery and bar_waves, live in build/chartkit.py, which knows nothing about any chapter,
 and every entry below is data handed to one of them.
@@ -44,6 +44,21 @@ figures shows:
     thick over it, the line styles of Figure 5.5. It sits after that figure.
   * **AC** the same chart with a ruler under it for one swing of each
     cycle, so the three can be told apart by comparing them.
+  * **AD** a breakout as Chapters 2 and 4 used the word: price leaving a
+    consolidation range through its top, on Chapter 4's own PHP 40 to
+    PHP 44 example. It is a recall, drawn so the next slide can widen it.
+  * **AE** the four kinds of level this chapter breaks out of: the top of a
+    range, a prior peak, a trendline and a channel line. The book never
+    defines a breakout and no figure sets the four side by side.
+  * **AF** Figure 5.8's three breakouts on price bars: one level at a prior
+    peak of each wave cycle, and the bar that closes above it.
+  * **AG** the bar stochastic measured on one bar with three closes. Figure
+    5.18 shows the ratio falling over a run of bars, which is characteristic
+    6, and not what the ratio is.
+  * **AH** Figure 5.7 on price bars: one market that is flat, ranging and
+    trending at once, by wave cycle.
+  * **AI** Figure 5.9 on price bars, with the two places the smaller cycles
+    turn and the largest does not, which the figure does not mark.
 
 **Teach only what the textbook teaches.** Every label on these charts is a
 statement the book's Chapter 5 makes, or arithmetic it sets out. Charts P,
@@ -69,6 +84,13 @@ into price bars. The book draws its wave cycles freehand and gives no rule
 for where the two smooth lines go, so their place on these two charts is
 our drawing choice, and the bar counts and pesos on Chart AC's rulers are
 read off our own chart. Both charts and both slides say so.
+Charts AF, AH and AI are built the same way, each with its waves arranged
+to show one thing: a slow rise added so the largest wave passes its own
+peak, the largest wave left flat, and the three waves set to peak on one
+bar. Chart AF's levels are the highs of its own bars and its breakouts the
+first bar to close above each; nothing on it is the book's but the idea.
+Chart AD is Chapter 4's worked range again. Charts AE and AG are not prices
+at all: four shapes, and one bar drawn three times.
 """
 
 from __future__ import annotations
@@ -483,7 +505,184 @@ AB_TRACES = (
 
 
 # --------------------------------------------------------------------------
-# The twenty nine charts
+# Charts AD and AE. Breakout as Chapters 2 and 4 used it, and what Chapter 5
+# adds.
+# --------------------------------------------------------------------------
+# AD is Chapter 4's own example again: a share ranging between PHP 40 and
+# PHP 44 that leaves the range through its top. AE is four small shapes, each
+# with the level price gets through in green: the top of a range, which is
+# the earlier chapters' case, and the three this chapter adds to it.
+
+AD_SERIES = _line(
+    ((0, 51), (10, 40.8), (14, 43.5), (19, 40.4), (24, 43.6), (29, 40.5),
+     (34, 43.5), (39, 40.6), (44, 43.4), (48, 41.6), (54, 46.2), (57, 45.2),
+     (67, 52.5), (70, 51), (76, 56)),
+    seed=571, noise=0.003, wobble=0.03)
+
+LEVELS = (
+    Sketch(name="The top of a range",
+           note="Chapters 2 and 4",
+           points=((0, 2.4), (1, 3.9), (2, 1.1), (3, 3.9), (4, 1.1), (5, 3.9),
+                   (6, 1.1), (7, 3.8), (8, 2.8), (9.4, 6.4), (10.1, 5.7),
+                   (11, 7.4)),
+           sides=(((0.4, 4.1), (11, 4.1)),)),
+    Sketch(name="A prior peak",
+           note="one at every wave degree: section 5.1",
+           points=((0, 0), (3, 5), (5, 2.4), (8.4, 7.4), (9.2, 6.6),
+                   (10.4, 8.4)),
+           sides=(((3, 5), (10.4, 5)),)),
+    Sketch(name="A trendline",
+           note="sections 5.2 and 5.6",
+           points=((0, 8), (1.5, 5.4), (3, 6.9), (4.5, 4.1), (6, 5.6),
+                   (7.2, 3.2), (9.5, 7.2), (10.2, 6.4), (11, 8)),
+           sides=(((0, 8.1), (11, 4.4)),)),
+    Sketch(name="A channel line",
+           note="section 5.6",
+           points=((0, 1), (1.5, 4.15), (3, 2.6), (4.5, 5.65), (6, 4.1),
+                   (7.5, 7.15), (8.6, 6.2), (10.4, 10.4), (11, 9.8)),
+           sides=(((0, 3.5), (11, 9.0)), ((0, 0.9), (11, 6.4)))),
+)
+
+# --------------------------------------------------------------------------
+# Chart AF. The three breakouts of Figure 5.8, on price bars.
+# --------------------------------------------------------------------------
+# The same three waves as Chart AB with a slow rise added, so that the
+# largest wave peaks, falls back and then passes its own peak, which is what
+# Figure 5.8 draws. Each level is the high of a prior peak, read off the
+# bars, and each breakout is the first bar that closes above it.
+
+AF_BARS = 121
+
+
+def _breakout_waves():
+    import math
+    import random
+    rng = random.Random(431)
+    higher, medium, closes = [], [], []
+    for x in range(AF_BARS):
+        h = 55.0 + 0.10 * x + 10.0 * math.sin(2 * math.pi * x / 96)
+        m = h + 5.0 * math.sin(2 * math.pi * x / 32)
+        low = 2.5 * math.sin(2 * math.pi * (x + 0.5) / 8)
+        higher.append(h)
+        medium.append(m)
+        closes.append(m + low + rng.uniform(-0.3, 0.3))
+    bars = []
+    for x, c in enumerate(closes):
+        o = closes[x - 1] if x else c - 0.6
+        bars.append(Bar(open=o, close=c,
+                        high=max(o, c) + rng.uniform(0.2, 0.7),
+                        low=min(o, c) - rng.uniform(0.2, 0.7)))
+    return tuple(bars), tuple(medium), tuple(higher)
+
+
+def _level(bars, first, last):
+    """A prior peak between two bars, and the first bar to close above it:
+    (bar of the peak, its high, bar of the breakout)."""
+    at = max(range(first, last + 1), key=lambda x: bars[x].high)
+    high = bars[at].high
+    out = next(x for x in range(at + 1, len(bars)) if bars[x].close > high)
+    return at, high, out
+
+
+AF_PRICE, AF_MWC, AF_HWC = _breakout_waves()
+AF_TRACES = (
+    Trace(values=AF_HWC, tone="deep", width=3.0),
+    Trace(values=AF_MWC, tone="structure", dotted=True, width=2.4),
+)
+AF_HIGH = _level(AF_PRICE, 20, 50)      # the top of the whole move
+AF_MED = _level(AF_PRICE, 68, 78)       # the last medium peak before it
+AF_LOW = _level(AF_PRICE, 79, 85)       # the last small peak before that
+
+# --------------------------------------------------------------------------
+# Chart AG. The bar stochastic, measured on three bars.
+# --------------------------------------------------------------------------
+# One bar three times, with a low of PHP 40 and a high of PHP 50 each time
+# and only the close moved: PHP 48, PHP 45 and PHP 42. The ratio is the
+# book's, printed on its Figure 5.18; the pesos are ours.
+
+
+def _stochastic_bar(name, note, close):
+    low, high, open_ = 40.0, 50.0, 44.0
+    return Sketch(
+        name=name, note=note,
+        points=((-0.5, open_), (0, open_), (0, low), (0, high), (0, close),
+                (0.5, close)),
+        sides=(((-1.6, high), (1.6, high)), ((-1.6, low), (1.6, low))))
+
+
+STOCHASTIC = (
+    _stochastic_bar("Close PHP 48: 0.80", "near the high of the bar", 48.0),
+    _stochastic_bar("Close PHP 45: 0.50", "the middle of the bar", 45.0),
+    _stochastic_bar("Close PHP 42: 0.20", "near the low of the bar", 42.0),
+)
+
+# --------------------------------------------------------------------------
+# Charts AH and AI. Figure 5.7 and Figure 5.9, on price bars.
+# --------------------------------------------------------------------------
+# AH is a market whose largest wave is flat: the medium wave swings across
+# one level and the small one climbs and falls along it, so the one chart is
+# flat, ranging and trending at once. AI is Chart AB's price with the three
+# waves set to peak on the same bar, so the one turn of the largest wave is
+# also a turn of the two smaller ones.
+
+
+def _mode_waves():
+    import math
+    import random
+    rng = random.Random(613)
+    higher, medium, closes = [], [], []
+    for x in range(AB_BARS):
+        h = 60.0
+        m = h - 6.0 * math.cos(2 * math.pi * x / 32)
+        low = 2.2 * math.sin(2 * math.pi * (x + 0.5) / 8)
+        higher.append(h)
+        medium.append(m)
+        closes.append(m + low + rng.uniform(-0.3, 0.3))
+    bars = []
+    for x, c in enumerate(closes):
+        o = closes[x - 1] if x else c - 0.6
+        bars.append(Bar(open=o, close=c,
+                        high=max(o, c) + rng.uniform(0.2, 0.7),
+                        low=min(o, c) - rng.uniform(0.2, 0.7)))
+    return tuple(bars), tuple(medium), tuple(higher)
+
+
+def _synced_waves():
+    import math
+    import random
+    rng = random.Random(829)
+    top = AB_BARS // 2
+    higher, medium, closes = [], [], []
+    for x in range(AB_BARS):
+        h = 60.0 - AB_HIGH[0] * math.cos(2 * math.pi * x / AB_HIGH[1])
+        m = h + AB_MEDIUM[0] * math.cos(2 * math.pi * (x - top) / AB_MEDIUM[1])
+        low = AB_LOW[0] * math.cos(2 * math.pi * (x - top) / AB_LOW[1])
+        higher.append(h)
+        medium.append(m)
+        closes.append(m + low + rng.uniform(-0.3, 0.3))
+    bars = []
+    for x, c in enumerate(closes):
+        o = closes[x - 1] if x else c - 0.6
+        bars.append(Bar(open=o, close=c,
+                        high=max(o, c) + rng.uniform(0.2, 0.7),
+                        low=min(o, c) - rng.uniform(0.2, 0.7)))
+    return tuple(bars), tuple(medium), tuple(higher)
+
+
+AH_PRICE, AH_MWC, AH_HWC = _mode_waves()
+AH_TRACES = (
+    Trace(values=AH_HWC, tone="deep", width=3.4),
+    Trace(values=AH_MWC, tone="structure", dotted=True, width=2.6),
+)
+AI_PRICE, AI_MWC, AI_HWC = _synced_waves()
+AI_TRACES = (
+    Trace(values=AI_HWC, tone="deep", width=3.4),
+    Trace(values=AI_MWC, tone="structure", dotted=True, width=2.6),
+)
+
+
+# --------------------------------------------------------------------------
+# The thirty five charts
 # --------------------------------------------------------------------------
 
 CHARTS = (
@@ -1187,6 +1386,125 @@ CHARTS = (
             top=0.05, bottom=0.12,
             footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC. The "
                      "rulers are ours.",
+        ),
+    ),
+    ChartArt(
+        letter="AD",
+        draw=ck.annotated,
+        kwargs=dict(
+            series=AD_SERIES,
+            size=PAIR,
+            boxes=(Box(x0=9, x1=50, lo=40, hi=44,
+                       label="A consolidation range: PHP 40 to PHP 44",
+                       where="below"),),
+            strokes=(
+                Stroke(points=((9, 44), (78, 44)), dashed=True,
+                       tone="notice"),
+            ),
+            notes=(
+                Note(x=52, y=44, label="The breakout: price leaves\n"
+                     "the range through its top", dx=-12, dy=46,
+                     notice=True),
+                Note(x=67, label="The trend\nthat follows", dx=-70, dy=30),
+            ),
+            price_ticks=(40, 44, 48, 52, 56),
+            ylabel="Price (PHP)",
+            top=0.22, bottom=0.26,
+            footnote=INVENTED + " The range is Chapter 4's own example. In "
+                     "gold, the top of the range.",
+        ),
+    ),
+    ChartArt(
+        letter="AE",
+        draw=ck.gallery,
+        kwargs=dict(sketches=LEVELS, cols=2, size=PAIR,
+                    footnote="Not prices: four shapes. In green, the level "
+                             "that price gets through."),
+    ),
+    ChartArt(
+        letter="AF",
+        draw=ck.bar_waves,
+        kwargs=dict(
+            bars=AF_PRICE, traces=AF_TRACES, size=PAIR,
+            strokes=(
+                Stroke(points=((AF_HIGH[0], AF_HIGH[1]),
+                               (AF_HIGH[2] + 2, AF_HIGH[1])),
+                       tone="notice", width=2.0),
+                Stroke(points=((AF_MED[0], AF_MED[1]),
+                               (AF_MED[2] + 2, AF_MED[1])),
+                       tone="notice", width=2.0),
+                Stroke(points=((AF_LOW[0], AF_LOW[1]),
+                               (AF_LOW[2] + 2, AF_LOW[1])),
+                       tone="notice", width=2.0),
+            ),
+            notes=(
+                Note(x=AF_LOW[2], y=AF_LOW[1],
+                     label="LWC breakout:\nprice passes the\nlast small peak",
+                     dx=10, dy=-84),
+                Note(x=AF_MED[2], y=AF_MED[1],
+                     label="MWC breakout:\nprice passes the\n"
+                     "last medium peak", dx=-40, dy=28),
+                Note(x=AF_HIGH[2], y=AF_HIGH[1],
+                     label="HWC breakout: price passes\n"
+                     "the top of the whole move", dx=-36, dy=46,
+                     notice=True),
+            ),
+            price_ticks=(50, 60, 70, 80),
+            top=0.22, bottom=0.34,
+            footnote=INVENTED + " Gold lines: three breakout levels, each "
+                     "the high of a prior peak. Our drawing.",
+        ),
+    ),
+    ChartArt(
+        letter="AG",
+        draw=ck.gallery,
+        kwargs=dict(sketches=STOCHASTIC, cols=3, size=TERM,
+                    footnote="One bar, three closes. Green: its high, "
+                             "PHP 50, and its low, PHP 40."),
+    ),
+    ChartArt(
+        letter="AH",
+        draw=ck.bar_waves,
+        kwargs=dict(
+            bars=AH_PRICE, traces=AH_TRACES, size=PAIR,
+            strokes=(
+                Stroke(points=((33, AH_PRICE[33].low - 1.6),
+                               (46, AH_PRICE[46].low - 1.6)),
+                       tone="notice", width=2.0, arrow=True),
+            ),
+            notes=(
+                Note(x=40, y=AH_PRICE[40].low - 1.9,
+                     label="LWC: higher swing after\nswing here. Trend mode",
+                     dx=12, dy=-58, dot=False),
+                Note(x=48, y=AH_MWC[48],
+                     label="MWC: swings across\none level. Ranging mode",
+                     dx=-24, dy=64),
+                Note(x=92, y=60.0,
+                     label="HWC: flat.\nFlatline mode", dx=-6, dy=100),
+            ),
+            price_ticks=(50, 55, 60, 65, 70),
+            top=0.44, bottom=0.46,
+            footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC. One "
+                     "market, three readings.",
+        ),
+    ),
+    ChartArt(
+        letter="AI",
+        draw=ck.bar_waves,
+        kwargs=dict(
+            bars=AI_PRICE, traces=AI_TRACES, size=PAIR,
+            notes=(
+                Note(x=16, label="The MWC and LWC\nturn down here.\n"
+                     "The HWC does not", dx=-16, dy=72),
+                Note(x=40, label="Only the LWC\nturns down here", dx=34,
+                     dy=-122),
+                Note(x=48, label="The HWC turns down,\nand both smaller "
+                     "cycles\nturn with it", dx=28, dy=6, notice=True),
+            ),
+            price_ticks=(40, 50, 60, 70, 80),
+            top=0.20, bottom=0.08,
+            footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC. The "
+                     "three are drawn to peak on one bar.",
         ),
     ),
 )

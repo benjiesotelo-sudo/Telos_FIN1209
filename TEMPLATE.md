@@ -17,13 +17,14 @@ Read this before you touch anything. Five chapters are built.
   audit are written outside the repository. See **The lean form** below
   before you copy it.
 - **Chapter 5** is the lean form done a second time, and only the teaching
-  deck so far: 141 slides, 21 checks carrying 42 items, 32 terms, all 59 of
-  the book's figures and 29 charts. `chapter-05/README.md` has what it
+  deck so far: 147 slides, 21 checks carrying 42 items, 32 terms, all 59 of
+  the book's figures and 35 charts. `chapter-05/README.md` has what it
   found: a figure whose labels are not in its image, and a reveal slide
   that overflows in the PDF. Its first build was sent back for where it put
-  the new-term marker, and its second for using wave degrees before any
-  slide explained them; see **The new-term marker** below before you write
-  a `Term`.
+  the new-term marker, its second for using wave degrees before any slide
+  explained them, and its fourth for using breakout more widely than
+  Chapters 2 and 4 had without saying so; see **The new-term marker** below
+  before you write a `Term`.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -227,13 +228,13 @@ time, or the room freezes.
 slide carries the gold NEW TERM chip, and the instructor reads the chip
 literally: this word is new today. Chapter 5's first build marked *Uptrend*,
 which Chapter 2 introduced, and left *HWC* and *MWC*, which are new, on an
-ordinary slide. He sent it back for both. Four rules, and nothing in the
+ordinary slide. He sent it back for both. Five rules, and nothing in the
 build checks any of them:
 
 1. **First teaching only.** A term gets the marker on the first slide in
    the course that says what it means, and nowhere else. If an earlier
    chapter gave it a `Term` slide it is a recall: an ordinary `Content`
-   slide, with the chapter it came from in the speaker cue.
+   slide, with the chapter it came from named on the slide.
 2. **Every new name gets it.** Go through the book's chapter section by
    section and list every name it introduces: an abbreviation, a "referred
    to as", a named method, a named item in a numbered list. Each one that
@@ -255,6 +256,17 @@ build checks any of them:
    say on the slide where that section is. When the book never explains
    it, say that on the slide. A speaker cue does none of this: read every
    slide as someone holding only the slides.
+
+5. **A word from an earlier chapter means what it meant there, or the
+   slide says what changed.** Chapters 2 and 4 used *breakout* of price
+   leaving a range; Chapter 5 used it of a prior peak, a trendline and a
+   channel, and the instructor read it as a contradiction. Before a chapter
+   ships, list every term the earlier decks mark, and every word they
+   taught by use, and check each use in the new deck. Where it is the same,
+   name the chapter on the slide. Where the new chapter widens it, recall
+   the earlier use first, by chapter, then say what is added, with a
+   picture of both. Where the book never defines the word, say so, and say
+   that the reading is ours. `chapter-05/README.md` has the table.
 
 What stays an ordinary slide: a statement, a question, a worked example, a
 comparison, and a list of things the book gives one line each, such as the
@@ -435,7 +447,7 @@ bare bars. Compare each extracted file with the printed page, and render
 that figure from the page instead; `chapter-05/README.md` has the command.
 
 **The twenty seventh chart is AA.** `deckkit` names a chart by one capital
-letter, and by two after Z. Chapter 5 draws 29 and leaves five list slides
+letter, and by two after Z. Chapter 5 draws 35 and leaves five list slides
 without a picture.
 
 ---

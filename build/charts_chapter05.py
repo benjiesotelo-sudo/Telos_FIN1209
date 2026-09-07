@@ -463,8 +463,11 @@ WAVES = (
 # The price is three waves added together, like Chart AA's third drawing,
 # with a little seeded noise, and turned into open, high, low and close.
 # The largest wave swings once across the chart in 96 bars, the medium one
-# every 32 bars and the smallest every 8, so four of each fit inside one of
-# the next. The two smooth lines are the waves the price was built from: the
+# every 32 bars and the smallest every 8, so three medium swings fit inside
+# the largest and four small ones inside a medium one. The sizes were picked
+# for the picture, each wave three or four times as long as the next and
+# twice as tall, and the slides say so: the instructor asked where the
+# numbers came from. The two smooth lines are the waves the price was built from: the
 # thick one is the largest alone and the dotted one is the largest plus the
 # medium, which is why each runs through the middle of the smaller swings.
 # The book gives no rule for drawing either line, so where they sit is our
@@ -501,6 +504,53 @@ AB_PRICE, AB_MWC, AB_HWC = _degree_waves()
 AB_TRACES = (
     Trace(values=AB_HWC, tone="deep", width=3.4),
     Trace(values=AB_MWC, tone="structure", dotted=True, width=2.6),
+)
+
+
+# --------------------------------------------------------------------------
+# Chart AJ. The three waves Charts AB and AC are built from, and their sum.
+# --------------------------------------------------------------------------
+# The same three waves as _degree_waves, each drawn alone and then added,
+# with no noise and no bars, so the slide that says the price is invented
+# can show what it was invented from. All four cells share one scale: a
+# gallery fits every shape to its own cell, so each one carries two lone
+# points at the top and bottom of the tallest, which draw nothing and hold
+# the scale.
+
+AJ_REACH = 22.0
+
+
+def _ingredient(name, note, wave):
+    import math
+    points = tuple((x, wave(x, math)) for x in range(AB_BARS))
+    return Sketch(
+        name=name, note=note,
+        points=points + ((0, AJ_REACH), (0, -AJ_REACH)),
+        breaks=(len(points), len(points) + 1),
+        sides=(((0, 0.0), (AB_BARS - 1, 0.0)),))
+
+
+def _aj_big(x, math):
+    return -AB_HIGH[0] * math.cos(2 * math.pi * x / AB_HIGH[1])
+
+
+def _aj_medium(x, math):
+    return AB_MEDIUM[0] * math.sin(2 * math.pi * x / AB_MEDIUM[1])
+
+
+def _aj_small(x, math):
+    return AB_LOW[0] * math.sin(2 * math.pi * (x + 0.5) / AB_LOW[1])
+
+
+INGREDIENTS = (
+    _ingredient("1  The big wave", "one swing: 96 bars, PHP 24 tall", _aj_big),
+    _ingredient("2  The medium wave", "one swing: 32 bars, PHP 12 tall",
+                _aj_medium),
+    _ingredient("3  The small wave", "one swing: 8 bars, PHP 6 tall",
+                _aj_small),
+    _ingredient("4  Added together", "the invented price, before its noise",
+                lambda x, math: (_aj_big(x, math) + _aj_medium(x, math)
+                                 + _aj_small(x, math))),
 )
 
 
@@ -682,7 +732,7 @@ AI_TRACES = (
 
 
 # --------------------------------------------------------------------------
-# The thirty five charts
+# The thirty six charts
 # --------------------------------------------------------------------------
 
 CHARTS = (
@@ -1058,8 +1108,9 @@ CHARTS = (
                      dx=-34, dy=52, notice=True),
             ),
             top=0.50, bottom=0.34,
-            footnote=INVENTED + " Two simple moving averages of the line. "
-                     "Moving averages are Chapter 11.",
+            footnote=INVENTED + " Simple moving averages of 6 and 18 bars:"
+                     "\nlengths we chose so the crossings show. Moving "
+                     "averages are Chapter 11.",
         ),
     ),
     ChartArt(
@@ -1348,13 +1399,21 @@ CHARTS = (
                              "green, the wave of the drawing before."),
     ),
     ChartArt(
+        letter="AJ",
+        draw=ck.gallery,
+        kwargs=dict(sketches=INGREDIENTS, cols=2, size=PAIR,
+                    footnote="Not a market: the three waves this course added "
+                             "together, all four drawn to one scale.\nIn "
+                             "green, the level each one swings around."),
+    ),
+    ChartArt(
         letter="AB",
         draw=ck.bar_waves,
         kwargs=dict(
             bars=AB_PRICE, traces=AB_TRACES, size=PAIR,
             notes=(
                 Note(x=33, label="LWC: the price\nitself, here\nas bars",
-                     dx=-24, dy=58),
+                     dx=-24, dy=40),
                 Note(x=57, y=AB_MWC[57], label="MWC: the dotted line",
                      dx=-30, dy=-92),
                 Note(x=84, y=AB_HWC[84], label="HWC: the\nthick line",
@@ -1362,8 +1421,9 @@ CHARTS = (
             ),
             price_ticks=(40, 50, 60, 70, 80),
             top=0.12, bottom=0.08,
-            footnote=INVENTED + " The bars and the place of the two smooth "
-                     "lines are our drawing.",
+            footnote="Invented: three waves added together. Dotted: big plus "
+                     "medium. Thick: big alone.\nThe bars and the place of "
+                     "both lines are our drawing; the book gives no rule.",
         ),
     ),
     ChartArt(
@@ -1385,7 +1445,7 @@ CHARTS = (
             price_ticks=(40, 50, 60, 70, 80),
             top=0.05, bottom=0.12,
             footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC. The "
-                     "rulers are ours.",
+                     "rulers show the sizes we built in.",
         ),
     ),
     ChartArt(
@@ -1440,7 +1500,7 @@ CHARTS = (
             notes=(
                 Note(x=AF_LOW[2], y=AF_LOW[1],
                      label="LWC breakout:\nprice passes the\nlast small peak",
-                     dx=10, dy=-84),
+                     dx=10, dy=-70),
                 Note(x=AF_MED[2], y=AF_MED[1],
                      label="MWC breakout:\nprice passes the\n"
                      "last medium peak", dx=-40, dy=28),
@@ -1451,8 +1511,9 @@ CHARTS = (
             ),
             price_ticks=(50, 60, 70, 80),
             top=0.22, bottom=0.34,
-            footnote=INVENTED + " Gold lines: three breakout levels, each "
-                     "the high of a prior peak. Our drawing.",
+            footnote="Invented: the same three waves, on a slow rise. Gold "
+                     "lines: three breakout levels,\neach the high of a prior "
+                     "peak on this chart. Our drawing.",
         ),
     ),
     ChartArt(
@@ -1484,7 +1545,8 @@ CHARTS = (
             ),
             price_ticks=(50, 55, 60, 65, 70),
             top=0.44, bottom=0.46,
-            footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC. One "
+            footnote="Invented: a flat line at PHP 60 plus a 32 bar wave and "
+                     "an 8 bar wave.\nBars: LWC. Dotted: MWC. Thick: HWC. One "
                      "market, three readings.",
         ),
     ),

@@ -70,6 +70,16 @@ Chapters 2 and 4, which had used the word only of price leaving a range:
     has no cues. Three more book sketches got a companion chart on price
     bars: Figures 5.7, 5.8 and 5.9. chapter-05/README.md has the table.
 
+And one from his fifth, when he asked how the swings on the wave charts had
+been computed, was told, and said that should have been on the slide:
+
+  * **Nothing is stated without its explanation.** Every slide carries an
+    origin line, bottom right: the book page it comes from, whose its
+    numbers are, and where the book gives no reason, that it gives none.
+    The invented price of the wave charts gets a slide and a chart of its
+    own, saying what it was built from and why those sizes. TEMPLATE.md has
+    the rule and chapter-05/README.md what the pass found.
+
 What is lean, against Chapters 1 to 3:
 
   * The parts are the book's own sections, 5.1 to 5.11. Section 5.12 is the
@@ -162,6 +172,7 @@ SECTION1 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book p.125. The chart is ours, on invented prices: the book has no figure of the three trends together.",
             left=Content(
                 title="5.1  Dow sorts trends by how long they last",
                 lines=(
@@ -183,6 +194,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book p.126 and Figure 5.1. The pesos in the small print are our example.",
             left=Content(
                 title="An uptrend: higher highs and higher lows",
                 lines=(
@@ -204,6 +216,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book p.126 and Figure 5.2.",
             left=Content(
                 title="A downtrend: lower highs and lower lows",
                 lines=(
@@ -224,6 +237,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.126-127 and Figure 5.3.",
             left=Content(
                 title="Where the definition runs out",
                 lines=(
@@ -245,6 +259,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.127-128 and Figure 5.4.",
             left=Content(
                 title="Three other ways to call a trend intact",
                 lines=(
@@ -290,6 +305,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book p.128 says wave cycle, wave degree and subwave and defines none of them. The reading and the chart are ours, from its Figures 5.5 to 5.9.",
             left=Content(
                 title="What a wave degree is",
                 lines=(
@@ -312,6 +328,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.128-129 and Figure 5.5. It gives the minimum of two degrees as a note, with no reason.",
             left=Term(
                 term="Wave cycles: HWC, MWC and LWC",
                 plain="Three wave degrees on one chart, named by size against each other.",
@@ -330,37 +347,64 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Ours, to explain the book's Figure 5.5 (p.129). Every number here is one we chose; none is the book's or a market's.",
             left=Content(
-                title="How the three cycles are drawn",
+                title="An invented price, built from three waves",
                 lines=(
-                    "The LWC is the price itself: a thin line in the book, the bars on a price chart.",
-                    "The MWC and HWC are not prices. Each is a smooth line through the middle of the smaller swings, to show the bigger swing.",
-                    "The book gives no rule for drawing them: no formula, no indicator, no number of bars.",
+                    "The book sketches wave cycles with no prices. To show them on price bars we invented a price.",
+                    "It is three waves added together: big, medium and small, plus a little random noise.",
+                    "Our sizes, for one swing of each: 96 bars and PHP 24, 32 bars and PHP 12, 8 bars and PHP 6.",
+                    "Why: each is three or four times as long as the next and twice as tall, so the nesting shows.",
                 ),
-                accent="They look like moving averages. The book does not say they are.",
-                caption="The book's: thick, dotted, thin. Ours: the bars, and where the two smooth lines sit.",
+                accent="Real charts carry no such numbers.",
+                caption="Three waves, because the book draws three wave cycles.",
             ),
             picture=Chart(
-                letter="AB",
-                shows="One invented price drawn as bars, the lower wave cycle. A dotted line runs through the middle of the small swings of the bars, the medium wave cycle. A thick line runs through the middle of the dotted line's swings, rising once and falling once across the chart, the higher wave cycle.",
+                letter="AJ",
+                shows="Four small drawings to one scale. The big wave: one swing in 96 bars, 24 pesos tall. The medium wave: one swing every 32 bars, 12 pesos tall. The small wave: one swing every 8 bars, 6 pesos tall. And the three added together, which is the invented price.",
             ),
             text_w=CHART_W,
             notes=(
-                "The question a student asks of Figure 5.5 is what the three lines are. The thin one is price. The other two are drawn over price to show its bigger swings.",
+                "Say plainly that this price is made up, and how. Nothing on the next slides is a measurement of a market; it is a price we built so that the three cycles can be seen.",
+                "Read the four drawings in order: big, medium, small, then the sum. All four are to one scale, so the small wave really is that small.",
+                "The numbers were picked for the picture. Three medium swings fit in the big one and four small swings in a medium one. Any clearly different sizes would have done.",
+            ),
+        ),
+        Pair(
+            origin="The book's (pp.128-129, Figure 5.5): thick, dotted and thin lines, and no formula, indicator or number of bars. Ours: the bars, and where both lines sit.",
+            left=Content(
+                title="How the three cycles are drawn",
+                lines=(
+                    "The bars are the price: all three waves added up. Their smallest swings are the LWC.",
+                    "Dotted, the MWC: the big wave plus the medium, through the middle of the small swings.",
+                    "Thick, the HWC: the big wave alone, through the middle of the medium swings.",
+                    "We know where both go only because we built the price. The book gives no rule for drawing them.",
+                ),
+                accent="They look like moving averages. The book does not say they are.",
+            ),
+            picture=Chart(
+                letter="AB",
+                shows="The invented price drawn as bars, whose smallest swings are the lower wave cycle. A dotted line, the big wave plus the medium one, runs through the middle of the small swings of the bars: the medium wave cycle. A thick line, the big wave alone, runs through the middle of the dotted line's swings, rising once and falling once across the chart: the higher wave cycle.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "The question a student asks of the book's figure is what the three lines are. The thin one is price. The other two are drawn over price to show its bigger swings.",
                 "Why draw them at all: the book calls it critical that a trader be able to visualize price cycles on the chart. Its figures are freehand sketches, with no bars and no price axis.",
                 "Be plain that the book stops there. It names no indicator and gives no length, so do not say the lines are moving averages of any period. Moving averages are Chapter 11.",
             ),
         ),
         Pair(
+            origin="Ours, on the book's pp.128-129, which fix no size, duration or timeframe for a wave cycle. The bars and pesos are the sizes we built in.",
             left=Content(
                 title="Telling the three cycles apart",
                 lines=(
-                    "Compare the swings with each other. The book fixes no size, duration or timeframe.",
-                    "The smallest swings in view: the LWC. The bigger swing they ride on: the MWC. The biggest: the HWC.",
-                    "Subwave test: LWC swings sit inside one MWC swing, MWC swings inside the HWC swing.",
+                    "The rulers mark one swing of each cycle: the sizes we built in, give or take the noise.",
+                    "A real chart gives you no sizes. The book fixes no size, duration or timeframe.",
+                    "So compare swings. The smallest in view: LWC. The swing they ride on: MWC. The biggest: HWC.",
+                    "Subwave test: here four LWC swings fit in one MWC swing, three MWC swings in the HWC swing.",
                 ),
-                accent="Relative: a wave has a degree only against another wave.",
-                caption="Bar counts and pesos are read off our invented chart, not the book.",
+                accent="A degree is relative, never a size.",
+                caption="Four and three are this chart's numbers, not a rule.",
             ),
             picture=Chart(
                 letter="AC",
@@ -368,12 +412,13 @@ SECTION1 = Section(
             ),
             text_w=CHART_W,
             notes=(
-                "Read the three rulers from the top: each swing is longer and taller than the one above it, and holds four of it. Four is this chart's number, not a rule.",
+                "Read the three rulers from the top: each swing is longer and taller than the one above it. Four small swings fit in a medium one, and three medium swings in the big one.",
                 "Each degree also has its own average size of swing. The book's words are the average wave amplitude and volatility associated with that particular wave degree, and they come up with breakouts in a moment.",
                 "Chapter 9 comes back to wave degrees and says the relationship between them is relative. Chapter 18 gives Elliott's named degrees. Neither is needed here.",
             ),
         ),
         Pair(
+            origin="Book p.129, its list of five, and Figure 5.6. The book's reasons follow on p.130.",
             left=Content(
                 title="Know which wave cycle you are trading",
                 lines=(
@@ -396,6 +441,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book p.130 and Figure 5.7. The Chapter 4 line is this course's Chapter 4 deck.",
             left=Content(
                 title="Trending and consolidating at once",
                 lines=(
@@ -416,6 +462,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Ours: the book's Figure 5.7 (p.130) on price bars. Built from a flat line at PHP 60, a 32 bar wave of PHP 12 and an 8 bar wave, so each mode shows.",
             left=Content(
                 title="One market, three modes, on price bars",
                 lines=(
@@ -461,6 +508,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="A recall of this course's Chapters 2 and 4. The chart is Chapter 4's own example, a range from PHP 40 to PHP 44.",
             left=Content(
                 title="Breakout, as Chapters 2 and 4 used it",
                 lines=(
@@ -483,6 +531,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Our reading of how the book uses the word: pp.130, 143, 148, 158 to 161. It defines breakout nowhere.",
             left=Content(
                 title="Chapter 5: a breakout is through a level",
                 lines=(
@@ -505,6 +554,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book p.130 and Figure 5.8.",
             left=Content(
                 title="A breakout for every wave degree",
                 lines=(
@@ -527,6 +577,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Ours: the book's Figure 5.8 (p.130) on price bars. The same three invented waves on a slow rise; each level is the high of a prior peak on this chart.",
             left=Content(
                 title="One price passes three breakout levels",
                 lines=(
@@ -550,6 +601,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book p.130, and Figure 5.9 on p.131.",
             left=Term(
                 term="Wave-degree convergence",
                 plain="When the biggest wave turns, every smaller wave turns with it. That is why bigger turning points matter more.",
@@ -567,6 +619,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Ours: the book's Figure 5.9 (pp.130-131) on price bars. The three invented waves are set to peak on one bar, so the one turn shows.",
             left=Content(
                 title="Lower degrees turn alone. The highest does not.",
                 lines=(
@@ -589,6 +642,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book p.131. It puts no number on 'a few percent'. The pesos are our example, a dip of 2 percent, and the chart is ours.",
             left=Term(
                 term="Correction and pullback",
                 plain="A small move against the trend: shallow, usually no more than a few percent.",
@@ -606,6 +660,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.131-132 and Figure 5.10.",
             left=Content(
                 title="A trend in the highs, the lows or the closes",
                 lines=(
@@ -664,6 +719,7 @@ SECTION2 = Section(
     covers=(),
     slides=(
         Content(
+            origin="Book p.132. For most of the sixteen the book states what a change signals and gives no reason. Where it gives one, the slide gives it.",
             title="5.2  Sixteen price characteristics",
             lines=(
                 "1 Cycle amplitude.  2 Cycle period.  3 Bar retracement symmetry.",
@@ -681,6 +737,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.132 and Figure 5.11. It gives no reason why a shrinking amplitude means weakness. The pesos are our example.",
             left=Term(
                 term="1  Cycle amplitude",
                 plain="Each swing's height, as the figure marks it.",
@@ -699,6 +756,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.133 and Figure 5.12. The book states these readings and gives no reason for them.",
             left=Content(
                 title="Contracting, even and expanding amplitude",
                 lines=(
@@ -719,6 +777,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.133 and Figure 5.13. It gives no reason. The bar counts 30, 20 and 12 are our example.",
             left=Term(
                 term="2  Cycle period",
                 plain="How long each swing takes, as the figure marks it: across, from one peak to the next.",
@@ -737,6 +796,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.134 and Figure 5.14: the bar counts 28, 30, 26 and 14 are printed on the figure. It gives no reason.",
             left=Term(
                 term="3  Bar retracement symmetry",
                 plain="In a strong trend each retracement takes about the same number of bars. Count them.",
@@ -777,6 +837,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.134 and Figure 5.15. Its one reason is for the ATR: it counts gaps. The pesos are our example.",
             left=Term(
                 term="4  Average bar range",
                 plain="The average height of the bars, low to high.",
@@ -794,6 +855,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.134-135 and Figure 5.16.",
             left=Content(
                 title="A declining ATR in a steady uptrend",
                 lines=(
@@ -814,6 +876,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.135-136 and Figure 5.17.",
             left=Content(
                 title="5  Price persistence",
                 lines=(
@@ -836,6 +899,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.135; the formula is printed on its Figure 5.18 (p.136). The pesos and the chart are ours, picked to give 0.80, 0.50 and 0.20.",
             left=Term(
                 term="Bar stochastic",
                 plain="Where a bar closed inside its own range: near the top, the middle or the bottom.",
@@ -854,6 +918,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.135, and Figure 5.18 on p.136. It gives no reason for the sign.",
             left=Content(
                 title="6  The average bar stochastic ratio",
                 lines=(
@@ -873,6 +938,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.136-137 and Figure 5.19. It does not say why the average is of three periods.",
             left=Content(
                 title="The ratio, averaged, on a real chart",
                 lines=(
@@ -893,6 +959,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.136; the formula is printed on Figure 5.20 (p.137). It gives no reason for the sign. The pesos are our example.",
             left=Term(
                 term="7  Real body to range ratio, BRR",
                 plain="How much of a candlestick is real body: the open-to-close move as a share of the whole bar.",
@@ -933,6 +1000,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.137-138 and Figure 5.21. Its reason for the bullish reading: trendline 1 was followed by a steady rise, so the same is expected after trendline 2.",
             left=Term(
                 term="8  Angular symmetry and momentum",
                 plain="A trend rising at one steady angle.",
@@ -951,6 +1019,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.138 and Figure 5.22.",
             left=Content(
                 title="Acceleration and deceleration",
                 lines=(
@@ -972,6 +1041,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.138-139 and Figure 5.23.",
             left=Content(
                 title="Deceleration with a diminishing bar range",
                 lines=(
@@ -991,6 +1061,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.139 and Figure 5.24. The dollar rates are the book's, and it does not show how they were measured.",
             left=Content(
                 title="A change in the trend rate",
                 lines=(
@@ -1012,6 +1083,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.139-140 and Figure 5.25. It gives no reason here; why a barrier turns price is section 5.6, pp.155-156.",
             left=Term(
                 term="9  Barrier proximity",
                 plain="How near a trend has come to a strong price barrier. The nearer, the likelier a turn.",
@@ -1052,6 +1124,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.140-141 and Figure 5.26. The reason on the slide, profit taking, is the book's.",
             left=Content(
                 title="10  Frequency and depth of oscillations",
                 lines=(
@@ -1073,6 +1146,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.141 and Figure 5.27.",
             left=Content(
                 title="Oscillations on the Apple chart",
                 lines=(
@@ -1094,6 +1168,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.141. The chart is ours, on invented prices: the book has no figure for this point.",
             left=Content(
                 title="11  Size and duration of a consolidation",
                 lines=(
@@ -1115,6 +1190,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.141-142 and Figure 5.28. It gives no reason why the third gap; section 5.8 names the three gaps of a trend.",
             left=Term(
                 term="12  Third gap exhaustion",
                 plain="Count the gaps in a trend. Watch the third.",
@@ -1155,6 +1231,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.142: the 120 pips, the two standard deviations and the ninety percent are all the book's. It does not say what a pip is. The chart is ours.",
             left=Term(
                 term="13  Average period range",
                 plain="The usual distance price travels in one period.",
@@ -1173,6 +1250,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.142-143 and Figure 5.29. It gives no reason for either reading.",
             left=Content(
                 title="14  Overextension past an overlay barrier",
                 lines=(
@@ -1194,6 +1272,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
+            origin="Book p.143, reasons included. The chart is ours: the book has no figure for its four cases.",
             left=Content(
                 title="15  Volume spread action",
                 lines=(
@@ -1216,6 +1295,7 @@ SECTION2 = Section(
             ),
         ),
         Content(
+            origin="Book p.143: one sentence, then it refers to Chapter 9. The MACD example is this course's Chapter 4.",
             title="16  Volume and oscillator divergence",
             lines=(
                 "Standard or reverse divergence may appear between price and volume, or between price and any oscillator.",
@@ -1267,6 +1347,7 @@ SECTION3 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book p.144. The chart is ours, on invented prices: the book's own figure lists the filters and does not show the three entries.",
             left=Content(
                 title="5.3  Three categories of filter",
                 lines=(
@@ -1288,6 +1369,7 @@ SECTION3 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.144-145 and Figure 5.30. The book puts no number on N.",
             left=Content(
                 title="The filters, one level down",
                 lines=(
@@ -1308,6 +1390,7 @@ SECTION3 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.144-145. The chart is ours, on invented prices.",
             left=Content(
                 title="Two-stage filtering",
                 lines=(
@@ -1366,6 +1449,7 @@ SECTION4 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book pp.145-146 and Figure 5.31: the dollar amounts are printed on the figure.",
             left=Content(
                 title="5.4  Four ways into and out of the market",
                 lines=(
@@ -1388,6 +1472,7 @@ SECTION4 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.145-146. The chart is ours, on invented prices.",
             left=Content(
                 title="Buying low and selling high, four ways",
                 lines=(
@@ -1410,6 +1495,7 @@ SECTION4 = Section(
             ),
         ),
         Pair(
+            origin="Book p.146. The chart is ours, on invented prices.",
             left=Content(
                 title="Stop orders: execution, but not the price",
                 lines=(
@@ -1433,6 +1519,7 @@ SECTION4 = Section(
             ),
         ),
         Pair(
+            origin="Book p.146. The pesos and the chart are our example: PHP 48.00 less PHP 46.50 is PHP 1.50.",
             left=Term(
                 term="Slippage",
                 plain="You asked for one price and were filled at another. The difference is slippage.",
@@ -1451,6 +1538,7 @@ SECTION4 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.146-147. The chart is ours, on invented prices.",
             left=Content(
                 title="Limit orders: the price, but not execution",
                 lines=(
@@ -1496,6 +1584,7 @@ SECTION4 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.147-148. The chart is ours; the book's own table of these orders is the next slide.",
             left=Content(
                 title="Exits, and orders at the market",
                 lines=(
@@ -1518,6 +1607,7 @@ SECTION4 = Section(
             ),
         ),
         Figure(
+            origin="Book p.148, Figure 5.32.",
             title="Every order, above, below and at the market",
             number="5.32",
             shows="A table around the current market price. Orders allowable above the market: buy stop or limit entry, sell limit entry, MIT sell, buy stop to exit a loss, sell limit to exit with profit. Orders allowable under the market: sell stop or limit entry, buy limit entry, MIT buy, sell stop to exit a loss, buy limit to exit with profit.",
@@ -1528,6 +1618,7 @@ SECTION4 = Section(
             ),
         ),
         Content(
+            origin="Book pp.147-148.",
             title="Other orders the book names",
             lines=(
                 "Market if Touched, MIT: an MIT sell to short above the market, an MIT buy to long below it.",
@@ -1580,6 +1671,7 @@ SECTION5 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book pp.148-149: it announces four simple ways and lists five. The chart is ours, on invented prices.",
             left=Content(
                 title="5.5  Ways of initiating an entry",
                 lines=(
@@ -1601,6 +1693,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book p.149 and Figure 5.33. The book says 'as we learned in Chapter 4'; in this course they were Chapter 2's terms.",
             left=Content(
                 title="Three variations of a top and a bottom",
                 lines=(
@@ -1622,6 +1715,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.149-150. It gives no reason why more flanking bars make a stronger level. Strengths 2 and 10 are our example.",
             left=Term(
                 term="Inflection point of strength N",
                 plain="An inflection point, a peak or trough, counts for more the more bars flank it.",
@@ -1640,6 +1734,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book p.150 and Figure 5.34. It gives no reason here. The pesos are our example.",
             left=Term(
                 term="Support and resistance role reversal",
                 plain="A breached barrier changes sides.",
@@ -1657,6 +1752,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book p.150, Figure 5.35. The book gives this figure no sentence of its own.",
             left=Content(
                 title="Role reversal in a trend",
                 lines=(
@@ -1676,6 +1772,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book p.151 and Figure 5.36.",
             left=Content(
                 title="Prior peaks, prior troughs and a channel",
                 lines=(
@@ -1719,6 +1816,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.151-152 and Figure 5.37. Both reasons on the slide are the book's.",
             left=Content(
                 title="Trade in the direction of the trend",
                 lines=(
@@ -1740,6 +1838,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book p.152. The chart is ours: two moving averages of an invented line, 6 and 18 bars, lengths we chose only so the crossings show.",
             left=Term(
                 term="Trend filter",
                 plain="Says whether a trend is on. Not 5.3's filters.",
@@ -1758,6 +1857,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.152-153 and Figure 5.38.",
             left=Content(
                 title="A filter and a trigger together",
                 lines=(
@@ -1802,6 +1902,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.153-154 and Figure 5.39.",
             left=Content(
                 title="Where the stop goes, and how big it is",
                 lines=(
@@ -1823,6 +1924,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book p.153. The chart is ours, and is arithmetic: PHP 10,000 at risk divided by each stopsize.",
             left=Content(
                 title="The trouble with a varying stopsize",
                 lines=(
@@ -1844,6 +1946,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.153-154. The pesos are ours: PHP 3.00 and 3,333 shares are worked out on the next slide.",
             left=Term(
                 term="Proportional stopsizing",
                 plain="One tradesize for every stop up to a threshold. A smaller one for any wider stop.",
@@ -1861,6 +1964,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
+            origin="Book p.154, its five steps. It gives no reason for 300 to 500 trades, or for adding two standard deviations. Every peso amount is ours.",
             left=Content(
                 title="Five steps to the proportional tradesize",
                 lines=(
@@ -1921,6 +2025,7 @@ SECTION6 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book p.155. It gives no reason why the third contact confirms a line. The pesos and the chart are ours.",
             left=Term(
                 term="5.6  Trendline",
                 plain="A straight line through two turning points, carried forward. It must not cut through price.",
@@ -1939,6 +2044,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.155 and Figure 5.40.",
             left=Content(
                 title="Short, medium and longer-term trendlines",
                 lines=(
@@ -1960,6 +2066,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.155-156, reason included. The chart is ours, on invented prices.",
             left=Content(
                 title="Why a trendline holds: behavior",
                 lines=(
@@ -1981,6 +2088,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.156 and Figure 5.41.",
             left=Term(
                 term="Internal line",
                 plain="A breached trendline, kept under a new name.",
@@ -1998,6 +2106,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.156-157. The chart is ours, on invented prices.",
             left=Content(
                 title="What counts as a valid penetration?",
                 lines=(
@@ -2042,6 +2151,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.157. It gives no reason for 35 to 45 degrees, and does not say on what scaling the angle is measured. The chart is ours.",
             left=Content(
                 title="A reliable trendline: angle and duration",
                 lines=(
@@ -2063,6 +2173,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.157-158, reasons included. The chart is ours, on invented prices.",
             left=Content(
                 title="A reliable trendline: the other four",
                 lines=(
@@ -2084,6 +2195,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.158 and Figure 5.42. The pesos are our example of the one-to-one projection.",
             left=Content(
                 title="A trendline's minimum price target",
                 lines=(
@@ -2105,6 +2217,7 @@ SECTION6 = Section(
             ),
         ),
         Content(
+            origin="Book pp.158-159: its own list of four strengths and three weaknesses.",
             title="Strengths and weaknesses of trendline analysis",
             lines=(
                 "Strength: straight lines catch any trend change effectively, with no need to identify price patterns.",
@@ -2142,6 +2255,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.159 and Figure 5.43.",
             left=Term(
                 term="Continuation and reversal trendlines",
                 plain="Named by the breakout a trendline allows.",
@@ -2159,6 +2273,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.159-160 and Figure 5.44.",
             left=Term(
                 term="Channel, and its return line",
                 plain="A trendline and a parallel across price.",
@@ -2177,6 +2292,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.160, and Figure 5.45 on p.161.",
             left=Term(
                 term="Nested channels",
                 plain="Channels inside a bigger channel.",
@@ -2194,6 +2310,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.160, and Figure 5.46 on p.161.",
             left=Content(
                 title="Nested channels at Fibonacci levels",
                 lines=(
@@ -2213,6 +2330,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.160, and Figure 5.47 on p.162.",
             left=Content(
                 title="Projecting a price target with a channel",
                 lines=(
@@ -2233,6 +2351,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.160-161. The chart is ours, on invented prices: the book makes the point on its Figure 5.14.",
             left=Content(
                 title="Anticipating a channel breakout",
                 lines=(
@@ -2276,6 +2395,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.162, and Figure 5.48 on p.163. The pesos are our example.",
             left=Term(
                 term="Sperandeo trendlines",
                 plain="Sperandeo's rule for which two points to join.",
@@ -2293,6 +2413,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.162, and Figure 5.49 on p.163.",
             left=Term(
                 term="DeMark trendlines",
                 plain="A more responsive line: newest points first.",
@@ -2310,6 +2431,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.163, and Figure 5.50 on p.164. It says to draw only three lines and gives no reason.",
             left=Term(
                 term="Standard fan lines",
                 plain="Three trendlines fanning out from one point.",
@@ -2328,6 +2450,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.164 and Figure 5.51. The three percentages are given and not derived; the book's Chapter 10 is Fibonacci. The pesos are our example.",
             left=Term(
                 term="Fibonacci fan lines",
                 plain="Fan lines through three Fibonacci levels.",
@@ -2345,6 +2468,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.164, and Figure 5.52 on p.165. It gives no reason for thirds.",
             left=Term(
                 term="Speed lines",
                 plain="Fibonacci fan lines, drawn with thirds.",
@@ -2362,6 +2486,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
+            origin="Book p.165 and Figure 5.53.",
             left=Term(
                 term="Andrew's Pitchfork",
                 plain="Three parallel lines; a geometric overlay.",
@@ -2416,6 +2541,7 @@ SECTION7 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book p.166 and Figure 5.54. None of the percentages is derived here; the book leaves that to a later chapter.",
             left=Content(
                 title="5.7  Three ways to measure a retracement",
                 lines=(
@@ -2437,6 +2563,7 @@ SECTION7 = Section(
             ),
         ),
         Pair(
+            origin="Book p.166. The chart is ours: a rise from PHP 40 to PHP 60, chosen so that 50 percent falls on PHP 50.",
             left=Content(
                 title="Where the three approaches agree",
                 lines=(
@@ -2472,6 +2599,7 @@ SECTION8 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book p.166, and Figure 5.55 on p.167.",
             left=Term(
                 term="5.8  Common, breakaway, runaway and exhaustion gaps",
                 plain="Each is named for where in the trend it opens.",
@@ -2490,6 +2618,7 @@ SECTION8 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.166-167 and Figure 5.56.",
             left=Content(
                 title="Gaps forecasting trend exhaustion",
                 lines=(
@@ -2511,6 +2640,7 @@ SECTION8 = Section(
             ),
         ),
         Pair(
+            origin="Book pp.167-168 and Figure 5.57.",
             left=Content(
                 title="Gaps become support and resistance",
                 lines=(
@@ -2568,6 +2698,7 @@ SECTION9 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book pp.168-169 and Figure 5.58.",
             left=Term(
                 term="5.9  Unidirectional and bidirectional entries",
                 plain="Trade one way only, or whichever way it breaks.",
@@ -2599,6 +2730,7 @@ SECTION10 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book p.169 and Figure 5.59. It gives no reason for three periods. The forward shift is for an early read of market sentiment.",
             left=Term(
                 term="5.10  Drummond geometry",
                 plain="Drummond's way to stay on the right side.",
@@ -2654,6 +2786,7 @@ SECTION11 = Section(
     covers=(),
     slides=(
         Pair(
+            origin="Book p.170. The chart is ours, on invented prices.",
             left=Content(
                 title="5.11  Signs that a trend may reverse",
                 lines=(
@@ -2675,6 +2808,7 @@ SECTION11 = Section(
             ),
         ),
         Content(
+            origin="Book p.170.",
             title="Reversal signs from tools taught later",
             lines=(
                 "Oscillators: overbought signals at tops, oversold signals at bottoms.",
@@ -2721,6 +2855,7 @@ SECTION11 = Section(
 
 OPENERS = (
     Content(
+        origin="Book p.125: its seven learning objectives, on six lines.",
         title="What you will be able to do",
         lines=(
             "Understand the significance of a market trend and its underlying characteristics.",
@@ -2736,6 +2871,7 @@ OPENERS = (
         ),
     ),
     Content(
+        origin="The sections are the book's own, pp.125 to 170.",
         title="How this chapter is laid out",
         lines=(
             "5.1  What a trend is, and where any definition runs out.",
@@ -2745,6 +2881,7 @@ OPENERS = (
             "5.7 to 5.11  Retracements, gaps, directionality, Drummond, reversal signs.",
         ),
         accent="Eleven sections, the book's own. Two of them are long: 5.2 and 5.6.",
+        caption="Bottom right of every slide: the book page it comes from, and whose the numbers are. Lettered charts are ours, on invented prices, drawn where the book gives only words. Peso amounts are our examples.",
         notes=(
             "The parts are the book's own sections. The marker at the bottom left of every slide says which one we are in.",
             "Say the checks carry no marks. Each question slide is followed by its answers on a slide of their own.",
@@ -2754,6 +2891,7 @@ OPENERS = (
 
 CLOSING = (
     Content(
+        origin="Book p.171: its summary is three sentences. These five are ours, of the whole chapter.",
         title="Chapter 5 in five sentences",
         lines=(
             "Dow defines a trend by its peaks and troughs, and every definition has limits.",
@@ -2769,6 +2907,7 @@ CLOSING = (
         ),
     ),
     Content(
+        origin="Book p.171.",
         title="The review questions to prepare",
         lines=(
             "What is a trend? Explain the disadvantages of defining market and price action.",
@@ -2785,6 +2924,7 @@ CLOSING = (
         ),
     ),
     Content(
+        origin="This course's own list, drawn from the chapter's slides.",
         title="What the book uses, and where it says two things",
         lines=(
             "Never defined here: breakout, wave cycle, wave degree. Used, not taught: typical price, the cycle-tuned stochastic, MACD, candlesticks.",

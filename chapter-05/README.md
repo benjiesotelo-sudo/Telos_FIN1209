@@ -1,7 +1,7 @@
 # Chapter 5 - Trend Analysis
 
-147 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
-items, 32 terms, all 59 of the book's figures, and 35 charts of our own.
+148 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
+items, 32 terms, all 59 of the book's figures, and 36 charts of our own.
 
 **This chapter is built to the lean form the instructor approved in Chapter
 4**: the content decides the length, each question is followed by its own
@@ -48,7 +48,7 @@ and 5.10.
 
 ## Every idea has a picture
 
-Of the 99 teaching slides, 94 carry a picture: 93 with the picture beside
+Of the 100 teaching slides, 95 carry a picture: 94 with the picture beside
 the text and one, Figure 5.32, on a slide of its own. The other 48 slides are
 the 21 checks, at two slides each, and the six slides of the frame.
 
@@ -56,11 +56,11 @@ the 21 checks, at two slides each, and the six slides of the frame.
   what the book says about it. Figure 5.32 stands alone because it is a wide
   table of small type, and a slide of its own is the only size it can be
   read at.
-- **One of our own charts otherwise.** 35 of them, lettered A to Z and then
-  AA to AI. See the table below.
+- **One of our own charts otherwise.** 36 of them, lettered A to Z and then
+  AA to AJ. See the table below.
 - **And one of our own beside a book sketch that does not carry the idea on
-  its own.** Six of the 35 are companions of that kind, added in the third
-  and fourth reviews: AB and AC after Figure 5.5, AH after 5.7, AF after
+  its own.** Seven of the 36 are companions of that kind, added in the
+  third, fourth and fifth reviews: AJ, AB and AC after Figure 5.5, AH after 5.7, AF after
   5.8, AI after 5.9, and AG, which took Figure 5.18's place beside the bar
   stochastic so the figure could sit beside the characteristic it draws.
 
@@ -318,13 +318,57 @@ None of them carries a check:
 - Stop orders and limit orders: the peso example of each, which the chart
   beside each now carries.
 
+## Nothing is stated without its explanation
+
+The instructor asked how the swings on the wave charts had been computed.
+The answer was that Charts AB and AC are three waves added together, of
+sizes picked for the picture. His reply: "Then it should be explained I
+hate when things are said but not explained in any way". `TEMPLATE.md` has
+the rule that came of it. This is what the pass over the deck did.
+
+**The invented price has a slide of its own.** *An invented price, built
+from three waves* comes before the two slides that use it, with Chart AJ:
+the big, the medium and the small wave, each alone, then added, all four to
+one scale. It gives the sizes, one swing of each being 96 bars and PHP 24,
+32 bars and PHP 12, 8 bars and PHP 6, and why: each wave is three or four
+times as long as the next and twice as tall, so the nesting shows. The next
+slide says the dotted line is the big wave plus the medium one and the
+thick line the big wave alone, and that we know where they go only because
+we built the price. The third says a real chart gives no sizes, so degree
+is judged by comparing swings.
+
+**One thing that pass corrected.** The slide and the code had said four of
+each wave fit in the next. Four small swings fit in a medium one, and three
+medium swings in the big one: 96 is three times 32. The slide now says four
+and three.
+
+**Every teaching slide carries an origin line**, bottom right, level with
+the progress marker: the book page, the figure, and whose the numbers are.
+`deckkit` prints it from a slide's `origin` field, added for this chapter;
+Chapters 1 to 4 set none and rebuild byte identical. The roadmap slide says
+what the line is. What the 100 lines say, by kind:
+
+| What the slide states | What its origin line says |
+|---|---|
+| The book's text and a figure, 59 slides | The page, and the figure number |
+| A rule the book gives no reason for: most of the sixteen characteristics, the minimum of two wave degrees, the third gap, the third contact that confirms a trendline, 35 to 45 degrees, three fan lines, three periods for the bar stochastic average and the PLdot, 300 to 500 trades, adding two standard deviations | That the book gives no reason |
+| A reason the book does give: the ATR and gaps, profit taking and oscillations, the parallel trendlines on 3M, the orders behind a trendline | That the reason is the book's |
+| A number printed on a figure: the bar counts on 5.14, the dollars on 5.31, the formulas on 5.18 and 5.20 | That it is printed on the figure |
+| A peso example of ours | That the pesos are our example |
+| One of our charts where the book has no figure | That the chart is ours, and why it was drawn |
+| A chart built from waves: AH, AF, AI | What it was built from, in the chart's own small print as well |
+| A reading of ours: wave degree, breakout through a level | That it is our reading, and the pages it rests on |
+
+Chart O's small print now gives the lengths of its two moving averages, 6
+and 18 bars, and says they were chosen so the crossings show.
+
 ## What each section teaches
 
 Every section is taught as fully as the book teaches it.
 
 | Section | Slides | Checks | Figures | Our charts |
 |---|---|---|---|---|
-| 5.1 Definitions of a trend | 26 | 3 | 5.1 to 5.10 | A, AA to AF, AH, AI, B |
+| 5.1 Definitions of a trend | 27 | 3 | 5.1 to 5.10 | A, AA to AF, AH, AI, AJ, B |
 | 5.2 Quality of trend: 16 price characteristics | 35 | 5 | 5.11 to 5.29 | AG, C, D, E |
 | 5.3 Price and trend filters | 5 | 1 | 5.30 | F, G |
 | 5.4 Trend participation | 12 | 2 | 5.31, 5.32 | H to L |
@@ -372,7 +416,7 @@ where it appears, and no check rests on any of them:
 | Alternative channel constructions | 5.6, cue | Chapter 13 |
 | Tradesizing in general | 5.5, cue | Chapter 28 |
 
-## The thirty five charts
+## The thirty six charts
 
 A chart is drawn where the book makes a point in words that none of its own
 figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
@@ -414,6 +458,7 @@ figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
 | AG | Bar stochastic | One bar with three closes: 0.80, 0.50 and 0.20 |
 | AH | One market, three modes, on price bars | Figure 5.7 on price bars: flat, ranging and trending at once |
 | AI | Lower degrees turn alone. The highest does not. | Figure 5.9 on price bars, with two places only the smaller cycles turn |
+| AJ | An invented price, built from three waves | The three waves Charts AB and AC are built from, each alone and then added, to one scale |
 
 **Charts P, Q and R are the book's five steps with pesos put in.** An
 average stopsize of PHP 2.00, a two standard deviation value of PHP 1.00,
@@ -430,8 +475,12 @@ label on the chart explains it.
 Its labels are the one place a chart states a reading and not a quotation,
 for the reason given above.
 
-**Charts AB and AC are those three waves made into price bars**, with a
-little seeded noise. They use `chartkit.bar_waves`, a form added for them;
+**Charts AB and AC are three such waves made into price bars**, with a
+little seeded noise. One swing of each is 96, 32 and 8 bars long and PHP
+24, 12 and 6 tall, and Chart AJ draws the three alone and then added. It is
+a `gallery`, and a gallery fits each shape to its own cell, so every cell
+carries two lone points at one height that draw nothing and hold all four
+to one scale. They use `chartkit.bar_waves`, a form added for them;
 Chapters 1 to 4 were rebuilt after it went in and their decks are byte
 identical. Where the two smooth lines sit is our drawing choice, because
 the book gives no rule, and the rulers on Chart AC are read off our own
@@ -464,16 +513,18 @@ the time axis.
 
 ## How long the chapter takes
 
-**260 minutes at the calibrated rate, against a 180 minute session.** That is
+**262 minutes at the calibrated rate, against a 180 minute session.** That is
 information, not a target: nothing was cut to reach a length, and nothing was
-added to reach one. It is 80 minutes more than one session holds. No run card exists for
+added to reach one. It is 82 minutes more than one session holds. No run card exists for
 this chapter, so nothing here says what to cut; that is a decision for
 whoever writes one. The first build cost 238 and the second 245: seven
 minutes for the 24 more slides costed as terms, then under two for the wave
 degree slide and its chart, then three and a half for the two slides on how
 the cycles are drawn and told apart, then ten for the six slides of the
 fourth review: three on breakout, two that put Figures 5.7 and 5.9 on price
-bars, and one that gives Figure 5.18 a slide beside its own characteristic.
+bars, and one that gives Figure 5.18 a slide beside its own characteristic,
+then under two for the slide and chart that say what the invented price was
+built from.
 
 The rate is the one written down in `chapter-03/README.md`: a content slide
 1, a term 1.25, a figure 0.75, a chart 0.5, a check with its reveal 2.5,
@@ -484,7 +535,7 @@ with a picture beside it is costed as the sum of its two parts.
 | Part | Slides | Minutes |
 |---|---|---|
 | Title, objectives, roadmap | 3 | 3.4 |
-| 5.1 Definitions | 26 | 46.9 |
+| 5.1 Definitions | 27 | 48.6 |
 | 5.2 Quality of trend | 35 | 64.7 |
 | 5.3 Filters | 5 | 8.3 |
 | 5.4 Participation | 12 | 18.7 |
@@ -497,8 +548,8 @@ with a picture beside it is costed as the sum of its two parts.
 | 5.11 Reversals | 4 | 5.8 |
 | Closing | 3 | 3.4 |
 
-The weights sum to 226.25 and 226.25 times 1.150 is 260.2. The chapter is 47
-pages of the book against Chapter 4's 26, and comes to 147 slides against
+The weights sum to 227.75 and 227.75 times 1.150 is 261.9. The chapter is 47
+pages of the book against Chapter 4's 26, and comes to 148 slides against
 79, so it is the same density.
 
 ## Building it
@@ -506,10 +557,10 @@ pages of the book against Chapter 4's 26, and comes to 147 slides against
 From the repository root:
 
 ```
-.venv/bin/python build/build_chapter5.py      # teaching, 147 slides
+.venv/bin/python build/build_chapter5.py      # teaching, 148 slides
 ```
 
-The build draws the 35 charts and is deterministic: a second run leaves
+The build draws the 36 charts and is deterministic: a second run leaves
 `git status` clean. It writes no answer sheet; see `build_chapter5.py` for
 why that was taken out of the script it was copied from.
 
@@ -524,17 +575,17 @@ soffice --headless --convert-to pdf --outdir ~ \
 ```
 
 Before committing the deck, confirm it embeds no artwork that is not ours.
-It must hold exactly 35 images, and their hashes must match this chapter's
+It must hold exactly 36 images, and their hashes must match this chapter's
 own chart folder:
 
 ```
-unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 35
+unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 36
 unzip -o -d /tmp/media chapter-05/FIN1209-Chapter-05.pptx 'ppt/media/*'
 diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
      <(shasum -a256 build/generated/charts-05/*.png | awk '{print $1}' | sort)
 ```
 
-The deck with the book's artwork in it holds 94: the 35 charts and one for
+The deck with the book's artwork in it holds 95: the 36 charts and one for
 each of the 59 figures.
 
 Then look at every page, as an image, in the build with the artwork, because

@@ -17,14 +17,16 @@ Read this before you touch anything. Five chapters are built.
   audit are written outside the repository. See **The lean form** below
   before you copy it.
 - **Chapter 5** is the lean form done a second time, and only the teaching
-  deck so far: 147 slides, 21 checks carrying 42 items, 32 terms, all 59 of
-  the book's figures and 35 charts. `chapter-05/README.md` has what it
+  deck so far: 148 slides, 21 checks carrying 42 items, 32 terms, all 59 of
+  the book's figures and 36 charts. `chapter-05/README.md` has what it
   found: a figure whose labels are not in its image, and a reveal slide
   that overflows in the PDF. Its first build was sent back for where it put
   the new-term marker, its second for using wave degrees before any slide
   explained them, and its fourth for using breakout more widely than
   Chapters 2 and 4 had without saying so; see **The new-term marker** below
-  before you write a `Term`.
+  before you write a `Term`. Its fifth was sent back for numbers on a chart
+  that no slide explained; see **Nothing is stated without its
+  explanation**, which is the instructor's standing rule for every slide.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -187,6 +189,11 @@ The slide types are dataclasses in `build/deckkit.py`:
 - `Recap(items, notes)` - the you-now-know close of a section.
 - `Closing(title, lines, accent, notes)` - the wrap-up slides.
 
+Every slide type also takes `origin`, one line printed bottom right, level
+with the progress marker: where the slide comes from and whose its numbers
+are. Added for Chapter 5; see **Nothing is stated without its explanation**
+below. Empty prints nothing, which is Chapters 1 to 4.
+
 `minutes` on a `Section` is the Full-plan time minus one minute per figure in
 that part. The teaching plan's Full column is the number including the figures.
 Charts are about half a minute each. Keep the two consistent; nothing checks
@@ -294,6 +301,35 @@ grep -n -i "slippage" build/content_chapter0[1-4].py
 
 `chapter-05/README.md` has the worked result: the 27 terms that gained the
 marker, the three that lost it, and what was left alone and why.
+
+**Nothing is stated without its explanation.** The instructor's standing
+rule, from his fifth review of Chapter 5: "I hate when things are said but
+not explained in any way." He had asked how the swings on a wave chart were
+computed. The answer was three waves of sizes we had picked, and no slide
+said so. Every number, rule, claim and chart choice says on the slide where
+it comes from and why. Four rules, and the build checks only the length of
+the origin line:
+
+1. **Where it comes from.** Every teaching slide carries an `origin` line:
+   the book page, the figure if there is one, and whose the numbers are.
+   Take the page from the book's text, not from memory. A slide that is
+   ours says so, and names the page it explains.
+2. **Why.** A reason the book gives goes on the slide. Where the book
+   states a rule and gives no reason, the origin line says it gives none.
+   Do not supply one: that is the standing principle at the top of this
+   file.
+3. **Our own numbers.** A peso example is said to be ours. When a chart is
+   built on an invented price and a slide reads numbers off it, a slide
+   says what the price was built from and why those sizes were chosen,
+   with a picture of the ingredients, before the numbers are used. Then
+   say that a real chart carries no such numbers.
+4. **Our drawing choices.** Say which part of a picture is the book's and
+   which is ours, and why ours was needed: usually that the book makes the
+   point in words, or in a sketch with no prices.
+
+A speaker cue does none of this, for the reason given under the new-term
+marker: the instructor studies from a PDF that has no cues.
+`chapter-05/README.md` has what the pass over 100 slides found.
 
 The answer key must be spread. No letter may hold more than 35 percent or fewer
 than 15 percent of the items, and no three consecutive items may share an
@@ -447,7 +483,7 @@ bare bars. Compare each extracted file with the printed page, and render
 that figure from the page instead; `chapter-05/README.md` has the command.
 
 **The twenty seventh chart is AA.** `deckkit` names a chart by one capital
-letter, and by two after Z. Chapter 5 draws 35 and leaves five list slides
+letter, and by two after Z. Chapter 5 draws 36 and leaves five list slides
 without a picture.
 
 ---

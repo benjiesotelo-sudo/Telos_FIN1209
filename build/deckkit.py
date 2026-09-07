@@ -1236,6 +1236,13 @@ def _quote_bottom(s: Quote) -> float:
     return top + 0.3 + _text_height(s.takeaway, CONTENT_W.inches, 21, "bold")
 
 
+def _chart_letter(letter: str) -> bool:
+    """A chart is lettered A to Z, and a chapter that draws a twenty seventh
+    goes on to AA, AB, the way a spreadsheet's columns do."""
+    return (1 <= len(letter) <= 2 and letter.isascii() and letter.isalpha()
+            and letter.isupper())
+
+
 def _validate(chapter: Chapter) -> list[str]:
     """Enforce the teaching brief's hard rules at build time, so a future
     chapter cannot quietly regress them."""
@@ -1295,11 +1302,10 @@ def _validate(chapter: Chapter) -> list[str]:
         if isinstance(picture, Figure) and (not picture.number
                                             or "." not in picture.number):
             problems.append(f"{where}: a figure needs a book figure number")
-        if isinstance(picture, Chart) and not (
-                len(picture.letter) == 1 and picture.letter.isupper()):
+        if isinstance(picture, Chart) and not _chart_letter(picture.letter):
             problems.append(
                 f"{where}: a chart is lettered in its own namespace, one "
-                f"capital letter, not {picture.letter!r}"
+                f"capital letter, or two after Z, not {picture.letter!r}"
             )
         if not 3.5 <= slide.text_w <= 8.0:
             problems.append(
@@ -1339,10 +1345,11 @@ def _validate(chapter: Chapter) -> list[str]:
                         "which is what the placeholder prints without the artwork"
                     )
             if isinstance(slide, Chart):
-                if not (len(slide.letter) == 1 and slide.letter.isupper()):
+                if not _chart_letter(slide.letter):
                     problems.append(
                         f"{where}: a chart is lettered in its own namespace, "
-                        f"one capital letter, not {slide.letter!r}. Book "
+                        f"one capital letter, or two after Z, not "
+                        f"{slide.letter!r}. Book "
                         "figure numbers belong to Figure."
                     )
                 if not slide.shows:

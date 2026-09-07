@@ -39,6 +39,16 @@ chapter, which had marked the uptrend as new and left HWC and MWC unmarked:
     rule and chapter-05/README.md the list, with what was left alone and
     why.
 
+And one he added when he reviewed the second, which named HWC, MWC and LWC
+on a slide that spoke of wave degrees before any slide had said what one is:
+
+  * **A word is explained before a slide leans on it.** The wave cycle and
+    the wave degree get a plain slide and a chart of their own before the
+    term that is built from them. A word that arrives ahead of the section
+    that teaches it carries that section's number on the slide, and a word
+    the book never explains is said to be unexplained, on the slide and not
+    only in the cue. chapter-05/README.md has the list.
+
 What is lean, against Chapters 1 to 3:
 
   * The parts are the book's own sections, 5.1 to 5.11. Section 5.12 is the
@@ -258,11 +268,31 @@ SECTION1 = Section(
             ),
         ),
         Pair(
+            left=Content(
+                title="Waves inside waves: cycles and degrees",
+                lines=(
+                    "Any trend or consolidation can be described in wave cycles, which exist at various wave degrees.",
+                    "A wave cycle is a swing of price, up and back down. A larger one carries smaller ones inside it: its subwaves.",
+                    "Degree ranks them by size: the larger wave cycle is of a higher degree, its subwaves of a lower one.",
+                ),
+                caption="The book defines neither word in a sentence. This reading is from its figures and its words larger, smaller and subwave.",
+            ),
+            picture=Chart(
+                letter="AA",
+                shows="One wave drawn three times, side by side. First a single large wave cycle, alone: the highest degree. Then the same wave with smaller wave cycles inside it, its subwaves, of a lower degree. Then with smaller ones again inside those, the lowest degree of the three.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "Teach this slide before anything is named. Left drawing: one wave. Middle: the same wave, in green, with smaller waves riding along it. Right: smaller ones again riding along those.",
+                "Each added wave is a subwave of the one it rides on, and one degree lower. Two drawings are two degrees, three are three.",
+            ),
+        ),
+        Pair(
             left=Term(
                 term="Wave cycles: HWC, MWC and LWC",
-                plain="Any trend or consolidation can be described in wave cycles, at different wave degrees.",
-                example="In the figure: HWC thick, MWC dotted, LWC thin.",
-                formal="HWC, the higher wave cycle: the highest wave degree. MWC, the medium wave cycle: a subwave of the HWC, of a lower degree. LWC, the lower wave cycle: a subwave of both, at the lowest degree. The minimum number of wave degrees in any trend is two.",
+                plain="Three wave degrees on one chart, named by size against each other.",
+                example="In the figure: HWC thick, MWC dotted, LWC thin. Three degrees here; the minimum in any trend is two.",
+                formal="HWC, the higher wave cycle: the highest wave degree. MWC, the medium wave cycle: a subwave of the HWC, of a lower degree. LWC, the lower wave cycle: a subwave of both, at the lowest degree.",
             ),
             picture=Figure(
                 number="5.5",
@@ -270,21 +300,22 @@ SECTION1 = Section(
             ),
             text_w=6.0,
             notes=(
-                "Trace the three in the figure: the thick line is the HWC, the dotted line the MWC, the thin line the LWC.",
-                "The book calls it critical that a trader be able to visualize price cycles on the chart.",
+                "The last slide's three drawings, laid over one another: the thick line is the HWC, the dotted line the MWC, the thin line the LWC.",
+                "Higher, medium and lower are relative to each other. The book fixes no size or duration for any of them.",
+                "It gives the minimum of two degrees as a note, with no reason. Do not supply one.",
             ),
         ),
         Pair(
             left=Content(
                 title="Know which wave cycle you are trading",
                 lines=(
-                    "Without knowing it, a trader may be unable to:",
+                    "Without knowing which one is traded, a trader may be unable to:",
                     "Select consistent breakout levels, or effective stoploss levels.",
                     "Apply effective stopsizing.",
                     "Distinguish between trend and consolidation mode.",
                     "Determine the direction of the predominant trend.",
                 ),
-                caption="Figure 5.6 is an Elliott wave count in the same terms. Elliott waves are Chapter 18.",
+                caption="Stoploss: section 5.4. Stopsizing: section 5.5. The Elliott count in Figure 5.6 is Chapter 18.",
             ),
             picture=Figure(
                 number="5.6",
@@ -292,7 +323,7 @@ SECTION1 = Section(
             ),
             text_w=5.4,
             notes=(
-                "Five inabilities in the book, on four lines here: breakout levels and stoploss levels share one.",
+                "The book calls it critical that a trader be able to visualize price cycles on the chart. Its five inabilities sit on four lines here.",
                 "The figure labels one rise three ways. Point at the three sets of labels and do not teach the count: that is Chapter 18.",
             ),
         ),
@@ -302,7 +333,7 @@ SECTION1 = Section(
                 lines=(
                     "A market may be in trend mode and in consolidation mode at the same time.",
                     "It depends on the wave cycle being observed.",
-                    "In the figure the LWC is in trend mode, the MWC in ranging mode and the HWC in flatline mode.",
+                    "In the figure the small LWC climbs each swing: trend mode. The MWC swings across one level: ranging mode. The large HWC is flat: flatline mode.",
                 ),
                 accent="Ask at which wave degree before asking whether it is trending.",
             ),
@@ -312,7 +343,7 @@ SECTION1 = Section(
             ),
             text_w=5.0,
             notes=(
-                "Three answers to one question on one chart: flat, ranging, trending.",
+                "Three answers to one question on one chart: flat, ranging, trending. Ranging and flatline are the figure's labels; the text says only trend and consolidation.",
                 "This is why the last slide matters: the same price is a trend to one trader and a range to another.",
             ),
         ),
@@ -320,13 +351,13 @@ SECTION1 = Section(
             label="Wave cycles",
             questions=(
                 Q(
-                    stem="The minimum number of wave degrees in any trend is:",
-                    options=("One",
-                             "Two",
-                             "Three",
-                             "Five"),
+                    stem="Of the three wave cycles, the one that is a subwave of both of the others is the:",
+                    options=("Higher wave cycle, HWC",
+                             "Lower wave cycle, LWC",
+                             "Medium wave cycle, MWC",
+                             "None: each is a subwave of only one"),
                     answer="B",
-                    reason="A wave cycle can be described at three degrees, but the minimum in any trend is two.",
+                    reason="The LWC is a subwave of both the HWC and the MWC, at the lowest wave degree. The MWC is a subwave of the HWC only.",
                 ),
                 Q(
                     stem="A market's lower wave cycle is rising while its medium wave cycle moves sideways. The market is in:",
@@ -348,6 +379,7 @@ SECTION1 = Section(
                     "Knowing the degree lets the trader size the stoploss to that degree's average wave amplitude and volatility.",
                 ),
                 accent="Volatility at one wave degree may not manifest at a higher or lower degree.",
+                caption="Amplitude: section 5.2. Stoploss: section 5.4.",
             ),
             picture=Figure(
                 number="5.8",
@@ -402,7 +434,7 @@ SECTION1 = Section(
                     "Rising closes are an uptrend as far as close prices are concerned: a line chart in action.",
                     "The same holds for the highs, the lows, and the mid or typical prices.",
                 ),
-                caption="The CCI oscillator and the Floor Trader's Pivot Points are based on typical prices. Neither is taught here.",
+                caption="The book names typical price, and the CCI oscillator and Floor Trader's Pivot Points that are based on it, and defines none of them here.",
             ),
             picture=Figure(
                 number="5.10",
@@ -628,7 +660,7 @@ SECTION2 = Section(
                 term="Bar stochastic",
                 plain="Where a bar closed inside its own range: near the top, the middle or the bottom.",
                 example="A bar with a low of PHP 40, a high of PHP 50 and a close of PHP 48: (48 - 40) / (50 - 40) = 0.80. It closed near its high.",
-                formal="The relative position of the closing price within the bar itself, measured as a ratio: (C - L) / (H - L). It is essentially a one-period %K.",
+                formal="The relative position of the closing price within the bar itself, measured as a ratio: (C - L) / (H - L). The book calls it essentially a one-period %K, and does not explain %K here.",
             ),
             picture=Figure(
                 number="5.18",
@@ -1042,7 +1074,7 @@ SECTION3 = Section(
                     "Event-based filters indicate neither, until an event has occurred.",
                 ),
                 accent="The type of filter, and the extent to which it is employed, sets the exact point of entry and exit.",
-                caption="Trading intraday breakouts with no filter makes backtesting virtually impossible.",
+                caption="With no filter, intraday breakouts are virtually impossible to backtest, a word the book does not define.",
             ),
             picture=Chart(
                 letter="F",
@@ -1083,7 +1115,7 @@ SECTION3 = Section(
                     "Time and event filters do not specify the exact price of entry, so controlling risk is ineffective, if not impossible.",
                 ),
                 accent="This is why price-based filters are the preferred mode of filtering.",
-                caption="Without control of the maximum risk per trade, a system may eventually experience risk of ruin.",
+                caption="With no control of the maximum risk per trade, a system may meet risk of ruin, which the book does not define.",
             ),
             picture=Chart(
                 letter="G",
@@ -1112,7 +1144,7 @@ SECTION3 = Section(
                     options=("Limit entry to within a specified distance",
                              "Delay the entry by N closed bars",
                              "Confirm the trend with volume",
-                             "Replace the stoploss"),
+                             "Replace the closing violation"),
                     answer="A",
                     reason="Prices may close too far beyond the entry level. The price-based filter limits entry to within a specified distance.",
                 ),
@@ -1244,7 +1276,7 @@ SECTION4 = Section(
                 Q(
                     stem="Which order can guarantee execution, but not the price at which it is filled?",
                     options=("A limit order",
-                             "A take profit order",
+                             "A sell limit order",
                              "A stop order",
                              "A buy limit order"),
                     answer="C",
@@ -1489,7 +1521,7 @@ SECTION5 = Section(
                 title="Trade in the direction of the trend",
                 lines=(
                     "It means to buy in an uptrend and short in a downtrend. It is generally easier and safer.",
-                    "Buying dips and selling rallies gets positions at the most advantageous prices, with the smallest stopsizes.",
+                    "Buying dips and selling rallies gets positions at the most advantageous prices, with the smallest stopsizes: the stop sits close to the entry.",
                     "Positions taken with the trend can be held, and so extract greater profit from the markets.",
                 ),
                 accent="Buying a dip and selling a rally are retracement entries in the direction of the existing trend.",
@@ -1576,7 +1608,7 @@ SECTION5 = Section(
                     "Barrier entries: stopsizes are always approximately the same, just behind the barrier.",
                     "Breakout entries: stopsizes vary with each entry.",
                 ),
-                caption="The significant peak or trough may be any distance from a breakout entry.",
+                caption="Stopsize: the distance from entry to stop, the figure's brackets. The book never defines the word.",
             ),
             picture=Figure(
                 number="5.39",
@@ -1799,7 +1831,7 @@ SECTION6 = Section(
                 Q(
                     stem="Once a trendline has been invalidated, it is thereafter referred to as:",
                     options=("A tentative line",
-                             "A continuation trendline",
+                             "A valid line",
                              "A neckline",
                              "An internal line"),
                     answer="D",

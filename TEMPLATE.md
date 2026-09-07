@@ -17,12 +17,13 @@ Read this before you touch anything. Five chapters are built.
   audit are written outside the repository. See **The lean form** below
   before you copy it.
 - **Chapter 5** is the lean form done a second time, and only the teaching
-  deck so far: 138 slides, 21 checks carrying 42 items, 32 terms, all 59 of
-  the book's figures and 26 charts. `chapter-05/README.md` has what it
-  found: the 26 chart limit, a figure whose labels are not in its image,
-  and a reveal slide that overflows in the PDF. Its first build was sent
-  back for where it put the new-term marker; see **The new-term marker**
-  below before you write a `Term`.
+  deck so far: 139 slides, 21 checks carrying 42 items, 32 terms, all 59 of
+  the book's figures and 27 charts. `chapter-05/README.md` has what it
+  found: a figure whose labels are not in its image, and a reveal slide
+  that overflows in the PDF. Its first build was sent back for where it put
+  the new-term marker, and its second for using wave degrees before any
+  slide explained them; see **The new-term marker** below before you write
+  a `Term`.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -226,7 +227,7 @@ time, or the room freezes.
 slide carries the gold NEW TERM chip, and the instructor reads the chip
 literally: this word is new today. Chapter 5's first build marked *Uptrend*,
 which Chapter 2 introduced, and left *HWC* and *MWC*, which are new, on an
-ordinary slide. He sent it back for both. Three rules, and nothing in the
+ordinary slide. He sent it back for both. Four rules, and nothing in the
 build checks any of them:
 
 1. **First teaching only.** A term gets the marker on the first slide in
@@ -243,6 +244,17 @@ build checks any of them:
    chapter used in a sentence, printed in a figure or named "for later" has
    not been taught. The slide that first says what it means gets the
    marker, and its cue says where the word was met before.
+
+4. **Explain the word before a slide leans on it, and not inside one
+   formal row.** Chapter 5's second build named HWC, MWC and LWC on a term
+   slide whose formal row spoke of wave degrees, and no slide had said what
+   a wave degree is. The instructor could not follow the next six slides
+   or answer their check. When a term is built out of an idea the room has
+   not met, give the idea a plain slide and a picture of its own first,
+   then the term. When a word turns up before the section that teaches it,
+   say on the slide where that section is. When the book never explains
+   it, say that on the slide. A speaker cue does none of this: read every
+   slide as someone holding only the slides.
 
 What stays an ordinary slide: a statement, a question, a worked example, a
 comparison, and a list of things the book gives one line each, such as the
@@ -422,10 +434,9 @@ its labels set as page text over the picture, so the extracted image is the
 bare bars. Compare each extracted file with the printed page, and render
 that figure from the page instead; `chapter-05/README.md` has the command.
 
-**A chapter can draw at most 26 charts.** `deckkit` names a chart by one
-capital letter and refuses anything else. Chapter 5 uses all 26 and leaves
-five list slides without a picture. Count the pictures a chapter needs
-before writing its slides, not after.
+**The twenty seventh chart is AA.** `deckkit` names a chart by one capital
+letter, and by two after Z. Chapter 5 draws 27 and leaves five list slides
+without a picture.
 
 ---
 

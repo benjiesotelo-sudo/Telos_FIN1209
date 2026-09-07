@@ -17,7 +17,7 @@ python3 -m venv .venv
 
 `python-pptx` 1.0.2 and `matplotlib` 3.9.4 are what the committed deck was
 built with. matplotlib draws the charts this course owns, nine in Chapter 1,
-eight in Chapter 2, six in Chapter 3, eighteen in Chapter 4 and twenty six in Chapter 5; see **Charts** below for why they are generated
+eight in Chapter 2, six in Chapter 3, eighteen in Chapter 4 and twenty seven in Chapter 5; see **Charts** below for why they are generated
 rather than committed as images, and for the one consequence that has for
 reproducibility.
 
@@ -386,7 +386,7 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | `build/build_chapter3.py`, `build/build_plan3.py`, `build/build_lecture_notes3.py` | Chapter 3's three builders, each a copy of Chapter 2's with the names changed. |
 | `build/content_chapter04.py`, `build/charts_chapter04.py`, `build/plan_chapter04.py`, `build/lecture_chapter04.py` | Chapter 4, the lean deck: the same four files. Eighteen charts, each beside the idea it shows. See `chapter-04/README.md`. |
 | `build/build_chapter4.py`, `build/build_plan4.py`, `build/build_lecture_notes4.py` | Chapter 4's three builders. The deck build writes the answer sheet outside the repository; the card build numbers a deck with no dividers and checks its minutes against the deck. |
-| `build/content_chapter05.py`, `build/charts_chapter05.py` | Chapter 5, the lean deck again, and only the deck so far: no plan and no lecture module yet. Twenty six charts, which is every letter a chart can be named by. See `chapter-05/README.md`. |
+| `build/content_chapter05.py`, `build/charts_chapter05.py` | Chapter 5, the lean deck again, and only the deck so far: no plan and no lecture module yet. Twenty seven charts, A to Z and then AA. See `chapter-05/README.md`. |
 | `build/build_chapter5.py` | Chapter 5's one builder: `build_chapter4.py` with the answer sheet taken out. |
 | `build/lecturekit.py` | Every lecture notes block renderer, its print CSS, and the figure plate machinery. Takes the palette and the paginator from notekit. Knows nothing about any chapter. |
 | `build/lecture_chapter01.py` | Chapter 1 lecture notes as plain data. No layout code. |

@@ -1,6 +1,8 @@
 """Chapter 5 teaching charts for FIN1209, as plain data.
 
-Twenty six charts, A to Z, which is every letter the deck's namespace has.
+Twenty seven charts, A to Z and then AA: the wave degree chart was added
+after the alphabet was used up, and deckkit letters a twenty seventh chart
+the way a spreadsheet letters its columns.
 This file carries no drawing code: the two forms it uses, annotated and
 gallery, live in build/chartkit.py, which knows nothing about any chapter,
 and every entry below is data handed to one of them.
@@ -34,6 +36,9 @@ figures shows:
     characteristic it was drawn for.
   * **Y** the three ranges where Fibonacci, Dow and Gann converge.
   * **Z** the signs of a reversal that can be drawn on one top.
+  * **AA** what a wave degree is: one wave drawn alone, then with its
+    subwaves, then with theirs. It sits before Figure 5.5, which shows all
+    three degrees at once and is where the book starts.
 
 **Teach only what the textbook teaches.** Every label on these charts is a
 statement the book's Chapter 5 makes, or arithmetic it sets out. Charts P,
@@ -43,12 +48,17 @@ PHP 10,000 at risk. The pesos are ours and the steps are the book's.
 Chart O computes two simple moving averages of the line it draws, a short
 one and a long one, and marks where they cross; how a moving average is
 built is Chapter 11 and no label explains it.
+Chart AA is the one place the labels are a reading and not a quotation: the
+book defines neither wave cycle nor wave degree in a sentence, so the chart
+says what its Figure 5.5 and its words larger, smaller and subwave show, and
+the slide beside it says that is where the reading comes from.
 
 **The data is invented.** We hold no market data licence. Every price
 series comes from chartkit.walk() with a fixed seed, offline and
 reproducible, and every chart carries the credit line
 deckkit.chart_credit() prints under it. Charts P, Q and R are not prices at
-all: each is one line of arithmetic, and says so.
+all: each is one line of arithmetic, and says so. Chart AA is not prices
+either: it is three sine waves added one at a time, and says so.
 """
 
 from __future__ import annotations
@@ -377,7 +387,45 @@ Z_VOLUME = _shaped(
 
 
 # --------------------------------------------------------------------------
-# The twenty six charts
+# Chart AA. One wave, drawn at one, two and three wave degrees.
+# --------------------------------------------------------------------------
+# Not a price series: three sine waves of three sizes, added one at a time,
+# so that the only thing that changes from one drawing to the next is the
+# subwave that was added. Each drawing carries the one before it in green.
+
+def _wave(parts, n=420):
+    """(x, y) along a sum of sine waves, each given as (height, cycles)."""
+    import math
+    return tuple(
+        (i / (n - 1),
+         sum(h * math.sin(2 * math.pi * c * i / (n - 1)) for h, c in parts))
+        for i in range(n))
+
+
+def _trace(points):
+    """A curve as the run of short straight sides a Sketch draws in green."""
+    return tuple(zip(points[:-1], points[1:]))
+
+
+AA_LARGE = ((10.0, 0.5),)
+AA_MEDIUM = AA_LARGE + ((2.4, 4.5),)
+AA_SMALL = AA_MEDIUM + ((1.1, 15.5),)
+
+WAVES = (
+    Sketch(name="1  One wave cycle",
+           note="the largest: the highest degree",
+           points=_wave(AA_LARGE)),
+    Sketch(name="2  With its subwaves",
+           note="smaller waves: a lower degree",
+           points=_wave(AA_MEDIUM), sides=_trace(_wave(AA_LARGE))),
+    Sketch(name="3  With their subwaves",
+           note="smaller again: the lowest degree",
+           points=_wave(AA_SMALL), sides=_trace(_wave(AA_MEDIUM))),
+)
+
+
+# --------------------------------------------------------------------------
+# The twenty seven charts
 # --------------------------------------------------------------------------
 
 CHARTS = (
@@ -464,7 +512,8 @@ CHARTS = (
             ),
             top=0.20, bottom=0.08,
             footnote="An invented currency pair. Its average daily range is "
-                     "the book's example, 120 pips.",
+                     "the book's example, 120 pips.\nThe book does not say "
+                     "what a pip is.",
         ),
     ),
     ChartArt(
@@ -1033,5 +1082,12 @@ CHARTS = (
             top=0.22, bottom=0.30,
             footnote=INVENTED + " Three kinds of sign at one market top.",
         ),
+    ),
+    ChartArt(
+        letter="AA",
+        draw=ck.gallery,
+        kwargs=dict(sketches=WAVES, cols=3, size=PAIR,
+                    footnote="Not prices: one wave, drawn three times. In "
+                             "green, the wave of the drawing before."),
     ),
 )

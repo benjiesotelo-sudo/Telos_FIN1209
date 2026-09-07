@@ -1,7 +1,7 @@
 # Chapter 5 - Trend Analysis
 
-138 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
-items, 32 terms, all 59 of the book's figures, and 26 charts of our own.
+139 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
+items, 32 terms, all 59 of the book's figures, and 27 charts of our own.
 
 **This chapter is built to the lean form the instructor approved in Chapter
 4**: the content decides the length, each question is followed by its own
@@ -48,7 +48,7 @@ and 5.10.
 
 ## Every idea has a picture
 
-Of the 90 teaching slides, 85 carry a picture: 84 with the picture beside
+Of the 91 teaching slides, 86 carry a picture: 85 with the picture beside
 the text and one, Figure 5.32, on a slide of its own. The other 48 slides are
 the 21 checks, at two slides each, and the six slides of the frame.
 
@@ -56,7 +56,8 @@ the 21 checks, at two slides each, and the six slides of the frame.
   what the book says about it. Figure 5.32 stands alone because it is a wide
   table of small type, and a slide of its own is the only size it can be
   read at.
-- **One of our own charts otherwise.** 26 of them, lettered A to Z. See the
+- **One of our own charts otherwise.** 27 of them, lettered A to Z and then
+  AA. See the
   table below.
 
 **Five slides carry no picture, and no two of them are next to each other.**
@@ -70,14 +71,64 @@ Each is a list the book gives without a figure:
 | 5.6, strengths and weaknesses | The book's own list of four strengths and three weaknesses. |
 | 5.11, reversal signs from tools taught later | Oscillators, candlesticks and intermarket action: each needs a tool the book has not taught yet. |
 
-**The 26 letters are a hard limit.** `deckkit` names a chart by one capital
-letter, so a chapter can draw at most 26. This chapter uses every one. A
-later chapter that needs more will have to add to the kit first.
+**After Z comes AA.** `deckkit` used to name a chart by one capital letter
+and nothing else, which capped a chapter at 26, and this chapter had used
+every one when the wave degree slide needed a picture. The kit now takes a
+second letter after Z, the way a spreadsheet letters its columns, and the
+check that refused it is `deckkit._chart_letter()`. Chapters 1 to 4 were
+rebuilt after the change and their decks are byte identical.
 
 A check may rest on what a slide's text says and never on what only its
 picture shows, because the committed build prints a placeholder where a book
 figure goes. All 42 items were checked against that by hand, and each is
 answered by the text of a slide that comes before its check.
+
+## A word is explained before a slide leans on it
+
+The instructor's review of the second build: the slides from the wave cycle
+term onward could not be followed, because they spoke of wave degrees and no
+slide had said what a wave degree is, and the check there asked for things
+the slides had not discussed. The first two builds had put the whole idea
+into the formal row of one term slide.
+
+**What changed in 5.1.** A slide now comes before the term, *Waves inside
+waves: cycles and degrees*, with Chart AA beside it: one wave drawn alone,
+then with its subwaves, then with theirs. Only after that does the term
+slide name the three and show Figure 5.5. The book defines neither *wave
+cycle* nor *wave degree* in a sentence, so the new slide says its reading
+comes from the book's figures and its words larger, smaller and subwave. The
+minimum of two degrees, which the book gives as a note with no reason, is on
+the term slide's example row. Check 2 now asks which wave cycle is a subwave
+of both of the others, and which mode a market is in when its LWC rises and
+its MWC moves sideways; both are slide text.
+
+**The same audit, run over the whole deck.** Every word a slide uses was
+checked against the slides before it and against Chapters 1 to 4. Where a
+word arrives before the section that teaches it, the slide now says where
+that is, and where the book never explains it at all, the slide says that:
+
+| Word | Where it was used early | What the slide says now |
+|---|---|---|
+| Stoploss, stopsizing | 5.1, twice | Section 5.4 and section 5.5, in the caption |
+| Wave amplitude | 5.1, breakouts | Section 5.2, in the caption |
+| Typical price | 5.1, OHLC trends | The book names it and defines it nowhere here |
+| %K | 5.2, bar stochastic | The book's comparison, not explained here |
+| Pip | 5.2, average period range | Chart D's footnote: the book does not say what one is |
+| Backtest, risk of ruin | 5.3 | The book defines neither |
+| Stopsize | 5.5 | The distance from entry to stop, the brackets in Figure 5.39 |
+
+Three wrong options in the checks named something a later slide teaches: a
+stoploss in Check 9, a take profit order in Check 10 and a continuation
+trendline in Check 15. Each now names something already taught.
+
+Left alone on purpose: trendline and channel, which Chapters 1, 3 and 4 used
+on their slides before 5.6 says how each is drawn; standard deviation, which
+the book assumes; and every oscillator the deck already flags where it
+appears.
+
+**No pair slide is set below 17 point**, which is what the first two builds
+held. Three of the flags above were first written longer and cost a size, so
+they were shortened or moved to a chart footnote.
 
 ## The new-term marker
 
@@ -164,7 +215,7 @@ Every section is taught as fully as the book teaches it.
 
 | Section | Slides | Checks | Figures | Our charts |
 |---|---|---|---|---|
-| 5.1 Definitions of a trend | 18 | 3 | 5.1 to 5.10 | A, B |
+| 5.1 Definitions of a trend | 19 | 3 | 5.1 to 5.10 | A, AA, B |
 | 5.2 Quality of trend: 16 price characteristics | 34 | 5 | 5.11 to 5.29 | C, D, E |
 | 5.3 Price and trend filters | 5 | 1 | 5.30 | F, G |
 | 5.4 Trend participation | 12 | 2 | 5.31, 5.32 | H to L |
@@ -212,7 +263,7 @@ where it appears, and no check rests on any of them:
 | Alternative channel constructions | 5.6, cue | Chapter 13 |
 | Tradesizing in general | 5.5, cue | Chapter 28 |
 
-## The twenty six charts
+## The twenty seven charts
 
 A chart is drawn where the book makes a point in words that none of its own
 figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
@@ -245,6 +296,7 @@ figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
 | X | Anticipating a channel breakout | A failed test of the bottom, then a break through the top |
 | Y | Where the three approaches agree | The three ranges where the percentages converge |
 | Z | Signs that a trend may reverse | Three kinds of sign at one market top |
+| AA | Waves inside waves: cycles and degrees | One wave alone, with its subwaves, then with theirs |
 
 **Charts P, Q and R are the book's five steps with pesos put in.** An
 average stopsize of PHP 2.00, a two standard deviation value of PHP 1.00,
@@ -256,6 +308,10 @@ says so.
 **Chart O computes two simple moving averages** of the line it draws and
 marks where they cross. How a moving average is built is Chapter 11, and no
 label on the chart explains it.
+
+**Chart AA is three sine waves**, added one at a time, and not a price.
+Its labels are the one place a chart states a reading and not a quotation,
+for the reason given above.
 
 Every other chart's data is invented from a fixed seed, and each says so.
 
@@ -275,12 +331,13 @@ the time axis.
 
 ## How long the chapter takes
 
-**245 minutes at the calibrated rate, against a 180 minute session.** That is
+**246 minutes at the calibrated rate, against a 180 minute session.** That is
 information, not a target: nothing was cut to reach a length, and nothing was
-added. It is 65 minutes more than one session holds. No run card exists for
+added to reach one. It is 66 minutes more than one session holds. No run card exists for
 this chapter, so nothing here says what to cut; that is a decision for
-whoever writes one. The first build cost 238: the slide count has not moved,
-and the seven minutes are the 24 more slides now costed as terms.
+whoever writes one. The first build cost 238 and the second 245: seven
+minutes for the 24 more slides costed as terms, then under two for the wave
+degree slide and its chart.
 
 The rate is the one written down in `chapter-03/README.md`: a content slide
 1, a term 1.25, a figure 0.75, a chart 0.5, a check with its reveal 2.5,
@@ -291,7 +348,7 @@ with a picture beside it is costed as the sum of its two parts.
 | Part | Slides | Minutes |
 |---|---|---|
 | Title, objectives, roadmap | 3 | 3.4 |
-| 5.1 Definitions | 18 | 33.1 |
+| 5.1 Definitions | 19 | 34.8 |
 | 5.2 Quality of trend | 34 | 63.0 |
 | 5.3 Filters | 5 | 8.3 |
 | 5.4 Participation | 12 | 18.7 |
@@ -304,8 +361,8 @@ with a picture beside it is costed as the sum of its two parts.
 | 5.11 Reversals | 4 | 5.8 |
 | Closing | 3 | 3.4 |
 
-The weights sum to 212.75 and 212.75 times 1.150 is 244.7. The chapter is 47
-pages of the book against Chapter 4's 26, and comes to 138 slides against
+The weights sum to 214.25 and 214.25 times 1.150 is 246.4. The chapter is 47
+pages of the book against Chapter 4's 26, and comes to 139 slides against
 79, so it is the same density.
 
 ## Building it
@@ -313,10 +370,10 @@ pages of the book against Chapter 4's 26, and comes to 138 slides against
 From the repository root:
 
 ```
-.venv/bin/python build/build_chapter5.py      # teaching, 138 slides
+.venv/bin/python build/build_chapter5.py      # teaching, 139 slides
 ```
 
-The build draws the 26 charts and is deterministic: a second run leaves
+The build draws the 27 charts and is deterministic: a second run leaves
 `git status` clean. It writes no answer sheet; see `build_chapter5.py` for
 why that was taken out of the script it was copied from.
 
@@ -331,17 +388,17 @@ soffice --headless --convert-to pdf --outdir ~ \
 ```
 
 Before committing the deck, confirm it embeds no artwork that is not ours.
-It must hold exactly 26 images, and their hashes must match this chapter's
+It must hold exactly 27 images, and their hashes must match this chapter's
 own chart folder:
 
 ```
-unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 26
+unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 27
 unzip -o -d /tmp/media chapter-05/FIN1209-Chapter-05.pptx 'ppt/media/*'
 diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
      <(shasum -a256 build/generated/charts-05/*.png | awk '{print $1}' | sort)
 ```
 
-The deck with the book's artwork in it holds 85: the 26 charts and one for
+The deck with the book's artwork in it holds 86: the 27 charts and one for
 each of the 59 figures.
 
 Then look at every page, as an image, in the build with the artwork, because

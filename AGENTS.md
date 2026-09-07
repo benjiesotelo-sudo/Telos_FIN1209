@@ -23,6 +23,11 @@ not. The worked example is `Supply side and demand side` in
 teaches the gap, marks the outside readings non-examinable, and sets no
 question on either.
 
+The FEU course booklet is the authority on hours and assessment weighting, not
+on tooling: it contradicts itself over whether a Bloomberg terminal is
+involved. Build activities to need nothing beyond a browser chart with a line
+tool.
+
 ## The deck ships in two editions from one content file
 
 `build/build_chapter1.py` takes `--edition teaching` (the default, 227 slides,
@@ -85,6 +90,17 @@ not ours: `unzip -l <deck>.pptx | grep ppt/media` must list exactly the nine
 charts and nothing else. See the section above for the hash check that proves
 which nine they are.
 
+**A committed deck is not a teaching deck, and nothing in its filename says
+so.** The committed `.pptx` and the committed notes carry the nine charts and a
+placeholder where every book figure goes; the teaching artefact is the
+`--with-figures` build, which has to be made from a checkout outside this
+repository and comes out with the same filename. So never hand a chapter
+deliverable to a class or an LMS straight from a repo clone, and check which
+one you are holding before it leaves: `unzip -l <deck>.pptx | grep -c
+ppt/media` is 9 for a committed deck, and 9 plus one image per placed figure
+for the real one. Student-facing copies go out as PDF rather than PowerPoint:
+a fraction of the size, opens on any phone, and cannot be edited by accident.
+
 Every chapter after this one inherits the constraint. See
 `chapter-01/README.md` for the build commands and the figure file naming.
 
@@ -120,6 +136,9 @@ slides instead of holding a copy.
 then never exits, so the build polls for the file instead of waiting on the
 process; pagination is done by a script inside the page, not by Chrome; and
 the notes turn on three paginator behaviors the plan deliberately does not.
+Headless Chrome with print CSS is a decision, not a default: a markdown to PDF
+path through LibreOffice's HTML import was tried first for a designed document
+and rendered tables one character to a line.
 
 **Render every finished PDF back to images and look at every page before you
 commit it**, and for the lecture notes look at both the placeholder build and
@@ -148,6 +167,16 @@ had a 180 minute column in its table while every cut marker still said "cut at
 Long", so reading a part page told the instructor to run 31 minutes of material
 in a 25 minute box.
 
+## Budget about fifty slides an hour, not the plan's arithmetic
+
+The Discussion plan prices all 220 part slides at 180 minutes, near enough 73
+slides an hour. A live run of that plan reached the end of Part 4 of 6, about
+151 of those slides, in the same 180 minutes. **Fifty teaching-edition slides
+an hour is what a real room gives**, so Chapter 1 as built is a two-session
+chapter and every run plan's minute figures are optimistic against a live
+class. Size a new chapter against that rate rather than against the plan's own
+arithmetic, and ask the instructor before assuming a chapter fits one sitting.
+
 ## A check must be answerable from the slides alone
 
 The student edition carries no speaker notes, so a fact that lives only in a
@@ -161,8 +190,9 @@ two failures it found: a check that sat in front of the slide it examined, and
 a term the question named that only the speaker note ever said out loud. Both
 failure modes are invisible to `deckkit.validate()`.
 
-The answer key rules are enforced: no letter over 35 percent or under 15, and
-no three identical answers in a row. Those cannot regress silently.
+The answer key rules are enforced for the deck's own checks: no letter over 35
+percent or under 15, and no three identical answers in a row. Those cannot
+regress silently there, but the guard reaches no further; see the next section.
 
 ## The closing slides are not validated
 
@@ -173,6 +203,12 @@ builds clean and then collides with the progress marker in the room. When you
 edit one, call `deckkit._content_bottom()` on it by hand and compare against
 `deckkit.SAFE_BOTTOM`. The review questions slide already sits at 6.53in
 against a 6.50in limit, so it has no headroom at all.
+
+The answer key guard has the same blind spot: it tallies `Check` questions
+found under `chapter.sections` and nothing else, so a quiz, a worksheet or an
+answer sheet produced by any other path is unguarded. Tally those by hand. An
+early build of the Chapter 1 key put 37 of 50 answers on B, which scored 74
+percent for a student who simply picked B every time.
 
 ## The two PDFs are not byte-reproducible; the decks are
 

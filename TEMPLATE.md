@@ -10,9 +10,12 @@ Read this before you touch anything. Four chapters are built.
   terms, 40 book figures and 6 charts. It is the freshest worked example of
   the full set and the one to copy; the file names below say `2`, and `3`
   works the same way.
-- **Chapter 4** is a trial of a leaner deck: 79 slides, 11 checks carrying
-  22 items, 6 terms, all 32 of the book's figures and 18 charts. It ships
-  the deck and nothing else. See **The lean form** below before you copy it.
+- **Chapter 4** is the leaner deck: 79 slides, 11 checks carrying 22 items,
+  6 terms, all 32 of the book's figures and 18 charts. The instructor kept
+  the shape, and it now has the full set: the student edition, a three page
+  run card and 33 pages of lecture notes. Its answer sheet and its check
+  audit are written outside the repository. See **The lean form** below
+  before you copy it.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -317,13 +320,31 @@ and not the talking, so a `Pair` is costed as the sum of its two parts. The
 weights are in `chapter-03/README.md`, and `build_chapter4.py` prints the
 sum for every part on every build.
 
-**What the trial did not build**, and what each would need if it is kept: a
-student edition (the switch already drops every check; look at the first and
-last slide of every part), lecture notes (the notes build walks the deck for
-figures and terms in `build_lecture_notes3.py` and does not look inside a
-`Pair`), a run card (the card build numbers the deck with its own traversal
-in `build_plan3.py`, which assumes a divider and a recap for every part), and
-a check audit, which is written by hand.
+**The companions the lean deck needed**, built after the instructor kept
+the shape. Copy Chapter 4's, not Chapter 3's, for a lean chapter:
+
+- **The run card numbers the deck its own way.** `build_plan4.py` walks a
+  deck with openers, no dividers and no recaps, and gives a `Pair` both its
+  names, so `{s:slide:Its title}` and `{s:fig:4.18}` are the same slide.
+  `{s:part:N}` is the first slide of a part and `{s:end:N}` its last. It
+  imports the weights from `build_chapter4.py` and refuses a card whose
+  typed minutes, cut by cut, disagree with the deck.
+- **A lean chapter can fit the session.** Chapter 4 costs 136 minutes, so
+  its card names no cut to take before starting. It prints a Latest start
+  column, the last clock time each part can begin and still end on the hour
+  uncut, and holds its cuts for a session that runs slow. A cut is a whole
+  slide, idea and picture together; there is no chart-only cut any more.
+- **The notes look inside a `Pair`** and drop the book's section number
+  from a term on the first slide of a part. `build_lecture_notes4.py` also
+  fails if the deck places a figure or a chart the notes do not, because
+  the lean rule is that the book's content is never cut.
+- **The charts are drawn for the slide's picture column**, close to square,
+  so in the notes the height sets the width. Below about 76mm their labels
+  are too small to read in print.
+- **The answer sheet and the audit stay out of the repository.**
+  `build_chapter4.py` writes the answer sheet to the home directory and
+  refuses a path inside the repository, and the card prints no answers and
+  points there instead. The audit is written by hand beside it.
 
 **The figure extraction is not always in figure order.** `pdfimages` returns
 the images of a page in the order the PDF stores them. Chapter 4's three

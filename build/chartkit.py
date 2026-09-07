@@ -924,6 +924,348 @@ def price_volume(path: Path, series, volume, *, spans=(), xlabel,
 
 
 # --------------------------------------------------------------------------
+# Forms added for Chapter 3, which is about how a chart is built. Each one
+# draws a construction the book describes and none of its own figures shows.
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class Bar:
+    """One OHLC bar, drawn the way the book's own figures draw one: a line
+    from low to high, a tick on the left for the open and on the right for
+    the close."""
+
+    open: float = 0.0
+    high: float = 0.0
+    low: float = 0.0
+    close: float = 0.0
+
+
+@dataclass
+class Measure:
+    """A distance between two prices, drawn as a bracket beside the bars.
+
+    ``lo`` and ``hi`` are the two prices; the chapter module supplies the
+    label, so nothing here knows which definition of a gap it is showing.
+    """
+
+    lo: float = 0.0
+    hi: float = 0.0
+    label: str = ""
+    notice: bool = False
+
+
+def _bar(ax, x, bar: Bar, *, tick=0.16, tone=INK):
+    ax.plot([x, x], [bar.low, bar.high], color=tone, lw=3.2, zorder=4,
+            solid_capstyle="butt")
+    ax.plot([x - tick, x], [bar.open, bar.open], color=tone, lw=3.2,
+            zorder=4, solid_capstyle="butt")
+    ax.plot([x, x + tick], [bar.close, bar.close], color=tone, lw=3.2,
+            zorder=4, solid_capstyle="butt")
+
+
+def measured_bars(path: Path, first: Bar, second: Bar,
+                  measures: tuple[Measure, ...], *, price_ticks=(),
+                  labels=("", ""), footnote="", display_font=None) -> Path:
+    """Two bars and the distances between them, each bracketed and labelled.
+
+    Built for the chapter's four definitions of a gap: the same two bars
+    measured four ways. The dashed guides run from each price that a bracket
+    uses, so a student can see which two prices every measurement joins.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.062, 0.12, 0.918, 0.80])
+    _dress(ax, xlabel="", grid=False)
+    ax.set_xlim(-0.6, 3.2 + 1.05 * len(measures))
+    prices = [first.low, first.high, second.low, second.high]
+    lo, hi = min(prices), max(prices)
+    span = hi - lo
+    ax.set_ylim(lo - span * 0.10, hi + span * 0.12)
+    if price_ticks:
+        ax.set_yticks(price_ticks)
+        ax.set_yticklabels([f"{p:g}" for p in price_ticks])
+        ax.yaxis.grid(True, color=BORDER, linewidth=0.6)
+
+    _bar(ax, 0.5, first)
+    _bar(ax, 2.0, second)
+    for x, text in ((0.5, labels[0]), (2.0, labels[1])):
+        if text:
+            ax.text(x, lo - span * 0.07, text, ha="center", va="center",
+                    fontsize=12, color=MUTED, fontweight="bold")
+
+    for i, m in enumerate(measures):
+        x = 3.3 + 1.05 * i
+        tone = GOLD if m.notice else GREEN
+        for y in (m.lo, m.hi):
+            ax.plot([0.5, x], [y, y], color=BORDER, lw=1.0,
+                    ls=(0, (4, 3)), zorder=1)
+        ax.annotate("", xy=(x, m.hi), xytext=(x, m.lo),
+                    arrowprops=dict(arrowstyle="<|-|>", color=tone, lw=2.2,
+                                    mutation_scale=16, shrinkA=0,
+                                    shrinkB=0), zorder=5)
+        ax.text(x + 0.08, (m.lo + m.hi) / 2, m.label, ha="left",
+                va="center", fontsize=12.5, color=GREEN_DEEP if not m.notice
+                else INK, fontweight="bold", zorder=6, bbox=_tag())
+
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def _point_figure_columns(closes, box: float, reversal: int):
+    """Point and figure columns from closing prices.
+
+    Returns a list of (kind, low_box, high_box) where kind is "X" or "O" and
+    the boxes are whole multiples of ``box``. A column extends when price
+    closes at least one box beyond its end, and a new column starts only
+    when price has moved ``reversal`` boxes back against it, one box away
+    from the extreme of the column it leaves.
+    """
+    level = int(closes[0] // box)
+    columns = []
+    kind, low, high = None, level, level
+    for c in closes[1:]:
+        up, down = int(c // box), -int(-c // box)
+        if kind is None:
+            if up >= level + 1:
+                kind, low, high = "X", level + 1, up
+            elif down <= level - 1:
+                kind, low, high = "O", down, level - 1
+            continue
+        if kind == "X":
+            if up > high:
+                high = up
+            elif down <= high - reversal:
+                columns.append((kind, low, high))
+                kind, low, high = "O", down, high - 1
+        else:
+            if down < low:
+                low = down
+            elif up >= low + reversal:
+                columns.append((kind, low, high))
+                kind, low, high = "X", low + 1, up
+    if kind is not None:
+        columns.append((kind, low, high))
+    return columns
+
+
+def point_figure(path: Path, closes, *, box: float, reversal: int, xlabel,
+                 price_label, figure_label, notice_column: int = 1,
+                 footnote="", display_font=None) -> Path:
+    """A closing price path, and the point and figure columns it produces.
+
+    Left, the closes day by day on an even time axis. Right, the same closes
+    as columns of X's and O's on the same price scale, with a column per
+    swing rather than per day: the time axis has disappeared, which is what
+    the chapter means by a constant range chart. One column is marked in
+    gold, the first reversal, so the reversal rule can be checked against
+    the price path by eye.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    left = fig.add_axes([0.062, 0.20, 0.50, 0.71])
+    right = fig.add_axes([0.600, 0.20, 0.380, 0.71], sharey=left)
+    columns = _point_figure_columns(closes, box, reversal)
+
+    left.plot(range(len(closes)), closes, color=INK, lw=1.7, zorder=3)
+    left.plot(range(len(closes)), closes, marker="o", ms=2.6, ls="none",
+              color=GREEN_DEEP, zorder=4)
+    _dress(left, xlabel=xlabel, grid=False)
+    left.set_xlim(-2, len(closes) + 1)
+    lo = min(min(closes), min(c[1] for c in columns) * box) - box
+    hi = max(max(closes), max(c[2] for c in columns) * box) + box * 1.5
+    left.set_ylim(lo, hi)
+    ticks = [box * k for k in range(int(lo // box) + 1, int(hi // box) + 1)]
+    left.set_yticks(ticks)
+    left.set_yticklabels([f"{t:g}" for t in ticks])
+    for ax in (left, right):
+        for t in ticks:
+            ax.axhline(t, color=BORDER, lw=0.6, zorder=0)
+
+    _dress(right, ylabel="", xlabel=figure_label, grid=False)
+    right.tick_params(labelleft=False)
+    right.set_xlim(-0.8, len(columns) - 0.2)
+    for i, (kind, low, high) in enumerate(columns):
+        tone = GOLD if i == notice_column else (GREEN if kind == "X"
+                                                else INK)
+        for b in range(low, high + 1):
+            right.text(i, b * box, kind, ha="center", va="center",
+                       fontsize=13,
+                       color=tone, fontweight="bold", zorder=4)
+    left.text(0.015, 0.97, price_label, transform=left.transAxes, ha="left",
+              va="top", fontsize=12, color=GREEN_DEEP, fontweight="bold",
+              zorder=6, bbox=_tag())
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def volume_clock(path: Path, series, volume, *, block: float, xlabel,
+                 volume_label, marks_label, callouts=(), footnote="",
+                 display_font=None) -> Path:
+    """A session's price and volume, and where each constant volume bar ends.
+
+    The price and the volume are drawn on an ordinary even time axis. A
+    gold tick is dropped on the time axis every time another ``block`` of
+    volume has traded, which is where a constant volume chart would close a
+    bar. Nothing else is claimed: the ticks crowd where volume is heavy and
+    spread where it is light, and that spacing is the non linear time axis.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    top, bottom = _stacked(fig)
+
+    top.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
+    _dress(top, ylabel="", xlabel="", grid=False)
+    top.set_xlim(-1, len(series))
+    _headroom(top, series, top=0.24, bottom=0.12)
+    top.set_yticks([])
+
+    bottom.bar(range(len(volume)), volume, width=0.82, color=GREEN,
+               zorder=3, linewidth=0)
+    _dress(bottom, ylabel="", xlabel=xlabel, grid=False)
+    bottom.set_xlim(-1, len(series))
+    bottom.set_ylim(0, max(volume) * 1.35)
+    bottom.set_yticks([])
+    bottom.text(0.008, 0.94, volume_label, transform=bottom.transAxes,
+                ha="left", va="top", fontsize=12.5, color=GREEN_DEEP,
+                fontweight="bold", zorder=6, bbox=_tag())
+
+    total, closes_at = 0.0, []
+    for i, v in enumerate(volume):
+        before = total
+        total += v
+        for k in range(int(before // block) + 1, int(total // block) + 1):
+            closes_at.append(i - 0.5 + (k * block - before) / v)
+    for x in closes_at:
+        for ax in (top, bottom):
+            ax.axvline(x, color=GOLD, lw=1.4, zorder=2)
+    top.text(0.008, 0.96, marks_label, transform=top.transAxes, ha="left",
+             va="top", fontsize=12.5, color=INK, fontweight="bold",
+             zorder=6, bbox=_tag())
+    for m in callouts:
+        top.annotate(m.label, xy=(m.x, 1.0), xycoords=top.get_xaxis_transform(),
+                     xytext=(m.dx, m.dy), textcoords="offset points",
+                     ha="center", va="bottom", fontsize=12, color=MUTED,
+                     fontweight="bold", zorder=7)
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def price_scales(path: Path, levels, *, low: float, high: float,
+                 names=("Linear", "Square root", "Ratio"),
+                 moves=(), footnote="", display_font=None) -> Path:
+    """The same price levels placed on a linear, a square root and a ratio
+    axis side by side.
+
+    Each axis is drawn to the same height, so what differs is only where the
+    levels land. ``moves`` are (low, high, label, notice) pairs bracketed on
+    every axis, so one move can be compared across the three scales.
+    """
+    import math
+
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.02, 0.10, 0.96, 0.78])
+    ax.axis("off")
+    maps = (
+        lambda p: (p - low) / (high - low),
+        lambda p: (math.sqrt(p) - math.sqrt(low))
+        / (math.sqrt(high) - math.sqrt(low)),
+        lambda p: (math.log(p) - math.log(low))
+        / (math.log(high) - math.log(low)),
+    )
+    ax.set_xlim(-0.2, 3.0)
+    ax.set_ylim(-0.04, 1.10)
+    for i, (name, f) in enumerate(zip(names, maps)):
+        x = 0.25 + i * 1.05
+        ax.plot([x, x], [0, 1], color=INK, lw=1.6, zorder=3)
+        labelled, top = None, f(levels[-1])
+        for p in levels:
+            y = f(p)
+            ax.plot([x - 0.035, x], [y, y], color=INK, lw=1.2, zorder=3)
+            # Where the scale crowds the levels together, skip a label rather
+            # than print numbers on top of each other. The two ends are always
+            # labelled and the ticks still show every level.
+            ends = p in (levels[0], levels[-1])
+            if ends or (y - labelled >= 0.05 and top - y >= 0.05):
+                ax.text(x - 0.05, y, f"{p:g}", ha="right", va="center",
+                        fontsize=10.5, color=MUTED)
+                labelled = y
+        ax.text(x + 0.12, 1.07, name, ha="center", va="bottom",
+                fontsize=13, color=GREEN_DEEP, fontweight="bold")
+        for j, (a, b, label, notice) in enumerate(moves):
+            tone = GOLD if notice else GREEN
+            bx = x + 0.07 + j * 0.10
+            ax.plot([bx, bx], [f(a), f(b)], color=tone, lw=7,
+                    solid_capstyle="butt", zorder=4)
+            if i == 0:
+                ax.text(bx + 0.07, (f(a) + f(b)) / 2, label, ha="left",
+                        va="center", fontsize=11.5, color=INK,
+                        fontweight="bold", zorder=6, bbox=_tag())
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def back_adjusted(path: Path, contracts, *, xlabel, raw_label,
+                  adjusted_label, zero_label, callout=None, footnote="",
+                  display_font=None) -> Path:
+    """A string of futures contracts joined end to end, and the same string
+    back adjusted.
+
+    ``contracts`` is a list of price segments, each the life of one nearby
+    contract, in order. Unadjusted, they are simply joined and the jump at
+    every rollover stays in. Back adjusted, every earlier segment is shifted
+    by the jump at each later rollover so the line is continuous and ends on
+    the current contract's real price; the shift is the net accumulated
+    spread, which is how the chapter describes it.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
+
+    raw, xs, x = [], [], 0
+    for seg in contracts:
+        xs.append(list(range(x, x + len(seg))))
+        raw.append(list(seg))
+        x += len(seg)
+    shifts = [0.0] * len(contracts)
+    for k in range(len(contracts) - 2, -1, -1):
+        shifts[k] = shifts[k + 1] + (contracts[k + 1][0] - contracts[k][-1])
+    adjusted = [[v + shifts[k] for v in seg] for k, seg in enumerate(raw)]
+
+    for k in range(len(contracts)):
+        ax.plot(xs[k], raw[k], color=MUTED, lw=1.5, alpha=0.75, zorder=2)
+        if k:
+            ax.plot([xs[k - 1][-1], xs[k][0]], [raw[k - 1][-1], raw[k][0]],
+                    color=MUTED, lw=1.0, ls=(0, (2, 2)), zorder=2)
+    flat_x = [i for part in xs for i in part]
+    flat_adj = [v for part in adjusted for v in part]
+    ax.plot(flat_x, flat_adj, color=INK, lw=2.0, zorder=3)
+    ax.axhline(0.0, color=GREEN, lw=1.4, zorder=1)
+    ax.text(0.992, 0.0, zero_label, transform=ax.get_yaxis_transform(),
+            ha="right", va="bottom", fontsize=11.5, color=GREEN,
+            fontweight="bold", zorder=4)
+    _dress(ax, xlabel=xlabel)
+    ax.set_xlim(-2, flat_x[-1] + 2)
+    everything = flat_adj + [v for part in raw for v in part]
+    _headroom(ax, everything, top=0.22, bottom=0.18)
+    # Lower right: the corner the two lines leave empty, since the raw record
+    # runs along the top and the adjusted one climbs out of the bottom left.
+    ax.text(0.985, 0.18, raw_label, transform=ax.transAxes, ha="right",
+            va="bottom", fontsize=12, color=MUTED, fontweight="bold",
+            zorder=6, bbox=_tag())
+    ax.text(0.985, 0.05, adjusted_label, transform=ax.transAxes, ha="right",
+            va="bottom", fontsize=12, color=INK, fontweight="bold", zorder=6,
+            bbox=_tag())
+    if callout is not None:
+        _dot(ax, callout.x, flat_adj[callout.x])
+        _callout(ax, callout.x, flat_adj[callout.x], callout.label,
+                 dx=callout.dx, dy=callout.dy)
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+# --------------------------------------------------------------------------
 # What a chapter module hands back, and how the builds ask for it
 # --------------------------------------------------------------------------
 

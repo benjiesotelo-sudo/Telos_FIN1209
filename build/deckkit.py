@@ -25,7 +25,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
-from lxml import etree
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
@@ -254,18 +253,6 @@ class Check(Slide):
 
     label: str = ""
     questions: tuple[Question, ...] = ()
-
-
-@dataclass
-class InlineCheck(Check):
-    """A check whose answers are revealed on the question slide itself.
-
-    One slide instead of two. Each card carries a gold answer strip, the
-    letter and the one line reason, which appears on a click in the room and
-    is simply there in a PDF of the deck. It is a Check in every other way:
-    the same two questions, the same answer key rules, and the student
-    edition drops it.
-    """
 
 
 @dataclass
@@ -926,174 +913,10 @@ def render_reveal(prs, s: Check, marker, index, total):
 
 
 # --------------------------------------------------------------------------
-# The lean slide types: a check that reveals on its own slide, and a picture
-# beside the idea it shows. Added for Chapter 4 as renderers of their own, so
-# no renderer an earlier chapter uses was touched to make room for them.
+# A picture beside the idea it shows. Added for Chapter 4 as a renderer of
+# its own, so no renderer an earlier chapter uses was touched to make room
+# for it.
 # --------------------------------------------------------------------------
-
-_P_NS = "http://schemas.openxmlformats.org/presentationml/2006/main"
-
-
-def _reveal_on_click(slide, shape_ids):
-    """Hide each shape until its click, in the order given.
-
-    This is the plain Appear entrance, one click per shape, written the way
-    PowerPoint writes it. A PDF of the deck knows nothing about timing, so
-    every shape is simply present there, which is the slide's final state.
-    """
-    counter = iter(range(3, 3 + 4 * len(shape_ids)))
-    clicks = []
-    for spid in shape_ids:
-        a, b, c, d = (next(counter) for _ in range(4))
-        clicks.append(
-            f'<p:par><p:cTn id="{a}" fill="hold">'
-            '<p:stCondLst><p:cond delay="indefinite"/></p:stCondLst>'
-            f'<p:childTnLst><p:par><p:cTn id="{b}" fill="hold">'
-            '<p:stCondLst><p:cond delay="0"/></p:stCondLst>'
-            f'<p:childTnLst><p:par><p:cTn id="{c}" presetID="1" '
-            'presetClass="entr" presetSubtype="0" fill="hold" '
-            'nodeType="clickEffect">'
-            '<p:stCondLst><p:cond delay="0"/></p:stCondLst>'
-            f'<p:childTnLst><p:set><p:cBhvr><p:cTn id="{d}" dur="1" '
-            'fill="hold"><p:stCondLst><p:cond delay="0"/></p:stCondLst>'
-            f'</p:cTn><p:tgtEl><p:spTgt spid="{spid}"/></p:tgtEl>'
-            '<p:attrNameLst><p:attrName>style.visibility</p:attrName>'
-            '</p:attrNameLst></p:cBhvr><p:to><p:strVal val="visible"/></p:to>'
-            '</p:set></p:childTnLst></p:cTn></p:par></p:childTnLst></p:cTn>'
-            '</p:par></p:childTnLst></p:cTn></p:par>'
-        )
-    xml = (
-        f'<p:timing xmlns:p="{_P_NS}"><p:tnLst><p:par>'
-        '<p:cTn id="1" dur="indefinite" restart="never" nodeType="tmRoot">'
-        '<p:childTnLst><p:seq concurrent="1" nextAc="seek">'
-        '<p:cTn id="2" dur="indefinite" nodeType="mainSeq"><p:childTnLst>'
-        + "".join(clicks) +
-        '</p:childTnLst></p:cTn>'
-        '<p:prevCondLst><p:cond evt="onPrev" delay="0"><p:tgtEl><p:sldTgt/>'
-        '</p:tgtEl></p:cond></p:prevCondLst>'
-        '<p:nextCondLst><p:cond evt="onNext" delay="0"><p:tgtEl><p:sldTgt/>'
-        '</p:tgtEl></p:cond></p:nextCondLst>'
-        '</p:seq></p:childTnLst></p:cTn></p:par></p:tnLst></p:timing>'
-    )
-    # p:timing follows p:clrMapOvr, which is the last child of a blank slide.
-    slide._element.append(etree.fromstring(xml))
-
-
-# The card geometry render_check uses, and the answer strip added to it.
-_CHECK_CARD_TOP, _CHECK_CARD_H = 1.32, 5.02
-_STRIP_LETTER_W = 0.72
-_STRIP_PT = 13.0
-_CHECK_SIZES = ((17.0, 15.0), (16.0, 14.0), (15.0, 13.5), (14.0, 13.0),
-                (13.0, 12.0), (12.0, 11.0))
-
-
-def _inline_check_fit(s: Check):
-    """The type sizes render_check_inline will use, the height of its answer
-    strip, and whether both questions fit their cards at those sizes.
-
-    One function for the renderer and for the validator, so the build cannot
-    pass a check the page then overflows.
-    """
-    col_w = (CONTENT_W.inches - 0.7) / 2
-    inner_in = col_w - 0.6
-    strip_h = max(
-        [0.62] + [_text_height(q.reason, inner_in - _STRIP_LETTER_W - 0.15,
-                               _STRIP_PT) + 0.26 for q in s.questions])
-    # Padding, the Q label and the gap under the stem, as in render_check,
-    # then the strip and the air above and below it.
-    budget = _CHECK_CARD_H - 0.95 - strip_h - 0.34
-    for stem_pt, opt_pt in _CHECK_SIZES:
-        worst = max(
-            _text_height(q.stem, inner_in, stem_pt, "bold")
-            + sum(_text_height(f"D.  {o}", inner_in, opt_pt) + 0.13
-                  for o in q.options)
-            for q in s.questions
-        )
-        if worst <= budget:
-            return stem_pt, opt_pt, strip_h, True
-    return stem_pt, opt_pt, strip_h, False
-
-
-def render_check_inline(prs, s: Check, marker, index, total):
-    """A check and its answers on one slide.
-
-    The question cards are render_check's. Each card ends in a gold strip
-    carrying the letter and the one line reason, hidden until its click, so
-    the room still answers before it sees anything.
-    """
-    slide = _blank(prs)
-    _ground(slide, GREEN_DEEP)
-    _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GOLD)
-
-    _chip(slide, MARGIN, Inches(0.55), f"CHECK {index} OF {total}", fill=GOLD,
-          text_color=INK, width=Inches(1.85))
-
-    frame = _textbox(slide, MARGIN + Inches(2.1), Inches(0.57), Inches(8.0),
-                     Inches(0.4))
-    _para(frame, s.label, size=15, color=WHITE, bold=True, first=True)
-
-    col_w = Emu(int((CONTENT_W - Inches(0.7)) / 2))
-    inner_in = col_w.inches - 0.6
-    card_top, card_h = _CHECK_CARD_TOP, _CHECK_CARD_H
-    stem_pt, opt_pt, strip_h, _fits = _inline_check_fit(s)
-    strip_top = card_top + card_h - strip_h - 0.24
-
-    tallest_stem = max(_text_height(q.stem, inner_in, stem_pt, "bold")
-                       for q in s.questions)
-
-    strips = []
-    for i, q in enumerate(s.questions):
-        x = MARGIN + (col_w + Inches(0.7)) * i
-        _rect(slide, x, Inches(card_top), col_w, Inches(card_h), GREEN)
-
-        frame = _textbox(slide, x + Inches(0.3), Inches(card_top + 0.27),
-                         col_w - Inches(0.6), Inches(0.25))
-        _para(frame, f"Q{i + 1}", size=12, color=GOLD, bold=True, first=True)
-
-        stem_top = card_top + 0.58
-        stem_h = _text_height(q.stem, inner_in, stem_pt, "bold")
-        frame = _textbox(slide, x + Inches(0.3), Inches(stem_top),
-                         col_w - Inches(0.6), Inches(stem_h + 0.1))
-        _para(frame, q.stem, size=stem_pt, color=WHITE, bold=True, first=True,
-              line_spacing=1.15)
-
-        options_top = stem_top + tallest_stem + 0.32
-        frame = _textbox(slide, x + Inches(0.3), Inches(options_top),
-                         col_w - Inches(0.6),
-                         Inches(max(0.5, strip_top - options_top - 0.1)))
-        for j, opt in enumerate(q.options):
-            _para(frame, f"{'ABCD'[j]}.  {opt}", size=opt_pt, color=WHITE,
-                  first=(j == 0), space_after=9, line_spacing=1.12)
-
-        # The strip is one group, so one click brings the letter and its
-        # reason up together.
-        group = slide.shapes.add_group_shape()
-        sx = x + Inches(0.3)
-        _rect(group, sx, Inches(strip_top), col_w - Inches(0.6),
-              Inches(strip_h), GOLD)
-        frame = _textbox(group, sx, Inches(strip_top),
-                         Inches(_STRIP_LETTER_W), Inches(strip_h),
-                         anchor=MSO_ANCHOR.MIDDLE)
-        _para(frame, q.answer, size=24, color=INK, font=MONO_FONT, bold=True,
-              align=PP_ALIGN.CENTER, first=True)
-        frame = _textbox(group, sx + Inches(_STRIP_LETTER_W),
-                         Inches(strip_top),
-                         col_w - Inches(0.6 + _STRIP_LETTER_W + 0.15),
-                         Inches(strip_h), anchor=MSO_ANCHOR.MIDDLE)
-        _para(frame, q.reason, size=_STRIP_PT, color=INK, first=True,
-              line_spacing=1.0)
-        strips.append(group.shape_id)
-
-    _reveal_on_click(slide, strips)
-
-    _progress(slide, marker, on_dark=True)
-    _notes(slide, s.notes or (
-        "Read Q1 aloud, then Q2. Give them sixty seconds and no discussion.",
-        "Hands up on each option, then click: each click shows one answer. "
-        "Say the reason out loud, not just the letter.",
-        "This is for reading the room, not for marks. Say so if anyone tenses up.",
-    ))
-
 
 # How far apart a Pair holds its text column and its picture column.
 PAIR_GAP = 0.35
@@ -1110,6 +933,10 @@ _PAIR_TIGHT_H = 1.0 * _PAIR_NATURAL
 # The picture column's band ends here and its credit line sits under it.
 PAIR_BAND_BOTTOM = 6.08
 PAIR_CREDIT_Y = 6.18
+# Where the picture column starts beside a term, whose heading sits lower
+# than a teaching slide's. chartkit reads this to draw a chart that fills
+# the column exactly.
+PAIR_TERM_TOP = 2.36
 
 
 def _pair_fit(s: Pair) -> tuple[float, float]:
@@ -1249,7 +1076,7 @@ def render_pair(prs, s: Pair, marker):
             _para(frame, text, size=body_pt, color=INK, bold=emphasise,
                   line_spacing=1.0)
             y += 0.30 + text_h + 0.20
-        band_top = 2.36
+        band_top = PAIR_TERM_TOP
     else:
         _content_frame(slide, left.title, marker)
         top = 2.15
@@ -1499,13 +1326,6 @@ def _validate(chapter: Chapter) -> list[str]:
             walk(where, slide)
             if isinstance(slide, Pair):
                 check_pair(where, slide)
-            if isinstance(slide, InlineCheck) and len(slide.questions) == 2:
-                if not _inline_check_fit(slide)[3]:
-                    problems.append(
-                        f"{where}: the questions and their answer strips do "
-                        "not fit the cards at the smallest type size. "
-                        "Shorten a stem, an option or a reason."
-                    )
             if isinstance(slide, Content) and len(slide.lines) > MAX_BODY_LINES:
                 problems.append(
                     f"{where}: {len(slide.lines)} body lines, limit is {MAX_BODY_LINES}"
@@ -1742,10 +1562,6 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
                 check_index += 1
                 marker = (f"Part {section.number} of {total_sections} - "
                           f"{section.short}  |  Check {check_index}")
-                if isinstance(slide, InlineCheck):
-                    render_check_inline(prs, slide, marker, check_index,
-                                        total_checks)
-                    continue
                 render_check(prs, slide, marker, check_index, total_checks)
                 render_reveal(prs, slide, marker, check_index, total_checks)
                 continue

@@ -1266,6 +1266,362 @@ def back_adjusted(path: Path, contracts, *, xlabel, raw_label,
 
 
 # --------------------------------------------------------------------------
+# Forms added for Chapter 4, which puts a picture beside the idea it shows.
+#
+# Those pictures sit in the picture column of a deckkit.Pair, which is
+# narrower and taller than the figure band every form above draws into. So
+# each form below takes the size to draw at, and pair_size() is the one
+# place that size is worked out, from deckkit's own geometry.
+# --------------------------------------------------------------------------
+
+
+def pair_size(text_w: float = 5.0, *, term: bool = False) -> tuple[float, float]:
+    """The image that exactly fills a Pair's picture column, in inches.
+
+    ``text_w`` is the Pair's own text column width and ``term`` says whether
+    its left side is a Term, whose picture column starts lower. Drawn at this
+    size a chart is placed at one to one, so a 10 point label in the artwork
+    is a 10 point label on the slide.
+    """
+    top = deckkit.PAIR_TERM_TOP if term else deckkit.FIGURE_TOP
+    return (deckkit.CONTENT_W.inches - text_w - deckkit.PAIR_GAP - 2 * INSET,
+            deckkit.PAIR_BAND_BOTTOM - top - 2 * INSET)
+
+
+@dataclass
+class Note:
+    """A short label on a plate, joined to a point by a hairline.
+
+    With ``y`` left as None the point is on the price line at ``x``. Give
+    ``y`` to point at a price the line does not pass through. ``notice``
+    makes it the chart's one gold point.
+    """
+
+    x: float = 0
+    label: str = ""
+    dx: float = 0.0     # offset of the label, in points
+    dy: float = 0.0
+    y: float | None = None
+    notice: bool = False
+    dot: bool = True
+
+
+@dataclass
+class Stroke:
+    """A straight line or a run of them, drawn over the chart.
+
+    A range boundary, a level, the two sides of a pattern, or a path price
+    has not taken yet. ``tone`` is structure (green), notice (gold) or quiet
+    (grey). ``label`` sits at the point numbered ``at``, offset in points.
+    """
+
+    points: tuple = ()      # ((x, y), ...)
+    tone: str = "structure"
+    dashed: bool = False
+    arrow: bool = False     # an arrowhead on the last point
+    label: str = ""
+    at: int = 0
+    dx: float = 0.0
+    dy: float = 0.0
+    width: float = 1.6
+
+
+@dataclass
+class Box:
+    """A rectangle around a stretch of prices, the way the book boxes a
+    phase on its own charts. ``label`` sits above it, below it or inside."""
+
+    x0: float = 0.0
+    x1: float = 0.0
+    lo: float = 0.0
+    hi: float = 0.0
+    label: str = ""
+    where: str = "above"    # above, below or inside
+    tone: str = "quiet"     # quiet (grey) or notice (gold)
+
+
+@dataclass
+class Bracket:
+    """A vertical measure between two prices, with its label beside it."""
+
+    x: float = 0.0
+    lo: float = 0.0
+    hi: float = 0.0
+    label: str = ""
+    notice: bool = False
+    side: str = "right"     # which side of the measure the label sits on
+
+
+_TONES = {"structure": GREEN, "notice": GOLD, "quiet": MUTED}
+
+
+def _strokes(ax, strokes, *, size=10.0):
+    for st in strokes:
+        color = _TONES[st.tone]
+        xs = [p[0] for p in st.points]
+        ys = [p[1] for p in st.points]
+        ls = (0, (5, 4)) if st.dashed else "-"
+        if st.arrow and len(st.points) >= 2:
+            ax.plot(xs[:-1], ys[:-1], color=color, lw=st.width, ls=ls,
+                    zorder=4, solid_capstyle="round")
+            ax.annotate("", xy=st.points[-1], xytext=st.points[-2],
+                        arrowprops=dict(arrowstyle="-|>", color=color,
+                                        lw=st.width, ls=ls,
+                                        mutation_scale=14,
+                                        shrinkA=0, shrinkB=0), zorder=4)
+        else:
+            ax.plot(xs, ys, color=color, lw=st.width, ls=ls, zorder=4,
+                    solid_capstyle="round")
+        if st.label:
+            ax.annotate(st.label, xy=st.points[st.at],
+                        xytext=(st.dx, st.dy), textcoords="offset points",
+                        ha="right" if st.dx < 0 else
+                           ("left" if st.dx > 0 else "center"),
+                        va="center", fontsize=size,
+                        color=GREEN_DEEP if st.tone == "structure" else
+                              (GOLD if st.tone == "notice" else MUTED),
+                        fontweight="bold", zorder=7, bbox=_tag())
+
+
+def annotated(path: Path, series, *, size, spans=(), boxes=(), strokes=(),
+              notes=(), brackets=(), breaks=(), volume=None,
+              volume_label="", volume_strokes=(), volume_notes=(),
+              xlabel="Time", ylabel="Price", price_ticks=None, extend=0,
+              top=0.20, bottom=0.14, footnote="", display_font=None) -> Path:
+    """One price line with whatever has to be said about it marked on it.
+
+    The general form for a picture that sits beside its own explanation: a
+    line, the stretches worth naming shaded or boxed, the levels and pattern
+    sides drawn over it, and a few short labels on plates. ``volume`` adds a
+    panel of volume bars under the price, with its own strokes and notes.
+
+    ``breaks`` are indices where the line is lifted, so the record shows a
+    gap as a gap and not as a steep stroke. ``extend`` leaves empty room to
+    the right of the last price, for a path that has not happened yet.
+    ``top`` and ``bottom`` are the headroom above and below the line, as
+    fractions of its range, where the labels go.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    # _new sets the deck's type and colours; its own figure is the band's
+    # size, so it is closed and one of the size asked for is opened.
+    plt.close(_new(display_font))
+    fig = plt.figure(figsize=size, dpi=DPI)
+    w_in, h_in = size
+
+    span_lines = max([s.label.count("\n") + 1 for s in spans if s.label]
+                     or [0])
+    foot_lines = footnote.count("\n") + 1 if footnote else 0
+    left = (0.40 if ylabel else 0.10) + (0.26 if price_ticks else 0.0)
+    right = 0.10
+    foot = 0.08 + 0.16 * foot_lines + (0.24 if xlabel else 0.06)
+    head = 0.10 + 0.17 * span_lines
+
+    plot_h = h_in - foot - head
+    if volume is not None:
+        vol_h = plot_h * 0.27
+        gap_h = 0.10
+        price_h = plot_h - vol_h - gap_h
+        vax = fig.add_axes([left / w_in, foot / h_in,
+                            (w_in - left - right) / w_in, vol_h / h_in])
+        ax = fig.add_axes([left / w_in, (foot + vol_h + gap_h) / h_in,
+                           (w_in - left - right) / w_in, price_h / h_in])
+    else:
+        vax = None
+        ax = fig.add_axes([left / w_in, foot / h_in,
+                           (w_in - left - right) / w_in, plot_h / h_in])
+
+    n = len(series)
+    for s in spans:
+        for a in (ax, vax):
+            if a is not None:
+                a.axvspan(s.x0, s.x1, color=GOLD_WASH if s.tone == "notice"
+                          else GREY_WASH, zorder=0, linewidth=0)
+    for b in boxes:
+        ax.add_patch(plt.Rectangle(
+            (b.x0, b.lo), b.x1 - b.x0, b.hi - b.lo,
+            facecolor=GOLD_WASH if b.tone == "notice" else GREY_WASH,
+            edgecolor=GOLD if b.tone == "notice" else MUTED,
+            linewidth=1.0, zorder=1))
+
+    # The line, lifted at every break.
+    cuts = [0] + sorted(breaks) + [n]
+    for a, b in zip(cuts[:-1], cuts[1:]):
+        ax.plot(range(a, b), series[a:b], color=INK, lw=1.6, zorder=3,
+                solid_capstyle="round")
+
+    _dress(ax, xlabel="" if vax is not None else xlabel, ylabel=ylabel,
+           grid=bool(price_ticks))
+    ax.xaxis.label.set_size(10)
+    ax.yaxis.label.set_size(10)
+    ax.set_xlim(-2, n + 1 + extend)
+    reach = list(series)
+    reach += [p[1] for st in strokes for p in st.points]
+    reach += [v for b in boxes for v in (b.lo, b.hi)]
+    reach += [v for br in brackets for v in (br.lo, br.hi)]
+    _headroom(ax, reach, top=top, bottom=bottom)
+    if price_ticks:
+        ax.set_yticks(list(price_ticks))
+        ax.tick_params(labelsize=9)
+    else:
+        ax.set_yticks([])
+
+    for s in spans:
+        if s.label:
+            ax.text((s.x0 + s.x1) / 2, 1.02, s.label,
+                    transform=ax.get_xaxis_transform(), ha="center",
+                    va="bottom", fontsize=10, color=MUTED, fontweight="bold",
+                    linespacing=1.05)
+
+    for b in boxes:
+        if not b.label:
+            continue
+        mid = (b.x0 + b.x1) / 2
+        tone = GOLD if b.tone == "notice" else GREEN_DEEP
+        if b.where == "inside":
+            ax.text(mid, b.hi, b.label, ha="center", va="top", fontsize=10,
+                    color=tone, fontweight="bold", zorder=6,
+                    linespacing=1.05)
+        else:
+            above = b.where == "above"
+            ax.annotate(b.label, xy=(mid, b.hi if above else b.lo),
+                        xytext=(0, 5 if above else -5),
+                        textcoords="offset points", ha="center",
+                        va="bottom" if above else "top", fontsize=10,
+                        color=tone, fontweight="bold", zorder=6,
+                        linespacing=1.05)
+
+    _strokes(ax, strokes)
+
+    for br in brackets:
+        color = GOLD if br.notice else GREEN
+        ax.annotate("", xy=(br.x, br.hi), xytext=(br.x, br.lo),
+                    arrowprops=dict(arrowstyle="<->", color=color, lw=1.6,
+                                    mutation_scale=11, shrinkA=0, shrinkB=0),
+                    zorder=5)
+        right_side = br.side == "right"
+        ax.annotate(br.label, xy=(br.x, (br.lo + br.hi) / 2),
+                    xytext=(7 if right_side else -7, 0),
+                    textcoords="offset points",
+                    ha="left" if right_side else "right", va="center",
+                    fontsize=10, color=GOLD if br.notice else GREEN_DEEP,
+                    fontweight="bold", zorder=7, linespacing=1.05)
+
+    for note in notes:
+        y = series[int(note.x)] if note.y is None else note.y
+        if note.dot:
+            _dot(ax, note.x, y, tone=GOLD if note.notice else GREEN, size=7)
+        _callout(ax, note.x, y, note.label, dx=note.dx, dy=note.dy,
+                 tone=GREEN_DEEP if note.notice else INK, size=10)
+
+    if vax is not None:
+        vax.bar(range(len(volume)), volume, width=0.86, color=GREEN,
+                zorder=3, linewidth=0)
+        _dress(vax, ylabel="", xlabel=xlabel, grid=False)
+        vax.xaxis.label.set_size(10)
+        vax.set_xlim(-2, n + 1 + extend)
+        vax.set_ylim(0, max(volume) * 1.45)
+        vax.set_yticks([])
+        if volume_label:
+            vax.set_ylabel(volume_label, fontsize=10, color=MUTED, labelpad=6)
+        _strokes(vax, volume_strokes)
+        for note in volume_notes:
+            y = volume[int(note.x)] if note.y is None else note.y
+            _callout(vax, note.x, y, note.label, dx=note.dx, dy=note.dy,
+                     tone=GREEN_DEEP if note.notice else INK, size=10)
+
+    if footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
+    return _save(fig, path)
+
+
+@dataclass
+class Sketch:
+    """One small drawing in a gallery: a shape, its sides, and its name.
+
+    ``points`` is the price path in any units; only its shape is drawn.
+    ``sides`` are the straight lines that bound the shape, each one
+    ((x0, y0), (x1, y1)). ``note`` is one small line under the name.
+    """
+
+    name: str = ""
+    points: tuple = ()
+    sides: tuple = ()
+    note: str = ""
+    breaks: tuple = ()      # indices into points where the line is lifted
+
+
+def gallery(path: Path, sketches, *, cols: int, size, footnote="",
+            display_font=None) -> Path:
+    """A grid of small named shapes, with no axes and no prices.
+
+    For a list of names that means nothing until each name has a picture.
+    Every cell is drawn to the same scale rule: the shape fills its cell,
+    the sides that bound it are green, and the name sits above it.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    # _new sets the deck's type and colours; its own figure is the band's
+    # size, so it is closed and one of the size asked for is opened.
+    plt.close(_new(display_font))
+    fig = plt.figure(figsize=size, dpi=DPI)
+    w_in, h_in = size
+    rows = -(-len(sketches) // cols)
+    foot_lines = footnote.count("\n") + 1 if footnote else 0
+    foot = 0.08 + 0.16 * foot_lines
+    pad = 0.07
+    cell_w = (w_in - pad) / cols
+    cell_h = (h_in - foot - pad) / rows
+
+    for i, sk in enumerate(sketches):
+        row, col = divmod(i, cols)
+        x = pad + col * cell_w
+        y = h_in - pad - (row + 1) * cell_h + pad
+        ax = fig.add_axes([x / w_in, y / h_in, (cell_w - pad) / w_in,
+                           (cell_h - pad) / h_in])
+        for side in ("top", "right", "left", "bottom"):
+            ax.spines[side].set_color(BORDER)
+            ax.spines[side].set_linewidth(0.9)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_facecolor(WHITE)
+
+        pts = list(sk.points)
+        cuts = [0] + sorted(sk.breaks) + [len(pts)]
+        for a, b in zip(cuts[:-1], cuts[1:]):
+            ax.plot([p[0] for p in pts[a:b]], [p[1] for p in pts[a:b]],
+                    color=INK, lw=1.5, zorder=3, solid_capstyle="round",
+                    solid_joinstyle="round")
+        for (x0, y0), (x1, y1) in sk.sides:
+            ax.plot([x0, x1], [y0, y1], color=GREEN, lw=1.3, zorder=4,
+                    solid_capstyle="round")
+
+        xs = [p[0] for p in pts] + [v for s in sk.sides for v in (s[0][0], s[1][0])]
+        ys = [p[1] for p in pts] + [v for s in sk.sides for v in (s[0][1], s[1][1])]
+        xr = (max(xs) - min(xs)) or 1.0
+        yr = (max(ys) - min(ys)) or 1.0
+        ax.set_xlim(min(xs) - xr * 0.08, max(xs) + xr * 0.08)
+        # Room at the top of every cell for the name and its note.
+        label_room = 0.42 + (0.16 if sk.note else 0.0)
+        frac = label_room / (cell_h - pad)
+        ax.set_ylim(min(ys) - yr * 0.10,
+                    max(ys) + yr * (0.10 + frac / max(1e-6, 1 - frac) * 1.2))
+
+        ax.text(0.5, 0.965, sk.name, transform=ax.transAxes, ha="center",
+                va="top", fontsize=9.5, color=GREEN_DEEP, fontweight="bold",
+                linespacing=1.05, zorder=6)
+        if sk.note:
+            lines = sk.name.count("\n") + 1
+            ax.text(0.5, 0.965 - (0.15 * lines + 0.02) / (cell_h - pad),
+                    sk.note, transform=ax.transAxes, ha="center", va="top",
+                    fontsize=8, color=MUTED, style="italic", zorder=6)
+
+    if footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
+    return _save(fig, path)
+
+
+# --------------------------------------------------------------------------
 # What a chapter module hands back, and how the builds ask for it
 # --------------------------------------------------------------------------
 

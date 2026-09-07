@@ -1,12 +1,14 @@
 # Building the next chapter
 
-Read this before you touch anything. Two chapters are built.
+Read this before you touch anything. Three chapters are built.
 
 - **Chapter 1** is the original template: 227 slides, 25 checks carrying 50
   items, 49 terms, 35 book figures and 9 charts of our own.
 - **Chapter 2** is the same design done a second time: 175 slides, 21 checks
-  carrying 42 items, 27 terms, 26 book figures and 8 charts. It is the fresher
-  worked example and it is the one to copy.
+  carrying 42 items, 27 terms, 26 book figures and 8 charts.
+- **Chapter 3** is the third: 188 slides, 23 checks carrying 46 items, 39
+  terms, 40 book figures and 6 charts. It is the freshest worked example and
+  the one to copy; the file names below say `2`, and `3` works the same way.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -24,6 +26,19 @@ run card, not a twenty six page teaching plan.** The captain taught from
 Chapter 1's plan and said plainly that he did not use it, and the problem it
 was meant to solve happened anyway: he had 180 minutes and reached the end of
 Part 4 of 6. See **The instructor's document** below.
+
+Four things Chapter 3 added, each small, all worth keeping:
+
+- **The minute rate is written down**, weight by weight, in
+  `chapter-03/README.md`, with the check that it reproduces Chapter 2's card.
+  Cost the next chapter with it before you write the card.
+- **The notes take their definitions from the deck.** `formal()` in
+  `build/lecture_chapter03.py` reads each term slide's formal wording, so the
+  two documents cannot define a term differently. Copy it.
+- **Bold in the notes covers whole sentences**, or a page break can land
+  inside one. `AGENTS.md` has why.
+- **The term slide check reads low.** Hold every term to seven wrapped lines
+  at 19pt; `AGENTS.md` has the sum to do by hand.
 
 ---
 

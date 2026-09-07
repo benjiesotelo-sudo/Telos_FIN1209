@@ -1622,6 +1622,110 @@ def gallery(path: Path, sketches, *, cols: int, size, footnote="",
 
 
 # --------------------------------------------------------------------------
+# A form added for Chapter 5's wave degrees: the price as bars, with the
+# larger waves the bars add up to drawn over them as smooth lines.
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class Trace:
+    """A smooth line laid over the bars, one value for every bar.
+
+    ``tone`` is structure (green), deep (dark green) or notice (gold).
+    ``dotted`` draws it in dots, the way the book draws a medium wave.
+    """
+
+    values: tuple = ()
+    tone: str = "structure"
+    dotted: bool = False
+    width: float = 2.0
+
+
+_TRACE_TONES = {"structure": GREEN, "deep": GREEN_DEEP, "notice": GOLD}
+
+
+def bar_waves(path: Path, bars, *, size, traces=(), strokes=(), brackets=(),
+              notes=(), xlabel="Time", ylabel="Price", price_ticks=None,
+              top=0.20, bottom=0.14, footnote="", display_font=None) -> Path:
+    """Price bars, and the larger waves they add up to drawn over them.
+
+    ``bars`` is one Bar for each period, drawn thin so that a hundred of
+    them read as a price path. Each Trace is a line through the bars. A
+    Note with no ``y`` points at the close of the bar at its ``x``.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    # _new sets the deck's type and colours; its own figure is the band's
+    # size, so it is closed and one of the size asked for is opened.
+    plt.close(_new(display_font))
+    fig = plt.figure(figsize=size, dpi=DPI)
+    w_in, h_in = size
+    foot_lines = footnote.count("\n") + 1 if footnote else 0
+    left = (0.40 if ylabel else 0.10) + (0.26 if price_ticks else 0.0)
+    right = 0.10
+    foot = 0.08 + 0.16 * foot_lines + (0.24 if xlabel else 0.06)
+    head = 0.10
+    ax = fig.add_axes([left / w_in, foot / h_in, (w_in - left - right) / w_in,
+                       (h_in - foot - head) / h_in])
+
+    n = len(bars)
+    for x, b in enumerate(bars):
+        ax.plot([x, x], [b.low, b.high], color=INK, lw=1.25, zorder=3,
+                solid_capstyle="butt")
+        ax.plot([x - 0.40, x], [b.open, b.open], color=INK, lw=1.25, zorder=3,
+                solid_capstyle="butt")
+        ax.plot([x, x + 0.40], [b.close, b.close], color=INK, lw=1.25,
+                zorder=3, solid_capstyle="butt")
+    for tr in traces:
+        ax.plot(range(len(tr.values)), tr.values,
+                color=_TRACE_TONES[tr.tone], lw=tr.width,
+                ls=(0, (0.1, 2.0)) if tr.dotted else "-", zorder=4,
+                solid_capstyle="round", dash_capstyle="round")
+
+    _dress(ax, xlabel=xlabel, ylabel=ylabel, grid=bool(price_ticks))
+    ax.xaxis.label.set_size(10)
+    ax.yaxis.label.set_size(10)
+    ax.set_xlim(-2, n + 1)
+    reach = [v for b in bars for v in (b.low, b.high)]
+    reach += [p[1] for st in strokes for p in st.points]
+    reach += [v for br in brackets for v in (br.lo, br.hi)]
+    _headroom(ax, reach, top=top, bottom=bottom)
+    if price_ticks:
+        ax.set_yticks(list(price_ticks))
+        ax.tick_params(labelsize=9)
+    else:
+        ax.set_yticks([])
+
+    _strokes(ax, strokes)
+
+    for br in brackets:
+        color = GOLD if br.notice else GREEN
+        ax.annotate("", xy=(br.x, br.hi), xytext=(br.x, br.lo),
+                    arrowprops=dict(arrowstyle="<->", color=color, lw=1.6,
+                                    mutation_scale=11, shrinkA=0, shrinkB=0),
+                    zorder=5)
+        right_side = br.side == "right"
+        ax.annotate(br.label, xy=(br.x, (br.lo + br.hi) / 2),
+                    xytext=(7 if right_side else -7, 0),
+                    textcoords="offset points",
+                    ha="left" if right_side else "right", va="center",
+                    fontsize=10, color=GOLD if br.notice else GREEN_DEEP,
+                    fontweight="bold", zorder=7, linespacing=1.05,
+                    bbox=_tag())
+
+    for note in notes:
+        y = bars[int(note.x)].close if note.y is None else note.y
+        if note.dot:
+            _dot(ax, note.x, y, tone=GOLD if note.notice else GREEN, size=7)
+        _callout(ax, note.x, y, note.label, dx=note.dx, dy=note.dy,
+                 tone=GREEN_DEEP if note.notice else INK, size=10)
+
+    if footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
+    return _save(fig, path)
+
+
+# --------------------------------------------------------------------------
 # What a chapter module hands back, and how the builds ask for it
 # --------------------------------------------------------------------------
 

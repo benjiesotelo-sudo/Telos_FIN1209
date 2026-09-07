@@ -17,8 +17,8 @@ Read this before you touch anything. Five chapters are built.
   audit are written outside the repository. See **The lean form** below
   before you copy it.
 - **Chapter 5** is the lean form done a second time, and only the teaching
-  deck so far: 139 slides, 21 checks carrying 42 items, 32 terms, all 59 of
-  the book's figures and 27 charts. `chapter-05/README.md` has what it
+  deck so far: 141 slides, 21 checks carrying 42 items, 32 terms, all 59 of
+  the book's figures and 29 charts. `chapter-05/README.md` has what it
   found: a figure whose labels are not in its image, and a reveal slide
   that overflows in the PDF. Its first build was sent back for where it put
   the new-term marker, and its second for using wave degrees before any
@@ -435,7 +435,7 @@ bare bars. Compare each extracted file with the printed page, and render
 that figure from the page instead; `chapter-05/README.md` has the command.
 
 **The twenty seventh chart is AA.** `deckkit` names a chart by one capital
-letter, and by two after Z. Chapter 5 draws 27 and leaves five list slides
+letter, and by two after Z. Chapter 5 draws 29 and leaves five list slides
 without a picture.
 
 ---

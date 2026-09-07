@@ -49,6 +49,15 @@ on a slide that spoke of wave degrees before any slide had said what one is:
     the book never explains is said to be unexplained, on the slide and not
     only in the cue. chapter-05/README.md has the list.
 
+And one from his third review, when the degree slide and Figure 5.5 still
+left him asking what the three lines are and what they are drawn from:
+
+  * **A drawing convention is taught, not assumed.** Two slides after the
+    term say how the three cycles are drawn and how to tell them apart, on
+    one price drawn as bars with the two larger waves over it. The book
+    gives no rule for either, and each slide says which part is the book's
+    and which is our drawing choice.
+
 What is lean, against Chapters 1 to 3:
 
   * The parts are the book's own sections, 5.1 to 5.11. Section 5.12 is the
@@ -269,11 +278,12 @@ SECTION1 = Section(
         ),
         Pair(
             left=Content(
-                title="Waves inside waves: cycles and degrees",
+                title="What a wave degree is",
                 lines=(
-                    "Any trend or consolidation can be described in wave cycles, which exist at various wave degrees.",
-                    "A wave cycle is a swing of price, up and back down. A larger one carries smaller ones inside it: its subwaves.",
-                    "Degree ranks them by size: the larger wave cycle is of a higher degree, its subwaves of a lower one.",
+                    "Price moves in swings, up and back down. The book calls a swing a wave cycle.",
+                    "Small swings ride inside bigger ones. The smaller is a subwave of the bigger.",
+                    "Degree is the rank of a wave by size: the bigger swing is of a higher degree, its subwaves of a lower one.",
+                    "The book: any trend or consolidation can be described in wave cycles, which exist at various wave degrees.",
                 ),
                 caption="The book defines neither word in a sentence. This reading is from its figures and its words larger, smaller and subwave.",
             ),
@@ -285,6 +295,7 @@ SECTION1 = Section(
             notes=(
                 "Teach this slide before anything is named. Left drawing: one wave. Middle: the same wave, in green, with smaller waves riding along it. Right: smaller ones again riding along those.",
                 "Each added wave is a subwave of the one it rides on, and one degree lower. Two drawings are two degrees, three are three.",
+                "A degree is not a number of degrees of angle and not a fixed size. It only says which of two waves is the bigger.",
             ),
         ),
         Pair(
@@ -300,9 +311,53 @@ SECTION1 = Section(
             ),
             text_w=6.0,
             notes=(
-                "The last slide's three drawings, laid over one another: the thick line is the HWC, the dotted line the MWC, the thin line the LWC.",
+                "Three wave cycles laid over one another: the thick line is the HWC, the dotted line the MWC, the thin line the LWC.",
                 "Higher, medium and lower are relative to each other. The book fixes no size or duration for any of them.",
                 "It gives the minimum of two degrees as a note, with no reason. Do not supply one.",
+            ),
+        ),
+        Pair(
+            left=Content(
+                title="How the three cycles are drawn",
+                lines=(
+                    "The LWC is the price itself: a thin line in the book, the bars on a price chart.",
+                    "The MWC and HWC are not prices. Each is a smooth line through the middle of the smaller swings, to show the bigger swing.",
+                    "The book gives no rule for drawing them: no formula, no indicator, no number of bars.",
+                ),
+                accent="They look like moving averages. The book does not say they are.",
+                caption="The book's: thick, dotted, thin. Ours: the bars, and where the two smooth lines sit.",
+            ),
+            picture=Chart(
+                letter="AB",
+                shows="One invented price drawn as bars, the lower wave cycle. A dotted line runs through the middle of the small swings of the bars, the medium wave cycle. A thick line runs through the middle of the dotted line's swings, rising once and falling once across the chart, the higher wave cycle.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "The question a student asks of Figure 5.5 is what the three lines are. The thin one is price. The other two are drawn over price to show its bigger swings.",
+                "Why draw them at all: the book calls it critical that a trader be able to visualize price cycles on the chart. Its figures are freehand sketches, with no bars and no price axis.",
+                "Be plain that the book stops there. It names no indicator and gives no length, so do not say the lines are moving averages of any period. Moving averages are Chapter 11.",
+            ),
+        ),
+        Pair(
+            left=Content(
+                title="Telling the three cycles apart",
+                lines=(
+                    "Compare the swings with each other. The book fixes no size, duration or timeframe.",
+                    "The smallest swings in view: the LWC. The bigger swing they ride on: the MWC. The biggest: the HWC.",
+                    "Subwave test: LWC swings sit inside one MWC swing, MWC swings inside the HWC swing.",
+                ),
+                accent="Relative: a wave has a degree only against another wave.",
+                caption="Bar counts and pesos are read off our invented chart, not the book.",
+            ),
+            picture=Chart(
+                letter="AC",
+                shows="The same price bars with the dotted medium wave cycle and the thick higher wave cycle, and three rulers underneath: one lower wave cycle swing is 8 bars and about 6 pesos, one medium wave cycle swing is 32 bars and about 12 pesos, and the higher wave cycle swing is all 96 bars and 24 pesos.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "Read the three rulers from the top: each swing is longer and taller than the one above it, and holds four of it. Four is this chart's number, not a rule.",
+                "Each degree also has its own average size of swing. The book's words are the average wave amplitude and volatility associated with that particular wave degree, and they come up with breakouts in a moment.",
+                "Chapter 9 comes back to wave degrees and says the relationship between them is relative. Chapter 18 gives Elliott's named degrees. Neither is needed here.",
             ),
         ),
         Pair(

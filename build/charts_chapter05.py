@@ -1,10 +1,10 @@
 """Chapter 5 teaching charts for FIN1209, as plain data.
 
-Twenty seven charts, A to Z and then AA: the wave degree chart was added
-after the alphabet was used up, and deckkit letters a twenty seventh chart
-the way a spreadsheet letters its columns.
-This file carries no drawing code: the two forms it uses, annotated and
-gallery, live in build/chartkit.py, which knows nothing about any chapter,
+Twenty nine charts, A to Z and then AA, AB and AC: the three wave degree
+charts were added after the alphabet was used up, and deckkit letters a
+twenty seventh chart the way a spreadsheet letters its columns.
+This file carries no drawing code: the three forms it uses, annotated,
+gallery and bar_waves, live in build/chartkit.py, which knows nothing about any chapter,
 and every entry below is data handed to one of them.
 
 Chapter 5 has 59 figures and every one is placed in the deck. A chart is
@@ -39,6 +39,11 @@ figures shows:
   * **AA** what a wave degree is: one wave drawn alone, then with its
     subwaves, then with theirs. It sits before Figure 5.5, which shows all
     three degrees at once and is where the book starts.
+  * **AB** how the three wave cycles are drawn: one price as bars, the
+    lower wave cycle, with the medium wave cycle dotted and the higher one
+    thick over it, the line styles of Figure 5.5. It sits after that figure.
+  * **AC** the same chart with a ruler under it for one swing of each
+    cycle, so the three can be told apart by comparing them.
 
 **Teach only what the textbook teaches.** Every label on these charts is a
 statement the book's Chapter 5 makes, or arithmetic it sets out. Charts P,
@@ -59,12 +64,18 @@ reproducible, and every chart carries the credit line
 deckkit.chart_credit() prints under it. Charts P, Q and R are not prices at
 all: each is one line of arithmetic, and says so. Chart AA is not prices
 either: it is three sine waves added one at a time, and says so.
+Charts AB and AC are the same three waves with a little seeded noise, made
+into price bars. The book draws its wave cycles freehand and gives no rule
+for where the two smooth lines go, so their place on these two charts is
+our drawing choice, and the bar counts and pesos on Chart AC's rulers are
+read off our own chart. Both charts and both slides say so.
 """
 
 from __future__ import annotations
 
 import chartkit as ck
-from chartkit import Box, Bracket, ChartArt, Note, Sketch, Span, Stroke
+from chartkit import (Bar, Box, Bracket, ChartArt, Note, Sketch, Span, Stroke,
+                      Trace)
 
 # Every chart sits in the picture column of a Pair. Beside a teaching slide
 # the text column is 5.6in wide; beside a term it is 6.2in, because a formal
@@ -425,7 +436,54 @@ WAVES = (
 
 
 # --------------------------------------------------------------------------
-# The twenty seven charts
+# Charts AB and AC. One price as bars, with its two larger waves drawn on it.
+# --------------------------------------------------------------------------
+# The price is three waves added together, like Chart AA's third drawing,
+# with a little seeded noise, and turned into open, high, low and close.
+# The largest wave swings once across the chart in 96 bars, the medium one
+# every 32 bars and the smallest every 8, so four of each fit inside one of
+# the next. The two smooth lines are the waves the price was built from: the
+# thick one is the largest alone and the dotted one is the largest plus the
+# medium, which is why each runs through the middle of the smaller swings.
+# The book gives no rule for drawing either line, so where they sit is our
+# drawing choice and both slides say so.
+
+AB_BARS = 97
+AB_HIGH = (12.0, 96)    # half the swing in pesos, and bars in one swing
+AB_MEDIUM = (6.0, 32)
+AB_LOW = (3.0, 8)
+
+
+def _degree_waves():
+    import math
+    import random
+    rng = random.Random(977)
+    higher, medium, closes = [], [], []
+    for x in range(AB_BARS):
+        h = 60.0 - AB_HIGH[0] * math.cos(2 * math.pi * x / AB_HIGH[1])
+        m = h + AB_MEDIUM[0] * math.sin(2 * math.pi * x / AB_MEDIUM[1])
+        low = AB_LOW[0] * math.sin(2 * math.pi * (x + 0.5) / AB_LOW[1])
+        higher.append(h)
+        medium.append(m)
+        closes.append(m + low + rng.uniform(-0.3, 0.3))
+    bars = []
+    for x, c in enumerate(closes):
+        o = closes[x - 1] if x else c - 0.6
+        bars.append(Bar(open=o, close=c,
+                        high=max(o, c) + rng.uniform(0.2, 0.7),
+                        low=min(o, c) - rng.uniform(0.2, 0.7)))
+    return tuple(bars), tuple(medium), tuple(higher)
+
+
+AB_PRICE, AB_MWC, AB_HWC = _degree_waves()
+AB_TRACES = (
+    Trace(values=AB_HWC, tone="deep", width=3.4),
+    Trace(values=AB_MWC, tone="structure", dotted=True, width=2.6),
+)
+
+
+# --------------------------------------------------------------------------
+# The twenty nine charts
 # --------------------------------------------------------------------------
 
 CHARTS = (
@@ -1089,5 +1147,46 @@ CHARTS = (
         kwargs=dict(sketches=WAVES, cols=3, size=PAIR,
                     footnote="Not prices: one wave, drawn three times. In "
                              "green, the wave of the drawing before."),
+    ),
+    ChartArt(
+        letter="AB",
+        draw=ck.bar_waves,
+        kwargs=dict(
+            bars=AB_PRICE, traces=AB_TRACES, size=PAIR,
+            notes=(
+                Note(x=33, label="LWC: the price\nitself, here\nas bars",
+                     dx=-24, dy=58),
+                Note(x=57, y=AB_MWC[57], label="MWC: the dotted line",
+                     dx=-30, dy=-92),
+                Note(x=84, y=AB_HWC[84], label="HWC: the\nthick line",
+                     dx=-4, dy=118),
+            ),
+            price_ticks=(40, 50, 60, 70, 80),
+            top=0.12, bottom=0.08,
+            footnote=INVENTED + " The bars and the place of the two smooth "
+                     "lines are our drawing.",
+        ),
+    ),
+    ChartArt(
+        letter="AC",
+        draw=ck.bar_waves,
+        kwargs=dict(
+            bars=AB_PRICE, traces=AB_TRACES, size=PAIR,
+            strokes=(
+                Stroke(points=((0, 33.0), (8, 33.0)), width=3.0,
+                       label="One LWC swing: 8 bars, about PHP 6", at=1,
+                       dx=8, dy=0),
+                Stroke(points=((0, 27.5), (32, 27.5)), width=3.0,
+                       label="One MWC swing: 32 bars, about PHP 12", at=1,
+                       dx=8, dy=0),
+                Stroke(points=((0, 22.0), (96, 22.0)), width=3.0,
+                       label="The HWC swing: 96 bars, PHP 24", at=1,
+                       dx=-8, dy=-12),
+            ),
+            price_ticks=(40, 50, 60, 70, 80),
+            top=0.05, bottom=0.12,
+            footnote=INVENTED + " Bars: LWC. Dotted: MWC. Thick: HWC. The "
+                     "rulers are ours.",
+        ),
     ),
 )

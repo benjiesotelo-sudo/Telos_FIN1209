@@ -1,7 +1,7 @@
 # Chapter 5 - Trend Analysis
 
-139 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
-items, 32 terms, all 59 of the book's figures, and 27 charts of our own.
+141 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
+items, 32 terms, all 59 of the book's figures, and 29 charts of our own.
 
 **This chapter is built to the lean form the instructor approved in Chapter
 4**: the content decides the length, each question is followed by its own
@@ -48,7 +48,7 @@ and 5.10.
 
 ## Every idea has a picture
 
-Of the 91 teaching slides, 86 carry a picture: 85 with the picture beside
+Of the 93 teaching slides, 88 carry a picture: 87 with the picture beside
 the text and one, Figure 5.32, on a slide of its own. The other 48 slides are
 the 21 checks, at two slides each, and the six slides of the frame.
 
@@ -56,8 +56,8 @@ the 21 checks, at two slides each, and the six slides of the frame.
   what the book says about it. Figure 5.32 stands alone because it is a wide
   table of small type, and a slide of its own is the only size it can be
   read at.
-- **One of our own charts otherwise.** 27 of them, lettered A to Z and then
-  AA. See the
+- **One of our own charts otherwise.** 29 of them, lettered A to Z and then
+  AA, AB and AC. See the
   table below.
 
 **Five slides carry no picture, and no two of them are next to each other.**
@@ -91,8 +91,9 @@ slide had said what a wave degree is, and the check there asked for things
 the slides had not discussed. The first two builds had put the whole idea
 into the formal row of one term slide.
 
-**What changed in 5.1.** A slide now comes before the term, *Waves inside
-waves: cycles and degrees*, with Chart AA beside it: one wave drawn alone,
+**What changed in 5.1.** A slide now comes before the term, *What a wave
+degree is* (first titled *Waves inside waves: cycles and degrees*), with
+Chart AA beside it: one wave drawn alone,
 then with its subwaves, then with theirs. Only after that does the term
 slide name the three and show Figure 5.5. The book defines neither *wave
 cycle* nor *wave degree* in a sentence, so the new slide says its reading
@@ -101,6 +102,33 @@ minimum of two degrees, which the book gives as a note with no reason, is on
 the term slide's example row. Check 2 now asks which wave cycle is a subwave
 of both of the others, and which mode a market is in when its LWC rises and
 its MWC moves sideways; both are slide text.
+
+**And what the third review added.** With that slide in place the instructor
+still asked what exactly a degree is, what the three lines in Figure 5.5 are
+drawn from, and why the HWC and MWC look like moving averages while the LWC
+looks like price. What the book says, and all it says (pages 128 to 131):
+
+- It never defines *wave degree* in a sentence. It ranks three wave cycles
+  against each other: the HWC is the highest degree, the MWC a subwave of
+  it, the LWC a subwave of both. So a degree is a wave's rank by size
+  against another wave on the same chart.
+- Figures 5.5 to 5.9 are freehand sketches with no bars and no axes. The
+  LWC is a thin jagged line standing for the price path. The MWC is a
+  dotted smooth line through the middle of the LWC's swings and the HWC a
+  thick smooth line through the middle of the MWC's.
+- It names no indicator, no formula and no length for either smooth line,
+  and no bar count, percentage or timeframe that puts a wave in one cycle
+  and not another. Later chapters touch it in passing (a zigzag filter in
+  Chapter 21, relative degrees in Chapter 9, Elliott's named degrees in
+  Chapter 18); none of that is taught here.
+
+Two slides after the term now say this. *How the three cycles are drawn*
+has Chart AB: one invented price as bars, the LWC, with the MWC dotted and
+the HWC thick over it, and says that they look like moving averages and the
+book does not say they are. *Telling the three cycles apart* has Chart AC,
+the same chart with a ruler for one swing of each cycle, and says the names
+are relative. Each slide marks what is the book's and what is our drawing.
+Check 2 is unchanged and both its answers are still slide text before it.
 
 **The same audit, run over the whole deck.** Every word a slide uses was
 checked against the slides before it and against Chapters 1 to 4. Where a
@@ -215,7 +243,7 @@ Every section is taught as fully as the book teaches it.
 
 | Section | Slides | Checks | Figures | Our charts |
 |---|---|---|---|---|
-| 5.1 Definitions of a trend | 19 | 3 | 5.1 to 5.10 | A, AA, B |
+| 5.1 Definitions of a trend | 21 | 3 | 5.1 to 5.10 | A, AA, AB, AC, B |
 | 5.2 Quality of trend: 16 price characteristics | 34 | 5 | 5.11 to 5.29 | C, D, E |
 | 5.3 Price and trend filters | 5 | 1 | 5.30 | F, G |
 | 5.4 Trend participation | 12 | 2 | 5.31, 5.32 | H to L |
@@ -263,7 +291,7 @@ where it appears, and no check rests on any of them:
 | Alternative channel constructions | 5.6, cue | Chapter 13 |
 | Tradesizing in general | 5.5, cue | Chapter 28 |
 
-## The twenty seven charts
+## The twenty nine charts
 
 A chart is drawn where the book makes a point in words that none of its own
 figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
@@ -296,7 +324,9 @@ figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
 | X | Anticipating a channel breakout | A failed test of the bottom, then a break through the top |
 | Y | Where the three approaches agree | The three ranges where the percentages converge |
 | Z | Signs that a trend may reverse | Three kinds of sign at one market top |
-| AA | Waves inside waves: cycles and degrees | One wave alone, with its subwaves, then with theirs |
+| AA | What a wave degree is | One wave alone, with its subwaves, then with theirs |
+| AB | How the three cycles are drawn | One price as bars, the LWC, with the MWC dotted and the HWC thick |
+| AC | Telling the three cycles apart | The same chart, with a ruler for one swing of each cycle |
 
 **Charts P, Q and R are the book's five steps with pesos put in.** An
 average stopsize of PHP 2.00, a two standard deviation value of PHP 1.00,
@@ -312,6 +342,13 @@ label on the chart explains it.
 **Chart AA is three sine waves**, added one at a time, and not a price.
 Its labels are the one place a chart states a reading and not a quotation,
 for the reason given above.
+
+**Charts AB and AC are those three waves made into price bars**, with a
+little seeded noise. They use `chartkit.bar_waves`, a form added for them;
+Chapters 1 to 4 were rebuilt after it went in and their decks are byte
+identical. Where the two smooth lines sit is our drawing choice, because
+the book gives no rule, and the rulers on Chart AC are read off our own
+chart. Both charts say so in their small print.
 
 Every other chart's data is invented from a fixed seed, and each says so.
 
@@ -331,13 +368,14 @@ the time axis.
 
 ## How long the chapter takes
 
-**246 minutes at the calibrated rate, against a 180 minute session.** That is
+**250 minutes at the calibrated rate, against a 180 minute session.** That is
 information, not a target: nothing was cut to reach a length, and nothing was
-added to reach one. It is 66 minutes more than one session holds. No run card exists for
+added to reach one. It is 70 minutes more than one session holds. No run card exists for
 this chapter, so nothing here says what to cut; that is a decision for
 whoever writes one. The first build cost 238 and the second 245: seven
 minutes for the 24 more slides costed as terms, then under two for the wave
-degree slide and its chart.
+degree slide and its chart, then three and a half for the two slides on how
+the cycles are drawn and told apart.
 
 The rate is the one written down in `chapter-03/README.md`: a content slide
 1, a term 1.25, a figure 0.75, a chart 0.5, a check with its reveal 2.5,
@@ -348,7 +386,7 @@ with a picture beside it is costed as the sum of its two parts.
 | Part | Slides | Minutes |
 |---|---|---|
 | Title, objectives, roadmap | 3 | 3.4 |
-| 5.1 Definitions | 19 | 34.8 |
+| 5.1 Definitions | 21 | 38.2 |
 | 5.2 Quality of trend | 34 | 63.0 |
 | 5.3 Filters | 5 | 8.3 |
 | 5.4 Participation | 12 | 18.7 |
@@ -361,8 +399,8 @@ with a picture beside it is costed as the sum of its two parts.
 | 5.11 Reversals | 4 | 5.8 |
 | Closing | 3 | 3.4 |
 
-The weights sum to 214.25 and 214.25 times 1.150 is 246.4. The chapter is 47
-pages of the book against Chapter 4's 26, and comes to 139 slides against
+The weights sum to 217.25 and 217.25 times 1.150 is 249.8. The chapter is 47
+pages of the book against Chapter 4's 26, and comes to 141 slides against
 79, so it is the same density.
 
 ## Building it
@@ -370,10 +408,10 @@ pages of the book against Chapter 4's 26, and comes to 139 slides against
 From the repository root:
 
 ```
-.venv/bin/python build/build_chapter5.py      # teaching, 139 slides
+.venv/bin/python build/build_chapter5.py      # teaching, 141 slides
 ```
 
-The build draws the 27 charts and is deterministic: a second run leaves
+The build draws the 29 charts and is deterministic: a second run leaves
 `git status` clean. It writes no answer sheet; see `build_chapter5.py` for
 why that was taken out of the script it was copied from.
 
@@ -388,17 +426,17 @@ soffice --headless --convert-to pdf --outdir ~ \
 ```
 
 Before committing the deck, confirm it embeds no artwork that is not ours.
-It must hold exactly 27 images, and their hashes must match this chapter's
+It must hold exactly 29 images, and their hashes must match this chapter's
 own chart folder:
 
 ```
-unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 27
+unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 29
 unzip -o -d /tmp/media chapter-05/FIN1209-Chapter-05.pptx 'ppt/media/*'
 diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
      <(shasum -a256 build/generated/charts-05/*.png | awk '{print $1}' | sort)
 ```
 
-The deck with the book's artwork in it holds 86: the 27 charts and one for
+The deck with the book's artwork in it holds 88: the 29 charts and one for
 each of the 59 figures.
 
 Then look at every page, as an image, in the build with the artwork, because

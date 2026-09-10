@@ -73,6 +73,45 @@ Charts are also the only block a run plan can cut whole, so **never write a
 slide that refers back to a chart**, the same rule and the same reason as for
 a check.
 
+## The take-home activity is a fourth renderer, and the only live dependency
+
+`build/build_activity.py` writes both `chapter-01/activity/` PDFs from one
+content module, with `key=True` turning on the answers and the reveal. Four
+renderers now exist and none knows about any chapter: `deckkit`, `notekit`,
+`lecturekit`, `activitykit`. `chapter-01/activity/README.md` carries the
+method; this file carries the two traps.
+
+**Every picture placed on a page needs a declared height in millimetres.** The
+paginator measures a block before printing, and an `<img>` with no height
+measures zero until it loads, so five steps landed on one sheet with two
+clipped off the bottom and nothing failed. `activitykit.Shots.height_mm`
+computes it from the file's own aspect; `lecturekit` does the same for the
+book's figures. This is why a rendered page has to be looked at.
+
+**The activity has one live external dependency, and the repository cannot
+check it.** Students pull their prices with `IMPORTRANGE` from a Google Sheet
+on the instructor's Drive, shared to anyone with the link as a **viewer**. Its
+id is printed on the worksheet. If that file is deleted or its sharing
+changes, every student gets `#REF!` and no build catches it.
+`build/make_source_sheet.py --upload` rebuilds it from the committed CSVs and
+prints the new id, which then goes into `SOURCE_SHEET` in
+`build/activity_chapter01.py`.
+
+## Real market data, in exactly one place
+
+The deck's nine charts are invented from fixed seeds because the course holds
+no market data licence. The activity is the exception: its prices are real,
+because a reveal drawn from invented numbers would be a lie. It is allowed
+only because both FRED series are public domain, which
+`build/activity_data.py` records with the licence URL. **Do not treat this as
+a precedent for committing price data.** Anything not verifiably public domain
+stays out, the same way the Wiley artwork does.
+
+Google Sheets screenshots are committed under Google's standing permission for
+screenshots of its products in instructional material. No other platform's
+artwork is, and the charting-platform step deliberately ships without a
+picture for that reason.
+
 ## This repository is public and the course text is not ours
 
 The textbook, the publisher's scans, the previous course holder's decks, and

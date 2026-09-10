@@ -111,8 +111,8 @@ BRIEFING = Section(
                 "for.",
                 "About 90 minutes. Part A takes the longest because every "
                 "click is spelled out.",
-                "A printer, or somebody with one, for the two charts you draw "
-                "on by hand.",
+                "Nothing to print. Every mark you make, on both charts, is "
+                "made in the spreadsheet you hand in.",
             ),
         ),
         Para(text=(
@@ -350,12 +350,13 @@ STEPS_A = (
         ),
     ),
     Step(
-        title="This is the chart you print",
+        title="This is your finished chart",
         text=("The chart now fills a tab of its own, called Chart1, and the "
               "tabs along the bottom let you move between it and your "
-              "numbers. It is big enough to read and big enough to draw on."),
-        then=("Print this tab, or take a screenshot of it. You need it on "
-              "paper later, and you need the Part B one on paper too."),
+              "numbers. It is big enough to read at a glance."),
+        then=("Leave it on its own tab. It is the chart that is marked for "
+              "Part A, and your Part B chart will sit on a tab of its own "
+              "the same way."),
         shot=Shot(
             name="s15-chart-own-sheet", crop=(0, 0, 1440, 900),
             caption="The finished Part A chart on its own tab.",
@@ -620,23 +621,27 @@ PART_B_SECTION = Section(
                 f"Build the same sixteen labels in column E and the same "
                 f"sixteen formulas in column G, changing every 103 to "
                 f"{B.last_row} and every 102 to {B.rows}.",
-                "Print your Part B chart, or take a screenshot of it and "
-                "print that. You are about to draw on it.",
             ),
         ),
         PART_B_QUESTIONS,
         Head(text="Mark the peaks and the troughs"),
         Para(text=(
-            "On your printed Part B chart, in pen, mark every point where the "
-            "price line turned. A **peak** is a point with lower prices on "
-            "both sides of it. A **trough** is a point with higher prices on "
-            "both sides. Write a P beside each peak and a T beside each "
-            "trough."
+            "Look at your Part B chart and find every point where the price "
+            "line turned. A **peak** is a point with lower prices on both "
+            "sides of it. A **trough** is a point with higher prices on both "
+            "sides. You mark them in two new columns of your Part B tab."
+            "\n\n"
+            "Type `Peaks` in cell H1 and `Troughs` in cell I1. For each peak, "
+            "find its date in column A and type `=B` and that row number into "
+            "column H of the same row, so a peak in row 50 gets `=B50` in "
+            "H50. Do the same for each trough in column I. Every other row of "
+            "both columns stays empty. The chart shows them once you add them "
+            "to it, below."
             "\n\n"
             "Chapter 1 gives the most widely accepted definition of a trend "
             "as **successively higher or lower peaks and troughs**. You now "
             "have the marks to test that definition against, so answer the "
-            "two questions below from your own marked chart."
+            "two questions below from your own marks."
         )),
         Lines(
             count=2,
@@ -654,25 +659,65 @@ PART_B_SECTION = Section(
                 "mistake. Chapter 1 calls that **subjectivity**: two "
                 "competent analysts, given the same chart, reaching different "
                 "and equally defensible conclusions. You met it in class with "
-                "the book's USDCAD chart. Here it is again, with your own "
-                "hand doing the drawing."
+                "the book's USDCAD chart. Here it is again, in your own "
+                "marks."
             ),
         ),
         Head(text="Draw one trendline"),
         Para(text=(
-            "Take a ruler. Draw **one** straight line that touches at least "
-            "two of your troughs and that no part of the price line drops "
-            "below between them. Extend that line past the right hand edge of "
-            "the chart, into the empty space where the future would be."
+            "Choose **one** straight line that touches at least two of your "
+            "troughs and that no part of the price line drops below between "
+            "them. You build it as a formula in column J of your Part B tab, "
+            "then extend it past the right hand edge of the chart, into the "
+            "empty space where the future would be."
             "\n\n"
-            "Label the two troughs your line rests on, and write beside the "
-            "line the price it would sit at one month after the chart ends. "
-            "You do not need to be exact. Read it off your own extended line."
+            "Type `Trendline` in cell J1. Find the row numbers of the two "
+            "troughs your line rests on. The formula below is written for "
+            "troughs in rows 2 and 104. Type it into column J in the row of "
+            "your first trough, with your first row number in place of every "
+            "2 and your second row number in place of every 104."
         )),
+        TypeBox(
+            label="The pattern, written for rows 2 and 104",
+            text="=$B$2+($B$104-$B$2)*($A2-$A$2)/($A$104-$A$2)",
+        ),
+        Para(text=(
+            "Leave `$A2` in the middle without a dollar sign before its 2: "
+            "that is what moves the line along as you copy it down."
+            "\n\n"
+            f"Now extend it. In cell A{B.last_row + 1}, type `2014-07-30`, "
+            f"one month after the chart ends, and leave B{B.last_row + 1} "
+            f"empty. Copy your formula from column J down to "
+            f"J{B.last_row + 1}. J{B.last_row + 1} is the price your line "
+            f"sits at one month after the chart ends."
+        )),
+        Head(text="Put your marks on the chart"),
+        Points(
+            numbered=True,
+            items=(
+                f"Open your Part B chart and click **Edit chart**. Under "
+                f"Setup, change the last number in the Data range from "
+                f"{B.last_row} to {B.last_row + 1}, unless Google has already "
+                f"done it for you. That gives the chart room past the last "
+                f"price for your line to run into.",
+                f"Under Series, click **Add Series**, then the small grid "
+                f"icon. Type your Part B tab's name, an exclamation mark and "
+                f"`H1:H{B.last_row + 1}`, and click OK. On a tab called "
+                f"Sheet2 that is `Sheet2!H1:H{B.last_row + 1}`. A name with a "
+                f"space goes in single quotes, as in "
+                f"`'Part B'!H1:H{B.last_row + 1}`.",
+                f"Do the same twice more, for `I1:I{B.last_row + 1}` and "
+                f"`J1:J{B.last_row + 1}`.",
+                "Click **Customize**, then **Series**. Choose Peaks and set "
+                "Point size to 7px. Choose Troughs and set Point size to 7px "
+                "as well. Your peaks, your troughs and your line are now on "
+                "the chart, and the line runs on past the last price.",
+            ),
+        ),
         Lines(
             count=2,
-            title="The two dates your line touches, and where it sits one "
-                  "month after the chart ends",
+            title=f"The two dates your line touches, and where it sits one "
+                  f"month after the chart ends (cell J{B.last_row + 1})",
         ),
         Head(text="Now, and only now, forecast"),
         Para(text=(
@@ -752,8 +797,9 @@ RUBRIC = (
     ("Part B, identified", 6,
      "The same sixteen questions, half a mark each, rounded down.", True),
     ("Peaks, troughs and one trendline", 2,
-     "Marked on the printed chart, in pen. The line touches at least two "
-     "troughs and is extended past the edge.", False),
+     "Marked in the Peaks and Troughs columns of your Part B tab. One "
+     "trendline, built as its own series on your Part B chart, that touches "
+     "at least two troughs and is extended past the last price.", False),
     ("The forecast", 1,
      "Five to eight sentences that name at least two things visible on your "
      "own chart, and one thing that argues against you. Never marked right "
@@ -774,9 +820,9 @@ HANDIN = Section(
             numbered=True,
             items=(
                 "This sheet, filled in, with your name on the front.",
-                "Your Part A chart and your Part B chart, printed, with the "
-                "peaks, the troughs and your one trendline drawn on the Part "
-                "B one.",
+                "Your Part A chart and your Part B chart, each on a tab of "
+                "its own, with your peaks, your troughs and your one "
+                "trendline added to the Part B one.",
                 "The link to your spreadsheet, or a screenshot of your Part B "
                 "tab showing columns A to G.",
                 f"Your {PLATFORM} screenshot with its one sentence.",

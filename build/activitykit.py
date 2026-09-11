@@ -201,6 +201,26 @@ class KeyOnly(Block):
 
 
 @dataclass
+class Applied:
+    """One mark on this sheet that the written-answer rubric decides.
+
+    `means` says what each of the rubric's marked criteria looks like for
+    this particular answer, in the rubric's own order.
+    """
+    what: str
+    out_of: float
+    means: tuple[str, ...]
+
+
+@dataclass
+class Worked:
+    """One worked example answer, at a named level of the rubric."""
+    level: str
+    answer: str
+    why: str
+
+
+@dataclass
 class Section:
     title: str
     blocks: tuple[Block, ...]
@@ -217,7 +237,7 @@ class Activity:
     title: str
     subtitle: str
     presenter: str
-    points: int
+    points: float
     duration: str
     replaces: str
     source_note: str
@@ -239,6 +259,99 @@ class Activity:
                 if isinstance(b, QuestionSet):
                     out.extend(b.questions)
         return tuple(out)
+
+
+# --------------------------------------------------------------------------
+# The written-answer rubric, laid out as ordinary blocks
+# --------------------------------------------------------------------------
+
+
+def written_rubric(rubric, applied: tuple[Applied, ...], question: str,
+                   worked: tuple[Worked, ...], honest: str
+                   ) -> tuple[Block, ...]:
+    """The course rubric (build/rubric.py) as the blocks of one section.
+
+    The words come from the rubric and are never retyped by a content module.
+    What the document supplies is its own: which of its marks the rubric
+    decides, and a worked example of every level written on its own material,
+    because an example on somebody else's chart shows a student nothing.
+
+    Ordinary blocks rather than one big one, for two reasons. The paginator
+    moves a block whole, so a rubric drawn as a single block would not fit on
+    a sheet. And validate() already reads every ordinary block, so the
+    rubric's words are held to the same rules as the rest of the copy.
+    """
+    names = {lv.name for lv in rubric.levels}
+    for w in worked:
+        if w.level not in names:
+            raise ValueError(f"a worked example is at level {w.level!r}, "
+                             f"which the rubric does not have")
+    missing = [lv.name for lv in rubric.levels
+               if not any(w.level == lv.name for w in worked)]
+    if missing:
+        raise ValueError(f"no worked example at level {', '.join(missing)}; "
+                         "a student has to see every level, not infer it")
+    marked = rubric.marked
+    for a in applied:
+        if len(a.means) != len(marked):
+            raise ValueError(f"\"{a.what}\" says what {len(a.means)} criteria "
+                             f"mean, and the rubric marks {len(marked)}")
+
+    def pct(lv) -> str:
+        return f"{lv.name}, {lv.percent}%"
+
+    blocks: list[Block] = [
+        Callout(label="Read this first", tone="gold", text=rubric.disclaimer),
+        Para(text=rubric.applies),
+        Points(title="What earns the marks",
+               items=tuple(f"**{c.name}.** {c.means}" for c in marked)),
+    ]
+    blocks += [Callout(label=f"{c.name}: named, never marked", text=c.means)
+               for c in rubric.unmarked]
+    blocks.append(Table(
+        title="The levels",
+        headers=("Level", "Share of the marks", "What it looks like"),
+        widths=(16, 20, 64),
+        rows=tuple((f"**{lv.name}**", f"{lv.percent} percent", lv.looks_like)
+                   for lv in rubric.levels),
+        note="Percentages rather than marks, so the same rubric marks a "
+             "question worth one mark or twenty.",
+    ))
+    blocks.append(Table(
+        title="The written answers on this sheet, level by level",
+        headers=("Answer", "Out of") + tuple(pct(lv) for lv in rubric.levels),
+        widths=(32, 12) + (14,) * len(rubric.levels),
+        rows=tuple((a.what, show_marks(a.out_of))
+                   + tuple(show_marks(m) for _, m in rubric.marks(a.out_of))
+                   for a in applied),
+        note="Every mark in this table is the level's percentage of what the "
+             "answer is worth, so it cannot disagree with the levels above.",
+    ))
+    blocks.append(Table(
+        title="What the rubric looks for in each of them",
+        headers=("Answer",) + tuple(f"{c.name} here means" for c in marked),
+        widths=(24,) + (76 // len(marked),) * len(marked),
+        rows=tuple((a.what,) + a.means for a in applied),
+    ))
+    order = {lv.name: i for i, lv in enumerate(rubric.levels)}
+    blocks += [
+        Head(text="One question, answered at every level"),
+        Para(text=question),
+        Table(
+            headers=("Level", "The answer", "Why it sits there"),
+            widths=(15, 47, 38),
+            rows=tuple((pct(rubric.level(w.level)), w.answer, w.why)
+                       for w in sorted(worked, key=lambda w: order[w.level])),
+        ),
+    ]
+    if rubric.unmarked:
+        blocks.append(Callout(label="What the best answers add", text=honest))
+    return tuple(blocks)
+
+
+def show_marks(marks: float) -> str:
+    """A mark as a person writes it: 2, 1.5, 0.75, never 2.0 or 1.50."""
+    return f"{marks:g}"
 
 
 # --------------------------------------------------------------------------
@@ -446,7 +559,7 @@ def _figure_html(f: Figure) -> str:
 
 def _masthead(a: Activity, key: bool) -> str:
     band = ("Answer key and marking guide  |  instructor's copy"
-            if key else f"{a.points} points  |  {a.duration}")
+            if key else f"{show_marks(a.points)} points  |  {a.duration}")
     what = "Answer key" if key else "Student worksheet"
     return (
         f'<div class="blk cover"><div class="main">'

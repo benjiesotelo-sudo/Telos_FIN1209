@@ -23,7 +23,7 @@ document's content.
 **It applies only to written answers with no single correct response.** A
 value read off the record, a date, a count, a formula's result, is right or
 wrong and needs no rubric. The levels are percentages so that the same rubric
-marks a question worth one mark or twenty.
+marks a question worth four points or forty.
 """
 
 from __future__ import annotations

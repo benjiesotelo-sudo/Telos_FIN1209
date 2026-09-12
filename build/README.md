@@ -205,7 +205,7 @@ drift from the question it answers.
 
 | Output | Who it is for | What is in it |
 |---|---|---|
-| `chapter-01/activity/FIN1209-Chapter-01-Activity-1.pdf` | The students | 20 numbered steps, 19 of them with a real screenshot, 32 identification questions, the 24 marks, and the course's written-answer rubric |
+| `chapter-01/activity/FIN1209-Chapter-01-Activity-1.pdf` | The students | 20 numbered steps, 19 of them with a real screenshot, 32 identification questions, the 100 points, and the course's written-answer rubric |
 | `chapter-01/activity/FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | The same, with every answer, the two reveal charts and how to run the session |
 
 Three things happen in this build that happen in no other.

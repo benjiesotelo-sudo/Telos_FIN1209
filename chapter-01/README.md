@@ -17,7 +17,7 @@ of its own, because a take-home is not the lecture.
 | `FIN1209-Chapter-01-Teaching-Plan.pdf` | The instructor | 26 pages. Timing, cut tiers, what to say, which check comes next. | `build/plan_chapter01.py` |
 | `FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | 29 pages. What the lesson covered, in prose, with the figures and the charts. | `build/lecture_chapter01.py` |
 | `activity/FIN1209-Chapter-01-Activity-1.pdf` | The students | 19 pages. The take-home that replaces Homework 1: build two price charts in Google Sheets, identify, then forecast. Ends on the course's written-answer rubric. | `build/activity_chapter01.py` |
-| `activity/FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | 24 pages. Every answer, the 24 marks and the written-answer rubric, and the reveal. | `build/activity_chapter01.py` |
+| `activity/FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | 24 pages. Every answer, the 100 points and the written-answer rubric, and the reveal. | `build/activity_chapter01.py` |
 | `in-class-checks.md` | The instructor | The answer sheet. | `build/content_chapter01.py` |
 | `check-answerability-audit.md` | The instructor | Whether every check item can be answered from the slides alone. | Written by hand |
 | `teaching-plan-design.md` | Whoever edits the plan | Why the plan looks the way it does. | Written by hand |

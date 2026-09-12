@@ -10,10 +10,11 @@ are computed from the committed price files, never typed here.
 It replaces the course booklet's Homework 1, which read in full: "CHARTING
 EXERCISES: Using different trading platform, Search for a latest charts that
 shows different trend. Add trend lines for a clear vision of trend then
-interpret the chart. (20 points)". It is worth 24 here, not 20, because the
-first published rubric promised sixteen answers at half a mark each and gave
-them six marks, and sixteen halves is eight. Same charting platform at the
-end, and a rubric the original never had.
+interpret the chart. (20 points)". It is worth 100 here, not 20. Every
+checkable answer is worth 2 points, which makes each identification block 32
+and leaves no fraction anywhere on the sheet. The published version promised
+sixteen answers at half a mark each and then gave them six marks. Same
+charting platform at the end, and a rubric the original never had.
 
 The teaching idea is the chapter's own dual function. Identification records
 what price did and can be marked right or wrong. Forecasting cannot, and the
@@ -493,14 +494,15 @@ STEPS_A = (
     ),
 )
 
-# Every identification answer is worth this much, and the marks for a part are
-# this times the number of questions, never a number typed beside it. The
-# first published rubric said "sixteen answers, half a mark each" and gave
-# them six marks, which a student would find in a minute.
-PER_ANSWER = 0.5
+# Every identification answer is worth this much, and a part's points are this
+# times the number of questions, never a number typed beside it. The published
+# version said "sixteen answers, half a mark each" and then gave them six
+# marks, which a student would find in a minute. Two points an answer also
+# means nothing on this sheet is ever a fraction.
+PER_ANSWER = 2
 
 
-def _identified(questions: tuple[Question, ...]) -> float:
+def _identified(questions: tuple[Question, ...]) -> int:
     return len(questions) * PER_ANSWER
 
 
@@ -538,8 +540,8 @@ PART_A_QUESTIONS = QuestionSet(
     intro=("Read each one out of column G of your spreadsheet and write it "
            "here. Give prices to two decimal places and dates as they appear."),
     questions=_A_QUESTIONS,
-    key_note=(f"Half a mark each, {show_marks(_identified(_A_QUESTIONS))} "
-              f"marks in total, rounded down. The one "
+    key_note=(f"2 points each, {show_marks(_identified(_A_QUESTIONS))} "
+              f"in total. The one "
               f"to watch is Days price did not move. {A.flat_days} of the "
               f"{A.rows - 1} changes are exactly zero, so rose plus fell does "
               f"not come to {A.rows - 1}. A student who assumed it would has "
@@ -619,8 +621,8 @@ PART_B_QUESTIONS = QuestionSet(
     intro=("The same sixteen questions, about a different market. Read them "
            "off column G of your Part B tab."),
     questions=_B_QUESTIONS,
-    key_note=(f"Half a mark each, {show_marks(_identified(_B_QUESTIONS))} "
-              f"marks in total, rounded down. Part B "
+    key_note=(f"2 points each, {show_marks(_identified(_B_QUESTIONS))} "
+              f"in total. Part B "
               f"has no flat days at all, so G12 is {B.flat_days} and rose "
               f"plus fell does come to {B.rows - 1} this time. A student who "
               f"wrote {A.flat_days} here has copied their Part A answer."),
@@ -832,7 +834,7 @@ PLATFORM_SECTION = Section(
 # order of marked criteria: grounded, then connected.
 TRENDLINE_MARK = Applied(
     what="Peaks, troughs and one trendline",
-    out_of=2,
+    out_of=8,
     means=(
         "Your marks in columns H and I sit on real turning points of your own "
         "Part B chart, and your line rests on two of your own troughs with no "
@@ -844,7 +846,7 @@ TRENDLINE_MARK = Applied(
 )
 FORECAST_MARK = Applied(
     what="The forecast",
-    out_of=1,
+    out_of=4,
     means=(
         "Your reasons are things anyone could find on your own Part B chart: "
         "a price, a date, a shape.",
@@ -854,7 +856,7 @@ FORECAST_MARK = Applied(
 )
 PLATFORM_MARK = Applied(
     what="The platform step",
-    out_of=1,
+    out_of=4,
     means=(
         "Your sentence names what your line touches, on the chart in your "
         "screenshot.",
@@ -868,16 +870,16 @@ WRITTEN_MARKS = (TRENDLINE_MARK, FORECAST_MARK, PLATFORM_MARK)
 # to. The last field says whether those marks are checkable against the
 # record, which is the distinction the whole activity is about.
 RUBRIC = (
-    ("Part A, built", 2,
+    ("Part A, built", 10,
      "The chart exists, has a title and two named axes, and the prices are "
      "the right ones.", True),
     ("Part A, identified", _identified(_A_QUESTIONS),
-     "Sixteen answers, half a mark each, rounded down. Right or wrong "
-     "against the record.", True),
-    ("Part B, built", 2,
+     "Sixteen answers, 2 points each. Right or wrong against the record.",
+     True),
+    ("Part B, built", 10,
      "The same, done without the pictures.", True),
     ("Part B, identified", _identified(_B_QUESTIONS),
-     "The same sixteen questions, half a mark each, rounded down.", True),
+     "The same sixteen questions, 2 points each.", True),
     (TRENDLINE_MARK.what, TRENDLINE_MARK.out_of,
      "Marked in the Peaks and Troughs columns of your Part B tab. One "
      "trendline, built as its own series on your Part B chart, that touches "
@@ -919,8 +921,8 @@ HANDIN = Section(
             ),
         ),
         Table(
-            title=f"The {show_marks(TOTAL)} marks",
-            headers=("What", "Marks", "What earns them"),
+            title=f"The {show_marks(TOTAL)} points",
+            headers=("What", "Points", "What earns them"),
             widths=(30, 12, 58),
             rows=tuple((what, show_marks(marks), how)
                        for what, marks, how, _ in RUBRIC),
@@ -1042,7 +1044,7 @@ HONEST = (
 RUBRIC_SECTION = Section(
     title=WRITTEN.title,
     kicker=(f"For the {show_marks(sum(a.out_of for a in WRITTEN_MARKS))} "
-            f"marks on this sheet that no record can check. The same rubric "
+            f"points on this sheet that no record can check. The same rubric "
             f"marks every written answer in this course."),
     footer="The written-answer rubric",
     # Not flowed: the rubric opens a sheet of its own, so its disclaimer is

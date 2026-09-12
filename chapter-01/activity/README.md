@@ -5,7 +5,7 @@ text was: *"CHARTING EXERCISES: Using different trading platform, Search for a
 latest charts that shows different trend. Add trend lines for a clear vision of
 trend then interpret the chart. (20 points)"*. It still ends on a charting
 platform, and it now carries a rubric, a data source and a right answer. It is
-worth **24** marks rather than the booklet's 20; see **The marks** below.
+worth **100** points rather than the booklet's 20; see **The points** below.
 
 | File | Who it is for | What it is |
 |---|---|---|
@@ -31,24 +31,27 @@ The Part B window stops at a decision point. The reveal, in the following
 session, is what price actually did next. A student's identification can be
 marked; their forecast can only be compared. That is the point.
 
-## The marks
+## The points
 
-| | Marks | How |
+| | Points | How |
 |---|---|---|
-| Part A, built | 2 | right or wrong |
-| Part A, identified | 8 | sixteen answers, half a mark each, rounded down |
-| Part B, built | 2 | right or wrong |
-| Part B, identified | 8 | the same sixteen, half a mark each, rounded down |
-| Peaks, troughs and one trendline | 2 | the written-answer rubric |
-| The forecast | 1 | the written-answer rubric, never right or wrong |
-| The platform step | 1 | the written-answer rubric |
-| **Total** | **24** | 20 checkable against the record, 4 not |
+| Part A, built | 10 | right or wrong |
+| Part A, identified | 32 | sixteen answers, 2 points each |
+| Part B, built | 10 | right or wrong |
+| Part B, identified | 32 | the same sixteen, 2 points each |
+| Peaks, troughs and one trendline | 8 | the written-answer rubric |
+| The forecast | 4 | the written-answer rubric, never right or wrong |
+| The platform step | 4 | the written-answer rubric |
+| **Total** | **100** | 84 checkable against the record, 16 not |
 
-The first published version gave each identified row 6 marks for "sixteen
-answers, half a mark each", which is 8. The captain grades by percentage, so
-the rows became 8 and the total 24 rather than the rate changing. Both
-identified rows and the total are computed in `build/activity_chapter01.py`
-from the number of questions, so they cannot disagree again.
+The published version gave each identified row 6 marks for "sixteen answers,
+half a mark each", which is 8. The captain grades by percentage and chose 100,
+at **2 points an answer**: the half mark that caused the problem is gone
+rather than papered over, and no number on the sheet is a fraction, the
+rubric's levels included. The weighting is what was published: identification
+64 percent, the two built charts 20, the judged answers 16. Both identified
+rows and the total are computed in `build/activity_chapter01.py` from the
+number of questions, so they cannot disagree again.
 
 ## The written-answer rubric
 
@@ -62,7 +65,7 @@ In short: an answer earns its marks by being **grounded** (it points at
 something checkable on the student's own chart) and **connected** (the
 conclusion follows from what it pointed at). **Honest**, naming what argues
 against you, is taught and praised and never marked. Four levels, 100, 75, 50
-and 0 percent, so the same rubric marks a question worth one mark or twenty.
+and 0 percent, so the same rubric marks a question worth 4 points or 40.
 The disclaimer, that length is not what is marked, prints at the top of the
 rubric and again on the first page.
 

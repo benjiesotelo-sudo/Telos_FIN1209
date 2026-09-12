@@ -315,7 +315,7 @@ def written_rubric(rubric, applied: tuple[Applied, ...], question: str,
         rows=tuple((f"**{lv.name}**", f"{lv.percent} percent", lv.looks_like)
                    for lv in rubric.levels),
         note="Percentages rather than marks, so the same rubric marks a "
-             "question worth one mark or twenty.",
+             "question worth four points or forty.",
     ))
     blocks.append(Table(
         title="The written answers on this sheet, level by level",
@@ -324,8 +324,9 @@ def written_rubric(rubric, applied: tuple[Applied, ...], question: str,
         rows=tuple((a.what, show_marks(a.out_of))
                    + tuple(show_marks(m) for _, m in rubric.marks(a.out_of))
                    for a in applied),
-        note="Every mark in this table is the level's percentage of what the "
-             "answer is worth, so it cannot disagree with the levels above.",
+        note="Every figure in this table is the level's percentage of what "
+             "the answer is worth, so it cannot disagree with the levels "
+             "above.",
     ))
     blocks.append(Table(
         title="What the rubric looks for in each of them",

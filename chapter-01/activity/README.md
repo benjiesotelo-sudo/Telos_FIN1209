@@ -3,14 +3,14 @@
 The take-home that replaces the course booklet's **Homework 1**, whose entire
 text was: *"CHARTING EXERCISES: Using different trading platform, Search for a
 latest charts that shows different trend. Add trend lines for a clear vision of
-trend then interpret the chart. (20 points)"*. Same 20 points, still ends on a
-charting platform, and it now carries a rubric, a data source and a right
-answer.
+trend then interpret the chart. (20 points)"*. It still ends on a charting
+platform, and it now carries a rubric, a data source and a right answer. It is
+worth **100** points rather than the booklet's 20; see **The points** below.
 
 | File | Who it is for | What it is |
 |---|---|---|
-| `FIN1209-Chapter-01-Activity-1.pdf` | The students | 17 pages. Every click of Part A with a real screenshot, Part B unaided, the rubric. |
-| `FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | 20 pages. The same sheet with all 32 answers filled in, plus the reveal, the two trendlines and how to run the session. |
+| `FIN1209-Chapter-01-Activity-1.pdf` | The students | 19 pages. Every click of Part A with a real screenshot, Part B unaided, the marks, and the course's written-answer rubric on two pages of its own. |
+| `FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | 24 pages. The same sheet with all 32 answers filled in, plus the reveal, the two trendlines and how to run the session. Gitignored, like every answer key. |
 | `data/` | Whoever rebuilds it | The three price windows, exactly as retrieved. Public domain. |
 | `screens/` | The build | 19 unaltered screen captures of Google Sheets, 1440 by 900. |
 
@@ -30,6 +30,52 @@ marked on its reasoning and never on its accuracy.
 The Part B window stops at a decision point. The reveal, in the following
 session, is what price actually did next. A student's identification can be
 marked; their forecast can only be compared. That is the point.
+
+## The points
+
+| | Points | How |
+|---|---|---|
+| Part A, built | 10 | right or wrong |
+| Part A, identified | 32 | sixteen answers, 2 points each |
+| Part B, built | 10 | right or wrong |
+| Part B, identified | 32 | the same sixteen, 2 points each |
+| Peaks, troughs and one trendline | 8 | the written-answer rubric |
+| The forecast | 4 | the written-answer rubric, never right or wrong |
+| The platform step | 4 | the written-answer rubric |
+| **Total** | **100** | 84 checkable against the record, 16 not |
+
+The published version gave each identified row 6 marks for "sixteen answers,
+half a mark each", which is 8. The captain grades by percentage and chose 100,
+at **2 points an answer**: the half mark that caused the problem is gone
+rather than papered over, and no number on the sheet is a fraction, the
+rubric's levels included. The weighting is what was published: identification
+64 percent, the two built charts 20, the judged answers 16. Both identified
+rows and the total are computed in `build/activity_chapter01.py` from the
+number of questions, so they cannot disagree again.
+
+## The written-answer rubric
+
+The four marks no record can check are marked with **the course's general
+rubric for written answers**, which lives once in `build/rubric.py` and is
+printed from there into any document that needs one. It is never copied into
+a content file: the pen-on-paper instruction survived into this spreadsheet
+activity precisely because it existed in two places.
+
+In short: an answer earns its marks by being **grounded** (it points at
+something checkable on the student's own chart) and **connected** (the
+conclusion follows from what it pointed at). **Honest**, naming what argues
+against you, is taught and praised and never marked. Four levels, 100, 75, 50
+and 0 percent, so the same rubric marks a question worth 4 points or 40.
+The disclaimer, that length is not what is marked, prints at the top of the
+rubric and again on the first page.
+
+What this activity supplies itself is in `build/activity_chapter01.py`: what
+grounded and connected mean for each of its three rubric-marked rows, and a
+worked answer at every level. The worked answers are a forecast **on the Part
+A chart**, deliberately. A full-marks forecast written on Part B would be a
+model answer to the question every student is marked on. Every price they
+quote is read from the data, and the build stops if the price files ever make
+one of their claims false.
 
 ## The data, and why it may be committed
 

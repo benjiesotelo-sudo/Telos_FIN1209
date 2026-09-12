@@ -97,6 +97,19 @@ changes, every student gets `#REF!` and no build catches it.
 prints the new id, which then goes into `SOURCE_SHEET` in
 `build/activity_chapter01.py`.
 
+## The written-answer rubric lives once, in `build/rubric.py`
+
+The captain marks every written answer with no single correct response, in
+every quiz and activity, with one general rubric: grounded, connected, and
+honest (named, never marked), at 100, 75, 50 and 0 percent. **Never retype its
+words into a content file.** Hand `rubric.WRITTEN` to the renderer
+(`activitykit.written_rubric()` for an activity) and supply only what is the
+document's own: which of its marks the rubric decides, and a worked answer at
+every level on its own material. A duplicated instruction has already drifted
+here once: pen on paper survived into a spreadsheet activity because it lived
+in two places. `chapter-01/activity/README.md` has the rest, including why the
+worked examples sit on Part A rather than Part B.
+
 ## Real market data, in exactly one place
 
 The deck's nine charts are invented from fixed seeds because the course holds

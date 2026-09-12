@@ -10,8 +10,11 @@ are computed from the committed price files, never typed here.
 It replaces the course booklet's Homework 1, which read in full: "CHARTING
 EXERCISES: Using different trading platform, Search for a latest charts that
 shows different trend. Add trend lines for a clear vision of trend then
-interpret the chart. (20 points)". Same 20 points, same charting platform at
-the end, and a rubric the original never had.
+interpret the chart. (20 points)". It is worth 100 here, not 20. Every
+checkable answer is worth 2 points, which makes each identification block 32
+and leaves no fraction anywhere on the sheet. The published version promised
+sixteen answers at half a mark each and then gave them six marks. Same
+charting platform at the end, and a rubric the original never had.
 
 The teaching idea is the chapter's own dual function. Identification records
 what price did and can be marked right or wrong. Forecasting cannot, and the
@@ -23,14 +26,23 @@ price-time chart, identification, forecasting, subjectivity, trend as
 successively higher or lower peaks and troughs. There is no support, no
 resistance, no moving average and no indicator, because the chapter defines
 none of them.
+
+**The written-answer rubric is not in this file.** It is the course's, it
+lives once in build/rubric.py, and this module only says which of its marks
+the rubric decides and supplies the worked examples, which have to be written
+on this activity's own prices.
 """
 
 from __future__ import annotations
 
+import datetime as dt
+
 import activity_data as ad
-from activitykit import (Activity, Callout, Figure, Head, Lines, Para,
-                         Points, Question, QuestionSet, Section, Shot, Step,
-                         Table, TypeBox)
+from activitykit import (Activity, Applied, Callout, Figure, Head, Lines,
+                         Para, Points, Question, QuestionSet, Section, Shot,
+                         Step, Table, TypeBox, Worked, show_marks,
+                         written_rubric)
+from rubric import WRITTEN
 
 # --------------------------------------------------------------------------
 # The one thing in this file that is a live address
@@ -55,6 +67,11 @@ def _pull(series: ad.Series, tab: str) -> str:
 
 def _d(day) -> str:
     return f"{day:%d %B %Y}".lstrip("0")
+
+
+def _dm(iso: str) -> str:
+    """A date inside the window, without the year every reader already has."""
+    return f"{dt.date.fromisoformat(iso):%d %B}".lstrip("0")
 
 
 def _trading_days_between(series: ad.Series, first, last) -> int:
@@ -95,11 +112,20 @@ BRIEFING = Section(
             text=(
                 "**Your forecast in Part B is not marked right or wrong.** It "
                 "is marked on whether the reasons you give are things your "
-                "own chart actually shows. Looking up what the price did next "
+                "own chart actually shows, and whether your forecast follows "
+                "from them. Looking up what the price did next "
                 "will not earn you a single mark, and copying it will lose "
                 "you the reasoning marks. In the session after this is due "
                 "you will be shown what price really did, and the point of "
                 "that reveal is not to find out who was lucky."
+            ),
+        ),
+        Callout(
+            label="How your written answers are marked",
+            text=(
+                f"{WRITTEN.disclaimer} The rubric itself, with an answer "
+                f"worked at every level, comes straight after the table of "
+                f"marks near the end of this sheet."
             ),
         ),
         Points(
@@ -111,8 +137,8 @@ BRIEFING = Section(
                 "for.",
                 "About 90 minutes. Part A takes the longest because every "
                 "click is spelled out.",
-                "A printer, or somebody with one, for the two charts you draw "
-                "on by hand.",
+                "Nothing to print. Every mark you make, on both charts, is "
+                "made in the spreadsheet you hand in.",
             ),
         ),
         Para(text=(
@@ -350,12 +376,13 @@ STEPS_A = (
         ),
     ),
     Step(
-        title="This is the chart you print",
+        title="This is your finished chart",
         text=("The chart now fills a tab of its own, called Chart1, and the "
               "tabs along the bottom let you move between it and your "
-              "numbers. It is big enough to read and big enough to draw on."),
-        then=("Print this tab, or take a screenshot of it. You need it on "
-              "paper later, and you need the Part B one on paper too."),
+              "numbers. It is big enough to read at a glance."),
+        then=("Leave it on its own tab. It is the chart that is marked for "
+              "Part A, and your Part B chart will sit on a tab of its own "
+              "the same way."),
         shot=Shot(
             name="s15-chart-own-sheet", crop=(0, 0, 1440, 900),
             caption="The finished Part A chart on its own tab.",
@@ -467,39 +494,54 @@ STEPS_A = (
     ),
 )
 
+# Every identification answer is worth this much, and a part's points are this
+# times the number of questions, never a number typed beside it. The published
+# version said "sixteen answers, half a mark each" and then gave them six
+# marks, which a student would find in a minute. Two points an answer also
+# means nothing on this sheet is ever a fraction.
+PER_ANSWER = 2
+
+
+def _identified(questions: tuple[Question, ...]) -> int:
+    return len(questions) * PER_ANSWER
+
+
+_A_QUESTIONS = (
+    Question(text="Trading days in the window", cell="G1",
+             answer=str(A.rows)),
+    Question(text="First close", cell="G2", answer=f"{A.first:.2f}"),
+    Question(text="Last close", cell="G3", answer=f"{A.last:.2f}"),
+    Question(text="Change over the window", cell="G4",
+             answer=f"{A.change:.2f}"),
+    Question(text="Percent change", cell="G5",
+             answer=f"{A.pct_change:.2f}"),
+    Question(text="Highest close", cell="G6", answer=f"{A.high:.2f}"),
+    Question(text="Date of the highest close", cell="G7",
+             answer=str(A.high_date)),
+    Question(text="Lowest close", cell="G8", answer=f"{A.low:.2f}"),
+    Question(text="Date of the lowest close", cell="G9",
+             answer=str(A.low_date)),
+    Question(text="Days price rose", cell="G10", answer=str(A.up_days)),
+    Question(text="Days price fell", cell="G11", answer=str(A.down_days)),
+    Question(text="Days price did not move", cell="G12",
+             answer=str(A.flat_days)),
+    Question(text="Biggest one day rise", cell="G13",
+             answer=f"{A.biggest_rise:.2f}"),
+    Question(text="Date of the biggest rise", cell="G14",
+             answer=str(A.biggest_rise_date)),
+    Question(text="Biggest one day fall", cell="G15",
+             answer=f"{A.biggest_fall:.2f}"),
+    Question(text="Date of the biggest fall", cell="G16",
+             answer=str(A.biggest_fall_date)),
+)
+
 PART_A_QUESTIONS = QuestionSet(
     title="Part A answers: copy them off your own screen",
     intro=("Read each one out of column G of your spreadsheet and write it "
            "here. Give prices to two decimal places and dates as they appear."),
-    questions=(
-        Question(text="Trading days in the window", cell="G1",
-                 answer=str(A.rows)),
-        Question(text="First close", cell="G2", answer=f"{A.first:.2f}"),
-        Question(text="Last close", cell="G3", answer=f"{A.last:.2f}"),
-        Question(text="Change over the window", cell="G4",
-                 answer=f"{A.change:.2f}"),
-        Question(text="Percent change", cell="G5",
-                 answer=f"{A.pct_change:.2f}"),
-        Question(text="Highest close", cell="G6", answer=f"{A.high:.2f}"),
-        Question(text="Date of the highest close", cell="G7",
-                 answer=str(A.high_date)),
-        Question(text="Lowest close", cell="G8", answer=f"{A.low:.2f}"),
-        Question(text="Date of the lowest close", cell="G9",
-                 answer=str(A.low_date)),
-        Question(text="Days price rose", cell="G10", answer=str(A.up_days)),
-        Question(text="Days price fell", cell="G11", answer=str(A.down_days)),
-        Question(text="Days price did not move", cell="G12",
-                 answer=str(A.flat_days)),
-        Question(text="Biggest one day rise", cell="G13",
-                 answer=f"{A.biggest_rise:.2f}"),
-        Question(text="Date of the biggest rise", cell="G14",
-                 answer=str(A.biggest_rise_date)),
-        Question(text="Biggest one day fall", cell="G15",
-                 answer=f"{A.biggest_fall:.2f}"),
-        Question(text="Date of the biggest fall", cell="G16",
-                 answer=str(A.biggest_fall_date)),
-    ),
-    key_note=(f"Half a mark each, six marks in total, rounded down. The one "
+    questions=_A_QUESTIONS,
+    key_note=(f"2 points each, {show_marks(_identified(_A_QUESTIONS))} "
+              f"in total. The one "
               f"to watch is Days price did not move. {A.flat_days} of the "
               f"{A.rows - 1} changes are exactly zero, so rose plus fell does "
               f"not come to {A.rows - 1}. A student who assumed it would has "
@@ -545,39 +587,42 @@ PART_A = Section(
 # Part B, on their own
 # ==========================================================================
 
+_B_QUESTIONS = (
+    Question(text="Trading days in the window", cell="G1",
+             answer=str(B.rows)),
+    Question(text="First close", cell="G2", answer=f"{B.first:.2f}"),
+    Question(text="Last close", cell="G3", answer=f"{B.last:.2f}"),
+    Question(text="Change over the window", cell="G4",
+             answer=f"{B.change:.2f}"),
+    Question(text="Percent change", cell="G5",
+             answer=f"{B.pct_change:.2f}"),
+    Question(text="Highest close", cell="G6", answer=f"{B.high:.2f}"),
+    Question(text="Date of the highest close", cell="G7",
+             answer=str(B.high_date)),
+    Question(text="Lowest close", cell="G8", answer=f"{B.low:.2f}"),
+    Question(text="Date of the lowest close", cell="G9",
+             answer=str(B.low_date)),
+    Question(text="Days price rose", cell="G10", answer=str(B.up_days)),
+    Question(text="Days price fell", cell="G11", answer=str(B.down_days)),
+    Question(text="Days price did not move", cell="G12",
+             answer=str(B.flat_days)),
+    Question(text="Biggest one day rise", cell="G13",
+             answer=f"{B.biggest_rise:.2f}"),
+    Question(text="Date of the biggest rise", cell="G14",
+             answer=str(B.biggest_rise_date)),
+    Question(text="Biggest one day fall", cell="G15",
+             answer=f"{B.biggest_fall:.2f}"),
+    Question(text="Date of the biggest fall", cell="G16",
+             answer=str(B.biggest_fall_date)),
+)
+
 PART_B_QUESTIONS = QuestionSet(
     title="Part B answers",
     intro=("The same sixteen questions, about a different market. Read them "
            "off column G of your Part B tab."),
-    questions=(
-        Question(text="Trading days in the window", cell="G1",
-                 answer=str(B.rows)),
-        Question(text="First close", cell="G2", answer=f"{B.first:.2f}"),
-        Question(text="Last close", cell="G3", answer=f"{B.last:.2f}"),
-        Question(text="Change over the window", cell="G4",
-                 answer=f"{B.change:.2f}"),
-        Question(text="Percent change", cell="G5",
-                 answer=f"{B.pct_change:.2f}"),
-        Question(text="Highest close", cell="G6", answer=f"{B.high:.2f}"),
-        Question(text="Date of the highest close", cell="G7",
-                 answer=str(B.high_date)),
-        Question(text="Lowest close", cell="G8", answer=f"{B.low:.2f}"),
-        Question(text="Date of the lowest close", cell="G9",
-                 answer=str(B.low_date)),
-        Question(text="Days price rose", cell="G10", answer=str(B.up_days)),
-        Question(text="Days price fell", cell="G11", answer=str(B.down_days)),
-        Question(text="Days price did not move", cell="G12",
-                 answer=str(B.flat_days)),
-        Question(text="Biggest one day rise", cell="G13",
-                 answer=f"{B.biggest_rise:.2f}"),
-        Question(text="Date of the biggest rise", cell="G14",
-                 answer=str(B.biggest_rise_date)),
-        Question(text="Biggest one day fall", cell="G15",
-                 answer=f"{B.biggest_fall:.2f}"),
-        Question(text="Date of the biggest fall", cell="G16",
-                 answer=str(B.biggest_fall_date)),
-    ),
-    key_note=(f"Half a mark each, six marks in total, rounded down. Part B "
+    questions=_B_QUESTIONS,
+    key_note=(f"2 points each, {show_marks(_identified(_B_QUESTIONS))} "
+              f"in total. Part B "
               f"has no flat days at all, so G12 is {B.flat_days} and rose "
               f"plus fell does come to {B.rows - 1} this time. A student who "
               f"wrote {A.flat_days} here has copied their Part A answer."),
@@ -620,23 +665,27 @@ PART_B_SECTION = Section(
                 f"Build the same sixteen labels in column E and the same "
                 f"sixteen formulas in column G, changing every 103 to "
                 f"{B.last_row} and every 102 to {B.rows}.",
-                "Print your Part B chart, or take a screenshot of it and "
-                "print that. You are about to draw on it.",
             ),
         ),
         PART_B_QUESTIONS,
         Head(text="Mark the peaks and the troughs"),
         Para(text=(
-            "On your printed Part B chart, in pen, mark every point where the "
-            "price line turned. A **peak** is a point with lower prices on "
-            "both sides of it. A **trough** is a point with higher prices on "
-            "both sides. Write a P beside each peak and a T beside each "
-            "trough."
+            "Look at your Part B chart and find every point where the price "
+            "line turned. A **peak** is a point with lower prices on both "
+            "sides of it. A **trough** is a point with higher prices on both "
+            "sides. You mark them in two new columns of your Part B tab."
+            "\n\n"
+            "Type `Peaks` in cell H1 and `Troughs` in cell I1. For each peak, "
+            "find its date in column A and type `=B` and that row number into "
+            "column H of the same row, so a peak in row 50 gets `=B50` in "
+            "H50. Do the same for each trough in column I. Every other row of "
+            "both columns stays empty. The chart shows them once you add them "
+            "to it, below."
             "\n\n"
             "Chapter 1 gives the most widely accepted definition of a trend "
             "as **successively higher or lower peaks and troughs**. You now "
             "have the marks to test that definition against, so answer the "
-            "two questions below from your own marked chart."
+            "two questions below from your own marks."
         )),
         Lines(
             count=2,
@@ -654,38 +703,80 @@ PART_B_SECTION = Section(
                 "mistake. Chapter 1 calls that **subjectivity**: two "
                 "competent analysts, given the same chart, reaching different "
                 "and equally defensible conclusions. You met it in class with "
-                "the book's USDCAD chart. Here it is again, with your own "
-                "hand doing the drawing."
+                "the book's USDCAD chart. Here it is again, in your own "
+                "marks."
             ),
         ),
         Head(text="Draw one trendline"),
         Para(text=(
-            "Take a ruler. Draw **one** straight line that touches at least "
-            "two of your troughs and that no part of the price line drops "
-            "below between them. Extend that line past the right hand edge of "
-            "the chart, into the empty space where the future would be."
+            "Choose **one** straight line that touches at least two of your "
+            "troughs and that no part of the price line drops below between "
+            "them. You build it as a formula in column J of your Part B tab, "
+            "then extend it past the right hand edge of the chart, into the "
+            "empty space where the future would be."
             "\n\n"
-            "Label the two troughs your line rests on, and write beside the "
-            "line the price it would sit at one month after the chart ends. "
-            "You do not need to be exact. Read it off your own extended line."
+            "Type `Trendline` in cell J1. Find the row numbers of the two "
+            "troughs your line rests on. The formula below is written for "
+            "troughs in rows 2 and 104. Type it into column J in the row of "
+            "your first trough, with your first row number in place of every "
+            "2 and your second row number in place of every 104."
         )),
+        TypeBox(
+            label="The pattern, written for rows 2 and 104",
+            text="=$B$2+($B$104-$B$2)*($A2-$A$2)/($A$104-$A$2)",
+        ),
+        Para(text=(
+            "Leave `$A2` in the middle without a dollar sign before its 2: "
+            "that is what moves the line along as you copy it down."
+            "\n\n"
+            f"Now extend it. In cell A{B.last_row + 1}, type `2014-07-30`, "
+            f"one month after the chart ends, and leave B{B.last_row + 1} "
+            f"empty. Copy your formula from column J down to "
+            f"J{B.last_row + 1}. J{B.last_row + 1} is the price your line "
+            f"sits at one month after the chart ends."
+        )),
+        Head(text="Put your marks on the chart"),
+        Points(
+            numbered=True,
+            items=(
+                f"Open your Part B chart and click **Edit chart**. Under "
+                f"Setup, change the last number in the Data range from "
+                f"{B.last_row} to {B.last_row + 1}, unless Google has already "
+                f"done it for you. That gives the chart room past the last "
+                f"price for your line to run into.",
+                f"Under Series, click **Add Series**, then the small grid "
+                f"icon. Type your Part B tab's name, an exclamation mark and "
+                f"`H1:H{B.last_row + 1}`, and click OK. On a tab called "
+                f"Sheet2 that is `Sheet2!H1:H{B.last_row + 1}`. A name with a "
+                f"space goes in single quotes, as in "
+                f"`'Part B'!H1:H{B.last_row + 1}`.",
+                f"Do the same twice more, for `I1:I{B.last_row + 1}` and "
+                f"`J1:J{B.last_row + 1}`.",
+                "Click **Customize**, then **Series**. Choose Peaks and set "
+                "Point size to 7px. Choose Troughs and set Point size to 7px "
+                "as well. Your peaks, your troughs and your line are now on "
+                "the chart, and the line runs on past the last price.",
+            ),
+        ),
         Lines(
             count=2,
-            title="The two dates your line touches, and where it sits one "
-                  "month after the chart ends",
+            title=f"The two dates your line touches, and where it sits one "
+                  f"month after the chart ends (cell J{B.last_row + 1})",
         ),
         Head(text="Now, and only now, forecast"),
         Para(text=(
             "Everything up to this point has been identification. This part "
-            "is not. Write five to eight sentences saying what you think the "
-            "price does next, and why."
+            "is not. Write a short paragraph saying what you think the price "
+            "does next, and why."
             "\n\n"
             "**You are marked on the reasons, not on the answer.** A forecast "
-            "that turns out wrong and is argued from three things visible on "
-            "your chart earns full marks. A forecast that turns out right "
-            "with no reasons earns almost none. Say which way you think price "
-            "goes, name the marks on your own chart that make you think so, "
-            "and name the one thing you can see that argues against you."
+            "that turns out wrong and is argued from what your chart shows "
+            "earns full marks. A forecast that turns out right with no "
+            "reasons earns nothing. Say which way you think price goes, name "
+            "the marks on your own chart that make you think so, and say why "
+            "they point that way. The best answers also name one thing on "
+            "the chart that argues against them. Nobody loses a mark for "
+            "leaving it out."
         )),
         Lines(count=11),
     ),
@@ -730,38 +821,85 @@ PLATFORM_SECTION = Section(
             text=(
                 "Write one sentence saying what your line touches and what "
                 "would have to happen for price to break it. That sentence is "
-                "worth as much as the screenshot."
+                "what the mark is for. The screenshot is what lets anyone "
+                "check it."
             ),
         ),
         Lines(count=2, title="Your one sentence"),
     ),
 )
 
+# The four marks no record can check, and what the course's written-answer
+# rubric (build/rubric.py) looks for in each. `means` follows the rubric's own
+# order of marked criteria: grounded, then connected.
+TRENDLINE_MARK = Applied(
+    what="Peaks, troughs and one trendline",
+    out_of=8,
+    means=(
+        "Your marks in columns H and I sit on real turning points of your own "
+        "Part B chart, and your line rests on two of your own troughs with no "
+        "part of the price line below it between them.",
+        "Your answers to the two questions, higher, lower or neither, follow "
+        "from the marks you made, and the price you give for one month on is "
+        "where your own line reaches.",
+    ),
+)
+FORECAST_MARK = Applied(
+    what="The forecast",
+    out_of=4,
+    means=(
+        "Your reasons are things anyone could find on your own Part B chart: "
+        "a price, a date, a shape.",
+        "The direction you forecast follows from those reasons. Whether price "
+        "really went that way is never marked.",
+    ),
+)
+PLATFORM_MARK = Applied(
+    what="The platform step",
+    out_of=4,
+    means=(
+        "Your sentence names what your line touches, on the chart in your "
+        "screenshot.",
+        "What you say would have to happen for price to break the line "
+        "follows from where you drew it.",
+    ),
+)
+WRITTEN_MARKS = (TRENDLINE_MARK, FORECAST_MARK, PLATFORM_MARK)
+
 # The rubric, as data, so the sheet cannot claim a total it does not add up
 # to. The last field says whether those marks are checkable against the
 # record, which is the distinction the whole activity is about.
 RUBRIC = (
-    ("Part A, built", 2,
+    ("Part A, built", 10,
      "The chart exists, has a title and two named axes, and the prices are "
      "the right ones.", True),
-    ("Part A, identified", 6,
-     "Sixteen answers, half a mark each, rounded down. Right or wrong "
-     "against the record.", True),
-    ("Part B, built", 2,
+    ("Part A, identified", _identified(_A_QUESTIONS),
+     "Sixteen answers, 2 points each. Right or wrong against the record.",
+     True),
+    ("Part B, built", 10,
      "The same, done without the pictures.", True),
-    ("Part B, identified", 6,
-     "The same sixteen questions, half a mark each, rounded down.", True),
-    ("Peaks, troughs and one trendline", 2,
-     "Marked on the printed chart, in pen. The line touches at least two "
-     "troughs and is extended past the edge.", False),
-    ("The forecast", 1,
-     "Five to eight sentences that name at least two things visible on your "
-     "own chart, and one thing that argues against you. Never marked right "
-     "or wrong.", False),
-    ("The platform step", 1,
+    ("Part B, identified", _identified(_B_QUESTIONS),
+     "The same sixteen questions, 2 points each.", True),
+    (TRENDLINE_MARK.what, TRENDLINE_MARK.out_of,
+     "Marked in the Peaks and Troughs columns of your Part B tab. One "
+     "trendline, built as its own series on your Part B chart, that touches "
+     "at least two troughs and is extended past the last price. Marked with "
+     "the written-answer rubric.", False),
+    (FORECAST_MARK.what, FORECAST_MARK.out_of,
+     "What you think price does next, and why, argued from your own chart. "
+     "Marked with the written-answer rubric. Never marked right or wrong.",
+     False),
+    (PLATFORM_MARK.what, PLATFORM_MARK.out_of,
      "A screenshot of a chart you found, with a trendline you drew, and one "
-     "sentence about it.", False),
+     "sentence about it. The sentence is marked with the written-answer "
+     "rubric.", False),
 )
+TOTAL = sum(m for _, m, _, _ in RUBRIC)
+
+if ({what for what, _, _, checkable in RUBRIC if not checkable}
+        != {a.what for a in WRITTEN_MARKS}):
+    raise ValueError("every mark the record cannot check must be one the "
+                     "written-answer rubric decides, and the other way round")
 
 
 HANDIN = Section(
@@ -774,26 +912,27 @@ HANDIN = Section(
             numbered=True,
             items=(
                 "This sheet, filled in, with your name on the front.",
-                "Your Part A chart and your Part B chart, printed, with the "
-                "peaks, the troughs and your one trendline drawn on the Part "
-                "B one.",
+                "Your Part A chart and your Part B chart, each on a tab of "
+                "its own, with your peaks, your troughs and your one "
+                "trendline added to the Part B one.",
                 "The link to your spreadsheet, or a screenshot of your Part B "
                 "tab showing columns A to G.",
                 f"Your {PLATFORM} screenshot with its one sentence.",
             ),
         ),
         Table(
-            title=f"The {sum(m for _, m, _, _ in RUBRIC)} marks",
-            headers=("What", "Marks", "What earns them"),
+            title=f"The {show_marks(TOTAL)} points",
+            headers=("What", "Points", "What earns them"),
             widths=(30, 12, 58),
-            rows=tuple((what, str(marks), how)
+            rows=tuple((what, show_marks(marks), how)
                        for what, marks, how, _ in RUBRIC),
-            note=(f"{sum(m for _, m, _, _ in RUBRIC)} in total. "
-                  f"{sum(m for _, m, _, checkable in RUBRIC if checkable)} of "
+            note=(f"{show_marks(TOTAL)} in total. "
+                  f"{show_marks(sum(m for _, m, _, c in RUBRIC if c))} of "
                   f"them are for work that can be marked right or wrong "
                   f"against the record. "
-                  f"{sum(m for _, m, _, checkable in RUBRIC if not checkable)} "
-                  f"are not, and those are marked on the reasoning."),
+                  f"{show_marks(sum(m for _, m, _, c in RUBRIC if not c))} "
+                  f"are not, and those are marked on the reasoning, with the "
+                  f"written-answer rubric in the next section."),
         ),
         Callout(
             label="What happens next",
@@ -808,6 +947,121 @@ HANDIN = Section(
                 "this activity exists."
             ),
         ),
+    ),
+)
+
+
+# ==========================================================================
+# The written-answer rubric, printed from build/rubric.py
+#
+# Only two things here are this activity's own: which marks the rubric
+# decides, above, and the worked examples below. The examples are set on the
+# Part A chart on purpose. A full-marks forecast written on Part B would be a
+# model answer to the one question every student is marked on, and a student
+# could copy it. Part A asks for no forecast, so nothing here answers anything
+# that is marked.
+# ==========================================================================
+
+_T1, _T2, _T3 = "2014-02-13", "2014-02-27", "2014-03-21"   # three troughs
+_P = "2014-03-04"          # the highest close after the February high
+
+
+def _at(iso: str) -> str:
+    return f"{A.on(iso):.2f} on {_dm(iso)}"
+
+
+_FULL = (f"Down. Each trough since the February spike is lower than the one "
+         f"before it: {_at(_T1)}, {_at(_T2)}, {_at(_T3)}. The best close "
+         f"after the spike, {_at(_P)}, stayed below the February high. Lower "
+         f"troughs and a lower peak since the spike fit Chapter 1's "
+         f"definition of a trend, pointing down, so I expect the next trough "
+         f"to be lower again.")
+
+WORKED = (
+    Worked(
+        level="Full",
+        answer=_FULL,
+        why=("Grounded: three troughs and a peak, each with a date and a "
+             "price anyone can find on the chart. Connected: lower troughs "
+             "under a lower peak is exactly what the conclusion says. It "
+             "names nothing that argues against it, and loses nothing for "
+             "that."),
+    ),
+    Worked(
+        level="Partial",
+        answer=("Down. Since the big spike in February the chart has looked "
+                "weak and the lows keep sliding, so I expect the fall to "
+                "carry on."),
+        why=("The conclusion follows, but the evidence is vague. Which lows, "
+             "on what dates, at what prices? Nobody can find \"looked weak\" "
+             "on a chart."),
+    ),
+    Worked(
+        level="Partial",
+        answer=(f"Down, and below 3.00 by June. Each trough since the "
+                f"February spike is lower than the one before it: "
+                f"{_at(_T1)}, {_at(_T2)}, {_at(_T3)}."),
+        why=("The evidence is precise and it supports down. Nothing named "
+             "supports 3.00, or June, so the conclusion goes further than "
+             "the evidence does."),
+    ),
+    Worked(
+        level="Minimal",
+        answer="Down. Whatever goes up must come down.",
+        why=("There is a reason, but a general one. It would be the same "
+             "sentence under any chart ever drawn, so nothing in it comes "
+             "from this one."),
+    ),
+    Worked(
+        level="None",
+        answer="Down.",
+        why=("A conclusion with no reasoning. It could turn out right, and "
+             "it would still earn nothing."),
+    ),
+)
+
+# The examples make claims about the record, so the record is asked. A
+# change to the price files that made one of them false stops the build.
+if not A.on(_T1) > A.on(_T2) > A.on(_T3):
+    raise ValueError("the worked examples say the three troughs fall, and "
+                     "they do not")
+if (max(A.closes[A.dates.index(A.high_date) + 1:]) != A.on(_P)
+        or A.on(_P) >= A.high):
+    raise ValueError("the worked examples name the wrong best close after "
+                     "the February high")
+if min(A.closes[A.dates.index(dt.date.fromisoformat(_T3)) + 1:]) <= A.on(_T3):
+    raise ValueError("the honest sentence says every later close is above "
+                     "the last trough, and the data says otherwise")
+
+HONEST = (
+    f"The Full answer, with one more sentence: \"Against me, every close "
+    f"since {_dm(_T3)} has been above {A.on(_T3):.2f}, so a higher trough "
+    f"could be forming there.\" It earns exactly the same marks as the Full "
+    f"answer, because honesty is never marked. It is still the better "
+    f"answer, and it is the kind this course wants you to learn to write."
+)
+
+RUBRIC_SECTION = Section(
+    title=WRITTEN.title,
+    kicker=(f"For the {show_marks(sum(a.out_of for a in WRITTEN_MARKS))} "
+            f"points on this sheet that no record can check. The same rubric "
+            f"marks every written answer in this course."),
+    footer="The written-answer rubric",
+    # Not flowed: the rubric opens a sheet of its own, so its disclaimer is
+    # the first thing on a page and the two pages can be read on their own.
+    blocks=written_rubric(
+        WRITTEN,
+        applied=WRITTEN_MARKS,
+        question=(
+            f"Suppose Part A had asked for a forecast: what does its price do "
+            f"after {_d(A.dates[-1])}, and why? Here are five answers, one at "
+            f"each level and two at Partial, because there are two ways to be "
+            f"partial. They are written on your Part A chart, not your Part B "
+            f"one, so that none of them is an answer to anything you are "
+            f"marked on."
+        ),
+        worked=WORKED,
+        honest=HONEST,
     ),
 )
 
@@ -921,9 +1175,11 @@ REVEAL_SECTION = Section(
         Callout(
             label="How to mark a trendline",
             text=(
-                "Give the two marks to any line that touches at least two "
-                "troughs, has no close below it between them, and is extended "
-                "past the right hand edge. **Do not mark a line down for "
+                "Mark this row with the written-answer rubric. For the line, "
+                "grounded means it touches at least two troughs, has no close "
+                "below it between them, and is extended past the right hand "
+                "edge, and any line that does all three meets it. **Do not "
+                "mark a line down for "
                 "being a different line from the two above.** A student who "
                 "drew line B and called the reversal on 1 July was reading "
                 "the same chart as a student who drew line A and called it on "
@@ -1019,13 +1275,14 @@ ACTIVITY = Activity(
              "what the record says, and then forecast what it does not.",
     presenter="Benjamin C. Sotelo  |  Institute of Accounts, Business and "
               "Finance, FEU Manila",
-    points=20,
+    points=TOTAL,
     duration="about 90 minutes",
     replaces="Homework 1, Charting Exercises",
     source_note=(f"Price data from FRED, Federal Reserve Bank of St. Louis, "
                  f"series {A.fred_id} and {B.fred_id}, both sourced from the "
                  f"{ad.EIA} and both in the public domain. Retrieved "
                  f"{ad.RETRIEVED}."),
-    sections=(BRIEFING, PART_A, PART_B_SECTION, PLATFORM_SECTION, HANDIN),
+    sections=(BRIEFING, PART_A, PART_B_SECTION, PLATFORM_SECTION, HANDIN,
+              RUBRIC_SECTION),
     key_sections=(REVEAL_SECTION,),
 )

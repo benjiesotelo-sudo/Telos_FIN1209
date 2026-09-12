@@ -205,7 +205,7 @@ drift from the question it answers.
 
 | Output | Who it is for | What is in it |
 |---|---|---|
-| `chapter-01/activity/FIN1209-Chapter-01-Activity-1.pdf` | The students | 20 numbered steps, 19 of them with a real screenshot, 32 identification questions, the 20 point rubric |
+| `chapter-01/activity/FIN1209-Chapter-01-Activity-1.pdf` | The students | 20 numbered steps, 19 of them with a real screenshot, 32 identification questions, the 100 points, and the course's written-answer rubric |
 | `chapter-01/activity/FIN1209-Chapter-01-Activity-1-Answer-Key.pdf` | The instructor | The same, with every answer, the two reveal charts and how to run the session |
 
 Three things happen in this build that happen in no other.
@@ -231,6 +231,16 @@ height.
 The build refuses to write a worksheet a student cannot finish: a step naming
 a screenshot that is not there, a question with no answer in the key, or an em
 dash anywhere in the copy.
+
+**The written-answer rubric is printed, never copied.** Its words live once,
+in `build/rubric.py`, which is course content rather than chapter content and
+knows nothing about any document. `activitykit.written_rubric()` lays it out
+as ordinary blocks, so the em dash check reads it like the rest of the copy.
+An activity supplies only what is its own: which of its marks the rubric
+decides, as `Applied` rows, and a `Worked` example at every level, written on
+its own material. The helper refuses a rubric with a level nobody has seen an
+example of, and every mark on the page is the level's percentage of the
+answer's worth, computed, never typed.
 
 `chapter-01/activity/README.md` has the data source and its licence, the one
 live Google Drive dependency and the command that rebuilds it, and why the

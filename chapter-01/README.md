@@ -21,7 +21,7 @@ of its own, because a take-home is not the lecture.
 | `in-class-checks.md` | The instructor | The answer sheet. | `build/content_chapter01.py` |
 | `check-answerability-audit.md` | The instructor | Whether every check item can be answered from the slides alone. | Written by hand |
 | `teaching-plan-design.md` | Whoever edits the plan | Why the plan looks the way it does. | Written by hand |
-| `lecture-notes-design.md` | Whoever writes Chapter 2 | The research behind the lecture notes, with sources. | Written by hand |
+| `lecture-notes-design.md` | Whoever writes the next chapter | The research behind the lecture notes, with sources. | Written by hand |
 
 **Nothing in this folder is hand-edited except the two design files, the check
 audit, `activity/README.md` and this one.** The two decks, the answer sheet and
@@ -57,7 +57,8 @@ instructor's, and the student build cannot touch it.
 ## A teaching plan is not lecture notes
 
 The distinction is the reason there are two PDFs, and it is worth keeping
-straight when Chapter 2 is written.
+straight in every chapter. Chapter 2 keeps the distinction and shortens the
+instructor's half to three pages; see `chapter-02/README.md` for why.
 
 The **teaching plan** is a run card. It is held in the hand while the deck is
 on the screen. It carries minute counts, five run plans, a cut tier for every

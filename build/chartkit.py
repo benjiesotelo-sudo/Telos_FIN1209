@@ -144,6 +144,42 @@ def gap(series: list[float], at: int, size: float) -> list[float]:
     return [v + (size if i >= at else 0.0) for i, v in enumerate(series)]
 
 
+def ranges(series, *, seed: int, reach: float = 0.010) -> list[tuple[float, float]]:
+    """The low and the high each point travelled between, around its close.
+
+    Dow Theory keeps only the closing price and throws the rest away, so a
+    chart that makes that point has to draw the rest first. The excursion is
+    invented like everything else here, from a fixed seed, and it is never an
+    OHLC bar: no opening price is produced, because Chapter 2 never mentions
+    one.
+    """
+    rng = random.Random(seed)
+    out = []
+    for value in series:
+        below = value * rng.uniform(0.25, 1.0) * reach
+        above = value * rng.uniform(0.25, 1.0) * reach
+        out.append((value - below, value + above))
+    return out
+
+
+def volume(series, *, seed: int, base: float = 100.0,
+           lift: float = 2.2) -> list[float]:
+    """Trade volume that expands when price moves and eases when it drifts.
+
+    Derived from the price series rather than invented separately, so a chart
+    of volume confirming a trend cannot accidentally show volume that
+    contradicts the line above it. Still invented: nothing here is measured.
+    """
+    rng = random.Random(seed)
+    out = []
+    moves = [0.0] + [series[i] - series[i - 1] for i in range(1, len(series))]
+    scale = max(abs(m) for m in moves) or 1.0
+    for move in moves:
+        out.append(base * (1.0 + lift * abs(move) / scale)
+                   * rng.uniform(0.72, 1.28))
+    return out
+
+
 # --------------------------------------------------------------------------
 # Chart chrome
 # --------------------------------------------------------------------------
@@ -520,6 +556,369 @@ def claim(path: Path, series, *, level: float, level_label: str,
                         level + (hi - lo) * 0.015),
                 arrowprops=dict(arrowstyle="-|>", color=GOLD, lw=2.0,
                                 ls=(0, (4, 3)), mutation_scale=20), zorder=6)
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+@dataclass
+class Swing:
+    """One peak or trough in the sequence that defines a trend.
+
+    ``tag`` is the short label that sits on the point itself, in the book's
+    own shorthand: HH for a higher high, HL for a higher low, LH for a lower
+    high. ``label`` is the optional longer callout, used once or twice on a
+    chart and never on every point.
+    """
+
+    x: int = 0
+    tag: str = ""
+    above: bool = True      # the tag sits over a peak, under a trough
+    label: str = ""
+    dx: float = 0.0         # offset of the callout, in points
+    dy: float = 0.0
+    notice: bool = False    # the one gold point on the chart
+
+
+@dataclass
+class Sweep:
+    """The straight arrow that names the direction of a trend.
+
+    Given as two prices at two moments rather than derived from the series,
+    so the chapter module decides where the arrow sits and the chart cannot
+    quietly assert a slope the data does not have.
+    """
+
+    x0: int = 0
+    y0: float = 0.0
+    x1: int = 0
+    y1: float = 0.0
+    label: str = ""
+    dx: float = 0.0
+    dy: float = 0.0
+
+
+@dataclass
+class Level:
+    """A horizontal line measured as a fraction of a move.
+
+    ``frac`` is how far back down from ``high`` the line sits, so 0.5 is the
+    halfway retracement. The chapter module supplies the wording; nothing
+    here knows what a retracement is for.
+    """
+
+    frac: float = 0.0
+    label: str = ""
+    notice: bool = False
+
+
+@dataclass
+class Panel:
+    """One of two stacked price panels, for the charts that compare two
+    series that have to agree with each other."""
+
+    series: tuple = ()
+    name: str = ""
+    level: float = 0.0
+    level_label: str = ""
+    cross: int = 0
+    cross_label: str = ""
+
+
+def _tag_text(ax, x, y, text, *, above=True, tone=GREEN_DEEP, size=11.5):
+    """The short shorthand label that sits on a point, with no leader line."""
+    ax.annotate(text, xy=(x, y), xytext=(0, 13 if above else -13),
+                textcoords="offset points", ha="center",
+                va="bottom" if above else "top", fontsize=size, color=tone,
+                fontweight="bold", zorder=7, bbox=_tag())
+
+
+def smoothing(path: Path, members, average, *, average_mark, member_mark,
+              member_index: int = 0, xlabel, footnote="",
+              display_font=None) -> Path:
+    """Several erratic lines, and the one line that is their average.
+
+    The teaching point is why Dow built an index at all: a single issue is
+    jumpy and can be pushed around, and averaging several of them leaves the
+    part they have in common. Both labels are placed by the chapter module,
+    because on a chart this crowded there is no safe automatic spot for them.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
+
+    for series in members:
+        ax.plot(range(len(series)), series, color=MUTED, lw=1.0, alpha=0.45,
+                zorder=2)
+    ax.plot(range(len(average)), average, color=INK, lw=2.6, zorder=4)
+    _dress(ax, xlabel=xlabel, ylabel="Index level")
+
+    flat = [v for series in members for v in series] + list(average)
+    ax.set_xlim(-2, len(average) + 1)
+    _headroom(ax, flat, top=0.20, bottom=0.14)
+
+    one = members[member_index]
+    _dot(ax, member_mark.x, one[member_mark.x], tone=BORDER)
+    _callout(ax, member_mark.x, one[member_mark.x], member_mark.label,
+             dx=member_mark.dx, dy=member_mark.dy, tone=MUTED,
+             weight="normal", size=11.5)
+    _dot(ax, average_mark.x, average[average_mark.x])
+    _callout(ax, average_mark.x, average[average_mark.x], average_mark.label,
+             dx=average_mark.dx, dy=average_mark.dy, tone=GREEN_DEEP)
+
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def closes_only(path: Path, closes, spans_hl, *, marks=(), xlabel,
+                close_label, range_label, footnote="",
+                display_font=None) -> Path:
+    """Each day's whole excursion, and the one price Dow Theory keeps.
+
+    Every day is drawn as the distance its price travelled, with the closing
+    price marked on it and the closes joined. Nothing here is an OHLC bar:
+    the opening price is not drawn, because this chapter never mentions it.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
+
+    for x, (low, high) in enumerate(spans_hl):
+        ax.plot([x, x], [low, high], color=BORDER, lw=2.6, zorder=1,
+                solid_capstyle="round")
+    ax.plot(range(len(closes)), closes, color=INK, lw=1.7, zorder=3)
+    ax.plot(range(len(closes)), closes, marker="o", ms=3.4, ls="none",
+            color=GREEN_DEEP, zorder=4)
+    _dress(ax, xlabel=xlabel)
+
+    flat = [v for pair in spans_hl for v in pair]
+    ax.set_xlim(-2, len(closes) + 1)
+    _headroom(ax, flat, top=0.26, bottom=0.24)
+
+    for m in marks:
+        _dot(ax, m.x, closes[m.x])
+        _callout(ax, m.x, closes[m.x], m.label, dx=m.dx, dy=m.dy)
+
+    lo, hi = ax.get_ylim()
+    ax.text(0.015, 0.97, range_label, transform=ax.transAxes, ha="left",
+            va="top", fontsize=12, color=MUTED, fontweight="bold",
+            zorder=6, bbox=_tag())
+    ax.text(0.015, 0.06, close_label, transform=ax.transAxes, ha="left",
+            va="bottom", fontsize=12, color=GREEN_DEEP, fontweight="bold",
+            zorder=6, bbox=_tag())
+
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def trends(path: Path, series, *, sweep=None, spans=(), marks=(), xlabel,
+           footnote="", display_font=None) -> Path:
+    """One price line carrying more than one trend at the same time.
+
+    The arrow names the long movement, a shaded stretch names the movement
+    against it, and the callouts point at the small stuff. All three are on
+    one line on purpose: the book's claim is that they run together, not that
+    they take turns.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
+
+    for s in spans:
+        ax.axvspan(s.x0, s.x1, color=GOLD_WASH if s.tone == "notice"
+                   else GREY_WASH, zorder=0)
+    ax.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
+    _dress(ax, xlabel=xlabel)
+    ax.set_xlim(-2, len(series) + 1)
+    _headroom(ax, series, top=0.28, bottom=0.22)
+
+    for s in spans:
+        if s.label:
+            ax.text((s.x0 + s.x1) / 2, 1.02, s.label,
+                    transform=ax.get_xaxis_transform(), ha="center",
+                    va="bottom", fontsize=12, color=MUTED, fontweight="bold")
+
+    if sweep is not None:
+        ax.annotate("", xy=(sweep.x1, sweep.y1), xytext=(sweep.x0, sweep.y0),
+                    arrowprops=dict(arrowstyle="-|>", color=GREEN, lw=2.6,
+                                    mutation_scale=26), zorder=5)
+        mid_x = (sweep.x0 + sweep.x1) / 2
+        mid_y = (sweep.y0 + sweep.y1) / 2
+        ax.annotate(sweep.label, xy=(mid_x, mid_y),
+                    xytext=(sweep.dx, sweep.dy), textcoords="offset points",
+                    ha="center", va="center", fontsize=13, color=GREEN,
+                    fontweight="bold", zorder=6, bbox=_tag())
+
+    for m in marks:
+        y = series[m.x]
+        _dot(ax, m.x, y)
+        _callout(ax, m.x, y, m.label, dx=m.dx, dy=m.dy)
+
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def swings(path: Path, series, points: tuple[Swing, ...], *, xlabel,
+           footnote="", display_font=None) -> Path:
+    """The sequence of peaks and troughs that is what a trend actually is.
+
+    Dow Theory defines an uptrend as successively higher peaks and higher
+    troughs, so the definition is a list of points and this chart is that
+    list drawn. No trendline is drawn anywhere on it: the chapter is explicit
+    that a trendline and this sequence are two different tests that can
+    disagree.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
+    ax.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
+    _dress(ax, xlabel=xlabel)
+    ax.set_xlim(-2, len(series) + 1)
+    _headroom(ax, series, top=0.30, bottom=0.26)
+
+    for p in points:
+        y = series[p.x]
+        _dot(ax, p.x, y, tone=GOLD if p.notice else GREEN, size=9,
+             dim=False)
+        if p.tag:
+            _tag_text(ax, p.x, y, p.tag, above=p.above,
+                      tone=GOLD if p.notice else GREEN_DEEP)
+        if p.label:
+            _callout(ax, p.x, y, p.label, dx=p.dx, dy=p.dy)
+
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def retracement(path: Path, series, *, low: float, high: float, x_low: int,
+                x_high: int, levels: tuple[Level, ...], reaction: tuple,
+                xlabel, footnote="", display_font=None) -> Path:
+    """One advance, and how far back down the reaction against it came.
+
+    The fractions are measured from the top of the advance, which is how the
+    chapter states them. Nothing is drawn beyond the reaction: how far it
+    would have gone is the question, not the answer.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    ax = fig.add_axes([0.062, 0.20, 0.918, 0.71])
+
+    x0, x1, span_label = reaction
+    ax.axvspan(x0, x1, color=GOLD_WASH, zorder=0)
+    ax.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
+    _dress(ax, xlabel=xlabel)
+    ax.set_xlim(-2, len(series) + 1)
+    _headroom(ax, series, top=0.24, bottom=0.20)
+
+    if span_label:
+        ax.text((x0 + x1) / 2, 1.02, span_label,
+                transform=ax.get_xaxis_transform(), ha="center", va="bottom",
+                fontsize=12, color=MUTED, fontweight="bold")
+
+    reach = high - low
+    for lv in levels:
+        y = high - reach * lv.frac
+        tone = GOLD if lv.notice else GREEN
+        ax.axhline(y, color=tone, lw=1.3, ls=(0, (5, 4)), zorder=2)
+        ax.text(0.008, y, lv.label, fontsize=11.5,
+                transform=ax.get_yaxis_transform(), color=tone, va="bottom",
+                ha="left", fontweight="bold", zorder=4)
+
+    _dot(ax, x_low, low, tone=GREEN, size=9)
+    _dot(ax, x_high, high, tone=GREEN, size=9)
+
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def _stacked(fig):
+    """Two price panels sharing one image, the upper one the taller.
+
+    The band a chart is drawn into is wide and short, so two panels only work
+    if the gutter between them is thin and neither carries an axis title of
+    its own.
+    """
+    top = fig.add_axes([0.062, 0.575, 0.918, 0.355])
+    bottom = fig.add_axes([0.062, 0.175, 0.918, 0.355])
+    return top, bottom
+
+
+def confirmation(path: Path, upper: Panel, lower: Panel, *, xlabel,
+                 footnote="", display_font=None) -> Path:
+    """Two averages, and the moment the second one agrees with the first.
+
+    Each panel carries the level the chapter cares about and the moment it is
+    penetrated. The two vertical markers are the whole point: the signal is
+    dated by the later of them, not by the earlier.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    axes = _stacked(fig)
+
+    for ax, panel, is_last in ((axes[0], upper, False), (axes[1], lower, True)):
+        ax.plot(range(len(panel.series)), panel.series, color=INK, lw=1.7,
+                zorder=3)
+        _dress(ax, ylabel="", xlabel=xlabel if is_last else "", grid=False)
+        ax.set_xlim(-2, len(panel.series) + 1)
+        _headroom(ax, panel.series, top=0.30, bottom=0.16)
+        ax.set_yticks([])
+
+        ax.axhline(panel.level, color=BORDER, lw=1.2, ls=(0, (5, 4)), zorder=2)
+        ax.text(0.008, panel.level, panel.level_label, fontsize=11,
+                transform=ax.get_yaxis_transform(), color=MUTED, va="bottom",
+                ha="left", zorder=4)
+        ax.axvline(panel.cross, color=GOLD, lw=2.0, zorder=5)
+        ax.text(panel.cross, 0.96, panel.cross_label,
+                transform=ax.get_xaxis_transform(), ha="center", va="top",
+                fontsize=12.5, color=GOLD, fontweight="bold", zorder=6,
+                bbox=_tag())
+        ax.text(0.008, 0.96, panel.name, transform=ax.transAxes, ha="left",
+                va="top", fontsize=12.5, color=GREEN_DEEP, fontweight="bold",
+                zorder=6, bbox=_tag())
+
+    _footnote(fig, footnote)
+    return _save(fig, path)
+
+
+def price_volume(path: Path, series, volume, *, spans=(), xlabel,
+                 volume_label, footnote="", display_font=None) -> Path:
+    """A price line over the volume that went with it.
+
+    Volume is drawn as one bar a period, on its own panel under the price,
+    which is how the book's own figures show it. The shaded stretches are
+    named above the price panel so one label serves both.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    fig = _new(display_font)
+    top, bottom = _stacked(fig)
+
+    for ax in (top, bottom):
+        for s in spans:
+            ax.axvspan(s.x0, s.x1, color=GOLD_WASH if s.tone == "notice"
+                       else GREY_WASH, zorder=0)
+
+    top.plot(range(len(series)), series, color=INK, lw=1.7, zorder=3)
+    _dress(top, ylabel="", xlabel="", grid=False)
+    top.set_xlim(-2, len(series) + 1)
+    _headroom(top, series, top=0.24, bottom=0.12)
+    top.set_yticks([])
+
+    for s in spans:
+        if s.label:
+            top.text((s.x0 + s.x1) / 2, 1.03, s.label,
+                     transform=top.get_xaxis_transform(), ha="center",
+                     va="bottom", fontsize=12, color=MUTED,
+                     fontweight="bold")
+
+    bottom.bar(range(len(volume)), volume, width=0.86, color=GREEN,
+               zorder=3, linewidth=0)
+    _dress(bottom, ylabel="", xlabel=xlabel, grid=False)
+    bottom.set_xlim(-2, len(series) + 1)
+    bottom.set_ylim(0, max(volume) * 1.30)
+    bottom.set_yticks([])
+    bottom.text(0.008, 0.94, volume_label, transform=bottom.transAxes,
+                ha="left", va="top", fontsize=12.5, color=GREEN_DEEP,
+                fontweight="bold", zorder=6, bbox=_tag())
+
     _footnote(fig, footnote)
     return _save(fig, path)
 

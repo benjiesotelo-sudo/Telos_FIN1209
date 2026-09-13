@@ -701,7 +701,11 @@ def render(notes: LectureNotes, figures: FigureFacts) -> str:
     rq = "".join(f"<li>{_inline(q)}</li>" for q in notes.review_questions)
     src = "".join(f"<li>{_inline(x)}</li>" for x in notes.sources)
     back = [
-        _sheet_head("Summary", "Chapter 1 in five sentences"),
+        # The eyebrow names the deck slide the summary is lifted from, so it
+        # takes the chapter number from the document rather than carrying a
+        # hard coded one. For Chapter 1 this produces exactly the string that
+        # used to be written here.
+        _sheet_head("Summary", f"{notes.chapter} in five sentences"),
         render_block(Points(items=notes.summary, numbered=True), figures),
         _blk(f'{_back_head("Review questions")}'
              f'<p class="pp">These are the chapter\'s own review questions. '

@@ -272,6 +272,11 @@ class Notes:
     chapter: str = ""
     title: str = ""
     presenter: str = ""
+    # What the cover calls this document. Chapter 1 ships a 26 page teaching
+    # plan; Chapter 2 ships a three page run card from the same renderer, and
+    # the cover has to be able to say which. The default is what the cover
+    # used to have hard coded, so Chapter 1 is unaffected.
+    doc_kind: str = "teaching plan"
     plans: tuple[str, ...] = ()   # names of the run plans, longest first
     # Which plan this term's session runs, and the hint printed beside it on
     # every part page. The chapter names it, because a plan chosen once at the
@@ -581,7 +586,7 @@ def _cover(n: Notes, deck: "DeckFacts") -> str:
     return f"""
 <div class="blk cover full">
   <span class="cov-code">{html.escape(n.code)}  {html.escape(n.course)}</span>
-  <h1 class="cov-title">{html.escape(n.chapter)} teaching plan</h1>
+  <h1 class="cov-title">{html.escape(n.chapter)} {html.escape(n.doc_kind)}</h1>
   <p class="cov-sub">{html.escape(n.title)}</p>
   <div class="cov-facts">
     <span><b>{deck.total_slides}</b> slides</span>

@@ -23,6 +23,11 @@ not. The worked example is `Supply side and demand side` in
 teaches the gap, marks the outside readings non-examinable, and sets no
 question on either.
 
+The FEU course booklet is the authority on hours and assessment weighting, not
+on tooling: it contradicts itself over whether a Bloomberg terminal is
+involved. Assume no paid terminal; Activity 1 needs only a browser, a Google
+Sheet and a free charting site.
+
 ## Two chapters are built, and the newer one is the shape to copy
 
 Chapter 1 is 227 slides and Chapter 2 is 175. Chapter 2 is the same design
@@ -152,6 +157,16 @@ not ours: `unzip -l <deck>.pptx | grep ppt/media` must list exactly that
 chapter's own charts and nothing else. See the section above for the hash
 check that proves which ones they are.
 
+**A committed deck is not a teaching deck, and nothing in its filename says
+so.** The committed `.pptx` and the committed notes carry the chapter's own
+charts and a placeholder where every book figure goes; the teaching artefact is
+the `--with-figures` build, which has to be made from a checkout outside this
+repository. So never hand a chapter deliverable to a class or an LMS straight
+from a repo clone, and check which one you are holding before it leaves:
+`unzip -l <deck>.pptx | grep -c ppt/media` is the chapter's chart count for a
+committed deck (9 for Chapter 1, 8 for Chapter 2), and that plus one image per
+placed figure for the real one.
+
 Every chapter inherits the constraint. See the chapter's own `README.md` for
 the build commands and the figure file naming.
 
@@ -247,8 +262,9 @@ failure modes are invisible to `deckkit.validate()`.
 chapter shipped rather than after, which is the order to work in. Its 42 items
 all pass. Write one for every chapter.
 
-The answer key rules are enforced: no letter over 35 percent or under 15, and
-no three identical answers in a row. Those cannot regress silently.
+The answer key rules are enforced for the deck's own checks: no letter over 35
+percent or under 15, and no three identical answers in a row. Those cannot
+regress silently there, but the guard reaches no further; see the next section.
 
 ## The closing slides are not validated
 
@@ -259,6 +275,12 @@ builds clean and then collides with the progress marker in the room. When you
 edit one, call `deckkit._content_bottom()` on it by hand and compare against
 `deckkit.SAFE_BOTTOM`. The review questions slide already sits at 6.53in
 against a 6.50in limit, so it has no headroom at all.
+
+The answer key guard has the same blind spot: it tallies `Check` questions
+found under `chapter.sections` and nothing else, so a quiz, a worksheet or an
+answer sheet produced by any other path is unguarded. Tally those by hand. An
+early build of the Chapter 1 key put 37 of 50 answers on B, which scored 74
+percent for a student who simply picked B every time.
 
 ## The two PDFs are not byte-reproducible; the decks are
 

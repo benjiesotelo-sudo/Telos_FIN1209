@@ -18,6 +18,7 @@ Official delivery runs on Canvas; this repository is the preparation workspace.
 | `TEMPLATE.md` | How to build the next chapter. Read it first. |
 | `chapter-01/` | Chapter 1: both deck editions, the instructor's 26 page teaching plan, the students' lecture notes, and the in-class checks |
 | `chapter-02/` | Chapter 2: both deck editions, the instructor's three page run card, the students' lecture notes, and the in-class checks |
+| `chapter-03/` | Chapter 3: the same set as Chapter 2 |
 | `build/` | The scripts that generate all of them |
 
 The deck, the instructor's document and the lecture notes are three views of

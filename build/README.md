@@ -16,8 +16,8 @@ python3 -m venv .venv
 ```
 
 `python-pptx` 1.0.2 and `matplotlib` 3.9.4 are what the committed deck was
-built with. matplotlib draws the charts this course owns, nine in Chapter 1
-and eight in Chapter 2; see **Charts** below for why they are generated
+built with. matplotlib draws the charts this course owns, nine in Chapter 1,
+eight in Chapter 2 and six in Chapter 3; see **Charts** below for why they are generated
 rather than committed as images, and for the one consequence that has for
 reproducibility.
 
@@ -108,6 +108,8 @@ different readers. Keeping them apart is the point.
 | `chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | Readable prose, the figures, every term defined once, summary and review questions |
 | `chapter-02/FIN1209-Chapter-02-Run-Card.pdf` | The instructor | Three pages: minutes per part, what to cut first, what must never be cut |
 | `chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf` | The students | The same shape as Chapter 1's |
+| `chapter-03/FIN1209-Chapter-03-Run-Card.pdf` | The instructor | Three pages, Chapter 2's shape |
+| `chapter-03/FIN1209-Chapter-03-Lecture-Notes.pdf` | The students | The same shape as Chapter 1's |
 
 **The instructor document is not the same length in every chapter, and that
 is deliberate.** Chapter 1 shipped a 26 page teaching plan and the instructor
@@ -380,6 +382,8 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | `build/build_plan.py` | Resolves the plan against the deck and renders the PDF. |
 | `build/content_chapter02.py`, `build/charts_chapter02.py`, `build/plan_chapter02.py`, `build/lecture_chapter02.py` | Chapter 2, the same four files. |
 | `build/build_chapter2.py`, `build/build_plan2.py`, `build/build_lecture_notes2.py` | Chapter 2's three builders, each a copy of Chapter 1's with the names changed. |
+| `build/content_chapter03.py`, `build/charts_chapter03.py`, `build/plan_chapter03.py`, `build/lecture_chapter03.py` | Chapter 3, the same four files. |
+| `build/build_chapter3.py`, `build/build_plan3.py`, `build/build_lecture_notes3.py` | Chapter 3's three builders, each a copy of Chapter 2's with the names changed. |
 | `build/lecturekit.py` | Every lecture notes block renderer, its print CSS, and the figure plate machinery. Takes the palette and the paginator from notekit. Knows nothing about any chapter. |
 | `build/lecture_chapter01.py` | Chapter 1 lecture notes as plain data. No layout code. |
 | `build/build_lecture_notes.py` | Checks the notes against the deck and renders the PDF. |
@@ -407,8 +411,8 @@ files, not a redesign.
 
 If a chapter needs a shape a kit has not got, **add the form to the kit** and
 leave the existing ones alone. Chapter 2 added seven chart forms and two data
-generators to `chartkit.py` that way, and both Chapter 1 decks still rebuild
-byte for byte.
+generators to `chartkit.py` that way, and Chapter 3 added five more; every
+earlier deck still rebuilds byte for byte.
 
 The activity is the same move again and a little more work, because its
 numbers are real. Copy `activity_chapter01.py`, and copy `activity_data.py`

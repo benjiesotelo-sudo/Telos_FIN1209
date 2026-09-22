@@ -28,11 +28,11 @@ on tooling: it contradicts itself over whether a Bloomberg terminal is
 involved. Assume no paid terminal; Activity 1 needs only a browser, a Google
 Sheet and a free charting site.
 
-## Two chapters are built, and the newer one is the shape to copy
+## Three chapters are built; copy the newest
 
-Chapter 1 is 227 slides and Chapter 2 is 175. Chapter 2 is the same design
-done a second time and it is the fresher worked example; `TEMPLATE.md` says
-which files to copy from it and what changed since Chapter 1.
+Chapter 1 is 227 slides, Chapter 2 is 175 and Chapter 3 is 188. Chapters 2
+and 3 are the same design done again; `TEMPLATE.md` says which files to copy
+and what each chapter changed.
 
 ## The deck ships in two editions from one content file
 
@@ -57,9 +57,9 @@ has the environment, the design rules the build enforces, and the fonts.
 
 ## Our own charts are committed. The book's figures never are.
 
-Chapter 1 carries nine charts this course drew and Chapter 2 carries eight,
-each on a companion slide after the term it illustrates. They are the opposite
-case to the textbook figures in every respect, and the two must not be
+Chapter 1 carries nine charts this course drew, Chapter 2 eight and Chapter 3
+six, each on a companion slide after the term it illustrates. They are the
+opposite case to the textbook figures in every respect, and the two must not be
 conflated:
 
 | | Book figure | Our chart |
@@ -77,11 +77,12 @@ data is invented from fixed seeds, because we hold no market data licence, and
 every chart says so in its credit line.
 
 **One output folder per chapter**, `build/generated/charts` for Chapter 1 and
-`charts-02` for Chapter 2. The letters restart at A in every chapter and a
-shared folder would have one chapter's Chart A overwrite another's.
+`charts-02`, `charts-03` after it. The letters restart at A in every chapter
+and a shared folder would have one chapter's Chart A overwrite another's.
 
 If a chapter needs a chart shape chartkit has not got, **add the form** rather
-than editing an existing one; Chapter 2 added seven. After any kit change,
+than editing an existing one; Chapter 2 added seven and Chapter 3 five. After
+any kit change,
 rebuild every earlier chapter and confirm the decks are byte identical.
 
 The one trap: the committed decks embed those PNGs, so the artwork check
@@ -164,8 +165,8 @@ the `--with-figures` build, which has to be made from a checkout outside this
 repository. So never hand a chapter deliverable to a class or an LMS straight
 from a repo clone, and check which one you are holding before it leaves:
 `unzip -l <deck>.pptx | grep -c ppt/media` is the chapter's chart count for a
-committed deck (9 for Chapter 1, 8 for Chapter 2), and that plus one image per
-placed figure for the real one.
+committed deck (9 for Chapter 1, 8 for Chapter 2, 6 for Chapter 3), and that
+plus one image per placed figure for the real one.
 
 Every chapter inherits the constraint. See the chapter's own `README.md` for
 the build commands and the figure file naming.
@@ -180,6 +181,8 @@ Do not merge them, and do not let content leak between them.
 | `chapter-01/FIN1209-Chapter-01-Lecture-Notes.pdf` | The students | `build/build_lecture_notes.py` | `build/lecture_chapter01.py` |
 | `chapter-02/FIN1209-Chapter-02-Run-Card.pdf` | The instructor | `build/build_plan2.py` | `build/plan_chapter02.py` |
 | `chapter-02/FIN1209-Chapter-02-Lecture-Notes.pdf` | The students | `build/build_lecture_notes2.py` | `build/lecture_chapter02.py` |
+| `chapter-03/FIN1209-Chapter-03-Run-Card.pdf` | The instructor | `build/build_plan3.py` | `build/plan_chapter03.py` |
+| `chapter-03/FIN1209-Chapter-03-Lecture-Notes.pdf` | The students | `build/build_lecture_notes3.py` | `build/lecture_chapter03.py` |
 
 The **instructor's document** carries timing, cuts, speaker cues, check
 answers and slide numbers. The **lecture notes** are the student facing record
@@ -197,9 +200,10 @@ and `TEMPLATE.md` has the three things a run card does.
 **Cost the minutes rather than guessing them, and print the honest total.**
 The rate is calibrated on what happened in the room: Chapter 1's openers plus
 its first four parts is 155 slides, and 155 slides is what 180 minutes bought.
-Chapter 2 comes to 202 minutes at that rate and its run card says so, then
-names exactly which twenty three minutes come out to land it at 180.
-`chapter-02/README.md` has the arithmetic.
+Chapter 2 comes to 202 minutes at that rate and Chapter 3 to 219, and each
+run card says so, then names exactly which minutes come out to land at 180.
+The per slide weights are written down in `chapter-03/README.md`, with the
+check that they reproduce Chapter 2's card.
 
 Layout lives in `build/notekit.py` and `build/lecturekit.py`, which know
 nothing about any chapter; lecturekit takes the FEU palette and the paginator
@@ -266,7 +270,16 @@ The answer key rules are enforced for the deck's own checks: no letter over 35
 percent or under 15, and no three identical answers in a row. Those cannot
 regress silently there, but the guard reaches no further; see the next section.
 
-## The closing slides are not validated
+## The term slide check reads low, and the closing slides are not checked
+
+`deckkit._term_bottom()` measures a term slide at a smaller type size than
+`render_term` actually uses, so a term the validator puts at 6.44in can render
+to 6.89in, past the progress marker, and build clean. Chapter 2 ships three
+terms at 6.59in. Chapter 3 holds every term to seven wrapped lines at 19pt,
+which is 6.28in rendered. Before trusting a term, add up its rows the way
+`render_term` lays them out: from 2.42in, each row is 0.42in plus its wrapped
+text plus 0.24in, at the size `render_term` chose, not the one the check did.
+
 
 `deckkit.validate()` walks `chapter.sections` only, so the `CLOSING` tuple in
 `build/content_chapter01.py` escapes every design rule: the six line limit, the
@@ -281,6 +294,13 @@ found under `chapter.sections` and nothing else, so a quiz, a worksheet or an
 answer sheet produced by any other path is unguarded. Tally those by hand. An
 early build of the Chapter 1 key put 37 of 50 answers on B, which scored 74
 percent for a student who simply picked B every time.
+
+## Bold in the lecture notes covers whole sentences
+
+The paginator moves a bold element whole and splits prose only at a sentence
+end, so a bold phrase in the middle of a sentence lets a page break fall
+inside the sentence, and nothing fails. Chapter 3's figure build did it twice.
+Bold a whole sentence or nothing, in `Para` text; lists never split.
 
 ## The two PDFs are not byte-reproducible; the decks are
 

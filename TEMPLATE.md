@@ -1,14 +1,18 @@
 # Building the next chapter
 
-Read this before you touch anything. Three chapters are built.
+Read this before you touch anything. Four chapters are built.
 
 - **Chapter 1** is the original template: 227 slides, 25 checks carrying 50
   items, 49 terms, 35 book figures and 9 charts of our own.
 - **Chapter 2** is the same design done a second time: 175 slides, 21 checks
   carrying 42 items, 27 terms, 26 book figures and 8 charts.
 - **Chapter 3** is the third: 188 slides, 23 checks carrying 46 items, 39
-  terms, 40 book figures and 6 charts. It is the freshest worked example and
-  the one to copy; the file names below say `2`, and `3` works the same way.
+  terms, 40 book figures and 6 charts. It is the freshest worked example of
+  the full set and the one to copy; the file names below say `2`, and `3`
+  works the same way.
+- **Chapter 4** is a trial of a leaner deck: 79 slides, 11 checks carrying
+  22 items, 6 terms, all 32 of the book's figures and 18 charts. It ships
+  the deck and nothing else. See **The lean form** below before you copy it.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -165,6 +169,8 @@ The slide types are dataclasses in `build/deckkit.py`:
 - `Check(label, questions)` - exactly two `Question(stem, options, answer,
   reason)`. Renders as a question slide plus a reveal slide, so a check always
   costs two slides.
+- `Pair(left, picture, text_w, notes)` - a `Content` or a `Term` on the left
+  and a `Figure` or a `Chart` on the right, on one slide. Added for Chapter 4.
 - `Recap(items, notes)` - the you-now-know close of a section.
 - `Closing(title, lines, accent, notes)` - the wrap-up slides.
 
@@ -231,6 +237,98 @@ teaching move rather than a set of slides. Chapter 1's Figures 1.9 to 1.15 are
 the same chart read seven ways and they run straight through without stopping,
 because that sequence *is* the argument that analysis is subjective. If your
 chapter has one of these, say so in the plan and mark it uncuttable.
+
+---
+
+## The lean form, tried in Chapter 4
+
+The slow pacing of Chapters 1 to 3 was good for learning and too slow for the
+semester: about 200 slides for a chapter of 26 to 34 pages. Chapter 4 is the
+instructor's trial of the fewest slides from which a chapter can still be
+learned and taught properly. No length was set in advance. It came to 79
+slides and 136 minutes at the calibrated rate, against 188 and 219 for
+Chapter 3. `chapter-04/README.md` is the full account; this is what to carry
+to the next chapter if the trial is kept.
+
+**Read this first: the first build of Chapter 4 was sent back.** It was 46
+slides, and the instructor found three things wrong with it. Each is now a
+rule.
+
+1. **Every idea has a picture beside it.** Five text slides in a row could
+   not be taught from. A book figure where the book has one, otherwise one of
+   our own charts. If a slide has no picture, be able to say why.
+2. **A check is a question slide and then a reveal slide**, as in Chapters 1
+   to 3. Revealing the answer on the question slide cannot be presented in a
+   room, and the renderer that did it has been removed.
+3. **Lean cuts a slide that teaches nothing new, and never what the book
+   says.** Place every figure the book prints and teach what the book says
+   about each. Dropping "duplicate" figures dropped the book's worked
+   examples with them.
+
+**What makes it lean:**
+
+1. **A picture goes beside its idea, not after it.** `Pair` costs little in
+   size: a figure in the right hand column is between eight and nine tenths
+   the width it has on a slide of its own, because a figure slide is limited
+   by height.
+2. **No dividers and no recaps.** `dividers=False` on the `Chapter`, and no
+   `recap` on a `Section`. The first slide of a part carries the book's
+   section number in its title.
+3. **The parts are the book's sections**, not six parts.
+4. **The frame is written, not generated.** `openers` on the `Chapter` gives
+   one objectives slide and one roadmap slide.
+
+**What it does not relax.** Every rule in the section above holds. A `Pair`
+with a `Term` on its left still teaches plain words, an example and the
+formal definition in that order, and the build still refuses text that runs
+past the safe bottom.
+
+**A section that borrows a later chapter's tool is taught as far as the book
+takes it, and no further.** Chapter 4 uses open interest, whipsaws,
+divergence and a dozen sentiment indicators without explaining any of them.
+The slide teaches what the section says, names in a caption what it uses and
+does not explain, and sets no question on the unexplained part.
+
+**Four things to know before writing a `Pair`:**
+
+- The text column is narrow, so it wraps into many lines. `_pair_fit()` in
+  `deckkit.py` measures it at the line height the renderer really produces
+  and steps the type down from 20pt to 15pt, or 18pt to 14pt for a term.
+  **Hold every pair to 17pt or larger**; nothing enforces it. The fix is
+  almost always to shorten one line by a few words so it wraps one line
+  fewer, and the measure is all or nothing, so print the line counts.
+- The picture's own `title` and `notes` are not used. The slide's title is
+  the left side's, and the speaker cues are the `Pair`'s.
+- A check may rest on what a pair's text says and never on what only its
+  picture shows, because the committed build prints a placeholder where a
+  book figure goes.
+- A chart for a `Pair` is drawn at the size of its picture column, not the
+  figure band. `chartkit.pair_size(text_w, term=...)` gives that size, and
+  the two forms added for Chapter 4, `annotated` and `gallery`, take it.
+  Keep one `text_w` for every chart beside a teaching slide and one for
+  every chart beside a term, so the charts are all drawn at two sizes.
+
+**Look at every chart at full size before placing it.** A callout is placed
+as an offset in points, so labels collide with each other and run off the
+edge of the plot, and nothing fails. Chapter 4's eighteen took three rounds.
+
+**Cost the minutes honestly.** Putting two things on one slide saves a click
+and not the talking, so a `Pair` is costed as the sum of its two parts. The
+weights are in `chapter-03/README.md`, and `build_chapter4.py` prints the
+sum for every part on every build.
+
+**What the trial did not build**, and what each would need if it is kept: a
+student edition (the switch already drops every check; look at the first and
+last slide of every part), lecture notes (the notes build walks the deck for
+figures and terms in `build_lecture_notes3.py` and does not look inside a
+`Pair`), a run card (the card build numbers the deck with its own traversal
+in `build_plan3.py`, which assumes a divider and a recap for every part), and
+a check audit, which is written by hand.
+
+**The figure extraction is not always in figure order.** `pdfimages` returns
+the images of a page in the order the PDF stores them. Chapter 4's three
+figures on one page came out as 4.28, 4.29, 4.27. Look at every extracted
+file against its caption before naming it.
 
 ---
 

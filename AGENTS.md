@@ -28,11 +28,12 @@ on tooling: it contradicts itself over whether a Bloomberg terminal is
 involved. Assume no paid terminal; Activity 1 needs only a browser, a Google
 Sheet and a free charting site.
 
-## Three chapters are built; copy the newest
+## Four chapters are built; copy Chapter 3 for the full set
 
-Chapter 1 is 227 slides, Chapter 2 is 175 and Chapter 3 is 188. Chapters 2
-and 3 are the same design done again; `TEMPLATE.md` says which files to copy
-and what each chapter changed.
+Chapter 1 is 227 slides, Chapter 2 is 175, Chapter 3 is 188 and Chapter 4 is
+79. Chapters 2 and 3 are the same design done again and Chapter 4 is a leaner
+trial that ships a deck and nothing else; `TEMPLATE.md` says which files to
+copy and what each chapter changed.
 
 ## The deck ships in two editions from one content file
 

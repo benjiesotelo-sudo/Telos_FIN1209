@@ -17,7 +17,7 @@ python3 -m venv .venv
 
 `python-pptx` 1.0.2 and `matplotlib` 3.9.4 are what the committed deck was
 built with. matplotlib draws the charts this course owns, nine in Chapter 1,
-eight in Chapter 2 and six in Chapter 3; see **Charts** below for why they are generated
+eight in Chapter 2, six in Chapter 3 and eighteen in Chapter 4; see **Charts** below for why they are generated
 rather than committed as images, and for the one consequence that has for
 reproducibility.
 
@@ -384,6 +384,7 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | `build/build_chapter2.py`, `build/build_plan2.py`, `build/build_lecture_notes2.py` | Chapter 2's three builders, each a copy of Chapter 1's with the names changed. |
 | `build/content_chapter03.py`, `build/charts_chapter03.py`, `build/plan_chapter03.py`, `build/lecture_chapter03.py` | Chapter 3, the same four files. |
 | `build/build_chapter3.py`, `build/build_plan3.py`, `build/build_lecture_notes3.py` | Chapter 3's three builders, each a copy of Chapter 2's with the names changed. |
+| `build/content_chapter04.py`, `build/charts_chapter04.py`, `build/build_chapter4.py` | Chapter 4, a trial of a leaner deck. The deck only: no plan and no notes. Eighteen charts, each beside the idea it shows. See `chapter-04/README.md`. |
 | `build/lecturekit.py` | Every lecture notes block renderer, its print CSS, and the figure plate machinery. Takes the palette and the paginator from notekit. Knows nothing about any chapter. |
 | `build/lecture_chapter01.py` | Chapter 1 lecture notes as plain data. No layout code. |
 | `build/build_lecture_notes.py` | Checks the notes against the deck and renders the PDF. |
@@ -412,7 +413,10 @@ files, not a redesign.
 If a chapter needs a shape a kit has not got, **add the form to the kit** and
 leave the existing ones alone. Chapter 2 added seven chart forms and two data
 generators to `chartkit.py` that way, and Chapter 3 added five more; every
-earlier deck still rebuilds byte for byte.
+earlier deck still rebuilds byte for byte. Chapter 4 added one slide type to
+`deckkit.py` the same way, `Pair`, three options on `Chapter` that default
+to the frame the earlier chapters have, and two chart forms to `chartkit.py`,
+`annotated` and `gallery`; `chapter-04/README.md` describes them.
 
 The activity is the same move again and a little more work, because its
 numbers are real. Copy `activity_chapter01.py`, and copy `activity_data.py`
@@ -443,6 +447,12 @@ that looks wrong in the lecture room:
 - No em dashes or en dashes anywhere. Plain dashes only.
 - No slide's content runs past the safe bottom of the page, computed from
   estimated text metrics, so nothing collides with the progress marker.
+- A `Pair` has a `Content` or a `Term` on its left and a `Figure` or a
+  `Chart` as its picture, the picture obeys the rules of its own type, and
+  the text column fits above the safe bottom at the smallest size the
+  renderer will use. The check and the renderer share one measuring function.
+- A chapter's own opening slides, when it supplies them, obey the body line
+  limit, the dash ban, the safe bottom and the speaker cue count.
 - The answer key is spread across A, B, C and D: no letter may hold more
   than 35 percent or fewer than 15 percent of the items, and no three
   consecutive items may share an answer.

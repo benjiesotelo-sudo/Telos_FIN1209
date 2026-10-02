@@ -256,6 +256,25 @@ class Check(Slide):
 
 
 @dataclass
+class Pair(Slide):
+    """One idea and the picture that shows it, side by side on one slide.
+
+    ``left`` is an ordinary Content or Term and ``picture`` an ordinary
+    Figure or Chart, so the two keep their own types, their own credit lines
+    and their own rules about what may be committed. The left slide's title
+    is the slide's title and the picture's own title is not drawn. The
+    speaker cues are the Pair's; any on its two parts are ignored.
+
+    ``text_w`` is the width of the text column in inches. Widen it for a
+    long definition beside a simple diagram.
+    """
+
+    left: Slide | None = None
+    picture: Slide | None = None
+    text_w: float = 5.0
+
+
+@dataclass
 class Recap(Slide):
     """The you-now-know close of a section."""
 
@@ -278,7 +297,8 @@ class Section:
     minutes: str
     covers: tuple[str, ...]
     slides: tuple[Slide, ...]
-    recap: Recap
+    # None renders no recap slide, for a part whose last check is its recap.
+    recap: Recap | None = None
 
 
 @dataclass
@@ -293,6 +313,18 @@ class Chapter:
     roadmap: tuple[str, ...]
     sections: tuple[Section, ...]
     closing: tuple[Slide, ...]
+    # The three below shape the frame build() generates around the parts.
+    # Left at their defaults they give the frame Chapters 1 to 3 were built
+    # with: generated objectives and roadmap slides, and a divider slide
+    # opening every part.
+    #
+    # ``openers`` replaces the generated objectives and roadmap slides with
+    # the chapter's own Content slides. ``title_notes`` replaces the generated
+    # cues on the title slide. ``dividers`` set to False drops the divider
+    # slide in front of every part.
+    openers: tuple[Slide, ...] | None = None
+    title_notes: tuple[str, ...] = ()
+    dividers: bool = True
 
 
 # --------------------------------------------------------------------------
@@ -880,6 +912,207 @@ def render_reveal(prs, s: Check, marker, index, total):
     ))
 
 
+# --------------------------------------------------------------------------
+# A picture beside the idea it shows. Added for Chapter 4 as a renderer of
+# its own, so no renderer an earlier chapter uses was touched to make room
+# for it.
+# --------------------------------------------------------------------------
+
+# How far apart a Pair holds its text column and its picture column.
+PAIR_GAP = 0.35
+# A narrow column wraps into many more lines than a full width slide does, so
+# a Pair cannot lean on the loose line height the wide slides get away with.
+# _text_height counts a line as its point size times the spacing it is given,
+# and a rendered line of Arial is about 1.2 times its point size before any
+# line spacing is applied. These are the spacings render_pair sets and the
+# heights _pair_fit therefore measures with.
+_PAIR_NATURAL = 1.2
+_PAIR_BODY_SPACING = 1.05
+_PAIR_BODY_H = _PAIR_BODY_SPACING * _PAIR_NATURAL
+_PAIR_TIGHT_H = 1.0 * _PAIR_NATURAL
+# The picture column's band ends here and its credit line sits under it.
+PAIR_BAND_BOTTOM = 6.08
+PAIR_CREDIT_Y = 6.18
+# Where the picture column starts beside a term, whose heading sits lower
+# than a teaching slide's. chartkit reads this to draw a chart that fills
+# the column exactly.
+PAIR_TERM_TOP = 2.36
+
+
+def _pair_fit(s: Pair) -> tuple[float, float]:
+    """The body size render_pair will use, and where its text column ends.
+
+    One function for the renderer and for the validator, on purpose: the
+    term slide check measures at a different size from the one the renderer
+    picks, and reads low because of it.
+    """
+    left, width = s.left, s.text_w
+    if isinstance(left, Term):
+        rows = ((left.plain, "bold"), (left.example, "regular"),
+                (left.formal, "regular"))
+        for pt in (18.0, 17.0, 16.0, 15.0, 14.0):
+            bottom = 2.42 + sum(
+                0.30 + _text_height(text, width - 0.3, pt, weight,
+                                    spacing=_PAIR_TIGHT_H) + 0.20
+                for text, weight in rows if text)
+            if bottom <= SAFE_BOTTOM or pt == 14.0:
+                return pt, bottom
+    for pt in (20.0, 19.0, 18.0, 17.0, 16.0, 15.0):
+        bottom = 2.15
+        if left.lines:
+            bottom += sum(_text_height(line, width, pt,
+                                       spacing=_PAIR_BODY_H) + 0.18
+                          for line in left.lines) + 0.22
+        if left.accent:
+            bottom += (_text_height(left.accent, width - 0.32, pt + 1, "bold",
+                                    spacing=_PAIR_TIGHT_H) + 0.16 + 0.22)
+        if left.caption:
+            bottom += _text_height(left.caption, width, 13,
+                                   spacing=_PAIR_TIGHT_H)
+        if bottom <= SAFE_BOTTOM or pt == 15.0:
+            return pt, bottom
+    return 15.0, SAFE_BOTTOM
+
+
+def _pair_picture(slide, picture, x, top, w, h):
+    """Draw a Figure or a Chart into the box given, or its placeholder.
+
+    The artwork is fitted to the box and sits at its top, level with the
+    text beside it, with its credit line directly under it. The placeholder
+    fills the box and carries its credit at the foot, so a build without the
+    artwork gives the text column exactly the same room.
+    """
+    is_figure = isinstance(picture, Figure)
+    root = FIGURES_DIR if is_figure else CHARTS_DIR
+    path = None if root is None else Path(root) / picture.filename
+
+    if path is not None and path.is_file():
+        px_w, px_h = _png_size(path)
+        pad = 0.13
+        scale = min((w - 2 * pad) / px_w, (h - 2 * pad) / px_h)
+        pic_w, pic_h = px_w * scale, px_h * scale
+        pic_x = x + (w - pic_w) / 2.0
+        pic_y = top + pad
+        _rect(slide, Inches(pic_x - pad), Inches(pic_y - pad),
+              Inches(pic_w + 2 * pad), Inches(pic_h + 2 * pad), WHITE,
+              line=BORDER)
+        slide.shapes.add_picture(str(path), Inches(pic_x), Inches(pic_y),
+                                 Inches(pic_w), Inches(pic_h))
+        # The credit sits just under the artwork rather than at the foot of
+        # the band, so a shallow picture and its credit read as one thing.
+        credit_y = pic_y + pic_h + pad + 0.10
+    else:
+        credit_y = PAIR_CREDIT_Y
+        _rect(slide, Inches(x), Inches(top), Inches(w), Inches(h), WHITE,
+              line=BORDER)
+        _rect(slide, Inches(x), Inches(top), Inches(w), Pt(4), GOLD)
+        frame = _textbox(slide, Inches(x + 0.45), Inches(top + 0.5),
+                         Inches(w - 0.9), Inches(h - 0.8))
+        _para(frame,
+              f"FIGURE {picture.number}" if is_figure else picture.name.upper(),
+              size=14, color=MUTED, bold=True, first=True, space_after=12)
+        _para(frame, picture.shows, size=18, color=INK, font=DISPLAY_FONT,
+              line_spacing=1.2, space_after=14)
+        _para(frame,
+              ("The artwork is copyrighted and is not in the public "
+               "repository. Build with assets/figures/ present to place it "
+               "here.") if is_figure else
+              ("This chart is generated by build/chartkit.py and was not "
+               "drawn for this build. Rerun the build to place it."),
+              size=12, color=MUTED, italic=True, line_spacing=1.15)
+
+    # The credit keeps to one line: a second would run past the safe bottom
+    # under a placeholder, so a narrow column steps the type down instead.
+    credit_pt = next((pt for pt in (12.0, 11.0, 10.0, 9.0)
+                      if _line_count(picture.credit, w, pt) == 1), 9.0)
+    frame = _textbox(slide, Inches(x), Inches(credit_y), Inches(w),
+                     Inches(0.3))
+    _para(frame, picture.credit, size=credit_pt, color=MUTED, first=True)
+
+
+def render_pair(prs, s: Pair, marker):
+    """Text on the left, the picture that shows it on the right.
+
+    The left column is drawn the way its own slide type is drawn, a teaching
+    slide or a new term, only narrower. The picture keeps the credit line
+    its type carries everywhere else in the deck.
+    """
+    slide = _blank(prs)
+    left = s.left
+    text_w = Inches(s.text_w)
+    body_pt, _bottom = _pair_fit(s)
+
+    if isinstance(left, Term):
+        _ground(slide, PAPER)
+        _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GREEN)
+        _chip(slide, MARGIN, Inches(0.62), "NEW TERM", fill=GOLD,
+              text_color=INK, width=Inches(1.35))
+        frame = _textbox(slide, MARGIN, Inches(1.15), CONTENT_W, Inches(0.9))
+        _para(frame, left.term, size=32, color=GREEN, font=DISPLAY_FONT,
+              first=True, line_spacing=1.05)
+        _header_rule(slide, Inches(2.05))
+        _progress(slide, marker)
+
+        rows = (
+            # The same teaching order as render_term: plain words first.
+            ("In plain words", left.plain, True),
+            ("For example", left.example, False),
+            ("The formal definition", left.formal, False),
+        )
+        inner = s.text_w - 0.3
+        y = 2.42
+        for label, text, emphasise in rows:
+            if not text:
+                continue
+            text_h = _text_height(text, inner, body_pt,
+                                  "bold" if emphasise else "regular",
+                                  spacing=_PAIR_TIGHT_H)
+            _rect(slide, MARGIN, Inches(y + 0.05), Inches(0.07),
+                  Inches(text_h + 0.22), GOLD if emphasise else BORDER)
+            frame = _textbox(slide, MARGIN + Inches(0.3), Inches(y),
+                             text_w - Inches(0.3), Inches(text_h + 0.34))
+            _para(frame, label.upper(), size=10.5, color=MUTED, bold=True,
+                  first=True, space_after=3)
+            _para(frame, text, size=body_pt, color=INK, bold=emphasise,
+                  line_spacing=1.0)
+            y += 0.30 + text_h + 0.20
+        band_top = PAIR_TERM_TOP
+    else:
+        _content_frame(slide, left.title, marker)
+        top = 2.15
+        if left.lines:
+            frame = _textbox(slide, MARGIN, Inches(top), text_w, Inches(3.4))
+            for i, line in enumerate(left.lines):
+                _para(frame, line, size=body_pt, color=INK, first=(i == 0),
+                      space_after=11, line_spacing=_PAIR_BODY_SPACING)
+            top += sum(_text_height(line, s.text_w, body_pt,
+                                    spacing=_PAIR_BODY_H)
+                       + 0.18 for line in left.lines) + 0.22
+        if left.accent:
+            accent_h = _text_height(left.accent, s.text_w - 0.32,
+                                    body_pt + 1, "bold",
+                                    spacing=_PAIR_TIGHT_H) + 0.16
+            _rect(slide, MARGIN, Inches(top), Inches(0.09), Inches(accent_h),
+                  GOLD)
+            frame = _textbox(slide, MARGIN + Inches(0.32), Inches(top + 0.04),
+                             text_w - Inches(0.32), Inches(accent_h))
+            _para(frame, left.accent, size=body_pt + 1, color=INK, bold=True,
+                  first=True, line_spacing=1.0)
+            top += accent_h + 0.22
+        if left.caption:
+            frame = _textbox(slide, MARGIN, Inches(top), text_w, Inches(0.8))
+            _para(frame, left.caption, size=13, color=MUTED, italic=True,
+                  first=True, line_spacing=1.0)
+        band_top = FIGURE_TOP
+
+    x = MARGIN.inches + s.text_w + PAIR_GAP
+    _pair_picture(slide, s.picture, x, band_top,
+                  CONTENT_W.inches - s.text_w - PAIR_GAP,
+                  PAIR_BAND_BOTTOM - band_top)
+
+    _notes(slide, s.notes)
+
+
 def render_recap(prs, s: Recap, marker):
     slide = _blank(prs)
     _ground(slide, PAPER)
@@ -1021,10 +1254,78 @@ def _validate(chapter: Chapter) -> list[str]:
                     if isinstance(item, str):
                         check_text(where, item)
 
+    def check_frame_slide(where, slide):
+        """A chapter's own opening slide: the rules a section slide obeys."""
+        if not isinstance(slide, Content):
+            problems.append(f"{where}: an opening slide must be a Content slide")
+            return
+        walk(where, slide)
+        if len(slide.lines) > MAX_BODY_LINES:
+            problems.append(
+                f"{where}: {len(slide.lines)} body lines, limit is {MAX_BODY_LINES}"
+            )
+        bottom = _content_bottom(slide)
+        if bottom > SAFE_BOTTOM:
+            problems.append(
+                f"{where}: content runs to {bottom:.2f}in, past the "
+                f"{SAFE_BOTTOM}in safe bottom. Split the slide or shorten it."
+            )
+        if not 2 <= len(slide.notes) <= 3:
+            problems.append(f"{where}: keep speaker cues to two or three lines")
+
+    def check_pair(where, slide):
+        left, picture = slide.left, slide.picture
+        if not isinstance(left, (Content, Term)):
+            problems.append(f"{where}: a pair's left side is a Content or a Term")
+            return
+        if not isinstance(picture, (Figure, Chart)):
+            problems.append(f"{where}: a pair's picture is a Figure or a Chart")
+            return
+        walk(where, left)
+        walk(where, picture)
+        if isinstance(left, Content) and len(left.lines) > MAX_BODY_LINES:
+            problems.append(
+                f"{where}: {len(left.lines)} body lines, limit is {MAX_BODY_LINES}"
+            )
+        if not picture.shows:
+            problems.append(
+                f"{where}: the picture needs a 'shows' line, which is what "
+                "the placeholder prints without the artwork"
+            )
+        if isinstance(picture, Figure) and (not picture.number
+                                            or "." not in picture.number):
+            problems.append(f"{where}: a figure needs a book figure number")
+        if isinstance(picture, Chart) and not (
+                len(picture.letter) == 1 and picture.letter.isupper()):
+            problems.append(
+                f"{where}: a chart is lettered in its own namespace, one "
+                f"capital letter, not {picture.letter!r}"
+            )
+        if not 3.5 <= slide.text_w <= 8.0:
+            problems.append(
+                f"{where}: text_w is {slide.text_w}in; keep the text column "
+                "between 3.5in and 8.0in so both columns stay readable"
+            )
+            return
+        size, bottom = _pair_fit(slide)
+        if bottom > SAFE_BOTTOM:
+            problems.append(
+                f"{where}: the text column runs to {bottom:.2f}in at "
+                f"{size:.0f}pt, its smallest size, past the {SAFE_BOTTOM}in "
+                "safe bottom. Shorten it, widen text_w, or split the slide."
+            )
+
+    for i, slide in enumerate(chapter.openers or ()):
+        check_frame_slide(f"opening slide {i + 1}", slide)
+    for cue in chapter.title_notes:
+        check_text("title slide cues", cue)
+
     for section in chapter.sections:
         for i, slide in enumerate(section.slides):
             where = f"section {section.number} slide {i + 1}"
             walk(where, slide)
+            if isinstance(slide, Pair):
+                check_pair(where, slide)
             if isinstance(slide, Content) and len(slide.lines) > MAX_BODY_LINES:
                 problems.append(
                     f"{where}: {len(slide.lines)} body lines, limit is {MAX_BODY_LINES}"
@@ -1081,11 +1382,11 @@ def _validate(chapter: Chapter) -> list[str]:
                 problems.append(f"{where}: content slides need speaker cues")
             if slide.notes and len(slide.notes) > 3:
                 problems.append(f"{where}: keep speaker cues to two or three lines")
-        walk(f"section {section.number} recap", section.recap)
+        if section.recap is not None:
+            walk(f"section {section.number} recap", section.recap)
 
-    letters_used = [slide.letter
-                    for section in chapter.sections
-                    for slide in section.slides if isinstance(slide, Chart)]
+    letters_used = [slide.letter for slide in _pictures(chapter)
+                    if isinstance(slide, Chart)]
     for letter in sorted({x for x in letters_used if letters_used.count(x) > 1}):
         problems.append(
             f"chart {letter} is used on more than one slide; the letters are "
@@ -1190,7 +1491,7 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
         title=chapter.title,
         subtitle=chapter.subtitle,
         presenter=chapter.presenter,
-        notes=(
+        notes=chapter.title_notes or (
             "Greet the room, then say what today buys them: after this session "
             "they can read a chart argument and say what it does and does not claim.",
             "Point at the roadmap slide next and promise a clean stopping point "
@@ -1198,49 +1499,56 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
         ),
     ))
 
-    # The booklet lists seven objectives, which is more than one slide should
-    # carry, so they are split rather than crammed.
-    objective_chunks = [chapter.objectives[i:i + 4]
-                        for i in range(0, len(chapter.objectives), 4)]
-    for n, chunk in enumerate(objective_chunks):
-        render_content(prs, Content(
-            title="What you will be able to do" if n == 0 else "What you will be able to do, continued",
-            lines=chunk,
-            notes=(
-                "Read these out once, slowly. These are the exact learning "
-                "objectives in the course booklet for this week.",
-                "Tell them every one of these is examinable.",
-            ),
-        ), marker=f"{chapter.chapter} - Learning objectives")
+    # A chapter that brings its own opening slides gets exactly those. The
+    # generated frame below is what every chapter without them has always had.
+    for slide in chapter.openers or ():
+        render_content(prs, slide, marker=f"{chapter.chapter} - Opening")
 
-    render_content(prs, Content(
-        title="How today is laid out",
-        lines=chapter.roadmap,
-        # The only line in the generated frame that names the checks. The
-        # student edition has none, so it says what is left that is true.
-        accent=("Six parts, a check every few terms, and a clean stop at "
-                "every boundary." if with_checks else
-                "Six parts, and a clean stop at every boundary."),
-        notes=(
-            "Say the shape of the session out loud: six parts, roughly twenty "
-            "five minutes each.",
-            "Tell them the checks are for reading the room, not for marks.",
-        ),
-    ), marker=f"{chapter.chapter} - Roadmap")
+    if chapter.openers is None:
+        # The booklet lists seven objectives, which is more than one slide should
+        # carry, so they are split rather than crammed.
+        objective_chunks = [chapter.objectives[i:i + 4]
+                            for i in range(0, len(chapter.objectives), 4)]
+        for n, chunk in enumerate(objective_chunks):
+            render_content(prs, Content(
+                title="What you will be able to do" if n == 0 else "What you will be able to do, continued",
+                lines=chunk,
+                notes=(
+                    "Read these out once, slowly. These are the exact learning "
+                    "objectives in the course booklet for this week.",
+                    "Tell them every one of these is examinable.",
+                ),
+            ), marker=f"{chapter.chapter} - Learning objectives")
+
+        render_content(prs, Content(
+            title="How today is laid out",
+            lines=chapter.roadmap,
+            # The only line in the generated frame that names the checks. The
+            # student edition has none, so it says what is left that is true.
+            accent=("Six parts, a check every few terms, and a clean stop at "
+                    "every boundary." if with_checks else
+                    "Six parts, and a clean stop at every boundary."),
+            notes=(
+                "Say the shape of the session out loud: six parts, roughly twenty "
+                "five minutes each.",
+                "Tell them the checks are for reading the room, not for marks.",
+            ),
+        ), marker=f"{chapter.chapter} - Roadmap")
 
     check_index = 0
     for section in chapter.sections:
-        render_section_open(prs, SectionOpen(
-            number=section.number,
-            total=total_sections,
-            title=section.title,
-            covers=section.covers,
-            minutes=section.minutes,
-            notes=(
-                f"Say we are starting Part {section.number} of {total_sections}.",
-                "Read the three covers lines, then move. Do not linger here.",
-            ),
-        ))
+        if chapter.dividers:
+            render_section_open(prs, SectionOpen(
+                number=section.number,
+                total=total_sections,
+                title=section.title,
+                covers=section.covers,
+                minutes=section.minutes,
+                notes=(
+                    f"Say we are starting Part {section.number} of {total_sections}.",
+                    "Read the three covers lines, then move. Do not linger here.",
+                ),
+            ))
 
         # The marker denominator has always counted the body of the section,
         # never the checks, so it is computed here from the slides this
@@ -1270,12 +1578,15 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
                 render_figure(prs, slide, marker)
             elif isinstance(slide, Chart):
                 render_chart(prs, slide, marker)
+            elif isinstance(slide, Pair):
+                render_pair(prs, slide, marker)
             else:
                 raise TypeError(f"unhandled slide type {type(slide).__name__}")
 
-        render_recap(prs, section.recap,
-                     marker=(f"Part {section.number} of {total_sections} - "
-                             f"{section.short}  |  recap"))
+        if section.recap is not None:
+            render_recap(prs, section.recap,
+                         marker=(f"Part {section.number} of {total_sections} - "
+                                 f"{section.short}  |  recap"))
 
     for slide in chapter.closing:
         if isinstance(slide, Closing):
@@ -1290,15 +1601,25 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
     return len(prs.slides._sldIdLst), (total_checks if with_checks else 0)
 
 
+def _pictures(chapter: Chapter):
+    """Every Figure and Chart the chapter places, in reading order, whether
+    it has a slide of its own or sits in a Pair."""
+    for section in chapter.sections:
+        for slide in section.slides:
+            if isinstance(slide, Pair):
+                slide = slide.picture
+            if isinstance(slide, (Figure, Chart)):
+                yield slide
+
+
 def figure_status(chapter: Chapter, figures_dir=None):
     """Every figure the chapter declares, and whether its artwork is present."""
     root = Path(figures_dir) if figures_dir else None
     out = []
-    for section in chapter.sections:
-        for slide in section.slides:
-            if isinstance(slide, Figure):
-                have = root is not None and (root / slide.filename).is_file()
-                out.append((slide.number, slide.filename, have))
+    for slide in _pictures(chapter):
+        if isinstance(slide, Figure):
+            have = root is not None and (root / slide.filename).is_file()
+            out.append((slide.number, slide.filename, have))
     return out
 
 
@@ -1306,11 +1627,10 @@ def chart_status(chapter: Chapter, charts_dir=None):
     """Every chart the chapter declares, and whether its artwork is present."""
     root = Path(charts_dir) if charts_dir else None
     out = []
-    for section in chapter.sections:
-        for slide in section.slides:
-            if isinstance(slide, Chart):
-                have = root is not None and (root / slide.filename).is_file()
-                out.append((slide.letter, slide.filename, have))
+    for slide in _pictures(chapter):
+        if isinstance(slide, Chart):
+            have = root is not None and (root / slide.filename).is_file()
+            out.append((slide.letter, slide.filename, have))
     return out
 
 

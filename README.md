@@ -19,6 +19,7 @@ Official delivery runs on Canvas; this repository is the preparation workspace.
 | `chapter-01/` | Chapter 1: both deck editions, the instructor's 26 page teaching plan, the students' lecture notes, and the in-class checks |
 | `chapter-02/` | Chapter 2: both deck editions, the instructor's three page run card, the students' lecture notes, and the in-class checks |
 | `chapter-03/` | Chapter 3: the same set as Chapter 2 |
+| `chapter-04/` | Chapter 4: a trial of a leaner deck, 79 slides with a picture beside every idea, and the deck only |
 | `build/` | The scripts that generate all of them |
 
 The deck, the instructor's document and the lecture notes are three views of
@@ -58,4 +59,4 @@ Slides are built for a class that includes students with ADHD:
 - A visible progress marker so students always know where they are.
 - A two-question multiple choice check after every two or three new terms, with the answer revealed on the following slide.
 - Where a term is being explained, a chart of it on the slide immediately after. Chapter 1 Part 1 is the pilot at nine charts; Chapter 2 draws eight across six parts, because that chapter comes with twenty six figures of its own.
-- Every check answerable from the slides alone, with the answering slide ahead of the question. Each chapter carries the audit that proves it.
+- Every check answerable from the slides alone, with the answering slide ahead of the question. Chapters 1 to 3 each carry the audit that proves it.

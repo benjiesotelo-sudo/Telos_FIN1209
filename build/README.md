@@ -384,7 +384,8 @@ Once Marcellus SC is installed on the presenting machine, rebuild with:
 | `build/build_chapter2.py`, `build/build_plan2.py`, `build/build_lecture_notes2.py` | Chapter 2's three builders, each a copy of Chapter 1's with the names changed. |
 | `build/content_chapter03.py`, `build/charts_chapter03.py`, `build/plan_chapter03.py`, `build/lecture_chapter03.py` | Chapter 3, the same four files. |
 | `build/build_chapter3.py`, `build/build_plan3.py`, `build/build_lecture_notes3.py` | Chapter 3's three builders, each a copy of Chapter 2's with the names changed. |
-| `build/content_chapter04.py`, `build/charts_chapter04.py`, `build/build_chapter4.py` | Chapter 4, a trial of a leaner deck. The deck only: no plan and no notes. Eighteen charts, each beside the idea it shows. See `chapter-04/README.md`. |
+| `build/content_chapter04.py`, `build/charts_chapter04.py`, `build/plan_chapter04.py`, `build/lecture_chapter04.py` | Chapter 4, the lean deck: the same four files. Eighteen charts, each beside the idea it shows. See `chapter-04/README.md`. |
+| `build/build_chapter4.py`, `build/build_plan4.py`, `build/build_lecture_notes4.py` | Chapter 4's three builders. The deck build writes the answer sheet outside the repository; the card build numbers a deck with no dividers and checks its minutes against the deck. |
 | `build/lecturekit.py` | Every lecture notes block renderer, its print CSS, and the figure plate machinery. Takes the palette and the paginator from notekit. Knows nothing about any chapter. |
 | `build/lecture_chapter01.py` | Chapter 1 lecture notes as plain data. No layout code. |
 | `build/build_lecture_notes.py` | Checks the notes against the deck and renders the PDF. |
@@ -416,7 +417,12 @@ generators to `chartkit.py` that way, and Chapter 3 added five more; every
 earlier deck still rebuilds byte for byte. Chapter 4 added one slide type to
 `deckkit.py` the same way, `Pair`, three options on `Chapter` that default
 to the frame the earlier chapters have, and two chart forms to `chartkit.py`,
-`annotated` and `gallery`; `chapter-04/README.md` describes them.
+`annotated` and `gallery`; `chapter-04/README.md` describes them. Its
+companion documents added a part count to `notekit.DeckFacts`, which the
+run card's cover prints and which defaults to the six it used to have hard
+coded, and `lecturekit` now counts the sections in the sentence above the
+review questions instead of saying six. Both earlier chapters' PDFs rebuild
+identical by text.
 
 The activity is the same move again and a little more work, because its
 numbers are real. Copy `activity_chapter01.py`, and copy `activity_data.py`

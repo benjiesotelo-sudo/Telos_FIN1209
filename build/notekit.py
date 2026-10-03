@@ -593,7 +593,7 @@ def _cover(n: Notes, deck: "DeckFacts") -> str:
     <span><b>{deck.total_checks}</b> checks, {deck.total_checks * 2} items</span>
     <span><b>{deck.total_figures}</b> figures</span>
     <span><b>{deck.total_charts}</b> charts</span>
-    <span><b>6</b> parts</span>
+    <span><b>{deck.total_parts}</b> parts</span>
   </div>
   <p class="cov-by">{html.escape(n.presenter)}</p>
 </div>"""
@@ -611,6 +611,10 @@ class DeckFacts:
     total_figures: int = 0
     total_charts: int = 0     # the charts this course drew for itself
     part_checks: dict = field(default_factory=dict)   # part number -> [indices]
+    # What the cover prints. Chapters 1 to 3 have six parts and the cover
+    # used to have that hard coded; Chapter 4's parts are the book's nine
+    # sections, so its build passes the count. The default is the old value.
+    total_parts: int = 6
 
     def checks_in_part(self, number: int) -> list[int]:
         return self.part_checks.get(number, [])

@@ -454,6 +454,17 @@ def _back_head(text: str) -> str:
     return f"<h3>{html.escape(text)}</h3>"
 
 
+_COUNT_WORDS = ("zero", "one", "two", "three", "four", "five", "six", "seven",
+                "eight", "nine", "ten", "eleven", "twelve")
+
+
+def _count_word(n: int) -> str:
+    """A small count in words, for the one sentence that names how many
+    sections the notes have. Chapters 1 to 3 have six, which is the word that
+    used to be written into that sentence; Chapter 4 has the book's nine."""
+    return _COUNT_WORDS[n] if 0 <= n < len(_COUNT_WORDS) else str(n)
+
+
 def _key_terms(n: LectureNotes) -> str:
     rows = "".join(
         f'<li><span class="kt">{_inline(t)}</span>'
@@ -709,7 +720,8 @@ def render(notes: LectureNotes, figures: FigureFacts) -> str:
         render_block(Points(items=notes.summary, numbered=True), figures),
         _blk(f'{_back_head("Review questions")}'
              f'<p class="pp">These are the chapter\'s own review questions. '
-             f'Every one is answered somewhere in the six sections above, and '
+             f'Every one is answered somewhere in the '
+             f'{_count_word(len(notes.sections))} sections above, and '
              f'they are the shape the quiz takes.</p><ol>{rq}</ol>', cls="rq"),
         _blk(_key_terms(notes), cls="kx"),
         _blk(f'{_back_head("Sources")}<ul>{src}</ul>', cls="src"),

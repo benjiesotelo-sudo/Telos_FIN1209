@@ -1,6 +1,6 @@
 # Building the next chapter
 
-Read this before you touch anything. Four chapters are built.
+Read this before you touch anything. Five chapters are built.
 
 - **Chapter 1** is the original template: 227 slides, 25 checks carrying 50
   items, 49 terms, 35 book figures and 9 charts of our own.
@@ -16,6 +16,11 @@ Read this before you touch anything. Four chapters are built.
   run card and 33 pages of lecture notes. Its answer sheet and its check
   audit are written outside the repository. See **The lean form** below
   before you copy it.
+- **Chapter 5** is the lean form done a second time, and only the teaching
+  deck so far: 138 slides, 21 checks carrying 42 items, 8 terms, all 59 of
+  the book's figures and 26 charts. `chapter-05/README.md` has what it
+  found: the 26 chart limit, a figure whose labels are not in its image,
+  and a reveal slide that overflows in the PDF.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -350,6 +355,16 @@ the shape. Copy Chapter 4's, not Chapter 3's, for a lean chapter:
 the images of a page in the order the PDF stores them. Chapter 4's three
 figures on one page came out as 4.28, 4.29, 4.27. Look at every extracted
 file against its caption before naming it.
+
+**And a figure is not always all in its image.** Chapter 5's Figure 5.2 has
+its labels set as page text over the picture, so the extracted image is the
+bare bars. Compare each extracted file with the printed page, and render
+that figure from the page instead; `chapter-05/README.md` has the command.
+
+**A chapter can draw at most 26 charts.** `deckkit` names a chart by one
+capital letter and refuses anything else. Chapter 5 uses all 26 and leaves
+five list slides without a picture. Count the pictures a chapter needs
+before writing its slides, not after.
 
 ---
 

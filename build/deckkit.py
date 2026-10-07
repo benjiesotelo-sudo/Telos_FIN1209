@@ -126,6 +126,11 @@ class Slide:
     """Base for every slide the chapter content declares."""
 
     notes: tuple[str, ...] = field(default_factory=tuple)
+    # Where the slide's content comes from, and whose its numbers are: one
+    # short line printed bottom right, level with the progress marker. Added
+    # for Chapter 5. Empty draws nothing, which is every earlier chapter.
+    # Not called source: a Quote already has one, its attribution.
+    origin: str = ""
 
 
 @dataclass
@@ -450,6 +455,30 @@ def _progress(slide, marker, *, on_dark=False):
         color=WHITE if on_dark else MUTED,
         first=True,
     )
+
+
+# The origin line starts clear of the longest progress marker and may wrap
+# to a second line, which still ends above the foot of the slide.
+ORIGIN_X = 4.7
+ORIGIN_PT = 11.0
+ORIGIN_MAX_LINES = 2
+
+
+def _origin(prs, declared):
+    """Print a slide's origin line on the slide just rendered.
+
+    Called by build() after the renderer, so no renderer an earlier chapter
+    uses was touched to make room for it. A Check carries none: its two
+    slides are a question and its answer.
+    """
+    text = declared.origin
+    if not text:
+        return
+    slide = prs.slides[len(prs.slides._sldIdLst) - 1]
+    frame = _textbox(slide, MARGIN + Inches(ORIGIN_X), SLIDE_H - Inches(0.72),
+                     CONTENT_W - Inches(ORIGIN_X), Inches(0.5))
+    _para(frame, text, size=ORIGIN_PT, color=MUTED, italic=True,
+          align=PP_ALIGN.RIGHT, first=True)
 
 
 def _header_rule(slide, y):
@@ -1236,6 +1265,13 @@ def _quote_bottom(s: Quote) -> float:
     return top + 0.3 + _text_height(s.takeaway, CONTENT_W.inches, 21, "bold")
 
 
+def _chart_letter(letter: str) -> bool:
+    """A chart is lettered A to Z, and a chapter that draws a twenty seventh
+    goes on to AA, AB, the way a spreadsheet's columns do."""
+    return (1 <= len(letter) <= 2 and letter.isascii() and letter.isalpha()
+            and letter.isupper())
+
+
 def _validate(chapter: Chapter) -> list[str]:
     """Enforce the teaching brief's hard rules at build time, so a future
     chapter cannot quietly regress them."""
@@ -1253,6 +1289,13 @@ def _validate(chapter: Chapter) -> list[str]:
                 for item in value:
                     if isinstance(item, str):
                         check_text(where, item)
+
+    def check_origin(where, slide):
+        text = slide.origin
+        width = CONTENT_W.inches - ORIGIN_X - 0.2
+        if text and _line_count(text, width, ORIGIN_PT) > ORIGIN_MAX_LINES:
+            problems.append(f"{where}: the origin line runs past "
+                            f"{ORIGIN_MAX_LINES} lines")
 
     def check_frame_slide(where, slide):
         """A chapter's own opening slide: the rules a section slide obeys."""
@@ -1295,11 +1338,10 @@ def _validate(chapter: Chapter) -> list[str]:
         if isinstance(picture, Figure) and (not picture.number
                                             or "." not in picture.number):
             problems.append(f"{where}: a figure needs a book figure number")
-        if isinstance(picture, Chart) and not (
-                len(picture.letter) == 1 and picture.letter.isupper()):
+        if isinstance(picture, Chart) and not _chart_letter(picture.letter):
             problems.append(
                 f"{where}: a chart is lettered in its own namespace, one "
-                f"capital letter, not {picture.letter!r}"
+                f"capital letter, or two after Z, not {picture.letter!r}"
             )
         if not 3.5 <= slide.text_w <= 8.0:
             problems.append(
@@ -1317,6 +1359,7 @@ def _validate(chapter: Chapter) -> list[str]:
 
     for i, slide in enumerate(chapter.openers or ()):
         check_frame_slide(f"opening slide {i + 1}", slide)
+        check_origin(f"opening slide {i + 1}", slide)
     for cue in chapter.title_notes:
         check_text("title slide cues", cue)
 
@@ -1324,6 +1367,7 @@ def _validate(chapter: Chapter) -> list[str]:
         for i, slide in enumerate(section.slides):
             where = f"section {section.number} slide {i + 1}"
             walk(where, slide)
+            check_origin(where, slide)
             if isinstance(slide, Pair):
                 check_pair(where, slide)
             if isinstance(slide, Content) and len(slide.lines) > MAX_BODY_LINES:
@@ -1339,10 +1383,11 @@ def _validate(chapter: Chapter) -> list[str]:
                         "which is what the placeholder prints without the artwork"
                     )
             if isinstance(slide, Chart):
-                if not (len(slide.letter) == 1 and slide.letter.isupper()):
+                if not _chart_letter(slide.letter):
                     problems.append(
                         f"{where}: a chart is lettered in its own namespace, "
-                        f"one capital letter, not {slide.letter!r}. Book "
+                        f"one capital letter, or two after Z, not "
+                        f"{slide.letter!r}. Book "
                         "figure numbers belong to Figure."
                     )
                 if not slide.shows:
@@ -1503,6 +1548,7 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
     # generated frame below is what every chapter without them has always had.
     for slide in chapter.openers or ():
         render_content(prs, slide, marker=f"{chapter.chapter} - Opening")
+        _origin(prs, slide)
 
     if chapter.openers is None:
         # The booklet lists seven objectives, which is more than one slide should
@@ -1582,6 +1628,7 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
                 render_pair(prs, slide, marker)
             else:
                 raise TypeError(f"unhandled slide type {type(slide).__name__}")
+            _origin(prs, slide)
 
         if section.recap is not None:
             render_recap(prs, section.recap,
@@ -1595,6 +1642,7 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
             render_content(prs, slide, marker=f"{chapter.chapter} - Wrap up")
         else:
             raise TypeError(f"unhandled closing slide {type(slide).__name__}")
+        _origin(prs, slide)
 
     prs.save(str(out_path))
     _repack_deterministically(out_path)

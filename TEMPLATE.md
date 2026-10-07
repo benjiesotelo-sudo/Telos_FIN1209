@@ -1,6 +1,6 @@
 # Building the next chapter
 
-Read this before you touch anything. Four chapters are built.
+Read this before you touch anything. Five chapters are built.
 
 - **Chapter 1** is the original template: 227 slides, 25 checks carrying 50
   items, 49 terms, 35 book figures and 9 charts of our own.
@@ -16,6 +16,17 @@ Read this before you touch anything. Four chapters are built.
   run card and 33 pages of lecture notes. Its answer sheet and its check
   audit are written outside the repository. See **The lean form** below
   before you copy it.
+- **Chapter 5** is the lean form done a second time: 157 slides in the
+  teaching edition, 115 in the student edition, 21 checks carrying 42 items,
+  32 terms, all 59 of the book's figures and 47 charts. `chapter-05/README.md`
+  has what it found: a figure whose labels are not in its image, and a reveal
+  slide that overflows in the PDF. Its first build was sent back for where it put
+  the new-term marker, its second for using wave degrees before any slide
+  explained them, and its fourth for using breakout more widely than
+  Chapters 2 and 4 had without saying so; see **The new-term marker** below
+  before you write a `Term`. Its fifth was sent back for numbers on a chart
+  that no slide explained; see **Nothing is stated without its
+  explanation**, which is the instructor's standing rule for every slide.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of
@@ -151,7 +162,8 @@ The slide types are dataclasses in `build/deckkit.py`:
 - `Content(title, lines, accent, caption, notes)` - a teaching slide. Six body
   lines maximum, three preferred. `accent` is the one gold line, the thing to
   notice. `caption` is the small muted line under it.
-- `Term(term, plain, example, formal, notes)` - a new term. The three fields
+- `Term(term, plain, example, formal, notes)` - a new term, and only a new
+  one; see **The new-term marker** below. The three fields
   are the teaching order and they are not interchangeable; see below. An empty
   `formal` renders no formal row, which is how a term the book leaves
   undefined is taught.
@@ -176,6 +188,11 @@ The slide types are dataclasses in `build/deckkit.py`:
   and a `Figure` or a `Chart` on the right, on one slide. Added for Chapter 4.
 - `Recap(items, notes)` - the you-now-know close of a section.
 - `Closing(title, lines, accent, notes)` - the wrap-up slides.
+
+Every slide type also takes `origin`, one line printed bottom right, level
+with the progress marker: where the slide comes from and whose its numbers
+are. Added for Chapter 5; see **Nothing is stated without its explanation**
+below. Empty prints nothing, which is Chapters 1 to 4.
 
 `minutes` on a `Section` is the Full-plan time minus one minute per figure in
 that part. The teaching plan's Full column is the number including the figures.
@@ -213,6 +230,141 @@ CHECK chip, followed by a reveal slide carrying the letter, the option text and
 a one-line reason. The reason is not decoration: the letter alone teaches
 nothing. Checks carry no marks and the instructor says so out loud the first
 time, or the room freezes.
+
+**The new-term marker is for a new term, and for every one.** A `Term`
+slide carries the gold NEW TERM chip, and the instructor reads the chip
+literally: this word is new today. Chapter 5's first build marked *Uptrend*,
+which Chapter 2 introduced, and left *HWC* and *MWC*, which are new, on an
+ordinary slide. He sent it back for both. Five rules, and nothing in the
+build checks any of them:
+
+1. **First teaching only.** A term gets the marker on the first slide in
+   the course that says what it means, and nowhere else. If an earlier
+   chapter gave it a `Term` slide it is a recall: an ordinary `Content`
+   slide, with the chapter it came from named on the slide.
+2. **Every new name gets it.** Go through the book's chapter section by
+   section and list every name it introduces: an abbreviation, a "referred
+   to as", a named method, a named item in a numbered list. Each one that
+   is the subject of its slide is a `Term`. Names the book introduces
+   together as one idea share one slide and one marker: *HWC, MWC and LWC*,
+   or the four kinds of gap.
+3. **A word that was only used earlier is still new.** A word an earlier
+   chapter used in a sentence, printed in a figure or named "for later" has
+   not been taught. The slide that first says what it means gets the
+   marker, and its cue says where the word was met before.
+
+4. **Explain the word before a slide leans on it, and not inside one
+   formal row.** Chapter 5's second build named HWC, MWC and LWC on a term
+   slide whose formal row spoke of wave degrees, and no slide had said what
+   a wave degree is. The instructor could not follow the next six slides
+   or answer their check. When a term is built out of an idea the room has
+   not met, give the idea a plain slide and a picture of its own first,
+   then the term. When a word turns up before the section that teaches it,
+   say on the slide where that section is. When the book never explains
+   it, say that on the slide. A speaker cue does none of this: read every
+   slide as someone holding only the slides.
+
+5. **A word from an earlier chapter means what it meant there, or the
+   slide says what changed.** Chapters 2 and 4 used *breakout* of price
+   leaving a range; Chapter 5 used it of a prior peak, a trendline and a
+   channel, and the instructor read it as a contradiction. Before a chapter
+   ships, list every term the earlier decks mark, and every word they
+   taught by use, and check each use in the new deck. Where it is the same,
+   name the chapter on the slide. Where the new chapter widens it, recall
+   the earlier use first, by chapter, then say what is added, with a
+   picture of both. Where the book never defines the word, say so, and say
+   that the reading is ours. `chapter-05/README.md` has the table.
+
+What stays an ordinary slide: a statement, a question, a worked example, a
+comparison, and a list of things the book gives one line each, such as the
+other order types in 5.4. A new name inside such a list is taught there,
+unmarked, because a term slide teaches one idea in three steps.
+
+**Check it against the earlier content modules, not against memory.** This
+prints every term the course has marked so far. Then search the earlier
+modules for each candidate word, because rule 3 turns on how it was used:
+
+```
+.venv/bin/python - <<'EOF'
+import sys, importlib
+sys.path.insert(0, "build")
+import deckkit
+for n in range(1, 6):
+    for sec in importlib.import_module(f"content_chapter{n:02d}").CHAPTER.sections:
+        for s in sec.slides:
+            s = s.left if isinstance(s, deckkit.Pair) else s
+            if isinstance(s, deckkit.Term):
+                print(n, s.term)
+EOF
+grep -n -i "slippage" build/content_chapter0[1-4].py
+```
+
+`chapter-05/README.md` has the worked result: the 27 terms that gained the
+marker, the three that lost it, and what was left alone and why.
+
+**Nothing is stated without its explanation.** The instructor's standing
+rule, from his fifth review of Chapter 5: "I hate when things are said but
+not explained in any way." He had asked how the swings on a wave chart were
+computed. The answer was three waves of sizes we had picked, and no slide
+said so. Every number, rule, claim and chart choice says on the slide where
+it comes from and why. Four rules, and the build checks only the length of
+the origin line:
+
+1. **Where it comes from.** Every teaching slide carries an `origin` line:
+   the book page, the figure if there is one, and whose the numbers are.
+   Take the page from the book's text, not from memory. A slide that is
+   ours says so, and names the page it explains.
+2. **Why.** A reason the book gives goes on the slide. Where the book
+   states a rule and gives no reason, the origin line says it gives none.
+   Do not supply one: that is the standing principle at the top of this
+   file.
+3. **Our own numbers.** A peso example is said to be ours. When a chart is
+   built on an invented price and a slide reads numbers off it, a slide
+   says what the price was built from and why those sizes were chosen,
+   with a picture of the ingredients, before the numbers are used. Then
+   say that a real chart carries no such numbers.
+4. **Our drawing choices.** Say which part of a picture is the book's and
+   which is ours, and why ours was needed: usually that the book makes the
+   point in words, or in a sketch with no prices.
+
+A speaker cue does none of this, for the reason given under the new-term
+marker: the instructor studies from a PDF that has no cues.
+`chapter-05/README.md` has what the pass over 100 slides found.
+
+**A slide has to be followed by a student alone.** The instructor's last
+review of Chapter 5: "Slide 13 makes no sense ... really make sure everything
+makes sense now ... use arrows, lines, numbers, labels, and etc in the graphs
+if it will help." He studies each deck by himself before he teaches it, from
+the PDF, so a slide that needs him in the room to explain it has failed
+twice. Three rules, none of which a build checks:
+
+1. **Everything the words point at can be found on the picture.** If a
+   slide says "one swing takes 96 bars", the chart measures one swing with
+   an arrow and writes 96 bars on it. If it says "four fit inside one", the
+   chart numbers them 1 to 4. Number the steps on the chart in the order
+   the slide lists them, and label a line on the line, in the slide's own
+   words. `chartkit` has the pieces: `Stroke`, `Bracket`, `Note`, and the
+   `Ruler` and `wave_sum` added for Chapter 5.
+2. **A sum is drawn as a sum.** When something is built from parts, draw
+   the parts one under another to one scale, each measured, and the total
+   under a rule. Four small boxes with a caption each did not carry it.
+3. **Letter the charts in the order the deck shows them.** Chapter 5 once
+   showed Chart AJ between AA and AB, because it was lettered in the order
+   it was drawn, and a reader took it for a mistake.
+
+**Then have it read by someone who did not build it.** Before a deck goes
+back to the instructor, give its PDF, one image a slide, to readers who get
+no context but this role: a FIN1209 student who has studied only the
+earlier chapters' decks. Split the deck so every slide is read, and for
+every slide have them answer four questions: do I understand what it says;
+why is it true, or where does it come from; what does the picture show, and
+does it show what the words say; is anything used before it was taught. A
+check slide adds a fifth: which earlier slide gives the answer. Fix every
+failure, rebuild, and read again until a round finds nothing but the book's
+own gaps, each already named on its slide. Chapter 5's first round failed
+70 of 148 slides that its author had looked at page by page.
+`chapter-05/README.md` has what the rounds found and how the role was
+worded.
 
 The answer key must be spread. No letter may hold more than 35 percent or fewer
 than 15 percent of the items, and no three consecutive items may share an
@@ -311,9 +463,18 @@ does not explain, and sets no question on the unexplained part.
   Keep one `text_w` for every chart beside a teaching slide and one for
   every chart beside a term, so the charts are all drawn at two sizes.
 
+- A `Term` beside a picture holds about nine wrapped lines at 17pt across
+  its three rows, and has no accent and no caption. To turn a teaching
+  slide into a term, the book's own statement goes in the formal row, its
+  example in the example row, and a note of ours that sat in the caption
+  goes to the speaker cue. Its picture column also starts lower, so a chart
+  beside it is drawn at the term size; switch `size=` in the chart module
+  and look at the chart again.
+
 **Look at every chart at full size before placing it.** A callout is placed
 as an offset in points, so labels collide with each other and run off the
-edge of the plot, and nothing fails. Chapter 4's eighteen took three rounds.
+edge of the plot, and nothing fails. Chapter 4's eighteen took three rounds,
+and three of the five charts Chapter 5 redrew at the other size collided.
 
 **Cost the minutes honestly.** Putting two things on one slide saves a click
 and not the talking, so a `Pair` is costed as the sum of its two parts. The
@@ -350,6 +511,15 @@ the shape. Copy Chapter 4's, not Chapter 3's, for a lean chapter:
 the images of a page in the order the PDF stores them. Chapter 4's three
 figures on one page came out as 4.28, 4.29, 4.27. Look at every extracted
 file against its caption before naming it.
+
+**And a figure is not always all in its image.** Chapter 5's Figure 5.2 has
+its labels set as page text over the picture, so the extracted image is the
+bare bars. Compare each extracted file with the printed page, and render
+that figure from the page instead; `chapter-05/README.md` has the command.
+
+**The twenty seventh chart is AA.** `deckkit` names a chart by one capital
+letter, and by two after Z. Chapter 5 draws 47, lettered in the order the
+deck shows them, and leaves five list slides without a picture.
 
 ---
 

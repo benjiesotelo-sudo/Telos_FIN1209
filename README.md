@@ -20,6 +20,7 @@ Official delivery runs on Canvas; this repository is the preparation workspace.
 | `chapter-02/` | Chapter 2: both deck editions, the instructor's three page run card, the students' lecture notes, and the in-class checks |
 | `chapter-03/` | Chapter 3: the same set as Chapter 2 |
 | `chapter-04/` | Chapter 4: the lean deck, 79 slides with a picture beside every idea, in both editions, with the three page run card and the students' lecture notes. Its answer sheet and check audit are kept outside this repository |
+| `chapter-05/` | Chapter 5: the lean deck again, 138 slides for a chapter nearly twice as long, teaching edition only so far. No student edition, run card, lecture notes or answer sheet yet |
 | `build/` | The scripts that generate all of them |
 
 The deck, the instructor's document and the lecture notes are three views of

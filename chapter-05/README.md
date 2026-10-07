@@ -1,7 +1,7 @@
 # Chapter 5 - Trend Analysis
 
-148 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
-items, 32 terms, all 59 of the book's figures, and 36 charts of our own.
+156 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
+items, 32 terms, all 59 of the book's figures, and 44 charts of our own.
 
 **This chapter is built to the lean form the instructor approved in Chapter
 4**: the content decides the length, each question is followed by its own
@@ -56,13 +56,14 @@ the 21 checks, at two slides each, and the six slides of the frame.
   what the book says about it. Figure 5.32 stands alone because it is a wide
   table of small type, and a slide of its own is the only size it can be
   read at.
-- **One of our own charts otherwise.** 36 of them, lettered A to Z and then
-  AA to AJ. See the table below.
+- **One of our own charts otherwise.** 44 of them, lettered A to Z and then
+  AA to AP, plus AQ (placed out of letter order, right before X) and ZG (not
+  yet relettered). See the table below.
 - **And one of our own beside a book sketch that does not carry the idea on
-  its own.** Seven of the 36 are companions of that kind, added in the
-  third, fourth and fifth reviews: AJ, AB and AC after Figure 5.5, AH after 5.7, AF after
-  5.8, AI after 5.9, and AG, which took Figure 5.18's place beside the bar
-  stochastic so the figure could sit beside the characteristic it draws.
+  its own.** Seven of the 44 are companions of that kind, added in the
+  third, fourth and fifth reviews: C, D and E after Figure 5.5, F after 5.7,
+  I after 5.8, J after 5.9, and L, which took Figure 5.18's place beside the
+  bar stochastic so the figure could sit beside the characteristic it draws.
 
 **Five slides carry no picture, and no two of them are next to each other.**
 Each is a list the book gives without a figure:
@@ -97,7 +98,7 @@ into the formal row of one term slide.
 
 **What changed in 5.1.** A slide now comes before the term, *What a wave
 degree is* (first titled *Waves inside waves: cycles and degrees*), with
-Chart AA beside it: one wave drawn alone,
+Chart B beside it: one wave drawn alone,
 then with its subwaves, then with theirs. Only after that does the term
 slide name the three and show Figure 5.5. The book defines neither *wave
 cycle* nor *wave degree* in a sentence, so the new slide says its reading
@@ -127,9 +128,9 @@ looks like price. What the book says, and all it says (pages 128 to 131):
   Chapter 18); none of that is taught here.
 
 Two slides after the term now say this. *How the three cycles are drawn*
-has Chart AB: one invented price as bars, the LWC, with the MWC dotted and
+has Chart D: one invented price as bars, the LWC, with the MWC dotted and
 the HWC thick over it, and says that they look like moving averages and the
-book does not say they are. *Telling the three cycles apart* has Chart AC,
+book does not say they are. *Telling the three cycles apart* has Chart E,
 the same chart with a ruler for one swing of each cycle, and says the names
 are relative. Each slide marks what is the book's and what is our drawing.
 Check 2 is unchanged and both its answers are still slide text before it.
@@ -145,7 +146,7 @@ that is, and where the book never explains it at all, the slide says that:
 | Wave amplitude | 5.1, breakouts | Section 5.2, in the caption |
 | Typical price | 5.1, OHLC trends | The book names it and defines it nowhere here |
 | %K | 5.2, bar stochastic | The book's comparison, not explained here |
-| Pip | 5.2, average period range | Chart D's footnote: the book does not say what one is |
+| Pip | 5.2, average period range | Chart P's footnote: the book does not say what one is |
 | Backtest, risk of ruin | 5.3 | The book defines neither |
 | Stopsize | 5.5 | The distance from entry to stop, the brackets in Figure 5.39 |
 
@@ -181,15 +182,21 @@ and any price overlay (148).
 
 | Slide | What it does |
 |---|---|
-| Breakout, as Chapters 2 and 4 used it | The recall, by chapter, with Chart AD: Chapter 4's own PHP 40 to PHP 44 range and the breakout through its top |
-| Chapter 5: a breakout is through a level | The edge of a range is one kind of level; this chapter adds a prior peak or trough, a trendline, a channel line and any overlay. Chart AE draws the four |
+| Breakout, as Chapters 2 and 4 used it | The recall, by chapter, with Chart G: Chapter 4's own PHP 40 to PHP 44 range and the breakout through its top |
+| Chapter 5: a breakout is through a level | The edge of a range is one kind of level; this chapter adds a prior peak or trough, a trendline, a channel line and any overlay. Chart H draws the four |
 | A breakout for every wave degree | The book's three sentences and Figure 5.8, with a caption saying each B/OUT LEVEL is a line across a prior peak |
-| One price passes three breakout levels | Chart AF: the three levels on price bars. Its last line joins the two uses: the stretch under the top is a consolidation at a higher degree |
+| One price passes three breakout levels | Chart I: three labelled prior peaks, a level from each, and the three breakouts numbered in the order they happen |
 
-The join between the two uses is ours and the slide says so. The book says
-a market may trend at one degree and consolidate at another (Figure 5.7),
-and never says in a sentence that a breakout from a range is a breakout
-through a level.
+The join between the two uses is ours and the second slide says so: same
+word, wider use, and a level may slope. The book never says in a sentence
+that a breakout from a range is a breakout through a level. **One line was
+taken out in the final pass.** The fourth slide used to say that the 67
+bars under the top were "a consolidation at a higher degree". A fresh
+reader could not follow it: the HWC is the highest degree the deck has, a
+PHP 23 fall and recovery is not Chapter 4's confined range, and the 67
+could not be counted. The first slide also said that "so far" a breakout
+had been out of a range, which Chapter 1's breakout of a trendline
+contradicts; it now says "in Chapters 2 and 4" and names Chapter 1.
 
 **Then every term of Chapters 1 to 4 was checked against this deck**: the
 121 terms those four decks mark, and the words they taught by use without a
@@ -233,10 +240,11 @@ the futures terms, the EMH terms and the participant terms.
 validate a breakout and section 5.5's trend filter says whether a trend is
 on. The term's plain row now says it is not one of 5.3's.
 
-**Barrier proximity was tried and put back.** A plain row saying a barrier
-is a support or a resistance cost the term slide two type sizes. Its
-example already says the barrier is a support level, and Figure 5.25 labels
-it.
+**Barrier proximity now says what a barrier is.** A plain row saying a
+barrier is a support below or a resistance above was first tried and put
+back, because it cost the term slide two type sizes. A fresh reader then
+failed the slide for leaving barrier undefined, so the final pass shortened
+the example to make room and the row is in.
 
 ## The new-term marker
 
@@ -321,17 +329,18 @@ None of them carries a check:
 ## Nothing is stated without its explanation
 
 The instructor asked how the swings on the wave charts had been computed.
-The answer was that Charts AB and AC are three waves added together, of
+The answer was that Charts D and E are three waves added together, of
 sizes picked for the picture. His reply: "Then it should be explained I
 hate when things are said but not explained in any way". `TEMPLATE.md` has
 the rule that came of it. This is what the pass over the deck did.
 
-**The invented price has a slide of its own.** *An invented price, built
-from three waves* comes before the two slides that use it, with Chart AJ:
-the big, the medium and the small wave, each alone, then added, all four to
-one scale. It gives the sizes, one swing of each being 96 bars and PHP 24,
-32 bars and PHP 12, 8 bars and PHP 6, and why: each wave is three or four
-times as long as the next and twice as tall, so the nesting shows. The next
+**The invented price has a slide of its own.** *Our example: one price,
+built from three waves* (first titled *An invented price, built from three
+waves*) comes before the two slides that use it, with Chart C: the big, the
+medium and the small wave, each alone, then added, all four to one scale.
+The chart gives the sizes, one swing of each being 96 bars and PHP 24,
+32 bars and PHP 12, 8 bars and PHP 6, and the slide says why: so that three
+medium swings fit in the big one and four small swings in each medium one. The next
 slide says the dotted line is the big wave plus the medium one and the
 thick line the big wave alone, and that we know where they go only because
 we built the price. The third says a real chart gives no sizes, so degree
@@ -359,7 +368,7 @@ what the line is. What the 100 lines say, by kind:
 | A chart built from waves: AH, AF, AI | What it was built from, in the chart's own small print as well |
 | A reading of ours: wave degree, breakout through a level | That it is our reading, and the pages it rests on |
 
-Chart O's small print now gives the lengths of its two moving averages, 6
+Chart AA's small print now gives the lengths of its two moving averages, 6
 and 18 bars, and says they were chosen so the crossings show.
 
 ## What each section teaches
@@ -368,17 +377,17 @@ Every section is taught as fully as the book teaches it.
 
 | Section | Slides | Checks | Figures | Our charts |
 |---|---|---|---|---|
-| 5.1 Definitions of a trend | 27 | 3 | 5.1 to 5.10 | A, AA to AF, AH, AI, AJ, B |
-| 5.2 Quality of trend: 16 price characteristics | 35 | 5 | 5.11 to 5.29 | AG, C, D, E |
-| 5.3 Price and trend filters | 5 | 1 | 5.30 | F, G |
-| 5.4 Trend participation | 12 | 2 | 5.31, 5.32 | H to L |
-| 5.5 Price inflection points | 19 | 3 | 5.33 to 5.39 | M to R |
-| 5.6 Trendlines, channels and fan lines | 29 | 4 | 5.40 to 5.53 | S to X |
-| 5.7 Trend retracements | 2 | | 5.54 | Y |
+| 5.1 Definitions of a trend | 27 | 3 | 5.1 to 5.10 | A to K |
+| 5.2 Quality of trend: 16 price characteristics | 35 | 5 | 5.11 to 5.29 | L to O |
+| 5.3 Price and trend filters | 5 | 1 | 5.30 | P, Q |
+| 5.4 Trend participation | 13 | 2 | 5.31, 5.32 | R to V, AQ |
+| 5.5 Price inflection points | 19 | 3 | 5.33 to 5.39 | W to AB |
+| 5.6 Trendlines, channels and fan lines | 29 | 4 | 5.40 to 5.53 | AC to AH |
+| 5.7 Trend retracements | 2 | | 5.54 | AI |
 | 5.8 Gaps and trends | 5 | 1 | 5.55 to 5.57 | |
 | 5.9 Trend directionality | 1 | | 5.58 | |
 | 5.10 Drummond geometry | 3 | 1 | 5.59 | |
-| 5.11 Forecasting trend reversals | 4 | 1 | | Z |
+| 5.11 Forecasting trend reversals | 4 | 1 | | AJ |
 
 The other six slides are the title, the objectives, the roadmap and three
 closing slides.
@@ -416,100 +425,117 @@ where it appears, and no check rests on any of them:
 | Alternative channel constructions | 5.6, cue | Chapter 13 |
 | Tradesizing in general | 5.5, cue | Chapter 28 |
 
-## The thirty six charts
+## The forty four charts
 
 A chart is drawn where the book makes a point in words that none of its own
 figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
+**They are lettered in the order the deck shows them.** They were first
+lettered in the order they were drawn, which put Chart AP on the slide
+between AA and AB, and a fresh reader took that for a mislabel. The final
+pass relettered all but one; the Python names in the chart module that
+begin `AB_` or `AF_` are the old letters and nothing more. Chart ZG is the
+one chart the final pass has not yet relettered. AQ was added after the
+relettering, for the orders pair below, and sits out of letter order on
+purpose: no letter falls between W and X.
 
 | Chart | Beside | What it shows |
 |---|---|---|
-| A | Dow sorts trends by how long they last | Primary, secondary and minor on one line |
-| B | Correction and pullback | A shallow dip beside a turn of any amount |
-| C | 11 Size and duration of a consolidation | A small interruption and a large one |
-| D | 13 Average period range | A day that completes its 120 pips early |
-| E | 15 Volume spread action | The book's four cases, as bars over their volume |
-| F | Three categories of filter | One breakout, entered three ways |
-| G | Two-stage filtering | A close inside the allowed distance, and one beyond it |
-| H | Buying low and selling high, four ways | Two longs and two shorts on one swing |
-| I | Stop orders | A buystop above the market and a sellstop below |
-| J | Slippage | A gap through a stoploss, in pesos |
-| K | Limit orders | A sell limit above the market and a buy limit below |
-| L | Exits, and orders at the market | The four exit orders around the current price |
-| M | Ways of initiating an entry | Barrier, breakout and failed breakout entries |
-| N | Inflection point of strength N | Strength 2 beside strength 10 |
-| O | Trend filter | A double moving average crossover |
-| P | The trouble with a varying stopsize | Tradesize against stopsize, for a fixed risk |
-| Q | Proportional stopsizing | The same, capped at the proportional stopsize |
-| R | Five steps to the proportional tradesize | The percentage risk that results |
-| S | 5.6 Trendline | Drawn, tentative, confirmed at the third contact |
-| T | Why a trendline holds: behavior | One line met from above, then from below |
-| U | What counts as a valid penetration? | An intraday low through the line, and a close back above |
-| V | A reliable trendline: angle and duration | Too steep, about right, too shallow |
-| W | A reliable trendline: the other four | Four precise retests |
-| X | Anticipating a channel breakout | A failed test of the bottom, then a break through the top |
-| Y | Where the three approaches agree | The three ranges where the percentages converge |
-| Z | Signs that a trend may reverse | Three kinds of sign at one market top |
-| AA | What a wave degree is | One wave alone, with its subwaves, then with theirs |
-| AB | How the three cycles are drawn | One price as bars, the LWC, with the MWC dotted and the HWC thick |
-| AC | Telling the three cycles apart | The same chart, with a ruler for one swing of each cycle |
-| AD | Breakout, as Chapters 2 and 4 used it | Chapter 4's PHP 40 to PHP 44 range, and price leaving it through its top |
-| AE | Chapter 5: a breakout is through a level | Four levels: the top of a range, a prior peak, a trendline, a channel line |
-| AF | One price passes three breakout levels | Figure 5.8 on price bars: a level at a prior peak of each wave cycle |
-| AG | Bar stochastic | One bar with three closes: 0.80, 0.50 and 0.20 |
-| AH | One market, three modes, on price bars | Figure 5.7 on price bars: flat, ranging and trending at once |
-| AI | Lower degrees turn alone. The highest does not. | Figure 5.9 on price bars, with two places only the smaller cycles turn |
-| AJ | An invented price, built from three waves | The three waves Charts AB and AC are built from, each alone and then added, to one scale |
+| A | Dow sorts trends by how long they last | Primary, secondary and minor on one line, with one minor trend boxed |
+| B | What a wave degree is | One wave alone, with its subwaves, then with theirs |
+| C | Our example: one price, built from three waves | The sum set out as a sum: three waves to one scale, one swing of each measured in bars and pesos, and the total as price bars |
+| D | How the three cycles are drawn | That price as bars, the LWC, with the MWC dotted and the HWC thick, each labelled |
+| E | Telling the three cycles apart | The same chart, with a counted ruler under it for each cycle |
+| F | One market, three modes, on price bars | Figure 5.7 on price bars: flat, ranging and trending at once |
+| G | Breakout, as Chapters 2 and 4 used it | Chapter 4's PHP 40 to PHP 44 range, and price leaving it through its top |
+| H | Chapter 5: a breakout is through a level | Four levels: the top of a range, a prior peak, a trendline, a channel line |
+| I | One price passes three breakout levels | Figure 5.8 on price bars: three labelled prior peaks, a level from each, and the three breakouts numbered in order |
+| J | Lower degrees turn alone. The highest does not. | Figure 5.9 on price bars, with two places only the smaller cycles turn |
+| K | Correction and pullback | A shallow dip beside a turn of any amount |
+| N | Bar stochastic | One bar with three closes: 0.80, 0.50 and 0.20 |
+| O | 11 Size and duration of a consolidation | A small interruption the trend carries on from, and a large one with a reversal made more probable |
+| P | 13 Average period range | A day that completes its 120 pips early |
+| Q | 15 Volume spread action | The book's four cases, as bars over their volume |
+| R | Three categories of filter | One breakout, entered three ways |
+| S | Two-stage filtering | A close inside the allowed distance, and one beyond it |
+| T | Four scenarios, one principle | Two longs and two shorts on one swing, numbered |
+| U | Stop orders | A buystop above the market and a sellstop below |
+| V | Slippage | A gap through a stoploss, in pesos |
+| W | Limit orders | A sell limit above the market and a buy limit below |
+| AQ | You do not own it: orders to enter | A market buy, a buy stop and a buy limit, numbered and arrowed |
+| X | You own it: orders to exit | A market sell, a sell limit to take profit and a sell stop to cut the loss, numbered and arrowed |
+| Y | Ways of initiating an entry | Four numbered entries on one barrier: at it, through it, after the breakout fails, at the retest |
+| Z | Inflection point of strength N | Strength 2 beside strength 10, on price bars with the flanking bars counted |
+| AA | Trend filter | A double moving average crossover |
+| AB | The trouble with a varying stopsize | Tradesize against stopsize, for a fixed risk |
+| AC | Proportional stopsizing | The same, capped at the proportional stopsize |
+| AD | Five steps to the proportional tradesize | The percentage risk that results |
+| AE | 5.6 Trendline | Drawn, tentative, confirmed at the third contact |
+| AF | Why a trendline holds: behavior | One line met from above, then from below |
+| AG | What counts as a valid penetration? | Two numbered days: an intraday low short of the price filter line, and one beyond it |
+| AH | A reliable trendline: angle and duration | Too steep, about 40 degrees, too shallow |
+| AI | A reliable trendline: the other four | Four touches: two draw the line, two retest it |
+| AK | Anticipating a channel breakout | Price fails to reach the bottom, then breaks through the top |
+| AM | Where the three approaches agree | The three ranges where the percentages converge |
+| AP | Signs that a trend may reverse | Three kinds of sign at one market top |
 
-**Charts P, Q and R are the book's five steps with pesos put in.** An
+**Charts AB, AC and AD are the book's five steps with pesos put in.** An
 average stopsize of PHP 2.00, a two standard deviation value of PHP 1.00,
 and PHP 10,000 at risk, so a proportional stopsize of PHP 3.00 and a
 proportional tradesize of 3,333 shares. The steps are the book's and the
 numbers are ours. Each chart is one line of arithmetic, not a price, and
 says so.
 
-**Chart O computes two simple moving averages** of the line it draws and
+**Chart AA computes two simple moving averages** of the line it draws and
 marks where they cross. How a moving average is built is Chapter 11, and no
 label on the chart explains it.
 
-**Chart AA is three sine waves**, added one at a time, and not a price.
+**Chart B is three sine waves**, added one at a time, and not a price.
 Its labels are the one place a chart states a reading and not a quotation,
 for the reason given above.
 
-**Charts AB and AC are three such waves made into price bars**, with a
+**Charts C, D and E are three such waves made into price bars**, with a
 little seeded noise. One swing of each is 96, 32 and 8 bars long and PHP
-24, 12 and 6 tall, and Chart AJ draws the three alone and then added. It is
-a `gallery`, and a gallery fits each shape to its own cell, so every cell
-carries two lone points at one height that draw nothing and hold all four
-to one scale. They use `chartkit.bar_waves`, a form added for them;
-Chapters 1 to 4 were rebuilt after it went in and their decks are byte
-identical. Where the two smooth lines sit is our drawing choice, because
-the book gives no rule, and the rulers on Chart AC are read off our own
-chart. Both charts say so in their small print.
+24, 12 and 6 tall. All three start at a low, so every fourth small low is a
+medium low and every third medium low a big one, which is what lets Chart C
+rule upright lines through all its rows and Chart E number the swings.
+Chart C is drawn by `chartkit.wave_sum`, a form added for it: the rows
+share one price scale and one time scale, so the small wave is drawn as
+small as it is. Charts D and E use `chartkit.bar_waves`, which gained a
+`Ruler`, a counted measure under the bars. Chapters 1 to 4 were redrawn
+after both went in and their charts are byte identical. Where the two
+smooth lines sit is our drawing choice, because the book gives no rule, and
+the charts say so in their small print.
 
-**Charts AF, AH and AI are built the same way**, each with its three waves
-arranged to show one thing: a slow rise added so the largest wave passes
-its own peak, the largest wave left flat, and the three set to peak on one
-bar. Chart AF's levels are the highs of its own bars and each breakout is
-the first bar to close above one, so nothing printed on it is a guess.
-Chart AD is a seeded line and Charts AE and AG are `gallery` shapes, not
-prices. None of the six needed a new form, so no earlier chapter was
-rebuilt.
+**Charts F, I and J are built the same way**, each with its three waves
+arranged to show one thing: the largest wave left flat, a slow rise added
+so the largest wave passes its own peak, and the three set to peak on one
+bar. Chart I's three waves also peak together at its first top, so nothing
+on it contradicts the wave-degree convergence the next slide teaches; an
+earlier drawing had the thick line turn before the bars did, and a fresh
+reader caught it. Its levels are the highs of its own bars and each
+breakout is the first bar to close above one, so nothing printed on it is a
+guess. Chart G is a seeded line and Charts H and N are `gallery` shapes,
+not prices.
+
+**Chart Z is drawn on price bars**, because its slide counts bars. An
+earlier drawing was a line with a shaded band, and the two strengths could
+not be counted on it. The book does not say where the count of flanking
+bars stops; the chart counts the bars whose highs stay below the peak's
+high, and says that is our reading.
 
 Every other chart's data is invented from a fixed seed, and each says so.
 
-**Two things about drawing them, both found by looking.** A label on a
+**Three things about drawing them, all found by looking.** A label on a
 `Stroke` is not drawn at all if the point it is attached to lies outside the
 plot, so a line that runs past the last price loses its label silently; end
-it inside. And a `Note` whose offset is negative is right aligned, so near
-the left edge it runs off the picture.
+it inside. A `Note` whose offset is negative is right aligned, so near
+the left edge it runs off the picture. And a `Note` placed low on a chart
+lands on the time axis title unless the chart is given more room at the
+bottom.
 
 **A chart is drawn for the slide type it sits beside.** The picture column
 beside a term starts lower and is narrower than the one beside a teaching
 slide, so `charts_chapter05.py` draws at two sizes, `PAIR` and `TERM`.
-When the marker moved, charts B, D and O went to the term size and I and K
-to the teaching size, and three of the five needed a label moved: B ran off
-the left edge, D covered its own price line and an axis label, and O sat on
-the time axis.
 
 ## How long the chapter takes
 
@@ -549,7 +575,7 @@ with a picture beside it is costed as the sum of its two parts.
 | Closing | 3 | 3.4 |
 
 The weights sum to 227.75 and 227.75 times 1.150 is 261.9. The chapter is 47
-pages of the book against Chapter 4's 26, and comes to 148 slides against
+pages of the book against Chapter 4's 26, and comes to 156 slides against
 79, so it is the same density.
 
 ## Building it
@@ -557,10 +583,10 @@ pages of the book against Chapter 4's 26, and comes to 148 slides against
 From the repository root:
 
 ```
-.venv/bin/python build/build_chapter5.py      # teaching, 148 slides
+.venv/bin/python build/build_chapter5.py      # teaching, 156 slides
 ```
 
-The build draws the 36 charts and is deterministic: a second run leaves
+The build draws the 44 charts and is deterministic: a second run leaves
 `git status` clean. It writes no answer sheet; see `build_chapter5.py` for
 why that was taken out of the script it was copied from.
 
@@ -575,17 +601,17 @@ soffice --headless --convert-to pdf --outdir ~ \
 ```
 
 Before committing the deck, confirm it embeds no artwork that is not ours.
-It must hold exactly 36 images, and their hashes must match this chapter's
+It must hold exactly 44 images, and their hashes must match this chapter's
 own chart folder:
 
 ```
-unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 36
+unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 44
 unzip -o -d /tmp/media chapter-05/FIN1209-Chapter-05.pptx 'ppt/media/*'
 diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
      <(shasum -a256 build/generated/charts-05/*.png | awk '{print $1}' | sort)
 ```
 
-The deck with the book's artwork in it holds 95: the 36 charts and one for
+The deck with the book's artwork in it holds 103: the 44 charts and one for
 each of the 59 figures.
 
 Then look at every page, as an image, in the build with the artwork, because

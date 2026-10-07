@@ -331,6 +331,41 @@ A speaker cue does none of this, for the reason given under the new-term
 marker: the instructor studies from a PDF that has no cues.
 `chapter-05/README.md` has what the pass over 100 slides found.
 
+**A slide has to be followed by a student alone.** The instructor's last
+review of Chapter 5: "Slide 13 makes no sense ... really make sure everything
+makes sense now ... use arrows, lines, numbers, labels, and etc in the graphs
+if it will help." He studies each deck by himself before he teaches it, from
+the PDF, so a slide that needs him in the room to explain it has failed
+twice. Three rules, none of which a build checks:
+
+1. **Everything the words point at can be found on the picture.** If a
+   slide says "one swing takes 96 bars", the chart measures one swing with
+   an arrow and writes 96 bars on it. If it says "four fit inside one", the
+   chart numbers them 1 to 4. Number the steps on the chart in the order
+   the slide lists them, and label a line on the line, in the slide's own
+   words. `chartkit` has the pieces: `Stroke`, `Bracket`, `Note`, and the
+   `Ruler` and `wave_sum` added for Chapter 5.
+2. **A sum is drawn as a sum.** When something is built from parts, draw
+   the parts one under another to one scale, each measured, and the total
+   under a rule. Four small boxes with a caption each did not carry it.
+3. **Letter the charts in the order the deck shows them.** Chapter 5 once
+   showed Chart AJ between AA and AB, because it was lettered in the order
+   it was drawn, and a reader took it for a mistake.
+
+**Then have it read by someone who did not build it.** Before a deck goes
+back to the instructor, give its PDF, one image a slide, to readers who get
+no context but this role: a FIN1209 student who has studied only the
+earlier chapters' decks. Split the deck so every slide is read, and for
+every slide have them answer four questions: do I understand what it says;
+why is it true, or where does it come from; what does the picture show, and
+does it show what the words say; is anything used before it was taught. A
+check slide adds a fifth: which earlier slide gives the answer. Fix every
+failure, rebuild, and read again until a round finds nothing but the book's
+own gaps, each already named on its slide. Chapter 5's first round failed
+70 of 148 slides that its author had looked at page by page.
+`chapter-05/README.md` has what the rounds found and how the role was
+worded.
+
 The answer key must be spread. No letter may hold more than 35 percent or fewer
 than 15 percent of the items, and no three consecutive items may share an
 answer. The build refuses a deck that breaks this. The first cut of Chapter 1
@@ -483,8 +518,8 @@ bare bars. Compare each extracted file with the printed page, and render
 that figure from the page instead; `chapter-05/README.md` has the command.
 
 **The twenty seventh chart is AA.** `deckkit` names a chart by one capital
-letter, and by two after Z. Chapter 5 draws 36 and leaves five list slides
-without a picture.
+letter, and by two after Z. Chapter 5 draws 43, lettered in the order the
+deck shows them, and leaves five list slides without a picture.
 
 ---
 

@@ -966,18 +966,32 @@ def _bar(ax, x, bar: Bar, *, tick=0.16, tone=INK):
 
 def measured_bars(path: Path, first: Bar, second: Bar,
                   measures: tuple[Measure, ...], *, price_ticks=(),
-                  labels=("", ""), footnote="", display_font=None) -> Path:
+                  labels=("", ""), footnote="", size=None,
+                  display_font=None) -> Path:
     """Two bars and the distances between them, each bracketed and labelled.
 
     Built for the chapter's four definitions of a gap: the same two bars
     measured four ways. The dashed guides run from each price that a bracket
     uses, so a student can see which two prices every measurement joins.
+
+    ``size`` draws it for the picture column of a Pair instead of the full
+    figure band; left out, the drawing is exactly what it always was.
     """
     display_font = display_font or deckkit.DISPLAY_FONT
     fig = _new(display_font)
-    ax = fig.add_axes([0.062, 0.12, 0.918, 0.80])
+    if size is None:
+        ax = fig.add_axes([0.062, 0.12, 0.918, 0.80])
+    else:
+        plt.close(fig)
+        fig = plt.figure(figsize=size, dpi=DPI)
+        foot = 0.16 * (footnote.count("\n") + 1) + 0.50 if footnote else 0.40
+        ax = fig.add_axes([0.56 / size[0], foot / size[1],
+                           (size[0] - 0.66) / size[0],
+                           (size[1] - foot - 0.12) / size[1]])
     _dress(ax, xlabel="", grid=False)
-    ax.set_xlim(-0.6, 3.2 + 1.05 * len(measures))
+    # In the narrower picture column the labels need more room each.
+    step = 1.05 if size is None else 2.15
+    ax.set_xlim(-0.6, 3.2 + step * len(measures))
     prices = [first.low, first.high, second.low, second.high]
     lo, hi = min(prices), max(prices)
     span = hi - lo
@@ -995,7 +1009,7 @@ def measured_bars(path: Path, first: Bar, second: Bar,
                     fontsize=12, color=MUTED, fontweight="bold")
 
     for i, m in enumerate(measures):
-        x = 3.3 + 1.05 * i
+        x = 3.3 + step * i
         tone = GOLD if m.notice else GREEN
         for y in (m.lo, m.hi):
             ax.plot([0.5, x], [y, y], color=BORDER, lw=1.0,
@@ -1005,10 +1019,15 @@ def measured_bars(path: Path, first: Bar, second: Bar,
                                     mutation_scale=16, shrinkA=0,
                                     shrinkB=0), zorder=5)
         ax.text(x + 0.08, (m.lo + m.hi) / 2, m.label, ha="left",
-                va="center", fontsize=12.5, color=GREEN_DEEP if not m.notice
+                va="center", fontsize=12.5 if size is None else 10,
+                color=GREEN_DEEP if not m.notice
                 else INK, fontweight="bold", zorder=6, bbox=_tag())
 
-    _footnote(fig, footnote)
+    if size is None:
+        _footnote(fig, footnote)
+    elif footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
     return _save(fig, path)
 
 

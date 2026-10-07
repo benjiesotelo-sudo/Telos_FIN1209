@@ -1,7 +1,7 @@
 # Chapter 5 - Trend Analysis
 
-156 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
-items, 32 terms, all 59 of the book's figures, and 44 charts of our own.
+157 slides, eleven parts, 21 in-class checks carrying 42 multiple choice
+items, 32 terms, all 59 of the book's figures, and 47 charts of our own.
 
 **This chapter is built to the lean form the instructor approved in Chapter
 4**: the content decides the length, each question is followed by its own
@@ -56,10 +56,10 @@ the 21 checks, at two slides each, and the six slides of the frame.
   what the book says about it. Figure 5.32 stands alone because it is a wide
   table of small type, and a slide of its own is the only size it can be
   read at.
-- **One of our own charts otherwise.** 44 of them, lettered A to Z and then
-  AA to AR, in the order the deck shows them. See the table below.
+- **One of our own charts otherwise.** 47 of them, lettered A to Z and then
+  AA to AU, in the order the deck shows them. See the table below.
 - **And one of our own beside a book sketch that does not carry the idea on
-  its own.** Seven of the 44 are companions of that kind, added in the
+  its own.** Seven of the 47 are companions of that kind, added in the
   third, fourth and fifth reviews: C, D and E after Figure 5.5, F after 5.7,
   I after 5.8, J after 5.9, and L, which took Figure 5.18's place beside the
   bar stochastic so the figure could sit beside the characteristic it draws.
@@ -145,8 +145,9 @@ that is, and where the book never explains it at all, the slide says that:
 | Wave amplitude | 5.1, breakouts | Section 5.2, in the caption |
 | Typical price | 5.1, OHLC trends | The book names it and defines it nowhere here |
 | %K | 5.2, bar stochastic | The book's comparison, not explained here |
-| Pip | 5.2, average period range | Chart P's footnote: the book does not say what one is |
-| Backtest, risk of ruin | 5.3 | The book defines neither |
+| Pip | 5.2, average period range | Glossed in one line on 13 Average period range, a fresh-reader fix: the book does not say what one is |
+| Backtest | 5.3 | Glossed in one line in the caption, a fresh-reader fix: run the system against past prices |
+| Risk of ruin | 5.3 | The book defines neither |
 | Stopsize | 5.5 | The distance from entry to stop, the brackets in Figure 5.39 |
 
 Three wrong options in the checks named something a later slide teaches: a
@@ -367,7 +368,7 @@ what the line is. What the 100 lines say, by kind:
 | A chart built from waves: AH, AF, AI | What it was built from, in the chart's own small print as well |
 | A reading of ours: wave degree, breakout through a level | That it is our reading, and the pages it rests on |
 
-Chart AA's small print now gives the lengths of its two moving averages, 6
+Chart AE's small print now gives the lengths of its two moving averages, 6
 and 18 bars, and says they were chosen so the crossings show.
 
 ## What each section teaches
@@ -424,7 +425,7 @@ where it appears, and no check rests on any of them:
 | Alternative channel constructions | 5.6, cue | Chapter 13 |
 | Tradesizing in general | 5.5, cue | Chapter 28 |
 
-## The forty four charts
+## The forty seven charts
 
 A chart is drawn where the book makes a point in words that none of its own
 figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
@@ -432,9 +433,14 @@ figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
 lettered in the order they were drawn, which put Chart AP on the slide
 between AA and AB, and a fresh reader took that for a mislabel; one chart
 (the bearish divergence chart, now O) also carried a placeholder letter
-outside the sequence entirely. The final pass relettered all forty four, so
-every letter runs in order with no exception; the Python names in the chart
-module that begin `AB_` or `AF_` are the old letters and nothing more.
+outside the sequence entirely. A later fresh-reader pass added three more:
+two recalls (of O, beside 16 Volume and oscillator divergence; of W, beside
+the book's other named orders) once deckkit's own uniqueness check ruled out
+reusing a letter twice, and one new chart redrawing Figure 5.50's standard
+fan lines. Every pass that adds or moves a chart has relettered the whole
+sequence, so every letter still runs in order with no exception; the Python
+names in the chart module that begin `AB_` or `AF_` are the old letters and
+nothing more.
 
 | Chart | Beside | What it shows |
 |---|---|---|
@@ -456,41 +462,44 @@ module that begin `AB_` or `AF_` are the old letters and nothing more.
 | P | 11 Size and duration of a consolidation | A small interruption the trend carries on from, and a large one with a reversal made more probable |
 | Q | 13 Average period range | A day that completes its 120 pips early |
 | R | 15 Volume spread action | The book's four cases, as bars over their volume |
-| S | Three categories of filter | One breakout, entered three ways |
-| T | Two-stage filtering | A close inside the allowed distance, and one beyond it |
-| U | Four scenarios, one principle | Two longs and two shorts on one swing, numbered |
-| V | Stop orders | A buystop above the market and a sellstop below |
-| W | Slippage | A gap through a stoploss, in pesos |
-| X | Limit orders | A sell limit above the market and a buy limit below |
-| Y | You do not own it: orders to enter | A market buy, a buy stop and a buy limit, numbered and arrowed |
-| Z | You own it: orders to exit | A market sell, a sell limit to take profit and a sell stop to cut the loss, numbered and arrowed |
-| AA | Ways of initiating an entry | Four numbered entries on one barrier: at it, through it, after the breakout fails, at the retest |
-| AB | Inflection point of strength N | Strength 2 beside strength 10, on price bars with the flanking bars counted |
-| AC | Trend filter | A double moving average crossover |
-| AD | The trouble with a varying stopsize | Tradesize against stopsize, for a fixed risk |
-| AE | Proportional stopsizing | The same, capped at the proportional stopsize |
-| AF | Five steps to the proportional tradesize | The percentage risk that results |
-| AG | 5.6 Trendline | Drawn, tentative, confirmed at the third contact |
-| AH | Why a trendline holds: behavior | One line met from above, then from below |
-| AI | What counts as a valid penetration? | Two numbered days: an intraday low short of the price filter line, and one beyond it |
-| AJ | A reliable trendline: angle and duration | Too steep, about 40 degrees, too shallow |
-| AK | A reliable trendline: the other four | Four touches: two draw the line, two retest it |
-| AL | A channel turning at retracement levels | Three dashed levels where a rising channel's own swings turn |
-| AM | Anticipating a channel breakout | Price fails to reach the bottom, then breaks through the top |
-| AN | DeMark's line, on numbered troughs | Four numbered troughs, the correct line against two wrong ones |
-| AO | Where the three approaches agree | The three ranges where the percentages converge |
-| AP | A gap as support, and a gap as resistance | Two stretches of price, a gold band marking the range each gap skipped |
-| AQ | Reading a PLdot line | A three-bar moving average standing in for the PLdot, three readings marked |
-| AR | Signs that a trend may reverse | Three kinds of sign at one market top |
+| S | 16 Volume and oscillator divergence | A recall of O: the book gives this one sentence and no picture of its own |
+| T | Three categories of filter | One breakout, entered three ways |
+| U | Two-stage filtering | A close inside the allowed distance, and one beyond it |
+| V | Four scenarios, one principle | Two longs and two shorts on one swing, numbered |
+| W | Stop orders | A buystop above the market and a sellstop below |
+| X | Slippage | A gap through a stoploss, in pesos |
+| Y | Limit orders | A sell limit above the market and a buy limit below |
+| Z | You do not own it: orders to enter | A market buy, a buy stop and a buy limit, numbered and arrowed |
+| AA | You own it: orders to exit | A market sell, a sell limit to take profit and a sell stop to cut the loss, numbered and arrowed |
+| AB | Other orders the book names | A recall of W: an MIT is the same waiting-order shape, just named for its use |
+| AC | Ways of initiating an entry | Four numbered entries on one barrier: at it, through it, after the breakout fails, at the retest |
+| AD | Inflection point of strength N | Strength 2 beside strength 10, on price bars with the flanking bars counted |
+| AE | Trend filter | A double moving average crossover |
+| AF | The trouble with a varying stopsize | Tradesize against stopsize, for a fixed risk |
+| AG | Proportional stopsizing | The same, capped at the proportional stopsize |
+| AH | Five steps to the proportional tradesize | The percentage risk that results |
+| AI | 5.6 Trendline | Drawn, tentative, confirmed at the third contact |
+| AJ | Why a trendline holds: behavior | One line met from above, then from below |
+| AK | What counts as a valid penetration? | Two numbered days: an intraday low short of the price filter line, and one beyond it |
+| AL | A reliable trendline: angle and duration | Too steep, about 40 degrees, too shallow |
+| AM | A reliable trendline: the other four | Four touches: two draw the line, two retest it |
+| AN | A channel turning at retracement levels | Three dashed levels where a rising channel's own swings turn |
+| AO | Anticipating a channel breakout | Price fails to reach the bottom, then breaks through the top |
+| AP | DeMark's line, on numbered troughs | Four numbered troughs, the correct line against two wrong ones |
+| AQ | Standard fan lines, numbered | Figure 5.50 redrawn: three fan lines numbered 1st, 2nd and 3rd, too small to tell apart in the book |
+| AR | Where the three approaches agree | The three ranges where the percentages converge |
+| AS | A gap as support, and a gap as resistance | Two stretches of price, a gold band marking the range each gap skipped |
+| AT | Reading a PLdot line | A three-bar moving average standing in for the PLdot, three readings marked |
+| AU | Signs that a trend may reverse | Three kinds of sign at one market top |
 
-**Charts AD, AE and AF are the book's five steps with pesos put in.** An
+**Charts AF, AG and AH are the book's five steps with pesos put in.** An
 average stopsize of PHP 2.00, a two standard deviation value of PHP 1.00,
 and PHP 10,000 at risk, so a proportional stopsize of PHP 3.00 and a
 proportional tradesize of 3,333 shares. The steps are the book's and the
 numbers are ours. Each chart is one line of arithmetic, not a price, and
 says so.
 
-**Chart AC computes two simple moving averages** of the line it draws and
+**Chart AE computes two simple moving averages** of the line it draws and
 marks where they cross. How a moving average is built is Chapter 11, and no
 label on the chart explains it.
 
@@ -524,7 +533,7 @@ breakout is the first bar to close above one, so nothing printed on it is a
 guess. Chart G is a seeded line and Charts H and N are `gallery` shapes,
 not prices.
 
-**Chart AB is drawn on price bars**, because its slide counts bars. An
+**Chart AD is drawn on price bars**, because its slide counts bars. An
 earlier drawing was a line with a shaded band, and the two strengths could
 not be counted on it. The book does not say where the count of flanking
 bars stops; the chart counts the bars whose highs stay below the peak's
@@ -546,18 +555,15 @@ slide, so `charts_chapter05.py` draws at two sizes, `PAIR` and `TERM`.
 
 ## How long the chapter takes
 
-**262 minutes at the calibrated rate, against a 180 minute session.** That is
-information, not a target: nothing was cut to reach a length, and nothing was
-added to reach one. It is 82 minutes more than one session holds. No run card exists for
-this chapter, so nothing here says what to cut; that is a decision for
-whoever writes one. The first build cost 238 and the second 245: seven
-minutes for the 24 more slides costed as terms, then under two for the wave
-degree slide and its chart, then three and a half for the two slides on how
-the cycles are drawn and told apart, then ten for the six slides of the
-fourth review: three on breakout, two that put Figures 5.7 and 5.9 on price
-bars, and one that gives Figure 5.18 a slide beside its own characteristic,
-then under two for the slide and chart that say what the invented price was
-built from.
+**278.6 minutes at the calibrated rate, against a 180 minute session.** That
+is information, not a target: nothing was cut to reach a length, and nothing
+was added to reach one. It is 98.6 minutes more than one session holds. No
+run card exists for this chapter, so nothing here says what to cut; that is
+a decision for whoever writes one. The number has grown build by build, each
+time by a few slides: the new-term marker pass, the wave-degree rework, the
+chart relettering, the slide 78 order pair split into two, and most
+recently a fresh-reader pass that fixed 25 slides and added one more (the
+redrawn standard fan lines, Chart AQ, beside Figure 5.50).
 
 The rate is the one written down in `chapter-03/README.md`: a content slide
 1, a term 1.25, a figure 0.75, a chart 0.5, a check with its reveal 2.5,
@@ -569,31 +575,31 @@ with a picture beside it is costed as the sum of its two parts.
 |---|---|---|
 | Title, objectives, roadmap | 3 | 3.4 |
 | 5.1 Definitions | 27 | 48.6 |
-| 5.2 Quality of trend | 35 | 64.7 |
+| 5.2 Quality of trend | 38 | 70.4 |
 | 5.3 Filters | 5 | 8.3 |
-| 5.4 Participation | 12 | 18.7 |
+| 5.4 Participation | 13 | 21.0 |
 | 5.5 Inflection points | 19 | 34.2 |
-| 5.6 Trendlines | 29 | 54.3 |
+| 5.6 Trendlines | 32 | 59.5 |
 | 5.7 Retracements | 2 | 3.7 |
-| 5.8 Gaps | 5 | 9.2 |
+| 5.8 Gaps | 6 | 10.9 |
 | 5.9 Directionality | 1 | 2.3 |
-| 5.10 Drummond | 3 | 5.2 |
+| 5.10 Drummond | 4 | 6.9 |
 | 5.11 Reversals | 4 | 5.8 |
 | Closing | 3 | 3.4 |
 
-The weights sum to 227.75 and 227.75 times 1.150 is 261.9. The chapter is 47
-pages of the book against Chapter 4's 26, and comes to 156 slides against
-79, so it is the same density.
+The chapter is 47 pages of the book against Chapter 4's 26, and comes to
+157 slides against 79, so it is the same density. `build_chapter5.py`
+prints this table fresh on every build; it is not hand maintained.
 
 ## Building it
 
 From the repository root:
 
 ```
-.venv/bin/python build/build_chapter5.py      # teaching, 156 slides
+.venv/bin/python build/build_chapter5.py      # teaching, 157 slides
 ```
 
-The build draws the 44 charts and is deterministic: a second run leaves
+The build draws the 47 charts and is deterministic: a second run leaves
 `git status` clean. It writes no answer sheet; see `build_chapter5.py` for
 why that was taken out of the script it was copied from.
 
@@ -618,7 +624,7 @@ diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
      <(shasum -a256 build/generated/charts-05/*.png | awk '{print $1}' | sort)
 ```
 
-The deck with the book's artwork in it holds 103: the 44 charts and one for
+The deck with the book's artwork in it holds 106: the 47 charts and one for
 each of the 59 figures.
 
 Then look at every page, as an image, in the build with the artwork, because

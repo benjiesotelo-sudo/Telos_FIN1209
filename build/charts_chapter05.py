@@ -1,12 +1,16 @@
 """Chapter 5 teaching charts for FIN1209, as plain data.
 
-Forty four charts, lettered A to Z and then AA to AR, in the order the deck
+Forty seven charts, lettered A to Z and then AA to AU, in the order the deck
 shows them: deckkit letters a twenty seventh chart the way a spreadsheet
 letters its columns. They were first lettered in the order they were drawn,
 which put a late addition between the second and third, and left one chart
 (the bearish divergence chart, now O) carrying a placeholder letter outside
-the sequence entirely; the final pass relettered all forty four so a reader
-meets every one of them in order, with no exceptions. The names in this
+the sequence entirely; a later pass added three more (two recalls, of O and
+of W, that needed their own letters once deckkit's own uniqueness check
+caught the reuse; one new chart for the standard fan lines, Figure 5.50,
+whose troughs and peaks the book draws too small to read). Every pass that
+adds or moves a chart has relettered the whole sequence so a reader meets
+every one of them in order, with no exceptions. The names in this
 file that still begin `AB_`, `AF_` and so on are the charts' old letters
 and nothing more.
 
@@ -52,55 +56,61 @@ figures shows, or beside a book sketch that does not carry the idea alone:
   * **P** characteristic 11, the size and duration of a consolidation.
   * **Q** characteristic 13, the average period range completed early.
   * **R** characteristic 15, the four cases of volume spread action.
-  * **S and T** the three categories of filter on one breakout, and
+  * **S** a recall of O, drawn again beside characteristic 16: the book
+    gives divergence one sentence there and no picture of its own.
+  * **T and U** the three categories of filter on one breakout, and
     two-stage filtering. Figure 5.30 lists the filters and draws neither.
-  * **U** the four scenarios of buying low and selling high.
-  * **V, W and X** a stop order, slippage, and a limit order, as entries.
-  * **Y** the orders to place with no position: a market buy, a buy stop
+  * **V** the four scenarios of buying low and selling high.
+  * **W, X and Y** a stop order, slippage, and a limit order, as entries.
+  * **Z** the orders to place with no position: a market buy, a buy stop
     and a buy limit, numbered and arrowed to the price that triggers each.
-  * **Z** the orders to place holding a long: a market sell, a sell limit
+  * **AA** the orders to place holding a long: a market sell, a sell limit
     to take profit and a sell stop to cut the loss, the same way. Figure
     5.32 is the book's own table of every order above and below the
     market, short side included, and is placed right after it.
-  * **AA** four entries on one barrier: at it, through it, after the
+  * **AB** a recall of W, drawn again beside the book's other named
+    orders: an MIT is the same waiting-order shape, just named for its use.
+  * **AC** four entries on one barrier: at it, through it, after the
     breakout fails, and at the retest.
-  * **AB** an inflection point of strength 2 beside one of strength 10, on
+  * **AD** an inflection point of strength 2 beside one of strength 10, on
     price bars with the flanking bars counted.
-  * **AC** a double moving average crossover as a trend filter.
-  * **AD, AE and AF** the book's proportional stopsizing, worked in pesos:
+  * **AE** a double moving average crossover as a trend filter.
+  * **AF, AG and AH** the book's proportional stopsizing, worked in pesos:
     what a fixed risk does to the tradesize, the tradesize capped, and the
     percentage risk that results.
-  * **AG** a trendline drawn, tentative, and confirmed.
-  * **AH** why a trendline holds: the orders on either side of it.
-  * **AI** two intraday penetrations that close back above the line, one
+  * **AI** a trendline drawn, tentative, and confirmed.
+  * **AJ** why a trendline holds: the orders on either side of it.
+  * **AK** two intraday penetrations that close back above the line, one
     short of a price filter and one beyond it.
-  * **AJ and AK** the factors of trendline reliability: angle, and retests.
-  * **AL** a rising channel whose swings turn at three retracement levels,
+  * **AL and AM** the factors of trendline reliability: angle, and retests.
+  * **AN** a rising channel whose swings turn at three retracement levels,
     which is what the book says of its Figure 5.46 and cannot be seen on it.
-  * **AM** price failing to test a channel boundary before breaking out.
+  * **AO** price failing to test a channel boundary before breaking out.
     The book makes this point on its Figure 5.14, which is placed with the
     characteristic it was drawn for.
-  * **AN** DeMark's line on four numbered troughs: Figure 5.49 redrawn so
+  * **AP** DeMark's line on four numbered troughs: Figure 5.49 redrawn so
     the troughs each line joins can be told apart.
-  * **AO** the three ranges where Fibonacci, Dow and Gann converge.
-  * **AP** a gap acting as support and a gap acting as resistance. The gaps
+  * **AQ** Figure 5.50's standard fan lines, redrawn and numbered: the
+    book's own troughs and peaks are too small to tell apart on it.
+  * **AR** the three ranges where Fibonacci, Dow and Gann converge.
+  * **AS** a gap acting as support and a gap acting as resistance. The gaps
     on Figure 5.57 are too small to see.
-  * **AQ** a three-bar moving average standing in for the PLdot, with the
+  * **AT** a three-bar moving average standing in for the PLdot, with the
     book's three readings marked. The line cannot be seen on Figure 5.59.
-  * **AR** the signs of a reversal that can be drawn on one top.
+  * **AU** the signs of a reversal that can be drawn on one top.
 
 **Teach only what the textbook teaches.** Every label on these charts is a
-statement the book's Chapter 5 makes, or arithmetic it sets out. Charts AD,
-AE and AF are the book's five step procedure with numbers put in: an average
+statement the book's Chapter 5 makes, or arithmetic it sets out. Charts AF,
+AG and AH are the book's five step procedure with numbers put in: an average
 stopsize of PHP 2.00, a two standard deviation value of PHP 1.00, and
 PHP 10,000 at risk. The pesos are ours and the steps are the book's.
-Chart AC computes two simple moving averages of the line it draws, a short
+Chart AE computes two simple moving averages of the line it draws, a short
 one and a long one, and marks where they cross; how a moving average is
 built is Chapter 11 and no label explains it.
 Chart B is the one place the labels are a reading and not a quotation: the
 book defines neither wave cycle nor wave degree in a sentence, so the chart
 says what its Figure 5.5 and its words larger, smaller and subwave show, and
-the slide beside it says that is where the reading comes from. Chart AB
+the slide beside it says that is where the reading comes from. Chart AD
 draws a peak that is higher than the N bars on either side of it, which is
 our reading of the book's "N bars on either side", and says in its small
 print that the book does not say whether N is a maximum.
@@ -108,7 +118,7 @@ print that the book does not say whether N is a maximum.
 **The data is invented.** We hold no market data licence. Every price
 series comes from chartkit.walk() with a fixed seed, offline and
 reproducible, and every chart carries the credit line
-deckkit.chart_credit() prints under it. Charts AD, AE and AF are not prices
+deckkit.chart_credit() prints under it. Charts AF, AG and AH are not prices
 at all: each is one line of arithmetic, and says so. Chart C is not prices
 either: it is three sine waves added one at a time, and says so.
 Charts C, D and E are three such waves with a little seeded noise, made
@@ -126,9 +136,9 @@ at all: four shapes, and one bar drawn three times.
 **An annotation is in the slide's own words.** The final pass put arrows,
 numbers, rulers and labelled lines on these charts wherever the slide points
 at something, so that every thing the words name can be found on the
-picture: the measured swings on C, the counted rulers on E and AB, the
-numbered breakouts on I and entries on AA, the two numbered days on AI,
-the two bracketed ranges on L, and the numbered orders on Y and Z.
+picture: the measured swings on C, the counted rulers on E and AD, the
+numbered breakouts on I and entries on AC, the two numbered days on AK,
+the two bracketed ranges on L, and the numbered orders on Z and AA.
 """
 
 from __future__ import annotations
@@ -1030,7 +1040,7 @@ CHARTS = (
             top=0.20, bottom=0.08,
             footnote="An invented currency pair. Its average daily range is "
                      "the book's example, 120 pips.\nThe book puts no number "
-                     "on the higher mark, and does not say what a pip is.",
+                     "on the higher mark.",
         ),
     ),
     ChartArt(
@@ -1043,7 +1053,7 @@ CHARTS = (
                              "near its low, it would be very bearish."),
     ),
     ChartArt(
-        letter="S",
+        letter="T",
         draw=ck.annotated,
         kwargs=dict(
             series=F_SERIES,
@@ -1068,7 +1078,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="T",
+        letter="U",
         draw=ck.annotated,
         kwargs=dict(
             series=G_SERIES,
@@ -1099,7 +1109,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="U",
+        letter="V",
         draw=ck.annotated,
         kwargs=dict(
             series=H_SERIES,
@@ -1125,7 +1135,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="V",
+        letter="W",
         draw=ck.annotated,
         kwargs=dict(
             series=I_SERIES,
@@ -1158,7 +1168,40 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="W",
+        letter="AB",
+        draw=ck.annotated,
+        kwargs=dict(
+            series=I_SERIES,
+            size=PAIR,
+            ylabel="Price (PHP)",
+            price_ticks=(48, 50, 52),
+            extend=44,
+            strokes=(
+                Stroke(points=((0, 52), (80, 52)), dashed=True,
+                       tone="quiet", label="Buystop at PHP 52", at=0, dx=4,
+                       dy=9),
+                Stroke(points=((0, 48), (80, 48)), dashed=True,
+                       tone="quiet", label="Sellstop at PHP 48", at=0, dx=4,
+                       dy=-9),
+                Stroke(points=((36, 50), (50, 52), (55, 51.6), (74, 55)),
+                       dashed=True, arrow=True,
+                       label="Triggered at 52:\nbuys at the market", at=3,
+                       dx=-4, dy=20),
+                Stroke(points=((36, 50), (50, 48), (55, 48.4), (74, 45)),
+                       dashed=True, arrow=True, tone="notice",
+                       label="Triggered at 48:\nsells at the market", at=3,
+                       dx=-4, dy=-20),
+            ),
+            notes=(
+                Note(x=36, label="Now: PHP 50", dx=-30, dy=-21),
+            ),
+            top=0.42, bottom=0.42,
+            footnote=INVENTED + " The same shape Chart W drew: the chart "
+                     "a few slides back, which this one recalls.",
+        ),
+    ),
+    ChartArt(
+        letter="X",
         draw=ck.annotated,
         kwargs=dict(
             series=J_SERIES,
@@ -1186,7 +1229,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="X",
+        letter="Y",
         draw=ck.annotated,
         kwargs=dict(
             series=K_SERIES,
@@ -1219,7 +1262,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="Y",
+        letter="Z",
         draw=ck.annotated,
         kwargs=dict(
             series=L_SERIES,
@@ -1257,7 +1300,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="Z",
+        letter="AA",
         draw=ck.annotated,
         kwargs=dict(
             series=L_SERIES,
@@ -1295,7 +1338,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AA",
+        letter="AC",
         draw=ck.annotated,
         kwargs=dict(
             series=M_SERIES,
@@ -1321,7 +1364,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AB",
+        letter="AD",
         draw=ck.bar_waves,
         kwargs=dict(
             bars=N_BARS, size=TERM,
@@ -1355,7 +1398,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AC",
+        letter="AE",
         draw=ck.annotated,
         kwargs=dict(
             series=O_SERIES,
@@ -1382,7 +1425,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AD",
+        letter="AF",
         draw=ck.annotated,
         kwargs=dict(
             series=P_SERIES,
@@ -1405,7 +1448,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AE",
+        letter="AG",
         draw=ck.annotated,
         kwargs=dict(
             series=Q_SERIES,
@@ -1432,7 +1475,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AF",
+        letter="AH",
         draw=ck.annotated,
         kwargs=dict(
             series=R_SERIES,
@@ -1454,7 +1497,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AG",
+        letter="AI",
         draw=ck.annotated,
         kwargs=dict(
             series=S_SERIES,
@@ -1484,7 +1527,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AH",
+        letter="AJ",
         draw=ck.annotated,
         kwargs=dict(
             series=T_SERIES,
@@ -1508,7 +1551,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AI",
+        letter="AK",
         draw=ck.annotated,
         kwargs=dict(
             series=U_SERIES,
@@ -1540,7 +1583,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AJ",
+        letter="AL",
         draw=ck.annotated,
         kwargs=dict(
             series=V_SERIES,
@@ -1567,7 +1610,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AK",
+        letter="AM",
         draw=ck.annotated,
         kwargs=dict(
             series=W_SERIES,
@@ -1591,7 +1634,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AM",
+        letter="AO",
         draw=ck.annotated,
         kwargs=dict(
             series=X_SERIES,
@@ -1614,7 +1657,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AO",
+        letter="AR",
         draw=ck.annotated,
         kwargs=dict(
             series=Y_SERIES,
@@ -1644,7 +1687,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AR",
+        letter="AU",
         draw=ck.annotated,
         kwargs=dict(
             series=Z_SERIES,
@@ -1911,7 +1954,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AN",
+        letter="AP",
         draw=ck.annotated,
         kwargs=dict(
             series=DM_SERIES,
@@ -1945,7 +1988,37 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AL",
+        letter="AQ",
+        draw=ck.annotated,
+        kwargs=dict(
+            series=DM_SERIES,
+            size=PAIR,
+            extend=20,
+            strokes=(
+                Stroke(points=(DM_TROUGHS[0],
+                               (80, _through(DM_TROUGHS[0], DM_TROUGHS[1], 80))),
+                       label="1  1st: steepest", at=1, dx=-6, dy=10),
+                Stroke(points=(DM_TROUGHS[0],
+                               (80, _through(DM_TROUGHS[0], DM_TROUGHS[2], 80))),
+                       tone="quiet",
+                       label="2  2nd: flatter", at=1, dx=-6, dy=10),
+                Stroke(points=(DM_TROUGHS[0],
+                               (80, _through(DM_TROUGHS[0], DM_TROUGHS[3], 80))),
+                       tone="notice",
+                       label="3  3rd: flattest", at=1, dx=-6, dy=10),
+            ),
+            notes=(
+                Note(x=DM_TROUGHS[0][0], y=DM_TROUGHS[0][1],
+                     label="All three\nstart here", dx=10, dy=-30),
+            ),
+            top=0.14, bottom=0.10,
+            footnote=INVENTED + " All three fan out from the one trough. "
+                     "The book draws only three; a line beyond\nthe third "
+                     "carries no special rule of its own.",
+        ),
+    ),
+    ChartArt(
+        letter="AN",
         draw=ck.annotated,
         kwargs=dict(
             series=RC_SERIES,
@@ -1985,7 +2058,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AP",
+        letter="AS",
         draw=ck.annotated,
         kwargs=dict(
             series=GAP_SERIES,
@@ -2014,7 +2087,7 @@ CHARTS = (
         ),
     ),
     ChartArt(
-        letter="AQ",
+        letter="AT",
         draw=ck.bar_waves,
         kwargs=dict(
             bars=PL_BARS, size=PAIR,
@@ -2071,6 +2144,43 @@ CHARTS = (
                      "Line: their closes. Lower panel: the three-bar\n"
                      "average of their bar stochastic. Through the second "
                      "rally the closes sit lower in each bar.",
+        ),
+    ),
+    ChartArt(
+        letter="S",
+        draw=ck.annotated,
+        kwargs=dict(
+            series=DV_CLOSES,
+            size=PAIR,
+            ylabel="Price (PHP)",
+            price_ticks=(55, 60, 65),
+            volume=DV_AVERAGE,
+            volume_label="Ratio, averaged",
+            strokes=(
+                Stroke(points=((DV_P1, DV_CLOSES[DV_P1] + 1.2),
+                               (DV_P2, DV_CLOSES[DV_P2] + 1.2)),
+                       tone="notice", arrow=True, width=2.0),
+            ),
+            volume_strokes=(
+                Stroke(points=((DV_P1, DV_AVERAGE[DV_P1] + 0.10),
+                               (DV_P2, DV_AVERAGE[DV_P2] + 0.10)),
+                       tone="notice", arrow=True, width=2.0),
+            ),
+            notes=(
+                Note(x=18, y=(DV_CLOSES[DV_P1] + DV_CLOSES[DV_P2]) / 2 + 1.4,
+                     label="Price: the second\npeak is higher", dx=-66,
+                     dy=30, dot=False, notice=True),
+            ),
+            volume_notes=(
+                Note(x=29, y=0.62,
+                     label="The ratio:\nits second\npeak is lower",
+                     dx=14, dy=2, notice=True),
+            ),
+            xlabel="Time",
+            top=0.34, bottom=0.10,
+            footnote="The same invented bars as the chart two topics back: "
+                     "the one it is recalling. Line: their\ncloses. Lower "
+                     "panel: the three-bar average of their bar stochastic.",
         ),
     ),
 )

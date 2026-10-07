@@ -1308,12 +1308,12 @@ SECTION2 = Section(
             ),
         ),
         Pair(
-            origin="Book p.142: 120 pips and ninety percent are its numbers. A breach of the higher mark is a greater overextension. Pip and standard deviation are not explained.",
+            origin="Book p.142: 120 pips and ninety percent are its numbers. A breach of the higher mark is a greater overextension.",
             left=Term(
                 term="13  Average period range",
                 plain="The usual range of price in one period.",
-                example="A foreign exchange (FOREX) pair averages 120 pips a day. Price beyond that, either way, before the day completes: potential exhaustion.",
-                formal="One of the most reliable characteristics of price activity. The average is found with the ATR. A higher mark, the 2 standard deviation value of bar range: ninety percent of period ranges stay below it.",
+                example="A foreign exchange (FOREX) pair averages 120 pips a day, a pip being the smallest price step a forex quote moves in. Price beyond that, either way, before the day completes: potential exhaustion.",
+                formal="One of the most reliable characteristics of price activity. The average is found with the ATR. A higher mark, the 2 standard deviation value of bar range (twice how far ranges typically spread from that average): ninety percent of period ranges stay below it.",
             ),
             picture=Chart(
                 letter="Q",
@@ -1370,17 +1370,24 @@ SECTION2 = Section(
                 "The two low volume cases are trend inhibiting, though not necessarily a reversal.",
             ),
         ),
-        Content(
-            origin="Book p.143: one sentence, then it refers to Chapter 9. The MACD example is this course's Chapter 4.",
-            title="16  Volume and oscillator divergence",
-            lines=(
-                "Standard or reverse divergence between price and volume, or between price and any oscillator, may give an early indication of potential reversals or continuations in the market.",
-                "Standard divergence, as Chapter 4 showed: price makes a higher peak while the MACD makes a lower one.",
+        Pair(
+            origin="Book p.143, one sentence, then Chapter 9. MACD: Chapter 4. Chart recalls Chart O, a few slides back.",
+            left=Content(
+                title="16  Volume and oscillator divergence",
+                lines=(
+                    "Standard divergence, price and volume or price and any oscillator, may signal a potential reversal or continuation.",
+                    "As Chapter 4 showed: price makes a higher peak while the MACD makes a lower one. Recalled on the right, characteristic 6's own example.",
+                ),
+                accent="The book names a second kind, reverse divergence, but gives it no sentence of its own here.",
+                caption="Reverse divergence, and how either kind signals a continuation, are left to Chapter 9.",
             ),
-            accent="The book gives divergence that one sentence here and refers to Chapter 9 for more.",
-            caption="Reverse divergence, and how a divergence signals a continuation, are not explained in this chapter. That completes the sixteen.",
+            picture=Chart(
+                letter="S",
+                shows="The same chart as characteristic 6's bearish divergence: an invented price line that rises to a first peak, pulls back, and rises to a second, higher peak, against the three-bar average of the bar stochastic, which is high through the first rally and lower through the second.",
+            ),
+            text_w=CHART_W,
             notes=(
-                "No picture on this slide: the book explains nothing about divergence here and sends the reader to Chapter 9.",
+                "This slide recalls the picture rather than drawing a new one: the book gives divergence one sentence here and sends the reader to Chapter 9 for the rest.",
                 "Two of this chapter's figures have already labelled divergences, and Chapter 4 showed one on the MACD. That is as far as the book has taken it.",
             ),
         ),
@@ -1422,7 +1429,7 @@ SECTION3 = Section(
     covers=(),
     slides=(
         Pair(
-            origin="Book p.144; it does not define backtest. The chart is ours: the book's own figure lists the filters and does not show the three entries.",
+            origin="Book p.144; backtest glossed in the caption, ours. The chart is ours: the book's own figure lists the filters and does not show the three entries.",
             left=Content(
                 title="5.3  Three categories of filter",
                 lines=(
@@ -1431,10 +1438,10 @@ SECTION3 = Section(
                     "Event-based filters indicate neither, until an event has occurred.",
                 ),
                 accent="The type of filter, and the extent to which it is employed, sets the exact point of entry and exit.",
-                caption="Chapter 1: filters validate breakouts. Unfiltered, they cannot be backtested, the book says.",
+                caption="Chapter 1: filters validate breakouts. Unfiltered, they cannot be backtested, run against past prices to see how they would have performed, the book says.",
             ),
             picture=Chart(
-                letter="S",
+                letter="T",
                 shows="One breakout above a level, filtered three ways: a price-based filter that enters at a set price beyond the level, a time-based filter that enters after N closed bars, and an event-based filter that enters when a bar closes beyond the level.",
             ),
             text_w=CHART_W,
@@ -1444,15 +1451,15 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.144-145, Figure 5.30. Not explained: N, what a sequence looks like, a retest, what confirms a breakout, standard deviation.",
+            origin="Book pp.144-145, Figure 5.30. N, a sequence, a retest and standard deviation are glossed in one line each; the book gives no number for any of them.",
             left=Content(
                 title="The filters, one level down",
                 lines=(
-                    "Price-based. Absolute: a fixed price excursion. Relative: a percentage of the breakout price. Volatility: multiples of average true range or of standard deviation.",
-                    "Time-based: a duration of N closed bars.",
-                    "Event-based. Algorithmic: a specific sequence of closed bars, or of new highs or lows. Event-based measure: a closing price violation, or a barrier retest after a confirmed breakout.",
+                    "Price-based. Absolute: a fixed price excursion. Relative: a percentage of the breakout price. Volatility: multiples of ATR or of standard deviation, how far a bar's range typically varies.",
+                    "Time-based: a duration of N closed bars, N being however many the trader chooses.",
+                    "Event-based. Algorithmic: a specific sequence of closed bars, several in a row closing the same way, or of new highs or lows. Event-based measure: a closing violation, or a retest, price returning to touch a broken level.",
                 ),
-                caption="The figure asks what a filter answers: how far past the line, the ?, before the break counts? Chapter 1, and the book's last review question, call the third family algorithmic, retest included. Here it is a branch of event-based.",
+                caption="How far past the line, the ?, before the break counts? Chapter 1 calls the third family algorithmic; here it is a branch of event-based.",
             ),
             picture=Figure(
                 number="5.30",
@@ -1476,7 +1483,7 @@ SECTION3 = Section(
                 accent="So price-based filters are preferred.",
             ),
             picture=Chart(
-                letter="T",
+                letter="U",
                 shows="Two closes above the same entry level: one inside the specified distance a price-based filter allows, where the entry is taken, and one far beyond it, where the entry is refused.",
             ),
             text_w=CHART_W,
@@ -1559,7 +1566,7 @@ SECTION4 = Section(
                 caption="The book here files all four under 'the principle of buying low and selling high'. By name only the first is buy low, sell high, as Chapter 1 said.",
             ),
             picture=Chart(
-                letter="U",
+                letter="V",
                 shows="One rise and one fall with four trades marked: a long bought low and sold high, a long bought high and sold higher, a short sold high and bought back lower, and a short sold low and bought back even lower.",
             ),
             text_w=CHART_W,
@@ -1581,7 +1588,7 @@ SECTION4 = Section(
                 caption="Chapter 1 taught stop and limit entries. New: the exits, and that a gap can fill a stop away from its price.",
             ),
             picture=Chart(
-                letter="V",
+                letter="W",
                 shows="The current market price with two pending stop entry orders: a buystop above the market, triggered if price rises to it, and a sellstop below the market, triggered if price falls to it. Both are placed when a continuation in price is expected.",
             ),
             text_w=CHART_W,
@@ -1600,7 +1607,7 @@ SECTION4 = Section(
                 formal="The difference between the specified order price and the actual filled price. Stoploss orders may experience additional loss under gapping price action, due to negative slippage.",
             ),
             picture=Chart(
-                letter="W",
+                letter="X",
                 shows="A long position with a stoploss at PHP 48: price gaps down through the level and the order is filled at PHP 46.50, a negative slippage of PHP 1.50.",
             ),
             text_w=TERM_CHART_W,
@@ -1623,7 +1630,7 @@ SECTION4 = Section(
                 accent="It can guarantee the intended price or better, but not execution.",
             ),
             picture=Chart(
-                letter="X",
+                letter="Y",
                 shows="The current market price with two pending limit entry orders: a sell limit above the market and a buy limit below it. Both are placed when a reversal in price is expected at that level.",
             ),
             text_w=CHART_W,
@@ -1669,7 +1676,7 @@ SECTION4 = Section(
                 caption="Going short itself was taught earlier, in 5.4 Trend Participation; the book does not pair it with these orders here.",
             ),
             picture=Chart(
-                letter="Y",
+                letter="Z",
                 shows="The current market price with three numbered entries: 1 a market buy at the price shown, 2 a buy stop above it that triggers on a continuation, 3 a buy limit below it that fills only at that price or better, on a reversal.",
             ),
             text_w=CHART_W,
@@ -1692,7 +1699,7 @@ SECTION4 = Section(
                 caption="The book says 'or better, that is, higher' of every limit order; for a buy limit on the other slide, better reads lower.",
             ),
             picture=Chart(
-                letter="Z",
+                letter="AA",
                 shows="The current market price with three numbered exits on a long: 1 a market sell at the price shown, 2 a sell limit above it that takes profit at that price or better, 3 a sell stop below it that cuts the loss once triggered, filled at the market.",
             ),
             text_w=CHART_W,
@@ -1702,19 +1709,25 @@ SECTION4 = Section(
                 "Negative slippage can occur on the stoploss if price gaps through it; Chapter 5's own slippage term, a few slides back.",
             ),
         ),
-        Content(
-            origin="Book pp.147-148.",
-            title="Other orders the book names",
-            lines=(
-                "Market if Touched, MIT: an MIT sell shorts above the market, an MIT buy goes long below it, using a stop order where a limit would otherwise go.",
-                "Day orders keep an order pending only until the end of the trading day.",
-                "Good till Cancelled orders keep an order active until further notice.",
-                "Market on Close orders are executed in the last minutes of the trading day, at or near the close.",
-                "Contingent orders are executed once another order is filled or triggered. Examples: one cancel other, OCO, and one trigger other, OTO.",
+        Pair(
+            origin="Book pp.147-148. The chart recalls Chart W, a few slides back: the same shape an MIT order uses.",
+            left=Content(
+                title="Other orders the book names",
+                lines=(
+                    "Market if Touched, MIT: sells above the market, buys below it, with a stop order. Same shape as the recall, right.",
+                    "Day orders stay pending only until the end of the trading day.",
+                    "Good till Cancelled orders stay active until further notice.",
+                    "Market on Close orders fill in the last minutes, at or near the close.",
+                    "OCO places two opposite orders and cancels whichever does not fill. OTO places a second order once a first fills.",
+                ),
             ),
-            caption="The book gives each of these one line and does not say how an MIT, OCO or OTO order works.",
+            picture=Chart(
+                letter="AB",
+                shows="The current market price with two pending stop entry orders: a buystop above the market and a sellstop below it, the same shape an MIT order uses, recalled from a few slides back.",
+            ),
+            text_w=CHART_W,
             notes=(
-                "No picture: these are instructions about time and conditions, and the book gives each one line.",
+                "The picture recalls Chart W rather than drawing a new one: an MIT is the same waiting-order shape, just named for its use as a profit exit or an any-price entry.",
                 "MIT sits in Figure 5.32 as a profit exit, or an entry at any price. The book describes it as shorting above the market using a stop order.",
             ),
         ),
@@ -1776,10 +1789,10 @@ SECTION5 = Section(
                     "Failed breakout entries: in the opposite direction, after a failed breakout.",
                     "Random entries, and pattern or sequence-based entries.",
                 ),
-                caption="The book announces four ways and lists five, each with or against the trend. Failed breakout: 5.2's false breakout. Pattern entries follow a set sequence of bars or a completed pattern; random ones it does not explain.",
+                caption="The book announces four ways and lists five, each with or against the trend. Failed breakout: 5.2's false breakout. Pattern entries follow a set sequence of bars or a completed pattern; a random entry is taken with no technical signal at all, usually only to benchmark a strategy against chance.",
             ),
             picture=Chart(
-                letter="AA",
+                letter="AC",
                 shows="One barrier and four numbered entries on it: 1, a barrier entry, shorting where price turns down at the resistance; 2, a breakout entry, buying as price breaks above it; 3, a failed breakout entry, shorting once the breakout fails and price falls back below; and 4, a barrier entry at a retest, shorting when price comes back up to the level and turns.",
             ),
             text_w=CHART_W,
@@ -1814,12 +1827,12 @@ SECTION5 = Section(
             origin="Book pp.149-150. It gives no reason, and does not say whether N is the most bars a peak tops. On the chart the small peak fails at the third bar. Strengths 2 and 10 are ours.",
             left=Term(
                 term="Inflection point of strength N",
-                plain="An inflection point, a peak or trough, counts for more the more bars flank it.",
+                plain="An inflection point, a peak or trough, counts for more the more bars flank it. A peak acts as resistance, stopping a rally; a trough acts as support, stopping a decline.",
                 example="A peak whose highest bar is higher than the ten bars on either side is of strength 10. One that tops only two bars each side is of strength 2.",
                 formal="N bars on either side of the highest peak or lowest trough is an inflection point of strength N. More bars: a more significant peak or trough, and a stronger resistance or support level.",
             ),
             picture=Chart(
-                letter="AB",
+                letter="AD",
                 shows="Price bars with two peaks. A small one whose highest bar is higher than the two bars on either side, counted on a ruler under them, while the third bar out is higher: an inflection point of strength 2. A large one that is higher than the ten bars before it and the ten after, counted on two rulers: an inflection point of strength 10, whose level, dashed in gold, is the stronger resistance.",
             ),
             text_w=TERM_CHART_W,
@@ -1830,12 +1843,12 @@ SECTION5 = Section(
             ),
         ),
         Pair(
-            origin="Book p.150, Figure 5.34: top row flat levels, bottom row trendlines (5.6). No reason given here; pesos ours. What support and resistance are, and why they hold: 5.6.",
+            origin="Book p.150, Figure 5.34: top row flat levels, bottom row trendlines (5.6). No reason given here; pesos ours. Support and resistance: the slide just before this one.",
             left=Term(
                 term="Support and resistance role reversal",
                 plain="A breached barrier changes sides.",
                 example="A share holds at PHP 40, then falls through it. On the next rally PHP 40 stops it.",
-                formal="Price barriers change roles once breached: support turns into future resistance, and resistance turns into future support. This applies to all overlay barriers, which include channels, trendlines, pivot points and price envelopes.",
+                formal="Price barriers change roles once breached: support turns into future resistance, and resistance into future support. All overlay barriers: channels, trendlines (5.6), pivot points and price envelopes, the last two not built in this course, named only as the book's others.",
             ),
             picture=Figure(
                 number="5.34",
@@ -1873,10 +1886,10 @@ SECTION5 = Section(
                 title="Prior peaks, prior troughs and a channel",
                 lines=(
                     "EURUSD, 30 minutes: support and resistance at prior peaks and troughs, and on the rising channel.",
-                    "The book: the oscillator below confirms, overbought at resistance and oversold at support.",
+                    "Resistance turning into support, again and again, in an uptrend.",
                 ),
-                accent="Resistance turning into support, again and again, in an uptrend.",
-                caption="The oscillator is the cycle-tuned stochastic: Chapter 8. Channels: 5.6. The thin uprights tie its lows to supports; its highs cannot be picked out at this size.",
+                accent="The same role reversal as the last two slides, on a real chart instead of an invented one.",
+                caption="The figure's lower panel carries an oscillator, the cycle-tuned stochastic, Chapter 8, too small to read here; this slide keeps only what the price panel itself shows.",
             ),
             picture=Figure(
                 number="5.36",
@@ -1885,7 +1898,7 @@ SECTION5 = Section(
             text_w=4.8,
             notes=(
                 "Horizontal levels and the channel's sloping lines are both barriers, and both change roles.",
-                "The vertical arrows join each oversold reading to the support it confirmed.",
+                "The book reads the lower panel as confirming oversold at each support; it cannot be verified at this size, so the slide does not assert it.",
             ),
         ),
         Check(
@@ -1938,11 +1951,11 @@ SECTION5 = Section(
             left=Term(
                 term="Trend filter",
                 plain="Says whether a trend is on. Not 5.3's filters.",
-                example="A double moving average crossover. Shorter above longer: a potential uptrend starts. Shorter below longer: a potential downtrend.",
-                formal="It helps to identify a trend amidst the market noise and price volatility. Two more: a longer-term oscillator crossing its signal line, and price contained above or below an overlay barrier, such as a moving average or trendline.",
+                example="A moving average: the average of a bar's own close and a set number before it, moving ahead one bar at a time. A double crossover compares a shorter one against a longer: shorter above, a potential uptrend; shorter below, a potential downtrend.",
+                formal="It helps to identify a trend amidst the market noise and price volatility. How a moving average is built in general is Chapter 11; this is only its crossing read. Two more: an oscillator crossing its signal line, and price contained above or below an overlay barrier.",
             ),
             picture=Chart(
-                letter="AC",
+                letter="AE",
                 shows="A price line with a shorter and a longer moving average: the shorter crosses above the longer, signifying the start of a potential uptrend, and later crosses back below it, signifying the start of a potential downtrend.",
             ),
             text_w=TERM_CHART_W,
@@ -1961,8 +1974,8 @@ SECTION5 = Section(
                     "Long: the stochastic crosses above its signal line with the MACD above zero. Short: the reverse.",
                     "Stops: below the previous trough for a long, trailing up to each higher trough. A short: the mirror.",
                 ),
-                accent="Divergence in the MACD helps to warn of a potential reversal.",
-                caption="An illustration of one tool for direction, one for timing. The MACD, the stochastic and signal lines are not taught yet.",
+                accent="Preview only, not examinable: the MACD, the stochastic and signal lines are not taught in this course until later chapters.",
+                caption="An illustration of one tool for direction, one for timing, shown here only because the book places it in this section. Nothing on this slide is assumed known or tested.",
             ),
             picture=Figure(
                 number="5.38",
@@ -2003,11 +2016,11 @@ SECTION5 = Section(
                 title="Where the stop goes, and how big it is",
                 lines=(
                     "A stop is usually placed just below significant troughs for longs, just above significant peaks for shorts.",
-                    "Entry too far from one: a stop some multiple of ATR or standard deviations away.",
+                    "Entry too far from one: a stop some multiple of ATR or standard deviations away. A qualitative rule only; the book gives no actual multiple.",
                     "Barrier entries: stopsizes always about the same. The peak or trough is usually the point of entry itself.",
                     "Breakout entries: stopsizes vary. The peak or trough may be any distance from the entry.",
                 ),
-                caption="Stopsize: the distance from entry to stop, the figure's brackets. Never defined; no multiple given.",
+                caption="Stopsize: the distance from entry to stop, the figure's brackets.",
             ),
             picture=Figure(
                 number="5.39",
@@ -2028,10 +2041,10 @@ SECTION5 = Section(
                     "The book's two worst cases: narrow stops taken out frequently, on a fixed percentage of current capital; or wide stops, on a fixed percentage of original capital.",
                 ),
                 accent="Either way the result is significant loss.",
-                caption="Taken out: the stop is hit. Current capital: what the account holds now. Original: what it began with. Our reading: the book defines neither, and gives no reason for either case.",
+                caption="Taken out: the stop is hit. Why each is bad, our reading: a narrow stop on current capital compounds, each loss shrinks the base the next is sized from; a wide stop on original capital stays large even after capital has shrunk.",
             ),
             picture=Chart(
-                letter="AD",
+                letter="AF",
                 shows="Tradesize against stopsize for a fixed risk of PHP 10,000 a trade: 2,000 shares at a stopsize of PHP 5.00, 5,000 shares at PHP 2.00, and 20,000 shares at PHP 0.50. The narrower the stop, the larger the tradesize.",
             ),
             text_w=CHART_W,
@@ -2049,7 +2062,7 @@ SECTION5 = Section(
                 formal="It limits the losses in either scenario by allocating a fixed percentage of original capital to narrow stops, and of current capital for stopsizes that exceed a fixed threshold size.",
             ),
             picture=Chart(
-                letter="AE",
+                letter="AG",
                 shows="Tradesize against stopsize under proportional stopsizing, for PHP 10,000 at risk: for every stopsize up to the proportional stopsize of PHP 3.00 the tradesize is held at 3,333 shares, and above PHP 3.00 it falls as PHP 10,000 divided by the stopsize.",
             ),
             text_w=TERM_CHART_W,
@@ -2059,20 +2072,19 @@ SECTION5 = Section(
             ),
         ),
         Pair(
-            origin="Book p.154. No reason for 300 to 500 trades or for step 3. Backtest and standard deviation are not explained: a check gives the values. Pesos, 1 percent: ours.",
+            origin="Book p.154. No reason for 300 to 500 trades or step 3, beyond 13's 2 SD case. Backtest: 5.3. Pesos, 1 percent: ours.",
             left=Content(
                 title="Five steps to the proportional tradesize",
                 lines=(
-                    "1  Backtest: the average stopsize of 300 to 500 trades. Say PHP 2.00.",
-                    "2  Their two standard deviation value, twice the deviation: say PHP 1.00.",
-                    "3  Add: the proportional stopsize, PHP 3.00.",
+                    "1  Backtest, run the system on past trades: the average stopsize of 300 to 500, to average out noise. Say PHP 2.00.",
+                    "2  Their two standard deviation value: say PHP 1.00, the same cushion as 13's ninety percent mark.",
+                    "3  Add: the proportional stopsize, PHP 3.00, wide enough for almost every stop seen.",
                     "4  Maximum risk per trade: 1 percent of current capital. Say PHP 10,000.",
                     "5  10,000 / 3.00 = 3,333 shares, the proportional tradesize.",
                 ),
-                caption="Wider stop than PHP 3.00: PHP 10,000 divided by the stopsize. Narrower: less risk, in proportion.",
             ),
             picture=Chart(
-                letter="AF",
+                letter="AH",
                 shows="The percentage of capital at risk against stopsize under proportional stopsizing: it rises in proportion to the stopsize, 0.5 percent at PHP 1.50, to the maximum of 1 percent at the proportional stopsize of PHP 3.00, and stays capped at 1 percent for every wider stop.",
             ),
             text_w=CHART_W,
@@ -2120,15 +2132,15 @@ SECTION6 = Section(
     covers=(),
     slides=(
         Pair(
-            origin="Book p.155. No reason given for the third contact, or for the rule that a line cuts through no price action. Price crossing it later is a breach. Pesos and chart ours.",
+            origin="Book p.155. No reason given for the third contact or the no-cutting rule beyond our own reading. Price crossing it later is a breach. Pesos and chart ours.",
             left=Term(
                 term="5.6  Trendline",
                 plain="A straight line through two turning points, carried forward, cutting through no price.",
                 example="Join an uptrend's troughs at PHP 40 and PHP 44 and extend the line. A third touch confirms it.",
-                formal="A line projected forward into the future from two significant inflection points: troughs for an uptrend, peaks for a downtrend. It is tentative until tested at the third point of price contact, then confirmed, or valid.",
+                formal="A line projected forward into the future from two significant inflection points: troughs for an uptrend, peaks for a downtrend. Two points only fit a line to the past; a third touch is the first time it predicts, which is why it is tentative until then and confirmed, or valid, after. A line price cuts through has already broken it, so it could not still be holding.",
             ),
             picture=Chart(
-                letter="AG",
+                letter="AI",
                 shows="An uptrend line drawn through two significant troughs and projected forward into the future: tentative from the second trough, and confirmed where price tests it at a third point of contact.",
             ),
             text_w=TERM_CHART_W,
@@ -2173,7 +2185,7 @@ SECTION6 = Section(
                 caption="Chapters 2 and 3 pointed here for support and resistance. This is the book's account of them.",
             ),
             picture=Chart(
-                letter="AH",
+                letter="AJ",
                 shows="One rising trendline met from both sides: price approaching from above triggers the buy orders resting above it and bounces, temporary support. Price later breaks down through the line, marked on the chart, and then approaches it from below, triggers the sell orders resting below it and turns down: temporary resistance.",
             ),
             text_w=CHART_W,
@@ -2212,7 +2224,7 @@ SECTION6 = Section(
                 caption="With a time or event filter, the book adds the price filter as a second stage. Valid or not, a new trendline may still be drawn.",
             ),
             picture=Chart(
-                letter="AI",
+                letter="AK",
                 shows="An uptrend line, a dashed price-based filter line a set distance below it, and two days whose closes both come back above the uptrend line. On day 1 the intraday low goes through the line but stops short of the filter line: invalid by both rules. On day 2 the low goes beyond the filter line: valid by the price filter, still invalid by the closing rule.",
             ),
             text_w=CHART_W,
@@ -2245,25 +2257,25 @@ SECTION6 = Section(
             ),
         ),
         Pair(
-            origin="Book p.157. It gives no reason for 35 to 45 degrees, and does not say on what scaling the angle is measured. The chart is ours.",
+            origin="Book p.157. No reason given for 35 to 45 degrees or the scaling; our reading is linear, Chapter 3. The chart is ours.",
             left=Content(
                 title="A reliable trendline: angle and duration",
                 lines=(
-                    "A reliable trendline gives consistent support and resistance. A lot of whipsaws: unreliable.",
-                    "Angle: above 45 degrees a steep uptrend is less stable, and may not sustain itself. So is a very shallow one.",
+                    "A reliable trendline gives consistent support and resistance. A lot of whipsaws, price crossing the line back and forth without a clean break: unreliable.",
+                    "Angle, read on a linear price scale, Chapter 3: above 45 degrees a steep uptrend is less stable, and may not sustain itself. So is a very shallow one.",
                     "The most reliable uptrend line rises at approximately 35 to 45 degrees.",
                     "Duration: longer-term trendlines are generally more reliable than shorter-term ones.",
                 ),
-                caption="A longer-term line is more obvious to all participants and attracts more and larger orders. Whipsaw: undefined by the book; Chapter 4's Figure 4.20 pointed at them.",
+                caption="A longer-term line is more obvious to all participants and attracts more and larger orders.",
             ),
             picture=Chart(
-                letter="AJ",
+                letter="AL",
                 shows="Three small drawings of an uptrend line under its price: one steeper than 45 degrees, less stable; one at about 35 to 45 degrees, the most reliable; and one with a very shallow angle of ascent, also less stable.",
             ),
             text_w=CHART_W,
             notes=(
                 "This and the next slide are review question 6: the factors that impact trendline reliability. Six of them, two here.",
-                "The steep trend may not be able to sustain itself over the longer term. Chapter 4 said the book uses whipsaw without defining it, and it still does.",
+                "The steep trend may not be able to sustain itself over the longer term. Chapter 4 said the book uses whipsaw without defining it; this slide gives it a working definition, ours, since the book never does.",
             ),
         ),
         Pair(
@@ -2279,7 +2291,7 @@ SECTION6 = Section(
                 caption="Retests show that traders are aware of the line and paying attention to it.",
             ),
             picture=Chart(
-                letter="AK",
+                letter="AM",
                 shows="An uptrend line touched four times. Touches 1 and 2 draw the line. Touches 3 and 4 retest it, each one precise: price comes down to the line, touches it, and is rejected.",
             ),
             text_w=CHART_W,
@@ -2311,16 +2323,15 @@ SECTION6 = Section(
             ),
         ),
         Content(
-            origin="Book pp.158-159: its own list. It does not explain viewable across all timeframes, or why a consolidation breaches a line.",
+            origin="Book pp.158-159: its own list. Weakness 3's reason is our reading.",
             title="Strengths and weaknesses of trendline analysis",
             lines=(
-                "Strengths 1 and 2: straight lines catch any trend change, with no need to identify price patterns.",
-                "Strengths 3 and 4: simple to construct on any timeframe or market; viewable across them all.",
-                "Weakness 1: subject to whipsaws, like moving averages; less effective in erratic or ranging markets.",
-                "Weakness 2: affected by the type of scaling used, Chapter 3's ratio or linear.",
-                "Weakness 3: a consolidation may breach a line without a legitimate reversal.",
+                "Strengths 1 and 2: straight lines catch any trend change, no need to identify price patterns.",
+                "Strengths 3 and 4: simple on any timeframe or market, viewable across them all.",
+                "Weakness 1: subject to whipsaws, the slide before's term; weaker in erratic markets.",
+                "Weakness 2: affected by the scaling used, Chapter 3's ratio or linear.",
+                "Weakness 3: a sideways consolidation drifts both ways, crossing a line without a real reversal's break.",
             ),
-            caption="Whipsaw: undefined by the book. Chapter 4's Figure 4.20 pointed at them.",
             notes=(
                 "No picture: this is the book's own list of four strengths and three weaknesses, on five lines.",
                 "The scaling weakness is Chapter 3: a straight line on a linear scale is not straight on a ratio scale.",
@@ -2411,7 +2422,7 @@ SECTION6 = Section(
                 lines=(
                     "Nested channeling again, this time on a chart of the USDCAD.",
                     "The horizontal lines are Fibonacci retracement levels: set percentages of a prior move.",
-                    "The book says to notice the channels reacting at those levels. Neither can be made out at this size: the next slide draws the idea.",
+                    "The book's own page, kept for completeness. Neither the channels nor the levels can be read at this size, so nothing here is asked to be verified from it; the next slide redraws the same idea so it can be.",
                 ),
                 caption="Retracement levels: 5.7, and Chapter 10. The book's printed caption repeats Figure 5.45's and says Silver; its text says USDCAD.",
             ),
@@ -2435,10 +2446,10 @@ SECTION6 = Section(
                     "Each swing of the rising channel turns down at one of the levels: the reaction the book says to notice.",
                 ),
                 accent="Two kinds of barrier: sloping channel lines, flat retracement levels.",
-                caption="The percentages are given, not derived: 5.7, and Chapter 10.",
+                caption="Preview only, not examinable: 38.2, 50 and 61.8 percent are borrowed here for the book's channel point; where they come from is 5.7 and Chapter 10, not this slide.",
             ),
             picture=Chart(
-                letter="AL",
+                letter="AN",
                 shows="An invented price that falls from 60 pesos to 40 and then climbs in a rising channel. Three dashed levels cross the chart at 47.64, 50.00 and 52.36 pesos, which are 38.2, 50 and 61.8 percent of the fall measured back up from 40. The channel's three peaks turn down at the three levels in turn, each one labelled.",
             ),
             text_w=CHART_W,
@@ -2471,7 +2482,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.160-161. The chart is ours: the book makes the point on its Figure 5.14. It does not square this with 5.2, where a push above an uptrending line was exhaustion.",
+            origin="Book pp.160-161. The chart is ours: the book makes the point on its Figure 5.14. Reconciled with 5.2's single-line exhaustion rule below, our reading.",
             left=Content(
                 title="Anticipating a channel breakout",
                 lines=(
@@ -2479,10 +2490,10 @@ SECTION6 = Section(
                     "A failure to test a channel bottom in an uptrend, or a channel top in a downtrend, is even stronger evidence of a continuation of the existing trend.",
                     "Especially so if the channel breakout bar is accompanied by large volume.",
                 ),
-                caption="The book's example is its Figure 5.14: price fails to test the lower channel boundary, then breaks out upward at point A.",
+                caption="Not the same case as 5.2's single trendline, where piercing the line itself was exhaustion: here price never even reaches the near boundary, then clears the far one, which 5.2 never addressed.",
             ),
             picture=Chart(
-                letter="AM",
+                letter="AO",
                 shows="A rising channel in which price tests both boundaries several times, then on its last decline fails to reach the channel bottom, turns up early, and breaks out through the channel top.",
             ),
             text_w=CHART_W,
@@ -2515,12 +2526,12 @@ SECTION6 = Section(
             ),
         ),
         Pair(
-            origin="Book p.162, Figure 5.48 (p.163). No reason given, and minor is not defined: a small trough or peak. It advises reading Sperandeo's book. Pesos ours.",
+            origin="Book p.162, Figure 5.48 (p.163). No reason given for the rule itself. It advises reading Sperandeo's book. Pesos ours.",
             left=Term(
                 term="Sperandeo trendlines",
-                plain="Sperandeo's rule for which two points to join.",
+                plain="Sperandeo's rule for which two points to join: a minor trough or peak is a small one, smaller than the move it sits inside.",
                 example="An uptrend's lowest trough is PHP 40, and its highest minor trough before the PHP 60 peak is PHP 55: the line runs from the first through the second.",
-                formal="Uptrend line: from the lowest trough to the highest minor trough preceding the highest peak. Downtrend line: from the highest peak to the lowest minor peak preceding the lowest trough. From Victor Sperandeo's book Trader Vic: Methods of a Wall Street Master.",
+                formal="Uptrend line: from the lowest trough to the highest minor trough preceding the highest peak. Downtrend line: the mirror. The rule anchors the line on the most recent higher low before the top, as close under price as the rally allows. From Victor Sperandeo's Trader Vic: Methods of a Wall Street Master.",
             ),
             picture=Figure(
                 number="5.48",
@@ -2563,7 +2574,7 @@ SECTION6 = Section(
                 caption="Which troughs qualify is DeMark's own rule; the book sends the reader to his book for it. Here all four are taken to qualify.",
             ),
             picture=Chart(
-                letter="AN",
+                letter="AP",
                 shows="An invented uptrend with four troughs numbered 1 to 4 in the order they form. A solid green line through troughs 3 and 4, the two most recent, is labelled correct. Two dashed grey lines, one through troughs 2 and 3 and one through troughs 1 and 2, are labelled wrong.",
             ),
             text_w=CHART_W,
@@ -2574,7 +2585,7 @@ SECTION6 = Section(
             ),
         ),
         Pair(
-            origin="Book p.163, Fig. 5.50. No reason for three, or for the names: its accelerating lines flatten too, unlike 5.2's acceleration. The troughs and peaks are too small to read.",
+            origin="Book p.163, Fig. 5.50. No reason for three or the names. Its troughs and peaks are too small to read; the next slide redraws them.",
             left=Term(
                 term="Standard fan lines",
                 plain="Three trendlines fanning out from one point, each flatter than the last.",
@@ -2589,6 +2600,27 @@ SECTION6 = Section(
             notes=(
                 "All three lines share one starting point: a trough for the decelerating set, a peak for the accelerating one.",
                 "Tentative and valid do not apply to fan lines. A fan line uses two inflection points but only one is at a peak or trough.",
+                "The troughs and peaks are too small to read here, so the next slide redraws the idea on an invented chart.",
+            ),
+        ),
+        Pair(
+            origin="Ours: the book's Figure 5.50 (p.163) redrawn on invented prices, because its troughs and peaks are too small to read on it.",
+            left=Content(
+                title="Standard fan lines, numbered",
+                lines=(
+                    "An uptrend, with three fan lines all starting from its first trough.",
+                    "1st, steepest: to the next trough. 2nd, flatter: to the one after. 3rd, flattest: to the last.",
+                    "Accelerating fan lines, from a peak instead, are the same shape mirrored down.",
+                ),
+                accent="Each line is numbered in the order the book draws it.",
+                caption="The book says to draw only three of either; a line beyond the third carries no rule of its own.",
+            ),
+            picture=Chart(
+                letter="AQ",
+                shows="An uptrend with three fan lines, all starting from its first trough: the 1st, steepest, to the next trough; the 2nd, flatter, to the one after; the 3rd, flattest, to the last. Each line is labelled by its order.",
+            ),
+            text_w=CHART_W,
+            notes=(
                 "Accelerating fan lines run from a significant higher peak to gradually rising lower peaks. The book says to draw only three of either.",
             ),
         ),
@@ -2717,7 +2749,7 @@ SECTION7 = Section(
                 accent="Probably the most important retracement percentage of all is the 50 percent level.",
             ),
             picture=Chart(
-                letter="AO",
+                letter="AR",
                 shows="A rise from PHP 40 to PHP 60 and the retracement after it, with the three ranges where the approaches converge shaded: 33 to 38.2 percent, 50 percent at PHP 50, and 61.8 to 66 percent.",
             ),
             text_w=CHART_W,
@@ -2782,7 +2814,7 @@ SECTION8 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.167-168 and Figure 5.57. It gives no reason why a gap becomes a barrier.",
+            origin="Book pp.167-168, Figure 5.57, kept for completeness; no reason given why a gap becomes a barrier.",
             left=Content(
                 title="Gaps become support and resistance",
                 lines=(
@@ -2790,7 +2822,7 @@ SECTION8 = Section(
                     "On this 15 minute chart of GLD, gaps give rise to areas of both support and resistance: the horizontal lines drawn from each gap.",
                 ),
                 accent="Gaps tend to create areas of potential support and resistance.",
-                caption="The gaps are too small to see at this size: each horizontal line starts at one. The next slide draws two. The cycle-tuned stochastic below (Chapter 8) corroborates.",
+                caption="The gaps, and the figure's other two labels (angular symmetry in GLD, a cycle-tuned stochastic, both characteristics for a different chapter), cannot be read at this size, so nothing here is asked to be verified from them; the next slide draws the gap claim so it can be.",
             ),
             picture=Figure(
                 number="5.57",
@@ -2799,7 +2831,7 @@ SECTION8 = Section(
             text_w=5.0,
             notes=(
                 "A gap is a price range nobody traded in. Its edges are levels, and levels act as barriers.",
-                "The figure also marks angular symmetry in GLD: characteristic 8, on a different chart.",
+                "The figure also marks angular symmetry in GLD and a cycle-tuned stochastic; neither is legible here and neither is this chapter's to explain.",
             ),
         ),
         Pair(
@@ -2815,7 +2847,7 @@ SECTION8 = Section(
                 caption="The book says area, and does not say which edge of the gap holds.",
             ),
             picture=Chart(
-                letter="AP",
+                letter="AS",
                 shows="Two stretches of an invented price. In the first, price gaps up; a gold band marks the range the gap skipped and is carried forward; price later falls back to the band from above and turns up there, labelled support. In the second, price gaps down; price later rallies to the band from below and turns down there, labelled resistance.",
             ),
             text_w=CHART_W,
@@ -2895,12 +2927,12 @@ SECTION10 = Section(
     covers=(),
     slides=(
         Pair(
-            origin="Book p.169, Fig. 5.59, where the line hugs the bars too closely to see: next slide. Not explained: typical price, inter-bar trendlines, why three periods.",
+            origin="Book p.169, Fig. 5.59, where the line hugs the bars too closely to see: next slide. Not explained: typical price, why three periods.",
             left=Term(
                 term="5.10  Drummond geometry",
                 plain="A way to stay on the right side of the market.",
                 example="Price above the PLdot line: bullish. Below: bearish. Some buy when it turns up, sell when it turns down.",
-                formal="Charles Drummond's: a short-term moving average, the PLdot line, and inter-bar trendlines that forecast support and resistance. The PLdot is a simple three-period moving average of typical price, and may be forward shifted by one period.",
+                formal="Charles Drummond's: a short-term moving average, the PLdot line, and inter-bar trendlines, which connect each bar's highs and connect each bar's lows, that forecast support and resistance. The PLdot is a simple three-period moving average of typical price, and may be forward shifted by one period.",
             ),
             picture=Figure(
                 number="5.59",
@@ -2926,7 +2958,7 @@ SECTION10 = Section(
                 caption="Ours averages closes, shifted forward one bar. The book's PLdot averages typical price, which this chapter does not define. Moving averages: Chapter 11.",
             ),
             picture=Chart(
-                letter="AQ",
+                letter="AT",
                 shows="Invented price bars that climb and then fall, with a green three-bar moving average line. On the way up the bars stand above the line, labelled bullish. At the top the line turns down, labelled some sell here. On the way down the bars stand below the line, labelled bearish.",
             ),
             text_w=CHART_W,
@@ -2986,7 +3018,7 @@ SECTION11 = Section(
                 caption="Also a chart pattern sign: the appearance of a large broadening, diamond or island formation.",
             ),
             picture=Chart(
-                letter="AR",
+                letter="AU",
                 shows="A long uptrend into a market top with four of the book's signs marked: cycle amplitude decreasing during the trend, volume diminishing as price rises and then extreme in a buying climax, and the top forming at a significant historical resistance level.",
             ),
             text_w=CHART_W,
@@ -2996,15 +3028,15 @@ SECTION11 = Section(
             ),
         ),
         Content(
-            origin="Book p.170. It does not say here what a signal line, an equilibrium line or an intermarket relationship is.",
+            origin="Book p.170. It does not say here what a signal line, an equilibrium line or an intermarket relationship is; this slide names each tool without claiming how it works.",
             title="Reversal signs from tools taught later",
             lines=(
-                "Oscillators, Chapter 8: overbought signals at tops, oversold at bottoms; crossing below the signal and equilibrium line at tops, above at bottoms.",
+                "Oscillators, Chapter 8: give overbought and oversold readings at tops and bottoms, by a method this chapter does not give.",
                 "Divergence, Chapter 9: bearish divergence with price at tops, bullish at bottoms.",
                 "Candlesticks, Chapter 14: bearish formations at tops, bullish at bottoms.",
-                "Intermarket, no chapter named: bearish action in the broad markets leading to a top in the stock; bullish action in highly correlated markets, to a bottom.",
+                "Intermarket, no chapter named: a reversal confirmed by what related or broader markets are doing at the same time, by a method this chapter does not give.",
             ),
-            caption="A summary, the book says: it explains none of these tools here. Know the names; the first three come with their own chapters.",
+            caption="A summary, the book says: it explains none of these tools here. Know the names; the first three come with their own chapters. Signal line, equilibrium line and intermarket relationship: used here by name only, defined in none of this course's chapters, and added to the next slide's used-not-taught list for that reason.",
             notes=(
                 "No picture: each of these needs a tool the book has not taught yet. Oscillators are Chapter 8, divergence Chapter 9, candlesticks Chapter 14.",
                 "With the last slide these are the book's seven headings, a to g. Together they answer review question 3.",
@@ -3114,8 +3146,8 @@ CLOSING = (
         origin="This course's own list of the main ones, drawn from the chapter's slides. The numbers after Sent ahead are the book's chapters.",
         title="What the book uses, and where it says two things",
         lines=(
-            "Never defined here: breakout, wave cycle, wave degree, stopsize, backtest, whipsaw, pip.",
-            "Used, not taught: typical price, overbought, oversold, signal line, MACD.",
+            "Never defined here: breakout, wave cycle, wave degree, stopsize.",
+            "Used, not taught: typical price, overbought, oversold, signal line, equilibrium line, intermarket relationship, MACD.",
             "Sent ahead, by chapter: oscillators 8, divergence 9, Fibonacci 10, moving averages 11, candlesticks 14, Elliott 18, Gann 19.",
             "Two answers: 16 characteristics, taught, or 12; 5 ways to enter, listed, or 4; Gold's rate, $3.30 or $3.80.",
         ),

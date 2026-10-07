@@ -9,17 +9,17 @@ answer slide, every idea that needs a picture has one beside it, and nothing
 the book says is cut. `chapter-04/README.md` has the history of that form and
 `TEMPLATE.md` the rules.
 
-**Only the teaching deck is built so far.** There is no student edition, no
-run card, no lecture notes, no answer sheet and no check audit document for
-this chapter yet. The `--edition student` switch still works, because it
-lives in `deckkit`; nothing has been built or checked with it.
+**The teaching deck and the student edition are both built.** There is still
+no run card, no lecture notes, no answer sheet and no check audit document
+for this chapter.
 
 | File | Who it is for | What it is | Generated from |
 |---|---|---|---|
-| `FIN1209-Chapter-05.pptx` | The room | The committed deck, teaching edition. Our own charts, and a placeholder where each of the book's figures goes. | `build/content_chapter05.py` |
+| `FIN1209-Chapter-05.pptx` | The room | The committed deck, teaching edition, 157 slides. Our own charts, and a placeholder where each of the book's figures goes. | `build/content_chapter05.py` |
+| `FIN1209-Chapter-05-Student-Edition.pptx` | The students | 115 slides. The same deck with the 21 checks, the 21 reveals and the speaker cues removed. | `build/content_chapter05.py` |
 
-**Nothing in this folder is hand-edited except this file.** The deck is
-build output, and the next build overwrites it.
+**Nothing in this folder is hand-edited except this file.** The two decks are
+build output, and the next build overwrites them.
 
 **A committed deck is not a teaching deck.** The file here carries a
 placeholder where each of the 59 figures goes. The deck to teach from is the
@@ -596,42 +596,52 @@ prints this table fresh on every build; it is not hand maintained.
 From the repository root:
 
 ```
-.venv/bin/python build/build_chapter5.py      # teaching, 157 slides
+.venv/bin/python build/build_chapter5.py                     # teaching, 157 slides
+.venv/bin/python build/build_chapter5.py --edition student    # student, 115 slides
 ```
 
 The build draws the 47 charts and is deterministic: a second run leaves
 `git status` clean. It writes no answer sheet; see `build_chapter5.py` for
 why that was taken out of the script it was copied from.
 
-The version with the book's artwork must be written outside the repository.
-Its PDF is the copy for an iPad:
+The versions with the book's artwork must be written outside the repository.
+Their PDFs are the copies for an iPad:
 
 ```
 .venv/bin/python build/build_chapter5.py \
     --with-figures --out ~/FIN1209-Chapter-05-with-figures-and-charts.pptx
 soffice --headless --convert-to pdf --outdir ~ \
     ~/FIN1209-Chapter-05-with-figures-and-charts.pptx
+
+.venv/bin/python build/build_chapter5.py --edition student --with-figures \
+    --out ~/FIN1209-Chapter-05-Student-Edition-with-charts.pptx
+soffice --headless --convert-to pdf --outdir ~ \
+    ~/FIN1209-Chapter-05-Student-Edition-with-charts.pptx
 ```
 
-Before committing the deck, confirm it embeds no artwork that is not ours.
-It must hold exactly 44 images, and their hashes must match this chapter's
-own chart folder:
+Before committing a deck, confirm it embeds no artwork that is not ours. Each
+must hold exactly 47 images, and their hashes must match this chapter's own
+chart folder:
 
 ```
-unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media          # 44
+unzip -l chapter-05/FIN1209-Chapter-05.pptx | grep -c ppt/media                  # 47
+unzip -l chapter-05/FIN1209-Chapter-05-Student-Edition.pptx | grep -c ppt/media  # 47
 unzip -o -d /tmp/media chapter-05/FIN1209-Chapter-05.pptx 'ppt/media/*'
 diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
      <(shasum -a256 build/generated/charts-05/*.png | awk '{print $1}' | sort)
 ```
 
-The deck with the book's artwork in it holds 106: the 47 charts and one for
-each of the 59 figures.
+The teaching deck with the book's artwork in it holds 106: the 47 charts and
+one for each of the 59 figures. The student edition with the book's artwork
+holds the same 106, because every figure and chart slide survives into the
+student edition; only the checks, the reveals and the speaker cues are cut.
 
 Then look at every page, as an image, in the build with the artwork, because
-that is what the room sees:
+that is what the room, or the student, sees:
 
 ```
 pdftoppm -r 62 -png ~/FIN1209-Chapter-05-with-figures-and-charts.pdf /tmp/ch5
+pdftoppm -r 62 -png ~/FIN1209-Chapter-05-Student-Edition-with-charts.pdf /tmp/ch5-student
 ```
 
 **One thing to look for that the build does not catch.** On a reveal slide

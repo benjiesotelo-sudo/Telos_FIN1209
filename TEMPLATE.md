@@ -16,11 +16,11 @@ Read this before you touch anything. Five chapters are built.
   run card and 33 pages of lecture notes. Its answer sheet and its check
   audit are written outside the repository. See **The lean form** below
   before you copy it.
-- **Chapter 5** is the lean form done a second time, and only the teaching
-  deck so far: 148 slides, 21 checks carrying 42 items, 32 terms, all 59 of
-  the book's figures and 36 charts. `chapter-05/README.md` has what it
-  found: a figure whose labels are not in its image, and a reveal slide
-  that overflows in the PDF. Its first build was sent back for where it put
+- **Chapter 5** is the lean form done a second time: 157 slides in the
+  teaching edition, 115 in the student edition, 21 checks carrying 42 items,
+  32 terms, all 59 of the book's figures and 47 charts. `chapter-05/README.md`
+  has what it found: a figure whose labels are not in its image, and a reveal
+  slide that overflows in the PDF. Its first build was sent back for where it put
   the new-term marker, its second for using wave degrees before any slide
   explained them, and its fourth for using breakout more widely than
   Chapters 2 and 4 had without saying so; see **The new-term marker** below

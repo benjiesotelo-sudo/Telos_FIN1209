@@ -57,8 +57,7 @@ the 21 checks, at two slides each, and the six slides of the frame.
   table of small type, and a slide of its own is the only size it can be
   read at.
 - **One of our own charts otherwise.** 44 of them, lettered A to Z and then
-  AA to AP, plus AQ (placed out of letter order, right before X) and ZG (not
-  yet relettered). See the table below.
+  AA to AR, in the order the deck shows them. See the table below.
 - **And one of our own beside a book sketch that does not carry the idea on
   its own.** Seven of the 44 are companions of that kind, added in the
   third, fourth and fifth reviews: C, D and E after Figure 5.5, F after 5.7,
@@ -380,7 +379,7 @@ Every section is taught as fully as the book teaches it.
 | 5.1 Definitions of a trend | 27 | 3 | 5.1 to 5.10 | A to K |
 | 5.2 Quality of trend: 16 price characteristics | 35 | 5 | 5.11 to 5.29 | L to O |
 | 5.3 Price and trend filters | 5 | 1 | 5.30 | P, Q |
-| 5.4 Trend participation | 13 | 2 | 5.31, 5.32 | R to V, AQ |
+| 5.4 Trend participation | 13 | 2 | 5.31, 5.32 | S to W, Y |
 | 5.5 Price inflection points | 19 | 3 | 5.33 to 5.39 | W to AB |
 | 5.6 Trendlines, channels and fan lines | 29 | 4 | 5.40 to 5.53 | AC to AH |
 | 5.7 Trend retracements | 2 | | 5.54 | AI |
@@ -431,12 +430,11 @@ A chart is drawn where the book makes a point in words that none of its own
 figures shows. `build/charts_chapter05.py` holds the data and the reasoning.
 **They are lettered in the order the deck shows them.** They were first
 lettered in the order they were drawn, which put Chart AP on the slide
-between AA and AB, and a fresh reader took that for a mislabel. The final
-pass relettered all but one; the Python names in the chart module that
-begin `AB_` or `AF_` are the old letters and nothing more. Chart ZG is the
-one chart the final pass has not yet relettered. AQ was added after the
-relettering, for the orders pair below, and sits out of letter order on
-purpose: no letter falls between W and X.
+between AA and AB, and a fresh reader took that for a mislabel; one chart
+(the bearish divergence chart, now O) also carried a placeholder letter
+outside the sequence entirely. The final pass relettered all forty four, so
+every letter runs in order with no exception; the Python names in the chart
+module that begin `AB_` or `AF_` are the old letters and nothing more.
 
 | Chart | Beside | What it shows |
 |---|---|---|
@@ -451,47 +449,56 @@ purpose: no letter falls between W and X.
 | I | One price passes three breakout levels | Figure 5.8 on price bars: three labelled prior peaks, a level from each, and the three breakouts numbered in order |
 | J | Lower degrees turn alone. The highest does not. | Figure 5.9 on price bars, with two places only the smaller cycles turn |
 | K | Correction and pullback | A shallow dip beside a turn of any amount |
+| L | The ATR: a bar range that counts the gaps | Chapter 3's two bars, bar range and true range both bracketed, so the gap the bar range misses shows |
+| M | High and lower quality price, on bars | A stretch of small, equal bars beside a stretch of uneven ones |
 | N | Bar stochastic | One bar with three closes: 0.80, 0.50 and 0.20 |
-| O | 11 Size and duration of a consolidation | A small interruption the trend carries on from, and a large one with a reversal made more probable |
-| P | 13 Average period range | A day that completes its 120 pips early |
-| Q | 15 Volume spread action | The book's four cases, as bars over their volume |
-| R | Three categories of filter | One breakout, entered three ways |
-| S | Two-stage filtering | A close inside the allowed distance, and one beyond it |
-| T | Four scenarios, one principle | Two longs and two shorts on one swing, numbered |
-| U | Stop orders | A buystop above the market and a sellstop below |
-| V | Slippage | A gap through a stoploss, in pesos |
-| W | Limit orders | A sell limit above the market and a buy limit below |
-| AQ | You do not own it: orders to enter | A market buy, a buy stop and a buy limit, numbered and arrowed |
-| X | You own it: orders to exit | A market sell, a sell limit to take profit and a sell stop to cut the loss, numbered and arrowed |
-| Y | Ways of initiating an entry | Four numbered entries on one barrier: at it, through it, after the breakout fails, at the retest |
-| Z | Inflection point of strength N | Strength 2 beside strength 10, on price bars with the flanking bars counted |
-| AA | Trend filter | A double moving average crossover |
-| AB | The trouble with a varying stopsize | Tradesize against stopsize, for a fixed risk |
-| AC | Proportional stopsizing | The same, capped at the proportional stopsize |
-| AD | Five steps to the proportional tradesize | The percentage risk that results |
-| AE | 5.6 Trendline | Drawn, tentative, confirmed at the third contact |
-| AF | Why a trendline holds: behavior | One line met from above, then from below |
-| AG | What counts as a valid penetration? | Two numbered days: an intraday low short of the price filter line, and one beyond it |
-| AH | A reliable trendline: angle and duration | Too steep, about 40 degrees, too shallow |
-| AI | A reliable trendline: the other four | Four touches: two draw the line, two retest it |
-| AK | Anticipating a channel breakout | Price fails to reach the bottom, then breaks through the top |
-| AM | Where the three approaches agree | The three ranges where the percentages converge |
-| AP | Signs that a trend may reverse | Three kinds of sign at one market top |
+| O | One bearish divergence, drawn | Price's second peak higher while the averaged bar stochastic's second peak is lower |
+| P | 11 Size and duration of a consolidation | A small interruption the trend carries on from, and a large one with a reversal made more probable |
+| Q | 13 Average period range | A day that completes its 120 pips early |
+| R | 15 Volume spread action | The book's four cases, as bars over their volume |
+| S | Three categories of filter | One breakout, entered three ways |
+| T | Two-stage filtering | A close inside the allowed distance, and one beyond it |
+| U | Four scenarios, one principle | Two longs and two shorts on one swing, numbered |
+| V | Stop orders | A buystop above the market and a sellstop below |
+| W | Slippage | A gap through a stoploss, in pesos |
+| X | Limit orders | A sell limit above the market and a buy limit below |
+| Y | You do not own it: orders to enter | A market buy, a buy stop and a buy limit, numbered and arrowed |
+| Z | You own it: orders to exit | A market sell, a sell limit to take profit and a sell stop to cut the loss, numbered and arrowed |
+| AA | Ways of initiating an entry | Four numbered entries on one barrier: at it, through it, after the breakout fails, at the retest |
+| AB | Inflection point of strength N | Strength 2 beside strength 10, on price bars with the flanking bars counted |
+| AC | Trend filter | A double moving average crossover |
+| AD | The trouble with a varying stopsize | Tradesize against stopsize, for a fixed risk |
+| AE | Proportional stopsizing | The same, capped at the proportional stopsize |
+| AF | Five steps to the proportional tradesize | The percentage risk that results |
+| AG | 5.6 Trendline | Drawn, tentative, confirmed at the third contact |
+| AH | Why a trendline holds: behavior | One line met from above, then from below |
+| AI | What counts as a valid penetration? | Two numbered days: an intraday low short of the price filter line, and one beyond it |
+| AJ | A reliable trendline: angle and duration | Too steep, about 40 degrees, too shallow |
+| AK | A reliable trendline: the other four | Four touches: two draw the line, two retest it |
+| AL | A channel turning at retracement levels | Three dashed levels where a rising channel's own swings turn |
+| AM | Anticipating a channel breakout | Price fails to reach the bottom, then breaks through the top |
+| AN | DeMark's line, on numbered troughs | Four numbered troughs, the correct line against two wrong ones |
+| AO | Where the three approaches agree | The three ranges where the percentages converge |
+| AP | A gap as support, and a gap as resistance | Two stretches of price, a gold band marking the range each gap skipped |
+| AQ | Reading a PLdot line | A three-bar moving average standing in for the PLdot, three readings marked |
+| AR | Signs that a trend may reverse | Three kinds of sign at one market top |
 
-**Charts AB, AC and AD are the book's five steps with pesos put in.** An
+**Charts AD, AE and AF are the book's five steps with pesos put in.** An
 average stopsize of PHP 2.00, a two standard deviation value of PHP 1.00,
 and PHP 10,000 at risk, so a proportional stopsize of PHP 3.00 and a
 proportional tradesize of 3,333 shares. The steps are the book's and the
 numbers are ours. Each chart is one line of arithmetic, not a price, and
 says so.
 
-**Chart AA computes two simple moving averages** of the line it draws and
+**Chart AC computes two simple moving averages** of the line it draws and
 marks where they cross. How a moving average is built is Chapter 11, and no
 label on the chart explains it.
 
-**Chart B is three sine waves**, added one at a time, and not a price.
-Its labels are the one place a chart states a reading and not a quotation,
-for the reason given above.
+**Chart C is three sine waves**, added one at a time, and not a price.
+
+**Chart B's labels are the one place a chart states a reading and not a
+quotation**, for the reason given above: the book defines neither wave
+cycle nor wave degree in a sentence.
 
 **Charts C, D and E are three such waves made into price bars**, with a
 little seeded noise. One swing of each is 96, 32 and 8 bars long and PHP
@@ -517,7 +524,7 @@ breakout is the first bar to close above one, so nothing printed on it is a
 guess. Chart G is a seeded line and Charts H and N are `gallery` shapes,
 not prices.
 
-**Chart Z is drawn on price bars**, because its slide counts bars. An
+**Chart AB is drawn on price bars**, because its slide counts bars. An
 earlier drawing was a line with a shaded band, and the two strengths could
 not be counted on it. The book does not say where the count of flanking
 bars stops; the chart counts the bars whose highs stay below the peak's

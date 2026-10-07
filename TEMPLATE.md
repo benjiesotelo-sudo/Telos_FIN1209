@@ -518,7 +518,7 @@ bare bars. Compare each extracted file with the printed page, and render
 that figure from the page instead; `chapter-05/README.md` has the command.
 
 **The twenty seventh chart is AA.** `deckkit` names a chart by one capital
-letter, and by two after Z. Chapter 5 draws 43, lettered in the order the
+letter, and by two after Z. Chapter 5 draws 44, lettered in the order the
 deck shows them, and leaves five list slides without a picture.
 
 ---

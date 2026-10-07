@@ -865,7 +865,7 @@ SECTION2 = Section(
             ),
         ),
         Pair(
-            origin="Book p.134: the sentence set in gold on the left is its own, and counting gaps its only reason. The recall is this course's Chapter 3 deck, slide 48. The chart is ours.",
+            origin="Book p.134: the gold sentence is ours. Recall: Chapter 3's slide \"The true range, and the Type 4 gap.\" The chart is ours.",
             left=Content(
                 title="The ATR: a bar range that counts the gaps",
                 lines=(

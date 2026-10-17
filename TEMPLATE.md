@@ -1,6 +1,6 @@
 # Building the next chapter
 
-Read this before you touch anything. Five chapters are built.
+Read this before you touch anything. Six chapters are built.
 
 - **Chapter 1** is the original template: 227 slides, 25 checks carrying 50
   items, 49 terms, 35 book figures and 9 charts of our own.
@@ -27,6 +27,16 @@ Read this before you touch anything. Five chapters are built.
   before you write a `Term`. Its fifth was sent back for numbers on a chart
   that no slide explained; see **Nothing is stated without its
   explanation**, which is the instructor's standing rule for every slide.
+- **Chapter 6** is the lean form with the full set: 136 slides in the
+  teaching edition, 98 in the student edition, 19 checks carrying 38
+  items, 26 terms, all 44 of the book's figures and 44 charts, a three
+  page run card and 51 pages of lecture notes. It was built to every rule
+  Chapter 5's reviews added, from the first build. It is the one to copy
+  for a lean chapter: Chapter 4's companions, Chapter 5's rules, and the
+  two chartkit forms it added, `panels` (price over volume, on one time
+  axis) and `cells` (a grid of small cases). `chapter-06/README.md` has
+  what it found, and how its run card handles a chapter that does not fit
+  one session.
 
 **The next chapter is four content files and nothing else.** You should not
 need to open a renderer, and if you think you do, read the last paragraph of

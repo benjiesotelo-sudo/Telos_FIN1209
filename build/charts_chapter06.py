@@ -351,6 +351,9 @@ S_PEAK_VOL[24] = 2.65
 S_PEAK_VOL = tuple(S_PEAK_VOL)
 S_CYCLE_VOL = _noisy([1.0 + 0.9 * max(0.0, math.sin(i * math.pi / 7.5))
                       for i in range(30)], seed=712, spread=0.10)
+# The tallest bar of each swell of the cycle.
+S_CYCLE_PEAKS = tuple(max(range(a, min(a + 15, 30)), key=lambda i: S_CYCLE_VOL[i])
+                      for a in range(0, 30, 15))
 
 # T - a smoothed volume filter: a 20-bar average, four spikes at turns.
 T_TURNS = (18, 38, 62, 84)
@@ -447,6 +450,7 @@ def _profile(closes, volumes, edges):
 
 AF_PROFILE = _profile(AF_LINE, AF_VOL, AF_EDGES)
 AF_BIG = max(range(len(AF_PROFILE)), key=lambda i: AF_PROFILE[i][2])
+AF_LABELS = tuple(f"{round(row[2])}m" for row in AF_PROFILE)
 AG_LO, AG_HI = AF_PROFILE[AF_BIG][0], AF_PROFILE[AF_BIG][1]
 # Step 2: the two busiest stretches of days, the bursts set above.
 AG_SPANS = ((25.5, 30.5), (45.5, 49.5))
@@ -788,8 +792,8 @@ CHARTS = (
                    Span(x0=56.5, x1=79, label="4\nconfirmation",
                         tone="quiet")),
             size=PAIR, xlabel="Time",
-            footnote=INVENTED + " Every period is bullish volume: price and "
-                     "volume move together.",
+            footnote=INVENTED + " 1, 2 and 4: bullish volume. 3: price "
+                     "sideways, no reading.",
         ),
     ),
     ChartArt(
@@ -1065,7 +1069,8 @@ CHARTS = (
                                                  tone="structure"),),
                                  top=0.15),)),
                 Cell(name="4  Volume cycles", note="peaks that repeat",
-                     panes=(Pane(columns=S_CYCLE_VOL, top=0.15),)),
+                     panes=(Pane(columns=S_CYCLE_VOL, picks=S_CYCLE_PEAKS,
+                                 top=0.15),)),
             ),
             cols=2, size=PAIR,
             footnote=INVENTED + " Gold: the volume each filter picks out.",
@@ -1109,7 +1114,9 @@ CHARTS = (
             ),
             size=TERM, xlabel="Time",
             footnote="Invented volume. Both lines are computed over the "
-                     "last 20 bars.\nGold: the bars above the 3-sigma line.",
+                     "last 20 bars.\nGold: the bars above the 3-sigma line. The "
+                     "dotted line jumps when\na spike enters the last 20 "
+                     "bars, and falls back 20 bars later.",
         ),
     ),
     ChartArt(
@@ -1300,7 +1307,7 @@ CHARTS = (
         kwargs=dict(
             items=(
                 Cell(name="Volume: by size",
-                     note="0.1 + 0.6 + 0.3 + 1.2 + 0.2 = 2.4 million shares",
+                     note="adds to 2.4 million shares",
                      panes=(Pane(columns=(0.1, 0.6, 0.3, 1.2, 0.2),
                                  tags=((0, "0.1"), (1, "0.6"), (2, "0.3"),
                                        (3, "1.2"), (4, "0.2")), top=0.25),)),
@@ -1342,18 +1349,18 @@ CHARTS = (
         kwargs=dict(
             panes=(
                 Pane(line=AF_LINE, profile=AF_PROFILE, profile_reach=0.45,
+                     profile_labels=AF_LABELS,
                      ylabel="Price (PHP)", ticks=(48, 52, 56, 60),
                      height=1.8, top=0.10, bottom=0.04,
-                     notes=(Note(x=44, y=48.6, label="Volume by price:\n"
-                                 "PHP 2 bands", dx=24, dy=-10,
-                                 dot=False),)),
+                     ),
                 Pane(columns=AF_VOL, ylabel="Volume", height=0.9, top=0.55,
                      notes=(Note(x=62, label="Volume by time:\none bar a "
                                  "day", dx=8, dy=30, dot=False),)),
             ),
             size=TERM, xlabel="Time",
-            footnote="Invented. Each sideways bar: the volume of the days "
-                     "that closed in its band.",
+            footnote="Invented, million shares, 100 days. Sideways bars, volume "
+                     "by price: the\nvolume of the days that closed in each "
+                     "PHP 2 band.",
         ),
     ),
     ChartArt(
@@ -1661,7 +1668,8 @@ CHARTS = (
                                  notice=True),)),
             ),
             size=TERM, xlabel="Time, weekly",
-            footnote=INVENTED + "\nThe COT report gives the positions "
+            footnote="Invented prices and open interest.\nThe COT report "
+                     "gives the positions "
                      "behind this open interest.",
         ),
     ),

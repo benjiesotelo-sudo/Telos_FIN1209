@@ -14,10 +14,17 @@ checks the notes against the deck, which is the authority on scope: a figure
 the deck does not place, or a term the deck teaches and the notes never
 define, fails the build.
 
-This is build_lecture_notes4.py pointed at Chapter 6 and nothing else
-changed. Chapter 6 is the same lean deck: the walk that collects what the
+This is build_lecture_notes4.py pointed at Chapter 6, with one thing
+added. Chapter 6 is the same lean deck: the walk that collects what the
 deck places looks inside each Pair, and the build fails if the deck places a
 figure or a chart the notes do not.
+
+**The review questions are split back into the book's eight.** The deck's
+closing slide carries the book's eight questions on six lines, two lines
+holding two questions each, and says so in its caption. The notes print
+them as a numbered list and drop the caption, so the list read 1 to 6 while
+the prose cites "review question 7". split_questions() cuts each line at
+its question marks, so the notes number the questions as the book does.
 
 The figures are Wiley's and this repository is public, so the plain build
 renders a placeholder in each figure's place and that is what is committed.
@@ -98,6 +105,15 @@ SUMMARY_SLIDE = "Chapter 6 in five sentences"
 REVIEW_SLIDE = "The review questions to prepare"
 
 
+def split_questions(lines) -> tuple[str, ...]:
+    """One question per item: a line carrying two questions becomes two."""
+    out = []
+    for line in lines:
+        parts = [q.strip() + "?" for q in line.split("?") if q.strip()]
+        out.extend(parts or [line])
+    return tuple(out)
+
+
 def deck_closing(chapter) -> tuple[tuple[str, ...], tuple[str, ...]]:
     """The summary and the review questions, taken from the deck's own closing.
 
@@ -163,6 +179,10 @@ def main() -> int:
 
     shows, files, chart_shows, chart_files, terms = deck_facts(CHAPTER)
     summary, review = deck_closing(CHAPTER)
+    review = split_questions(review)
+    if len(review) != 8:
+        raise SystemExit(f"the book has eight review questions and the "
+                         f"closing slide splits into {len(review)}")
 
     # Drawn before the document, and in every build, so a clone that has
     # never built anything still gets the real chart in the student's copy.

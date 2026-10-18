@@ -17,7 +17,7 @@ python3 -m venv .venv
 
 `python-pptx` 1.0.2 and `matplotlib` 3.9.4 are what the committed deck was
 built with. matplotlib draws the charts this course owns, nine in Chapter 1,
-eight in Chapter 2, six in Chapter 3, eighteen in Chapter 4 and thirty five in Chapter 5; see **Charts** below for why they are generated
+eight in Chapter 2, six in Chapter 3, eighteen in Chapter 4, forty seven in Chapter 5 and forty four in Chapter 6; see **Charts** below for why they are generated
 rather than committed as images, and for the one consequence that has for
 reproducibility.
 

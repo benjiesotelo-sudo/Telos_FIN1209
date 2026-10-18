@@ -1958,6 +1958,384 @@ def wave_sum(path: Path, rows, *, size, guides=(), label_w=1.30,
 
 
 # --------------------------------------------------------------------------
+# Forms added for Chapter 6, which reads volume and open interest against
+# price: panels stacked on one time axis, and the same panels as a grid of
+# small cases with no axes.
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class Pane:
+    """One panel of a stacked chart, on the time axis it shares.
+
+    A pane draws any of three things: ``bars``, one Bar a period, drawn as
+    price bars; ``line``, one value a period; and ``columns``, one value a
+    period drawn up from zero, which is how volume is drawn. ``picks`` are
+    the columns drawn gold and ``dims`` the ones drawn grey. ``tags`` are
+    (index, text) pairs printed just above a column or a point of the line,
+    for a number the slide reads off the chart.
+
+    ``profile`` is volume by price: (low, high, amount) rows drawn sideways
+    from the left edge, the largest reaching ``profile_reach`` of the way
+    across; ``profile_picks`` are the rows drawn gold.
+
+    ``name`` is printed on a plate at the top left. ``ticks`` gives the
+    value axis ticks; without it the pane has none. ``height`` is the
+    pane's share of the chart's height. ``top`` and ``bottom`` are the
+    headroom above and below what is drawn, as fractions of its range.
+    """
+
+    name: str = ""
+    ylabel: str = ""
+    bars: tuple = ()
+    line: tuple = ()
+    columns: tuple = ()
+    picks: tuple = ()
+    dims: tuple = ()
+    tags: tuple = ()
+    traces: tuple = ()
+    strokes: tuple = ()
+    notes: tuple = ()
+    brackets: tuple = ()
+    boxes: tuple = ()
+    profile: tuple = ()
+    profile_picks: tuple = ()
+    profile_reach: float = 0.40
+    ticks: tuple | None = None
+    zero: bool = False
+    height: float = 1.0
+    top: float = 0.18
+    bottom: float = 0.10
+
+
+@dataclass
+class Guide:
+    """A dashed upright line through every pane at bar ``x``, with its
+    label at the top of the first pane. ``notice`` draws it gold."""
+
+    x: float = 0.0
+    label: str = ""
+    notice: bool = False
+
+
+def _pane_reach(pane: Pane) -> list[float]:
+    reach = [v for b in pane.bars for v in (b.low, b.high)]
+    reach += list(pane.line)
+    reach += [v for tr in pane.traces for v in tr.values]
+    reach += [p[1] for st in pane.strokes for p in st.points]
+    reach += [v for br in pane.brackets for v in (br.lo, br.hi)]
+    reach += [v for b in pane.boxes for v in (b.lo, b.hi)]
+    reach += [v for row in pane.profile for v in row[:2]]
+    if pane.columns:
+        reach += [0.0, min(pane.columns), max(pane.columns)]
+    return reach or [0.0, 1.0]
+
+
+def _pane(ax, pane: Pane, n: int, *, x0: float, x1: float, small: bool):
+    """Draw one pane into ``ax``, whose x range is ``x0`` to ``x1``."""
+    label_pt = 8.5 if small else 10.0
+    ax.set_xlim(x0, x1)
+    reach = _pane_reach(pane)
+    lo, hi = min(reach), max(reach)
+    span = (hi - lo) or 1.0
+    if pane.columns and not (pane.bars or pane.line) and lo >= 0:
+        ax.set_ylim(0, hi + span * pane.top)
+    else:
+        ax.set_ylim(lo - span * pane.bottom, hi + span * pane.top)
+
+    for b in pane.boxes:
+        ax.add_patch(plt.Rectangle(
+            (b.x0, b.lo), b.x1 - b.x0, b.hi - b.lo,
+            facecolor=GOLD_WASH if b.tone == "notice" else GREY_WASH,
+            edgecolor=GOLD if b.tone == "notice" else MUTED,
+            linewidth=1.0, zorder=1))
+        if b.label:
+            mid = (b.x0 + b.x1) / 2
+            tone = GOLD if b.tone == "notice" else GREEN_DEEP
+            if b.where == "inside":
+                ax.text(mid, b.hi, b.label, ha="center", va="top",
+                        fontsize=label_pt, color=tone, fontweight="bold",
+                        zorder=6, linespacing=1.05)
+            else:
+                above = b.where == "above"
+                ax.annotate(b.label, xy=(mid, b.hi if above else b.lo),
+                            xytext=(0, 4 if above else -4),
+                            textcoords="offset points", ha="center",
+                            va="bottom" if above else "top",
+                            fontsize=label_pt, color=tone,
+                            fontweight="bold", zorder=6, linespacing=1.05)
+
+    if pane.profile:
+        biggest = max(row[2] for row in pane.profile) or 1.0
+        reach_x = (x1 - x0) * pane.profile_reach
+        for i, (p_lo, p_hi, amount) in enumerate(pane.profile):
+            pick = i in pane.profile_picks
+            ax.add_patch(plt.Rectangle(
+                (x0, p_lo), reach_x * amount / biggest, p_hi - p_lo,
+                facecolor=GOLD_WASH if pick else GREY_WASH,
+                edgecolor=GOLD if pick else BORDER, linewidth=0.9,
+                zorder=1))
+
+    if pane.columns:
+        tones = [GOLD if i in pane.picks else
+                 (BORDER if i in pane.dims else GREEN)
+                 for i in range(len(pane.columns))]
+        ax.bar(range(len(pane.columns)), pane.columns,
+               width=0.62 if n <= 24 else 0.86, color=tones, zorder=3,
+               linewidth=0)
+
+    if pane.bars:
+        lw = 2.4 if n <= 24 else (1.6 if n <= 60 else 1.2)
+        tick = 0.30 if n <= 24 else 0.40
+        for x, b in enumerate(pane.bars):
+            ax.plot([x, x], [b.low, b.high], color=INK, lw=lw, zorder=3,
+                    solid_capstyle="butt")
+            ax.plot([x - tick, x], [b.open, b.open], color=INK, lw=lw,
+                    zorder=3, solid_capstyle="butt")
+            ax.plot([x, x + tick], [b.close, b.close], color=INK, lw=lw,
+                    zorder=3, solid_capstyle="butt")
+
+    if pane.line:
+        ax.plot(range(len(pane.line)), pane.line, color=INK, lw=1.7,
+                zorder=3, solid_capstyle="round", solid_joinstyle="round")
+
+    for tr in pane.traces:
+        ax.plot(range(len(tr.values)), tr.values,
+                color=_TRACE_TONES[tr.tone], lw=tr.width,
+                ls=(0, (0.1, 2.0)) if tr.dotted else "-", zorder=4,
+                solid_capstyle="round", dash_capstyle="round")
+
+    if pane.zero:
+        ax.axhline(0, color=MUTED, lw=0.9, zorder=2)
+
+    def value_at(x):
+        x = int(x)
+        if pane.bars:
+            return pane.bars[x].close
+        if pane.line:
+            return pane.line[x]
+        return pane.columns[x]
+
+    for x, text in pane.tags:
+        y = value_at(x)
+        ax.annotate(text, xy=(x, y), xytext=(0, 4 if y >= 0 else -4),
+                    textcoords="offset points", ha="center",
+                    va="bottom" if y >= 0 else "top", fontsize=label_pt - 1,
+                    color=GREEN_DEEP, fontweight="bold", zorder=7)
+
+    _strokes(ax, pane.strokes, size=label_pt)
+
+    for br in pane.brackets:
+        color = GOLD if br.notice else GREEN
+        ax.annotate("", xy=(br.x, br.hi), xytext=(br.x, br.lo),
+                    arrowprops=dict(arrowstyle="<->", color=color, lw=1.6,
+                                    mutation_scale=11, shrinkA=0, shrinkB=0),
+                    zorder=5)
+        right_side = br.side == "right"
+        ax.annotate(br.label, xy=(br.x, (br.lo + br.hi) / 2),
+                    xytext=(7 if right_side else -7, 0),
+                    textcoords="offset points",
+                    ha="left" if right_side else "right", va="center",
+                    fontsize=label_pt, color=GOLD if br.notice else GREEN_DEEP,
+                    fontweight="bold", zorder=7, linespacing=1.05,
+                    bbox=_tag())
+
+    for note in pane.notes:
+        y = value_at(note.x) if note.y is None else note.y
+        # A note with no label is a point passed over: a grey dot only.
+        if not note.label:
+            _dot(ax, note.x, y, size=6, dim=True)
+            continue
+        if note.dot:
+            _dot(ax, note.x, y, tone=GOLD if note.notice else GREEN, size=6)
+        _callout(ax, note.x, y, note.label, dx=note.dx, dy=note.dy,
+                 tone=GREEN_DEEP if note.notice else INK, size=label_pt)
+
+    if pane.name:
+        ax.text(0.008, 0.97, pane.name, transform=ax.transAxes, ha="left",
+                va="top", fontsize=label_pt, color=GREEN_DEEP,
+                fontweight="bold", zorder=8, bbox=_tag())
+
+
+def panels(path: Path, panes, *, size, spans=(), guides=(), xticks=(),
+           xlabel="Time", extend=0, footnote="", display_font=None) -> Path:
+    """Panels stacked on one time axis: price over volume, and more.
+
+    Each Pane is drawn over the same bars, so a price bar and the volume
+    that went with it sit one above the other. ``spans`` shade a stretch
+    through every pane and are named above the first. ``guides`` are
+    upright dashed lines through every pane. ``xticks`` are (bar, label)
+    pairs printed under the last pane. ``extend`` leaves room to the right.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    # _new sets the deck's type and colours; its own figure is the band's
+    # size, so it is closed and one of the size asked for is opened.
+    plt.close(_new(display_font))
+    fig = plt.figure(figsize=size, dpi=DPI)
+    w_in, h_in = size
+
+    n = max(len(p.bars) or len(p.line) or len(p.columns) for p in panes)
+    span_lines = max([s.label.count("\n") + 1 for s in spans if s.label]
+                     or [0])
+    guide_room = 0.20 if any(g.label for g in guides) else 0.0
+    foot_lines = footnote.count("\n") + 1 if footnote else 0
+    ticks = any(p.ticks for p in panes)
+    labels = any(p.ylabel for p in panes)
+    left = (0.40 if labels else 0.12) + (0.30 if ticks else 0.0)
+    right = 0.10
+    tick_lines = max([t.count("\n") + 1 for _, t in xticks] or [1])
+    foot = (0.08 + 0.16 * foot_lines
+            + (0.24 if (xlabel or xticks) else 0.06)
+            + (0.14 if xlabel and xticks else 0.0)
+            + 0.15 * (tick_lines - 1))
+    head = 0.08 + 0.17 * span_lines + guide_room
+    gap = 0.09
+    plot_h = h_in - foot - head - gap * (len(panes) - 1)
+    total = sum(p.height for p in panes)
+
+    axes = []
+    y = h_in - head
+    for p in panes:
+        h = plot_h * p.height / total
+        y -= h
+        axes.append(fig.add_axes([left / w_in, y / h_in,
+                                  (w_in - left - right) / w_in, h / h_in]))
+        y -= gap
+
+    x0, x1 = -1.5, n + 0.5 + extend
+    for ax, p in zip(axes, panes):
+        for s in spans:
+            ax.axvspan(s.x0, s.x1, color=GOLD_WASH if s.tone == "notice"
+                       else GREY_WASH, zorder=0, linewidth=0)
+        _dress(ax, ylabel=p.ylabel, xlabel="", grid=bool(p.ticks))
+        ax.yaxis.label.set_size(10)
+        _pane(ax, p, n, x0=x0, x1=x1, small=False)
+        if p.ticks:
+            ax.set_yticks(list(p.ticks))
+            ax.tick_params(labelsize=9)
+        else:
+            ax.set_yticks([])
+        for g in guides:
+            ax.axvline(g.x, color=GOLD if g.notice else MUTED,
+                       lw=1.2 if g.notice else 0.9, ls=(0, (3, 3)), zorder=2)
+
+    last = axes[-1]
+    if xticks:
+        last.set_xticks([x for x, _ in xticks])
+        last.set_xticklabels([t for _, t in xticks], fontsize=9,
+                             color=MUTED)
+        last.tick_params(axis="x", length=3)
+    if xlabel:
+        last.set_xlabel(xlabel, fontsize=10, color=MUTED, labelpad=4)
+
+    # The guides' labels sit just over the first pane and the spans'
+    # labels over those, both measured in the first pane's own height.
+    first = axes[0]
+    first_h = plot_h * panes[0].height / total
+    for g in guides:
+        if g.label:
+            first.text(g.x, 1.0 + 0.03 / first_h, g.label,
+                       transform=first.get_xaxis_transform(), ha="center",
+                       va="bottom", fontsize=10.5,
+                       color=GOLD if g.notice else GREEN_DEEP,
+                       fontweight="bold")
+    for s in spans:
+        if s.label:
+            first.text((s.x0 + s.x1) / 2, 1.0 + (0.05 + guide_room) / first_h,
+                       s.label, transform=first.get_xaxis_transform(),
+                       ha="center", va="bottom", fontsize=10, color=MUTED,
+                       fontweight="bold", linespacing=1.05)
+
+    if footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
+    return _save(fig, path)
+
+
+@dataclass
+class Cell:
+    """One small case in a grid: its panes, its name above, a note below
+    the name. Drawn with no axes, so only the shapes and labels show."""
+
+    name: str = ""
+    note: str = ""
+    panes: tuple = ()
+    tone: str = "structure"     # structure or notice: the name's colour
+
+
+def cells(path: Path, items, *, cols: int, size, footnote="",
+          display_font=None) -> Path:
+    """A grid of small cases, each one a stack of panes with no axes.
+
+    For a chapter's list of named cases, each of which is price and volume
+    doing one thing: every cell shares the grid's size, and its panes are
+    drawn the way panels draws them, with lighter labels.
+    """
+    display_font = display_font or deckkit.DISPLAY_FONT
+    plt.close(_new(display_font))
+    fig = plt.figure(figsize=size, dpi=DPI)
+    w_in, h_in = size
+    rows = -(-len(items) // cols)
+    foot_lines = footnote.count("\n") + 1 if footnote else 0
+    foot = 0.08 + 0.16 * foot_lines
+    pad = 0.08
+    cell_w = (w_in - pad) / cols
+    cell_h = (h_in - foot - pad) / rows
+
+    for i, cell in enumerate(items):
+        row, col = divmod(i, cols)
+        x = pad + col * cell_w
+        top = h_in - pad - row * cell_h
+        name_lines = cell.name.count("\n") + 1 if cell.name else 0
+        note_lines = cell.note.count("\n") + 1 if cell.note else 0
+        label_h = 0.17 * name_lines + 0.14 * note_lines + 0.06
+        frame = fig.add_axes([x / w_in, (top - cell_h + pad) / h_in,
+                              (cell_w - pad) / w_in, (cell_h - pad) / h_in])
+        frame.set_xticks([])
+        frame.set_yticks([])
+        for side in ("top", "right", "left", "bottom"):
+            frame.spines[side].set_color(BORDER)
+            frame.spines[side].set_linewidth(0.9)
+        frame.set_facecolor(WHITE)
+        frame.set_zorder(0)
+        if cell.name:
+            fig.text((x + (cell_w - pad) / 2) / w_in, (top - 0.05) / h_in,
+                     cell.name, ha="center", va="top", fontsize=9.5,
+                     color=GOLD if cell.tone == "notice" else GREEN_DEEP,
+                     fontweight="bold", linespacing=1.05)
+        if cell.note:
+            fig.text((x + (cell_w - pad) / 2) / w_in,
+                     (top - 0.07 - 0.17 * name_lines) / h_in, cell.note,
+                     ha="center", va="top", fontsize=8, color=MUTED,
+                     style="italic", linespacing=1.05)
+
+        n = max(len(p.bars) or len(p.line) or len(p.columns)
+                or 1 for p in cell.panes)
+        inner_top = top - label_h - 0.05
+        inner_h = inner_top - (top - cell_h + pad) - 0.06
+        total = sum(p.height for p in cell.panes)
+        gap = 0.05
+        avail = inner_h - gap * (len(cell.panes) - 1)
+        y = inner_top
+        for p in cell.panes:
+            h = avail * p.height / total
+            y -= h
+            ax = fig.add_axes([(x + 0.10) / w_in, y / h_in,
+                               (cell_w - pad - 0.20) / w_in, h / h_in])
+            ax.set_axis_off()
+            xs = [pt[0] for st in p.strokes for pt in st.points]
+            x_hi = max([n - 0.5] + xs) + 0.5
+            x_lo = min([-0.5] + xs) - 0.5
+            _pane(ax, p, n, x0=x_lo, x1=x_hi, small=True)
+            y -= gap
+
+    if footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=8.5, color=MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
+    return _save(fig, path)
+
+
+# --------------------------------------------------------------------------
 # What a chapter module hands back, and how the builds ask for it
 # --------------------------------------------------------------------------
 

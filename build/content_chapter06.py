@@ -289,7 +289,7 @@ SECTION1 = Section(
                     options=("Bearish volume, because volume is falling",
                              "Bullish volume, because price and volume fall together",
                              "Neither, because the trend is up",
-                             "A low volume reversal"),
+                             "Volume not confirming the uptrend"),
                     answer="B",
                     reason="Volume and price declining together is bullish volume, whatever the volume does on its own.",
                 ),
@@ -305,7 +305,7 @@ SECTION1 = Section(
             ),
         ),
         Pair(
-            origin="Book p.175 defines both. The chart is ours: arrows, not prices.",
+            origin="Book p.175 defines both. The chart is ours: sketches, not prices.",
             left=Term(
                 term="Volume divergence and volume confirmation",
                 plain="Volume falling is divergence. Volume rising is confirmation, also called convergence.",
@@ -412,10 +412,10 @@ SECTION1 = Section(
                 title="Ten periods of bullish volume: gold",
                 lines=(
                     "Periods 1, 3, 7 and 9: bullish confirmation. 4 and 6: bullish divergence. 5: volume flat.",
-                    "2, 8 and 10: volume declines in a consolidation, timing the breakout.",
+                    "2, 8 and 10: volume declines in a consolidation, timing the breakout (why: Part 2).",
                 ),
                 accent="At the end of 2, 8 and 10, price breaks out as volume reaches its minimum.",
-                caption="The book says bullish divergence occurs only in a downtrend; 4 and 6 are dips in this uptrend. Our reading: price falling, for any stretch.",
+                caption="The book says bullish divergence occurs only in a downtrend; 4 and 6 are dips in this uptrend. Our reading, price falling for any stretch: no check rests on it.",
             ),
             picture=Figure(
                 number="6.6",
@@ -438,7 +438,7 @@ SECTION1 = Section(
                     "3  Price moves sideways, volume falls to its minimum: a consolidation.",
                     "4  Price breaks out and rises, volume rises: bullish confirmation.",
                 ),
-                accent="Every period here is bullish volume: price and volume move together.",
+                accent="1, 2 and 4 are bullish volume. In 3 price moves sideways: no reading, Part 2.",
             ),
             picture=Chart(
                 letter="H",
@@ -902,7 +902,7 @@ SECTION2 = Section(
             left=Term(
                 term="Low volume top and low volume bottom",
                 plain="A top, or a bottom, made on very little volume.",
-                example="Figure 6.16: Apple turns at nine time lines, each where volume tests a lower volume threshold, circled. Some are tops and some are bottoms.",
+                example="Figure 6.16: Apple turns at seven time lines, each where volume tests a lower volume threshold, circled. Some are tops and some are bottoms.",
                 formal="A market top associated with extremely low or minimal volume is called a low volume top. A market bottom associated with extremely low volume is called a low volume bottom.",
             ),
             picture=Figure(
@@ -1152,12 +1152,12 @@ SECTION3 = Section(
             left=Content(
                 title="Choosing the average's length",
                 lines=(
-                    "The lookback period: a simple backtest may be needed to find the filtering right for a setup.",
-                    "Some set it to the dominant trading cycle period, or one half of it.",
-                    "Figure 6.20: spikes above the smoothed volume line on USDJPY, each at a top or a bottom.",
+                    "The lookback period: a simple backtest may be needed to find the right filtering.",
+                    "Some set it to the dominant trading cycle period, or half of it.",
+                    "Figure 6.20: spikes above the smoothed volume line, each at a top or a bottom.",
                 ),
-                accent="The book leaves the length to testing or to the cycle: it gives no number.",
-                caption="Backtest, Chapter 5: run the method against past prices. Cycle period, Chapter 5: how long each swing takes.",
+                accent="The book gives no number for the length.",
+                caption="Backtest: run a method on past prices. Cycle period: how long a swing takes. Both Chapter 5. Dominant: undefined; our reading, the cycle most visible on the chart.",
             ),
             picture=Figure(
                 number="6.20",
@@ -1170,7 +1170,7 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book p.189. Standard deviation, Chapter 5: how far values typically spread from their average. Bollinger Bands: named in Chapter 5, unexplained. Chart: ours, computed.",
+            origin="Book p.189. Standard deviation, Chapter 5: how far values typically spread from their average. Bollinger Bands: named in Chapter 1, unexplained. Chart: ours, computed.",
             left=Term(
                 term="Two- or three-sigma volume filter",
                 plain="A line two or three standard deviations above average volume: only surges that cross it count.",
@@ -1184,7 +1184,7 @@ SECTION3 = Section(
             text_w=TERM_CHART_W,
             notes=(
                 "Sigma is the Greek letter for a standard deviation. Chapter 5 glossed standard deviation as how far values typically spread from their average.",
-                "Bollinger Bands were named in Chapter 5 and are not explained here. All this filter needs is the upper line.",
+                "Bollinger Bands were named in Chapter 1, in the mean reverting approach, and are not explained here. All this filter needs is the upper line.",
                 "Three sigma is stricter than two: fewer bars cross it.",
             ),
         ),
@@ -1197,7 +1197,7 @@ SECTION3 = Section(
                     "These tend to result in the most significant tops and bottoms in the market.",
                     "A standard deviation oscillator may also be used. It is less useful: it gives no overlay on which to see volume cross the threshold.",
                 ),
-                accent="Fewer signals than the smoothed filter, at bigger turns.",
+                accent="The book prefers the band: volume can be seen crossing it.",
             ),
             picture=Figure(
                 number="6.21",
@@ -1205,7 +1205,7 @@ SECTION3 = Section(
             ),
             text_w=5.4,
             notes=(
-                "Compare with Figure 6.20, the same market: fewer arrows here, because the threshold is higher.",
+                "Compare with Figure 6.20, the same market. The threshold here is higher, so only the largest surges cross it.",
                 "An overlay is a line drawn on top of the bars, which is why the band beats a separate oscillator here.",
             ),
         ),
@@ -1395,7 +1395,7 @@ SECTION4 = Section(
             ),
         ),
         Pair(
-            origin="Book p.191. The two shares, their volumes and their shares outstanding are ours: a peso example of turnover.",
+            origin="Book p.191. The two shares, their volumes and their shares outstanding are ours: a share-count example of turnover.",
             left=Content(
                 title="What absolute volume is good for",
                 lines=(
@@ -1601,18 +1601,18 @@ SECTION4 = Section(
             left=Content(
                 title="Reading the tick and the TRIN",
                 lines=(
-                    "Short term: a rising, not overbought tick with a falling, not oversold TRIN is bullish; the converse bearish.",
+                    "Short term: a rising, not overbought tick with a falling, not oversold TRIN: bullish; the converse bearish.",
                     "Longer term: tick oversold, above its weekly two-sigma level, with TRIN overbought, near or above 3.0 daily: bullish.",
                     "Figure 6.25, 1-minute: tick and TRIN both oversold. Short-term bullish; the index rose.",
                 ),
                 accent="The text: a bullish TRIN is overbought. The figure: oversold.",
-                caption="This tick is an indicator the book does not explain; it is not shown to be tick volume.",
+                caption="The book gives these rules no reasons, does not say how to read one value such as 2.0, and never says what this tick measures. No check rests on them.",
             ),
             picture=Figure(
                 number="6.25",
                 shows="A 1-minute chart of the S&P 500 index falling and then rising, with a $TICK panel and a $TRIN panel under it. A box around the low marks both labelled oversold, with the note that short-term bullishness was predicated on the confluence of oversold signals.",
             ),
-            text_w=6.8,
+            text_w=7.2,
             notes=(
                 "Read the book's two rules as written and point at the box on the figure. Then name both gaps: what the tick is, and which way a high TRIN counts.",
                 "Do not settle the gap. The book's text says a TRIN near 3.0 is overbought, and bullish; its figure calls its bullish TRIN reading oversold. Both are bullish; the word differs.",
@@ -1628,7 +1628,7 @@ SECTION4 = Section(
                     "The tick is largely absent of activity between 1:45 p.m. and 2:45 p.m.",
                 ),
                 accent="Together, a short-term bearish signal.",
-                caption="The figure adds what the text does not: balanced tick action, read as a potential consolidation.",
+                caption="The figure's other tick labels, such as balanced tick action, are not explained by the book.",
             ),
             picture=Figure(
                 number="6.26",
@@ -1668,12 +1668,12 @@ SECTION4 = Section(
             left=Term(
                 term="Volume by price and volume by time",
                 plain="By time: the usual bars, one a period. By price: sideways bars, one per price level.",
-                example="In three months: 9 million shares at PHP 48 to 50, 2 million at PHP 54 to 56. The longest sideways bar: PHP 48 to 50.",
+                example="Our chart, 100 days: 68 million shares at PHP 48 to 50, 12 million at PHP 54 to 56. The longest sideways bar: PHP 48 to 50.",
                 formal="Volume by time represents the total volume traded over a specified time interval or period. Volume by price identifies the total volume traded at each price level.",
             ),
             picture=Chart(
                 letter="AF",
-                shows="An invented share with its volume drawn both ways: sideways bars from the left edge, one for each two-peso price band, the longest where price spent most of its trading; and the usual volume bars under the chart, one for each day.",
+                shows="An invented share over 100 days with its volume drawn both ways: sideways bars from the left edge, one for each two-peso price band, each labelled in million shares, the longest, 68 million, at 48 to 50 pesos; and the usual volume bars under the chart, one for each day.",
             ),
             text_w=TERM_CHART_W,
             notes=(
@@ -1690,7 +1690,7 @@ SECTION4 = Section(
                     "So $17 represents a significant support.",
                 ),
                 accent="This is not obvious from conventional volume bar action.",
-                caption="Chapter 4 called this price-based volume. It is not Part 1's price-based volume oscillators, which build price into a line.",
+                caption="Chapter 4 called this price-based volume; it is not Part 1's price-based oscillators. The figure's top panel is an oscillator the book does not discuss.",
             ),
             picture=Figure(
                 number="6.27",
@@ -1711,6 +1711,7 @@ SECTION4 = Section(
                     "This is the most traded range, with some resistance at the $90 to $92 level.",
                 ),
                 accent="These price ranges are potential future support and resistance levels.",
+                caption="The figure also marks bearish confirmation, price falling on rising volume, and bearish divergence, price rising on falling volume: Part 1's names.",
             ),
             picture=Figure(
                 number="6.28",
@@ -1813,7 +1814,8 @@ SECTION5 = Section(
                     "Here the book uses the four to forecast potential breakouts and reversals, and names each bar.",
                     "Spread means bar range, as in Chapter 5: not Chapter 3's bid-ask spread.",
                 ),
-                accent="The same four cases. Chapter 6 names them, and reads two of them more strongly.",
+                accent="Chapter 5's squat bar is the High Volume Reversal Bar.",
+                caption="Chapter 6 reads two cases more strongly: both reversal bars. Chapter 5 called the large range on low volume only trend inhibiting.",
             ),
             picture=Figure(
                 number="6.30",
@@ -1872,7 +1874,7 @@ SECTION5 = Section(
                     "Low Volume Rest Bar: a lack of participation. In a strong, rapid trend, a potential reversal; in a weak to average one, a point of rest.",
                     "High Volume Continuation Bar: a big move on very large participation. Bullish in an uptrend, bearish in a downtrend.",
                 ),
-                accent="The rest bar depends on its trend; the continuation bar does not.",
+                accent="The rest bar's meaning depends on the trend's speed; the continuation bar continues whichever trend it is in.",
                 caption="Chapter 5: small range, low volume, trend inhibiting; large range, large volume, trend promoting.",
             ),
             picture=Chart(
@@ -1914,11 +1916,11 @@ SECTION5 = Section(
                 title="High volume reversal bars: a dollar fund",
                 lines=(
                     "Two narrow range candlesticks on high volume, at Points 1 and 2.",
-                    "After each, price reverses rapidly in the opposite direction.",
-                    "Also: a low volume breakout signal near the apex of a descending triangle in August, then a large volume surge on the breakout.",
+                    "After each, price reverses rapidly.",
+                    "Also: in August a low volume breakout signal at a descending triangle's apex, then a volume surge.",
                 ),
                 accent="Narrow bar, heavy volume, rapid reversal.",
-                caption="The apex is where the triangle's two lines meet.",
+                caption="Apex: where the triangle's lines meet. The curved lines are Bollinger Bands, not discussed. After Point 2 the reversal runs past the chart's edge.",
             ),
             picture=Figure(
                 number="6.31",
@@ -1951,7 +1953,7 @@ SECTION5 = Section(
             ),
         ),
         Pair(
-            origin="Book p.199 and Figure 6.33. The MACD is used here and not taught; Chapter 4 met it.",
+            origin="Book p.199 and Figure 6.33. The MACD is used here and not taught; Chapter 4 met it. The figure's RSI panel and two moving averages are not discussed.",
             left=Content(
                 title="More reliable inside the larger trend",
                 lines=(
@@ -1997,10 +1999,11 @@ SECTION5 = Section(
                 title="Constant volume charts find reversal bars",
                 lines=(
                     "Chapter 3: a constant volume chart draws a new bar once a set volume has traded.",
-                    "Volume is fixed for each bar, so a reversal bar is found from its range alone and its height against the rest.",
-                    "Figure 6.35: a narrow range bar, bearish, sellers taking control; a wider bar, a lack of interest in the rise.",
+                    "Volume is fixed per bar, so a reversal bar is found from its range and height alone.",
+                    "Figure 6.35: a narrow bar, bearish, sellers in control; a tall bar, no interest in the rise.",
                 ),
-                accent="Especially useful for pinpointing reversal bars on high or low volume.",
+                accent="Especially useful for reversal bars on high or low volume.",
+                caption="High and low against the range: a narrow bar packs the fixed volume into little movement, a tall bar spreads it over a big one.",
             ),
             picture=Figure(
                 number="6.35",
@@ -2184,7 +2187,7 @@ SECTION6 = Section(
                 "On Balance Volume (OBV), the Chaikin Money Flow and Chaikin Oscillator,",
                 "the Demand Index, the Herrick Payoff Index, the NYSE Up/Down Volume Line.",
             ),
-            accent="Each is read for signals by eight standard methods. Only one, divergence, is used here.",
+            accent="Each is read by eight standard methods. Here: mostly divergence, plus oversold levels and trendlines on the indicator.",
             caption="The eight methods, Chapter 8: 1 OBOS overextended levels, 2 equilibrium and zero line crossovers, 3 signal line crossovers, 4 price-oscillator divergence, 5 to 7 geometrically, numerically and horizontally based oscillator pattern analysis, 8 oscillator-on-oscillator analysis. OBOS: overbought and oversold. The VWMA was Part 2; the Demand Index is never explained.",
             notes=(
                 "Two lists the book gives without a figure, so this slide has no picture. Say the names, and that Chapter 8 teaches the methods.",
@@ -2420,10 +2423,10 @@ SECTION6 = Section(
             left=Content(
                 title="The Chaikin pair on copper",
                 lines=(
-                    "The Chaikin oscillator gives an earlier sell, or bearish, signal than the CMF.",
+                    "The sell, or bearish, signal: each breaks the rising line drawn under it. The Chaikin oscillator breaks first, the CMF later.",
                     "Oversold levels on both point to a potential market bottom in copper around October 2011.",
                 ),
-                accent="Two related oscillators: one turns first, both agree at the bottom.",
+                accent="The Chaikin oscillator gives the earlier signal.",
             ),
             picture=Figure(
                 number="6.43",

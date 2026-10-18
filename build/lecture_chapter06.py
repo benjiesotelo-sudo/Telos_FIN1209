@@ -335,7 +335,9 @@ SECTION1 = Section(
             "bullish confirmation. Period 2 dips on falling volume, bullish "
             "divergence. Period 3 moves sideways while volume falls to its "
             "minimum, a consolidation. Period 4 breaks out and rises on "
-            "rising volume. Every period is bullish volume."
+            "rising volume. Periods 1, 2 and 4 are bullish volume, price "
+            "and volume moving together. In period 3 price moves sideways, "
+            "so there is no reading, for the reason Section 2 gives."
         )),
         SelfCheck(text=(
             "Price makes a higher high while volume makes a lower high. Is "
@@ -572,10 +574,9 @@ SECTION2 = Section(
         )),
         chart("O", "A higher and a lower overextension level on one chart."),
         Para(text=(
-            "Chart O draws both lines on one invented chart. Only the "
-            "spikes at the two major turns, numbered 1 and 2, reach the "
-            "upper line. Three more, at smaller corrections lettered a to "
-            "c, reach only the lower one. Both lines are drawn by eye."
+            "Chart O draws both lines, by eye, on one invented chart: the "
+            "spikes at the major turns, 1 and 2, reach the upper line, and "
+            "those at the smaller corrections, a to c, only the lower one."
         )),
         figure("6.15", "Volatility spikes at the same turns in silver."),
         Para(text=(
@@ -596,7 +597,7 @@ SECTION2 = Section(
         formal("Low volume top and low volume bottom"),
         figure("6.16", "Low volume reversals on Apple."),
         Para(text=(
-            "Figure 6.16 has nine time lines on a daily Apple chart, each "
+            "Figure 6.16 has seven time lines on a daily Apple chart, each "
             "rising from a circle where volume tests a lower volume "
             "threshold. Follow each line up to price: some are tops and "
             "some are bottoms."
@@ -768,7 +769,7 @@ SECTION3 = Section(
             "values typically spread from their average. A line two or "
             "three standard deviations above average volume lets only the "
             "biggest surges through. The book builds it from a Bollinger "
-            "Band, which Chapter 5 named and this chapter does not explain; "
+            "Band, which Chapter 1 named and this chapter does not explain; "
             "only the band's upper line is needed."
         )),
         formal("Two- or three-sigma volume filter"),
@@ -1047,7 +1048,9 @@ SECTION4 = Section(
             "TRIN is bullish, and the converse bearish. Its longer-term "
             "rule: a tick that is oversold, above its two-sigma level on a "
             "weekly chart, with a TRIN that is overbought, near or above "
-            "3.0 on the daily chart, is bullish, and the converse bearish."
+            "3.0 on the daily chart, is bullish, and the converse bearish. "
+            "The book gives these rules no reasons, and does not say how "
+            "to read a single value such as the 2.0 above."
         )),
         figure("6.25", "The tick and the TRIN both oversold on the S&P 500."),
         Para(text=(
@@ -1074,17 +1077,17 @@ SECTION4 = Section(
             "Volume may be analyzed two dimensionally. The usual volume "
             "bars, one a period, are volume by time. Volume by price adds "
             "up all the volume traded at each price level and draws it as "
-            "bars running sideways from the price axis. If a share trades 9 "
-            "million shares between 48 and 50 pesos in three months and 2 "
-            "million between 54 and 56, its longest sideways bar is at 48 "
-            "to 50."
+            "bars running sideways from the price axis. The invented share "
+            "below trades 68 million shares between 48 and 50 pesos in 100 "
+            "days and 12 million between 54 and 56, so its longest sideways "
+            "bar is at 48 to 50."
         )),
         formal("Volume by price and volume by time"),
         chart("AF", "Volume by price and volume by time on one chart."),
         Para(text=(
-            "Chart AF draws both on one invented share. Each sideways bar "
-            "is the volume of every day that closed in its two-peso band; "
-            "the bars under the chart are one a day."
+            "Chart AF draws both. Each sideways bar is labelled with the "
+            "volume of every day that closed in its two-peso band, in "
+            "millions of shares; the bars under the chart are one a day."
             "\n\n"
             "Chapter 4's Figure 4.19 showed the same thing and called it "
             "price-based volume. That is this chapter's volume by price, "
@@ -1162,7 +1165,9 @@ SECTION5 = Section(
             "here says spread too, meaning bar range as in Chapter 5, and "
             "not Chapter 3's bid-ask spread. In this chapter the four cases "
             "forecast potential breakouts and reversals, and each bar gets "
-            "a name."
+            "a name. Chapter 5's squat bar, the small range on large "
+            "volume, is the High Volume Reversal Bar. Two cases are read "
+            "more strongly than in Chapter 5: both reversal bars."
         )),
         figure("6.30", "The four combinations of bar range and volume."),
         Para(text=(
@@ -1215,8 +1220,9 @@ SECTION5 = Section(
             "a strong, rapid rise price reverses after it; in a slow, "
             "average rise price rests and rises again. The third cell is "
             "the continuation bar, wide on high volume, after which the "
-            "rise continues. **The rest bar depends on the trend it is in; "
-            "the continuation bar does not.**"
+            "rise continues. **The rest bar's meaning depends on the "
+            "trend's speed; the continuation bar continues whichever trend "
+            "it is in.**"
         )),
         figure("6.31", "High volume reversal bars on a dollar fund."),
         Para(text=(
@@ -1384,8 +1390,10 @@ SECTION6 = Section(
             "overbought and oversold; equilibrium and zero line crossovers; "
             "signal line crossovers; price-oscillator divergence; "
             "geometrically, numerically and horizontally based oscillator "
-            "pattern analysis; and oscillator-on-oscillator analysis. Only "
-            "divergence is used in this chapter."
+            "pattern analysis; and oscillator-on-oscillator analysis. This "
+            "chapter uses mostly divergence; the Chaikin pair and the NYSE "
+            "line below also read oversold levels and trendlines drawn on "
+            "the indicator."
         )),
 
         Head(number="6.2", text="On Balance Volume"),
@@ -1514,9 +1522,10 @@ SECTION6 = Section(
         )),
         figure("6.43", "The Chaikin pair on copper."),
         Para(text=(
-            "In Figure 6.43 the Chaikin oscillator gives an earlier sell, "
-            "or bearish, signal than the CMF: follow the dashed arrows from "
-            "each panel up to the top, and the oscillator's comes first. "
+            "In Figure 6.43 the sell, or bearish, signal is each "
+            "oscillator breaking the rising line drawn under it. The "
+            "Chaikin oscillator breaks first, so its signal is earlier: "
+            "follow the dashed arrows from each panel up to the top. "
             "Oversold levels on both point to a potential bottom in copper "
             "around October 2011. The figure prints settings of 20 for the "
             "CMF and 3 and 10 for the oscillator; the text gives none."

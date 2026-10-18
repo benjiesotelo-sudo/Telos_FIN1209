@@ -1977,7 +1977,8 @@ class Pane:
 
     ``profile`` is volume by price: (low, high, amount) rows drawn sideways
     from the left edge, the largest reaching ``profile_reach`` of the way
-    across; ``profile_picks`` are the rows drawn gold.
+    across; ``profile_picks`` are the rows drawn gold, and
+    ``profile_labels``, one string a row, are printed at each row's end.
 
     ``name`` is printed on a plate at the top left. ``ticks`` gives the
     value axis ticks; without it the pane has none. ``height`` is the
@@ -2001,6 +2002,7 @@ class Pane:
     profile: tuple = ()
     profile_picks: tuple = ()
     profile_reach: float = 0.40
+    profile_labels: tuple = ()
     ticks: tuple | None = None
     zero: bool = False
     height: float = 1.0
@@ -2075,6 +2077,13 @@ def _pane(ax, pane: Pane, n: int, *, x0: float, x1: float, small: bool):
                 facecolor=GOLD_WASH if pick else GREY_WASH,
                 edgecolor=GOLD if pick else BORDER, linewidth=0.9,
                 zorder=1))
+            if i < len(pane.profile_labels) and pane.profile_labels[i]:
+                ax.text(x0 + reach_x * amount / biggest + (x1 - x0) * 0.01,
+                        (p_lo + p_hi) / 2, pane.profile_labels[i],
+                        ha="left", va="center", fontsize=label_pt - 1.5,
+                        color=GREEN_DEEP, fontweight="bold", zorder=6,
+                        bbox=dict(boxstyle="square,pad=0.10",
+                                  facecolor=WHITE, edgecolor="none"))
 
     if pane.columns:
         tones = [GOLD if i in pane.picks else

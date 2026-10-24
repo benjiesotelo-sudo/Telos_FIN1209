@@ -1227,11 +1227,13 @@ CHARTS = (
                      notes=(Note(x=50, label="The trend persists ...",
                                  dx=-30, dy=40, notice=True),)),
                 Pane(columns=W_VOL, ylabel="Volume", height=1.0, top=0.80,
-                     notes=(Note(x=50, y=2.2, label="... on flat volume",
+                     notes=(Note(x=50, y=2.2, label="... on flat volume:\n"
+                                 "every bar about 2 million",
                                  dx=-30, dy=26, dot=False),)),
             ),
             size=PAIR, xlabel="Time",
-            footnote=INVENTED + " Volume stays about the same all the way.",
+            footnote=INVENTED + " No change in volume, so relative volume "
+                     "says nothing new.",
         ),
     ),
     ChartArt(
@@ -1264,9 +1266,10 @@ CHARTS = (
                      height=1.7, top=0.12),
                 Pane(columns=Y_VOL, ylabel="Volume", height=1.0, top=0.15),
             ),
-            spans=(Span(x0=0, x1=40, label="Bull market volume:\ntaller bars"),
-                   Span(x0=41, x1=80, label="Bear market volume:\nshorter "
-                        "bars", tone="notice")),
+            spans=(Span(x0=0, x1=40, label="Bull market volume:\nabout "
+                        "2.8 million a day"),
+                   Span(x0=41, x1=80, label="Bear market volume:\nabout "
+                        "1.3 million a day", tone="notice")),
             size=PAIR, xlabel="Time",
             footnote=INVENTED + " The book gives three reasons; the chart "
                      "shows only the result.",
@@ -1345,7 +1348,8 @@ CHARTS = (
                      panes=(Pane(line=(1.0, 2.0, 3.0, 3.6, 3.0, 1.2, -0.6,
                                        -2.4), height=1.4, top=0.10),
                             Pane(columns=(80, 82, 85, 86, 84, 70, 50, 35),
-                                 name="open interest", top=0.25))),
+                                 name="open interest: about 85,000",
+                                 top=0.25))),
                 Cell(name="Open interest low", note="the reversal is gradual",
                      panes=(Pane(line=(1.0, 2.0, 3.0, 3.6, 3.3, 3.0, 2.7,
                                        2.4), height=1.4, top=0.10,
@@ -1355,7 +1359,8 @@ CHARTS = (
                                                          (0, -2.4)),
                                                  width=0.0),)),
                             Pane(columns=(20, 21, 22, 22, 21, 20, 19, 18),
-                                 name="open interest", top=3.3))),
+                                 name="open interest: about 20,000",
+                                 top=3.3))),
             ),
             cols=2, size=PAIR,
             footnote=SKETCH + " The open interest panels share one scale. "
@@ -1438,13 +1443,16 @@ CHARTS = (
                      strokes=(
                          Stroke(points=((AG_PEAK - 30, AG_RES),
                                         (99, AG_RES)), tone="structure",
-                                label="4  Resistance: closest peak above",
+                                label=f"4  Resistance, PHP {AG_RES:.2f}",
                                 at=1, dx=-2, dy=9, width=1.8),
                          Stroke(points=((AG_TROUGH - 30, AG_SUP),
                                         (99, AG_SUP)), tone="structure",
-                                label="4  Support: closest trough below",
+                                label=f"4  Support, PHP {AG_SUP:.2f}",
                                 at=1, dx=-2, dy=-9, width=1.8),
                      ),
+                     profile_labels=tuple(label if i == AF_BIG else ""
+                                          for i, label in
+                                          enumerate(AF_LABELS)),
                      notes=(Note(x=6, y=(AG_LO + AG_HI) / 2, label="1",
                                  dx=-1, dy=24, dot=False, notice=True),
                             Note(x=AG_SPANS[0][0] - 2, y=AG_HI, label="3",

@@ -1065,11 +1065,11 @@ SECTION3 = Section(
             left=Content(
                 title="Five kinds of volume action at a barrier",
                 lines=(
-                    "Across: the bars before, at and after the touch, marked by the dashed arrow.",
-                    "1 Increasing: each bar taller. 2 Decreasing: each shorter.",
-                    "3 Peaking: tallest at the touch. 4 Bottoming: shortest. 5 Flatlining: all alike.",
+                    "Across: the bars before, at and after the touch, which the dashed arrow marks. Only the volume differs between sketches.",
+                    "1 Increasing: each bar taller. 2 Decreasing: each shorter. 3 Peaking: tallest at the touch.",
+                    "4 Bottoming: shortest at the touch. 5 Flatlining: all alike.",
                 ),
-                accent="All five, twice: top row at a resistance, bottom row at a support.",
+                accent="Top: resistance. Bottom: support.",
                 caption="The book: increasing or decreasing volume there signifies a change in sentiment, the crowd's mood (Chapter 1).",
             ),
             picture=Figure(
@@ -1085,14 +1085,13 @@ SECTION3 = Section(
         Pair(
             origin="Book p.188. Confirmation, bullish and bearish: Part 1. The chart is ours: sketches and invented volume.",
             left=Content(
-                title="What each of the five tells",
+                title="Increasing volume: price driven away",
                 lines=(
                     "Increasing, ours: 1, 2, 3 million on the way in, 4 at the touch, 5, 6, 7 on the way out.",
-                    "The book: rising volume on the way in looks strong enough to break through.",
-                    "But price turns, and volume keeps rising: that force drives price away instead.",
-                    "That is confirmation (Part 1): bullish at a support, bearish at a resistance.",
+                    "The book: rising volume on the way in looks strong enough to break through. Instead price turns, and the rising volume drives it away.",
+                    "At a resistance price falls as volume rises: Part 1's bearish confirmation. At a support both rise: bullish confirmation.",
                 ),
-                accent="Rising volume across a barrier backs it.",
+                accent="Rising volume across a barrier confirms the turn away from it.",
             ),
             picture=Chart(
                 letter="R",
@@ -1101,7 +1100,7 @@ SECTION3 = Section(
             text_w=CHART_W,
             notes=(
                 "The book's sentences on increasing and decreasing volume are hard going. This slide takes increasing alone: what volume does, then what price does next.",
-                "Bullish confirmation is Part 1's: price and volume both rising. At a support price turns up on rising volume. At a resistance price turns down on rising volume: bearish confirmation.",
+                "Price down with volume up is bearish confirmation, Part 1's name for it: at a resistance the rising volume is the selling that drives price down.",
             ),
         ),
         Pair(
@@ -1127,15 +1126,16 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.187-188. The chart is ours: sketches and invented volume. The book does not rank increasing against peaking.",
+            origin="Book pp.187-188. The chart is ours: sketches and invented volume.",
             left=Content(
                 title="Peaking, bottoming and flatlining",
                 lines=(
-                    "Peaking, ours: 1, 2, 4, then 7 at the touch, then 4, 2, 1. Figure 6.18's peak: the most reliable.",
-                    "Bottoming: 7, 4, 2, then 1 at the touch, then 2, 4, 7. Figure 6.18's dip: less reliable.",
+                    "Peaking, ours: 1, 2, 4, 7 at the touch, 4, 2, 1. Figure 6.18's peak: most reliable.",
+                    "Bottoming: 7, 4, 2, 1 at the touch, 2, 4, 7. Figure 6.18's dip: less reliable.",
                     "Flatlining: 4 on every bar. The book: not enough information about price's next move.",
+                    "The other two: increasing confirms the turn, decreasing invites a retest.",
                 ),
-                accent="Increasing backs a barrier, decreasing invites a retest, a peak is strongest, a dip weaker, flat tells nothing.",
+                accent="A peak is the most reliable; the book does not rank it against increasing.",
             ),
             picture=Chart(
                 letter="RC",
@@ -1171,25 +1171,47 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.188-189: the four are the book's, from among numerous ways. The chart is ours: one sketch of each, on invented volume.",
+            origin="Book pp.188-189: the four are the book's, from among numerous ways. Prior volume peaks: named on p.188 only. The chart is ours, on invented volume.",
             left=Content(
                 title="Filtering volume action: four ways",
                 lines=(
                     "Filtering picks out the most significant volume: what may lead to a top or bottom.",
-                    "Ours, panel 1: bars average about 1 million. The 2.6 and 2.3 million bars clear it: kept.",
-                    "Four of the book's numerous ways: 1 a moving average filter, 2 a volatility filter, 3 prior volume peaks, 4 volume cycles.",
+                    "Four of the book's numerous ways: 1 a moving average filter, which it calls the smoothed volume filter, 2 a volatility filter, 3 prior volume peaks, 4 volume cycles.",
+                    "1 and 2 are worked next. 3 is named and never explained. 4 comes in Part 5.",
                 ),
-                accent="Next, 1: the smoothed volume filter. Then 2: the two- or three-sigma filter.",
-                caption="The book does not explain 3 here; 4, volume cycles, comes in Part 5.",
+                accent="Gold: the volume each filter keeps.",
+                caption="Panel 3 is our reading, not examinable: like Part 2's upper overextended volume level, set at earlier climax volume.",
             ),
             picture=Chart(
                 letter="S",
-                shows="Four small sketches of invented volume in millions of shares, one per filter. 1: an average line near 1 million, with the two bars of 2.6 and 2.3 that spike above it in gold. 2: a line set higher still, crossed only by the bar of 3.2; a bar of 1.9 stays under it. 3: a level drawn at an earlier peak of 2.6, reached again later. 4: volume that rises and falls in a repeating cycle, its peaks marked.",
+                shows="Four small sketches of invented volume in millions of shares, one per filter, the volume each keeps in gold. 1: an average line near 1 million, with two spikes of 3.0 and 2.8 above it. 2: a line set higher still, crossed only by a bar of 3.2. 3, our reading: a level drawn at an earlier peak of 2.6, reached again later. 4: volume that rises and falls in a repeating cycle, its peaks marked.",
             ),
             text_w=CHART_W,
             notes=(
-                "This answers review question 5, the modes of volume filtering. Four ways, and the book explains two of them in this passage: the smoothed volume filter now, the two- or three-sigma filter after it.",
-                "Prior volume peaks: the book does not explain them here. Part 2's upper overextended volume level was set at the volume of earlier climaxes, which is the nearest the book comes. Volume cycles get their own slides in Part 5.",
+                "This answers review question 5, the modes of volume filtering. Four ways, and the book explains two of them in this passage: the smoothed volume filter, then the two- or three-sigma filter.",
+                "Prior volume peaks: the book names them on p.188 and never explains them. Part 2's upper overextended volume level was set at the volume of earlier climaxes, which is the nearest the book comes; that reading is ours and is not examinable.",
+            ),
+        ),
+        Pair(
+            origin="Book pp.188-189: a spike above the line is significant; no measure of how far. Ours: the volume, the 8 bars, the twice rule and filter 2's stand-in line.",
+            left=Content(
+                title="Filters 1 and 2 in numbers",
+                lines=(
+                    "Ours, filter 1: the line is the average of the last 8 bars, about 1 million.",
+                    "How far above counts? The book gives no measure. Our rule: over twice the average.",
+                    "1.4 million is just over the line: ordinary. The 3.0 and 2.8 million spikes: kept.",
+                    "Filter 2: only the 3.2 bar crosses its higher line; the 1.9 bar is dropped.",
+                ),
+                accent="Filter 1 is the book's smoothed volume filter: next.",
+            ),
+            picture=Chart(
+                letter="SA",
+                shows="Two strips of invented volume in millions of shares. Filter 1: the average of the last 8 bars as a solid line and twice that average as a dotted gold line; a bar of 1.4 sits just over the average and is not kept, and the spikes of 3.0 and 2.8 rise over the dotted line, in gold. Filter 2: a higher line crossed only by the bar of 3.2, in gold; a bar of 1.9 stays under it.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "The twice rule is ours, to make the reading concrete. The book says only that a spike above the line is significant, and its own Figure 6.20 marks only the tallest spikes.",
+                "Filter 2's line here is a stand-in, the average plus a fixed amount. The real line, the two- or three-sigma filter, is computed on its own slides after the smoothed volume filter.",
             ),
         ),
         Pair(

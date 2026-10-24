@@ -22,7 +22,8 @@ not carry the idea alone, or where a slide works a number through:
     read only in retrospect, and one volume record on two timeframes.
   * **R to V** Part 3: why a volume peak makes the stronger barrier (RA),
     the five volume actions at a barrier and what each tells (R, RB, RC,
-    lettered beside R until the deck is lettered again), the four filters, a smoothed volume filter, a three-sigma
+    lettered beside R until the deck is lettered again), the four filters
+    and filters 1 and 2 in numbers (SA), a smoothed volume filter, a three-sigma
     filter and a channel drawn from volume filtered points.
   * **W to AG** Part 4: a trend on flat volume, loss aversion, bull and
     bear market volume, turnover, open interest day by day, the four cases
@@ -384,10 +385,12 @@ def _resistance_60(name, note, volume):
 _s_base = _noisy([1.0 + 0.25 * math.sin(i / 2.0) for i in range(30)],
                  seed=711, spread=0.2)
 S_MA_VOL = list(_s_base)
-for x, v in ((8, 2.6), (21, 2.3)):
+for x, v in ((8, 3.0), (21, 2.8)):
     S_MA_VOL[x] = v
 S_MA_VOL = tuple(S_MA_VOL)
 S_MA = _sma(S_MA_VOL, 8)
+# SA - our rule for "well above": more than twice the 8-bar average.
+S_TWICE = tuple(round(2 * v, 4) for v in S_MA)
 S_BAND_VOL = list(_s_base)
 S_BAND_VOL[17] = 3.2
 S_BAND_VOL[8] = 1.9
@@ -1083,10 +1086,12 @@ CHARTS = (
         kwargs=dict(
             items=(
                 _resistance_60("A  9 million at the touch",
-                               "the most of the move:\nthe most reliable",
+                               "the most volume of the move:\nthe most "
+                               "reliable",
                                RA_PEAK),
                 _resistance_60("B  0.5 million at the touch",
-                               "the least of the move:\nless reliable",
+                               "the least volume of the move:\nless "
+                               "reliable",
                                RA_DIP),
             ),
             cols=2, size=PAIR,
@@ -1166,7 +1171,7 @@ CHARTS = (
                 Cell(name="1  Moving average filter",
                      note="spikes above the average",
                      panes=(Pane(columns=S_MA_VOL, picks=(8, 21),
-                                 tags=((8, "2.6"), (21, "2.3")),
+                                 tags=((8, "3.0"), (21, "2.8")),
                                  traces=(Trace(values=S_MA, tone="deep",
                                                width=2.0),),
                                  notes=(Note(x=13.5, y=S_MA[13],
@@ -1181,7 +1186,7 @@ CHARTS = (
                                                width=2.0),),
                                  top=0.22),)),
                 Cell(name="3  Prior volume peaks",
-                     note="a level at an earlier peak",
+                     note="ours: a level at an earlier peak",
                      panes=(Pane(columns=S_PEAK_VOL, picks=(24,),
                                  tags=((6, "2.6"), (24, "2.6")),
                                  strokes=(Stroke(points=((6, 2.6),
@@ -1194,10 +1199,45 @@ CHARTS = (
                                  top=0.15),)),
             ),
             cols=2, size=PAIR,
-            footnote="Invented volume, in millions of shares. Panel 1: an "
-                     "8-bar average. Panel 2: that\naverage plus a fixed "
-                     "1.6, a stand-in for filter 2's line, taught shortly. "
-                     "Gold: kept.",
+            footnote="Invented volume, in millions of shares. Gold: the "
+                     "volume each filter keeps.\nPanels 1 and 2 are worked "
+                     "in numbers next. Panel 3 is our reading.",
+        ),
+    ),
+    ChartArt(
+        letter="SA",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                Cell(name="Filter 1: the average of the last 8 bars",
+                     note="kept, by our rule: over twice the average",
+                     panes=(Pane(columns=S_MA_VOL, picks=(8, 21),
+                                 tags=((4, "1.4"), (8, "3.0"), (21, "2.8")),
+                                 traces=(Trace(values=S_MA, tone="deep",
+                                               width=2.0),
+                                         Trace(values=S_TWICE,
+                                               tone="notice", width=2.4,
+                                               dotted=True)),
+                                 notes=(Note(x=11, y=S_MA[11],
+                                             label="average", dx=0, dy=12,
+                                             dot=False),
+                                        Note(x=15, y=S_TWICE[15],
+                                             label="twice the average",
+                                             dx=0, dy=34, dot=False)),
+                                 top=0.75),)),
+                Cell(name="Filter 2: a higher line",
+                     note="kept: only the bar that crosses it",
+                     panes=(Pane(columns=S_BAND_VOL, picks=(17,),
+                                 tags=((8, "1.9"), (17, "3.2")),
+                                 traces=(Trace(values=S_BAND, tone="deep",
+                                               width=2.0),),
+                                 top=0.22),)),
+            ),
+            cols=1, size=PAIR,
+            footnote="Invented volume, in millions of shares. Filter 2's "
+                     "line is the average plus a fixed 1.6,\na stand-in: "
+                     "its real line is computed on the sigma filter's "
+                     "slides.",
         ),
     ),
     ChartArt(

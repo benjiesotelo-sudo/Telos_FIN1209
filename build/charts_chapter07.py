@@ -205,4 +205,81 @@ CHARTS = (
             footnote="Ours, invented PHP ranges. The ID/NR6 rule follows Lim (2016), p. 232.",
         ),
     ),
+    ck.ChartArt(
+        letter="V",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Bullish Oops: two-bar worked example",
+                    note="invented PHP values; buy-stop then stoploss",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((49.0, 50.0, 48.0, 49.5),
+                                       (47.0, 49.0, 46.0, 48.5))),
+                            height=1.75,
+                            strokes=(
+                                ck.Stroke(points=((0, 48.0), (1, 48.0)),
+                                          tone="structure", dashed=True,
+                                          label="buy-stop 48.00", at=0,
+                                          dx=-24, dy=8),
+                                ck.Stroke(points=((0, 46.0), (1, 46.0)),
+                                          tone="notice", dashed=True,
+                                          label="stoploss 46.00", at=1,
+                                          dx=20, dy=10),
+                            ),
+                            notes=_bar_notes(
+                                (1, 47.0, "open 47.00", -24, 14, True),
+                                (1, 46.0, "low 46.00", 20, 8, True),
+                                (0, 48.0, "prior low 48.00", -24, 8, True),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP values. The bullish Oops order rule follows Lim (2016), p. 231.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="W",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Inside Month/NR5: worked example",
+                    note="invented monthly ranges; upward breakout after the count",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((28.0, 30.0, 18.0, 26.0),
+                                       (26.0, 29.0, 19.0, 27.0),
+                                       (27.0, 30.0, 21.0, 28.0),
+                                       (28.0, 31.0, 24.0, 29.0),
+                                       (29.0, 30.0, 25.0, 28.0),
+                                       (28.0, 33.0, 27.0, 32.0))),
+                            height=1.75,
+                            strokes=(
+                                ck.Stroke(points=((3, 31.0), (5.8, 31.0)),
+                                          tone="structure", dashed=True,
+                                          label="breakout 31.00", at=1,
+                                          dx=0, dy=-10),
+                            ),
+                            notes=_bar_notes(
+                                (0, 30.0, "range 12", -20, 8, False),
+                                (1, 29.0, "range 10", -12, 10, False),
+                                (2, 30.0, "range 9", -12, 8, False),
+                                (3, 31.0, "range 7", 12, 8, False),
+                                (4, 30.0, "range 5", 14, 8, False),
+                                (5, 33.0, "break 31.00", 16, 8, True),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented monthly PHP ranges. The inside-month extension follows Lim (2016), p. 232.",
+        ),
+    ),
 )

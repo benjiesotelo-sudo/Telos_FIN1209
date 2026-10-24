@@ -740,12 +740,12 @@ OOPS_FIGURE = Figure(
     aspect=920 / 450,
     crop=(),
     marks=(
-        Mark(1, "circle", 0.25, 0.43, 0.33, 0.55,
-             color="gold", at=(0.20, 0.38), size=0.30),
-        Mark(2, "circle", 0.28, 0.54, 0.38, 0.64,
-             color="red", at=(0.42, 0.53), size=0.30),
-        Mark(3, "circle", 0.28, 0.72, 0.38, 0.84,
-             color="blue", at=(0.42, 0.86), size=0.30),
+        Mark(1, "circle", 0.18, 0.64, 0.28, 0.71,
+             color="gold", at=(0.14, 0.67), size=0.30),
+        Mark(2, "line", 0.30, 0.57, 0.46, 0.57,
+             color="red", at=(0.51, 0.52), size=0.30),
+        Mark(3, "line", 0.30, 0.75, 0.48, 0.75,
+             color="blue", at=(0.53, 0.81), size=0.30),
     ),
     shows=("The book's two Williams' Oops schematics: a gap below the prior "
            "range with a buy-stop at the prior low, and a gap above it with "
@@ -764,12 +764,12 @@ OOPS_EXAMPLE_FIGURE = Figure(
     aspect=1120 / 450,
     crop=(),
     marks=(
-        Mark(1, "circle", 0.73, 0.56, 0.80, 0.66,
-             color="gold", at=(0.69, 0.69), size=0.30),
-        Mark(2, "circle", 0.76, 0.62, 0.83, 0.72,
-             color="red", at=(0.87, 0.75), size=0.30),
-        Mark(3, "circle", 0.76, 0.49, 0.83, 0.59,
-             color="blue", at=(0.88, 0.43), size=0.30),
+        Mark(1, "circle", 0.74, 0.60, 0.80, 0.68,
+             color="gold", at=(0.69, 0.72), size=0.30),
+        Mark(2, "line", 0.78, 0.66, 0.91, 0.66,
+             color="red", at=(0.70, 0.73), size=0.30),
+        Mark(3, "line", 0.78, 0.61, 0.91, 0.61,
+             color="blue", at=(0.94, 0.50), size=0.30),
     ),
     shows=("The book's daily Dynegy chart marked at the bearish Oops opening "
            "gap, sell-stop at the prior high, stop-and-reverse buy level, and "
@@ -808,12 +808,12 @@ IDNR_FIGURE = Figure(
     aspect=1180 / 680,
     crop=(0.015, 0.0, 0.015, 0.0),
     marks=(
-        Mark(1, "line", 0.30, 0.89, 0.56, 0.89,
-             color="gold", at=(0.28, 0.93), size=0.30),
-        Mark(2, "box", 0.52, 0.43, 0.58, 0.82,
-             color="red", at=(0.61, 0.40), size=0.30),
-        Mark(3, "circle", 0.52, 0.56, 0.59, 0.70,
-             color="blue", at=(0.64, 0.73), size=0.30),
+        Mark(1, "arrow", 0.30, 0.93, 0.56, 0.93,
+             color="gold", at=(0.27, 0.87), size=0.30),
+        Mark(2, "box", 0.49, 0.62, 0.58, 0.98,
+             color="red", at=(0.63, 0.56), size=0.30),
+        Mark(3, "line", 0.54, 0.65, 0.54, 0.98,
+             color="blue", at=(0.64, 0.88), size=0.30),
     ),
     shows=("The book's ID/NR6 schematic: six numbered bars, with the sixth "
            "bar inside the prior range and the narrowest range, followed by "
@@ -831,10 +831,10 @@ IDNR_DIRECTION_FIGURE = Figure(
     number="7.38",
     aspect=1180 / 680,
     marks=(
-        Mark(1, "circle", 0.52, 0.56, 0.59, 0.70,
-             color="gold", at=(0.65, 0.73), size=0.30),
-        Mark(2, "box", 0.52, 0.43, 0.58, 0.82,
-             color="red", at=(0.61, 0.40), size=0.30),
+        Mark(1, "line", 0.54, 0.65, 0.54, 0.98,
+             color="gold", at=(0.64, 0.88), size=0.30),
+        Mark(2, "box", 0.49, 0.62, 0.58, 0.98,
+             color="red", at=(0.63, 0.56), size=0.30),
         Mark(3, "line", 0.60, 0.60, 0.60, 0.82,
              color="blue", at=(0.92, 0.84), size=0.30),
     ),
@@ -842,7 +842,7 @@ IDNR_DIRECTION_FIGURE = Figure(
            "and both possible trigger directions visible."),
     notes=(
         "Mark 1 is the narrowest bar and mark 2 is its inside condition.",
-        "The blue box contains both printed trigger arrows; either direction is possible before the break.",
+        "The blue line crosses both printed trigger levels; either direction is possible before the break.",
     ),
     origin="Lim (2016), p. 232, Figure 7.38. The numbered marks are for teaching.",
 )
@@ -852,12 +852,12 @@ INSIDE_MONTH_FIGURE = Figure(
     number="7.39",
     aspect=1120 / 440,
     marks=(
-        Mark(1, "circle", 0.44, 0.57, 0.50, 0.75,
-             color="gold", at=(0.40, 0.79), size=0.30),
-        Mark(2, "line", 0.22, 0.84, 0.47, 0.84,
-             color="red", at=(0.19, 0.89), size=0.30),
-        Mark(3, "circle", 0.51, 0.17, 0.57, 0.58,
-             color="blue", at=(0.61, 0.12), size=0.30),
+        Mark(1, "circle", 0.47, 0.62, 0.53, 0.80,
+             color="gold", at=(0.42, 0.84), size=0.30),
+        Mark(2, "arrow", 0.22, 0.88, 0.54, 0.88,
+             color="red", at=(0.18, 0.93), size=0.30),
+        Mark(3, "circle", 0.53, 0.17, 0.59, 0.42,
+             color="blue", at=(0.63, 0.12), size=0.30),
     ),
     shows=("The book's monthly Dynegy chart: an inside month after five "
            "monthly ranges, followed by an upside breakout."),
@@ -950,6 +950,27 @@ OOPS_CHART = Chart(
     origin="Chart T is ours, with invented PHP values to show Lim (2016), p. 231.",
 )
 
+OOPS_BULLISH_CHART = Chart(
+    letter="V",
+    title="Williams' Oops: bullish converse values",
+    shows=("An invented bullish Oops example with the prior low, gap-down open, "
+            "buy-stop, and new low with stoploss labelled on the chart."),
+    tier="core",
+    marks=(
+        Mark(1, "circle", 0.61, 0.34, 0.67, 0.40,
+             color="gold", at=(0.52, 0.42), size=0.30),
+        Mark(2, "circle", 0.61, 0.49, 0.67, 0.55,
+             color="red", at=(0.76, 0.51), size=0.30),
+        Mark(3, "circle", 0.61, 0.70, 0.67, 0.76,
+             color="blue", at=(0.76, 0.82), size=0.30),
+    ),
+    notes=(
+        "The previous bar's low is PHP 48.00. The next bar opens at PHP 47.00, below that low.",
+        "The buy-stop is PHP 48.00 and the new low and stoploss are PHP 46.00.",
+    ),
+    origin="Chart V is ours, with invented PHP values to show Lim (2016), p. 231.",
+)
+
 IDNR_CHART = Chart(
     letter="U",
     title="ID/NR6: invented ranges",
@@ -969,6 +990,28 @@ IDNR_CHART = Chart(
         "The last bar is the narrowest and remains inside the prior bar. A later break can go up or down.",
     ),
     origin="Chart U is ours, with invented PHP ranges to show Lim (2016), p. 232.",
+)
+
+INSIDE_MONTH_CHART = Chart(
+    letter="W",
+    title="Inside Month/NR5: invented worked example",
+    shows=("Six invented monthly bars with ranges 12, 10, 9, 7, and 5 PHP; "
+            "the fifth is inside the fourth, followed by an upward break "
+            "through PHP 31.00."),
+    tier="core",
+    marks=(
+        Mark(1, "circle", 0.67, 0.45, 0.73, 0.57,
+             color="gold", at=(0.61, 0.62), size=0.30),
+        Mark(2, "line", 0.25, 0.86, 0.73, 0.86,
+             color="red", at=(0.20, 0.91), size=0.30),
+        Mark(3, "circle", 0.80, 0.18, 0.86, 0.33,
+             color="blue", at=(0.91, 0.15), size=0.30),
+    ),
+    notes=(
+        "The five counted monthly ranges are 12, 10, 9, 7, and 5 PHP; the fifth bar is inside the fourth.",
+        "The sixth bar breaks above PHP 31.00. The example is invented to show the extension.",
+    ),
+    origin="Chart W is ours, with invented monthly PHP values to show Lim (2016), p. 232.",
 )
 
 SECTION4 = Section(
@@ -1000,7 +1043,7 @@ SECTION4 = Section(
                 title="Figure 7.36: both Oops directions",
                 lines=(
                     "Definition: an Oops opens beyond the previous bar's range. Left [1] gaps down: buy-stop at previous low [2], stoploss at new low [3].",
-                    "Right is the converse: gap up, sell-stop at previous high, stoploss at new high.",
+                    "Right is the unmarked converse: gap up, sell-stop at previous high, stoploss at new high.",
                     "Action: if price reverses, stop and reverse at the stoploss. The book promises no result.",
                 ),
                 accent="Read the bearish and bullish order locations as exact opposites.",
@@ -1023,11 +1066,11 @@ SECTION4 = Section(
                 accent="Gap down means bullish Oops; gap up is its bearish converse.",
                 caption="Lim (2016), p. 231. Values are ours, invented to show the bearish converse.",
             ),
-            picture=OOPS_EXAMPLE_FIGURE,
+            picture=OOPS_BULLISH_CHART,
             text_w=6.8,
             picture_extra=0.15,
-            notes=OOPS_EXAMPLE_FIGURE.notes,
-            origin=OOPS_EXAMPLE_FIGURE.origin,
+            notes=OOPS_BULLISH_CHART.notes,
+            origin=OOPS_BULLISH_CHART.origin,
         ),
         Pair(
             left=Content(
@@ -1243,16 +1286,27 @@ CHAPTER = Chapter(
             origin="Lim (2016), pp. 218 to 232. Review answers are written from the preceding slides.",
         ),
         Content(
-            title="Review answer 4: the 16 characteristics",
+            title="Review answer 4: the 16 characteristics (1 of 2)",
             lines=(
                 "1 to 4: decrease in price cycle amplitude; decrease in price cycle period; change in bar retracement symmetry; decrease in average bar range.",
                 "5 to 8: lack of the quality of price persistence; decrease in average bar stochastic ratio; decrease in average candlestick real body to range ratio; changes in angular symmetry and momentum.",
+            ),
+            accent="These first eight are potential reversal clues, not guarantees. Chapter 5 gives the detailed discussion.",
+            notes=(
+                "Point back to the earlier Chapter 5 terms for the first eight characteristics.",
+                "Read every name as evidence, not certainty.",
+            ),
+            origin="Lim (2016), pp. 216 to 218; the 16 names follow the book's order.",
+        ),
+        Content(
+            title="Review answer 4: the 16 characteristics (2 of 2)",
+            lines=(
                 "9 to 12: proximity to a price barrier; reduction in frequency and decrease in depth of trend-based oscillations; appearance of relatively larger and longer lasting consolidations; appearance of an exhaustion gap.",
                 "13 to 16: completion of the average range for the period under observation; overextended price action with respect to a price barrier; price accompanied by extremely high or low volume; standard divergences between price, volume, and oscillators.",
             ),
-            accent="These are potential reversal clues, not guarantees. Chapter 5 gives the detailed discussion.",
+            accent="Barrier proximity is the especially important context; these clues still do not guarantee reversal.",
             notes=(
-                "Point back to the earlier Chapter 5 terms for the definitions the book says to recall.",
+                "Point back to the earlier Chapter 5 terms for the remaining definitions the book says to recall.",
                 "Read barrier proximity as the strongest reliability emphasis in this chapter.",
             ),
             origin="Lim (2016), pp. 216 to 218; the 16 names follow the book's order.",
@@ -1279,7 +1333,7 @@ CHAPTER = Chapter(
                 title="Review answer 7: ideal inside-bar reversal",
                 lines=(
                     "Inside reversal: the inside bar stays within the prior high and low, then breaks in the reversal direction.",
-                    "Ideal: first bar wide on high volume; second narrow on very low volume. Barrier and trend context strengthen [1] [2].",
+                    "Ideal: first bar wide on high volume; second narrow on very low volume. Barrier and trend context strengthen the potential reading.",
                     "Figure 7.25 marks wide [1], narrow inside [2], and oscillator region [3]. Chapter 7 gives no formula.",
                     "Harami is one-fourth to one-third the prior range; an inside bar has no restriction.",
                 ),

@@ -233,8 +233,8 @@ I_OBV = _obv(I_CLOSE, I_VOL)
 # Part 2
 # ==========================================================================
 
-# J - a range with stops above and below, volume falling to its lowest,
-# and the breakout.
+# J - a range with stops above and below, an earlier low of volume that sets
+# the level, volume falling back to test it, and the breakout.
 J_TOP, J_BOT = 52.0, 48.0
 J_BREAK = 60
 _j_close = _line(((0, 44.0), (12, 50.0), (18, 51.4), (24, 48.6), (31, 51.5),
@@ -245,6 +245,8 @@ J_BARS = _bars(_j_close, seed=662, reach=0.006)
 _j_vol = (_ramp(2.4, 2.0, 12) + _ramp(1.9, 0.5, J_BREAK - 12)
           + [3.4] + _ramp(2.8, 2.2, 72 - J_BREAK))
 J_VOL = list(_noisy(_j_vol, seed=663, spread=0.12))
+J_EARLIER = 5
+J_VOL[J_EARLIER] = 0.45
 J_VOL[J_BREAK - 1] = 0.42
 J_VOL[J_BREAK] = 3.6
 J_VOL = tuple(J_VOL)
@@ -263,7 +265,7 @@ K_VOL = list(_noisy(_k_vol, seed=672, spread=0.10))
 K_VOL[K_PEAK] = 0.55
 K_VOL[K_TROUGH] = 0.55
 K_VOL = tuple(K_VOL)
-K_LOW = 0.6
+K_LOW = 0.55
 
 # L and M - a price and its 10-bar VWMA.
 _l_close = list(_line(((0, 50.0), (14, 55.0), (26, 49.0), (40, 54.5),
@@ -975,15 +977,17 @@ CHARTS = (
                 Pane(columns=J_VOL, ylabel="Volume (million)", height=1.0,
                      top=0.28, ticks=(1, 2, 3), picks=(J_BREAK,),
                      tags=((J_BREAK, "3.6"),),
-                     strokes=(Stroke(points=((0, J_LOW), (72, J_LOW)),
+                     strokes=(Stroke(points=((J_EARLIER, J_LOW), (72, J_LOW)),
                                      dashed=True, tone="quiet"),),
-                     notes=(Note(x=J_BREAK - 1, label="1  Lowest level:\n"
-                                 "0.42 million", dx=-110, dy=20),)),
+                     notes=(Note(x=J_EARLIER, label="earlier low, 0.45",
+                                 dx=10, dy=24),
+                            Note(x=J_BREAK - 1, label="1  Tests it: 0.42",
+                                 dx=-62, dy=24),)),
             ),
             size=PAIR, xlabel="Time",
-            footnote=INVENTED + " Volume in millions of shares. Dashed: "
-                     "volume's lowest level,\nby eye. The book says a "
-                     "breakout may be up or down; this one is up.",
+            footnote=INVENTED + " Volume in millions of shares. Dashed: the "
+                     "earlier low,\ntested at 1. The book says a breakout may "
+                     "be up or down; this one is up.",
         ),
     ),
     ChartArt(
@@ -1008,7 +1012,7 @@ CHARTS = (
                     Guide(x=K_TROUGH, label="2", notice=True)),
             size=TERM, xlabel="Time",
             footnote=INVENTED + " Volume in millions of shares.\nDashed: "
-                     "the low volume level, drawn by eye.",
+                     "the low set at 1, which volume tests again at 2.",
         ),
     ),
     ChartArt(

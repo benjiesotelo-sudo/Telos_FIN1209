@@ -1217,15 +1217,15 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book p.189 and Figure 6.21.",
+            origin="Book p.189 and Figure 6.21. Ours: the counts of arrows and the April top, read off Figures 6.20 and 6.21.",
             left=Content(
                 title="A three-sigma filter on USDJPY",
                 lines=(
-                    "The filter signals the most significant volume surges.",
-                    "These tend to result in the most significant tops and bottoms in the market.",
-                    "A standard deviation oscillator may also be used. It is less useful: it gives no overlay on which to see volume cross the threshold.",
+                    "Stepped line: the three-sigma filter, on daily USDJPY. The book marks three surges over it, arrows up to price.",
+                    "Figure 6.20, same market, marked six. Stricter, this line skips the April 2011 top, the highest price, that 6.20 caught.",
+                    "The two lower lines are drawn and not named by the book; only the top one is the filter.",
                 ),
-                accent="The book prefers the band: volume can be seen crossing it.",
+                accent="The book: such surges tend to come at the most significant tops and bottoms.",
             ),
             picture=Figure(
                 number="6.21",
@@ -1234,7 +1234,21 @@ SECTION3 = Section(
             text_w=5.4,
             notes=(
                 "Compare with Figure 6.20, the same market. The threshold here is higher, so only the largest surges cross it.",
-                "An overlay is a line drawn on top of the bars, which is why the band beats a separate oscillator here.",
+                "Follow each of the three arrows down to the surge under it. Then find the April 2011 top: a dotted upright, and no arrow.",
+            ),
+        ),
+        Content(
+            origin="Book p.189. It names the oscillator and does not describe it.",
+            title="Why the book draws the line on the bars",
+            lines=(
+                "The book also names a standard deviation oscillator: an indicator in its own panel, as Part 1 used the word. It does not describe or draw one.",
+                "It is less useful, the book says, because it gives no overlay: a line drawn over the volume bars themselves, so a bar can be seen crossing it.",
+                "Figure 6.21's line stays high for months after the March spike, far beyond our 20 bars. The book never gives its N.",
+            ),
+            accent="What to do: pick N as for the smoothed filter, then draw the 3-sigma line over the bars. A bar above it may mark a top or bottom.",
+            notes=(
+                "No picture: this slide reads the book's one sentence on the oscillator, beside the two figures already shown.",
+                "Oscillator is Part 1's word: an indicator in a panel under price.",
             ),
         ),
         Check(
@@ -1261,16 +1275,16 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book p.189. Inflection point: Chapter 5, a peak or a trough. The chart is ours, on invented prices.",
+            origin="Book p.189. Inflection point: Chapter 5. The chart is ours, invented.",
             left=Term(
                 term="Volume filtered inflection points",
-                plain="Only the peaks and troughs that came with heavy volume are used to draw lines.",
-                example="Our chart: three turns on volume above the threshold, 1, 2 and 3. A line joins 1 and 2; its parallel through 3 makes a channel.",
+                plain="Only peaks and troughs (Chapter 5's inflection points) that came on heavy volume are used to draw lines.",
+                example="Ours, in millions: 1, 2, 3 came on 3.0, above our 2.5 line. Seven grey turns came on 1.0: dropped.",
                 formal="Many practitioners use only peaks and troughs that are considered significant, that is, associated with above average volume, to construct trendlines and channels.",
             ),
             picture=Chart(
                 letter="V",
-                shows="An invented price with six peaks and troughs over its volume, and a volume threshold drawn by eye. Three turns came on volume above the threshold and are numbered 1, 2 and 3; the others are grey. A line joins peaks 1 and 2, and a parallel line through trough 3 completes a channel.",
+                shows="An invented price over its volume, every peak and trough dotted. Turns 1, 2 and 3, at PHP 52.00, 56.00 and 49.00, came on 3.0 million, above a threshold of 2.5 drawn by eye, and are gold; the seven grey turns came on 1.0, below the 1.3 average.",
             ),
             text_w=TERM_CHART_W,
             notes=(
@@ -1279,16 +1293,36 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book p.189 and Figure 6.22. The text names no market for 6.22 and calls 6.23 USDJPY; both captions and charts say Silver.",
+            origin="Ours: the steps and every number, invented. The method and both rules for the threshold are the book's, p.189.",
+            left=Content(
+                title="Drawing a volume filtered channel, step by step",
+                lines=(
+                    "Step 1. Mark every peak and trough.",
+                    "Step 2. The book's rule: above average volume, 1.3 here. Its example draws a higher line by eye, and it never says which governs. Ours: 2.5. Only 1, 2, 3 reach it.",
+                    "Step 3. Join peaks 1 (bar 22, PHP 52.00) and 2 (bar 62, PHP 56.00): PHP 4.00 in 40 bars, 0.10 a bar.",
+                    "Step 4. The same slope through trough 3 (bar 44, PHP 49.00): the channel.",
+                ),
+            ),
+            picture=Chart(
+                letter="VA",
+                shows="The same invented price and volume, with bar numbers on the time axis. A solid line joins peak 1, bar 22, PHP 52.00, and peak 2, bar 62, PHP 56.00, rising PHP 4.00 in 40 bars, measured on the chart; a dashed parallel runs through trough 3, bar 44, PHP 49.00. Price comes back to the dashed line at X, bar 72, PHP 51.80. Only the three gold volume bars reach the 2.5 threshold.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "Read the steps against the chart: each bar number and price is printed on it.",
+                "A turn on 2.0 million would pass the book's definition and fail its example's line. The book does not settle that, and neither do we: our chart has no turn in between.",
+            ),
+        ),
+        Pair(
+            origin="Book p.189 and Figure 6.22.",
             left=Content(
                 title="A channel from filtered points: silver",
                 lines=(
-                    "Tick volume, with a threshold drawn by visual inspection: only the most significant peaks reach it.",
-                    "Points 1, 2 and 3 came with overextended tick volume. A trendline joins 1 and 2; a parallel from 3.",
-                    "At X price reacts to the channel, a short-term buy, before falling through it.",
+                    "The book's example: daily silver, with tick volume, the number of trades (Part 4).",
+                    "A threshold drawn by visual inspection, so only the most significant peaks reach it. The oval rings July to August.",
+                    "Two arrows: under Points 1 and 3, days apart, and under 2. Trendline 1 to 2, parallel from 3.",
                 ),
-                accent="Only heavily traded points are used.",
-                caption="Tick volume, a count of trades: defined in Part 4.",
+                accent="At X price bounces off the lower line, a short-term buy, then falls through it.",
             ),
             picture=Figure(
                 number="6.22",
@@ -1296,20 +1330,35 @@ SECTION3 = Section(
             ),
             text_w=5.6,
             notes=(
-                "Follow the arrows from the circle on the volume panel up to points 1 to 3. Those are the only points used.",
-                "Tick volume counts trades, not shares; Part 4 defines it. The book uses it here because its broker gives tick volume for this market.",
+                "Follow the two arrows from the oval up to points 1 and 3, then 2. Those are the only points used.",
+                "Falls through it: the book says the market reversed downward, violating the rising channel.",
+            ),
+        ),
+        Content(
+            origin="Book pp.189-190 and Figure 6.22. Ours: the arithmetic at X, and what the figure's volume panel shows.",
+            title="What the channel is for, and what the book leaves open",
+            lines=(
+                "Ours: X is bar 72, 28 bars after trough 3 at bar 44. The lower line is there at 49.00 + 28 x 0.10 = PHP 51.80; price touches it and turns up.",
+                "Silver's April bars (labelled High tick volume level) and late September bars reach the line too; the channel uses only July to August, unexplained.",
+                "Chapter 5's uptrend line joined troughs; here the book joins two peaks and gives no reason. Either way, two parallels make the channel.",
+            ),
+            accent="What to do: at the lower line, look for a short-term buy, as at silver's X. Falling through it violates the channel.",
+            notes=(
+                "28 is the number of bars from trough 3, bar 44, to X, bar 72, on the step by step chart.",
+                "Why only heavily traded turns? The book says only that it shows the importance of significant inflection points; the next figure's slide quotes it. Part 3's first rule, a barrier formed at a volume peak is the most reliable, fits, and that link is ours.",
             ),
         ),
         Pair(
-            origin="Book pp.189-190 and Figure 6.23. Angular symmetry: a Chapter 5 term.",
+            origin="Book pp.189-190 and Figure 6.23. Candlestick and valid: Chapters 3 and 5.",
             left=Content(
                 title="More channels from filtered points",
                 lines=(
-                    "Trendline from 1 and 2, parallel from 3: a large bearish candlestick breaches it.",
-                    "A parallel from 4, taken back in time, meets the trough at X: in retrospect a valid rising channel.",
-                    "Parallels from 5 and 6 contain price too: resistance at the top, support at the bottom.",
+                    "Points numbered afresh. Ovals ring heavy volume under 1, under 3 and 2, under 5 and 6.",
+                    "Trendline 1 to 2, parallel from 3: a large bearish candlestick, closing far below its open, breaks it.",
+                    "A parallel from 4, carried back, meets the trough at X, January 2011: valid, the book says, with no third touch (Chapter 5).",
+                    "Parallels from 5 and 6: a new channel.",
                 ),
-                accent="The book: near perfect angular symmetry.",
+                accent="Every line runs parallel to 1 to 2.",
             ),
             picture=Figure(
                 number="6.23",
@@ -1317,8 +1366,23 @@ SECTION3 = Section(
             ),
             text_w=5.6,
             notes=(
-                "Count the parallels: every line is drawn from a numbered point that sits over a volume peak.",
+                "Count the parallels: five lines, every one at the slope of the line from 1 to 2.",
                 "The book admits the line through X was found looking back. It still calls the channel valid.",
+            ),
+        ),
+        Content(
+            origin="Book pp.189-190 and Figure 6.23. Angular symmetry: Chapter 5. Ours: what the figure rings and what it does not.",
+            title="What Figure 6.23 shows, and two things it leaves open",
+            lines=(
+                "Every line has the slope of trendline 1 to 2, January to November 2011: one steady angle, which the book calls near perfect angular symmetry (Chapter 5).",
+                "The 5 and 6 channel: resistance at its top, support at its bottom. The book's lesson: build patterns on significant inflection points.",
+                "Open: the text calls it the same chart of USDJPY; caption and chart say silver.",
+                "Open: the figure rings no heavy volume under 4 or X, though both anchor lines.",
+            ),
+            accent="Draw from heavily traded turns; watch the parallels for resistance and support.",
+            notes=(
+                "No picture of its own: it reads Figure 6.23, on the slide before, as a whole.",
+                "Look at the three ovals on the volume panel: they sit under 1, under 2 and 3, and under 5 and 6.",
             ),
         ),
         Check(

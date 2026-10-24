@@ -748,12 +748,12 @@ CHARTS = (
 )
 
 
-# Charts S to X belong to the inside-bar through Hikkake range. The letters
+# Charts SA to SH belong to the inside-bar through Hikkake range. The letters
 # deliberately start at S so parallel Chapter 7 workers can add their own
 # charts without colliding with this lane or with the approved A and B.
 CHARTS = CHARTS + (
     ck.ChartArt(
-        letter="S",
+        letter="SA",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -785,7 +785,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="T",
+        letter="SB",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -816,7 +816,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="U",
+        letter="SC",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -850,7 +850,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="V",
+        letter="SD",
         draw=ck.cells,
         kwargs=dict(
             items=(
@@ -891,7 +891,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="Y",
+        letter="SE",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -919,7 +919,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="W",
+        letter="SF",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -960,7 +960,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="X",
+        letter="SG",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -986,7 +986,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="Z",
+        letter="SH",
         draw=ck.cells,
         kwargs=dict(
             items=(

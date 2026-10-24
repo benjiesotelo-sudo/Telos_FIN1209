@@ -1239,7 +1239,7 @@ HIKKAKE_EXAMPLE_FIGURE = _book_figure(
 )
 
 OUTSIDE_CHART = Chart(
-    letter="S",
+    letter="SA",
     title="Outside bar: an invented containment example",
     shows="Three invented PHP bars. The third range contains the first two and closes near its low on high volume.",
     tier="core",
@@ -1252,11 +1252,11 @@ OUTSIDE_CHART = Chart(
         "The first two bars run from PHP 48.00 to PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50.",
         "Its 5.0 million volume is invented to show the book's high-volume reliability condition.",
     ),
-    origin="Chart S is ours, with invented PHP bars and million-share volume.",
+    origin="Chart SA is ours, with invented PHP bars and million-share volume.",
 )
 
 INSIDE_CHART = Chart(
-    letter="T",
+    letter="SB",
     title="Inside bar: an invented quiet reversal",
     shows="Two invented PHP bars at resistance. The second bar stays inside the first and has much lower volume.",
     tier="core",
@@ -1269,11 +1269,11 @@ INSIDE_CHART = Chart(
         "The first bar is O 50.00, H 53.00, L 48.00, C 52.40 on 4.5 million shares.",
         "The second is O 51.80, H 52.50, L 49.20, C 50.10 on 0.5 million shares. It stays inside the first range.",
     ),
-    origin="Chart T is ours, with invented PHP bars and million-share volume.",
+    origin="Chart SB is ours, with invented PHP bars and million-share volume.",
 )
 
 SPIKE_CHART = Chart(
-    letter="U",
+    letter="SC",
     title="Emotion spike: a wide bar on high volume",
     shows="Six invented PHP bars. The third bar is much wider and carries much higher volume, followed by a bearish three-bar reversal.",
     tier="reinforcement",
@@ -1286,11 +1286,11 @@ SPIKE_CHART = Chart(
         "The ordinary bars have a PHP 3.0 range and 1.5 million shares. The spike has an 8.0 range and 6.0 million shares.",
         "The numbers are invented to make Lim's wide-range and high-volume description visible.",
     ),
-    origin="Chart U is ours, with invented PHP bars and million-share volume.",
+    origin="Chart SC is ours, with invented PHP bars and million-share volume.",
 )
 
 FALSE_CHART = Chart(
-    letter="V",
+    letter="SD",
     title="False breakouts: return through the barrier",
     shows="Two invented cases. The upper case breaks PHP 60.00 and closes at 59.40; the lower case breaks PHP 40.00 and closes at 40.60.",
     tier="core",
@@ -1304,11 +1304,11 @@ FALSE_CHART = Chart(
         "The upper barrier is resistance at PHP 60.00; the false high is PHP 62.00 and the short close is PHP 59.40.",
         "The lower barrier is support at PHP 40.00; the false low is PHP 38.50 and the long close is PHP 40.60.",
     ),
-    origin="Chart V is ours, with invented PHP barriers and closes.",
+    origin="Chart SD is ours, with invented PHP barriers and closes.",
 )
 
 FALSE_OWN_CHART = Chart(
-    letter="Y",
+    letter="SE",
     title="Figure 7.31: own course drawing",
     shows="A large invented two-bar false upside breakout with resistance, return, and stop values written on the drawing.",
     tier="core",
@@ -1322,11 +1322,11 @@ FALSE_OWN_CHART = Chart(
         "The course drawing labels resistance PHP 60.00, high PHP 62.00, close PHP 59.40, and stop PHP 62.20.",
         "The book's drawing follows on its own slide.",
     ),
-    origin="Chart Y is ours, with invented PHP values; the book's drawing is shown separately.",
+    origin="Chart SE is ours, with invented PHP values; the book's drawing is shown separately.",
 )
 
 REPO_CHART = Chart(
-    letter="W",
+    letter="SF",
     title="Double Repo: two crossings of a three-day SMA",
     shows="Invented closes cross a forward-shifted three-day SMA twice after nine bullish days, then decline.",
     tier="reinforcement",
@@ -1339,11 +1339,11 @@ REPO_CHART = Chart(
         "The forward-shifted three-day SMA is PHP 50.00. Invented closes cross above at 50.80, below at 49.60, then repeat after nine bullish days.",
         "The book says the full method belongs in DiNapoli's original text, so this chart teaches only the named Chapter 7 structure.",
     ),
-    origin="Chart W is ours, with invented PHP closes and a three-day SMA.",
+    origin="Chart SF is ours, with invented PHP closes and a three-day SMA.",
 )
 
 HIKKAKE_CHART = Chart(
-    letter="X",
+    letter="SG",
     title="Hikkake: failed breakout, opposite re-entry",
     shows="Two invented inside-bar cases. The breakout fails and the entry is taken only in the opposite direction within three bars.",
     tier="core",
@@ -1356,11 +1356,11 @@ HIKKAKE_CHART = Chart(
         "In the bearish case, the inside high is PHP 52.00, the false high is PHP 53.00, and the short re-entry is below PHP 49.00.",
         "The bullish converse uses an inside low of PHP 40.00, a false low of PHP 39.20, and an upside re-entry at PHP 41.00.",
     ),
-    origin="Chart X is ours, with invented PHP levels and entries.",
+    origin="Chart SG is ours, with invented PHP levels and entries.",
 )
 
 HIKKAKE_OWN_CHART = Chart(
-    letter="Z",
+    letter="SH",
     title="Figure 7.34: own course drawings",
     shows="Large invented bullish and bearish Hikkake drawings with inside levels, failed breakouts, and opposite re-entries written on the bars.",
     tier="core",
@@ -1376,7 +1376,7 @@ HIKKAKE_OWN_CHART = Chart(
         "Left: inside high 43.00, inside low 40.00, false low 39.00, long re-entry at 43.00.",
         "Right: inside high 52.00, inside low 49.00, false high 53.00, short re-entry at 49.00.",
     ),
-    origin="Chart Z is ours, with invented PHP values; the book's drawing is shown separately.",
+    origin="Chart SH is ours, with invented PHP values; the book's drawing is shown separately.",
 )
 
 
@@ -2546,7 +2546,7 @@ TRIPLE_BEARISH_FIGURE = Figure(
 INSIDE_BAR_FIGURE = Figure(
     title="Figure 7.25: bearish inside-day reversal",
     number="7.25",
-    aspect=1090 / 620,
+    aspect=672 / 402,
     marks=(
         Mark(1, "circle", 0.57, 0.15, 0.63, 0.39,
              color="gold", at=(0.53, 0.10), size=0.30),

@@ -469,7 +469,7 @@ KEY_CAVEAT = Pair(
         accent="A wide bar may make follow-through more reliable, but width does not guarantee it.",
     ),
     picture=KEY_CAVEAT_FIGURE,
-    text_w=5.9,
+    text_w=6.8,
     notes=(
         "Point to mark 1 for the hover and mark 2 for the later decline. The book's point is delayed follow-through.",
         "Separate the pattern definition from the later price path. The latter is a caveat, not part of the definition.",
@@ -718,6 +718,7 @@ TWO_DAY_WORKED = Pair(
     left=Content(
         title="Two-day reversal: read the two closes",
         lines=(
+            "Now move from one-bar to a two-day pattern: read the first close near its high and the second near its low.",
             "Ours: bar 1 ranges PHP 49.70 to 52.20 and closes PHP 51.80 near its high [1].",
             "Bar 2 ranges PHP 49.00 to 52.00 and closes PHP 49.60 near its low [2]. Its range is wider, which Lim prefers.",
             "The two-bar close sequence warns of a bearish reversal; the later decline is not guaranteed.",
@@ -734,7 +735,7 @@ TWO_DAY_WORKED = Pair(
             Mark(2, "circle", 0.64, 0.56, 0.72, 0.65, color="red", at=(0.80, 0.52), size=0.25),
         ),
     ),
-    text_w=6.4,
+    text_w=7.6,
     notes=(
         "Read the first close near the high, then the second near the low.",
         "The values and volume are ours, invented. The wider-range preference comes from Lim, p. 220.",
@@ -762,12 +763,12 @@ THREE_WORKED = Pair(
     left=Content(
         title="Bullish three-bar reversal: volume around the middle",
         lines=(
-            "Ours: the first bar ranges PHP 41.00 to 44.00 on 4.0 million shares [1].",
-            "Middle: range PHP 43.20 to 44.10, volume 0.6 million [2]. Third: close PHP 46.50, volume 4.2 million [3].",
-            "Middle volume 0.6 million is below average: it sits between the 4.0 and 4.2 million outer volumes.",
-            "The quiet middle shows uncertainty inside a potential bullish reversal.",
+            "Three bars add a middle bar whose volume matters.",
+            "Ours: first bar ranges PHP 41.00 to 44.00; volume 4.0 million [1].",
+            "Middle ranges PHP 43.20 to 44.10; volume 0.6 million [2]. Third closes PHP 46.50; volume 4.2 million [3].",
+            "The quiet middle is below average and shows uncertainty inside a potential bullish reversal.",
         ),
-        accent="High-volume outer bars and a below-average-volume middle bar are a clue, not a guarantee.",
+        accent="Strong outer volumes and a quiet middle are a clue, not a guarantee.",
     ),
     picture=Chart(
         letter="S",
@@ -872,6 +873,7 @@ ISLAND_WORKED = Pair(
     left=Content(
         title="Island reversal: two gaps isolate the bars",
         lines=(
+            "Next, gaps can separate several bars from the surrounding trend into an island reversal.",
             "Ours: price gaps up from PHP 50.00 to an open of PHP 50.80 [1]. Two bars sit alone [2].",
             "It later gaps down to PHP 49.40 [3]. The gaps isolate the formation from surrounding bars.",
             "Gap keeps Chapter 3's meaning in ‘Gaps’. The book shows an overbought stochastic label but gives no method here.",
@@ -889,7 +891,7 @@ ISLAND_WORKED = Pair(
             Mark(3, "circle", 0.70, 0.20, 0.80, 0.30, color="blue", at=(0.86, 0.15)),
         ),
     ),
-    text_w=6.1,
+    text_w=6.9,
     notes=(
         "Read the gap up, the isolated bars, then the gap down.",
         "Gap meaning points back to Chapter 3. The prices and volume are ours, invented.",
@@ -911,6 +913,41 @@ ISLAND_READ = Pair(
     text_w=6.4,
     notes=ISLAND_FIGURE.notes,
     origin=ISLAND_FIGURE.origin,
+)
+
+ISLAND_CHECK = Check(
+    label="From the island reversal reading",
+    questions=(
+        Q(
+            stem="What isolates an island reversal?",
+            options=(
+                "A gap up followed by a gap down",
+                "A single wide bar",
+                "A high-volume middle bar",
+                "A trendline only",
+            ),
+            answer="A",
+            reason="Figure 7.23 shows a gap up before and a gap down after the island.",
+        ),
+        Q(
+            stem="What is the stochastic label here?",
+            options=(
+                "As the island definition",
+                "As a formula taught in this chapter",
+                "As supporting context; Chapter 7 gives no method",
+                "As a guaranteed reversal signal",
+            ),
+            answer="C",
+            reason="It is supporting context; Chapter 7 gives no method.",
+        ),
+    ),
+    picture=ISLAND_FIGURE,
+    text_w=5.0,
+    layout="beside",
+    notes=(
+        "Let students answer from the preceding island slides. The two gaps define the formation; the stochastic label is not a Chapter 7 formula.",
+    ),
+    origin="Questions are ours and answerable from the preceding Figure 7.23 teaching slides.",
 )
 
 SECTION1 = Section(
@@ -1232,7 +1269,7 @@ SECTION3 = Section(
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=3.6,
+            text_w=4.4,
             picture_extra=0.8,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,
@@ -1253,6 +1290,7 @@ SECTION3 = Section(
         TRIPLE_CHECK,
         ISLAND_WORKED,
         ISLAND_READ,
+        ISLAND_CHECK,
     ),
 )
 

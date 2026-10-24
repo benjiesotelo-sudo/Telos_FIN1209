@@ -594,6 +594,8 @@ def _fa_osc():
 
 FA_OSC = _fa_osc()
 FA_FLOOR = -0.9
+# The first bar at which the oscillator is below the rising line: bar 35.
+FA_BREAK = 35
 
 
 def FA_RISE(x):
@@ -705,6 +707,29 @@ AM_SIGNS = ("start", "+2.0", "-1.5", "0", "+3.0", "-1.0")
 # FC - a bar that makes a new high and closes a little lower.
 FC_BARS = (Bar(open=50.0, high=51.0, low=49.6, close=50.8),
            Bar(open=50.9, high=54.0, low=50.5, close=50.7))
+
+# FD - the Chaikin oscillator's steps on invented bars: thirty CMF values,
+# their running total, a 3-bar and a 10-bar EMA of that total, and their
+# difference. The EMA is the usual one, each value weighted 2 / (n + 1) and
+# started at the first total; the book's chapter does not give its formula.
+# Bar 17 reads 1.0 - 0.5 = +0.5 and bar 27 reads 0.6 - 0.8 = -0.2.
+_fd_cmf = [(-0.10 if i < 8 else 0.20 if i < 20 else -0.15)
+           + 0.03 * math.sin(i * 1.3) for i in range(30)]
+FD_TOTAL = tuple(round(sum(_fd_cmf[:i + 1]), 4) for i in range(30))
+
+
+def _ema(values, n):
+    a = 2 / (n + 1)
+    out = [values[0]]
+    for v in values[1:]:
+        out.append(a * v + (1 - a) * out[-1])
+    return tuple(round(v, 4) for v in out)
+
+
+FD_FAST = _ema(FD_TOTAL, 3)
+FD_SLOW = _ema(FD_TOTAL, 10)
+FD_OSC = tuple(round(f - w, 4) for f, w in zip(FD_FAST, FD_SLOW))
+FD_UP, FD_DOWN = 17, 27
 
 # AO - three bars from PHP 48 to PHP 52, closing at 52, 50 and 49.
 AO_BARS = (Bar(open=50.0, high=52.0, low=48.0, close=52.0),
@@ -1785,28 +1810,30 @@ CHARTS = (
         draw=ck.panels,
         kwargs=dict(
             panes=(
-                Pane(line=FA_LINE, name="Price", height=1.2, top=0.30,
-                     bottom=0.10,
+                Pane(line=FA_LINE, name="Price", height=1.3, top=0.60,
+                     bottom=0.45,
                      strokes=(Stroke(points=((14, 54.4), (34, 56.4)),
                                      arrow=True, label="A  higher peak",
-                                     at=0, dx=-6, dy=10),)),
+                                     at=0, dx=-6, dy=10),),
+                     notes=(Note(x=48, label="then falls", dx=-30, dy=-10,
+                                 dot=False),)),
                 Pane(line=FA_OSC, name="Oscillator", height=1.5, top=0.45,
-                     bottom=0.12,
+                     bottom=0.30,
                      strokes=(Stroke(points=((14, 0.98), (34, 0.63)),
                                      arrow=True, label="A  lower peak",
                                      at=0, dx=10, dy=12),
                               Stroke(points=((2, FA_RISE(2)),
-                                             (42, FA_RISE(42)))),
+                                             (40, FA_RISE(40)))),
                               Stroke(points=((0, FA_FLOOR), (56, FA_FLOOR)),
                                      dashed=True, tone="quiet",
-                                     label="C  oversold level", at=0, dx=2,
-                                     dy=-14)),
-                     notes=(Note(x=27, y=FA_RISE(27), label="B  rising line",
-                                 dx=-50, dy=-30, dot=False),
-                            Note(x=38, label="B  falls through", dx=18,
-                                 dy=-14, notice=True))),
+                                     label="C  oversold level", at=0,
+                                     dx=2, dy=-16)),
+                     notes=(Note(x=24, y=FA_RISE(24), label="B  rising line",
+                                 dx=4, dy=-22, dot=False),
+                            Note(x=FA_BREAK, label="B  falls through",
+                                 dx=22, dy=10, notice=True),)),
             ),
-            size=ck.pair_size(7.2), xlabel="Time",
+            size=ck.pair_size(7.5), xlabel="Time",
             footnote="Invented price and oscillator. A, B and C: the three "
                      "readings\nPart 6 uses, as the slide lists them.",
         ),
@@ -1934,21 +1961,49 @@ CHARTS = (
         draw=ck.cells,
         kwargs=dict(
             items=(
-                Cell(name="Signed volume, S", note="2.0 + 0 - 0.5 = 1.5",
-                     panes=(Pane(columns=(2.0, 0.0, -0.5), zero=True,
-                                 tags=((0, "2.0"), (1, "0"), (2, "-0.5")),
+                Cell(name="Signed volume, S", note="2.0 + 0 - 1.0 = 1.0",
+                     panes=(Pane(columns=(2.0, 0.0, -1.0), zero=True,
+                                 tags=((0, "2.0"), (1, "0"), (2, "-1.0")),
                                  top=0.25, bottom=0.25),)),
-                Cell(name="Volume", note="2.0 + 1.0 + 1.0 = 4.0",
-                     panes=(Pane(columns=(2.0, 1.0, 1.0),
-                                 tags=((0, "2.0"), (1, "1.0"), (2, "1.0")),
+                Cell(name="Volume", note="2.0 + 2.0 + 2.0 = 6.0",
+                     panes=(Pane(columns=(2.0, 2.0, 2.0),
+                                 tags=((0, "2.0"), (1, "2.0"), (2, "2.0")),
                                  top=0.25),)),
-                Cell(name="CMF", note="1.5 / 4.0 = 0.375", tone="notice",
-                     panes=(Pane(columns=(1.5, 4.0, 0.375), picks=(2,),
-                                 tags=((0, "1.5"), (1, "4.0"),
-                                       (2, "0.375")), top=0.25),)),
+                Cell(name="CMF", note="1.0 / 6.0 = 0.17", tone="notice",
+                     panes=(Pane(columns=(1.0, 6.0, 0.17), picks=(2,),
+                                 tags=((0, "1.0"), (1, "6.0"),
+                                       (2, "0.17")), top=0.25),)),
             ),
             cols=3, size=TERM,
-            footnote="Our example: three bars, in million shares.",
+            footnote="Our example: the ADL's three bars, closing at 52, 50 "
+                     "and 49,\neach on 2.0 million shares.",
+        ),
+    ),
+    ChartArt(
+        letter="FD",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(line=FD_TOTAL, name="Running total of the CMF, black",
+                     height=1.4, top=0.35, bottom=0.10,
+                     traces=(Trace(values=FD_FAST, tone="notice"),
+                             Trace(values=FD_SLOW, tone="structure")),
+                     notes=(Note(x=FD_UP, y=FD_FAST[FD_UP],
+                                 label="3-bar EMA, gold: 1.0", dx=-60,
+                                 dy=14),
+                            Note(x=FD_UP, y=FD_SLOW[FD_UP],
+                                 label="10-bar EMA, green: 0.5", dx=10,
+                                 dy=-22))),
+                Pane(columns=FD_OSC, picks=(FD_UP, FD_DOWN), zero=True,
+                     name="Oscillator: 3-bar EMA less 10-bar EMA",
+                     height=1.1, top=0.90, bottom=0.30,
+                     tags=((FD_UP, "+0.5"), (FD_DOWN, "-0.2"))),
+            ),
+            guides=(Guide(x=FD_UP), Guide(x=FD_DOWN)),
+            size=ck.pair_size(6.6), xlabel="Bars",
+            footnote="Invented CMF values. Our EMA weights each new value "
+                     "2 / (n + 1);\nthe chapter does not give its formula. "
+                     "Dashed lines: 1.0 - 0.5, then 0.6 - 0.8.",
         ),
     ),
     ChartArt(

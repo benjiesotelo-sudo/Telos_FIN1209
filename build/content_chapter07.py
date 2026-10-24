@@ -483,9 +483,9 @@ SECTION1 = Section(
         Content(
             title="Third question: continuation or reversal?",
             lines=(
-                "Finally ask whether intrinsic sentiment agrees with trend sentiment. Agreement is continuation; disagreement is reversal (Lim, p. 211).",
-                "Ours, invented: bearish intrinsic sentiment in an uptrend disagrees, so it is a potential reversal; bullish intrinsic sentiment agrees, so it is a potential continuation.",
-                "Meaning/action: these are directional expectations, not certainties. Part 2 makes the agreement rule explicit.",
+                "Trend sentiment is bullish in an uptrend and bearish in a downtrend (Lim, p. 211).",
+                "Compare intrinsic sentiment: agreement suggests continuation; disagreement suggests potential reversal (p. 211).",
+                "Ours: bearish formation plus uptrend means potential reversal; bullish plus uptrend means potential continuation, not certainty.",
             ),
             accent="Agreement suggests continuation; disagreement suggests reversal.",
             notes=(

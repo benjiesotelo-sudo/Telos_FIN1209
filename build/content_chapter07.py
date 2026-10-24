@@ -447,7 +447,7 @@ KEY_PLAIN = Content(
     title="Key reversal: plain words",
     lines=(
         "A bearish key reversal starts in an uptrend, makes a higher high, then closes near or below the previous close.",
-        "It is a warning that the trend may change. It is not a promise of an immediate decline.",
+        "It is a warning, not a promise. Lim says a wider bar may make follow-through more reliable, but an immediate decline is not guaranteed (p. 218).",
         "Next, put the rule into invented prices before reading the book's chart.",
     ),
     accent="The definition is about the higher high and the close, not the bar's name.",
@@ -1171,6 +1171,7 @@ SECTION3 = Section(
             left=Content(
                 title="Bearish key reversal: the numbers first",
                 lines=(
+                    "With the agreement rule in place, now read a named reversal bar in five steps.",
                     "Step 1. Prior bar: open 50.80, high 52.00, low 50.60, close 51.10.",
                     "Step 2. It opens at 52.30 above prior high 52.00 [1].",
                     "Step 3. It makes a new high of 53.20 [2].",
@@ -1181,7 +1182,7 @@ SECTION3 = Section(
                 caption="",
             ),
             picture=KEY_WORKED_CHART,
-            text_w=5.2,
+            text_w=6.5,
             picture_extra=0.0,
             notes=KEY_WORKED_CHART.notes,
             origin=KEY_WORKED_CHART.origin,

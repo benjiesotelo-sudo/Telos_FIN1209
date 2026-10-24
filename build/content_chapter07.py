@@ -764,8 +764,8 @@ THREE_WORKED = Pair(
         title="Bullish three-bar reversal: volume around the middle",
         lines=(
             "Three bars add a middle bar whose volume matters.",
-            "Ours: first bar ranges PHP 41.00 to 44.00; volume 4.0 million [1].",
-            "Middle ranges PHP 43.20 to 44.10; volume 0.6 million [2]. Third closes PHP 46.50; volume 4.2 million [3].",
+            "First bar ranges PHP 41.00 to 44.00. Volume: 4.0 million [1].",
+            "Middle ranges PHP 43.20 to 44.10. Volume: 0.6 million [2]. Third closes PHP 46.50. Volume: 4.2 million [3].",
             "The quiet middle is below average and shows uncertainty inside a potential bullish reversal.",
         ),
         accent="Strong outer volumes and a quiet middle are a clue, not a guarantee.",
@@ -1261,6 +1261,7 @@ SECTION3 = Section(
             left=Content(
                 title="Exhaustion bar versus pin bar",
                 lines=(
+                    "Before the key-reversal check, compare two one-bar warnings: exhaustion and pin bars.",
                     "Exhaustion: in an uptrend, it opens at 65.40 above prior high 65.00 [1], reaches 66.20 [2], and closes at 60.50 [3]; the next bar opens at 60.20 with no gap [4].",
                     "Pin bar: it penetrates support at 40.00 to 38.80 [5], then rapidly retraces and closes at 40.60 [6].",
                     "Meaning/action: exhaustion warns of a tiring trend; a pin bar warns of a false breakout.",
@@ -1269,7 +1270,7 @@ SECTION3 = Section(
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=4.4,
+            text_w=5.2,
             picture_extra=0.8,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,

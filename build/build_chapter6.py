@@ -157,11 +157,22 @@ def check_frame(parser) -> None:
     problems = []
     for i, slide in enumerate(CHAPTER.closing, start=1):
         where = f"closing slide {i}"
-        texts = [slide.title, slide.accent, *slide.lines, *slide.notes,
+        notes = slide.notes
+        if isinstance(slide, deckkit.Pair):
+            # A closing slide with a picture beside it: its text is the
+            # left side's, measured the way render_pair lays it out.
+            bottom = deckkit._pair_fit(slide)[1]
+            if bottom > deckkit.SAFE_BOTTOM:
+                problems.append(
+                    f"{where}: content runs to {bottom:.2f}in, past the "
+                    f"{deckkit.SAFE_BOTTOM}in safe bottom")
+            slide = slide.left
+        texts = [getattr(slide, "title", ""), getattr(slide, "accent", ""),
+                 *getattr(slide, "lines", ()), *notes,
                  getattr(slide, "caption", "")]
         if any("\u2014" in t or "\u2013" in t for t in texts):
             problems.append(f"{where}: dash character not allowed")
-        if len(slide.lines) > deckkit.MAX_BODY_LINES:
+        if len(getattr(slide, "lines", ())) > deckkit.MAX_BODY_LINES:
             problems.append(f"{where}: {len(slide.lines)} body lines")
         if isinstance(slide, deckkit.Content):
             bottom = deckkit._content_bottom(slide)

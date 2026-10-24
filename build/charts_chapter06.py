@@ -2435,6 +2435,17 @@ J_CHARTS = (
                             Pane(columns=JB_VOL_HIGH, picks=(7,),
                                  dims=tuple(range(7)), height=1.0, top=0.30,
                                  tags=((3, "2m"), (7, "5m"))))),
+            ),
+            cols=1, size=ck.pair_size(6.8),
+            footnote=SKETCH + " Grey: usual bars, about PHP 1.00 on 2 "
+                     "million.\nGold: the named bar, boxed, and its volume.",
+        ),
+    ),
+    ChartArt(
+        letter="JN",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
                 Cell(name="Low Volume Reversal Bar",
                      note="PHP 3.00 on 0.7 million, a third of usual",
                      panes=(Pane(bars=JB_WIDE, height=1.3, top=0.12,
@@ -2443,7 +2454,7 @@ J_CHARTS = (
                                  dims=tuple(range(7)), height=1.0, top=0.30,
                                  tags=((3, "2m"), (7, "0.7m"))))),
             ),
-            cols=2, size=ck.pair_size(6.4),
+            cols=1, size=ck.pair_size(6.8),
             footnote=SKETCH + " Grey: usual bars, about PHP 1.00 on 2 "
                      "million.\nGold: the named bar, boxed, and its volume.",
         ),
@@ -2497,7 +2508,7 @@ J_CHARTS = (
                             Note(x=58, label="days later", dx=-30,
                                  dy=22, notice=True))),
             ),
-            size=ck.pair_size(6.4), xlabel="Days",
+            size=ck.pair_size(6.8), xlabel="Days",
             footnote=INVENTED + " Volume in million shares; about 1.3 on "
                      "a usual day.",
         ),
@@ -2528,7 +2539,7 @@ J_CHARTS = (
             ),
             xticks=((0, "low 100"), (10, "low 110"), (15, "step 15"),
                     (20, "step 20")),
-            size=ck.pair_size(6.4), xlabel="Steps along the time axis",
+            size=ck.pair_size(6.8), xlabel="Steps along the time axis",
             footnote="Ours, not prices. The line rises PHP 1.00 a step on "
                      "both charts.",
         ),
@@ -2632,7 +2643,7 @@ J_CHARTS = (
             ),
             xticks=((0, "all at\nlows"), (1, "at mid-\npoints"),
                     (2, "ours,\n1.0 / 6.0"), (3, "all at\nhighs")),
-            size=ck.pair_size(6.4), xlabel="",
+            size=ck.pair_size(6.6), xlabel="",
             footnote="Our arithmetic: no bar's S is bigger than its volume, "
                      "so the CMF\nruns from -1 to +1. The book gives no "
                      "reading of its value.",

@@ -1261,7 +1261,6 @@ SECTION3 = Section(
             left=Content(
                 title="Exhaustion bar versus pin bar",
                 lines=(
-                    "Before the key-reversal check, compare two one-bar warnings: exhaustion and pin bars.",
                     "Exhaustion: in an uptrend, it opens at 65.40 above prior high 65.00 [1], reaches 66.20 [2], and closes at 60.50 [3]; the next bar opens at 60.20 with no gap [4].",
                     "Pin bar: it penetrates support at 40.00 to 38.80 [5], then rapidly retraces and closes at 40.60 [6].",
                     "Meaning/action: exhaustion warns of a tiring trend; a pin bar warns of a false breakout.",
@@ -1270,7 +1269,7 @@ SECTION3 = Section(
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=5.2,
+            text_w=4.4,
             picture_extra=0.8,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,

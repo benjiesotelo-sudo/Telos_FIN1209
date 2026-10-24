@@ -971,7 +971,7 @@ OUTSIDE_FIGURE = _book_figure(
     (
         Mark(1, "box", 0.35, 0.08, 0.54, 0.42, color="gold", at=(0.29, 0.06)),
         Mark(2, "line", 0.54, 0.08, 0.54, 0.42, color="red", at=(0.60, 0.22)),
-        Mark(3, "circle", 0.52, 0.36, 0.58, 0.44, color="blue", at=(0.61, 0.47)),
+        Mark(3, "circle", 0.49, 0.34, 0.55, 0.41, color="blue", at=(0.60, 0.46)),
     ),
     (
         "Point first to the 11 contained bars, then to the outside high and low.",
@@ -1017,8 +1017,8 @@ LOWER_INSIDE_FIGURE = _book_figure(
     "Silver Wheaton daily chart. Three successively lower inside bars form below "
     "the lower band, followed by a bearish outside bar.",
     (
-        Mark(1, "box", 0.43, 0.56, 0.58, 0.90, color="gold", at=(0.36, 0.52)),
-        Mark(2, "line", 0.36, 0.74, 0.58, 0.74, color="red", at=(0.29, 0.79)),
+        Mark(1, "box", 0.43, 0.69, 0.57, 0.96, color="gold", at=(0.36, 0.65)),
+        Mark(2, "line", 0.35, 0.78, 0.58, 0.78, color="red", at=(0.30, 0.83)),
         Mark(3, "circle", 0.77, 0.19, 0.86, 0.34, color="blue", at=(0.90, 0.18)),
     ),
     (
@@ -1033,9 +1033,9 @@ COMBINED_FIGURE = _book_figure(
     "Alacer Gold daily chart. The marked examples show inside, outside, and "
     "three-bar reversals aligned with stochastic overbought or oversold readings.",
     (
-        Mark(1, "circle", 0.16, 0.35, 0.23, 0.47, color="gold", at=(0.11, 0.30)),
-        Mark(2, "circle", 0.70, 0.20, 0.78, 0.32, color="red", at=(0.83, 0.18)),
-        Mark(3, "circle", 0.48, 0.48, 0.56, 0.60, color="blue", at=(0.45, 0.67)),
+        Mark(1, "circle", 0.24, 0.16, 0.31, 0.29, color="gold", at=(0.20, 0.13)),
+        Mark(2, "circle", 0.70, 0.25, 0.77, 0.38, color="red", at=(0.83, 0.22)),
+        Mark(3, "circle", 0.56, 0.52, 0.63, 0.68, color="blue", at=(0.67, 0.71)),
     ),
     (
         "The figure places three named reversal families on one chart.",
@@ -1049,8 +1049,8 @@ EXHAUSTION_FIGURE = _book_figure(
     "J.P. Morgan Chase daily chart. The marked exhaustion bar forms a bottom; "
     "the preceding gap and later rebound show the context.",
     (
-        Mark(1, "circle", 0.54, 0.56, 0.62, 0.68, color="gold", at=(0.47, 0.52)),
-        Mark(2, "box", 0.54, 0.67, 0.63, 0.91, color="red", at=(0.65, 0.94)),
+        Mark(1, "circle", 0.50, 0.52, 0.56, 0.61, color="gold", at=(0.46, 0.50)),
+        Mark(2, "box", 0.53, 0.55, 0.59, 0.71, color="red", at=(0.64, 0.52)),
         Mark(3, "arrow", 0.61, 0.82, 0.78, 0.40, color="blue", at=(0.82, 0.36)),
     ),
     (
@@ -1065,9 +1065,9 @@ EXHAUSTION_COMPARE_FIGURE = _book_figure(
     "J.P. Morgan Chase daily chart. The crop keeps the bullish exhaustion bar "
     "and its following bar readable for the comparison.",
     (
-        Mark(1, "circle", 0.54, 0.48, 0.62, 0.60, color="gold", at=(0.47, 0.43)),
-        Mark(2, "circle", 0.54, 0.70, 0.63, 0.82, color="red", at=(0.66, 0.70)),
-        Mark(3, "line", 0.62, 0.72, 0.72, 0.72, color="blue", at=(0.76, 0.76)),
+        Mark(1, "circle", 0.50, 0.52, 0.56, 0.61, color="gold", at=(0.46, 0.50)),
+        Mark(2, "circle", 0.53, 0.54, 0.59, 0.61, color="red", at=(0.64, 0.51)),
+        Mark(3, "line", 0.56, 0.60, 0.63, 0.60, color="blue", at=(0.68, 0.68)),
     ),
     (
         "Gold [1] marks the exhaustion bar's open context, red [2] its close near the trend-side extreme, and blue [3] the no-gap relationship to the following bar.",
@@ -1081,9 +1081,9 @@ SPIKE_FIGURE = _book_figure(
     "Mad Catz Interactive daily chart. A wide price spike occurs on high volume "
     "and a three-bar bearish reversal forms near the top.",
     (
-        Mark(1, "circle", 0.51, 0.28, 0.59, 0.45, color="gold", at=(0.46, 0.23)),
-        Mark(2, "circle", 0.44, 0.75, 0.53, 0.88, color="red", at=(0.59, 0.92)),
-        Mark(3, "circle", 0.78, 0.15, 0.87, 0.29, color="blue", at=(0.90, 0.14)),
+        Mark(1, "circle", 0.40, 0.20, 0.47, 0.53, color="gold", at=(0.36, 0.17)),
+        Mark(2, "circle", 0.42, 0.80, 0.48, 0.95, color="red", at=(0.53, 0.96)),
+        Mark(3, "circle", 0.74, 0.06, 0.82, 0.20, color="blue", at=(0.87, 0.14)),
     ),
     (
         "The price panel shows the wide spike; the lower panel shows its high volume.",
@@ -1098,8 +1098,8 @@ PIN_FIGURE = _book_figure(
     "then retraces above the level.",
     (
         Mark(1, "line", 0.08, 0.86, 0.70, 0.86, color="gold", at=(0.05, 0.92)),
-        Mark(2, "circle", 0.23, 0.72, 0.29, 0.91, color="red", at=(0.19, 0.68)),
-        Mark(3, "circle", 0.24, 0.62, 0.31, 0.76, color="blue", at=(0.34, 0.57)),
+        Mark(2, "circle", 0.19, 0.84, 0.24, 0.93, color="red", at=(0.16, 0.95)),
+        Mark(3, "circle", 0.19, 0.45, 0.25, 0.56, color="blue", at=(0.29, 0.41)),
     ),
     (
         "Mark 1 is the support barrier, mark 2 the penetration, and mark 3 the rapid retrace.",
@@ -1113,9 +1113,9 @@ FALSE_ONE_FIGURE = _book_figure(
     "Bearish non-failure swing. Price breaks above resistance, returns below it, "
     "and creates a short entry with a stop above the breakout high.",
     (
-        Mark(1, "line", 0.07, 0.22, 0.93, 0.22, color="gold", at=(0.08, 0.13)),
-        Mark(2, "circle", 0.47, 0.08, 0.58, 0.22, color="red", at=(0.62, 0.08)),
-        Mark(3, "arrow", 0.52, 0.25, 0.52, 0.39, color="blue", at=(0.64, 0.42)),
+        Mark(1, "line", 0.07, 0.10, 0.60, 0.10, color="gold", at=(0.08, 0.06)),
+        Mark(2, "circle", 0.29, 0.03, 0.36, 0.12, color="red", at=(0.40, 0.05)),
+        Mark(3, "circle", 0.36, 0.10, 0.42, 0.18, color="blue", at=(0.47, 0.20)),
     ),
     (
         "Lim calls this a non-failure swing and attributes the setup to a 2B entry.",
@@ -1129,9 +1129,9 @@ FALSE_BOTH_FIGURE = _book_figure(
     "Silver daily chart. The marked examples return through resistance for shorts "
     "or through support for longs.",
     (
-        Mark(1, "circle", 0.40, 0.28, 0.48, 0.40, color="gold", at=(0.36, 0.23)),
+        Mark(1, "circle", 0.29, 0.23, 0.36, 0.34, color="gold", at=(0.25, 0.20)),
         Mark(2, "circle", 0.53, 0.46, 0.61, 0.59, color="red", at=(0.67, 0.66)),
-        Mark(3, "line", 0.43, 0.35, 0.55, 0.50, color="blue", at=(0.57, 0.37)),
+        Mark(3, "circle", 0.33, 0.29, 0.39, 0.37, color="blue", at=(0.43, 0.39)),
     ),
     (
         "Read the two directions separately: short below resistance after a false upside break, long above support after a false downside break.",
@@ -1145,8 +1145,8 @@ REPO_FIGURE = _book_figure(
     "Continuous daily sugar chart. The marked sequence crosses a forward-shifted "
     "three-day SMA twice before the rapid decline.",
     (
-        Mark(1, "circle", 0.47, 0.31, 0.56, 0.43, color="gold", at=(0.43, 0.26)),
-        Mark(2, "circle", 0.51, 0.24, 0.58, 0.36, color="red", at=(0.63, 0.20)),
+        Mark(1, "circle", 0.38, 0.20, 0.44, 0.29, color="gold", at=(0.35, 0.17)),
+        Mark(2, "circle", 0.50, 0.20, 0.56, 0.29, color="red", at=(0.60, 0.17)),
         Mark(3, "arrow", 0.59, 0.40, 0.77, 0.68, color="blue", at=(0.81, 0.72)),
     ),
     (
@@ -1161,9 +1161,9 @@ REPO_LIMITS_FIGURE = _book_figure(
     "Continuous daily sugar chart. The marked sequence crosses a forward-shifted "
     "three-day SMA twice before the rapid decline.",
     (
-        Mark(1, "line", 0.17, 0.34, 0.78, 0.34, color="gold", at=(0.20, 0.28)),
+        Mark(1, "line", 0.53, 0.22, 0.73, 0.34, color="gold", at=(0.76, 0.18)),
         Mark(2, "circle", 0.20, 0.18, 0.40, 0.30, color="red", at=(0.17, 0.14)),
-        Mark(3, "box", 0.45, 0.08, 0.58, 0.31, color="blue", at=(0.62, 0.05)),
+        Mark(3, "box", 0.39, 0.04, 0.55, 0.27, color="blue", at=(0.60, 0.05)),
     ),
     (
         "Gold [1] marks the forward-shifted three-day SMA. Red [2] marks the long bullish run before the pattern.",
@@ -1193,9 +1193,9 @@ HIKKAKE_EXAMPLE_FIGURE = _book_figure(
     "iShares Emerging Markets daily chart. A bullish Hikkake forms at a linear "
     "regression channel bottom with high volume and an oversold stochastic label.",
     (
-        Mark(1, "box", 0.43, 0.43, 0.57, 0.67, color="gold", at=(0.37, 0.40)),
-        Mark(2, "circle", 0.50, 0.43, 0.59, 0.58, color="red", at=(0.65, 0.40)),
-        Mark(3, "arrow", 0.55, 0.60, 0.72, 0.42, color="blue", at=(0.76, 0.36)),
+        Mark(1, "box", 0.42, 0.42, 0.50, 0.56, color="gold", at=(0.37, 0.40)),
+        Mark(2, "circle", 0.47, 0.52, 0.52, 0.63, color="red", at=(0.56, 0.66)),
+        Mark(3, "arrow", 0.52, 0.58, 0.58, 0.38, color="blue", at=(0.62, 0.34)),
     ),
     (
         "The book places the bullish Hikkake at a channel bottom, with high volume and an oversold stochastic label.",
@@ -1625,7 +1625,7 @@ B4_SLIDES = (
         left=Content(
             title="Figure 7.32: both breakout directions",
             lines=(
-                "Gold [1] marks a false upside breakout and red [2] a false downside breakout. Blue [3] marks the closes back through their barriers.",
+                "Gold [1] marks the false upside high, red [2] the false downside low, and blue [3] the upper close back below resistance. The lower case closes back above support.",
                 "Ours: upside barrier PHP 60.00 and downside barrier PHP 40.00; returned closes PHP 59.40 and PHP 40.60.",
                 "Meaning/action: short below resistance after a false upside break, or long above support after a false downside break.",
             ),

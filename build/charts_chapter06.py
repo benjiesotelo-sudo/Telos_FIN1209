@@ -73,6 +73,8 @@ from chartkit import (Bar, Box, Bracket, Cell, ChartArt, Guide, Note, Pane,
 # content_chapter06.py.
 PAIR = ck.pair_size(5.6)
 TERM = ck.pair_size(6.6, term=True)
+# Beside a 6.0in text column, WIDE_W in content_chapter06.py.
+WIDE = ck.pair_size(6.0)
 
 INVENTED = "Invented prices and volume."
 SKETCH = "Not prices: sketches."
@@ -750,7 +752,7 @@ CHARTS = (
                 Pane(bars=A_BARS, ylabel="Price (PHP)", ticks=(46, 50, 54),
                      height=2.0, top=0.30,
                      notes=(Note(x=A_DAY, label="Day 40's price bar:\n"
-                                 "closes at PHP 52.40", dx=-118, dy=22,
+                                 "closes at PHP 52.40", dx=-92, dy=22,
                                  notice=True),),
                      name="Price: the main evidence"),
                 Pane(columns=A_VOL, picks=(A_DAY,), ylabel="Volume",
@@ -759,7 +761,7 @@ CHARTS = (
                      name="Volume: one bar under each price bar"),
             ),
             guides=(Guide(x=A_DAY, notice=True),),
-            size=PAIR, xlabel="Time, one bar a day",
+            size=WIDE, xlabel="Time, one bar a day",
             footnote=INVENTED + " Volume in millions of shares.",
         ),
     ),
@@ -867,7 +869,7 @@ CHARTS = (
                                  notes=(Note(x=36, label="0.8", dx=0, dy=22,
                                              dot=False),)))),
             ),
-            cols=2, size=PAIR,
+            cols=2, size=WIDE,
             footnote=INVENTED + " Prices in PHP, volume in millions. The "
                      "right-hand ending\nis one possibility, drawn to show the "
                      "warning.",

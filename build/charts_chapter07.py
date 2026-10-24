@@ -33,7 +33,8 @@ def _bar_notes(*items):
 
 def _readable_cells(path: Path, items, *, cols, size, footnote="",
                     display_font=None, title_pt=14.5, note_pt=13.0,
-                    label_pt=13.5, footnote_pt=12.5, tag_offset=10) -> Path:
+                    label_pt=13.5, footnote_pt=12.5, tag_offset=10,
+                    tag_dx=0) -> Path:
     """Draw the Chapter 7 cells with projection-sized labels.
 
     The shared cell form is intentionally compact for ordinary chart bands.
@@ -155,7 +156,7 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
             for index, label in pane.tags:
                 value = value_at(index)
                 ax.annotate(label, xy=(index, value),
-                            xytext=(0, tag_offset),
+                            xytext=(tag_dx, tag_offset),
                             textcoords="offset points", ha="center",
                             va="bottom", fontsize=label_pt,
                             color=ck.GREEN_DEEP, fontweight="bold", zorder=7)
@@ -669,6 +670,7 @@ CHARTS = (
             ),
             cols=1,
             size=ck.pair_size(2.8),
+            tag_dx=-35,
             footnote="Ours, invented PHP bars and million-share volume.",
         ),
     ),
@@ -728,7 +730,7 @@ CHARTS = (
                                           dx=-24, dy=-10),
                             ),
                             notes=_bar_notes(
-                                (1, 50.8, "gap-up O 50.80", -50, 15, True),
+                                (1, 50.8, "gap-up O 50.80", -85, 15, True),
                                 (2, 51.5, "island", 18, -8, True),
                                 (3, 49.4, "gap-down O 49.40", 18, 15, True)),
                         ),

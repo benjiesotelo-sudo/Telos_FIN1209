@@ -151,8 +151,8 @@ KEY_WORKED_CHART = Chart(
     marks=(
         Mark(1, "circle", 0.64, 0.29, 0.69, 0.34,
              color="gold", at=(0.52, 0.34)),
-        Mark(2, "circle", 0.64, 0.18, 0.69, 0.23,
-             color="red", at=(0.77, 0.13)),
+            Mark(2, "circle", 0.64, 0.18, 0.69, 0.23,
+                 color="red", at=(0.88, 0.18)),
         Mark(3, "circle", 0.64, 0.52, 0.69, 0.57,
              color="blue", at=(0.77, 0.62)),
         Mark(4, "circle", 0.64, 0.78, 0.70, 0.84,
@@ -730,7 +730,7 @@ TWO_DAY_WORKED = Pair(
         shows="Two invented PHP bars with OHLC values, closing positions and million-share volume labelled. Mark 1 is the first close near the high and mark 2 the second near the low.",
         tier="core",
         marks=(
-            Mark(1, "circle", 0.27, 0.28, 0.34, 0.36, color="gold", at=(0.22, 0.22), size=0.25),
+            Mark(1, "circle", 0.27, 0.28, 0.34, 0.36, color="gold", at=(0.12, 0.28), size=0.25),
             Mark(2, "circle", 0.64, 0.56, 0.72, 0.65, color="red", at=(0.80, 0.52), size=0.25),
         ),
     ),
@@ -775,7 +775,7 @@ THREE_WORKED = Pair(
         shows="Three invented PHP bars with OHLC values and volumes labelled. Marks 1, 2 and 3 identify the first, middle and third volume readings.",
         tier="core",
         marks=(
-            Mark(1, "circle", 0.22, 0.75, 0.29, 0.84, color="gold", at=(0.19, 0.70)),
+            Mark(1, "circle", 0.22, 0.75, 0.29, 0.84, color="gold", at=(0.14, 0.55)),
             Mark(2, "circle", 0.47, 0.75, 0.54, 0.84, color="red", at=(0.42, 0.70)),
             Mark(3, "circle", 0.73, 0.75, 0.80, 0.84, color="blue", at=(0.86, 0.70)),
         ),
@@ -886,7 +886,7 @@ ISLAND_WORKED = Pair(
         tier="core",
         marks=(
             Mark(1, "circle", 0.30, 0.20, 0.39, 0.30, color="gold", at=(0.25, 0.15)),
-            Mark(2, "box", 0.38, 0.22, 0.66, 0.52, color="red", at=(0.70, 0.54)),
+            Mark(2, "box", 0.38, 0.22, 0.76, 0.52, color="red", at=(0.78, 0.54)),
             Mark(3, "circle", 0.70, 0.20, 0.80, 0.30, color="blue", at=(0.86, 0.15)),
         ),
     ),

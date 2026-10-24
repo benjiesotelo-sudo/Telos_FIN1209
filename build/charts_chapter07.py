@@ -484,4 +484,100 @@ CHARTS = (
             footnote="Ours, invented PHP bars. The final two bars are the double formation.",
         ),
     ),
+    ck.ChartArt(
+        letter="R",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Two-day bearish reversal",
+                    note="first close near high; second near low",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((50.0, 52.2, 49.7, 51.8),
+                                       (51.7, 52.0, 48.7, 49.6))),
+                            height=1.7,
+                            notes=_bar_notes(
+                                (0, 51.8, "C 51.80", -20, 8, True),
+                                (1, 49.6, "C 49.60", 18, -8, True),
+                                (0, 52.2, "H 52.20", -18, 10, False),
+                                (1, 48.7, "L 48.70", 18, -10, False)),
+                        ),
+                        ck.Pane(columns=(2.4, 3.1), height=0.55,
+                                tags=((0, "2.4m"), (1, "3.1m"))),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="S",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Bullish three-bar reversal",
+                    note="strong outer bars; quiet middle bar",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((42.0, 44.0, 41.0, 43.8),
+                                       (43.7, 44.1, 43.2, 43.5),
+                                       (43.4, 46.8, 43.0, 46.5))),
+                            height=1.7,
+                            notes=_bar_notes(
+                                (0, 44.0, "H 44.00", -20, 8, False),
+                                (1, 43.5, "middle C 43.50", 18, 7, True),
+                                (2, 46.5, "C 46.50", 18, -8, True)),
+                        ),
+                        ck.Pane(columns=(4.0, 0.6, 4.2), height=0.55,
+                                tags=((0, "4.0m"), (1, "0.6m"),
+                                      (2, "4.2m"))),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="T",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Bearish island reversal",
+                    note="gap up, isolated bars, gap down",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((48.0, 50.0, 47.5, 49.5),
+                                       (50.8, 52.0, 50.6, 51.5),
+                                       (51.4, 52.2, 50.9, 51.1),
+                                       (49.4, 50.0, 48.2, 48.8))),
+                            height=1.7,
+                            strokes=(
+                                ck.Stroke(points=((0, 50.0), (3, 50.0)),
+                                          tone="quiet", dashed=True,
+                                          label="prior high 50.00", at=0,
+                                          dx=-24, dy=-10),
+                            ),
+                            notes=_bar_notes(
+                                (1, 50.8, "gap-up O 50.80", -28, 15, True),
+                                (2, 51.5, "island", 18, -8, True),
+                                (3, 49.4, "gap-down O 49.40", 18, 15, True)),
+                        ),
+                        ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), height=0.55,
+                                tags=((0, "2.3m"), (1, "0.7m"),
+                                      (2, "0.6m"), (3, "2.1m"))),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
 )

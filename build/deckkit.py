@@ -20,6 +20,7 @@ Design rules encoded here, from the course teaching brief:
 from __future__ import annotations
 
 import os
+import re
 import zipfile
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -27,8 +28,9 @@ from pathlib import Path
 
 from pptx import Presentation
 from pptx.dml.color import RGBColor
-from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
 # --------------------------------------------------------------------------
@@ -180,6 +182,66 @@ class Quote(Slide):
     takeaway: str = ""
 
 
+# The colours a numbered mark is drawn in, in order: mark 1 takes the first,
+# mark 2 the second, and so on, unless a Mark names its own. The deck's own
+# gold and green, plus three more chosen to stay apart from them and from
+# each other on a white scan and on the paper ground, because the same colour
+# also prints the mark's number in the slide text.
+MARK_COLORS = {
+    "gold": RGBColor(0xE0, 0x9B, 0x00),
+    "red": RGBColor(0xC6, 0x28, 0x28),
+    "blue": RGBColor(0x1F, 0x5F, 0xAD),
+    "green": GREEN,
+    "purple": RGBColor(0x7B, 0x3F, 0xA0),
+}
+MARK_KINDS = ("line", "box", "circle", "arrow")
+
+
+@dataclass(frozen=True)
+class Mark:
+    """A numbered mark drawn over a Figure or a Chart, pointing at one part.
+
+    The book's figures cannot be edited, so the mark is drawn as pptx shapes
+    on top of the picture, and the text beside it names the same part by the
+    same number in the same colour.
+
+    ``x0, y0, x1, y1`` are fractions of the picture itself, 0 to 1 from its
+    top left corner, not of the slide, so a mark stays on its part wherever
+    the picture lands. For a ``line`` they are its two ends; for an ``arrow``
+    its tail and then its head; for a ``box`` or a ``circle`` two opposite
+    corners of the box it fills. The number sits in a small disc at the start
+    of a line or an arrow and on the top left corner of a box or a circle;
+    ``at`` moves it to any other point, in the same fractions.
+
+    ``color`` is a MARK_COLORS key; left empty, mark n takes the n-th.
+
+    In the slide's text, ``[n]`` prints as a bold ``(n)`` in mark n's colour.
+    Only on a Pair whose picture carries mark n, so a bracketed number
+    anywhere else in a deck is left as it is.
+
+        deckkit.Figure(number="6.6", aspect=1.42, shows="...", marks=(
+            deckkit.Mark(1, "line", 0.10, 0.62, 0.48, 0.62),
+            deckkit.Mark(2, "box", 0.55, 0.70, 0.80, 0.95),
+        ))
+    """
+
+    number: int
+    kind: str
+    x0: float
+    y0: float
+    x1: float
+    y1: float
+    color: str = ""
+    at: tuple[float, float] | None = None
+
+    @property
+    def rgb(self) -> RGBColor:
+        if self.color:
+            return MARK_COLORS[self.color]
+        palette = list(MARK_COLORS.values())
+        return palette[(self.number - 1) % len(palette)]
+
+
 @dataclass
 class Figure(Slide):
     """A textbook figure, one to a slide.
@@ -192,6 +254,13 @@ class Figure(Slide):
     title: str = ""
     number: str = ""
     shows: str = ""
+    # Numbered marks drawn over the picture; see Mark. A figure that carries
+    # marks declares ``aspect``, its artwork's width over its height, so the
+    # placeholder takes the artwork's exact box and the marks land in the
+    # same place with or without the artwork. The artwork build fails if the
+    # file's own aspect disagrees, since every mark would then be off.
+    marks: tuple[Mark, ...] = ()
+    aspect: float = 0.0
 
     @property
     def filename(self) -> str:
@@ -229,6 +298,10 @@ class Chart(Slide):
     # Which run plans keep it. The chart slides are the only slides that can
     # be dropped as a block, so the teaching plan needs to know.
     tier: str = "reinforcement"
+    # As on Figure. A chart is drawn on every build, so its aspect comes
+    # from the file and need not be declared.
+    marks: tuple[Mark, ...] = ()
+    aspect: float = 0.0
 
     @property
     def name(self) -> str:
@@ -258,6 +331,14 @@ class Check(Slide):
 
     label: str = ""
     questions: tuple[Question, ...] = ()
+    # The Figure or Chart the questions ask about, marks and all, drawn
+    # beside them on the question slide and again on the reveal. The two
+    # questions then stack in a column ``text_w`` inches wide instead of
+    # standing side by side. It must be a picture the chapter already places
+    # on a teaching slide, so the student edition, which drops every check,
+    # loses no picture.
+    picture: Slide | None = None
+    text_w: float = 6.6
 
 
 @dataclass
@@ -341,8 +422,8 @@ def _blank(prs: Presentation):
     return prs.slides.add_slide(prs.slide_layouts[6])
 
 
-def _rect(slide, x, y, w, h, fill, line=None):
-    shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
+def _rect(slide, x, y, w, h, fill, line=None, kind=MSO_SHAPE.RECTANGLE):
+    shape = slide.shapes.add_shape(kind, x, y, w, h)
     shape.fill.solid()
     shape.fill.fore_color.rgb = fill
     if line is None:
@@ -407,7 +488,7 @@ def _textbox(slide, x, y, w, h, anchor=MSO_ANCHOR.TOP):
 
 def _para(frame, text, *, size, color, font=BODY_FONT, bold=False,
           italic=False, align=PP_ALIGN.LEFT, space_before=0, space_after=0,
-          first=False, line_spacing=1.0, hanging=None):
+          first=False, line_spacing=1.0, hanging=None, refs=None):
     para = frame.paragraphs[0] if first else frame.add_paragraph()
     para.alignment = align
     if hanging is not None:
@@ -418,14 +499,29 @@ def _para(frame, text, *, size, color, font=BODY_FONT, bold=False,
     para.space_before = Pt(space_before)
     para.space_after = Pt(space_after)
     para.line_spacing = line_spacing
-    run = para.add_run()
-    run.text = text
-    run.font.size = Pt(size)
-    run.font.bold = bold
-    run.font.italic = italic
-    run.font.name = font
-    run.font.color.rgb = color
+    # ``refs`` maps a mark number to its colour: each ``[n]`` in the text
+    # becomes a bold ``(n)`` in that colour, the same width as what it
+    # replaces, so the text measures exactly as written.
+    pieces = [(text, color, bold)]
+    if refs:
+        pieces = []
+        for i, piece in enumerate(_REF.split(text)):
+            if i % 2 and int(piece) in refs:
+                pieces.append((f"({piece})", refs[int(piece)], True))
+            elif piece:
+                pieces.append((f"[{piece}]" if i % 2 else piece, color, bold))
+    for piece, piece_color, piece_bold in pieces:
+        run = para.add_run()
+        run.text = piece
+        run.font.size = Pt(size)
+        run.font.bold = piece_bold
+        run.font.italic = italic
+        run.font.name = font
+        run.font.color.rgb = piece_color
     return para
+
+
+_REF = re.compile(r"\[(\d)\]")
 
 
 def _notes(slide, cues):
@@ -692,6 +788,92 @@ def _png_size(path) -> tuple[int, int]:
             int.from_bytes(head[20:24], "big"))
 
 
+def _picture_size(picture, path) -> tuple[float, float] | None:
+    """The pixel size the picture is fitted by, or None for a full plate.
+
+    The artwork's own size when the file is there. Without it, a picture
+    that carries marks and declares its aspect is fitted as if it were
+    there, so the placeholder and the marks keep the artwork's exact box.
+    """
+    if path is not None and path.is_file():
+        px_w, px_h = _png_size(path)
+        if picture.aspect and abs(px_w / px_h / picture.aspect - 1) > 0.02:
+            raise ValueError(
+                f"{path.name} is {px_w}x{px_h}, aspect {px_w / px_h:.3f}, "
+                f"but its slide declares {picture.aspect}; its marks would "
+                "land in the wrong place")
+        return float(px_w), float(px_h)
+    if picture.marks and picture.aspect:
+        return picture.aspect * 1000.0, 1000.0
+    return None
+
+
+def _placeholder_plate(slide, picture, x, y, w, h):
+    """The placeholder drawn into a picture's own box, for a marked figure."""
+    is_figure = isinstance(picture, Figure)
+    _rect(slide, Inches(x), Inches(y), Inches(w), Inches(h), WHITE,
+          line=BORDER)
+    _rect(slide, Inches(x), Inches(y), Inches(w), Pt(4), GOLD)
+    frame = _textbox(slide, Inches(x + 0.3), Inches(y + 0.3),
+                     Inches(w - 0.6), Inches(h - 0.5))
+    _para(frame,
+          f"FIGURE {picture.number}" if is_figure else picture.name.upper(),
+          size=13, color=MUTED, bold=True, first=True, space_after=8)
+    _para(frame, picture.shows, size=15, color=INK, font=DISPLAY_FONT,
+          line_spacing=1.15)
+
+
+def _draw_marks(slide, marks, x, y, w, h):
+    """Draw each Mark over the picture whose box is given, in inches.
+
+    Plain pptx shapes, outlined and unfilled, so PowerPoint, Keynote and
+    LibreOffice draw them alike and the picture shows through. Each number
+    sits in a disc of its mark's colour, drawn last so no line crosses it.
+    """
+    def at(fx, fy):
+        return Inches(x + fx * w), Inches(y + fy * h)
+
+    discs = []
+    for m in marks:
+        color = m.rgb
+        if m.kind in ("line", "arrow"):
+            shape = slide.shapes.add_connector(
+                MSO_CONNECTOR.STRAIGHT, *at(m.x0, m.y0), *at(m.x1, m.y1))
+            if m.kind == "arrow":
+                ln = shape.line._get_or_add_ln()
+                ln.append(ln.makeelement(qn("a:tailEnd"), {
+                    "type": "triangle", "w": "med", "len": "med"}))
+            label = m.at or (m.x0, m.y0)
+        else:
+            left, top = min(m.x0, m.x1), min(m.y0, m.y1)
+            shape = slide.shapes.add_shape(
+                MSO_SHAPE.RECTANGLE if m.kind == "box" else MSO_SHAPE.OVAL,
+                *at(left, top), Inches(abs(m.x1 - m.x0) * w),
+                Inches(abs(m.y1 - m.y0) * h))
+            shape.fill.background()
+            label = m.at or (left, top)
+        shape.line.color.rgb = color
+        shape.line.width = Pt(3.5)
+        style = shape._element.find(qn("p:style"))
+        if style is not None:
+            shape._element.remove(style)
+        discs.append((m.number, color, label))
+
+    d = 0.34
+    for number, color, (fx, fy) in discs:
+        cx, cy = at(fx, fy)
+        disc = _rect(slide, cx - Inches(d / 2), cy - Inches(d / 2),
+                     Inches(d), Inches(d), color, line=WHITE,
+                     kind=MSO_SHAPE.OVAL)
+        frame = disc.text_frame
+        frame.word_wrap = False
+        frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        for side in ("left", "right", "top", "bottom"):
+            setattr(frame, f"margin_{side}", 0)
+        _para(frame, str(number), size=13, color=WHITE, bold=True,
+              align=PP_ALIGN.CENTER, first=True)
+
+
 # The band a figure is drawn into, between the header rule and the credit line.
 FIGURE_TOP = 1.98
 FIGURE_H = 4.10
@@ -711,9 +893,10 @@ def render_figure(prs, s: Figure, marker):
 
     band_w = CONTENT_W.inches
     path = None if FIGURES_DIR is None else Path(FIGURES_DIR) / s.filename
+    size = _picture_size(s, path)
 
-    if path is not None and path.is_file():
-        px_w, px_h = _png_size(path)
+    if size is not None:
+        px_w, px_h = size
         pad = 0.13
         scale = min((band_w - 2 * pad) / px_w, (FIGURE_H - 2 * pad) / px_h)
         w, h = px_w * scale, px_h * scale
@@ -724,8 +907,12 @@ def render_figure(prs, s: Figure, marker):
         # patch. The plate makes the edge deliberate.
         _rect(slide, Inches(x - pad), Inches(y - pad),
               Inches(w + 2 * pad), Inches(h + 2 * pad), WHITE, line=BORDER)
-        slide.shapes.add_picture(str(path), Inches(x), Inches(y),
-                                 Inches(w), Inches(h))
+        if path is not None and path.is_file():
+            slide.shapes.add_picture(str(path), Inches(x), Inches(y),
+                                     Inches(w), Inches(h))
+        else:
+            _placeholder_plate(slide, s, x, y, w, h)
+        _draw_marks(slide, s.marks, x, y, w, h)
     else:
         plate_w = min(8.2, band_w)
         x = MARGIN.inches + (band_w - plate_w) / 2.0
@@ -765,9 +952,10 @@ def render_chart(prs, s: Chart, marker):
 
     band_w = CONTENT_W.inches
     path = None if CHARTS_DIR is None else Path(CHARTS_DIR) / s.filename
+    size = _picture_size(s, path)
 
-    if path is not None and path.is_file():
-        px_w, px_h = _png_size(path)
+    if size is not None:
+        px_w, px_h = size
         pad = 0.13
         scale = min((band_w - 2 * pad) / px_w, (FIGURE_H - 2 * pad) / px_h)
         w, h = px_w * scale, px_h * scale
@@ -775,8 +963,12 @@ def render_chart(prs, s: Chart, marker):
         y = FIGURE_TOP + (FIGURE_H - h) / 2.0
         _rect(slide, Inches(x - pad), Inches(y - pad),
               Inches(w + 2 * pad), Inches(h + 2 * pad), WHITE, line=BORDER)
-        slide.shapes.add_picture(str(path), Inches(x), Inches(y),
-                                 Inches(w), Inches(h))
+        if path is not None and path.is_file():
+            slide.shapes.add_picture(str(path), Inches(x), Inches(y),
+                                     Inches(w), Inches(h))
+        else:
+            _placeholder_plate(slide, s, x, y, w, h)
+        _draw_marks(slide, s.marks, x, y, w, h)
     else:
         # Only reachable if a caller skipped the generation step. The slide
         # still renders so the deck keeps its count and its markers.
@@ -807,6 +999,8 @@ def render_chart(prs, s: Chart, marker):
 def render_check(prs, s: Check, marker, index, total):
     """Question slide. Deliberately unlike any teaching slide: deep green
     ground, gold CHECK chip, two questions side by side."""
+    if s.picture is not None:
+        return _render_check_beside(prs, s, marker, index, total)
     slide = _blank(prs)
     _ground(slide, GREEN_DEEP)
     _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GOLD)
@@ -876,6 +1070,8 @@ def render_check(prs, s: Check, marker, index, total):
 def render_reveal(prs, s: Check, marker, index, total):
     """Answer slide. Paper ground so the room feels the release, with the
     answers in the monospace face and one line of reason each."""
+    if s.picture is not None:
+        return _render_reveal_beside(prs, s, marker, index, total)
     slide = _blank(prs)
     _ground(slide, PAPER)
     _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GOLD)
@@ -1014,9 +1210,10 @@ def _pair_picture(slide, picture, x, top, w, h):
     is_figure = isinstance(picture, Figure)
     root = FIGURES_DIR if is_figure else CHARTS_DIR
     path = None if root is None else Path(root) / picture.filename
+    size = _picture_size(picture, path)
 
-    if path is not None and path.is_file():
-        px_w, px_h = _png_size(path)
+    if size is not None:
+        px_w, px_h = size
         pad = 0.13
         scale = min((w - 2 * pad) / px_w, (h - 2 * pad) / px_h)
         pic_w, pic_h = px_w * scale, px_h * scale
@@ -1025,8 +1222,12 @@ def _pair_picture(slide, picture, x, top, w, h):
         _rect(slide, Inches(pic_x - pad), Inches(pic_y - pad),
               Inches(pic_w + 2 * pad), Inches(pic_h + 2 * pad), WHITE,
               line=BORDER)
-        slide.shapes.add_picture(str(path), Inches(pic_x), Inches(pic_y),
-                                 Inches(pic_w), Inches(pic_h))
+        if path is not None and path.is_file():
+            slide.shapes.add_picture(str(path), Inches(pic_x), Inches(pic_y),
+                                     Inches(pic_w), Inches(pic_h))
+        else:
+            _placeholder_plate(slide, picture, pic_x, pic_y, pic_w, pic_h)
+        _draw_marks(slide, picture.marks, pic_x, pic_y, pic_w, pic_h)
         # The credit sits just under the artwork rather than at the foot of
         # the band, so a shallow picture and its credit read as one thing.
         credit_y = pic_y + pic_h + pad + 0.10
@@ -1070,6 +1271,8 @@ def render_pair(prs, s: Pair, marker):
     left = s.left
     text_w = Inches(s.text_w)
     body_pt, _bottom = _pair_fit(s)
+    # Each [n] in the text is printed in mark n's colour; see Mark.
+    refs = {m.number: m.rgb for m in s.picture.marks} or None
 
     if isinstance(left, Term):
         _ground(slide, PAPER)
@@ -1103,7 +1306,7 @@ def render_pair(prs, s: Pair, marker):
             _para(frame, label.upper(), size=10.5, color=MUTED, bold=True,
                   first=True, space_after=3)
             _para(frame, text, size=body_pt, color=INK, bold=emphasise,
-                  line_spacing=1.0)
+                  line_spacing=1.0, refs=refs)
             y += 0.30 + text_h + 0.20
         band_top = PAIR_TERM_TOP
     else:
@@ -1113,7 +1316,8 @@ def render_pair(prs, s: Pair, marker):
             frame = _textbox(slide, MARGIN, Inches(top), text_w, Inches(3.4))
             for i, line in enumerate(left.lines):
                 _para(frame, line, size=body_pt, color=INK, first=(i == 0),
-                      space_after=11, line_spacing=_PAIR_BODY_SPACING)
+                      space_after=11, line_spacing=_PAIR_BODY_SPACING,
+                      refs=refs)
             top += sum(_text_height(line, s.text_w, body_pt,
                                     spacing=_PAIR_BODY_H)
                        + 0.18 for line in left.lines) + 0.22
@@ -1126,12 +1330,12 @@ def render_pair(prs, s: Pair, marker):
             frame = _textbox(slide, MARGIN + Inches(0.32), Inches(top + 0.04),
                              text_w - Inches(0.32), Inches(accent_h))
             _para(frame, left.accent, size=body_pt + 1, color=INK, bold=True,
-                  first=True, line_spacing=1.0)
+                  first=True, line_spacing=1.0, refs=refs)
             top += accent_h + 0.22
         if left.caption:
             frame = _textbox(slide, MARGIN, Inches(top), text_w, Inches(0.8))
             _para(frame, left.caption, size=13, color=MUTED, italic=True,
-                  first=True, line_spacing=1.0)
+                  first=True, line_spacing=1.0, refs=refs)
         band_top = FIGURE_TOP
 
     x = MARGIN.inches + s.text_w + PAIR_GAP
@@ -1189,6 +1393,140 @@ def render_recap(prs, s: Recap, marker):
 
     _progress(slide, marker)
     _notes(slide, s.notes)
+
+
+# --------------------------------------------------------------------------
+# A check and its reveal with the picture they ask about beside them. Their
+# own renderers, so a check without a picture renders exactly as before.
+# --------------------------------------------------------------------------
+
+# The type sizes a check beside a picture steps through, largest first, and
+# never below twelve point.
+_BESIDE_SIZES = ((17.0, 15.0), (16.0, 14.0), (15.0, 13.5), (14.0, 13.0),
+                 (13.0, 12.0), (12.0, 12.0))
+BESIDE_TOP = 1.32
+BESIDE_BOTTOM = 6.30
+
+
+def _beside_picture(slide, s: Check):
+    x = MARGIN.inches + s.text_w + PAIR_GAP
+    _pair_picture(slide, s.picture, x, BESIDE_TOP,
+                  CONTENT_W.inches - s.text_w - PAIR_GAP,
+                  PAIR_BAND_BOTTOM - BESIDE_TOP)
+
+
+def _render_check_beside(prs, s: Check, marker, index, total):
+    """The question slide with the two questions stacked on the left and the
+    picture on the right, at the largest size at which both fit."""
+    slide = _blank(prs)
+    _ground(slide, GREEN_DEEP)
+    _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GOLD)
+    _chip(slide, MARGIN, Inches(0.55), f"CHECK {index} OF {total}", fill=GOLD,
+          text_color=INK, width=Inches(1.85))
+    frame = _textbox(slide, MARGIN + Inches(2.1), Inches(0.57), Inches(8.0),
+                     Inches(0.4))
+    _para(frame, s.label, size=15, color=WHITE, bold=True, first=True)
+
+    inner_in = s.text_w - 0.5
+    gap = 0.18
+
+    def card_heights(stem_pt, opt_pt):
+        return [0.50 + _text_height(q.stem, inner_in, stem_pt, "bold") + 0.18
+                + sum(_text_height(f"D.  {o}", inner_in, opt_pt) + 0.10
+                      for o in q.options) + 0.15
+                for q in s.questions]
+
+    for stem_pt, opt_pt in _BESIDE_SIZES:
+        heights = card_heights(stem_pt, opt_pt)
+        if sum(heights) + gap * (len(heights) - 1) <= BESIDE_BOTTOM - BESIDE_TOP:
+            break
+
+    y = BESIDE_TOP
+    for i, (q, card_h) in enumerate(zip(s.questions, heights)):
+        _rect(slide, MARGIN, Inches(y), Inches(s.text_w), Inches(card_h), GREEN)
+        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.18),
+                         Inches(inner_in), Inches(0.25))
+        _para(frame, f"Q{i + 1}", size=12, color=GOLD, bold=True, first=True)
+        stem_h = _text_height(q.stem, inner_in, stem_pt, "bold")
+        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.45),
+                         Inches(inner_in), Inches(stem_h + 0.1))
+        _para(frame, q.stem, size=stem_pt, color=WHITE, bold=True, first=True,
+              line_spacing=1.15)
+        frame = _textbox(slide, MARGIN + Inches(0.25),
+                         Inches(y + 0.45 + stem_h + 0.18), Inches(inner_in),
+                         Inches(card_h - stem_h - 0.6))
+        for j, opt in enumerate(q.options):
+            _para(frame, f"{'ABCD'[j]}.  {opt}", size=opt_pt, color=WHITE,
+                  first=(j == 0), space_after=6, line_spacing=1.12)
+        y += card_h + gap
+
+    _beside_picture(slide, s)
+    _progress(slide, marker, on_dark=True)
+    _notes(slide, s.notes or (
+        "Read Q1 aloud, then Q2. Give them sixty seconds and no discussion.",
+        "Ask for a show of hands on each option before you advance.",
+        "This is for reading the room, not for marks. Say so if anyone tenses up.",
+    ))
+
+
+def _render_reveal_beside(prs, s: Check, marker, index, total):
+    """The reveal with its cards in the left column and the same picture on
+    the right, so the answer can be pointed at on it."""
+    slide = _blank(prs)
+    _ground(slide, PAPER)
+    _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GOLD)
+    _chip(slide, MARGIN, Inches(0.55), "ANSWERS", fill=GREEN,
+          text_color=WHITE, width=Inches(1.35))
+    frame = _textbox(slide, MARGIN + Inches(1.6), Inches(0.57), Inches(8.5),
+                     Inches(0.4))
+    _para(frame, s.label, size=15, color=GREEN, bold=True, first=True)
+
+    inner_in = s.text_w - 0.6
+    refs = {m.number: m.rgb for m in s.picture.marks} or None
+
+    def card_heights(stem_pt, ans_pt, reason_pt):
+        return [0.80 + _text_height(f"Q1   {q.stem}", inner_in, stem_pt)
+                + _text_height(f"{q.answer}.  "
+                               f"{q.options['ABCD'.index(q.answer)]}",
+                               inner_in, ans_pt, "mono")
+                + _text_height(q.reason, inner_in, reason_pt)
+                for q in s.questions]
+
+    for stem_pt, ans_pt, reason_pt in ((16.0, 20.0, 16.0), (15.0, 18.0, 15.0),
+                                       (14.0, 17.0, 14.0), (13.0, 15.0, 13.0),
+                                       (12.0, 14.0, 12.0)):
+        heights = card_heights(stem_pt, ans_pt, reason_pt)
+        if sum(heights) + 0.2 <= BESIDE_BOTTOM - BESIDE_TOP:
+            break
+
+    y = BESIDE_TOP
+    for i, (q, card_h) in enumerate(zip(s.questions, heights)):
+        stem = f"Q{i + 1}   {q.stem}"
+        answer = f"{q.answer}.  {q.options['ABCD'.index(q.answer)]}"
+        stem_h = _text_height(stem, inner_in, stem_pt)
+        ans_h = _text_height(answer, inner_in, ans_pt, "mono")
+        _rect(slide, MARGIN, Inches(y), Inches(s.text_w), Inches(card_h),
+              WHITE, line=BORDER)
+        _rect(slide, MARGIN, Inches(y), Inches(0.1), Inches(card_h), GOLD)
+        frame = _textbox(slide, MARGIN + Inches(0.35), Inches(y + 0.2),
+                         Inches(inner_in), Inches(stem_h + 0.1))
+        _para(frame, stem, size=stem_pt, color=MUTED, first=True,
+              line_spacing=1.15)
+        frame = _textbox(slide, MARGIN + Inches(0.35),
+                         Inches(y + 0.2 + stem_h + 0.2), Inches(inner_in),
+                         Inches(card_h - stem_h - 0.4))
+        _para(frame, answer, size=ans_pt, color=GREEN, font=MONO_FONT,
+              bold=True, first=True, line_spacing=1.15)
+        _para(frame, q.reason, size=reason_pt, color=INK, space_before=5,
+              line_spacing=1.15, refs=refs)
+        y += card_h + 0.2
+
+    _beside_picture(slide, s)
+    _progress(slide, marker)
+    _notes(slide, s.notes or (
+        "Reveal one at a time. Say the reason out loud, not just the letter.",
+        "If more than a third of the room missed one, step back and reteach it.",
+    ))
 
 
 def render_closing(prs, s: Closing):
@@ -1276,6 +1614,7 @@ def _validate(chapter: Chapter) -> list[str]:
     """Enforce the teaching brief's hard rules at build time, so a future
     chapter cannot quietly regress them."""
     problems: list[str] = []
+    placed = {picture.filename for picture in _pictures(chapter)}
 
     def check_text(where: str, text: str):
         if "—" in text or "–" in text:
@@ -1316,6 +1655,29 @@ def _validate(chapter: Chapter) -> list[str]:
         if not 2 <= len(slide.notes) <= 3:
             problems.append(f"{where}: keep speaker cues to two or three lines")
 
+    def check_marks(where, picture):
+        numbers = [m.number for m in picture.marks]
+        if len(set(numbers)) != len(numbers):
+            problems.append(f"{where}: two marks share a number")
+        for m in picture.marks:
+            if m.kind not in MARK_KINDS:
+                problems.append(f"{where}: mark {m.number} is a {m.kind!r}, "
+                                f"not one of {MARK_KINDS}")
+            if m.color and m.color not in MARK_COLORS:
+                problems.append(f"{where}: mark {m.number} colour "
+                                f"{m.color!r} is not in MARK_COLORS")
+            if not 1 <= m.number <= 9:
+                problems.append(f"{where}: mark numbers run 1 to 9")
+            points = (m.x0, m.y0, m.x1, m.y1) + tuple(m.at or ())
+            if not all(0.0 <= f <= 1.0 for f in points):
+                problems.append(f"{where}: mark {m.number} reaches outside "
+                                "its picture; fractions run 0 to 1")
+        if picture.marks and isinstance(picture, Figure) and not picture.aspect:
+            problems.append(
+                f"{where}: figure {picture.number} carries marks, so it "
+                "declares its aspect, or the placeholder build puts them "
+                "somewhere else")
+
     def check_pair(where, slide):
         left, picture = slide.left, slide.picture
         if not isinstance(left, (Content, Term)):
@@ -1326,6 +1688,7 @@ def _validate(chapter: Chapter) -> list[str]:
             return
         walk(where, left)
         walk(where, picture)
+        check_marks(where, picture)
         if isinstance(left, Content) and len(left.lines) > MAX_BODY_LINES:
             problems.append(
                 f"{where}: {len(left.lines)} body lines, limit is {MAX_BODY_LINES}"
@@ -1374,6 +1737,8 @@ def _validate(chapter: Chapter) -> list[str]:
                 problems.append(
                     f"{where}: {len(slide.lines)} body lines, limit is {MAX_BODY_LINES}"
                 )
+            if isinstance(slide, (Figure, Chart)):
+                check_marks(where, slide)
             if isinstance(slide, Figure):
                 if not slide.number or "." not in slide.number:
                     problems.append(f"{where}: a figure needs a book figure number")
@@ -1411,6 +1776,20 @@ def _validate(chapter: Chapter) -> list[str]:
                         problems.append(f"{where}: every question needs 4 options")
                     if q.answer not in "ABCD":
                         problems.append(f"{where}: answer must be A, B, C or D")
+                if slide.picture is not None:
+                    if not isinstance(slide.picture, (Figure, Chart)):
+                        problems.append(f"{where}: a check's picture is a "
+                                        "Figure or a Chart")
+                    elif slide.picture.filename not in placed:
+                        problems.append(
+                            f"{where}: a check's picture must be one a "
+                            "teaching slide places, or the student edition "
+                            "loses it")
+                    else:
+                        check_marks(where, slide.picture)
+                    if not 4.5 <= slide.text_w <= 8.0:
+                        problems.append(f"{where}: a check's text_w runs "
+                                        "4.5in to 8.0in")
             bottom = None
             if isinstance(slide, Content):
                 bottom = _content_bottom(slide)
@@ -1640,6 +2019,8 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
             render_closing(prs, slide)
         elif isinstance(slide, Content):
             render_content(prs, slide, marker=f"{chapter.chapter} - Wrap up")
+        elif isinstance(slide, Pair):
+            render_pair(prs, slide, marker=f"{chapter.chapter} - Wrap up")
         else:
             raise TypeError(f"unhandled closing slide {type(slide).__name__}")
         _origin(prs, slide)
@@ -1652,12 +2033,12 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
 def _pictures(chapter: Chapter):
     """Every Figure and Chart the chapter places, in reading order, whether
     it has a slide of its own or sits in a Pair."""
-    for section in chapter.sections:
-        for slide in section.slides:
-            if isinstance(slide, Pair):
-                slide = slide.picture
-            if isinstance(slide, (Figure, Chart)):
-                yield slide
+    slides = [s for section in chapter.sections for s in section.slides]
+    for slide in [*slides, *chapter.closing]:
+        if isinstance(slide, Pair):
+            slide = slide.picture
+        if isinstance(slide, (Figure, Chart)):
+            yield slide
 
 
 def figure_status(chapter: Chapter, figures_dir=None):

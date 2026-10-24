@@ -990,6 +990,50 @@ CHARTS = (
                      "be up or down; this one is up.",
         ),
     ),
+    # GA - Chart J's range again, with the four steps of the slide that
+    # explains why the lowest volume times the breakout marked on it. Its own
+    # letter, because a letter names one chart on one slide.
+    ChartArt(
+        letter="GA",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(bars=J_BARS, ylabel="Price (PHP)", ticks=(45, 50, 55),
+                     height=1.9, top=0.22,
+                     boxes=(Box(x0=13, x1=J_BREAK - 0.5, lo=J_BOT, hi=J_TOP,
+                                label="", tone="quiet"),),
+                     strokes=(
+                         Stroke(points=((20, J_TOP + 0.9), (55, J_TOP + 0.9)),
+                                dashed=True, tone="structure",
+                                label="2  buy stops above 52", at=0,
+                                dx=0, dy=9),
+                         Stroke(points=((20, J_BOT - 0.9), (55, J_BOT - 0.9)),
+                                dashed=True, tone="structure",
+                                label="2  sell stops below 48", at=1, dx=-4,
+                                dy=-9),
+                         Stroke(points=((J_BREAK, J_TOP + 0.6),
+                                        (J_BREAK + 9, 56.5)),
+                                tone="notice", arrow=True,
+                                label="4  up: price shows the way", at=1,
+                                dx=-25, dy=6),
+                     ),
+                     notes=(Note(x=J_BREAK - 1, y=J_TOP,
+                                 label="3  the edge: stops trigger", dx=-125,
+                                 dy=43),)),
+                Pane(columns=J_VOL, ylabel="Volume (million)", height=1.0,
+                     top=0.28, ticks=(1, 2, 3), picks=(J_BREAK,),
+                     tags=((J_BREAK, "3.6"),),
+                     strokes=(Stroke(points=((14, 2.2), (J_BREAK - 2, 0.6)),
+                                     tone="notice", arrow=True,
+                                     label="1  volume shrinks", at=0,
+                                     dx=14, dy=4),)),
+            ),
+            size=WIDE, xlabel="Time",
+            footnote=INVENTED + " Chart J's range, PHP 48 to 52, with the "
+                     "slide's four steps\nmarked. Volume in millions of "
+                     "shares.",
+        ),
+    ),
     ChartArt(
         letter="K",
         draw=ck.panels,

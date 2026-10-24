@@ -404,19 +404,25 @@ SECTION1 = Section(
                 "The right-hand chart is one possible ending, drawn to show what potential reversal means. Divergence is an early warning, not a certainty.",
             ),
         ),
-        Content(
-            origin="Book p.174 (the tenet) and p.175 (volume confirmation). The prices and share counts are the tenet's, ours. Figure 6.6: p.178.",
-            title="Confirms the trend, or volume confirmation",
-            lines=(
-                "Volume confirms the trend (Chapter 2, p.174): over the whole trend, big with it and small against it. It judges the pattern.",
-                "Volume confirmation (p.175): on one stretch, volume rising. It judges one leg at a time.",
-                "Ours: PHP 40 to 46 on 2 to 4 million, a dip to 44 on 1 million. The trend is confirmed. The dip alone, volume falling with price, is bullish divergence.",
+        Pair(
+            origin="Book p.174 (the tenet), p.175 (volume confirmation) and Figure 6.6 (p.178). The prices and share counts are the tenet's, ours.",
+            left=Content(
+                title="Confirms the trend, or volume confirmation",
+                lines=(
+                    "1  Volume confirms the trend (Chapter 2, p.174): over the whole trend, big with it, small against it. On Figure 6.6, at 1, volume expands across the whole rise.",
+                    "Volume confirmation (p.175): on one stretch, volume rising. It judges one leg at a time.",
+                    "2  Ours: PHP 40 to 46 on 2 to 4 million, a dip to 44 on 1 million. The trend is confirmed; the dip alone, volume falling with price, is bullish divergence. At 2, the book's periods 4 and 6 are such dips.",
+                ),
+                accent="One dip can be a bullish divergence inside a confirmed uptrend.",
             ),
-            accent="One dip can be a bullish divergence inside a confirmed uptrend.",
-            caption="Figure 6.6, below, does the same: bullish volume overall, with two dips labelled bullish divergence.",
+            picture=Figure(
+                number="6.6",
+                shows="The SPDR Gold Trust over about four years, split by dashed lines into ten numbered periods. Volume expands across the whole uptrend, and periods 4 and 6 are dips on falling volume, labelled bullish divergence by the book.",
+            ),
+            text_w=WIDE_W,
             notes=(
-                "Two phrases share a word. The tenet looks at the whole trend; volume confirmation looks at one stretch of volume.",
-                "So the uptrend dip on falling volume is bullish volume that confirms the trend, and on its own it is a bullish divergence. Both are the book's.",
+                "Two phrases share a word. The tenet looks at the whole trend, mark 1; volume confirmation looks at one stretch of volume.",
+                "So the uptrend dip on falling volume, mark 2, is bullish volume that confirms the trend, and on its own it is a bullish divergence. Both are the book's.",
             ),
         ),
         Pair(
@@ -439,18 +445,39 @@ SECTION1 = Section(
             ),
         ),
         Content(
-            origin="Book pp.175-177: what each name indicates, from its two principles on p.174. Where each can occur is its p.176 to 177 wording.",
+            origin="Book pp.175-177: what each name indicates, from its two principles on p.174.",
             title="What each of the four tells",
             lines=(
                 "Bullish divergence, PHP 50 to 46 as volume falls 3 to 1 million: fewer will sell lower. A potential upside reversal.",
-                "Bearish divergence, volume falling as price rises: fewer will buy higher, a potential downside reversal. Confirmation: a potential continuation.",
-                "The book says bullish divergence can only occur in a downtrend, bearish only in an uptrend (p.176), yet Figure 6.6 finds bullish divergence in uptrend dips.",
+                "Bearish divergence, PHP 46 to 50 as volume falls 3 to 1 million: fewer will buy higher. A potential downside reversal.",
+                "Bullish or bearish confirmation, volume rising with the move: more are taking part. A potential continuation.",
             ),
             accent="Divergence warns of a turn. Confirmation, of backing.",
-            caption="Our reading: the p.178 summary on any stretch, so a dip inside an uptrend can be bullish divergence. The book: divergence always indicates potential weakness, confirmation potential strength.",
+            caption="The book: divergence always indicates potential weakness, confirmation potential strength.",
             notes=(
                 "Each name says something about participation, which is the two principles again: more or fewer want to take part in the move price is making.",
-                "Downtrend and uptrend are the book's words for where each divergence can occur. Figure 6.6 tests that, and the slide there says so.",
+                "Where each can occur is the next slide, and there the book's sentence and its figure disagree.",
+            ),
+        ),
+        Pair(
+            origin="Book pp.176-177 for where each can occur, and Figure 6.6 (p.178). Our reading is said to be ours.",
+            left=Content(
+                title="Where divergence can occur: the book and its figure",
+                lines=(
+                    "The book: bullish divergence can only occur in a downtrend, bearish only in an uptrend (p.176).",
+                    "1  Yet on Figure 6.6, price rises from about 42 to about 120: an uptrend.",
+                    "2  Inside it, the book labels the dips of periods 4 and 6, price and volume falling together, bullish divergence.",
+                ),
+                accent="Our reading: the p.178 summary applies to any stretch, so a dip inside an uptrend can be bullish divergence.",
+            ),
+            picture=Figure(
+                number="6.6",
+                shows="The SPDR Gold Trust over about four years, rising from about 42 to about 120, split into ten numbered periods. Periods 4 and 6 are dips on falling volume inside that uptrend, labelled bullish divergence by the book.",
+            ),
+            text_w=WIDE_W,
+            notes=(
+                "Downtrend and uptrend are the book's words for where each divergence can occur. Mark 1 is the uptrend, mark 2 the dips the book calls bullish divergence inside it.",
+                "Be plain that the reading is ours: the book's sentence says downtrend, its figure says inside an uptrend. No check rests on it.",
             ),
         ),
         Pair(
@@ -622,18 +649,25 @@ SECTION1 = Section(
                 "Why the two kinds differ: the book gives the figure and no reason, so give none.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.179 and Figure 6.7: the four names on both kinds. The prices and the volume and OBV numbers are ours.",
-            title="The four names on both kinds, with numbers",
-            lines=(
-                "Price rising, PHP 46 to 50: both kinds read alike. Volume 3 to 5 million, OBV 5 to 7: bullish confirmation. Both down: bearish divergence.",
-                "Price falling, 50 to 46, bullish divergence: volume falls 3 to 1 million, with price; the OBV rises 5 to 7 million, against price.",
-                "Price falling, 50 to 46, bearish confirmation: volume rises 3 to 5 million, against price; the OBV falls 5 to 3 million, with price.",
+            left=Content(
+                title="The four names on both kinds, with numbers",
+                lines=(
+                    "1  Price rising, PHP 46 to 50: both kinds read alike. Volume 3 to 5 million, OBV 5 to 7: bullish confirmation. Both down: bearish divergence.",
+                    "2  Price falling, 50 to 46, bullish divergence: volume falls 3 to 1 million, with price; the OBV rises 5 to 7 million, against price.",
+                    "3  Price falling, 50 to 46, bearish confirmation: volume rises 3 to 5 million, against price; the OBV falls 5 to 3 million, with price.",
+                ),
+                accent="Price falling: same names, opposite arrows.",
+                caption="Plain volume: rising is confirmation. A price-based line: moving with price is confirmation.",
             ),
-            accent="Price falling: same names, opposite arrows.",
-            caption="Plain volume: rising is confirmation. A price-based line: moving with price is confirmation.",
+            picture=Figure(
+                number="6.7",
+                shows="Eight pairs of arrows, a price arrow over a volume arrow, in four boxes. With price rising the two kinds of oscillator match; with price falling, in bullish divergence and bearish confirmation, the price-based volume arrow points the other way.",
+            ),
+            text_w=WIDE_W,
             notes=(
-                "Only two of the figure's eight arrows change, and they are both with price falling. Read those two lines slowly.",
+                "Only two of the figure's eight arrows change, and they are both with price falling, marks 2 and 3. Read those two lines slowly.",
                 "Plain volume: up is confirmation, down is divergence. A price-based line: with price is confirmation, against price is divergence.",
             ),
         ),
@@ -721,16 +755,23 @@ SECTION2 = Section(
                 "Read the numbers off the chart with the room: the earlier low of 0.45 that sets the line, 0.42 at 1 where volume tests it, 3.6 on the breakout bar at 2.",
             ),
         ),
-        Content(
-            origin="Book p.180: the reasons are the book's. Stop orders: Chapters 1 and 5. The PHP 48 and 52 edges are ours, from the last slide's chart.",
-            title="Why the lowest volume times the breakout",
-            lines=(
-                "1  Volume shrinks as each side finishes: most who wanted to buy have bought, most who wanted to sell have sold.",
-                "2  Stop orders pile up outside the range: buy stops above PHP 52, sell stops below PHP 48 (Chapter 1: they trade once price pushes through their level).",
-                "3  When price reaches one edge, those stops trigger together and push it out: the catalyst.",
-                "4  Up or down, the book does not say: let price show the way.",
+        Pair(
+            origin="Book p.180: the reasons are the book's. Stop orders: Chapters 1 and 5. The chart is Chart J's invented range again, with the four steps marked.",
+            left=Content(
+                title="Why the lowest volume times the breakout",
+                lines=(
+                    "1  Volume shrinks as each side finishes: most who wanted to buy have bought, most who wanted to sell have sold.",
+                    "2  Stop orders, which trade once price pushes through their level (Chapter 1), pile up outside the range: buy stops above PHP 52, sell stops below PHP 48.",
+                    "3  When price reaches one edge, those stops trigger together and push it out: the catalyst.",
+                    "4  Up or down, the book does not say: let price show the way.",
+                ),
+                accent="What to do: volume back at an earlier low, expect a breakout.",
             ),
-            accent="What to do: volume back at an earlier low, expect a breakout.",
+            picture=Chart(
+                letter="GA",
+                shows="The invented range of Chart J, PHP 48 to 52, with the four steps marked: 1, volume shrinking from about 2 million to 0.42; 2, the buy stops above PHP 52 and the sell stops below PHP 48; 3, price reaching the top edge, where the buy stops trigger; 4, the breakout up on 3.6 million.",
+            ),
+            text_w=WIDE_W,
             notes=(
                 "Walk the four steps in order. Step 2 is the one students miss: the orders that start the move were placed during the quiet range.",
                 "Step 4 is the book's either an upside or downside breakout. The signal is about timing only.",
@@ -948,16 +989,23 @@ SECTION2 = Section(
                 "Upper for the big turns, lower for the corrections. What each tells, with the figure's numbers, is the next slide.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.183 and Figure 6.12, its scale read by eye. Correction: Chapter 5. Not a promise: the book's word potential, said plainly.",
-            title="What the two levels tell you",
-            lines=(
-                "Off Figure 6.12's scale: most days trade under 40 million shares; the lower line sits a little under 70 million, the upper a little above 120 million.",
-                "Both are high volume: lower means less extreme, not low volume.",
-                "Upper: potential tops or bottoms, a warning and not a promise. Lower: less significant corrections, smaller moves against the trend.",
-                "The figure shows only bottoms; the book says the same level signals tops too.",
+            left=Content(
+                title="What the two levels tell you",
+                lines=(
+                    "1  Most days trade under 40 million shares, read by eye off Figure 6.12's scale.",
+                    "2  The lower line, a little under 70 million: less significant corrections, smaller moves against the trend. Still high volume: lower means less extreme.",
+                    "3  The upper line, a little above 120 million: potential tops or bottoms, a warning and not a promise.",
+                    "4  The two spikes that reach it sit under bottoms. The book says the same level signals tops too.",
+                ),
+                accent="Above the line: a potential turn. Which way: price, afterwards.",
             ),
-            accent="Above the line: a potential turn. Which way: price, afterwards.",
+            picture=Figure(
+                number="6.12",
+                shows="The daily chart of Exxon Mobil from 2006 to 2013. Most volume bars sit under 40 million shares; a lower overextension line runs near 70 million and an upper one near 120 million, and the two spikes that reach the upper line sit under the market bottom in the ellipse.",
+            ),
+            text_w=WIDE_W,
             notes=(
                 "The trap is the word lower. A lower overextended level is still high volume, only less extreme.",
                 "Which way the turn goes is the book's caution at the end of this part: overbought or oversold, only in retrospect.",
@@ -1006,19 +1054,46 @@ SECTION2 = Section(
                 "Find the support break at the far right: price falls through a significant level on extreme volume.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.184 names the line and notes the spikes are all above it. Ours: the arithmetic, the 20 and 10 million, and which line it is, by eye.",
-            title="The figure's second line: a rolling 2-sigma level",
-            lines=(
-                "On Figure 6.14: the solid line stepping under the dashed level.",
-                "Rolling 100-day 2-sigma level = 100-day average volume + 2 x sigma. Sigma, the standard deviation: how far volume typically strays from its average.",
-                "Ours: average 20 million, sigma 10 million: 20 + 2 x 10 = 40 million. A 35 million day stays under; 55 million crosses.",
-                "Rolling: redone daily over the latest 100 days. The August 2011 spikes lift it; some 100 days later, as they leave the window, it drops back.",
+            left=Content(
+                title="The figure's second line: a rolling 2-sigma level",
+                lines=(
+                    "1  On Figure 6.14: the solid line stepping along under the dashed level, the rolling 100-day 2-sigma level.",
+                    "Its formula: 100-day average volume + 2 x sigma. Sigma, the standard deviation: how far volume typically strays from its average.",
+                    "Ours: average 20 million, sigma 10 million: 20 + 2 x 10 = 40 million. A 35 million day stays under; 55 million crosses.",
+                ),
+                accent="By eye or by formula: only volume above the line counts.",
             ),
-            accent="By eye or by formula: only volume above the line counts.",
+            picture=Figure(
+                number="6.14",
+                shows="The daily SPDR Gold Trust with its volume panel: a dashed volume overextension line, and under it a solid stepped line, the rolling 100-day 2-sigma level.",
+            ),
+            text_w=WIDE_W,
             notes=(
                 "Keep it to the arithmetic. Part 3 teaches the sigma filter properly, with its own worked example and the bar-by-bar method.",
                 "The point for today is that the eye-drawn line and the computed one agree on Figure 6.14: the circled spikes clear both.",
+            ),
+        ),
+        Pair(
+            origin="Book p.184 names the rolling line. Ours: why it steps, read by eye off Figure 6.14.",
+            left=Content(
+                title="Why the 2-sigma line steps: it rolls",
+                lines=(
+                    "Rolling: the average and sigma are redone each day over the latest 100 days only.",
+                    "1  The August 2011 spikes enter the window: the average and sigma jump, so the line steps up.",
+                    "2  Some 100 days later those spikes leave the window, and the line drops back.",
+                ),
+                accent="The level follows volume's recent past: what counts as extreme changes over time.",
+            ),
+            picture=Figure(
+                number="6.14",
+                shows="The daily SPDR Gold Trust with its volume panel: the solid rolling 100-day 2-sigma line steps up after the August 2011 volume spikes and drops back some 100 days later.",
+            ),
+            text_w=WIDE_W,
+            notes=(
+                "Point at the step up under the August 2011 spikes, mark 1, then follow the line right to where it drops, mark 2.",
+                "A fixed line, drawn by eye, does not move; this one does, because only the latest 100 days count.",
             ),
         ),
         Pair(
@@ -1064,16 +1139,22 @@ SECTION2 = Section(
                 "Do not teach the bandwidth. Say it is a measure of volatility the book uses here and explains elsewhere.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.184 and Figure 6.15. Evidence that corroborates: the chapter's first slide, p.173.",
-            title="What the volatility spike adds",
-            lines=(
-                "A second, separate measure, price's swings, agreeing with volume at the same turns: evidence that corroborates, the chapter's first idea.",
-                "Two lines, by eye off the scale: below the dashed one, near 15, is noise, which many practitioners filter out. All four circled spikes clear it.",
-                "Only the spikes at 1 and 2 reach the historical volatility level, near 40: the major turns, as on the volume panel's upper line.",
-                "Both crossing together is stronger evidence; the book gives no weighting.",
+            left=Content(
+                title="What the volatility spike adds",
+                lines=(
+                    "A second, separate measure, price's swings, agreeing with volume at the same turns: evidence that corroborates, the chapter's first idea.",
+                    "1  The dashed line, near 15 by eye: below it is noise, which many practitioners filter out. All four circled spikes clear it.",
+                    "2  The historical volatility level, near 40: only the spikes under the book's two lows reach it, the major turns, as on volume's upper line.",
+                ),
+                accent="Both crossing together is stronger evidence; the book gives no weighting.",
             ),
-            accent="As on volume: a low line for noise, a high one for the major turns.",
+            picture=Figure(
+                number="6.15",
+                shows="The continuous daily chart of silver, its volume with two overextension lines, and under it a bandwidth oscillator labelled volatility: a dashed noise line near 15 that four circled spikes clear, and a historical volatility level near 40 that only the two spikes under the book's lows 1 and 2 reach.",
+            ),
+            text_w=WIDE_W,
             notes=(
                 "The wavy stretch under the dashed line is what the figure labels noise. Point at the two small circles on the historical volatility level, under 1 and 2.",
                 "This slide goes with the one before: drop both or neither.",

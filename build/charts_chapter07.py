@@ -748,12 +748,11 @@ CHARTS = (
 )
 
 
-# Charts SA to SH belong to the inside-bar through Hikkake range. The letters
-# deliberately start at S so parallel Chapter 7 workers can add their own
-# charts without colliding with this lane or with the approved A and B.
+# Charts LA to LJ belong to the inside-bar through Hikkake range. The letters
+# deliberately start at L so this range has its own chart namespace.
 CHARTS = CHARTS + (
     ck.ChartArt(
-        letter="SA",
+        letter="LA",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -785,7 +784,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="SB",
+        letter="LB",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -816,7 +815,71 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="SC",
+        letter="LC",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="Exhaustion bar",
+                note="wide bar opens above the prior high and is followed without a gap",
+                panes=(
+                    ck.Pane(
+                        bars=_bars(((62.0, 65.0, 61.0, 64.0),
+                                   (65.4, 66.2, 60.0, 60.5),
+                                   (60.2, 62.0, 59.0, 61.2))),
+                        height=1.8,
+                        strokes=(ck.Stroke(points=((0, 65.0), (2, 65.0)),
+                                           tone="quiet", dashed=True,
+                                           label="prior high 65.00", at=0,
+                                           dx=-20, dy=-10),),
+                        notes=_bar_notes(
+                            (1, 65.4, "O 65.40", 18, 8, True),
+                            (1, 66.2, "H 66.20", 18, 8, True),
+                            (1, 60.0, "L 60.00", -18, -10, False),
+                            (1, 60.5, "C 60.50", 18, -4, True),
+                            (2, 60.2, "next O 60.20", 18, -8, True),
+                        ),
+                    ),
+                    ck.Pane(columns=(2.0, 5.5, 2.2), height=0.55,
+                            tags=((0, "2.0m"), (1, "5.5m"), (2, "2.2m"))),
+                ),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="LJ",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="Pin bar",
+                note="false support break returns above the barrier",
+                panes=(
+                    ck.Pane(
+                        bars=_bars(((42.0, 43.0, 40.5, 42.2),
+                                   (42.0, 42.5, 38.8, 40.6))),
+                        height=1.8,
+                        strokes=(ck.Stroke(points=((0, 40.0), (1, 40.0)),
+                                           tone="quiet", dashed=True,
+                                           label="support 40.00", at=0,
+                                           dx=-18, dy=-10),),
+                        notes=_bar_notes(
+                            (1, 38.8, "L 38.80", -18, -8, True),
+                            (1, 40.6, "C 40.60", 18, 6, True),
+                        ),
+                    ),
+                    ck.Pane(columns=(2.0, 0.8), height=0.55,
+                            tags=((0, "2.0m"), (1, "0.8m"))),
+                ),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="LD",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -850,7 +913,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="SD",
+        letter="LE",
         draw=ck.cells,
         kwargs=dict(
             items=(
@@ -891,7 +954,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="SE",
+        letter="LF",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -919,7 +982,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="SF",
+        letter="LG",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -960,7 +1023,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="SG",
+        letter="LH",
         draw=ck.cells,
         kwargs=dict(
             items=(ck.Cell(
@@ -986,7 +1049,7 @@ CHARTS = CHARTS + (
         ),
     ),
     ck.ChartArt(
-        letter="SH",
+        letter="LI",
         draw=ck.cells,
         kwargs=dict(
             items=(

@@ -75,8 +75,6 @@ KEY_CROP_FIGURE = Figure(
              color="red", at=(0.63, 0.01), size=0.39),
         Mark(3, "circle", 0.50, 0.24, 0.58, 0.32,
              color="blue", at=(0.69, 0.35), size=0.39),
-        Mark(4, "circle", 0.46, 0.77, 0.54, 0.86,
-             color="purple", at=(0.72, 0.84), size=0.32),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked bar opens above the previous high, "
@@ -91,11 +89,40 @@ KEY_CROP_FIGURE = Figure(
             "for teaching; the worked PHP values are ours, invented."),
 )
 
+KEY_READ_FIGURE = Figure(
+    title="Figure 7.15: the same reading on a real chart",
+    number="7.15",
+    aspect=701 / 413,
+    crop=(0.30, 0.0, 0.20, 0.02),
+    marks=(
+        Mark(1, "circle", 0.43, 0.10, 0.51, 0.18,
+             color="gold", at=(0.34, 0.06), size=0.39),
+        Mark(2, "circle", 0.47, 0.02, 0.54, 0.10,
+             color="red", at=(0.63, 0.01), size=0.39),
+        Mark(3, "circle", 0.50, 0.24, 0.58, 0.32,
+             color="blue", at=(0.69, 0.35), size=0.39),
+        Mark(4, "circle", 0.46, 0.77, 0.54, 0.86,
+             color="purple", at=(0.72, 0.84), size=0.32),
+    ),
+    shows=("The Apple daily chart, cropped to the key reversal day and its "
+           "surrounding bars. The marked day opens above the previous high, "
+           "forms a new high, closes below the previous close, and has above "
+           "average volume."),
+    notes=(
+        "Read the book's definition first, then explain marks 1 to 4 in the "
+        "same order: gap/open, new high, close, and above-average volume.",
+        "The figure shows consolidation before the later decline. Keep the "
+        "word potentially: this is a warning, not a promise.",
+    ),
+    origin=("Lim (2016), pp. 218 to 219, Figure 7.15. The crop and marks are "
+            "for teaching; no invented example is on this slide."),
+)
+
 KEY_WORKED_CHART = Chart(
     letter="B",
     title="Bearish key reversal: a two-bar worked example",
     shows=("Two invented PHP bars with every OHLC value and volume value "
-            "labelled. Marks 1 to 3 show the five-step reading."),
+            "labelled. Marks 1 to 4 show the five-step reading."),
     tier="core",
     marks=(
         Mark(1, "circle", 0.64, 0.29, 0.69, 0.34,
@@ -104,11 +131,14 @@ KEY_WORKED_CHART = Chart(
              color="red", at=(0.77, 0.13)),
         Mark(3, "circle", 0.64, 0.52, 0.69, 0.57,
              color="blue", at=(0.77, 0.62)),
+        Mark(4, "circle", 0.64, 0.78, 0.70, 0.84,
+             color="purple", at=(0.80, 0.88), size=0.32),
     ),
     notes=(
-        "Read the prior high and prior close lines before reading marks 1 to 3.",
+        "Read the prior high and prior close lines before reading marks 1 to 4.",
         "The second bar opens above 52.00, reaches a new high of 53.20, and "
-        "closes at 50.80, below the prior close of 51.10.",
+        "closes at 50.80, below the prior close of 51.10. Mark 4 identifies "
+        "the 4.2 million-share volume bar.",
     ),
     origin="Chart B is ours, with invented PHP bars and million-share volume.",
 )
@@ -230,34 +260,37 @@ SECTION3 = Section(
             left=Content(
                 title="Bearish key reversal: the numbers first",
                 lines=(
-                    "Step 1. The prior bar opens at 50.80, reaches a high of 52.00, falls to a low of 50.60, and closes at 51.10.",
-                    "Step 2. The new bar opens at 52.30, above the prior high of 52.00.",
-                    "Step 3. It reaches a new high of 53.20, then falls to a low of 49.90.",
+                    "Step 1. Prior bar: open 50.80, high 52.00, low 50.60, close 51.10.",
+                    "Step 2. It opens at 52.30 above prior high 52.00 [1].",
+                    "Step 3. It makes a new high of 53.20 [2].",
+                    "Step 4. It closes at 50.80 below prior close 51.10 [3].",
+                    "Step 5. Volume is 4.2 million versus 2.0 million [4]. That is a bearish key reversal (Lim, p. 218).",
                 ),
                 accent="",
                 caption="",
             ),
             picture=KEY_WORKED_CHART,
-            text_w=3.5,
-            picture_extra=0.9,
+            text_w=4.25,
+            picture_extra=0.0,
             notes=KEY_WORKED_CHART.notes,
             origin=KEY_WORKED_CHART.origin,
         ),
         Pair(
             left=Content(
-                title="Figure 7.15: three observations",
+                title="Figure 7.15: the same reading on a real chart",
                 lines=(
-                    "Step 4. The new bar closes at 50.80, below the prior close of 51.10.",
-                    "Step 5. Volume is 4.2 million shares, versus 2.0 million on the prior bar. On Figure 7.15, mark 4 identifies the volume reading.",
-                    "Meaning/action: this is a potential warning, not a promise. The book's chart shows consolidation may precede decline. Next, compare the bullish converse.",
+                    "Lim defines it: “A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar.” (Lim, p. 218).",
+                    "Gold [1] marks the key reversal day opening above the prior high. Red [2] marks its new high.",
+                    "Blue [3] marks its close below the prior close. Purple [4] marks the above-average volume under it.",
+                    "Meaning/action: a potential warning, not a promise. The book's chart shows consolidation before the decline. Check the 16 characteristics and barrier proximity.",
                 ),
                 accent="",
                 caption="",
             ),
-            picture=KEY_CROP_FIGURE,
+            picture=KEY_READ_FIGURE,
             text_w=6.6,
-            notes=KEY_CROP_FIGURE.notes,
-            origin=KEY_CROP_FIGURE.origin,
+            notes=KEY_READ_FIGURE.notes,
+            origin=KEY_READ_FIGURE.origin,
         ),
         Pair(
             left=Content(

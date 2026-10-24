@@ -122,6 +122,8 @@ Q = Question
 # every chart to fill the picture column these two widths leave.
 CHART_W = 5.6
 TERM_CHART_W = 6.6
+# A wider text column, for the Part 1 slides whose worked numbers need it.
+WIDE_W = 6.0
 
 # ==========================================================================
 # Part 1 - 6.1, pp.173 to 180: Dow's volume confirmation, volume divergence
@@ -141,18 +143,17 @@ SECTION1 = Section(
             left=Content(
                 title="6.1  Price first: volume and open interest as evidence",
                 lines=(
-                    "Price is regarded as the best indicator of potential future price behavior.",
-                    "Volume and open interest offer additional evidence to corroborate bullish or bearish setups.",
-                    "They can show underlying weakness, and work as timing indicators for potential breakouts.",
+                    "Price is regarded as the best indicator of future price. Volume and open interest are extra evidence: they back up, or corroborate, a setup, show weakness, time breakouts.",
+                    "Chart A, ours: every chart today has price bars on top, one volume bar under each. Day 40: PHP 52.40, 2.4 million shares.",
                 ),
-                accent="Many novices misread declining volume as a weakness in a consolidation.",
-                caption="Why that is a misreading: Part 2. Volume is defined two slides on, open interest in Part 4.",
+                accent="Novices misread falling volume in a consolidation as weakness: it times the breakout.",
+                caption="Why: Part 2. Volume: defined below. Open interest: Part 4.",
             ),
             picture=Chart(
                 letter="A",
                 shows="An invented share drawn the way the book's figures draw a chart: price bars in the upper panel and, in the lower panel, one volume bar for each price bar, standing directly under it. One day is picked out in gold in both panels, its close and its volume labelled.",
             ),
-            text_w=CHART_W,
+            text_w=WIDE_W,
             notes=(
                 "The book's opening paragraph, and the shape of every figure today: price on top, volume underneath, one volume bar under each price bar.",
                 "Point at the gold day. The price bar says where it traded; the volume bar under it says how much traded. Every figure in the chapter is read that way.",
@@ -164,12 +165,12 @@ SECTION1 = Section(
             left=Content(
                 title="Chapter 2's tenet: volume confirms the trend",
                 lines=(
-                    "Chapter 2: under Dow Theory, volume should expand in the direction of the trend.",
-                    "Uptrend: volume rises as price rises and falls in downside retracements: bullish volume action.",
-                    "Downtrend: volume rises as price declines and falls in upside retracements: bearish volume action.",
+                    "Chapter 2, Dow Theory: volume should expand in the direction of the trend. Big on moves with the trend, small on retracements, the moves against it.",
+                    "Uptrend: volume rises as price rises, falls on the dips. The book calls this bullish volume action.",
+                    "Downtrend: volume rises as price falls, falls on the bounces. The book calls this bearish volume action.",
                 ),
-                accent="Volume is a supporting, or secondary, indicator.",
-                caption="Volume action contrary to this: an uptrend may potentially be bearish, a downtrend bullish.",
+                accent="Both confirm their trend. Numbers on the next slide.",
+                caption="Volume is a supporting, or secondary, indicator. Volume doing the opposite: an uptrend may be bearish, a downtrend bullish.",
             ),
             picture=Figure(
                 number="6.1",
@@ -180,6 +181,21 @@ SECTION1 = Section(
                 "A recall: Chapter 2 gave this as its sixth tenet, with the same four conditions. Nothing in it changes.",
                 "Read the figure's two halves. In each, the tall volume bars sit under the move that goes with the trend, and the short ones under the retracement.",
                 "What is new today is the vocabulary on the next slides: volume is bullish or bearish, and it confirms or diverges.",
+            ),
+        ),
+        Content(
+            origin="Book pp.173-174 states the tenet and its two names. The prices and share counts are ours.",
+            title="The tenet with numbers",
+            lines=(
+                "Uptrend, ours: price climbs PHP 40 to 46 as volume grows from 2 to 4 million shares a day, then dips to 44 on 1 million. Confirmed.",
+                "Downtrend, ours: price falls PHP 50 to 46 as volume grows from 2 to 4 million a day, then bounces to 48 on 1 million. Confirmed.",
+                "Same pattern, big with the trend and small against it, but two names. Uptrend: price and volume move the same way, bullish. Downtrend: opposite ways, bearish.",
+            ),
+            accent="Bearish here is not a warning. It is volume backing a fall.",
+            caption="Why opposite ways is called bearish: the term Bullish volume and bearish volume, and the slide after it.",
+            notes=(
+                "Walk both lines with the numbers. In each trend the big volume is on the move with the trend and the small volume on the move against it.",
+                "The trap the room falls into: price falling on rising volume sounds bullish. It is not. Name it now and the next two slides explain it.",
             ),
         ),
         Pair(
@@ -202,18 +218,19 @@ SECTION1 = Section(
             ),
         ),
         Pair(
-            origin="Book p.174: its two basic principles, nearly word for word. The chart is ours, on invented prices.",
+            origin="Book p.174: its two basic principles, in plainer words. The chart is ours, on invented prices; the numbers are read off it.",
             left=Content(
                 title="Two principles: rising and declining volume",
                 lines=(
-                    "1  Rising volume: participants want to see price go higher in an uptrend, lower in a downtrend, and will buy higher or sell lower to take part.",
-                    "2  Declining volume: they are losing interest, would rather buy lower in an uptrend or sell higher in a downtrend, if not exiting.",
+                    "1  Rising volume: more want price to keep going the trend's way, and will buy higher in an uptrend or sell lower in a downtrend.",
+                    "2  Declining volume: losing interest. They would rather buy lower in an uptrend, sell higher in a downtrend, or leave.",
+                    "Chart C: rally 1, PHP 40 to 47, on volume rising 1.1 to 2.9 million. Rally 2, 44.5 to 51, on volume falling 2.4 to 0.9 million.",
                 ),
-                accent="Volume measures participation: how many want to take part in the move.",
+                accent="Volume measures participation.",
             ),
             picture=Chart(
                 letter="C",
-                shows="An invented uptrend over its volume. In the first rally, numbered 1, volume rises as participants buy higher to take part. In the last rally, numbered 2, price still rises but volume declines as they lose interest.",
+                shows="An invented uptrend over its volume. In the first rally, numbered 1, price climbs from PHP 40 to 47 as volume rises from 1.1 to 2.9 million shares: participants buy higher to take part. In the last rally, numbered 2, price still climbs, from 44.5 to 51, but volume declines from 2.4 to 0.9 million as they lose interest.",
             ),
             text_w=CHART_W,
             notes=(
@@ -222,11 +239,11 @@ SECTION1 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.174-175 states it for an uptrend, then a downtrend. Joined into one line here: our summary of its four sentences.",
+            origin="Book pp.174-175 states it for an uptrend, then a downtrend. Joined into one line here: our summary of its four sentences. The numbers are ours.",
             left=Term(
                 term="Bullish volume and bearish volume",
-                plain="Bullish volume moves with price. Bearish volume moves against it.",
-                example="A share rallies on rising volume and dips on falling volume: bullish both times. Falling on rising volume, bouncing on falling volume: bearish.",
+                plain="Compare price's direction with volume's. Same way: bullish volume. Opposite: bearish volume.",
+                example="Ours: price PHP 50 to 46 as volume grows 2 to 4 million: opposite, bearish. Price 50 to 46 as volume shrinks 4 to 2 million: same way, bullish.",
                 formal="Both rising and declining volume are regarded as bullish volume if volume and price rise and decline together, and as bearish volume if they move in opposite directions.",
             ),
             picture=Chart(
@@ -240,45 +257,75 @@ SECTION1 = Section(
                 "This answers review question 2, describe bullish and bearish volume.",
             ),
         ),
+        Content(
+            origin="Book p.174: the definition and the two principles. Ours: the buyer and seller point, which follows from the definition, and the numbers.",
+            title="Why falling price on rising volume is bearish",
+            lines=(
+                "Volume counts shares that changed hands. Every share traded has a buyer and a seller, so volume alone never says buyers outnumber sellers.",
+                "Principle 1: rising volume is more people taking part in the move. PHP 50 to 46 on 2 to 4 million: more sell lower. The fall has backing: bearish.",
+                "Principle 2, the other way: price 50 to 46 on 4 to 2 million shares: fewer willing to sell lower. The fall is losing its backing, so bullish.",
+            ),
+            accent="Rising volume is not demand. It is more trading in the direction price is already going.",
+            notes=(
+                "This is the question the room asks: more volume as price falls, is that not more demand? No. Each of those shares was sold by someone as well as bought.",
+                "Volume says how many take part. Price says which way they are pushing. Together they say whether the push has backing.",
+            ),
+        ),
         Pair(
-            origin="Book p.175 and Figure 6.2.",
+            origin="Book p.175 and Figure 6.2, its prices read off the figure. The peso example is ours.",
             left=Content(
                 title="Rising volume is not always bullish",
                 lines=(
-                    "Declining volume does not necessarily imply bearishness. Rising volume does not imply bullishness.",
-                    "The bullish or bearish sentiment of volume depends on the direction of the price.",
-                    "Figure 6.2: volume expands with gold's primary bull trend and declines in the retracement. Bullish, both times.",
+                    "The book: declining volume does not imply bearishness, nor rising volume bullishness. PHP 50 to 46 on 2 to 4 million: rising, yet bearish.",
+                    "Figure 6.2: gold, about 260 in 2001 to 1,900 in 2011 as volume expands: bullish. Then to about 1,200 in 2013 as volume declines: bullish too.",
                 ),
-                accent="The book calls the opposite reading a simple mistake many novices make.",
+                accent="Read price's direction first, then volume's.",
+                caption="The book calls reading volume alone, falling means bad, a simple mistake many novices make.",
             ),
             picture=Figure(
                 number="6.2",
                 shows="The continuous daily chart of gold from 1989 to 2013: a primary bull trend from 2001, its volume expanding in the direction of the trend, and volume declining in the retracement at the end, labelled bullish.",
             ),
-            text_w=5.6,
+            text_w=WIDE_W,
             notes=(
                 "Point at the end of the chart: price falls and volume falls with it. That is bullish volume in an uptrend, not a warning.",
                 "The mistake is reading volume alone: falling equals bad. Ask the room which way price was going first.",
             ),
         ),
         Pair(
-            origin="Book p.175 and Figure 6.3.",
+            origin="Book p.175 and Figure 6.3. The prices and share counts are ours: the tenet's numbers with the volume swapped.",
             left=Content(
                 title="Volume that does not confirm the trend",
                 lines=(
-                    "Uptrend: volume decreases as price rises and increases in downside retracements. Bearish volume: a potentially weak or bearish uptrend.",
-                    "Downtrend: volume decreases as price falls and increases in upside retracements. Bullish volume: a potentially bullish downtrend.",
+                    "Confirming volume is big with the trend, small against it. Not confirming is the reverse.",
+                    "Uptrend, ours: PHP 40 to 46 as volume shrinks 4 to 2 million, dip to 44 as it grows to 3. Opposite ways: bearish volume, a potentially weak uptrend.",
+                    "Downtrend, ours: PHP 50 to 46 as volume shrinks 4 to 2 million, bounce to 48 as it grows to 3. Same way: bullish volume, a potentially bullish downtrend.",
                 ),
-                accent="The trend goes one way and its volume says the other.",
+                accent="A warning, not a reversal.",
             ),
             picture=Figure(
                 number="6.3",
                 shows="Two sketches of volume not confirming a trend. Top: a rising price whose volume shrinks on the rise and grows in the retracement, labelled bearish volume action in an uptrend. Bottom: a falling price whose volume shrinks on the fall and grows in the upside retracement, labelled bullish volume action in a downtrend.",
             ),
-            text_w=5.8,
+            text_w=6.2,
             notes=(
                 "Set this beside Figure 6.1. The prices are the same shapes; only the volume is swapped.",
                 "Not confirming is still only a potential: the book says weak or bearish uptrend, not a reversal.",
+            ),
+        ),
+        Content(
+            origin="Our summary of the book's pp.174-175, which states both for each trend. The prices and share counts are ours.",
+            title="Two questions, asked in order",
+            lines=(
+                "1  Bullish or bearish volume? Price and volume only, no trend: same direction bullish, opposite bearish.",
+                "2  Does it confirm the trend? In an uptrend bullish volume confirms; in a downtrend bearish volume confirms. The other kind does not.",
+                "Downtrend, PHP 50 to 46, volume 2 to 4 million: bearish, so it confirms.",
+                "Uptrend dip, PHP 46 to 44, volume 1 to 3 million: bearish, so it does not.",
+            ),
+            accent="Bearish is not the same as not confirming.",
+            notes=(
+                "Two layers. The first is mechanical and needs only two arrows. The second brings in the trend, and asks whether the volume backs it.",
+                "Volume that does not confirm is the other kind: bearish volume in an uptrend, bullish volume in a downtrend.",
             ),
         ),
         Check(
@@ -291,7 +338,7 @@ SECTION1 = Section(
                              "Neither, because the trend is up",
                              "Volume not confirming the uptrend"),
                     answer="B",
-                    reason="Volume and price declining together is bullish volume, whatever the volume does on its own.",
+                    reason="Price and volume fall together: bullish volume. In an uptrend bullish volume is the confirming kind, so D is wrong too.",
                 ),
                 Q(
                     stem="Volume rises while price declines in a preexisting downtrend. The book calls this:",
@@ -300,21 +347,21 @@ SECTION1 = Section(
                              "Volume that does not confirm the trend",
                              "Bearish volume action, confirming the downtrend"),
                     answer="D",
-                    reason="Volume expanding in the direction of a downtrend is bearish volume action: it confirms the trend.",
+                    reason="Price down, volume up: opposite ways, bearish volume. In a downtrend that is the confirming kind: volume expanding with the trend.",
                 ),
             ),
         ),
         Pair(
-            origin="Book p.175 defines both. The chart is ours: sketches, not prices.",
+            origin="Book p.175 defines both. The prices and share counts are ours; the chart is ours, sketches, not prices.",
             left=Term(
                 term="Volume divergence and volume confirmation",
-                plain="Volume falling is divergence. Volume rising is confirmation, also called convergence.",
-                example="Price rises from PHP 40 to PHP 46 as volume shrinks from 3 to 1 million a day: divergence. Had it grown to 5 million: confirmation.",
+                plain="Leave price out. Volume falling: divergence. Volume rising: confirmation, or convergence.",
+                example="Ours: price PHP 40 to 46 as volume shrinks 3 to 1 million: divergence. Volume 3 to 5 million instead: confirmation.",
                 formal="Volume divergence occurs whenever volume declines, irrespective of the direction of price. Volume convergence or confirmation occurs whenever volume rises, irrespective of the direction of price.",
             ),
             picture=Chart(
                 letter="E",
-                shows="Four small cases in two columns. Left column, volume divergence: volume bars falling, once under a rising price and once under a falling price. Right column, volume confirmation: volume bars rising, once under a rising price and once under a falling price.",
+                shows="Four small cases in two columns. Left column, volume divergence: volume bars falling, once under a rising price and once under a falling price, still divergence. Right column, volume confirmation: volume bars rising, once under a rising price and once under a falling price, still confirmation.",
             ),
             text_w=TERM_CHART_W,
             notes=(
@@ -322,34 +369,63 @@ SECTION1 = Section(
                 "Bullish or bearish volume needs price. Divergence or confirmation does not: it is volume's direction alone.",
             ),
         ),
+        Content(
+            origin="Book p.175 defines both pairs. The comparison and the numbers are ours.",
+            title="Not bullish and bearish renamed",
+            lines=(
+                "Bullish or bearish asks about price and volume together. Divergence or confirmation asks about volume alone. Two questions, two answers.",
+                "Ours: price PHP 40 to 46 on volume 2 to 4 million. Same way: bullish. Volume up: confirmation. Here the two answers line up.",
+                "Price PHP 50 to 46 on volume 2 to 4 million. Opposite ways: bearish. Volume up: still confirmation. Here they do not.",
+            ),
+            accent="Bullish or bearish needs price. Divergence or confirmation needs only volume.",
+            notes=(
+                "The room will try to map bullish onto confirmation and bearish onto divergence. The second example breaks that mapping.",
+                "Keep both answers. The next slides put them together into one name.",
+            ),
+        ),
         Pair(
-            origin="Book pp.175-176. The chart is ours, on invented prices.",
+            origin="Book pp.175-176. The chart is ours, on invented prices; the numbers are read off it.",
             left=Content(
                 title="What divergence and confirmation say",
                 lines=(
-                    "Divergence: participants are not interested in seeing price go further. Bearish for an uptrend, bullish for a downtrend.",
-                    "Confirmation: they are interested in taking part in the move. Bullish for an uptrend, bearish for a downtrend.",
+                    "Divergence, volume falling: on a rise, fewer will buy higher, bearish for an uptrend; on a fall, fewer will sell lower, bullish for a downtrend.",
+                    "Confirmation, volume rising: with a rise, bullish for an uptrend; with a fall, bearish for a downtrend.",
+                    "Chart F: left, PHP 40 to 55, volume 0.9 to 3.4 million: it continues. Right, 40 to 51, volume 2.9 to 0.8: it turns.",
                 ),
-                accent="Confirmation is an early indication of a potential continuation; divergence, of a potential reversal.",
-                caption="The book: divergence always indicates potential weakness in an existing trend, confirmation always potential strength.",
+                accent="Both are early warnings, not certainties.",
             ),
             picture=Chart(
                 letter="F",
-                shows="Two invented uptrends side by side. Left: volume rises with price, confirmation, and the trend continues. Right: volume falls as price rises, divergence, and price turns down at the end.",
+                shows="Two invented uptrends side by side. Left: price climbs from PHP 40 to 55 as volume rises from 0.9 to 3.4 million, confirmation, and the trend continues. Right: price climbs from 40 to 51 as volume falls from 2.9 to 0.8 million, divergence, and price turns down to 46 at the end.",
             ),
-            text_w=CHART_W,
+            text_w=WIDE_W,
             notes=(
                 "Confirmation is called convergence too: price and volume coming together in one direction. Both words mean volume rising.",
                 "The right-hand chart is one possible ending, drawn to show what potential reversal means. Divergence is an early warning, not a certainty.",
             ),
         ),
+        Content(
+            origin="Book p.174 (the tenet) and p.175 (volume confirmation). The prices and share counts are the tenet's, ours. Figure 6.6: p.178.",
+            title="Confirms the trend, or volume confirmation",
+            lines=(
+                "Volume confirms the trend (Chapter 2, p.174): over the whole trend, big with it and small against it. It judges the pattern.",
+                "Volume confirmation (p.175): on one stretch, volume rising. It judges one leg at a time.",
+                "Ours: PHP 40 to 46 on 2 to 4 million, a dip to 44 on 1 million. The trend is confirmed. The dip alone, volume falling with price, is bullish divergence.",
+            ),
+            accent="One dip can be a bullish divergence inside a confirmed uptrend.",
+            caption="Figure 6.6, below, does the same: bullish volume overall, with two dips labelled bullish divergence.",
+            notes=(
+                "Two phrases share a word. The tenet looks at the whole trend; volume confirmation looks at one stretch of volume.",
+                "So the uptrend dip on falling volume is bullish volume that confirms the trend, and on its own it is a bullish divergence. Both are the book's.",
+            ),
+        ),
         Pair(
-            origin="Book pp.176-178 and Figure 6.4. The four names are its p.178 summary. The ATR on the figure is in no sentence of the text.",
+            origin="Book pp.176-178 and Figure 6.4. The formal row is its p.178 summary. The ATR on the figure is in no sentence of the text. The numbers are ours.",
             left=Term(
                 term="Bullish and bearish divergence and confirmation",
-                plain="Four names: is volume falling or rising, and does it move with price or against it?",
-                example="Both falling: bullish divergence. Both rising: bullish confirmation. Volume down, price up: bearish divergence. Volume up, price down: bearish confirmation.",
-                formal="Bullish divergence can only occur in a downtrend, a potential upside reversal; bearish divergence only in an uptrend, a potential downside reversal.",
+                plain="One name from two answers: bullish or bearish, then divergence or confirmation.",
+                example="Ours: PHP 50 to 46, volume 2 to 4 million: opposite, bearish; volume up, confirmation. Figure 6.4's third column: price top, volume below.",
+                formal="Volume and price declining together: bullish divergence. Rising together: bullish confirmation. Volume declining, price rising: bearish divergence. Volume rising, price declining: bearish confirmation.",
             ),
             picture=Figure(
                 number="6.4",
@@ -357,44 +433,58 @@ SECTION1 = Section(
             ),
             text_w=6.8,
             notes=(
-                "The example row is the book's own summary of all four scenarios, page 178. The formal row is its two sentences on where each divergence can occur.",
-                "Bullish or bearish comes from the last slide but one: together or apart. Divergence or confirmation from the last slide: volume down or up.",
+                "The formal row is the book's own summary of all four scenarios, page 178. The next slide is what each one warns of.",
+                "Bullish or bearish comes from the term Bullish volume and bearish volume: together or apart. Divergence or confirmation from the term before this one: volume down or up.",
                 "The figure lists four kinds of supporting series. Volume, its moving average and open interest are all in the text; the ATR is not mentioned anywhere in it.",
             ),
         ),
+        Content(
+            origin="Book pp.175-177: what each name indicates, from its two principles on p.174. Where each can occur is its p.176 to 177 wording.",
+            title="What each of the four tells",
+            lines=(
+                "Bullish divergence, PHP 50 to 46 as volume falls 3 to 1 million: fewer will sell lower. A potential upside reversal.",
+                "Bearish divergence, volume falling as price rises: fewer will buy higher, a potential downside reversal. Confirmation: a potential continuation.",
+                "The book says bullish divergence can only occur in a downtrend, bearish only in an uptrend (p.176), yet Figure 6.6 finds bullish divergence in uptrend dips.",
+            ),
+            accent="Divergence warns of a turn. Confirmation, of backing.",
+            caption="Our reading: the p.178 summary on any stretch, so a dip inside an uptrend can be bullish divergence. The book: divergence always indicates potential weakness, confirmation potential strength.",
+            notes=(
+                "Each name says something about participation, which is the two principles again: more or fewer want to take part in the move price is making.",
+                "Downtrend and uptrend are the book's words for where each divergence can occur. Figure 6.6 tests that, and the slide there says so.",
+            ),
+        ),
         Pair(
-            origin="A recall of this course's Chapters 4 and 5, against the book's p.176. The chart is ours, on invented prices.",
+            origin="A recall of this course's Chapters 4 and 5, against the book's p.176. The chart is ours, on invented prices; its peaks are read off it.",
             left=Content(
                 title="Not the divergence Chapters 4 and 5 drew",
                 lines=(
-                    "Chapters 4 and 5: standard divergence. Price makes a higher peak while an oscillator, the MACD or the bar stochastic, makes a lower one.",
-                    "Volume divergence is volume declining, whatever price does.",
-                    "Price's direction still decides bullish or bearish.",
+                    "Chapters 4 and 5, standard divergence: compare two peaks. Ours: price peaks at PHP 58, then higher at 60; an oscillator peaks at 80, then lower at 62.",
+                    "Volume divergence compares no peaks: volume declining, whatever price does. Price's direction still decides bullish or bearish.",
                 ),
-                accent="Volume has no reverse divergence classification.",
-                caption="Chapter 4 gave the volume case: falling price on decreasing volume. Reverse divergence: Chapter 9.",
+                accent="Volume has no reverse divergence (p.176): one kind only, volume falling.",
+                caption="Chapter 5 only named reverse divergence, left to Chapter 9. Chapter 4: bullish divergence in volume is falling price on decreasing volume.",
             ),
             picture=Chart(
                 letter="G",
-                shows="Two invented charts side by side. Left, standard divergence as Chapters 4 and 5 drew it: price makes a higher second peak while an oscillator below makes a lower one, peak against peak. Right, volume divergence: price rises and the volume bars under it shrink, with no peaks compared.",
+                shows="Two invented charts side by side. Left, standard divergence as Chapters 4 and 5 drew it: price peaks at PHP 58 and then higher at 60, while an oscillator below peaks at 80 and then lower at 62, peak against peak. Right, volume divergence: price rises and the volume bars under it shrink, with no peaks compared.",
             ),
             text_w=CHART_W,
             notes=(
                 "Same word, different test. Standard divergence compares two peaks on two lines. Volume divergence asks one question: is volume falling?",
                 "This answers review question 3, how volume divergence differs from standard oscillator divergence.",
-                "Reverse divergence was named in Chapter 5 and left to Chapter 9. The book says there is no such classification for volume.",
+                "The oscillators there were the MACD and the bar stochastic. Reverse divergence was named in Chapter 5 and left to Chapter 9; the book says volume has no such classification.",
             ),
         ),
         Pair(
-            origin="Book p.177 and Figure 6.5. Rounding bottom: named in Chapter 4. Chapter 4's Figure 4.18 was an intraday chart of this stock too.",
+            origin="Book p.177 and Figure 6.5, its prices read off the figure. Its caption says daily; the chart is labelled 10 min. Rounding bottom: Chapter 4.",
             left=Content(
                 title="Bullish volume divergence: Isis Pharmaceuticals",
                 lines=(
-                    "Isis Pharmaceuticals traces out a bullish rounding bottom.",
-                    "As price falls, volume falls with it, twice: bullish volume divergence.",
+                    "Isis Pharmaceuticals falls from about 12 to about 9 and curves into a rounding bottom, a bullish pattern from Chapter 4.",
+                    "In two stretches volume falls as price falls: volume falling, divergence; with price, bullish. Fewer are willing to sell lower.",
                 ),
                 accent="Divergence provides additional evidence of a bullish chart formation.",
-                caption="The chart's own note: Isis penetrated the previous day's close though the Dow Jones Industrial Average fell 219 points.",
+                caption="The chart's note: Isis rose past the previous day's close though the Dow Jones Industrial Average fell 219 points, a bullish indication.",
             ),
             picture=Figure(
                 number="6.5",
@@ -404,6 +494,7 @@ SECTION1 = Section(
             notes=(
                 "Price falling and volume falling together: bullish divergence, by the last slides. Point at the two dashed lines in the volume panel.",
                 "Evidence, not a signal: the pattern is the setup and the volume corroborates it, which is the chapter's first sentence again.",
+                "Chapter 4's Figure 4.18 was an intraday chart of this stock too.",
             ),
         ),
         Pair(
@@ -411,11 +502,11 @@ SECTION1 = Section(
             left=Content(
                 title="Ten periods of bullish volume: gold",
                 lines=(
-                    "Periods 1, 3, 7 and 9: bullish confirmation. 4 and 6: bullish divergence. 5: volume flat.",
-                    "2, 8 and 10: volume declines in a consolidation, timing the breakout (why: Part 2).",
+                    "1, 3, 7 and 9: price and volume rise, bullish confirmation. 4 and 6: price dips as volume falls, bullish divergence. 5: volume flat, no reading.",
+                    "2, 8 and 10: volume falls as price moves sideways, a consolidation (Chapter 4). At volume's minimum, price breaks out.",
                 ),
-                accent="At the end of 2, 8 and 10, price breaks out as volume reaches its minimum.",
-                caption="The book says bullish divergence occurs only in a downtrend; 4 and 6 are dips in this uptrend. Our reading, price falling for any stretch: no check rests on it.",
+                accent="In a consolidation, volume times the breakout: Part 2.",
+                caption="4 and 6 are dips inside this uptrend, yet the book labels them bullish divergence: its p.178 summary applied to a falling stretch.",
             ),
             picture=Figure(
                 number="6.6",
@@ -429,25 +520,26 @@ SECTION1 = Section(
             ),
         ),
         Pair(
-            origin="Ours: Figure 6.6's readings on one invented uptrend, so each period can be seen. The periods' lengths and volumes are ours.",
+            origin="Ours: Figure 6.6's readings on one invented uptrend, so each period can be seen. The periods, prices and volumes are ours, read off the chart.",
             left=Content(
                 title="Our example: one uptrend, period by period",
                 lines=(
-                    "1  Price rises, volume rises: bullish confirmation.",
-                    "2  Price dips, volume falls: bullish divergence.",
-                    "3  Price moves sideways, volume falls to its minimum: a consolidation.",
-                    "4  Price breaks out and rises, volume rises: bullish confirmation.",
+                    "1  PHP 40 to 48, volume about 1.2 to 3.3 million: both rise, bullish confirmation.",
+                    "2  Dip to 45.5, volume about 2.7 to 1.4 million: both fall, bullish divergence. Fewer will sell lower: a weak dip, and 4 resumes the trend.",
+                    "3  Sideways, 45.5 to 47.3, volume down to 0.5 million: a consolidation.",
+                    "4  Breakout, 46 to 55, volume about 2.5 to 3 million: bullish confirmation.",
                 ),
-                accent="1, 2 and 4 are bullish volume. In 3 price moves sideways: no reading, Part 2.",
+                accent="3: no direction, no reading (p.180).",
             ),
             picture=Chart(
                 letter="H",
-                shows="An invented uptrend over its volume, split by dashed lines into four numbered periods: 1 a rise on rising volume, bullish confirmation; 2 a dip on falling volume, bullish divergence; 3 a sideways range with volume falling to its minimum, a consolidation; 4 a breakout and rise on rising volume, bullish confirmation.",
+                shows="An invented uptrend over its volume, split by dashed lines into four numbered periods: 1 a rise from PHP 40 to 48 on volume rising from about 1.2 to 3.3 million, bullish confirmation; 2 a dip to 45.5 on volume falling to about 1.4 million, bullish divergence; 3 a sideways range with volume falling to its minimum, 0.5 million, a consolidation; 4 a breakout and rise to 55 on volume rising to about 3 million, bullish confirmation.",
             ),
             text_w=CHART_W,
             notes=(
                 "The book's figure has ten periods on a real chart and they are hard to see. Here are four, one of each kind it names.",
                 "Ask the room for each period before reading the label: which way is price, which way is volume, together or apart.",
+                "Period 3: the book says there is no divergence reading in a consolidation, because price moves sideways. Part 2 is where that page is taught.",
             ),
         ),
         Check(
@@ -474,11 +566,11 @@ SECTION1 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.178-179 defines both. The chart is ours, on invented prices; its OBV line is computed by the rule taught in Part 6.",
+            origin="Book pp.178-179 defines both; our gloss of oscillator. The numbers are ours. The chart is ours, on invented prices; its line is the rule taught in Part 6.",
             left=Term(
                 term="Price-based and non-price-based volume oscillators",
-                plain="Oscillator: an indicator in a panel under price. Non-price-based: volume only. Price-based: price built in.",
-                example="Volume bars count shares. A line adding volume on up closes, subtracting on down closes, uses price.",
+                plain="Oscillator: an indicator under price. Price-based: price built in. Non-price-based: volume only.",
+                example="Ours: closes PHP 50, 51, 50.5 on 2, 3, 1 million. Bars: 2, 3, 1. Line: start at 0; 51 is higher, add 3: 3; 50.5 is lower, subtract 1: 2.",
                 formal="Price-based volume oscillators incorporate price data in their construction, whereas non-price-based volume oscillators only incorporate volume data in their construction.",
             ),
             picture=Chart(
@@ -487,8 +579,8 @@ SECTION1 = Section(
             ),
             text_w=TERM_CHART_W,
             notes=(
-                "Oscillator is the book's word for any indicator drawn in its own panel under the price. Chapter 8 is oscillators; nothing more about them is needed today.",
-                "The bottom line on the chart is the On Balance Volume, taught in Part 6. Here it only shows what price-based means: the close decides the sign.",
+                "Oscillator here means an indicator drawn in its own panel under the price. That gloss is ours: this chapter never defines the word, and Chapter 8 is oscillators.",
+                "The example's second line starts at 0, adds 3 on the higher close, subtracts 1 on the lower: 0, 3, 2. It cannot be drawn without the closes. Part 6 names it the On Balance Volume.",
                 "Volume bars are on the book's non-price-based list, so plain volume counts as one of these oscillators.",
             ),
         ),
@@ -498,6 +590,7 @@ SECTION1 = Section(
             lines=(
                 "Price-based: On Balance Volume (OBV), Accumulation/Distribution Line (ADL), Chaikin Money Flow, Chaikin Oscillator, Demand Index, Herrick Payoff Index.",
                 "Non-price-based: standard volume bars, smoothed volume, detrended volume, rate of change of volume (ROC volume), percentage volume oscillator (PVO).",
+                "So plain volume bars count as a non-price-based volume oscillator.",
             ),
             accent="Reading divergence on one kind differs from reading it on the other.",
             caption="Taught later: OBV, ADL, the two Chaikin indicators and the Herrick index in Part 6, smoothed volume in Part 3. The Demand Index, detrended volume, ROC volume and the PVO are named and never explained.",
@@ -507,15 +600,16 @@ SECTION1 = Section(
             ),
         ),
         Pair(
-            origin="Book p.179 and Figure 6.7. The last line is our summary of the figure's eight arrows.",
+            origin="Book p.179 and Figure 6.7. The two rules are our summary of the figure's eight arrows; the book gives no reason the two kinds differ.",
             left=Content(
                 title="Reading divergence on the two kinds",
                 lines=(
-                    "Bearish divergence and bullish confirmation are read the same way on both kinds.",
-                    "Bullish divergence: price falls. Volume falls on a non-price-based one; a price-based one rises.",
-                    "Bearish confirmation: price falls. Volume rises on a non-price-based one; a price-based one falls.",
+                    "Non-price-based, plain volume included: bullish if it moves with price, bearish if against. Divergence if it falls, confirmation if it rises.",
+                    "Price-based, such as the OBV: bullish if it rises, bearish if it falls. Divergence if it moves against price, confirmation if with it.",
+                    "Figure 6.7: top half divergence, bottom half confirmation; left box plain volume, right box price-based. Only two volume arrows flip.",
                 ),
-                accent="A price-based oscillator diverges by moving against price; plain volume, by falling.",
+                accent="First ask which kind you are reading.",
+                caption="Book: only bullish divergence and bearish confirmation differ.",
             ),
             picture=Figure(
                 number="6.7",
@@ -524,19 +618,37 @@ SECTION1 = Section(
             text_w=5.8,
             notes=(
                 "Go box by box. Top left and top right differ only in the bullish divergence pair; bottom left and bottom right only in the bearish confirmation pair.",
-                "Why the price-based one differs: price is built into it, so when price falls it would fall too, unless buying is underneath. Ours, not the book's words: the book gives the figure and no reason.",
+                "Read a price-based line the way you read price itself: up is bullish, down is bearish. Then compare it with price for divergence or confirmation.",
+                "Why the two kinds differ: the book gives the figure and no reason, so give none.",
+            ),
+        ),
+        Content(
+            origin="Book p.179 and Figure 6.7: the four names on both kinds. The prices and the volume and OBV numbers are ours.",
+            title="The four names on both kinds, with numbers",
+            lines=(
+                "Price rising, PHP 46 to 50: both kinds read alike. Volume 3 to 5 million, OBV 5 to 7: bullish confirmation. Both down: bearish divergence.",
+                "Price falling, 50 to 46, bullish divergence: volume falls 3 to 1 million, with price; the OBV rises 5 to 7 million, against price.",
+                "Price falling, 50 to 46, bearish confirmation: volume rises 3 to 5 million, against price; the OBV falls 5 to 3 million, with price.",
+            ),
+            accent="Price falling: same names, opposite arrows.",
+            caption="Plain volume: rising is confirmation. A price-based line: moving with price is confirmation.",
+            notes=(
+                "Only two of the figure's eight arrows change, and they are both with price falling. Read those two lines slowly.",
+                "Plain volume: up is confirmation, down is divergence. A price-based line: with price is confirmation, against price is divergence.",
             ),
         ),
         Pair(
-            origin="Book p.180 and Figure 6.8. PVO and detrending are on the figure and not explained by the book.",
+            origin="Book p.180 and Figure 6.8, its prices read off the figure. PVO and detrending are on the figure and not explained by the book.",
             left=Content(
                 title="Both kinds on one chart",
                 lines=(
-                    "Volume and smoothed volume, non-price-based: bearish divergence as the euro trust rises.",
-                    "The detrended PVO, non-price-based: bearish divergence too.",
-                    "The ADL, price-based: bullish confirmation, rising with price.",
+                    "The trust rises from about 129 to 133, October to January.",
+                    "Volume and smoothed volume, a 20-day average, non-price-based: falling, against price: bearish divergence.",
+                    "The PVO, a detrended volume oscillator the book never explains: non-price-based, falling: bearish divergence too.",
+                    "ADL, price-based: rising, with price: bullish confirmation.",
                 ),
-                accent="The same rise, read two ways: each kind by its own rule.",
+                accent="Each kind read by its own rule.",
+                caption="The book gives no rule for which reading to believe. Smoothed volume: Part 3.",
             ),
             picture=Figure(
                 number="6.8",
@@ -567,7 +679,7 @@ SECTION1 = Section(
                              "Bearish divergence",
                              "Bullish confirmation"),
                     answer="B",
-                    reason="On a price-based oscillator, bullish divergence is price falling while the oscillator rises.",
+                    reason="On a price-based oscillator, rising is bullish and moving against price is divergence: bullish divergence.",
                 ),
             ),
         ),
@@ -3110,7 +3222,7 @@ OPENERS = (
             "Set up effective volume filtering, for better timed entries and exits.",
             "Read volume across successive contract months in futures markets.",
         ),
-        caption="The last is not taught in this chapter's text. Chapter 3 read volume across contract months.",
+        caption="The last is not taught in this chapter's text; Chapter 3 read volume across contract months. Every other idea here gets its own slide when its part comes.",
         notes=(
             "These are the book's six learning objectives. Say the first and the fifth, and that every one is examinable.",
             "Be straight about the sixth: the chapter's text never comes back to contract months. Chapter 3's rollover slides are where it was taught.",
@@ -3120,8 +3232,8 @@ OPENERS = (
         origin="The parts are the book's own sub-sections, pp.173 to 208, grouped in its order.",
         title="How this chapter is laid out",
         lines=(
-            "Part 1  Confirmation and divergence.  Part 2  Timing, the VWMA, climaxes.",
-            "Part 3  Price barriers and filtering.  Part 4  Open interest, tick volume, the TRIN.",
+            "Part 1  Confirmation and divergence.  Part 2  Timing, the volume-weighted moving average (VWMA), climaxes.",
+            "Part 3  Price barriers and filtering.  Part 4  Open interest, tick volume, the Arms Index (TRIN).",
             "Part 5  Bar range and volume cycles.  Part 6  The volume oscillators, section 6.2.",
         ),
         accent="Parts 1 to 5 are the book's section 6.1, in its order.",

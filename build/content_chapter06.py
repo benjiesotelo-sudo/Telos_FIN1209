@@ -1847,18 +1847,25 @@ SECTION3 = Section(
                 "Three sigma is stricter than two: fewer bars cross it.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.189 gives only the words. Ours: how build/charts_chapter06.py actually computes it, read from the code, not guessed.",
-            title="How the dotted line is drawn, bar by bar",
-            lines=(
-                "At each bar: take its last 20 volume bars, this one included. Mean, then sigma. Plot mean + 3 x sigma. Move forward one bar, repeat.",
-                "That is why it jumps: a spike entering the window raises both at once, so the line leaps up, staying high until the spike leaves 20 bars later.",
-                "The book never says if sigma divides by 20 or 19, or if the bar sits in its own window. Our code divides by 20 and includes the bar.",
+            left=Content(
+                title="How the dotted line is drawn, bar by bar",
+                lines=(
+                    "At each bar: take its last 20 volume bars, this one included. Mean, then sigma. Plot mean + 3 x sigma. Move forward one bar, repeat.",
+                    "That is why it jumps, at 1: a spike entering the window raises both at once, so the line leaps up. It stays high until the spike leaves 20 bars later, at 2.",
+                    "The book never says if sigma divides by 20 or 19, or if the bar sits in its own window. Our code divides by 20 and includes the bar.",
+                ),
+                accent="Recomputed from nothing at every bar: no memory beyond its window.",
             ),
-            accent="Recomputed from nothing at every bar: no memory beyond its window.",
+            picture=Chart(
+                letter="HU",
+                shows="The invented volume record of the three-sigma term slide, its 20-bar average and its dotted three-sigma line. At 1, bar 24, a spike enters the last 20 bars and the dotted line jumps; at 2, bar 44, twenty bars later, the spike leaves and the line falls back.",
+            ),
+            text_w=6.0,
             notes=(
                 "This closes the two gaps the review found: the divisor and the window. Both are read straight from the code that drew the chart.",
-                "The jump explanation matches the chart's own footnote, here given as the reason instead of just the fact.",
+                "Point at 1, where the line leaps as the spike comes in, then count along twenty bars to 2, where it drops as the spike goes out.",
             ),
         ),
         Pair(
@@ -1882,17 +1889,25 @@ SECTION3 = Section(
                 "Follow each of the three arrows down to the surge under it. Then find the April 2011 top: a dotted upright, and no arrow.",
             ),
         ),
-        Content(
-            origin="Book p.189. It names the oscillator and does not describe it.",
-            title="Why the book draws the line on the bars",
-            lines=(
-                "The book also names a standard deviation oscillator: an indicator in its own panel, as Part 1 used the word. It does not describe or draw one.",
-                "It is less useful, the book says, because it gives no overlay: a line drawn over the volume bars themselves, so a bar can be seen crossing it.",
-                "Figure 6.21's line stays high for months after the March spike, far beyond our 20 bars. The book never gives its N.",
+        Pair(
+            origin="Book p.189 and Figure 6.21. It names the oscillator and does not describe it.",
+            left=Content(
+                title="Why the book draws the line on the bars",
+                lines=(
+                    "The book also names a standard deviation oscillator: an indicator in its own panel (Part 1). It does not describe or draw one.",
+                    "It is less useful, the book says, because it gives no overlay: a line drawn over the volume bars themselves, 1, so a bar can be seen crossing it.",
+                    "Its line stays high for months after the March spike, 2: far beyond our 20 bars. The book never gives its N.",
+                ),
+                accent="What to do: pick N as for the smoothed filter, and draw the 3-sigma line over the bars; a bar above it may mark a top or bottom.",
             ),
-            accent="What to do: pick N as for the smoothed filter, then draw the 3-sigma line over the bars. A bar above it may mark a top or bottom.",
+            picture=Figure(
+                number="6.21",
+                shows="The daily USDJPY chart with a stepped line across its volume panel labelled 3-sigma volume overextension threshold, drawn over the volume bars themselves, and staying high for months after the March 2011 spike.",
+            ),
+            text_w=6.2,
             notes=(
-                "No picture: this slide reads the book's one sentence on the oscillator, beside the two figures already shown.",
+                "This slide reads the book's one sentence on the oscillator against Figure 6.21 again: the line sits on the bars, which is what an oscillator in its own panel would not give.",
+                "Point at 1, the stepped line on the volume bars, then at 2, the March spike, and follow the line along: it stays high for months.",
                 "Oscillator is Part 1's word: an indicator in a panel under price.",
             ),
         ),
@@ -1979,17 +1994,44 @@ SECTION3 = Section(
                 "Falls through it: the book says the market reversed downward, violating the rising channel.",
             ),
         ),
-        Content(
-            origin="Book pp.189-190 and Figure 6.22. Ours: the arithmetic at X, and what the figure's volume panel shows.",
-            title="What the channel is for, and what the book leaves open",
-            lines=(
-                "Ours: X is bar 72, 28 bars after trough 3 at bar 44. The lower line is there at 49.00 + 28 x 0.10 = PHP 51.80; price touches it and turns up.",
-                "Silver's April bars (labelled High tick volume level) and late September bars reach the line too; the channel uses only July to August, unexplained.",
-                "Chapter 5's uptrend line joined troughs; here the book joins two peaks and gives no reason. Either way, two parallels make the channel.",
+        Pair(
+            origin="Book pp.189-190. Ours: the channel, its numbers and the arithmetic at X, on the step by step chart's invented prices.",
+            left=Content(
+                title="What the channel is for: the lower line at X",
+                lines=(
+                    "Ours: the lower line rises at the slope of peaks 1 to 2: PHP 4.00 in 40 bars, 0.10 a bar.",
+                    "X is bar 72, 28 bars after trough 3 at bar 44, shaded. The lower line is there at 49.00 + 28 x 0.10 = PHP 51.80; price touches it and turns up.",
+                ),
+                accent="What to do: at the lower line, look for a short-term buy. Falling through it violates the channel, the book's word.",
             ),
-            accent="What to do: at the lower line, look for a short-term buy, as at silver's X. Falling through it violates the channel.",
+            picture=Chart(
+                letter="HV",
+                shows="The invented channel of the step by step chart: a solid line through peaks 1 and 2 and a dashed parallel through trough 3, bar 44, PHP 49.00, rising PHP 0.10 a bar. The 28 bars from trough 3 to X are shaded, and at X, bar 72, price touches the dashed line at 49.00 + 28 x 0.10 = PHP 51.80.",
+            ),
+            text_w=CHART_W,
             notes=(
-                "28 is the number of bars from trough 3, bar 44, to X, bar 72, on the step by step chart.",
+                "Count along the shaded stretch: trough 3 at bar 44 to X at bar 72 is 28 bars, and 28 times 0.10 is 2.80 on top of 49.00.",
+                "The buy at the lower line is the book's reading of silver's X on the last slide's figure; here it is worked on our own numbers.",
+            ),
+        ),
+        Pair(
+            origin="Book pp.189-190 and Figure 6.22. Ours: what the figure's volume panel shows that the text does not explain.",
+            left=Content(
+                title="What Figure 6.22 leaves open",
+                lines=(
+                    "The channel uses only the July to August peaks in tick volume, 4, under Points 1, 2 and 3.",
+                    "Yet silver's April bars, 5, at the line labelled High tick volume level, and late September bars, 6, reach the threshold too; the book does not say why it skips them.",
+                    "Chapter 5's uptrend line joined troughs; here the book joins two peaks, Points 1 and 2, and gives no reason.",
+                ),
+                accent="Use heavily traded turns; which of them is left to the eye.",
+            ),
+            picture=Figure(
+                number="6.22",
+                shows="The daily silver chart, XAGUSD, with its tick volume overextension threshold. The July to August tick volume peaks are ringed under Points 1, 2 and 3; the April bars, at the line labelled high tick volume level, and the late September bars also reach the threshold and are not used.",
+            ),
+            text_w=5.6,
+            notes=(
+                "Point at 4, the ringed July to August bars, then at 5 and 6: both reach the threshold, and neither is used.",
                 "Why only heavily traded turns? The book says only that it shows the importance of significant inflection points; the next figure's slide quotes it. Part 3's first rule, a barrier formed at a volume peak is the most reliable, fits, and that link is ours.",
             ),
         ),
@@ -2015,19 +2057,26 @@ SECTION3 = Section(
                 "The book admits the line through X was found looking back. It still calls the channel valid.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book pp.189-190 and Figure 6.23. Angular symmetry: Chapter 5. Ours: what the figure rings and what it does not.",
-            title="What Figure 6.23 shows, and two things it leaves open",
-            lines=(
-                "Every line has the slope of trendline 1 to 2, January to November 2011: one steady angle, which the book calls near perfect angular symmetry (Chapter 5).",
-                "The 5 and 6 channel: resistance at its top, support at its bottom. The book's lesson: build patterns on significant inflection points.",
-                "Open: the text calls it the same chart of USDJPY; caption and chart say silver.",
-                "Open: the figure rings no heavy volume under 4 or X, though both anchor lines.",
+            left=Content(
+                title="What Figure 6.23 shows, and two things it leaves open",
+                lines=(
+                    "Every line has the slope of trendline 1 to 2, 7: one steady angle, the book's near perfect angular symmetry (Chapter 5).",
+                    "The 5 and 6 channel, 8: resistance at its top, support at its bottom.",
+                    "Open: the text says USDJPY; the chart, silver.",
+                    "Open: no heavy volume is ringed under 4 or X, 9, yet both anchor lines.",
+                ),
+                accent="Build lines on heavily traded turns; watch the parallels for resistance and support.",
             ),
-            accent="Draw from heavily traded turns; watch the parallels for resistance and support.",
+            picture=Figure(
+                number="6.23",
+                shows="The same silver chart with volume filtered points 1 to 6 and X. Every line runs parallel to the trendline from 1 to 2; the last channel runs from 5 and 6; the volume panel rings heavy volume under 1, under 3 and 2, and under 5 and 6, and nothing under 4 or X.",
+            ),
+            text_w=6.0,
             notes=(
-                "No picture of its own: it reads Figure 6.23, on the slide before, as a whole.",
-                "Look at the three ovals on the volume panel: they sit under 1, under 2 and 3, and under 5 and 6.",
+                "Point at 7, the line from 1 to 2, and lay a ruler along it: every other line has its angle.",
+                "Then 8, the channel from 5 and 6, and 9: no oval under 4 or under X, though each anchors a line.",
             ),
         ),
         Check(
@@ -2223,19 +2272,26 @@ SECTION4 = Section(
                 "The chart is the next slide's four days, one column a day. Read its labels against the three rules in the example row.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.192 gives the three rules and the reason. The traders and contract counts are ours.",
-            title="Open interest, day by day",
-            lines=(
-                "Day 1: A buys 1 from B, both new, A long and B short: plus 1. Open interest 1.",
-                "Day 2: C buys 2 from D, both new: plus 2. Open interest 3.",
-                "Day 3: A sells that 1 to E, the new long; B is still short: no change. Still 3.",
-                "Day 4: D buys back 2 from C: D's short and C's long close: minus 2. Now 1.",
+            left=Content(
+                title="Open interest, day by day",
+                lines=(
+                    "Day 1: A buys 1 from B, both new, A long and B short: plus 1. Open interest 1.",
+                    "Day 2: C buys 2 from D, both new: plus 2. Open interest 3.",
+                    "Day 3: A sells that 1 to E, the new long; B is still short: no change. Still 3.",
+                    "Day 4: D buys back 2 from C: D's short and C's long close: minus 2. Now 1.",
+                ),
+                accent="Only both sides opening, or both closing, moves the count.",
+                caption="The book's reason to count: unlike stocks, all futures and options contracts eventually expire.",
             ),
-            accent="Only both sides opening, or both closing, moves the count.",
-            caption="The book's reason to count: unlike stocks, all futures and options contracts eventually expire.",
+            picture=Chart(
+                letter="HA",
+                shows="Open interest over the slide's four days, one column a day: 1, 3, 3 and 1 contracts. Under each, what the day did to the count: day 1 new, plus 1; day 2 new, plus 2; day 3 one side replaced, no change, in gold; day 4 closed, minus 2.",
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture of its own: the chart beside the term is these four days, one column each.",
+                "Read each day's line, then its column: the label under the column is the line's rule.",
                 "On day 4, D buying back is covering and C selling is liquidating: Chapter 1's words for closing a short and a long.",
             ),
         ),
@@ -2261,18 +2317,24 @@ SECTION4 = Section(
                 "This is review question 6, the relationship between volume, open interest and price.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.192 gives the four readings and their reasons. The contract, its prices and its counts are ours, invented.",
-            title="The four readings, worked",
-            lines=(
-                "Ours: a futures contract rises from PHP 100 to PHP 110.",
-                "Open interest 50,000 to 60,000 contracts, volume 8,000 to 12,000 a day: both rise with price. Bullish confirmation, buying pressure.",
-                "Open interest 50,000 to 40,000, volume 8,000 to 5,000: both fall as price rises. Bearish divergence: shorts covering, longs leaving.",
-                "Falling from PHP 110 to PHP 100 instead: both rising is bearish confirmation, short selling; both falling, bullish divergence.",
+            left=Content(
+                title="The four readings, worked",
+                lines=(
+                    "1  Ours: a futures contract rises from PHP 100 to PHP 110. Open interest 50,000 to 60,000 contracts, volume 8,000 to 12,000 a day: bullish confirmation, buying pressure.",
+                    "2  The same rise; open interest 50,000 to 40,000, volume 8,000 to 5,000: bearish divergence, shorts covering, longs leaving.",
+                    "Falling, PHP 110 to PHP 100: 3, both rising, is bearish confirmation, short selling; 4, both falling, bullish divergence.",
+                ),
+                accent="Same price move, opposite readings: volume and open interest decide.",
             ),
-            accent="Same price move, opposite readings: volume and open interest decide.",
+            picture=Chart(
+                letter="HB",
+                shows="The four cases as arrows for price, volume and open interest, numbered as the slide numbers them. 1 all three rising, open interest 50,000 to 60,000 and volume 8,000 to 12,000. 2 price up, the other two down, open interest 50,000 to 40,000 and volume 8,000 to 5,000. 3 price down, the other two up: bearish confirmation. 4 all three falling: bullish divergence.",
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture: it puts numbers on the four sketches of the last slide. The names are Part 1's: bullish or bearish, confirmation or divergence.",
+                "This slide puts numbers on the four sketches of the last slide. The names are Part 1's: bullish or bearish, confirmation or divergence.",
                 "Ask the room to name the case before you read the answer: price up, open interest down, volume down.",
             ),
         ),
@@ -2393,18 +2455,25 @@ SECTION4 = Section(
                 "Work the arithmetic slowly. The TRIN is a ratio of two ratios.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.193 gives the ratio. It names breadth volume, advances, declines, up and down volume and never defines them; our readings. The numbers are ours.",
-            title="The TRIN, step by step",
-            lines=(
-                "1  Advances / declines = 1,500 / 1,000 = 1.5 rising stocks for each falling one.",
-                "2  Up volume / down volume = 600m / 800m = 0.75: the falling stocks traded more shares.",
-                "3  TRIN = 1.5 / 0.75 = 2.0. Rearranged: down volume per falling stock, 800m / 1,000 = 0.8m, over up volume per rising stock, 600m / 1,500 = 0.4m.",
+            left=Content(
+                title="The TRIN, step by step",
+                lines=(
+                    "1  Advances / declines = 1,500 / 1,000 = 1.5 rising stocks for each falling one.",
+                    "2  Up volume / down volume = 600m / 800m = 0.75: the falling stocks traded more shares.",
+                    "3  TRIN = 1.5 / 0.75 = 2.0. Rearranged: down volume per falling stock, 800m / 1,000 = 0.8m, over up volume per rising stock, 600m / 1,500 = 0.4m.",
+                ),
+                accent="A TRIN of 2.0: each falling stock traded, on average, twice the volume of each rising stock.",
+                caption="Step 3 and the gold line are our arithmetic; the book never reads one value such as 2.0.",
             ),
-            accent="A TRIN of 2.0: each falling stock traded, on average, twice the volume of each rising stock.",
-            caption="Step 3 and the gold line are our arithmetic; the book never reads one value such as 2.0.",
+            picture=Chart(
+                letter="HE",
+                shows="The TRIN worked as the slide's three steps, numbered. 1 advances 1,500 against declines 1,000, a ratio of 1.5. 2 up volume 600 million against down volume 800 million, a ratio of 0.75. 3 the two ratios and their quotient, a TRIN of 2.0, in gold.",
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture: the chart beside the term is these three steps as columns.",
+                "Each step on the slide is the cell with its number on the chart: read the columns, then the division under them.",
                 "Step 3 is only the same division rearranged. Check it on the board: 0.8 / 0.4 = 2.0.",
             ),
         ),
@@ -2430,18 +2499,26 @@ SECTION4 = Section(
                 "The converse, the longer-term rule and the book's gaps are the next slide.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.193 and Figure 6.25. The weekly tick numbers are ours, in invented units; the book never says what the tick measures.",
-            title="The longer-term rule, and the book's gaps",
-            lines=(
-                "Short term, the converse: tick falling but not oversold, TRIN rising but not overbought: bearish, look for a short entry.",
-                "Longer term: tick oversold, above its weekly two-sigma level, and TRIN overbought, near or above 3.0 daily: bullish, long. Reverse: bearish, short.",
-                "Two sigma: Part 3's line, k = 2. Ours: weekly tick mean 200, sigma 300, line 200 + 2 x 300 = 800; above it, oversold. A daily TRIN of 3.2: overbought.",
+            left=Content(
+                title="The longer-term rule, and the book's gaps",
+                lines=(
+                    "Short term, the converse: tick falling but not oversold, TRIN rising but not overbought: bearish, look for a short entry.",
+                    "Longer term: tick oversold, above its weekly two-sigma level, and TRIN overbought, near or above 3.0 daily: bullish, long. Reverse: bearish, short.",
+                    "Two sigma: Part 3's line, k = 2. Ours: weekly tick mean 200, sigma 300: 200 + 2 x 300 = 800; above it, oversold. Daily TRIN 3.2: overbought.",
+                ),
+                accent="A bullish TRIN: overbought in the text; oversold at 1.",
+                caption="No reasons for either rule. The oversold tick, 2, sits at its low, not above two sigma.",
             ),
-            accent="Bullish TRIN: overbought in the text, oversold in Figure 6.25.",
-            caption="No reasons for either rule. Figure 6.25's oversold tick sits at its low, not above two sigma.",
+            picture=Figure(
+                number="6.25",
+                shows="The 1-minute S&P 500 chart of the last slide. In the box at the low, the TRIN reaches about 2.2 at the line the figure labels TRIN oversold, and the tick drops to about -1,000 at the line it labels TICK oversold: both at the bottom of their swing, not above a two-sigma level.",
+            ),
+            text_w=7.2,
             notes=(
-                "This slide has no picture: it finishes the book's rules from the last slide's figure. Do not settle the gaps; name them.",
+                "This slide finishes the book's rules on the last slide's figure. Point at 1, the TRIN the figure calls oversold, then read the text's rule: a bullish TRIN is overbought. Do not settle the gap; name it.",
+                "Then 2, the tick at its low. The text's longer-term oversold tick is above a two-sigma level, so the figure is not that rule either.",
                 "No check rests on these rules. The check after this part tests only tick volume and the TRIN's arithmetic.",
             ),
         ),
@@ -2588,17 +2665,24 @@ SECTION4 = Section(
                 "The book takes the nearest turn either side of the intersection. The next slide says what our two levels then did.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book pp.196-197. The prices are our chart's, read from the series that drew it.",
-            title="What the two levels did on our chart",
-            lines=(
-                "Support at PHP 47.50: price turned up near it twice, at PHP 47.40 and PHP 47.50.",
-                "Resistance at PHP 50.80: price turned down near it twice, at PHP 50.90 and PHP 50.80, then broke above it and rose to about PHP 58.60.",
-                "The book says potentially: likely levels, not certain ones. It does not say what a break through one means.",
+            left=Content(
+                title="What the two levels did on our chart",
+                lines=(
+                    "Support at PHP 47.50: price turned up near it twice, at 1, PHP 47.40, and 2, PHP 47.50.",
+                    "Resistance at PHP 50.80: price turned down near it twice, at 3, PHP 50.90, and 4, PHP 50.80, then broke above it and rose to about PHP 58.60, at 5.",
+                    "The book says potentially: likely levels, not certain ones. It does not say what a break through one means.",
+                ),
+                accent="A level from the four steps is potential: ours held twice, then broke.",
             ),
-            accent="A level from the four steps is potential: ours held twice, then broke.",
+            picture=Chart(
+                letter="HG",
+                shows="The invented share of the four steps chart with its two step 4 levels, resistance at PHP 50.80 and support at PHP 47.50. Price turns up near support at 1, PHP 47.40, and 2, PHP 47.50; turns down near resistance at 3, PHP 50.90, and 4, PHP 50.80; then breaks above and rises to about PHP 58.60 at 5.",
+            ),
+            text_w=CHART_W,
             notes=(
-                "This slide has no picture: it reads the two lines of the chart on the last slide, after the step 4 prices were found.",
+                "Read the five numbers in order: two turns up at support, two turns down at resistance, then the break.",
                 "Do not add a rule for the break. The book gives none.",
             ),
         ),

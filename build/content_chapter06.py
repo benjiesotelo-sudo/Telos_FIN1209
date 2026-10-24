@@ -2129,7 +2129,7 @@ SECTION5 = Section(
             origin="Book p.197: the four names. The pesos and share counts in the example are ours. The chart is ours: sketches, not prices.",
             left=Term(
                 term="Rest, reversal and continuation bars",
-                plain="Four names for one bar: narrow or wide range, on low or high volume, each against the trend's usual bars.",
+                plain="One name for each of four kinds of bar: narrow or wide range, on low or high volume, each judged against the trend's usual bars.",
                 example="Usual bar: PHP 1.00 on 2 million shares. PHP 0.20 on 5 million: narrow, high, a High Volume Reversal Bar.",
                 formal="Narrow range on low volume: Low Volume Rest Bar. Narrow, high volume: High Volume Reversal Bar. Wide, low volume: Low Volume Reversal Bar. Wide, high volume: High Volume Continuation Bar.",
             ),
@@ -2184,7 +2184,7 @@ SECTION5 = Section(
             lines=(
                 "Ours: the usual bar moves PHP 1.00 on 2 million shares. Today 5 million trade, 2.5 times usual, and price moves only PHP 0.20.",
                 "The book: were that volume buying, the range would be much wider. So sellers are attempting to take control. In a downtrend, the converse.",
-                "Ours: price jumps PHP 3.00 on 0.7 million shares, a third of usual. The book: a large move on little participation, a lack of interest.",
+                "Ours: price jumps PHP 3.00 on 0.7 million shares, a third of usual. The book: a large move on little participation, its word for volume: a lack of interest.",
             ),
             accent="A warning of a potential turn, not a certainty: the book gives no entry rule.",
             notes=(
@@ -2254,19 +2254,19 @@ SECTION5 = Section(
             left=Content(
                 title="High volume reversal bars: a dollar fund",
                 lines=(
-                    "At 1 and 2: a narrow range candle on one of the tallest volume bars, about 12 million shares against 5 million most days.",
-                    "Point 1, near a low: price then rises. Point 2, near a high: the chart ends before its reversal shows.",
+                    "At 1 and 2: a narrow range candle on one of the tallest volume bars, about 11 to 13 million shares against 5 million most days.",
+                    "Point 1, late October, at a low: price then rises. Point 2, at the year end, ends a dip from about 22.6 to 22.35: price turns back up to 22.72.",
                     "August: volume falls into a triangle's apex, where its lines meet: Part 2's low volume breakout signal. Then a volume surge.",
                 ),
                 accent="Narrow bar, heavy volume, then a turn.",
             ),
             picture=Figure(
                 number="6.31",
-                shows="The daily dollar fund. Narrow range candlesticks on high volume circled at 1, near a low, and 2, near a high, lined to their tall volume bars. At the left, a triangle and a low volume breakout signal.",
+                shows="The daily dollar fund: narrow range candlesticks on high volume circled at 1, at a low, and 2, at a dip near the highs, lined to tall volume bars; a triangle at the left.",
             ),
             text_w=6.0,
             notes=(
-                "Point 1 is a reversal bar at a bottom, so the converse applies: bullish. Point 2 is at a top.",
+                "Both points are reversal bars after a fall, so the converse applies: bullish. Point 1 ends a decline, Point 2 a short dip near the highs; price turns up after each, as the book says.",
                 "The triangle on the left is Part 2's low volume breakout signal again: volume falling into the apex, then surging. The book calls it a descending triangle; its shape is the book's Chapter 13.",
             ),
         ),
@@ -2316,9 +2316,9 @@ SECTION5 = Section(
             origin="Book p.199. Ours: every number, the reading of larger trend as the whole move, and the reading of X. The book does not define the larger trend.",
             title="Why the larger trend matters, with numbers",
             lines=(
-                "Larger, or predominant, trend: the whole move, not the last few bars. Ours: PHP 60 to PHP 45 in six months, then a two-week rally to PHP 48.",
+                "Larger, or predominant, trend, our reading as the book gives none: the whole move. Ours: PHP 60 to 45 in six months, then a rally to 48.",
                 "A high volume reversal bar at PHP 48 is bearish, with the six-month fall: potentially more reliable. The book says the same of continuation bars.",
-                "Figure 6.33's X, a high volume continuation bar, is a tall rising candle: against the larger downtrend. Its rally ended at the circle.",
+                "Figure 6.33's X, by eye, as the book does not say: rising against the larger downtrend, the less reliable kind. Its rally lasted about two and a half weeks.",
             ),
             accent="Ask which way the larger trend runs. The book gives no further reason.",
             notes=(
@@ -2410,11 +2410,11 @@ SECTION5 = Section(
             left=Content(
                 title="Volume leading price, or price leading volume",
                 lines=(
-                    "Most agree that without volume, price cannot move significantly: volume leading price.",
-                    "Yet signals need little volume to appear. Chart, 1: a small trendline breakout on ordinary volume.",
+                    "Volume leading price, our reading: volume rises first, price moves after. Most agree price cannot move significantly without volume.",
+                    "Price leading volume: price breaks first. Signals need little volume to appear. Chart, 1: a small trendline breakout on ordinary volume.",
                     "As the break becomes obvious it invites tremendous volume. Chart, 2: volume more than doubles.",
                 ),
-                accent="Price moved first: price led volume. More often now, says the book.",
+                accent="Price moved first: price led volume.",
             ),
             picture=Chart(
                 letter="AK",
@@ -2432,7 +2432,7 @@ SECTION5 = Section(
             lines=(
                 "Ours: volume runs about 1.3 million a day. Price closes PHP 0.80 above a falling trendline that held for two months, on 1.3 million: an ordinary day.",
                 "By volume alone, nothing happened. But the break is on every chart, and days later 3 million trade as the move becomes obvious.",
-                "So a light volume signal is not dismissed for that alone, nor proven by it: the volume may come after.",
+                "So light volume on the break does not cancel the signal: watch whether volume arrives in the days after. The book gives no rule for how long to wait.",
                 "Why more often now, the book says: the widespread use of technical analysis.",
             ),
             accent="No significant move without volume, but volume can follow the signal.",
@@ -2460,35 +2460,35 @@ SECTION5 = Section(
             ),
         ),
         Content(
-            origin="Book pp.200-201. Ours: the EURUSD prices and order levels. Bidirectional entry: a Chapter 5 term. Stop orders: Chapter 1.",
+            origin="Book pp.200-201. Ours: the EURUSD prices, the timing and the order levels. EURUSD: the euro priced in US dollars. Bidirectional entry: a Chapter 5 term.",
             title="Using the cycle: when to watch, not which way",
             lines=(
-                "The book: the cycle lets us anticipate potential price action. At the peak hour price will reverse or continue, very rarely stay put.",
-                "It does not say which way, so many use a straddle, Chapter 5's bidirectional entry: a buy stop above price and a sell stop below.",
-                "Ours: EURUSD, the euro against the US dollar, at 1.3000. Buy stop 1.3020, sell stop 1.2980: whichever price reaches first is the trade.",
+                "The book: the cycle lets us anticipate price action. At the peak hour price will reverse or continue, very rarely stay put.",
+                "It does not say which way, so many use a straddle, Chapter 5's bidirectional entry: one order each way.",
+                "Ours: EURUSD at 1.3000 before 1:30 p.m. GMT. A buy stop at 1.3020 buys only if price rises to it; a sell stop at 1.2980 sells only if price falls to it.",
             ),
-            accent="The book gives no reason for the hour, no distance for the orders, and shows it only on EURUSD.",
+            accent="The book gives no reason for the hour, no distance for the orders, and nothing on the order not filled.",
             notes=(
                 "This slide has no picture: it is the book's use of the cycle, with the straddle worked in one market.",
                 "The 20-point distance is ours. The book gives no distance for the two orders, and does not say what is done with the one not filled.",
             ),
         ),
         Pair(
-            origin="Book pp.200-201 and Figure 6.36. Retest: our plain reading; the book does not define it. The figure's apex and bottom labels are not in the text.",
+            origin="Book pp.200-201 and Figure 6.36. Retest: our plain reading; the book does not define it. The figure's labels and dotted lines are not explained in the text.",
             left=Content(
                 title="Volume cycle peaks at support and resistance",
                 lines=(
-                    "30-minute EURUSD: almost every reversal comes at an intraday tick volume peak, the daily spikes in the bottom panel.",
-                    "Tick volume, Part 4: a count of trades, given by fx brokers instead of volume.",
+                    "30-minute EURUSD: almost every reversal comes at a peak in tick volume, Part 4's count of trades: the daily spikes in the bottom panel.",
+                    "Follow the solid line down from Market bottom: it lands on one of the tallest spikes.",
                     "Especially useful when price retests a support or resistance level: comes back to one it turned at before.",
                 ),
                 accent="Many straddle the peak: catch price either way.",
             ),
             picture=Figure(
                 number="6.36",
-                shows="A 30-minute EURUSD chart over several weeks with support and resistance lines, a triangle and a channel, and daily volume cycles in the volume panel; price reverses at the volume peaks.",
+                shows="A 30-minute EURUSD chart over weeks, with support and resistance lines, a triangle and a channel, over daily volume cycles; price turns at the peaks.",
             ),
-            text_w=5.8,
+            text_w=6.0,
             notes=(
                 "Straddle is the book's second name for the bidirectional entry: orders above and below, so either move is caught.",
                 "The daily spikes in the volume panel are the cycle. Line a few of them up with turns in price.",
@@ -2499,17 +2499,17 @@ SECTION5 = Section(
             left=Content(
                 title="Trendline retests at volume peaks",
                 lines=(
-                    "Hourly EURUSD: price comes back to a rising trendline and rebounds at 1, 4 and 5, each during a tick volume cycle peak.",
-                    "There a cycle-tuned stochastic, bottom panel, showed oversold too.",
-                    "At 2 and 3 the line failed, with no clear oversold reading: circles Y and X.",
+                    "Hourly EURUSD: at 1, 4 and 5 price rebounds off a rising trendline, each time at a tick volume peak.",
+                    "A cycle-tuned stochastic, bottom panel, read oversold there: its line on the lower line, the grey boxes. The book never defines oversold.",
+                    "At 2 and 3 the trendline failed: at circles Y and X the stochastic was still mid-panel, not clearly oversold.",
                 ),
-                accent="The volume peak times the retest; the oscillator confirms it.",
+                accent="Volume peak and oscillator both: the line held.",
             ),
             picture=Figure(
                 number="6.37",
-                shows="An hourly EURUSD chart with three rising trendlines, retests marked at 1 to 5, a volume panel with daily volume cycles, and a stochastic panel whose oversold readings are marked under 1, 4 and 5, with circles at X and Y where it was not clearly oversold.",
+                shows="Hourly EURUSD with rising trendlines and retests 1 to 5, daily volume cycles below, and a stochastic panel: oversold under 1, 4 and 5, not at X and Y.",
             ),
-            text_w=5.4,
+            text_w=6.0,
             notes=(
                 "Match each number to the shaded marks in the bottom panel. The successful retests had the oscillator oversold; the failures did not.",
                 "Do not teach the stochastic. Oversold is used as in Part 2: named, not defined here.",
@@ -2540,14 +2540,14 @@ SECTION5 = Section(
             origin="Book p.202. Ours: every number. The book says the angle is affected and shows the result; it does not work the arithmetic.",
             title="Why the trendline moves, with numbers",
             lines=(
-                "Ours: two lows, PHP 100 and PHP 110, ten days apart. On a daily chart each day is one step wide: the line rises PHP 1.00 a step.",
-                "On an equivolume chart those ten days, if heavy, are drawn wider, say 20 steps. The same two lows give a line rising PHP 0.50 a step.",
-                "Same prices, different angle, so later prices meet the line at different bars: cut on one chart, not on the other.",
+                "Ours: lows of PHP 100 and PHP 110, ten ordinary days apart, each day one step wide on both charts. The line rises PHP 1.00 a step.",
+                "Then five heavy days: one step each on the daily chart, two each on the equivolume chart. Five days on, the daily line is at PHP 115, the equivolume line at PHP 120.",
+                "A low of PHP 117 that day holds above the daily line and cuts the equivolume one. Equal widths would move nothing: unequal widths move the cut.",
             ),
             accent="The book shows the discrepancy and does not say which break to trust.",
             notes=(
                 "This slide has no picture: it is the geometry of the last slide's two charts, in numbers.",
-                "Rise over run: 10 pesos over 10 steps, then 10 pesos over 20. Same rise, longer run, flatter line.",
+                "Count the steps: 15 on the daily chart, 10 plus 10 on the equivolume chart. If heavy days fell between the two lows instead, the line's angle itself would change, which is the book's word: angle.",
             ),
         ),
         Check(

@@ -233,6 +233,7 @@ class Mark:
     y1: float
     color: str = ""
     at: tuple[float, float] | None = None
+    size: float = 0.34
 
     @property
     def rgb(self) -> RGBColor:
@@ -890,8 +891,8 @@ def _draw_marks(slide, marks, x, y, w, h):
             shape._element.remove(style)
         discs.append((m.number, color, label))
 
-    d = 0.34
     for number, color, (fx, fy) in discs:
+        d = next((m.size for m in marks if m.number == number), 0.34)
         cx, cy = at(fx, fy)
         disc = _rect(slide, cx - Inches(d / 2), cy - Inches(d / 2),
                      Inches(d), Inches(d), color, line=WHITE,
@@ -1468,12 +1469,12 @@ def _render_check_beside(prs, s: Check, marker, index, total):
     _para(frame, s.label, size=15, color=WHITE, bold=True, first=True)
 
     inner_in = s.text_w - 0.5
-    gap = 0.18
+    gap = 0.10
 
     def card_heights(stem_pt, opt_pt):
-        return [0.50 + _text_height(q.stem, inner_in, stem_pt, "bold") + 0.18
-                + sum(_text_height(f"D.  {o}", inner_in, opt_pt) + 0.10
-                      for o in q.options) + 0.15
+        return [0.28 + _text_height(q.stem, inner_in, stem_pt, "bold") + 0.08
+                + sum(_text_height(f"D.  {o}", inner_in, opt_pt) + 0.04
+                      for o in q.options) + 0.08
                 for q in s.questions]
 
     for stem_pt, opt_pt in _BESIDE_SIZES:
@@ -1484,20 +1485,20 @@ def _render_check_beside(prs, s: Check, marker, index, total):
     y = BESIDE_TOP
     for i, (q, card_h) in enumerate(zip(s.questions, heights)):
         _rect(slide, MARGIN, Inches(y), Inches(s.text_w), Inches(card_h), GREEN)
-        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.18),
+        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.10),
                          Inches(inner_in), Inches(0.25))
         _para(frame, f"Q{i + 1}", size=12, color=GOLD, bold=True, first=True)
         stem_h = _text_height(q.stem, inner_in, stem_pt, "bold")
-        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.45),
+        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.32),
                          Inches(inner_in), Inches(stem_h + 0.1))
         _para(frame, q.stem, size=stem_pt, color=WHITE, bold=True, first=True,
               line_spacing=1.15)
         frame = _textbox(slide, MARGIN + Inches(0.25),
-                         Inches(y + 0.45 + stem_h + 0.18), Inches(inner_in),
-                         Inches(card_h - stem_h - 0.6))
+                         Inches(y + 0.32 + stem_h + 0.08), Inches(inner_in),
+                         Inches(card_h - stem_h - 0.48))
         for j, opt in enumerate(q.options):
             _para(frame, f"{'ABCD'[j]}.  {opt}", size=opt_pt, color=WHITE,
-                  first=(j == 0), space_after=6, line_spacing=1.12)
+                  first=(j == 0), space_after=2, line_spacing=1.05)
         y += card_h + gap
 
     _beside_picture(slide, s)

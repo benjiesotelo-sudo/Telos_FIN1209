@@ -70,11 +70,11 @@ KEY_CROP_FIGURE = Figure(
     crop=(0.30, 0.0, 0.20, 0.02),
     marks=(
         Mark(1, "circle", 0.43, 0.10, 0.51, 0.18,
-             color="gold", at=(0.35, 0.08)),
+             color="gold", at=(0.34, 0.06), size=0.39),
         Mark(2, "circle", 0.47, 0.02, 0.54, 0.10,
-             color="red", at=(0.62, 0.02)),
+             color="red", at=(0.63, 0.01), size=0.39),
         Mark(3, "circle", 0.50, 0.24, 0.58, 0.32,
-             color="blue", at=(0.67, 0.34)),
+             color="blue", at=(0.69, 0.35), size=0.39),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked bar opens above the previous high, "
@@ -96,12 +96,12 @@ KEY_WORKED_CHART = Chart(
             "labelled. Marks 1 to 3 show the five-step reading."),
     tier="core",
     marks=(
-        Mark(1, "circle", 0.60, 0.27, 0.66, 0.33,
-             color="gold", at=(0.53, 0.28)),
-        Mark(2, "circle", 0.60, 0.17, 0.66, 0.23,
-             color="red", at=(0.73, 0.16)),
-        Mark(3, "circle", 0.60, 0.52, 0.66, 0.58,
-             color="blue", at=(0.74, 0.58)),
+        Mark(1, "circle", 0.64, 0.29, 0.69, 0.34,
+             color="gold", at=(0.52, 0.34)),
+        Mark(2, "circle", 0.64, 0.18, 0.69, 0.23,
+             color="red", at=(0.77, 0.13)),
+        Mark(3, "circle", 0.64, 0.52, 0.69, 0.57,
+             color="blue", at=(0.77, 0.62)),
     ),
     notes=(
         "Read the prior high and prior close lines before reading marks 1 to 3.",
@@ -118,12 +118,12 @@ COMPARISON_CHART = Chart(
             "beyond the prior high and is followed without a gap. Right: a "
             "pin bar penetrates support and closes back above it."),
     marks=(
-        Mark(1, "circle", 0.20, 0.27, 0.27, 0.36,
-             color="gold", at=(0.14, 0.25)),
-        Mark(2, "circle", 0.20, 0.52, 0.27, 0.61,
-             color="red", at=(0.14, 0.66)),
-        Mark(3, "circle", 0.69, 0.46, 0.76, 0.56,
-             color="blue", at=(0.82, 0.56)),
+        Mark(1, "circle", 0.25, 0.29, 0.30, 0.34,
+             color="gold", at=(0.12, 0.23)),
+        Mark(2, "circle", 0.25, 0.55, 0.30, 0.60,
+             color="red", at=(0.12, 0.69)),
+        Mark(3, "circle", 0.75, 0.45, 0.80, 0.50,
+             color="blue", at=(0.88, 0.58)),
     ),
     tier="core",
     notes=(
@@ -159,7 +159,7 @@ KEY_CHECK = Check(
                 "Prior close",
                 "New high",
                 "Close below prior close",
-                "Later consolidation",
+                "Later bars",
             ),
             answer="C",
             reason=("The preceding slide maps blue mark 3 to the close below "
@@ -226,17 +226,17 @@ SECTION3 = Section(
     slides=(
         Pair(
             left=Content(
-                title="Three marked observations",
+                title="Bearish key reversal: the numbers first",
                 lines=(
                     "A key reversal is an uptrend bar with a higher high, then a close near or below the previous close (Lim, p. 218).",
                     "Prior: O 50.80, H 52.00, L 50.60, C 51.10. New: O 52.30, H 53.20, L 49.90, C 50.80. Ours, invented.",
-                    "[1] open above old high; [2] new high; [3] close below old close. Volume is shares traded: 4.2m versus 2.0m (Chapter 6, “Volume and bar range: Chapter 5's four cases”). Next, Figure 7.15.",
+                    "[1] open above old high; [2] new high; [3] close below old close. Volume is the number of shares traded (Chapter 6): 4.2m versus 2.0m. Next, Figure 7.15.",
                 ),
                 accent="",
                 caption="",
             ),
             picture=KEY_WORKED_CHART,
-            text_w=6.6,
+            text_w=5.8,
             notes=KEY_WORKED_CHART.notes,
             origin=KEY_WORKED_CHART.origin,
         ),
@@ -274,12 +274,12 @@ SECTION3 = Section(
         ),
         Pair(
             left=Content(
-                title="Two reversal warnings",
+                title="Exhaustion bar versus pin bar",
                 lines=(
                     "Exhaustion bar (Lim, p. 226): uptrend open above prior high, close near low, no gap to next bar.",
                     "Pin bar (Lim, p. 227): “Pinocchio bars or Pin bars, are single bar misrepresentations of market strength or weakness.”",
                     "Chart: [1] left O 65.40 > 65.00; [2] left C 60.50 near L, next O 60.20 no gap; [3] right L 38.80 below support 40.00, a barrier. Ours.",
-                    "No gap distinguishes exhaustion from an island (Lim, p. 226). Exhaustion warns a tiring trend; pin warns a false breakout. Next, test key reversal.",
+                    "No gap follows the exhaustion bar (Lim, p. 226). Exhaustion warns a tiring trend; pin warns a false breakout. Next, test key reversal.",
                 ),
                 accent="",
                 caption="",

@@ -1594,17 +1594,20 @@ def render_closing(prs, s: Closing):
 _TOP_SIZES = ((17.0, 15.0), (17.0, 14.0))
 _TOP_REVEAL_SIZES = ((16.0, 20.0, 16.0), (15.0, 18.0, 15.0),
                      (14.0, 17.0, 14.0))
-TOP_PICTURE_TOP = 1.15
+TOP_PICTURE_TOP = 1.08
 # The least height the strip keeps for the picture and its credit line.
-TOP_PICTURE_MIN = 1.5
-TOP_GAP = 0.25
+TOP_PICTURE_MIN = 1.9
+TOP_GAP = 0.12
+# Where the cards under a strip end: lower than a beside check's, still
+# clear of the progress marker, so the strip gets the room.
+TOP_BOTTOM = 6.55
 
 
 def _top_picture(slide, s: Check, bottom):
     """The picture across the top, fitted between the chip and ``bottom``,
     with its credit line under it."""
     _pair_picture(slide, s.picture, MARGIN.inches, TOP_PICTURE_TOP,
-                  CONTENT_W.inches, bottom - TOP_PICTURE_TOP - 0.32)
+                  CONTENT_W.inches, bottom - TOP_PICTURE_TOP - 0.28)
 
 
 def _render_check_top(prs, s: Check, marker, index, total):
@@ -1621,7 +1624,7 @@ def _render_check_top(prs, s: Check, marker, index, total):
 
     col_w = Emu(int((CONTENT_W - Inches(0.7)) / 2))
     inner_in = col_w.inches - 0.6
-    floor = BESIDE_BOTTOM - TOP_PICTURE_TOP - TOP_PICTURE_MIN - TOP_GAP
+    floor = TOP_BOTTOM - TOP_PICTURE_TOP - TOP_PICTURE_MIN - TOP_GAP
 
     for stem_pt, opt_pt in _TOP_SIZES:
         # Measured as rendered: a line of Arial is about 1.2 times its size,
@@ -1637,7 +1640,7 @@ def _render_check_top(prs, s: Check, marker, index, total):
         if card_h <= floor:
             break
 
-    card_top = BESIDE_BOTTOM - card_h
+    card_top = TOP_BOTTOM - card_h
     _top_picture(slide, s, card_top - TOP_GAP)
 
     for i, q in enumerate(s.questions):
@@ -1682,7 +1685,7 @@ def _render_reveal_top(prs, s: Check, marker, index, total):
     col_w = Emu(int((CONTENT_W - Inches(0.5)) / 2))
     inner_in = col_w.inches - 0.6
     refs = {m.number: m.rgb for m in s.picture.marks} or None
-    floor = BESIDE_BOTTOM - TOP_PICTURE_TOP - TOP_PICTURE_MIN - TOP_GAP
+    floor = TOP_BOTTOM - TOP_PICTURE_TOP - TOP_PICTURE_MIN - TOP_GAP
 
     for stem_pt, ans_pt, reason_pt in _TOP_REVEAL_SIZES:
         card_h = max(0.62 + _text_height(f"Q1   {q.stem}", inner_in, stem_pt)
@@ -1694,7 +1697,7 @@ def _render_reveal_top(prs, s: Check, marker, index, total):
         if card_h <= floor:
             break
 
-    card_top = BESIDE_BOTTOM - card_h
+    card_top = TOP_BOTTOM - card_h
     _top_picture(slide, s, card_top - TOP_GAP)
 
     for i, q in enumerate(s.questions):

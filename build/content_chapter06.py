@@ -2193,9 +2193,9 @@ SECTION3 = Section(
                 number="6.22",
                 shows="The daily silver chart, XAGUSD, with a tick volume overextension threshold drawn across its volume panel by eye; the tick volume peaks that reach it are ringed under points 1, 2 and 3.",
                 aspect=1.994,
-                crop=(0.30, 0.55, 0.03, 0.02),
+                crop=(0.30, 0.70, 0.03, 0.02),
                 marks=(
-                    Mark(1, "line", 0.03, 0.819, 0.97, 0.819),
+                    Mark(1, "line", 0.03, 0.721, 0.97, 0.721),
                 ),
             ),
             layout="top",

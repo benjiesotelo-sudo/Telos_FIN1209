@@ -1148,16 +1148,16 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.188-189 and Figure 6.20. Backtest: Chapter 5's gloss. Cycle period: a Chapter 5 term.",
+            origin="Book pp.188-189 and Figure 6.20.",
             left=Content(
                 title="Choosing the average's length",
                 lines=(
-                    "The lookback period: a simple backtest may be needed to find the right filtering.",
-                    "Some set it to the dominant trading cycle period, or half of it.",
-                    "Figure 6.20: spikes above the smoothed volume line, each at a top or a bottom.",
+                    "The average is slide 57's smoothed volume filter, over the last N bars. N, the lookback, is how many bars go into it.",
+                    "Short N, 5 bars say: hugs the bars closely, ordinary ones cross it too, many false signals.",
+                    "Long N, 100 bars say: slow and flat, only huge spikes cross it, few signals, some turns missed.",
                 ),
-                accent="The book gives no number for the length.",
-                caption="Backtest: run a method on past prices. Cycle period: how long a swing takes. Both Chapter 5. Dominant: undefined; our reading, the cycle most visible on the chart.",
+                accent="The right N sits in between. How to find it: next slide.",
+                caption="Figure 6.20: each dotted arrow runs from a spike crossing the line up to a top or a bottom.",
             ),
             picture=Figure(
                 number="6.20",
@@ -1169,13 +1169,27 @@ SECTION3 = Section(
                 "Follow two or three of the dotted arrows from a spike to a turn in price.",
             ),
         ),
+        Content(
+            origin="Book pp.188-189. Ours: the worked cycle number and the actionable backtest description.",
+            title="Choosing the length, continued",
+            lines=(
+                "Backtest: run the filter on past prices with a few different N, and see which one actually caught the real tops and bottoms. Keep that N.",
+                "Rule of thumb: set N to the dominant trading cycle period, or half of it. Ours, invented: swings about 40 bars peak to peak give N = 40, or N = 20.",
+                "The book gives no fixed N. Not that any N works: the right N is found for each market, by backtest or by this rule of thumb.",
+            ),
+            accent="No universal lookback. A method for finding one, for this market.",
+            notes=(
+                "This slide has no picture: it works through the book's two rules of thumb, not a new reading of a chart. Figure 6.20 was the last slide's.",
+                "Walk the backtest sentence slowly: try N = 10, 20 and 50 on last year's chart, and see which flagged the real turns.",
+            ),
+        ),
         Pair(
-            origin="Book p.189. Standard deviation, Chapter 5: how far values typically spread from their average. Bollinger Bands: named in Chapter 1, unexplained. Chart: ours, computed.",
+            origin="Book p.189. Chart: ours, computed; divisor and window read from build/charts_chapter06.py, not guessed.",
             left=Term(
                 term="Two- or three-sigma volume filter",
-                plain="A line two or three standard deviations above average volume: only surges that cross it count.",
-                example="Our chart: the 20-bar average plus three standard deviations of those bars. Three bars cross it.",
-                formal="A two- or three-standard deviation, or sigma, filter, also called a volatility filter, keeps only the most significant surges: a 2 or 3 standard deviation Bollinger Band on volume, upper band only.",
+                plain="Sigma is the standard deviation: how far volume typically strays from its own mean, over the same N bars. The line: Upper = mean + k x sigma, k = 3 here, or 2.",
+                example="Worked, ours: the last 20 bars average 10 million shares, sigma 2 million. 3-sigma line = 10 + 3x2 = 16 million: 12 million does not cross, 18 million does. 2-sigma line = 14 million, so it flags more bars.",
+                formal="A 2- or 3-sigma filter, also a volatility filter, keeps only the most significant surges: a Bollinger Band on volume, lines a set number of standard deviations above and below a moving average, upper band only, since only surges matter here.",
             ),
             picture=Chart(
                 letter="U",
@@ -1183,9 +1197,23 @@ SECTION3 = Section(
             ),
             text_w=TERM_CHART_W,
             notes=(
-                "Sigma is the Greek letter for a standard deviation. Chapter 5 glossed standard deviation as how far values typically spread from their average.",
-                "Bollinger Bands were named in Chapter 1, in the mean reverting approach, and are not explained here. All this filter needs is the upper line.",
+                "Sigma is the Greek letter for a standard deviation: how far values typically spread from their average.",
+                "Bollinger Bands were named in Chapter 1, in the mean reverting approach, and are not explained there either. All this filter needs is the upper line.",
                 "Three sigma is stricter than two: fewer bars cross it.",
+            ),
+        ),
+        Content(
+            origin="Book p.189 gives only the words. Ours: how build/charts_chapter06.py actually computes it, read from the code, not guessed.",
+            title="How the dotted line is drawn, bar by bar",
+            lines=(
+                "At each bar: take its last 20 volume bars, this one included. Mean, then sigma. Plot mean + 3 x sigma. Move forward one bar, repeat.",
+                "That is why it jumps: a spike entering the window raises both at once, so the line leaps up, staying high until the spike leaves 20 bars later.",
+                "The book never says if sigma divides by 20 or 19, or if the bar sits in its own window. Our code divides by 20 and includes the bar.",
+            ),
+            accent="Recomputed from nothing at every bar: no memory beyond its window.",
+            notes=(
+                "This closes the two gaps the review found: the divisor and the window. Both are read straight from the code that drew the chart.",
+                "The jump explanation matches the chart's own footnote, here given as the reason instead of just the fact.",
             ),
         ),
         Pair(
@@ -1667,7 +1695,7 @@ SECTION4 = Section(
             origin="Book p.194 defines both. The chart is ours: the volume by price is added up from its own invented bars and volume.",
             left=Term(
                 term="Volume by price and volume by time",
-                plain="By time: the usual bars, one a period. By price: sideways bars, one per price level.",
+                plain="A different split from the tick and the TRIN: not a breadth count, but one share count sliced two ways. By time: the usual bars, one a period. By price: sideways bars, one per price level.",
                 example="Our chart, 100 days: 68 million shares at PHP 48 to 50, 12 million at PHP 54 to 56. The longest sideways bar: PHP 48 to 50.",
                 formal="Volume by time represents the total volume traded over a specified time interval or period. Volume by price identifies the total volume traded at each price level.",
             ),

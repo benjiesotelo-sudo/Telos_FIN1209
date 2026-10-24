@@ -64,27 +64,26 @@ BULLISH_FIGURE = Figure(
 )
 
 KEY_CROP_FIGURE = Figure(
-    title="Figure 7.15: the marked bearish key reversal",
+    title="Figure 7.15: read the warning",
     number="7.15",
     aspect=701 / 413,
     crop=(0.30, 0.0, 0.20, 0.02),
     marks=(
-        Mark(1, "circle", 0.43, 0.02, 0.61, 0.25,
-             color="gold", at=(0.62, 0.04)),
-        Mark(2, "circle", 0.43, 0.21, 0.61, 0.44,
-             color="red", at=(0.66, 0.43)),
-        Mark(3, "circle", 0.42, 0.73, 0.62, 0.99,
-             color="blue", at=(0.66, 0.88)),
+        Mark(1, "circle", 0.43, 0.10, 0.51, 0.18,
+             color="gold", at=(0.35, 0.08)),
+        Mark(2, "circle", 0.47, 0.02, 0.54, 0.10,
+             color="red", at=(0.62, 0.02)),
+        Mark(3, "circle", 0.50, 0.24, 0.58, 0.32,
+             color="blue", at=(0.67, 0.34)),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked bar opens above the previous high, "
-           "forms a new high, closes below the previous close, and has above "
-           "average volume."),
+           "forms a new high, and closes below the previous close."),
     notes=(
         "Read the worked PHP example first. Then use the crop to locate the "
         "same three actions in the book's chart.",
-        "The blue mark is the above-average volume panel below the marked bar. "
-        "The later bars show that the decline does not have to be immediate.",
+        "The three marks identify open, new high, and close. The later bars show "
+        "that the decline does not have to be immediate.",
     ),
     origin=("Lim (2016), pp. 218 to 219, Figure 7.15. The crop and marks are "
             "for teaching; the worked PHP values are ours, invented."),
@@ -96,6 +95,14 @@ KEY_WORKED_CHART = Chart(
     shows=("Two invented PHP bars with every OHLC value and volume value "
             "labelled. Marks 1 to 3 show the five-step reading."),
     tier="core",
+    marks=(
+        Mark(1, "circle", 0.60, 0.27, 0.66, 0.33,
+             color="gold", at=(0.53, 0.28)),
+        Mark(2, "circle", 0.60, 0.17, 0.66, 0.23,
+             color="red", at=(0.73, 0.16)),
+        Mark(3, "circle", 0.60, 0.52, 0.66, 0.58,
+             color="blue", at=(0.74, 0.58)),
+    ),
     notes=(
         "Read the prior high and prior close lines before reading marks 1 to 3.",
         "The second bar opens above 52.00, reaches a new high of 53.20, and "
@@ -110,7 +117,14 @@ COMPARISON_CHART = Chart(
     shows=("Two invented three-bar examples. Left: an exhaustion bar opens "
             "beyond the prior high and is followed without a gap. Right: a "
             "pin bar penetrates support and closes back above it."),
-    marks=(),
+    marks=(
+        Mark(1, "circle", 0.20, 0.27, 0.27, 0.36,
+             color="gold", at=(0.14, 0.25)),
+        Mark(2, "circle", 0.20, 0.52, 0.27, 0.61,
+             color="red", at=(0.14, 0.66)),
+        Mark(3, "circle", 0.69, 0.46, 0.76, 0.56,
+             color="blue", at=(0.82, 0.56)),
+    ),
     tier="core",
     notes=(
         "Read left to right. The exhaustion bar opens beyond the previous high, "
@@ -125,32 +139,31 @@ COMPARISON_CHART = Chart(
 )
 
 KEY_CHECK = Check(
-    label="Key reversal bars",
+    label="From “Figure 7.15: three observations”",
     questions=(
         Q(
-            stem=("A bearish key reversal bar must make a higher high than the "
-                  "previous bar and then:") ,
+            stem="A bearish key reversal makes a higher high, then:",
             options=(
-                "Close near or below the previous close",
-                "Close above the previous high",
-                "Open below the previous low",
-                "Trade on low volume only",
+                "Near or below prior close",
+                "Above prior high",
+                "Below prior low",
+                "On low volume only",
             ),
             answer="A",
             reason=("Lim defines the bearish pattern as a higher high followed "
                     "by a close near or below the previous close."),
         ),
         Q(
-            stem="On Figure 7.15, what does blue mark 3 identify?" ,
+            stem="On Figure 7.15, blue mark 3 identifies:",
             options=(
-                "The previous bar's close",
-                "The new high",
-                "The above-average volume",
-                "The later consolidation",
+                "Prior close",
+                "New high",
+                "Close below prior close",
+                "Later consolidation",
             ),
             answer="C",
-            reason=("Blue mark 3 identifies the above-average volume below the "
-                    "key reversal bar."),
+            reason=("The preceding slide maps blue mark 3 to the close below "
+                    "the previous close (Lim, p. 219)."),
         ),
     ),
     picture=KEY_CROP_FIGURE,
@@ -164,7 +177,7 @@ KEY_CHECK = Check(
 )
 
 SECOND_CHECK = Check(
-    label="Key reversal review",
+    label="From “Figure 7.15: three observations”",
     questions=(
         Q(
             stem="A wider key reversal bar makes downside follow-through:",
@@ -174,7 +187,7 @@ SECOND_CHECK = Check(
         ),
         Q(
             stem="The bullish converse is read in a:",
-            options=("Downtrend", "Flat market only", "Monthly chart only", "Volume panel"),
+            options=("Monthly chart only", "Downtrend", "Flat market only", "Volume panel"),
             answer="B",
             reason="The bullish key reversal is the converse in a downtrend.",
         ),
@@ -213,35 +226,33 @@ SECTION3 = Section(
     slides=(
         Pair(
             left=Content(
-                title="Bearish key reversal: numbers first",
+                title="Three marked observations",
                 lines=(
-                    "Prior bar: open 50.80, high 52.00, low 50.60, close 51.10, volume 2.0 million.",
-                    "New bar: open 52.30, high 53.20, low 49.90, close 50.80, volume 4.2 million.",
-                    "[1] Open above the old high. [2] Make a new high. [3] Close below the old close. Then compare volume.",
-                    "The wider bar can make downside follow-through potentially more reliable, but the decline may wait through consolidation.",
+                    "A key reversal is an uptrend bar with a higher high, then a close near or below the previous close (Lim, p. 218).",
+                    "Prior: O 50.80, H 52.00, L 50.60, C 51.10. New: O 52.30, H 53.20, L 49.90, C 50.80. Ours, invented.",
+                    "[1] open above old high; [2] new high; [3] close below old close. Volume is shares traded: 4.2m versus 2.0m (Chapter 6, “Volume and bar range: Chapter 5's four cases”). Next, Figure 7.15.",
                 ),
-                accent="A warning of potential reversal, not a promise of immediate decline.",
+                accent="",
                 caption="",
             ),
             picture=KEY_WORKED_CHART,
-            text_w=5.8,
+            text_w=6.6,
             notes=KEY_WORKED_CHART.notes,
             origin=KEY_WORKED_CHART.origin,
         ),
         Pair(
             left=Content(
-                title="Bearish key reversal: definition and figure reading",
+                title="Figure 7.15: three observations",
                 lines=(
-                    'Definition (p. 218): "A bearish key reversal forms a higher high, then closes near or below the previous close."',
-                    "Figure 7.15: [1] opens above the prior high, [2] forms a new high, and [3] closes below the prior close. Volume is above average.",
-                    "Meaning: a potential downside warning. Consolidation may come before decline.",
-                    "Action: check the 16 reversal characteristics and a significant resistance barrier.",
+                    "From “Three marked observations”: a key reversal makes a higher high, then closes near or below the previous close (Lim, p. 218).",
+                    "Figure 7.15: [1] open above prior high, [2] new high, [3] close below prior close (Lim, p. 219).",
+                    "Meaning/action: potential warning; consolidation may precede decline. Check Lim's 16-item p. 217 list, recalled in Chapter 5 slide “16 Volume and Price Action Reversal Characteristics”, and barrier context from “Barrier proximity”. No indicator formulas here. Next, compare the bullish converse.",
                 ),
-                accent="The five steps identify a warning; context decides how much weight to give it.",
+                accent="",
                 caption="",
             ),
             picture=KEY_CROP_FIGURE,
-            text_w=6.15,
+            text_w=6.6,
             notes=KEY_CROP_FIGURE.notes,
             origin=KEY_CROP_FIGURE.origin,
         ),
@@ -263,19 +274,18 @@ SECTION3 = Section(
         ),
         Pair(
             left=Content(
-                title="Exhaustion bar versus pin bar: numbers first",
+                title="Two reversal warnings",
                 lines=(
-                    "Left values: prior high 65.00; O 65.40, H 66.20, L 60.00, C 60.50; next O 60.20, no gap.",
-                    "Right values: support 40.00; low 38.80, close 40.60, volume 0.8 million; price closes back above support.",
-                    "[1] and [2] label price action. [3] marks the no-gap test on the left and the pin bar on the right.",
-                    'Lim: "Exhaustion bars are regarded as reversal bars." (p. 226) A pin bar is a "single bar misrepresentation." (p. 227)',
-                    "Exhaustion warns of a tiring trend; pin warns of a false breakout. No gap separates exhaustion from an island formation. Wait for close, barrier, and volume context.",
+                    "Exhaustion bar (Lim, p. 226): uptrend open above prior high, close near low, no gap to next bar.",
+                    "Pin bar (Lim, p. 227): “Pinocchio bars or Pin bars, are single bar misrepresentations of market strength or weakness.”",
+                    "Chart: [1] left O 65.40 > 65.00; [2] left C 60.50 near L, next O 60.20 no gap; [3] right L 38.80 below support 40.00, a barrier. Ours.",
+                    "No gap distinguishes exhaustion from an island (Lim, p. 226). Exhaustion warns a tiring trend; pin warns a false breakout. Next, test key reversal.",
                 ),
                 accent="",
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=6.4,
+            text_w=6.6,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,
         ),

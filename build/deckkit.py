@@ -22,7 +22,7 @@ from __future__ import annotations
 import os
 import re
 import zipfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from pathlib import Path
 
@@ -1434,15 +1434,23 @@ def render_recap(prs, s: Recap, marker):
 
 # The type sizes a check beside a picture steps through, largest first, and
 # never below twelve point.
-_BESIDE_SIZES = ((17.0, 15.0), (16.0, 14.0), (15.0, 13.5), (14.0, 13.0),
-                 (13.0, 12.0), (12.0, 12.0))
+_BESIDE_SIZES = ((17.0, 17.0),)
 BESIDE_TOP = 1.32
 BESIDE_BOTTOM = 6.30
 
 
-def _beside_picture(slide, s: Check):
+def _beside_picture(slide, s: Check, reveal=False):
     x = MARGIN.inches + s.text_w + PAIR_GAP
-    _pair_picture(slide, s.picture, x, BESIDE_TOP,
+    picture = s.picture
+    # LibreOffice can paint a repeated cropped image blank when the answer
+    # slide reuses the exact same source rectangle as the question slide.
+    # A sub-pixel crop change preserves the visible crop and keeps the marks
+    # aligned while giving the answer its own image paint operation.
+    if reveal and isinstance(picture, Figure) and picture.crop:
+        left, top, right, bottom = picture.crop
+        picture = replace(picture, crop=(left - 0.0001, top,
+                                         right - 0.0001, bottom))
+    _pair_picture(slide, picture, x, BESIDE_TOP,
                   CONTENT_W.inches - s.text_w - PAIR_GAP,
                   PAIR_BAND_BOTTOM - BESIDE_TOP)
 
@@ -1524,9 +1532,7 @@ def _render_reveal_beside(prs, s: Check, marker, index, total):
                 + _text_height(q.reason, inner_in, reason_pt)
                 for q in s.questions]
 
-    for stem_pt, ans_pt, reason_pt in ((16.0, 20.0, 16.0), (15.0, 18.0, 15.0),
-                                       (14.0, 17.0, 14.0), (13.0, 15.0, 13.0),
-                                       (12.0, 14.0, 12.0)):
+    for stem_pt, ans_pt, reason_pt in ((17.0, 20.0, 17.0), (17.0, 18.0, 17.0)):
         heights = card_heights(stem_pt, ans_pt, reason_pt)
         if sum(heights) + 0.2 <= BESIDE_BOTTOM - BESIDE_TOP:
             break
@@ -1553,7 +1559,7 @@ def _render_reveal_beside(prs, s: Check, marker, index, total):
               line_spacing=1.15, refs=refs)
         y += card_h + 0.2
 
-    _beside_picture(slide, s)
+    _beside_picture(slide, s, reveal=True)
     _progress(slide, marker)
     _notes(slide, s.notes or (
         "Reveal one at a time. Say the reason out loud, not just the letter.",

@@ -183,9 +183,9 @@ COMPARISON_CHART = Chart(
         Mark(4, "line", 0.27, 0.60, 0.37, 0.58,
              color="purple", at=(0.42, 0.55), size=0.25),
         Mark(5, "circle", 0.735, 0.60, 0.77, 0.67,
-             color="gold", at=(0.70, 0.73), size=0.25),
+             color="gold", at=(0.84, 0.66), size=0.25),
         Mark(6, "circle", 0.735, 0.37, 0.77, 0.43,
-             color="red", at=(0.83, 0.38), size=0.25),
+             color="red", at=(0.94, 0.30), size=0.25),
     ),
     tier="core",
     notes=(
@@ -437,10 +437,8 @@ WORKED_CHART = Chart(
 )
 
 # --------------------------------------------------------------------------
-# Part 3, first half: the sample sequence above is kept unchanged.  The
-# figures below are the book's figures, with the teaching marks in this
-# chapter's colours.  The three charts are ours and use letters R onward so
-# they cannot collide with the approved sample charts A and B.
+# Part 3, first half: the figures below are the book's figures, with the
+# teaching marks in this chapter's colours. The reworked charts use K onward.
 # --------------------------------------------------------------------------
 
 KEY_PLAIN = Content(
@@ -460,13 +458,13 @@ KEY_PLAIN = Content(
 
 KEY_CAVEAT = Pair(
     left=Content(
-        title="Key reversal: consolidation can come first",
+        title="A key reversal can warn early without starting an immediate fall",
         lines=(
-            "Lim says a rapid decline may not follow. The market can hover near the key bar [1] before falling [2] (p. 219).",
-            "Ours: the key bar closes PHP 50.80, then prices hover at PHP 50.60 [1] before declining to PHP 48.90 [2].",
-            "Meaning/action: treat the bar as a potential warning; wait for the surrounding context rather than assuming timing.",
+            "A key reversal is a warning about changing pressure, not a promise that price will fall at once.",
+            "Lim's Figure 7.15 shows the market hovering near the key bar [1] before the later decline [2] (p. 219).",
+            "Read the pattern first, then wait for the surrounding context rather than assuming the timing of the move.",
         ),
-        accent="A wide bar may make follow-through more reliable, but width does not guarantee it.",
+        accent="A wide bar may make follow-through more reliable, but it does not guarantee it.",
     ),
     picture=KEY_CAVEAT_FIGURE,
     text_w=6.8,
@@ -681,21 +679,21 @@ TRIPLE_CHECK = Check(
 
 KEY_CONTEXT = Pair(
     left=Content(
-        title="Key reversal: the bullish context",
+        title="The bullish key reversal is the same idea in a downtrend",
         lines=(
-            "In a downtrend, the converse makes a new low [1], then closes near or above the previous close [2].",
-            "Ours: the prior low is PHP 42.00 and close PHP 41.00; the new low is PHP 40.50, then the close is PHP 43.20 on 4.0 million shares [3].",
-            "Lim's Figure 7.14 observes a rapid rebound after a high-volume bullish key reversal.",
+            "In a downtrend, a bullish key reversal makes a new low [1], then closes near or above the previous close [2].",
+            "The direction changes, but the reading still compares the new extreme with the previous close.",
+            "Lim's Figure 7.14 observes a rapid rebound after a high-volume bullish key reversal. That is the book's example, not a promise for every bar.",
         ),
         accent="The direction changes, but the reading still uses the new extreme and the prior close.",
     ),
     picture=BULLISH_FIGURE,
     text_w=5.8,
     notes=(
-        "Walk the converse with the invented prices before reading the figure.",
+        "Walk the converse from the new low to the close above the previous close before reading the figure.",
         "The rapid rebound is the book's observation in Figure 7.14, not a promise for every bullish key reversal.",
     ),
-    origin="Lim (2016), p. 218, Figure 7.14. The PHP values are ours, invented.",
+    origin="Lim (2016), p. 218, Figure 7.14. The figure shows the book's bullish converse.",
 )
 
 KEY_16_PAIR = Pair(
@@ -716,17 +714,17 @@ KEY_16_PAIR = Pair(
 
 TWO_DAY_WORKED = Pair(
     left=Content(
-        title="Two-day reversal: read the closes",
+        title="A two-day reversal compares the two closing positions",
         lines=(
-            "First close near high [1]; second near low [2].",
-            "Ours: PHP 51.80, then PHP 49.60; the second range is wider.",
-            "Meaning/action: potential bearish reversal, not a guarantee.",
+            "A bearish two-day reversal uses two closing positions: first near the high, second near the low.",
+            "Here is the pattern with simple prices: the first closes at PHP 51.80 near its high [1], and the second at PHP 49.60 near its low [2].",
+            "The book prefers wider ranges for both bars. Treat the pair as a potential reversal warning, not a guarantee (p. 220).",
         ),
-        accent="",
+        accent="The close sequence is the pattern; the range and context affect how much weight to give it.",
     ),
     picture=Chart(
-        letter="RA",
-        title="Two-day bearish reversal",
+        letter="L",
+        title="Two-day bearish reversal with simple prices",
         shows="Two invented PHP bars with OHLC values, closing positions and million-share volume labelled. Mark 1 is the first close near the high and mark 2 the second near the low.",
         tier="core",
         marks=(
@@ -734,13 +732,13 @@ TWO_DAY_WORKED = Pair(
             Mark(2, "circle", 0.64, 0.56, 0.72, 0.65, color="red", at=(0.80, 0.52), size=0.25),
         ),
     ),
-    text_w=4.0,
+    text_w=5.0,
     picture_extra=0.1,
     notes=(
-        "Read the first close near the high, then the second near the low.",
+        "Name the two-day reversal before reading the values. Then read the first close near the high and the second near the low.",
         "The values and volume are ours, invented. The wider-range preference comes from Lim, p. 220.",
     ),
-    origin="Lim (2016), p. 220. Chart RA is ours, with invented PHP bars and volume.",
+    origin="Lim (2016), p. 220. Chart L is ours, with invented PHP bars and volume.",
 )
 
 TWO_DAY_READ = Pair(
@@ -761,17 +759,17 @@ TWO_DAY_READ = Pair(
 
 THREE_WORKED = Pair(
     left=Content(
-        title="Bullish three-bar reversal: volume",
+        title="A bullish three-bar reversal can show uncertainty in the middle",
         lines=(
-            "Read volume: strong [1], quiet [2], strong [3].",
-            "Ours: 4.0m, 0.6m, then 4.2m shares.",
-            "Meaning/action: a quiet middle shows uncertainty, not a guarantee.",
+            "A bullish three-bar reversal uses three bars, and the middle bar can show uncertainty between stronger outer bars.",
+            "Here is the volume pattern with simple values: 4.0 million shares on the first bar [1], 0.6 million on the middle bar [2], and 4.2 million on the third [3].",
+            "A quiet middle supports the potential reversal reading, but it does not guarantee follow-through (Lim, pp. 221 to 223).",
         ),
-        accent="",
+        accent="Read the three bars as a group, then use volume as supporting context.",
     ),
     picture=Chart(
-        letter="RB",
-        title="Bullish three-bar reversal",
+        letter="M",
+        title="Bullish three-bar reversal with simple volume values",
         shows="Three invented PHP bars with OHLC values and volumes labelled. Marks 1, 2 and 3 identify the first, middle and third volume readings.",
         tier="core",
         marks=(
@@ -780,22 +778,22 @@ THREE_WORKED = Pair(
             Mark(3, "circle", 0.73, 0.75, 0.80, 0.84, color="blue", at=(0.86, 0.70)),
         ),
     ),
-    text_w=4.0,
+    text_w=4.6,
     picture_extra=0.1,
     notes=(
-        "Read volumes left to right: strong, quiet, strong.",
+        "Name the three-bar reversal first. Then read volume left to right: strong, quiet, strong.",
         "The arithmetic and volume are ours, invented; the interpretation follows Lim, pp. 221 to 223.",
     ),
-    origin="Lim (2016), pp. 221 to 223. Chart RB is ours, with invented PHP bars and volume.",
+    origin="Lim (2016), pp. 221 to 223. Chart M is ours, with invented PHP bars and volume.",
 )
 
 THREE_BEAR_READ = Pair(
     left=Content(
-        title="Figure 7.18: the bearish three-bar structure",
+        title="The bearish three-bar reversal changes from a strong close to a weak one",
         lines=(
-            "In a clear, strong uptrend, mark 1 is the first bar, mark 2 the middle bar, and mark 3 the third bar.",
-            "The first closes near its high and the third near its low. The figure also labels bearish +DM divergence [3].",
-            "Meaning/action: read the three bars with trend and volume context; the later decline is not guaranteed.",
+            "A bearish three-bar reversal appears in a clear uptrend when the first bar closes near its high and the third closes near its low.",
+            "Figure 7.18 marks the first, middle and third bars [1], [2] and [3]. It also labels bearish +DM divergence, which the book shows but does not define here.",
+            "The pattern can warn of a change in pressure. Read it with trend and volume context; the later decline is not guaranteed (p. 221).",
         ),
         accent="The first and third bars carry the outer close reading; the middle bar separates them.",
     ),
@@ -807,11 +805,11 @@ THREE_BEAR_READ = Pair(
 
 THREE_BULL_READ = Pair(
     left=Content(
-        title="Figure 7.19: the volume pattern",
+        title="The bullish three-bar examples use stronger outer volume",
         lines=(
-            "The three-bar bottom reversal has high-volume outer columns [1] and [3], with a below-average middle column [2].",
-            "This is the same uncertainty-between-strengthers reading shown in the invented example.",
-            "Volume supports the potential reversal. Lim does not say it guarantees follow-through.",
+            "A bullish three-bar reversal can be more convincing when the outer bars carry higher volume [1] and [3], while the middle bar is quieter [2].",
+            "That volume pattern repeats the uncertainty-between-strengthers idea from the worked example.",
+            "Volume supports a potential reversal reading. Lim does not say it guarantees follow-through (p. 221).",
         ),
         accent="Keep the quiet middle bar between the stronger outer bars.",
     ),
@@ -823,11 +821,11 @@ THREE_BULL_READ = Pair(
 
 THREE_CONTEXT_PAIR = Pair(
     left=Content(
-        title="Figure 7.20:\noversold context",
+        title="Context can strengthen a bullish three-bar reversal",
         lines=(
-            "Mark 1 is the three-bar bullish reversal. The full pattern occurs at an oversold StochRSI [2].",
-            "The last close sits between the Bollinger bands [3], which Lim calls bullish.",
-            "The book links this example to pattern 5 in Figure 7.9. It gives no indicator formula here.",
+            "The three-bar reversal is the price pattern. In Figure 7.20, it appears with an oversold StochRSI label [2] and a final close between the Bollinger bands [3].",
+            "Lim calls that location bullish and links the example to pattern 5 in Figure 7.9.",
+            "The book gives no formula for either indicator here, so these labels are context rather than a method to calculate.",
         ),
         accent="The pattern is read first; the indicator labels add context.",
     ),
@@ -839,11 +837,11 @@ THREE_CONTEXT_PAIR = Pair(
 
 THREE_OUTSIDE_PAIR = Pair(
     left=Content(
-        title="Figure 7.21: a separate outside day follows",
+        title="A later outside day is a separate event",
         lines=(
-            "The three-bar reversal is marked 1. Its large third bar near its high [2] adds bullishness.",
-            "Later, the outside day engulfs four preceding bars [4] and closes near its low [3].",
-            "Keep the two formations separate: the later outside day is a new event and can reverse the preceding move.",
+            "Figure 7.21 first shows a bullish three-bar reversal [1], whose large third bar closes near its high [2].",
+            "Later, a separate outside day engulfs four preceding bars [4] and closes near its low [3].",
+            "Keep the two formations separate. The outside day is a new event that can reverse the preceding move, not part of the first three-bar count.",
         ),
         accent="Below-average middle volume and high-volume outer bars are the three-bar clue; the outside day is separate.",
     ),
@@ -855,11 +853,11 @@ THREE_OUTSIDE_PAIR = Pair(
 
 THREE_PATTERN6_PAIR = Pair(
     left=Content(
-        title="Figure 7.22:\nthe pattern 6 link",
+        title="Figure 7.22 links this volume arrangement to pattern 6",
         lines=(
-            "Mark 1 is the first-bar volume. Mark 2 is the large middle-bar range.",
-            "Mark 3 is the middle-bar volume, lower than the first. Lim links this arrangement to pattern 6 in Figure 7.9.",
-            "The link recalls the generic pattern; it does not add a new trading rule or formula.",
+            "The figure shows a bullish three-bar reversal with a large middle-bar range [2] and middle-bar volume [3] lower than the first bar [1].",
+            "Lim links this arrangement to pattern 6 in Figure 7.9.",
+            "That link recalls the generic pattern; it does not add a new trading rule or formula (p. 223).",
         ),
         accent="A large price bar can still carry lower volume than the first bar.",
     ),
@@ -871,17 +869,17 @@ THREE_PATTERN6_PAIR = Pair(
 
 ISLAND_WORKED = Pair(
     left=Content(
-        title="Island reversal: two gaps",
+        title="An island reversal is isolated by two gaps",
         lines=(
-            "Read the gap up [1], isolated bars [2], then gap down [3].",
-            "Ours: PHP 50.00 to 50.80, then PHP 49.40.",
-            "Meaning/action: two gaps isolate a potential reversal warning.",
+            "An island reversal is a group of bars separated from surrounding price action by a gap up and a gap down.",
+            "Here is the pattern with simple prices: price gaps up from PHP 50.00 to PHP 50.80 [1], forms the isolated bars [2], then gaps down to open at PHP 49.40 [3].",
+            "The two gaps create a potential reversal warning. Gap terminology follows Chapter 3; this chapter adds no new gap definition.",
         ),
-        accent="",
+        accent="Name the two gaps first, then read the isolated bars between them.",
     ),
     picture=Chart(
-        letter="RC",
-        title="Bearish island reversal",
+        letter="N",
+        title="Bearish island reversal with simple prices",
         shows="Four invented PHP bars with the prior high, gap-up open, isolated bars, gap-down open and volume values labelled. Marks 1, 2 and 3 identify the two gaps and the island.",
         tier="core",
         marks=(
@@ -890,22 +888,22 @@ ISLAND_WORKED = Pair(
             Mark(3, "circle", 0.70, 0.20, 0.80, 0.30, color="blue", at=(0.86, 0.15)),
         ),
     ),
-    text_w=4.0,
+    text_w=4.6,
     picture_extra=0.1,
     notes=(
-        "Read the gap up, the isolated bars, then the gap down.",
+        "Name the island reversal first. Then read the gap up, the isolated bars, and the gap down.",
         "Gap meaning points back to Chapter 3. The prices and volume are ours, invented.",
     ),
-    origin="Lim (2016), pp. 223 to 224. Chart RC is ours, with invented PHP bars and volume; gap meaning points to Chapter 3.",
+    origin="Lim (2016), pp. 223 to 224. Chart N is ours, with invented PHP bars and volume; gap meaning points to Chapter 3.",
 )
 
 ISLAND_READ = Pair(
     left=Content(
-        title="Figure 7.23: the book's island context",
+        title="Figure 7.23 shows the island's supporting context",
         lines=(
-            "Gap keeps Chapter 3 meaning in ‘Gaps’. Mark 1 is the gap up, mark 2 the island, and mark 3 the gap down.",
-            "The book observes low volume [4] and an overbought stochastic label [5], calling low volume lack of conviction.",
-            "No stochastic method is given in Chapter 7. These labels are context; the island is a potential warning.",
+            "The two gaps do the defining work. Mark 1 is the gap up, mark 2 the isolated island, and mark 3 the gap down.",
+            "The book also observes low volume [4] and an overbought stochastic label [5], calling low volume a lack of conviction.",
+            "No stochastic method is given in Chapter 7. These labels are supporting context, and the island remains a potential warning rather than a promise.",
         ),
         accent="The two gaps do the defining work; volume and stochastic are supporting context.",
     ),
@@ -1766,7 +1764,6 @@ B4_SLIDES = (
         origin="Lim (2016), p. 226. The 6.0-point example is ours, invented.",
     ),
     COMBINED_CHECK,
-    ISLAND_CHECK,
     Content(
         title="Exhaustion bar: plain words",
         lines=(
@@ -2304,33 +2301,42 @@ SECTION3 = Section(
     slides=(
         Pair(
             left=Content(
-                title="Bearish key reversal: numbers first",
+                title="The key reversal is when a strong move suddenly turns",
                 lines=(
-                    "Read the prior high and close first.",
-                    "1. Open 52.30 above prior high 52.00 [1].",
-                    "2. New high 53.20 [2]. 3. Close 50.80 below prior close 51.10 [3].",
-                    "4. Volume 4.2m versus 2.0m [4].",
-                    "Meaning/action: bearish key reversal, a potential warning (Lim, p. 218).",
+                    "A bearish key reversal is an uptrend bar that makes a higher high, then closes near or below the previous close.",
+                    "It warns that buyers may be losing control. Lim defines it: \"A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar\" (p. 218).",
+                    "Now use simple prices: yesterday H 52.00 and C 51.10; today O 52.30 [1], H 53.20 [2], C 50.80 [3], volume 2.0 to 4.2 million shares [4].",
                 ),
                 accent="",
                 caption="",
             ),
-            picture=KEY_WORKED_CHART,
-            text_w=4.0,
+            picture=Chart(
+                letter="K",
+                title="Walking through one key reversal, price by price",
+                shows="Two invented PHP bars with every OHLC value and volume value labelled. Marks 1 to 4 show the opening price above the previous high, the new high, the close below the previous close, and the volume increase.",
+                tier="core",
+                marks=(
+                    Mark(1, "circle", 0.64, 0.29, 0.69, 0.34, color="gold", at=(0.52, 0.34)),
+                    Mark(2, "circle", 0.64, 0.18, 0.69, 0.23, color="red", at=(0.88, 0.18)),
+                    Mark(3, "circle", 0.64, 0.52, 0.69, 0.57, color="blue", at=(0.77, 0.62)),
+                    Mark(4, "circle", 0.64, 0.78, 0.70, 0.84, color="purple", at=(0.80, 0.88), size=0.32),
+                ),
+            ),
+            text_w=5.0,
             picture_extra=0.1,
             notes=KEY_WORKED_CHART.notes,
-            origin=KEY_WORKED_CHART.origin,
+            origin="Chart K is ours, with invented PHP bars and million-share volume.",
         ),
         Pair(
             left=Content(
-                title="The bullish converse",
+                title="The bullish key reversal is the same rule in the opposite direction",
                 lines=(
                     "In a downtrend, a bullish key reversal makes a new low, then closes near or above the previous close.",
-                    "Ours: previous low PHP 42.00 and close PHP 41.00. New bar reaches PHP 40.50 and closes PHP 43.20 on 4.0 million shares.",
-                    "[1] New low. [2] Close above the previous close. [3] High volume supports the potential reversal.",
+                    "It matters for the same reason: a single bar can show sellers losing control after a sustained decline.",
+                    "Lim's Figure 7.14 shows a rapid rebound after a high-volume bullish key reversal. The rebound is the book's observation, not a promise for every example.",
                 ),
-                accent="Same five-step reading, reversed direction.",
-                caption="Book p. 218 and Figure 7.14. The values are ours, invented to show the converse.",
+                accent="The direction changes, but the reading still compares the new extreme with the previous close.",
+                caption="Lim (2016), p. 218, Figure 7.14. The figure shows the book's bullish converse.",
             ),
             picture=BULLISH_FIGURE,
             text_w=7.0,
@@ -2339,12 +2345,12 @@ SECTION3 = Section(
         ),
         Pair(
             left=Content(
-                title="Figure 7.15: the same reading on a real chart",
+                title="Figure 7.15 shows the key reversal on the book's chart",
                 lines=(
-                    "Lim defines it: “A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar.” (Lim, p. 218).",
+                    "The worked example gives us the rule. On the book's chart, Lim defines it as: \"A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar.\" (p. 218).",
                     "Gold [1] marks the key reversal day opening above the prior high. Red [2] marks its new high.",
                     "Blue [3] marks its close below the prior close. Purple [4] marks the above-average volume under it.",
-                    "Meaning/action: a potential warning, not a promise. The book's chart shows consolidation before the decline. Check the 16 characteristics and barrier proximity.",
+                    "Why we care: the chart gives a potential warning, not a promise. It shows consolidation before the decline, so timing still needs context.",
                 ),
                 accent="",
                 caption="",
@@ -2356,17 +2362,17 @@ SECTION3 = Section(
         ),
         Pair(
             left=Content(
-                title="Exhaustion bar versus pin bar",
+                title="Two bars can look alike but warn for different reasons",
                 lines=(
-                "Before the key-reversal check, compare two one-bar warnings: exhaustion has no following gap; pin falsely penetrates a barrier.",
-                "Exhaustion O65.40 > prior high65.00; H66.20; next O60.20 means no gap. Pin support40.00; low38.80; C40.60; return.",
-                "Meaning/action: exhaustion warns a tiring trend; pin warns of a false breakout.",
+                "Exhaustion ends a long run and has no gap to the next bar. Pin pierces a barrier, then snaps back, making the break false.",
+                "Simple prices: exhaustion O 65.40 above H 65.00, H 66.20, C 60.50, next O 60.20 with no gap. Pin L 38.80 through support 40.00, C 40.60. Exhaustion warns of a tiring trend; pin warns of a false break.",
+                "The distinction is about context and price action, not the tail's size alone.",
                 ),
                 accent="",
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=4.0,
+            text_w=5.0,
             picture_extra=0.8,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,

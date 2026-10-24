@@ -732,7 +732,7 @@ CHARTS = (
                             notes=_bar_notes(
                                 (1, 50.8, "gap-up O 50.80", -85, 15, True),
                                 (2, 51.5, "island", 18, -8, True),
-                                (3, 49.4, "gap-down O 49.40", 18, 15, True)),
+                                (3, 49.4, "gap-down O 49.40", -82, 15, True)),
                         ),
                         ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), height=0.55,
                                 tags=((0, "2.3m"), (1, "0.7m"),
@@ -747,6 +747,16 @@ CHARTS = (
     ),
 )
 
+
+# The reworked first-half examples use fresh K-series filenames. Their data
+# keeps the approved OHLC values, while the new names prevent an old chart
+# image from being mistaken for this pass's artwork.
+_CHART_BY_LETTER = {art.letter: art for art in CHARTS}
+CHARTS = CHARTS + tuple(
+    ck.ChartArt(letter=new, draw=_CHART_BY_LETTER[source].draw,
+               kwargs=dict(_CHART_BY_LETTER[source].kwargs))
+    for new, source in (("K", "B"), ("L", "RA"), ("M", "RB"), ("N", "RC"))
+)
 
 # Charts SA to SH belong to the inside-bar through Hikkake range. The letters
 # deliberately start at S so parallel Chapter 7 workers can add their own

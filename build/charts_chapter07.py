@@ -57,8 +57,6 @@ def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Pat
     for x, y, w, h, result, example, tone in cells:
         ax.add_patch(Rectangle((x, y), w, h, facecolor=ck.WHITE,
                                edgecolor=ck.BORDER, linewidth=1.0))
-        # A small directional example makes the trend/form relationship
-        # visible without relying on percentages or a numerical axis.
         rising = "uptrend" in example
         form_bullish = "bullish formation" in example
         x0, x1 = x + 0.07 * w, x + 0.93 * w
@@ -195,6 +193,164 @@ CHARTS = (
         ),
     ),
     ck.ChartArt(
+        letter="TA",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Gap up Oops",
+                    note="invented PHP values; sell-stop then stoploss",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((50.0, 52.0, 49.5, 51.0),
+                                       (53.0, 54.0, 50.5, 51.5))),
+                            height=1.75,
+                            strokes=(
+                                ck.Stroke(points=((0, 52.0), (1, 52.0)),
+                                          tone="structure", dashed=True,
+                                          label="prior high 52.00", at=0,
+                                          dx=-24, dy=-10),
+                                ck.Stroke(points=((0, 54.0), (1, 54.0)),
+                                          tone="notice", dashed=True,
+                                          label="stoploss 54.00", at=1,
+                                          dx=20, dy=-10),
+                            ),
+                            notes=_bar_notes(
+                                (1, 53.0, "open 53.00", -24, 14, True),
+                                (1, 54.0, "high 54.00", 20, 8, True),
+                                (0, 52.0, "sell-stop 52.00", -24, 8, True),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP values. The order rule follows Lim (2016), p. 231.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="TB",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="ID/NR6",
+                    note="last bar is inside and narrowest; either trigger is possible",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((50.0, 54.0, 49.0, 52.0),
+                                       (52.0, 55.2, 50.0, 53.5),
+                                       (53.5, 56.3, 51.2, 54.0),
+                                       (54.0, 56.1, 52.2, 55.0),
+                                       (55.0, 56.6, 54.4, 55.8),
+                                       (55.7, 56.5, 55.3, 56.1))),
+                            height=1.75,
+                            strokes=(
+                                ck.Stroke(points=((4.5, 56.6), (5.8, 56.6)),
+                                          tone="notice", dashed=True, arrow=True,
+                                          label="long trigger 56.60", at=1,
+                                          dx=0, dy=-10),
+                                ck.Stroke(points=((4.5, 54.4), (5.8, 54.4)),
+                                          tone="notice", dashed=True, arrow=True,
+                                          label="short trigger 54.40", at=1,
+                                          dx=0, dy=10),
+                            ),
+                            notes=_bar_notes(
+                                (0, 54.0, "range 4.0", -20, 10, False),
+                                (1, 55.2, "range 3.2", -12, 12, False),
+                                (2, 56.3, "range 2.8", -12, 10, False),
+                                (3, 56.1, "range 2.1", -12, 10, False),
+                                (4, 56.6, "range 1.6", 14, 8, False),
+                                (5, 56.5, "range 1.2", 14, 8, True),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP ranges. The ID/NR6 rule follows Lim (2016), p. 232.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="V",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Bullish Oops: two-bar worked example",
+                    note="invented PHP values; buy-stop then stoploss",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((49.0, 50.0, 48.0, 49.5),
+                                       (47.0, 49.0, 46.0, 48.5))),
+                            height=1.75,
+                            strokes=(
+                                ck.Stroke(points=((0, 48.0), (1, 48.0)),
+                                          tone="structure", dashed=True,
+                                          label="buy-stop 48.00", at=0,
+                                          dx=-24, dy=8),
+                                ck.Stroke(points=((0, 46.0), (1, 46.0)),
+                                          tone="notice", dashed=True,
+                                          label="stoploss 46.00", at=1,
+                                          dx=20, dy=10),
+                            ),
+                            notes=_bar_notes(
+                                (1, 47.0, "open 47.00", -24, 14, True),
+                                (1, 46.0, "low 46.00", 20, 8, True),
+                                (0, 48.0, "prior low 48.00", -24, 8, True),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP values. The bullish Oops order rule follows Lim (2016), p. 231.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="W",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Inside Month/NR5: worked example",
+                    note="invented monthly ranges; upward breakout after the count",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((28.0, 30.0, 18.0, 26.0),
+                                       (26.0, 29.0, 19.0, 27.0),
+                                       (27.0, 30.0, 21.0, 28.0),
+                                       (28.0, 31.0, 24.0, 29.0),
+                                       (29.0, 30.0, 25.0, 28.0),
+                                       (28.0, 33.0, 27.0, 32.0))),
+                            height=1.75,
+                            strokes=(
+                                ck.Stroke(points=((3, 31.0), (5.8, 31.0)),
+                                          tone="structure", dashed=True,
+                                          label="breakout 31.00", at=1,
+                                          dx=0, dy=-10),
+                            ),
+                            notes=_bar_notes(
+                                (0, 30.0, "range 12", -20, 8, False),
+                                (1, 29.0, "range 10", -12, 10, False),
+                                (2, 30.0, "range 9", -12, 8, False),
+                                (3, 31.0, "range 7", 12, 8, False),
+                                (4, 30.0, "range 5", 14, 8, False),
+                                (5, 33.0, "break 31.00", 16, 8, True),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented monthly PHP ranges. The inside-month extension follows Lim (2016), p. 232.",
+        ),
+    ),
+    ck.ChartArt(
         letter="P",
         draw=ck.panels,
         kwargs=dict(
@@ -204,10 +360,10 @@ CHARTS = (
                     bars=(ck.Bar(open=50.00, high=52.40, low=49.60,
                                  close=51.10),),
                     notes=(
-                                ck.Note(x=0, y=50.00, label="O 50.00", dx=-24, dy=18),
-                                ck.Note(x=0, y=52.40, label="H 52.40", dx=32, dy=12,
+                        ck.Note(x=0, y=50.00, label="O 50.00", dx=-24, dy=18),
+                        ck.Note(x=0, y=52.40, label="H 52.40", dx=32, dy=12,
                                 notice=True),
-                                ck.Note(x=0, y=49.60, label="L 49.60", dx=28, dy=-10),
+                        ck.Note(x=0, y=49.60, label="L 49.60", dx=28, dy=-10),
                         ck.Note(x=0, y=51.10, label="C 51.10", dx=10, dy=-8),
                     ),
                     ticks=(49.60, 51.10, 52.40),
@@ -243,12 +399,9 @@ CHARTS = (
                 ck.Pane(
                     name="Three lower-timeframe bars",
                     bars=(
-                        ck.Bar(open=50.00, high=50.70, low=49.40,
-                               close=50.20),
-                        ck.Bar(open=50.20, high=50.90, low=49.80,
-                               close=50.00),
-                        ck.Bar(open=50.00, high=50.60, low=49.70,
-                               close=50.30),
+                        ck.Bar(open=50.00, high=50.70, low=49.40, close=50.20),
+                        ck.Bar(open=50.20, high=50.90, low=49.80, close=50.00),
+                        ck.Bar(open=50.00, high=50.60, low=49.70, close=50.30),
                     ),
                     notes=(
                         ck.Note(x=0, y=50.00, label="1 first O", dx=-8, dy=18),
@@ -281,32 +434,22 @@ CHARTS = (
         draw=ck.cells,
         kwargs=dict(
             items=(
-                ck.Cell(
-                    name="1  continuation",
-                    note="uptrend +4.0%; bullish +2.0%",
-                    tone="notice",
-                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
-                                   tags=((0, "+4.0% trend"), (1, "+2.0% form"))),),
-                ),
-                ck.Cell(
-                    name="2  continuation",
-                    note="downtrend -4.0%; bearish -2.0%",
-                    tone="notice",
-                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
-                                   tags=((0, "-4.0% trend"), (1, "-2.0% form"))),),
-                ),
-                ck.Cell(
-                    name="3  potential reversal",
-                    note="uptrend +4.0%; bearish -2.0%",
-                    panes=(ck.Pane(columns=(4.0, -2.0), height=1.0,
-                                   tags=((0, "+4.0% trend"), (1, "-2.0% form"))),),
-                ),
-                ck.Cell(
-                    name="4  potential reversal",
-                    note="downtrend -4.0%; bullish +2.0%",
-                    panes=(ck.Pane(columns=(-4.0, 2.0), height=1.0,
-                                   tags=((0, "-4.0% trend"), (1, "+2.0% form"))),),
-                ),
+                ck.Cell(name="1  continuation", note="uptrend +4.0%; bullish +2.0%",
+                        tone="notice", panes=(ck.Pane(
+                            columns=(4.0, 2.0), height=1.0,
+                            tags=((0, "+4.0% trend"), (1, "+2.0% form"))),)),
+                ck.Cell(name="2  continuation", note="downtrend -4.0%; bearish -2.0%",
+                        tone="notice", panes=(ck.Pane(
+                            columns=(4.0, 2.0), height=1.0,
+                            tags=((0, "-4.0% trend"), (1, "-2.0% form"))),)),
+                ck.Cell(name="3  potential reversal", note="uptrend +4.0%; bearish -2.0%",
+                        panes=(ck.Pane(
+                            columns=(4.0, -2.0), height=1.0,
+                            tags=((0, "+4.0% trend"), (1, "-2.0% form"))),)),
+                ck.Cell(name="4  potential reversal", note="downtrend -4.0%; bullish +2.0%",
+                        panes=(ck.Pane(
+                            columns=(-4.0, 2.0), height=1.0,
+                            tags=((0, "-4.0% trend"), (1, "+2.0% form"))),)),
             ),
             cols=2,
             size=ck.pair_size(3.6),

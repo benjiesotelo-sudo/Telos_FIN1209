@@ -809,7 +809,7 @@ IDNR_FIGURE = Figure(
     crop=(0.015, 0.0, 0.015, 0.0),
     marks=(
         Mark(1, "box", 0.27, 0.35, 0.55, 0.95,
-             color="gold", at=(0.20, 0.50), size=0.30),
+             color="gold", at=(0.15, 0.82), size=0.30),
         Mark(2, "box", 0.50, 0.56, 0.55, 0.95,
              color="red", at=(0.58, 0.90), size=0.30),
         Mark(3, "line", 0.53, 0.57, 0.53, 0.95,

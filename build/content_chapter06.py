@@ -2588,26 +2588,47 @@ SECTION6 = Section(
     covers=(),
     slides=(
         Content(
-            origin="Book p.203: both lists, as printed. It refers the eight methods to Chapter 8.",
+            origin="Book p.203 lists the eight. p.179 sorts the price-based ones and p.206 the NYSE line; the VWMA is on neither list.",
             title="6.2  Volume oscillators, and how they are read",
             lines=(
-                "The book's eight: the VWMA, the Accumulation Distribution Line (ADL),",
-                "On Balance Volume (OBV), the Chaikin Money Flow and Chaikin Oscillator,",
-                "the Demand Index, the Herrick Payoff Index, the NYSE Up/Down Volume Line.",
+                "An oscillator (Part 1): an indicator in its own panel under price. Section 6.2 names eight built from volume.",
+                "Price-based: the OBV, the ADL, the Chaikin Money Flow and Oscillator, the Herrick Payoff Index, the Demand Index (never explained).",
+                "Non-price-based: the NYSE Up/Down Volume Line. The eighth, the VWMA (Part 2), is on neither of Part 1's lists.",
             ),
-            accent="Each is read by eight standard methods. Here: mostly divergence, plus oversold levels and trendlines on the indicator.",
-            caption="The eight methods, Chapter 8: 1 OBOS overextended levels, 2 equilibrium and zero line crossovers, 3 signal line crossovers, 4 price-oscillator divergence, 5 to 7 geometrically, numerically and horizontally based oscillator pattern analysis, 8 oscillator-on-oscillator analysis. OBOS: overbought and oversold. The VWMA was Part 2; the Demand Index is never explained.",
+            accent="Plain volume diverges by falling; price-based, against price.",
             notes=(
-                "Two lists the book gives without a figure, so this slide has no picture. Say the names, and that Chapter 8 teaches the methods.",
-                "Divergence on a volume oscillator was Part 1: price-based ones read like standard divergence.",
+                "The book gives the list without a figure, so this slide has no picture. Say the names and the kind of each.",
+                "Part 1's rule: on plain volume, divergence is volume falling; on a price-based oscillator, it is the oscillator moving against price.",
+            ),
+        ),
+        Pair(
+            origin="Book p.203 lists the eight methods and sends them to Chapter 8; p.206 reads the oversold level. The chart is ours, invented.",
+            left=Content(
+                title="Eight ways to read an oscillator; three used here",
+                lines=(
+                    "Eight methods, taught in Chapter 8, listed below. Part 6 uses only three:",
+                    "A  Price, a higher peak; oscillator, a lower one. Against price: divergence. Falling: bearish. Price then falls (method 4).",
+                    "B  A rising line under the oscillator; falling through it is a sell signal (Figure 6.43). No method is named.",
+                    "C  An oversold level (method 1): a potential bottom, the book says (p.206). It never says how it is set.",
+                ),
+                caption="The eight: 1 OBOS (overbought and oversold) overextended levels, 2 equilibrium and zero line crossovers, 3 signal line crossovers, 4 price-oscillator divergence, 5 to 7 geometric, numeric and horizontal pattern analysis, 8 oscillator on oscillator.",
+            ),
+            picture=Chart(
+                letter="FA",
+                shows="An invented price over an invented oscillator, with the three readings this part uses lettered. A: price makes a higher peak while the oscillator makes a lower one, divergence. B: a rising line drawn under the oscillator's lows, which it then falls through. C: a flat line low in the oscillator panel, labelled oversold, which the oscillator touches at the price low.",
+            ),
+            text_w=7.5,
+            notes=(
+                "Read the letters in order on the chart. A is Part 1's divergence; B and C are the two other readings Figures 6.43 and 6.44 use.",
+                "Do not teach the other five methods: the book sends them to Chapter 8.",
             ),
         ),
         Pair(
             origin="Book p.203 gives the rule. The closes and volumes in the example and on the chart are ours.",
             left=Term(
                 term="On Balance Volume, OBV",
-                plain="A running total of volume: add the day's volume if the close rose, subtract it if the close fell.",
-                example="Closes PHP 50.00, 50.50, 50.20, 50.20, 50.80, 50.60; volumes after day 1: 2.0, 1.5, 1.0, 3.0, 1.0 million. OBV: 0, 2.0, 0.5, 0.5, 3.5, 2.5.",
+                plain="A running total of volume: a close above the day before's adds the day's volume; below, subtracts it; the same, nothing.",
+                example="Ours: day 2 closes up, add 2.0 million: OBV 2.0. Day 3 down, take 1.5: 0.5. Day 4 unchanged: 0.5. Day 5 up, add 3.0: 3.5. Day 6 down, take 1.0: 2.5.",
                 formal="A cumulative running total of each period's volume: added if the close is higher than the preceding close, subtracted if lower, and nothing if unchanged.",
             ),
             picture=Chart(
@@ -2616,40 +2637,77 @@ SECTION6 = Section(
             ),
             text_w=TERM_CHART_W,
             notes=(
-                "Work it with the room: day 2 closes up, add 2.0; day 3 down, take away 1.5; day 4 unchanged, nothing; day 5 up, add 3.0; day 6 down, take away 1.0.",
-                "Only the direction of the close matters, not how far it moved. That is the weakness on the next slide.",
+                "Work it with the room, day by day, pointing at the middle panel: the sign comes from the close, the size from the volume.",
+                "Only the direction of the close matters, not how far it moved. That is the weakness a few slides on.",
+            ),
+        ),
+        Content(
+            origin="Book p.203 gives the rule and no starting value. The arithmetic is ours, on the last slide's six days. The reading rule is Part 1's, Figure 6.7.",
+            title="What the OBV's number says, and which kind it is",
+            lines=(
+                "The book sets no start; we start at 0 on day 1, with no day before it. Up days: 2.0 + 3.0 = 5.0 million; down days: 1.5 + 1.0 = 2.5. OBV: 2.5.",
+                "Rising OBV: more volume on up closes than down closes. Falling: the reverse.",
+                "Price-based, as the close sets the sign. Part 1's two questions: rising (bullish) or falling (bearish)? With price (confirmation) or against it (divergence)?",
+            ),
+            accent="Read it by rises and falls against price, not by level: next slide.",
+            notes=(
+                "This slide has no picture: it reads the numbers of the last slide's example. Ask the room what day 6 would read had it closed up.",
+                "Day 6 closing up would add 1.0 instead of taking it away: 3.5 + 1.0 = 4.5.",
             ),
         ),
         Pair(
-            origin="Book pp.203-204: the disadvantage, the weakness and its example are the book's. The chart is ours, on invented bars.",
+            origin="Book pp.203-204: the disadvantage and its consequence are the book's. The chart is ours: the OBV's six days, started twice.",
             left=Content(
-                title="The OBV: a disadvantage and a weakness",
+                title="The OBV's disadvantage: the start date",
                 lines=(
-                    "Disadvantage: its absolute value depends on the start date. Its relative changes do not, so the eight methods still work.",
-                    "Weakness: volume is added or subtracted regardless of the bar's own behavior.",
-                    "A bar closing just below the last close is subtracted, even after a new high far above the last bar's.",
+                    "Its level, the book's absolute value, depends on the start date. Start our six days on day 3: day 6 reads 2.0, not 2.5.",
+                    "Its changes, the relative value, do not. Day 3 to day 6, both lines rise 2.0: 0.5 to 2.5, 0 to 2.0.",
+                    "The book: so all eight methods may still be used. Divergence reads rises and falls.",
                 ),
-                accent="To redress it, many prefer the ADL or the two Chaikin indicators.",
+                accent="An OBV reading of 2.5 means nothing alone; a rise or a fall does.",
             ),
             picture=Chart(
                 letter="AN",
-                shows="Two small cases. Left: the same OBV started on two different days, two lines of the same shape at different heights. Right: two bars, the second making a much higher high but closing a little below the first, and its whole volume marked as subtracted.",
+                shows="The OBV of the six days drawn twice. Started on day 1, it reads 0.5 on day 3 and 2.5 on day 6. Started on day 3, it reads 0 there and 2.0 on day 6. Two lines of the same shape at different heights, each rising 2.0 from day 3 to day 6.",
             ),
             text_w=CHART_W,
             notes=(
-                "Left cell: shift the start and the whole line moves up or down, but every rise and fall stays the same. Divergence reads the rises and falls.",
-                "Right cell: the second bar went far higher and still counts as a down day, because it closed a little lower.",
+                "Shift the start and the whole line moves up or down, but every rise and fall stays the same.",
+                "Absolute value and relative value are the book's words; level and changes are the plain ones.",
             ),
         ),
         Pair(
-            origin="Book p.204 and Figure 6.39.",
+            origin="Book pp.203-204: the weakness and its example are the book's. The two bars and their numbers are ours.",
+            left=Content(
+                title="The OBV's weakness: only the close counts",
+                lines=(
+                    "Volume is added or subtracted regardless of the bar's own behavior.",
+                    "Ours: bar 1 has a high of 51.00 and closes 50.80. Bar 2 rallies to a new high of 54.00, far above, and closes 50.70, just under 50.80.",
+                    "Bar 2 closed lower, so all its 3.0 million is subtracted.",
+                ),
+                accent="To redress it, that is, to put it right, many prefer the ADL or the two Chaikin indicators: next.",
+            ),
+            picture=Chart(
+                letter="FC",
+                shows="Two invented bars and their signed volume. Bar 1, high 51.00, closes 50.80 and adds 2.0 million. Bar 2 makes a new high of 54.00 far above it but closes at 50.70, just under 50.80, and its whole 3.0 million is marked as subtracted.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "The second bar went far higher and still counts as a down day, because it closed a little lower.",
+                "Redress is the book's word: to put right.",
+            ),
+        ),
+        Pair(
+            origin="Book p.204 and Figure 6.39. The dollar levels are read off the figure, roughly.",
             left=Content(
                 title="OBV bullish divergence: Citigroup",
                 lines=(
-                    "Citigroup's price falls to a lower low while the OBV makes a higher one.",
-                    "Prices rebound strongly thereafter.",
+                    "Price: a lower low, August to October 2011: the falling line.",
+                    "OBV: a higher low, same weeks: the rising line.",
+                    "Price-based rule: rising, so bullish; against price, so divergence.",
+                    "Then, the book: prices rebound strongly, here about 22 to 34 dollars.",
                 ),
-                accent="The OBV is price-based: bullish divergence is price falling while it rises.",
+                accent="On plain volume, bullish divergence is instead volume falling as price falls.",
             ),
             picture=Figure(
                 number="6.39",
@@ -2657,28 +2715,30 @@ SECTION6 = Section(
             ),
             text_w=5.4,
             notes=(
-                "Part 1's rule for a price-based oscillator: bullish divergence is price falling while the oscillator rises. Point at the two lines.",
-                "Compare with plain volume, where bullish divergence is volume falling with price.",
+                "A lower low is a low below the last one; a higher low, above it. Point at the two lines: same weeks, opposite directions.",
+                "Part 1: divergence is an early indication of a potential reversal. Here the fall did reverse.",
             ),
         ),
         Pair(
-            origin="Book p.204 and Figure 6.40.",
+            origin="Book p.204 and Figure 6.40. The price levels are read off the figure, roughly.",
             left=Content(
                 title="OBV bearish divergence: copper",
                 lines=(
-                    "Copper's price rises, twice, while the OBV falls.",
-                    "Prices fell strongly thereafter.",
+                    "First arrow, March to April 2011: equal peaks near 4.5; the OBV falls.",
+                    "Second, June to August: price rises from about 4.1 to 4.5; the OBV falls.",
+                    "The book calls both bearish divergence: the OBV falls while price holds or rises.",
+                    "Prices then fell strongly, the book says: here to about 3.0 by October.",
                 ),
-                accent="Bearish divergence reads the same on both kinds: price up, the indicator down.",
+                accent="Bearish divergence: price flat or up, the price-based indicator down.",
             ),
             picture=Figure(
                 number="6.40",
-                shows="The daily chart of copper with an On Balance Volume panel under it. Two arrows mark price rising to higher peaks in 2011 while two arrows under the OBV fall, labelled bearish divergence.",
+                shows="The daily chart of copper with an On Balance Volume panel under it. Two arrows mark price holding level and then rising to a peak in 2011 while two arrows under the OBV fall, labelled bearish divergence.",
             ),
             text_w=5.4,
             notes=(
-                "Two divergences, each an arrow up on price and an arrow down on the OBV.",
-                "After the second one, copper fell from about 4.5 to about 3.0.",
+                "Two divergences, each an arrow on price and an arrow down on the OBV. The first price arrow, March to April, holds level.",
+                "Plain volume falling as price rises would also be bearish divergence: this is the case the two kinds read alike.",
             ),
         ),
         Check(
@@ -2705,12 +2765,12 @@ SECTION6 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.204-205 gives the calculation. C, H and L: the close, high and low of the bar, Chapter 1's OHLC. The bars and their volume are ours.",
+            origin="Book pp.204-205 gives the calculation. C, H and L are Chapter 1's OHLC. The bars and their volume are ours.",
             left=Term(
                 term="Accumulation Distribution Line, ADL",
-                plain="A running total of volume, each bar adding or subtracting a share of its volume by where it closed.",
-                example="High PHP 52, low PHP 48, 2 million shares. Close 52: add 2.0 million. Close 50, the middle: add nothing. Close 49: subtract 1.0 million.",
-                formal="Calculate the multiplying factor [(C - L) - (H - C)] / (H - L) times the period's volume, and add it to its running total: the ADL.",
+                plain="Like the OBV, a running total, but each bar adds a share of its volume set by where it closes in its range.",
+                example="Ours: bar PHP 48 to 52, 2 million shares. Close 52: add 2.0. At 50: add 0. At 49: take 1.0.",
+                formal="C, H, L: close, high, low. Calculate the multiplying factor [(C - L) - (H - C)] / (H - L) times the period's volume, and add it to its running total: the ADL.",
             ),
             picture=Chart(
                 letter="AO",
@@ -2718,18 +2778,32 @@ SECTION6 = Section(
             ),
             text_w=TERM_CHART_W,
             notes=(
-                "C, H and L are the close, high and low: the OHLC of Chapter 1. Work the 49 close: (49 - 48) - (52 - 49) is 1 - 3, minus 2; over the range of 4, minus one half.",
+                "C, H and L are the close, high and low: the OHLC of Chapter 1. The next slide works all three bars.",
                 "The name echoes the accumulation and distribution phases of Chapters 2 and 4. The book does not connect the two.",
             ),
         ),
+        Content(
+            origin="Book pp.204-205 gives the factor. The bars, volumes and arithmetic are ours, the last slide's.",
+            title="The ADL worked, bar by bar",
+            lines=(
+                "Each bar: low L = 48, high H = 52, range H - L = 4, volume 2.0 million. C - L: the close's height above the low. H - C: its depth below the high.",
+                "Close 52: (4 - 0) / 4 = 1, add 2.0.   Close 50: (2 - 2) / 4 = 0, add nothing.   Close 49: (1 - 3) / 4 = -0.5, take 1.0.",
+                "The running total, bar by bar: 2.0, then 2.0 + 0 = 2.0, then 2.0 - 1.0 = 1.0. That total is the ADL.",
+            ),
+            accent="The factor scores where the close sits: -1 at the low, 0 at the midpoint, +1 at the high.",
+            notes=(
+                "This slide has no picture: it works the last slide's example in numbers. Point back at the three bars as you go.",
+                "Ask the room for a close at 51: (3 - 1) / 4 = 0.5, so add 1.0 million.",
+            ),
+        ),
         Pair(
-            origin="Book p.205: the algebra is the book's. The chart is ours: the factor drawn against where the close sits.",
+            origin="Book p.205: the algebra and the maximum are the book's. The chart is ours: the factor against where the close sits.",
             left=Content(
                 title="How the ADL redresses the OBV",
                 lines=(
-                    "A close at the midpoint adds nothing: if C - L = H - C, then C = (H + L) / 2.",
-                    "The further above the midpoint price closes, the more volume is added; below, the more subtracted.",
-                    "At most the day's total volume is added: a close at the high makes the factor exactly 1.",
+                    "Midpoint, nothing added: if C - L = H - C, then C = (H + L) / 2. For 48 and 52, 50.",
+                    "Further above it, more is added; below it, more subtracted.",
+                    "At most the day's volume: at the high, C = H, the factor is (H - L) / (H - L) = 1, however wide the bar.",
                 ),
                 accent="The ADL accounts for the current bar's price action. The OBV does not.",
             ),
@@ -2743,15 +2817,30 @@ SECTION6 = Section(
                 "No matter how wide the range, the maximum is the day's volume, not some multiple of it: the book's words.",
             ),
         ),
+        Content(
+            origin="Ours: one invented bar, read by the book's two rules from pp.203 and 205.",
+            title="One bar, two answers: the OBV against the ADL",
+            lines=(
+                "Ours: yesterday closed 50.00. Today runs from 46.00 to 51.00 on 2.0 million shares and closes at 49.75.",
+                "OBV: 49.75 is below 50.00, so subtract all 2.0 million.",
+                "ADL: C - L = 3.75, H - C = 1.25, range 5. Factor (3.75 - 1.25) / 5 = 0.5: add 1.0 million.",
+            ),
+            accent="The OBV sees only yesterday's close; the ADL sees where today closed in today's bar.",
+            notes=(
+                "This slide has no picture: it is one bar read two ways. Draw it on the board if the room wants it.",
+                "Today closed near the top of its own range, which the ADL counts as buying. The OBV counts only the tiny fall from 50.00.",
+            ),
+        ),
         Pair(
-            origin="Book p.205 and Figure 6.41.",
+            origin="Book p.205 and Figure 6.41. Price confirmation as Figure 6.44, p.206, labels it.",
             left=Content(
                 title="The ADL confirms, volume diverges: EURUSD",
                 lines=(
-                    "The ADL shows bullish confirmation, rising with price.",
-                    "The volume bars show bearish divergence: an underlying weakness in the uptrend.",
+                    "Hourly EURUSD, June 2011: price makes new highs.",
+                    "ADL, price-based: rising with price, so bullish confirmation.",
+                    "Volume, plain: falling as price rises, so bearish divergence: an underlying weakness, the book says.",
                 ),
-                accent="The trader should wait for price confirmation of a reversal before taking part.",
+                accent="They disagree: wait for price to confirm a reversal, as in Figure 6.44, where price breaks its own trendline.",
             ),
             picture=Figure(
                 number="6.41",
@@ -2760,19 +2849,19 @@ SECTION6 = Section(
             text_w=5.4,
             notes=(
                 "The two kinds again, disagreeing: the price-based ADL rises with price, plain volume falls.",
-                "The book does not pick one. It says wait for price to confirm before acting.",
+                "The book does not pick one. Taking part, its word, means trading on the signal.",
             ),
         ),
         Pair(
-            origin="Book pp.205-206 and Figure 6.42.",
+            origin="Book pp.205-206 and Figure 6.42. Regime is the book's word, not defined; the reading of it is ours.",
             left=Content(
                 title="OBV and ADL together: trend or range",
                 lines=(
-                    "When the OBV and the ADL rise or fall together, price trends in a decisive manner.",
-                    "When they move in opposite directions, price tends to range or consolidate.",
-                    "Useful for gauging behavioral or regime changes in the market.",
+                    "Both rising, or both falling: price trends in a decisive manner. Right ellipse.",
+                    "Opposite directions: price tends to range or consolidate, going sideways. Left ellipse.",
+                    "Regime: whether the market trends or ranges. Trend-following trades with a trend; range-bound, inside a range.",
                 ),
-                accent="It may help decide between a trend-following and a range-bound strategy.",
+                accent="The book: it may help choose. Together, trend-following; apart, range-bound.",
             ),
             picture=Figure(
                 number="6.42",
@@ -2780,8 +2869,8 @@ SECTION6 = Section(
             ),
             text_w=5.4,
             notes=(
-                "Left ellipse: the OBV falls while the ADL rises, and price goes nowhere. Right ellipse: both rise, and price trends.",
-                "Regime is the book's word for the market's mode: trending or ranging, as in Chapter 4's phases.",
+                "Left ellipse: the OBV falls while the ADL rises, and price goes nowhere; the figure calls it a lack of clarity and strength. Right ellipse: both rise, and price trends.",
+                "Range or consolidate, the book's words: Chapter 4's consolidation, price going sideways between a high and a low.",
             ),
         ),
         Check(
@@ -2808,33 +2897,83 @@ SECTION6 = Section(
             ),
         ),
         Pair(
-            origin="Book p.206 gives the calculation, not the two EMA lengths. EMA: an exponential moving average, Chapter 11. N: a number of periods. The bars and volumes are ours.",
+            origin="Book p.206 gives the calculation, not the lengths. The bars and volumes are ours.",
             left=Term(
                 term="Chaikin Money Flow and Chaikin Oscillator",
-                plain="CMF: the ADL's signed volume over N bars, over their volume. The oscillator: two averages of its running total.",
-                example="Signed volumes 2.0, 0 and -0.5 million on volumes 2.0, 1.0 and 1.0 million: CMF = 1.5 / 4.0 = 0.375.",
-                formal="S is the multiplying factor times volume. N-period CMF: the N-period sum of S over the N-period sum of volume. Chaikin oscillator: a shorter-term EMA less a longer-term EMA of the CMF's running total.",
+                plain="CMF: add the ADL's signed volumes S over the last N bars, and divide by those bars' total volume.",
+                example="Ours, the ADL's three bars, N = 3: S of 2.0, 0 and -1.0 million make 1.0; volumes of 2.0 each make 6.0. CMF = 1.0 / 6.0 = 0.17.",
+                formal="S: the multiplying factor times volume. N-period CMF: the sum of S over the sum of volume. Chaikin oscillator: a shorter-term EMA less a longer-term EMA of the CMF's running total.",
             ),
             picture=Chart(
                 letter="AQ",
-                shows="The Chaikin Money Flow worked for three invented bars. Left, each bar's signed volume S: 2.0, 0 and minus 0.5 million, adding to 1.5. Middle, each bar's volume: 2.0, 1.0 and 1.0 million, adding to 4.0. Right, the result: 1.5 divided by 4.0, a CMF of 0.375.",
+                shows="The Chaikin Money Flow worked on the ADL's three invented bars. Left, each bar's signed volume S: 2.0, 0 and minus 1.0 million, adding to 1.0. Middle, each bar's volume: 2.0 million each, adding to 6.0. Right, the result: 1.0 divided by 6.0, a CMF of 0.17.",
             ),
             text_w=TERM_CHART_W,
             notes=(
-                "S is the same signed volume as the ADL's. The CMF divides its total over N bars by the volume of those bars, so it stays between minus one and one.",
-                "The book says to make a running total of the CMF, as for the ADL, and take the oscillator from that. It gives no lengths for the two EMAs; its figure prints 3 and 10.",
-                "EMA is an exponential moving average: named here, taught in Chapter 11. N is the number of periods, as in Chapter 5.",
+                "S is the same signed volume as the ADL's: the factor times the bar's volume. N is the number of bars, as in Part 3's lookback.",
+                "What the CMF's number means comes next, then the oscillator step by step.",
+            ),
+        ),
+        Content(
+            origin="Ours: arithmetic on the book's p.206 definition and the ADL's factor, p.205. The book gives no reading of the CMF's value.",
+            title="What the CMF's number says",
+            lines=(
+                "The ADL's factor runs from -1 to +1, so no S is bigger than its bar's volume. So the CMF also runs from -1 to +1.",
+                "+1: every bar closed at its high. -1: every bar closed at its low. 0: on balance, the closes sat at their midpoints.",
+                "Our 0.17: of 6.0 million traded, a net 1.0 million counts as added. Above 0, on balance the volume came with closes above their midpoints.",
+            ),
+            accent="That reading is our arithmetic. The book reads the CMF only by a line and an oversold level, Figure 6.43.",
+            notes=(
+                "This slide has no picture: it reads the last slide's number. Ask what the CMF would be had all three bars closed at their highs: 6.0 / 6.0 = 1.",
+                "Do not call a positive CMF bullish on the book's authority: the book does not say so.",
             ),
         ),
         Pair(
-            origin="Book p.206 and Figure 6.43. The figure prints CMF(20) and ChiOsc(3,10); the text gives no settings.",
+            origin="Book p.206 gives the steps, no lengths, no reading of the sign and no EMA formula. The chart is ours: invented CMF values, our EMAs.",
+            left=Content(
+                title="The Chaikin oscillator, step by step",
+                lines=(
+                    "1  Each bar's CMF, over its last N bars.",
+                    "2  A running total of the CMF, as for the ADL: black.",
+                    "3  Two EMAs of that total, here over 3 and 10 bars: gold and green.",
+                    "4  Oscillator = shorter EMA - longer EMA, bottom panel. At the dashed lines: 1.0 - 0.5 = +0.5; 0.6 - 0.8 = -0.2.",
+                ),
+                accent="The oscillator is the gap between the two averages.",
+            ),
+            picture=Chart(
+                letter="FD",
+                shows="The Chaikin oscillator's steps on invented bars. Top, the running total of the CMF in black, with its 3-bar EMA in gold and its 10-bar EMA in green. Bottom, the oscillator, the 3-bar EMA less the 10-bar, as columns above and below zero. Two dashed lines mark a bar reading 1.0 less 0.5, plus 0.5, and a bar reading 0.6 less 0.8, minus 0.2.",
+            ),
+            text_w=6.6,
+            notes=(
+                "Follow the steps down the chart: the black total, the two averages that trail it, and their gap in the bottom panel.",
+                "The gold average follows the total closely, the green one slowly. When the total turns down, gold crosses below green and the oscillator goes negative.",
+            ),
+        ),
+        Content(
+            origin="Book p.206 gives the steps, no EMA formula and no reading of the sign. The reading of the sign is our arithmetic.",
+            title="The EMA, and what the oscillator's sign says",
+            lines=(
+                "EMA, exponential moving average: a moving average of the last few values, like Part 3's smoothed volume. This chapter never says how it weights them.",
+                "A 3-bar EMA follows the running total closely; a 10-bar one follows it slowly.",
+                "Above 0, the recent average is above the longer one: the total has been rising lately. Below 0, falling. Ours: the book gives no reading of the sign.",
+            ),
+            accent="Figure 6.43, next: CMF(20) is N = 20; ChiOsc(3,10) is EMAs of 3 and 10 bars.",
+            notes=(
+                "This slide has no picture: it reads the last slide's chart in words. The book gives no lengths; its figure prints them.",
+                "A rising total means the CMFs being added are positive, by the last slides' arithmetic.",
+            ),
+        ),
+        Pair(
+            origin="Book p.206 and Figure 6.43. The text gives no settings. Oversold is not defined in this chapter.",
             left=Content(
                 title="The Chaikin pair on copper",
                 lines=(
-                    "The sell, or bearish, signal: each breaks the rising line drawn under it. The Chaikin oscillator breaks first, the CMF later.",
-                    "Oversold levels on both point to a potential market bottom in copper around October 2011.",
+                    "Each indicator falls through the rising line under its lows: the sell signal.",
+                    "The oscillator falls through first, the CMF later. The dashed arrows run up to the price top near 4.5, early August.",
+                    "Copper then fell to about 3.0 by October, where both touched the line labelled oversold: a potential bottom, the book says.",
                 ),
-                accent="The Chaikin oscillator gives the earlier signal.",
+                accent="The Chaikin oscillator gives the earlier sell, or bearish, signal.",
             ),
             picture=Figure(
                 number="6.43",
@@ -2842,55 +2981,91 @@ SECTION6 = Section(
             ),
             text_w=5.4,
             notes=(
-                "Follow the dashed arrows from each panel up to the top: the oscillator's arrow comes first.",
-                "Oversold again: used, not defined, as in Part 2.",
+                "Follow the dashed arrows from each panel up to the top near 4.5 in early August: the oscillator's comes first.",
+                "Readings B and C of the part's second slide: a line on the indicator, and an oversold level, used and not defined.",
+            ),
+        ),
+        Pair(
+            origin="Book p.206. Advancing and declining volume: our reading of the names, as for the TRIN in Part 4. The numbers are ours.",
+            left=Term(
+                term="NYSE Up/Down Volume",
+                plain="Volume traded in NYSE stocks that rose that day, divided by volume in those that fell.",
+                example="Ours: 600 million shares in rising stocks, 400 million in falling: 600 / 400 = 1.5. Read like plain volume: falling is divergence, rising confirmation.",
+                formal="The ratio of advancing volume over declining volume. Being non-price-based, its divergence is read like volume bars and smoothed and detrended volume.",
+            ),
+            picture=Chart(
+                letter="FB",
+                shows="The NYSE Up/Down Volume worked for one invented day in three columns. Advancing volume, 600 million shares in the stocks that rose. Declining volume, 400 million in the stocks that fell. Then 600 divided by 400, a ratio of 1.5.",
+            ),
+            text_w=TERM_CHART_W,
+            notes=(
+                "The book gives the ratio and no example; the numbers are ours. Up and down volume were read the same way for the TRIN in Part 4.",
+                "Non-price-based: it holds no price of its own, so it is read like plain volume: falling is divergence, rising confirmation; with price, bullish.",
             ),
         ),
         Pair(
             origin="Book p.206 and Figure 6.44. Its line is labelled cumulative and runs below zero, which a ratio cannot; the book does not explain.",
-            left=Term(
-                term="NYSE Up/Down Volume",
-                plain="Volume in the NYSE's rising stocks set against volume in its falling ones.",
-                example="Figure 6.44: the indicator breaks its rising trendline first, an early bearish signal; the NYSE Composite breaks later.",
-                formal="The ratio of advancing volume over declining volume. Being non-price-based, its divergence is read like volume bars and smoothed and detrended volume.",
+            left=Content(
+                title="The NYSE Up/Down Volume on a chart",
+                lines=(
+                    "Top: the indicator falls through its rising trendline in mid 2011: an early bearish signal.",
+                    "Bottom: the NYSE Composite, an index of NYSE share prices, breaks its own line later: price confirmation.",
+                    "The book says ratio; the figure's line is cumulative and runs below zero. It does not explain.",
+                ),
+                accent="The volume line warned first; price confirmed later.",
             ),
             picture=Figure(
                 number="6.44",
                 shows="Two daily panels, 2009 to 2011: the NYSE Advance-Decline Volume line above, labelled cumulative, breaking its rising trendline at a point marked early bearish signal; and the NYSE Composite Index below, breaking its own trendline later, circled as price confirmation.",
             ),
-            text_w=6.8,
+            text_w=5.6,
             notes=(
-                "Read it as the book does: the volume indicator breaks first, price confirms later.",
-                "Say the gap plainly: the text says ratio; the figure's line is cumulative and goes negative. The book does not reconcile them.",
+                "The NYSE Composite Index is the price the indicator is read against. The arrow joins the two breaks.",
+                "Say the gap plainly: a ratio of two volumes cannot be negative. The book does not reconcile them.",
             ),
         ),
         Term(
             origin="Book pp.207-208. The book gives no formula and no figure for it, so this slide has no picture.",
             term="Herrick Payoff Index",
-            plain="A price-based volume oscillator that also uses open interest, so it can only be used where there is open interest: futures and options.",
-            example="On a gold futures chart it can be read. On a PSE share, which has no open interest, it cannot.",
-            formal="The Herrick Payoff Index uses open interest in its calculations, so it may only be used with futures and options. It incorporates price, so its divergence is read as for all price-based volume oscillators. Bearish signals: money flowing out; bullish signals: money flowing in.",
+            plain="Uses price and open interest, so futures and options only. Price-based: rising bullish, falling bearish; against price, divergence.",
+            example="Gold futures: yes. A PSE share, with no open interest: no. The book gives no formula.",
+            formal="The Herrick Payoff Index uses open interest in its calculations, so it may only be used with futures and options. It incorporates price, so its divergence is read as for all price-based volume oscillators. As with all volume oscillators, bearish signals: money flowing out; bullish: money flowing in.",
             notes=(
-                "Open interest was Part 4: only futures and options have it, which is why this index is limited to them.",
-                "It may be read with any or all of the eight methods of the part's first slide.",
+                "Price-based, so Part 1's rule: rising is bullish, falling bearish; against price, divergence. It may be read with any or all of the eight methods.",
+                "Money flowing out and in are the book's words for what a bearish and a bullish signal indicate.",
             ),
         ),
         Pair(
-            origin="Book p.208 gives the report and its two uses; it does not define net. The chart is ours, on invented prices and open interest.",
+            origin="Book p.208 gives the report and its two uses. The chart is ours, on invented prices and open interest.",
             left=Term(
                 term="Commitment of Traders, COT, report",
-                plain="A weekly report of who holds the open positions in a futures market, group by group.",
-                example="Traders look for changes in the net commercial or non-commercial positions, and for a test of a significant or historical open interest level.",
+                plain="A weekly report of all open positions, listed by who holds them: three groups.",
+                example="Ours: open interest returns to its 92,000 peak as price tops: a test of a historical level.",
                 formal="Released every Friday, it reports all open positions held by commercials (hedgers, non-cash positions), non-commercials (hedge funds, financial institutions, large traders) and, in aggregate, small traders.",
             ),
             picture=Chart(
                 letter="AR",
-                shows="An invented futures price rising to a top, with its open interest underneath climbing to a dashed line drawn at its earlier historical peak. The test of that level, at the top, is marked: one of the two things the book says traders look for in the report.",
+                shows="An invented futures price rising to a top, with its open interest underneath peaking at 92,000 contracts, falling back, then climbing to a dashed line drawn at that earlier peak. The test of that level, at the price top, is marked: one of the two things the book says traders look for in the report.",
             ),
             text_w=TERM_CHART_W,
             notes=(
-                "Traders use it to find potential tops and bottoms. The book says net position and does not define net; do not supply a formula.",
                 "Hedgers were named in Chapter 1 among the participants. Commercial and non-commercial are the report's own groups.",
+                "A test means open interest coming back to a level it reached before, the way price retests a barrier in Part 3.",
+            ),
+        ),
+        Content(
+            origin="Book p.208. It does not define net or non-cash positions and gives no worked figures. The what-to-do line is ours, from p.205.",
+            title="What traders read in the COT report",
+            lines=(
+                "Commercials: hedgers, holding non-cash positions, a phrase the book never explains.",
+                "The book: traders use it to identify potential tops and bottoms, by two things.",
+                "1  Changes in net commercial or non-commercial positions. Net: never defined.",
+                "2  Open interest testing a significant or historical level: back at an old level.",
+            ),
+            accent="Ours: treat either as a warning, and wait for price to confirm (Figure 6.41).",
+            notes=(
+                "This slide has no picture: it is the book's two uses. Do not supply a formula for net; the book gives none.",
+                "Commercials are hedgers, Chapter 1's participants; non-commercials are hedge funds, financial institutions and large traders.",
             ),
         ),
         Check(
@@ -2960,16 +3135,16 @@ OPENERS = (
 
 CLOSING = (
     Content(
-        origin="Book p.208: its summary is three sentences. These five are ours, of the whole chapter.",
+        origin="Book p.208: its summary is three sentences. These five are ours, of the whole chapter, each with the part that teaches it.",
         title="Chapter 6 in five sentences",
         lines=(
-            "Volume is participation: moving with price, bullish; against it, bearish.",
-            "Volume falling is divergence, rising is confirmation, whatever price does.",
-            "Minimum volume times breakouts and reversals; extreme volume, climaxes.",
-            "Barriers, filters and volume by price pick out the volume that matters.",
-            "Open interest reads like volume; the OBV, ADL and Chaikin pair use price.",
+            "Part 1: volume with price is bullish volume; against price, bearish.",
+            "Part 1: falling volume is divergence, rising confirmation, whatever price does.",
+            "Parts 2, 5: minimum volume, extreme volume and reversal bars time the turns.",
+            "Parts 3, 4: filters pick out key volume; open interest reads like volume.",
+            "Part 6: price-based oscillators diverge by moving against price.",
         ),
-        accent="The book's summary: price-based volume oscillators read differently.",
+        accent="The book: price-based and non-price-based oscillators read differently.",
         notes=(
             "Read all five slowly. This is the summary to copy down.",
             "The book's summary adds that volume divergence and filtering are used throughout the rest of the book.",
@@ -2979,31 +3154,90 @@ CLOSING = (
         origin="Book p.208.",
         title="The review questions to prepare",
         lines=(
-            "Volume against tick volume? Bearish and bullish volume?",
+            "Volume and tick volume: what is the difference? Bearish and bullish volume?",
             "How is volume divergence distinct from standard oscillator divergence?",
             "How would you use volume as a timing indicator?",
             "The various modes of volume filtering?",
             "The relationship between volume, open interest and price?",
-            "Absolute or relative volume? Volume cycles: their use, and where?",
+            "Absolute or relative volume, which is more useful? Volume cycles: use, where?",
         ),
-        caption="The book's eight questions, on six lines: the first and last lines carry two each.",
+        caption="The book's eight, shortened to fit six lines. Its full wording, with where each is answered, is on the next two slides.",
         notes=(
-            "Say where each answer sits, line by line: Parts 4 and 1, Part 1, Part 2, Part 3, Part 4, then Parts 4 and 5.",
+            "Read them through. The next slide says where in the deck each is answered.",
             "Question 3 is the one most likely to be answered wrongly: volume divergence ignores price's direction.",
         ),
     ),
     Content(
-        origin="This course's own list, drawn from the chapter's slides. The numbers after Sent ahead are the book's chapters.",
-        title="What the book uses, and where it says two things",
+        origin="Book p.208, the questions word for word. Where each is answered is this course's own map onto the parts of this deck.",
+        title="The review questions in full: 1 to 4",
         lines=(
-            "Used, not explained: overbought, oversold, Bollinger Bands and Bandwidth, MACD, EMA, the tick, the cycle-tuned stochastic.",
-            "Named only: the Demand Index, detrended volume, ROC volume, the PVO.",
-            "Sent ahead, by chapter: oscillators 8, divergence 9, moving averages and the VWMA's calculation 11.",
-            "Two answers: above the VWMA, bullish or overvalued; a bullish TRIN, overbought or oversold; the up/down line, ratio or cumulative.",
+            "1  What is the difference between volume and tick volume? Part 4.",
+            "2  Describe bearish and bullish volume. Part 1.",
+            "3  How is volume divergence distinct from standard oscillator divergence? Part 1.",
+            "4  How would you use volume as a timing indicator? Part 2.",
         ),
-        accent="Where the book disagrees with itself, the slide says so.",
+        accent="The part after each question is where its answer is taught.",
+        notes=(
+            "Say each part's name as you read its line, so the room can find the slides again.",
+            "Question 3's answer is the slide on standard divergence against volume divergence, in Part 1.",
+        ),
+    ),
+    Content(
+        origin="Book p.208, the questions word for word. Where each is answered is this course's own map onto the parts of this deck.",
+        title="The review questions in full: 5 to 8",
+        lines=(
+            "5  Describe the various modes of volume filtering. Part 3.",
+            "6  Describe the relationship between volume, open interest, and price. Part 4.",
+            "7  Which is more useful, absolute or relative volume? Part 4.",
+            "8  How are volume cycles useful and where would you normally find them? Part 5.",
+        ),
+        accent="The part after each question is where its answer is taught.",
+        notes=(
+            "Question 5 is the four filters of Part 3; question 8 is the intraday volume cycle of Part 5.",
+            "Question 7 is Part 4's opening: relative volume compares, absolute volume measures participation.",
+        ),
+    ),
+    Content(
+        origin="This course's own list, drawn from the chapter's slides. The chapter numbers and pages are the book's.",
+        title="What the book uses here and teaches later, or never",
+        lines=(
+            "Not explained in the book's chapter: overbought, oversold, the MACD, the EMA, the tick, the cycle-tuned stochastic, the Bollinger Band and Bandwidth (Part 3 gives the Band a one-line meaning).",
+            "Named only: the Demand Index, detrended volume, ROC volume, the PVO.",
+            "Sent ahead: oscillator analysis, Chapter 8 (p.203); the classification of divergence, Chapter 9 (p.176); the VWMA's calculation, Chapter 11 (p.181).",
+        ),
+        accent="Where a slide uses one of these, it says so on the slide.",
         notes=(
             "Be straight with them: this chapter leans on oscillators the book teaches in Chapter 8.",
+            "Do not teach any of these today. Each is named where it appears.",
+        ),
+    ),
+    Content(
+        origin="This course's own list, drawn from the chapter's slides. Each is also named on its own slide.",
+        title="Where the book says two different things",
+        lines=(
+            "Above the VWMA (Part 2): the text calls price potentially bullish, then a paragraph later overvalued.",
+            "A bullish TRIN (Part 4): overbought in the text, oversold in Figure 6.25.",
+            "NYSE Up/Down Volume (Part 6): a ratio in the text; Figure 6.44's line runs below zero, which a ratio cannot.",
+            "Bullish divergence (Part 1): downtrends only, says the text; Figure 6.6 shows it in dips inside an uptrend.",
+        ),
+        accent="No check rests on any of these. If asked, give both readings.",
+        notes=(
+            "Do not pick a side for the book. Say both readings and move on.",
+            "The captions that disagree with their charts are on the next slide.",
+        ),
+    ),
+    Content(
+        origin="This course's own list, from the book's figures and their captions. Each is also named on its own slide.",
+        title="Four figure captions that disagree with their chart or text",
+        lines=(
+            "Figure 6.6 (Part 1): captioned daily; the chart itself is labelled weekly.",
+            "Figure 6.11 (Part 2): captioned a VWMA on a daily chart; it is a VWAP on 10-minute bars.",
+            "Figure 6.23 (Part 3): captioned silver; the text calls it USDJPY, then silver.",
+            "Figures 6.25 and 6.26 (Part 4): captioned daily; both charts are intraday.",
+        ),
+        accent="No check rests on any of these. Read the chart, and name both.",
+        notes=(
+            "These are labelling slips in the book, not ideas to learn.",
             "Next is Chapter 7, Bar Chart Analysis.",
         ),
     ),

@@ -345,6 +345,14 @@ class Check(Slide):
     # loses no picture.
     picture: Slide | None = None
     text_w: float = 6.6
+    # "beside" puts the picture to the right of the stacked questions.
+    # "top" draws it as a strip across the top and keeps the two questions
+    # side by side under it, at the sizes a check without a picture uses,
+    # for a wide, shallow picture such as a crop of one volume panel.
+    layout: str = "beside"
+
+
+CHECK_LAYOUTS = ("beside", "top")
 
 
 @dataclass
@@ -1020,6 +1028,8 @@ def render_chart(prs, s: Chart, marker):
 def render_check(prs, s: Check, marker, index, total):
     """Question slide. Deliberately unlike any teaching slide: deep green
     ground, gold CHECK chip, two questions side by side."""
+    if s.picture is not None and s.layout == "top":
+        return _render_check_top(prs, s, marker, index, total)
     if s.picture is not None:
         return _render_check_beside(prs, s, marker, index, total)
     slide = _blank(prs)
@@ -1091,6 +1101,8 @@ def render_check(prs, s: Check, marker, index, total):
 def render_reveal(prs, s: Check, marker, index, total):
     """Answer slide. Paper ground so the room feels the release, with the
     answers in the monospace face and one line of reason each."""
+    if s.picture is not None and s.layout == "top":
+        return _render_reveal_top(prs, s, marker, index, total)
     if s.picture is not None:
         return _render_reveal_beside(prs, s, marker, index, total)
     slide = _blank(prs)
@@ -1572,6 +1584,148 @@ def render_closing(prs, s: Closing):
     _notes(slide, s.notes)
 
 
+
+# --------------------------------------------------------------------------
+# A check and its reveal under a strip picture, the questions side by side.
+# --------------------------------------------------------------------------
+
+# The question sizes a check under a strip steps through, largest first: the
+# check's own sizes first, never below the deck's seventeen point stem.
+_TOP_SIZES = ((17.0, 15.0), (17.0, 14.0))
+_TOP_REVEAL_SIZES = ((16.0, 20.0, 16.0), (15.0, 18.0, 15.0),
+                     (14.0, 17.0, 14.0))
+TOP_PICTURE_TOP = 1.08
+# The least height the strip keeps for the picture and its credit line.
+TOP_PICTURE_MIN = 1.9
+TOP_GAP = 0.12
+# Where the cards under a strip end: lower than a beside check's, still
+# clear of the progress marker, so the strip gets the room.
+TOP_BOTTOM = 6.55
+
+
+def _top_picture(slide, s: Check, bottom):
+    """The picture across the top, fitted between the chip and ``bottom``,
+    with its credit line under it."""
+    _pair_picture(slide, s.picture, MARGIN.inches, TOP_PICTURE_TOP,
+                  CONTENT_W.inches, bottom - TOP_PICTURE_TOP - 0.28)
+
+
+def _render_check_top(prs, s: Check, marker, index, total):
+    """The question slide with the picture as a strip across the top and the
+    two questions side by side below it."""
+    slide = _blank(prs)
+    _ground(slide, GREEN_DEEP)
+    _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GOLD)
+    _chip(slide, MARGIN, Inches(0.55), f"CHECK {index} OF {total}", fill=GOLD,
+          text_color=INK, width=Inches(1.85))
+    frame = _textbox(slide, MARGIN + Inches(2.1), Inches(0.57), Inches(8.0),
+                     Inches(0.4))
+    _para(frame, s.label, size=15, color=WHITE, bold=True, first=True)
+
+    col_w = Emu(int((CONTENT_W - Inches(0.7)) / 2))
+    inner_in = col_w.inches - 0.6
+    floor = TOP_BOTTOM - TOP_PICTURE_TOP - TOP_PICTURE_MIN - TOP_GAP
+
+    for stem_pt, opt_pt in _TOP_SIZES:
+        # Measured as rendered: a line of Arial is about 1.2 times its size,
+        # times the 1.12 line spacing the options are set at.
+        tallest_stem = max(_text_height(q.stem, inner_in, stem_pt, "bold",
+                                        spacing=1.15 * 1.2)
+                           for q in s.questions)
+        card_h = max(0.52 + tallest_stem + 0.18
+                     + sum(_text_height(f"D.  {o}", inner_in, opt_pt,
+                                        spacing=1.12 * 1.2) + 6 / 72
+                           for o in q.options) + 0.2
+                     for q in s.questions)
+        if card_h <= floor:
+            break
+
+    card_top = TOP_BOTTOM - card_h
+    _top_picture(slide, s, card_top - TOP_GAP)
+
+    for i, q in enumerate(s.questions):
+        x = MARGIN + (col_w + Inches(0.7)) * i
+        _rect(slide, x, Inches(card_top), col_w, Inches(card_h), GREEN)
+        frame = _textbox(slide, x + Inches(0.3), Inches(card_top + 0.22),
+                         col_w - Inches(0.6), Inches(0.25))
+        _para(frame, f"Q{i + 1}", size=12, color=GOLD, bold=True, first=True)
+        stem_top = card_top + 0.52
+        stem_h = _text_height(q.stem, inner_in, stem_pt, "bold",
+                              spacing=1.15 * 1.2)
+        frame = _textbox(slide, x + Inches(0.3), Inches(stem_top),
+                         col_w - Inches(0.6), Inches(stem_h + 0.1))
+        _para(frame, q.stem, size=stem_pt, color=WHITE, bold=True, first=True,
+              line_spacing=1.15)
+        frame = _textbox(slide, x + Inches(0.3),
+                         Inches(stem_top + tallest_stem + 0.18),
+                         col_w - Inches(0.6), Inches(3.2))
+        for j, opt in enumerate(q.options):
+            _para(frame, f"{'ABCD'[j]}.  {opt}", size=opt_pt, color=WHITE,
+                  first=(j == 0), space_after=6, line_spacing=1.12)
+
+    _progress(slide, marker, on_dark=True)
+    _notes(slide, s.notes or (
+        "Read Q1 aloud, then Q2. Give them sixty seconds and no discussion.",
+        "Ask for a show of hands on each option before you advance.",
+        "This is for reading the room, not for marks. Say so if anyone tenses up.",
+    ))
+
+
+def _render_reveal_top(prs, s: Check, marker, index, total):
+    """The reveal under the same strip, its two cards side by side."""
+    slide = _blank(prs)
+    _ground(slide, PAPER)
+    _rect(slide, 0, 0, SLIDE_W, Inches(0.16), GOLD)
+    _chip(slide, MARGIN, Inches(0.55), "ANSWERS", fill=GREEN,
+          text_color=WHITE, width=Inches(1.35))
+    frame = _textbox(slide, MARGIN + Inches(1.6), Inches(0.57), Inches(8.5),
+                     Inches(0.4))
+    _para(frame, s.label, size=15, color=GREEN, bold=True, first=True)
+
+    col_w = Emu(int((CONTENT_W - Inches(0.5)) / 2))
+    inner_in = col_w.inches - 0.6
+    refs = {m.number: m.rgb for m in s.picture.marks} or None
+    floor = TOP_BOTTOM - TOP_PICTURE_TOP - TOP_PICTURE_MIN - TOP_GAP
+
+    for stem_pt, ans_pt, reason_pt in _TOP_REVEAL_SIZES:
+        card_h = max(0.62 + _text_height(f"Q1   {q.stem}", inner_in, stem_pt)
+                     + _text_height(f"{q.answer}.  "
+                                    f"{q.options['ABCD'.index(q.answer)]}",
+                                    inner_in, ans_pt, "mono")
+                     + _text_height(q.reason, inner_in, reason_pt)
+                     for q in s.questions)
+        if card_h <= floor:
+            break
+
+    card_top = TOP_BOTTOM - card_h
+    _top_picture(slide, s, card_top - TOP_GAP)
+
+    for i, q in enumerate(s.questions):
+        x = MARGIN + (col_w + Inches(0.5)) * i
+        stem = f"Q{i + 1}   {q.stem}"
+        answer = f"{q.answer}.  {q.options['ABCD'.index(q.answer)]}"
+        stem_h = _text_height(stem, inner_in, stem_pt)
+        _rect(slide, x, Inches(card_top), col_w, Inches(card_h), WHITE,
+              line=BORDER)
+        _rect(slide, x, Inches(card_top), Inches(0.1), Inches(card_h), GOLD)
+        frame = _textbox(slide, x + Inches(0.35), Inches(card_top + 0.2),
+                         Inches(inner_in), Inches(stem_h + 0.1))
+        _para(frame, stem, size=stem_pt, color=MUTED, first=True,
+              line_spacing=1.15)
+        frame = _textbox(slide, x + Inches(0.35),
+                         Inches(card_top + 0.2 + stem_h + 0.18),
+                         Inches(inner_in), Inches(card_h - stem_h - 0.4))
+        _para(frame, answer, size=ans_pt, color=GREEN, font=MONO_FONT,
+              bold=True, first=True, line_spacing=1.15)
+        _para(frame, q.reason, size=reason_pt, color=INK, space_before=5,
+              line_spacing=1.15, refs=refs)
+
+    _progress(slide, marker)
+    _notes(slide, s.notes or (
+        "Reveal one at a time. Say the reason out loud, not just the letter.",
+        "If more than a third of the room missed one, step back and reteach it.",
+    ))
+
 # --------------------------------------------------------------------------
 # Build
 # --------------------------------------------------------------------------
@@ -1815,6 +1969,9 @@ def _validate(chapter: Chapter) -> list[str]:
                             "loses it")
                     else:
                         check_marks(where, slide.picture)
+                    if slide.layout not in CHECK_LAYOUTS:
+                        problems.append(f"{where}: a check's layout is one "
+                                        f"of {CHECK_LAYOUTS}")
                     if not 4.5 <= slide.text_w <= 8.0:
                         problems.append(f"{where}: a check's text_w runs "
                                         "4.5in to 8.0in")

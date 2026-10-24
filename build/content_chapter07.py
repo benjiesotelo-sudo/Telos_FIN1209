@@ -1115,8 +1115,8 @@ FALSE_ONE_FIGURE = _book_figure(
     (
         Mark(1, "line", 0.07, 0.10, 0.60, 0.10, color="gold", at=(0.08, 0.20)),
         Mark(2, "circle", 0.29, 0.03, 0.36, 0.12, color="red", at=(0.26, 0.18)),
-        Mark(3, "circle", 0.36, 0.10, 0.42, 0.18, color="blue", at=(0.48, 0.28)),
-        Mark(4, "line", 0.27, 0.03, 0.42, 0.03, color="purple", at=(0.62, 0.24)),
+        Mark(3, "circle", 0.36, 0.10, 0.42, 0.18, color="blue", at=(0.44, 0.42)),
+        Mark(4, "line", 0.27, 0.03, 0.42, 0.03, color="purple", at=(0.80, 0.40)),
     ),
     (
         "Lim calls this a non-failure swing and attributes the setup to a 2B entry.",
@@ -1387,7 +1387,7 @@ OUTSIDE_CHECK = Check(
             stem="What must a bearish outside bar's range contain?",
             options=("Only the current bar's body", "One or more preceding bars", "A gap on both sides", "Only the volume bars"),
             answer="B",
-            reason="Lim defines an outside bar as engulfing one or more preceding bars (p. 223).",
+            reason="It engulfs preceding bars (Lim, p. 223).\n",
         ),
         Q(
             stem="Which close is more reliable for a bearish outside-bar reading?",

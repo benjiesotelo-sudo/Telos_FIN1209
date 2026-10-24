@@ -377,22 +377,30 @@ U_MA = _sma(U_VOL, 20)
 U_BAND = _band(U_VOL, 20, 3.0)
 U_PICKS = tuple(i for i in range(20, 100) if U_VOL[i] > U_BAND[i - 1])
 
-# V - volume filtered inflection points and the channel from them.
+# V - volume filtered inflection points and the channel from them. Every
+# peak and trough is dotted. Three came on 3.0 million, above a threshold
+# set by eye at 2.5; the others on 1.0, below the average bar. The line
+# through peaks 1 and 2 rises PHP 4.00 over 40 bars, PHP 0.10 a bar; its
+# parallel through trough 3 is the channel's lower line, and price comes
+# back to that line at X, bar 72, PHP 51.80, and turns up.
 V_POINTS = {"1": 22, "2": 62, "3": 44}
-V_SKIPPED = (10, 34, 52, 74)
-_v_close = _line(((0, 46.0), (V_SKIPPED[0], 49.0), (16, 47.6),
-                  (V_POINTS["1"], 52.0), (V_SKIPPED[1], 49.4),
-                  (38, 51.0), (V_POINTS["3"], 49.0),
-                  (V_SKIPPED[2], 53.0), (56, 51.8), (V_POINTS["2"], 56.0),
-                  (68, 53.6), (V_SKIPPED[3], 55.4), (84, 54.0)),
+V_SKIPPED = (10, 16, 34, 38, 52, 56)
+V_X = 72
+V_THRESHOLD = 2.5
+_v_close = _line(((0, 46.0), (V_SKIPPED[0], 49.0), (V_SKIPPED[1], 47.6),
+                  (V_POINTS["1"], 52.0), (V_SKIPPED[2], 49.4),
+                  (V_SKIPPED[3], 51.0), (V_POINTS["3"], 49.0),
+                  (V_SKIPPED[4], 53.0), (V_SKIPPED[5], 51.8),
+                  (V_POINTS["2"], 56.0), (V_X, 51.8), (84, 55.0)),
                  seed=741, noise=0.002, wobble=0.02)
 V_LINE = tuple(_v_close)
 _v_vol = list(_noisy([1.3] * 85, seed=742, spread=0.25))
 for x in V_POINTS.values():
     _v_vol[x] = 3.0
-for x in V_SKIPPED:
-    _v_vol[x] = 1.5
+for x in V_SKIPPED + (V_X,):
+    _v_vol[x] = 1.0
 V_VOL = tuple(_v_vol)
+V_AVERAGE = sum(V_VOL) / len(V_VOL)
 V_SLOPE = (V_LINE[V_POINTS["2"]] - V_LINE[V_POINTS["1"]]) / (
     V_POINTS["2"] - V_POINTS["1"])
 
@@ -1124,11 +1132,12 @@ CHARTS = (
         draw=ck.panels,
         kwargs=dict(
             panes=(
-                Pane(line=V_LINE, ylabel="Price (PHP)", ticks=(46, 50, 54),
-                     height=1.7, top=0.22, bottom=0.12,
+                Pane(line=V_LINE, ylabel="Price (PHP)",
+                     ticks=(46, 50, 54, 58),
+                     height=1.8, top=0.10, bottom=0.24,
                      strokes=(
-                         Stroke(points=((V_POINTS["1"] - 4,
-                                         _v_top(V_POINTS["1"] - 4)),
+                         Stroke(points=((V_POINTS["1"],
+                                         _v_top(V_POINTS["1"])),
                                         (84, _v_top(84))), tone="structure",
                                 width=1.8),
                          Stroke(points=((V_POINTS["3"] - 6,
@@ -1136,24 +1145,36 @@ CHARTS = (
                                         (84, _v_bottom(84))),
                                 tone="structure", width=1.8, dashed=True),
                      ),
-                     notes=tuple(Note(x=x, label=k, dx=-14 if k != "3" else 10,
-                                      dy=10 if k != "3" else -12,
-                                      notice=True, dot=True)
-                                 for k, x in V_POINTS.items())
+                     notes=(Note(x=V_POINTS["1"], label="1  PHP 52.00",
+                                 dx=-14, dy=0, notice=True),
+                            Note(x=V_POINTS["2"], label="2  PHP 56.00",
+                                 dx=-84, dy=6, notice=True),
+                            Note(x=V_POINTS["3"], label="3  PHP 49.00",
+                                 dx=-10, dy=-24, notice=True),
+                            Note(x=V_X, label="X  PHP 51.80", dx=-4,
+                                 dy=-56))
                      + tuple(Note(x=x, label="", dx=0.1, dy=0.1, dot=True)
                              for x in V_SKIPPED)),
-                Pane(columns=V_VOL, ylabel="Volume", height=1.0, top=0.30,
+                Pane(columns=V_VOL, ylabel="Volume (m)", ticks=(1, 2, 3),
+                     height=1.1, top=0.28,
                      picks=tuple(V_POINTS.values()),
-                     dims=V_SKIPPED,
-                     strokes=(Stroke(points=((0, 2.4), (84, 2.4)),
+                     dims=V_SKIPPED + (V_X,),
+                     tags=tuple((x, "3.0") for x in V_POINTS.values()),
+                     strokes=(Stroke(points=((0, V_THRESHOLD),
+                                             (84, V_THRESHOLD)),
                                      dashed=True, tone="quiet",
-                                     label="threshold, by eye", at=0, dx=2,
-                                     dy=10),)),
+                                     label="threshold, by eye: 2.5", at=1,
+                                     dx=-4, dy=-12),
+                              Stroke(points=((0, V_AVERAGE),
+                                             (84, V_AVERAGE)),
+                                     tone="quiet", width=1.0,
+                                     label="average: 1.3", at=1, dx=-58,
+                                     dy=-14))),
             ),
-            size=TERM, xlabel="Time",
-            footnote=INVENTED + " Solid: the line through 1 and 2.\n"
-                     "Dashed: its parallel through 3. Grey: turns on too "
-                     "little volume.",
+            size=TERM, xlabel="Time (bars)",
+            footnote="Invented, ours; volume in millions. Solid: the line "
+                     "through peaks 1 and 2.\nDashed: its parallel through "
+                     "trough 3. Grey: turns on 1.0, not used.",
         ),
     ),
     ChartArt(

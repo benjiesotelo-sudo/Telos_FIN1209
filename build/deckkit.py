@@ -261,6 +261,11 @@ class Figure(Slide):
     # file's own aspect disagrees, since every mark would then be off.
     marks: tuple[Mark, ...] = ()
     aspect: float = 0.0
+    # The part of the artwork to show, when a slide talks about one panel:
+    # (left, top, right, bottom), the fraction cut off each side. The shown
+    # part is fitted to the box as the whole would be, so a crop draws it
+    # larger, and marks are placed in fractions of the shown part.
+    crop: tuple[float, float, float, float] = ()
 
     @property
     def filename(self) -> str:
@@ -302,6 +307,7 @@ class Chart(Slide):
     # from the file and need not be declared.
     marks: tuple[Mark, ...] = ()
     aspect: float = 0.0
+    crop: tuple[float, float, float, float] = ()
 
     @property
     def name(self) -> str:
@@ -802,10 +808,22 @@ def _picture_size(picture, path) -> tuple[float, float] | None:
                 f"{path.name} is {px_w}x{px_h}, aspect {px_w / px_h:.3f}, "
                 f"but its slide declares {picture.aspect}; its marks would "
                 "land in the wrong place")
-        return float(px_w), float(px_h)
-    if picture.marks and picture.aspect:
-        return picture.aspect * 1000.0, 1000.0
-    return None
+    elif picture.aspect and (picture.marks or picture.crop):
+        px_w, px_h = picture.aspect * 1000.0, 1000.0
+    else:
+        return None
+    left, top, right, bottom = picture.crop or (0.0, 0.0, 0.0, 0.0)
+    return float(px_w) * (1 - left - right), float(px_h) * (1 - top - bottom)
+
+
+def _add_picture(slide, picture, path, x, y, w, h):
+    """Place the artwork in the box given, cut to its crop if it has one."""
+    shape = slide.shapes.add_picture(str(path), Inches(x), Inches(y),
+                                     Inches(w), Inches(h))
+    if picture.crop:
+        (shape.crop_left, shape.crop_top, shape.crop_right,
+         shape.crop_bottom) = picture.crop
+    return shape
 
 
 def _placeholder_plate(slide, picture, x, y, w, h):
@@ -816,10 +834,15 @@ def _placeholder_plate(slide, picture, x, y, w, h):
     _rect(slide, Inches(x), Inches(y), Inches(w), Pt(4), GOLD)
     frame = _textbox(slide, Inches(x + 0.3), Inches(y + 0.3),
                      Inches(w - 0.6), Inches(h - 0.5))
+    # The box is the artwork's, and a crop can make it shallow, so the
+    # description steps down until it fits inside the plate.
+    shows_pt = next((pt for pt in (15.0, 13.0, 11.0, 9.0)
+                     if 0.4 + _text_height(picture.shows, w - 0.6, pt,
+                                           spacing=1.4) <= h - 0.4), 8.0)
     _para(frame,
           f"FIGURE {picture.number}" if is_figure else picture.name.upper(),
-          size=13, color=MUTED, bold=True, first=True, space_after=8)
-    _para(frame, picture.shows, size=15, color=INK, font=DISPLAY_FONT,
+          size=11, color=MUTED, bold=True, first=True, space_after=4)
+    _para(frame, picture.shows, size=shows_pt, color=INK, font=DISPLAY_FONT,
           line_spacing=1.15)
 
 
@@ -908,8 +931,7 @@ def render_figure(prs, s: Figure, marker):
         _rect(slide, Inches(x - pad), Inches(y - pad),
               Inches(w + 2 * pad), Inches(h + 2 * pad), WHITE, line=BORDER)
         if path is not None and path.is_file():
-            slide.shapes.add_picture(str(path), Inches(x), Inches(y),
-                                     Inches(w), Inches(h))
+            _add_picture(slide, s, path, x, y, w, h)
         else:
             _placeholder_plate(slide, s, x, y, w, h)
         _draw_marks(slide, s.marks, x, y, w, h)
@@ -964,8 +986,7 @@ def render_chart(prs, s: Chart, marker):
         _rect(slide, Inches(x - pad), Inches(y - pad),
               Inches(w + 2 * pad), Inches(h + 2 * pad), WHITE, line=BORDER)
         if path is not None and path.is_file():
-            slide.shapes.add_picture(str(path), Inches(x), Inches(y),
-                                     Inches(w), Inches(h))
+            _add_picture(slide, s, path, x, y, w, h)
         else:
             _placeholder_plate(slide, s, x, y, w, h)
         _draw_marks(slide, s.marks, x, y, w, h)
@@ -1223,8 +1244,7 @@ def _pair_picture(slide, picture, x, top, w, h):
               Inches(pic_w + 2 * pad), Inches(pic_h + 2 * pad), WHITE,
               line=BORDER)
         if path is not None and path.is_file():
-            slide.shapes.add_picture(str(path), Inches(pic_x), Inches(pic_y),
-                                     Inches(pic_w), Inches(pic_h))
+            _add_picture(slide, picture, path, pic_x, pic_y, pic_w, pic_h)
         else:
             _placeholder_plate(slide, picture, pic_x, pic_y, pic_w, pic_h)
         _draw_marks(slide, picture.marks, pic_x, pic_y, pic_w, pic_h)
@@ -1672,6 +1692,14 @@ def _validate(chapter: Chapter) -> list[str]:
             if not all(0.0 <= f <= 1.0 for f in points):
                 problems.append(f"{where}: mark {m.number} reaches outside "
                                 "its picture; fractions run 0 to 1")
+        if picture.crop and (len(picture.crop) != 4
+                             or not all(0.0 <= f < 0.9 for f in picture.crop)
+                             or picture.crop[0] + picture.crop[2] >= 0.9
+                             or picture.crop[1] + picture.crop[3] >= 0.9):
+            problems.append(f"{where}: a crop is four fractions, left, top, "
+                            "right, bottom, leaving at least a tenth shown")
+        if picture.crop and isinstance(picture, Figure) and not picture.aspect:
+            problems.append(f"{where}: a cropped figure declares its aspect")
         if picture.marks and isinstance(picture, Figure) and not picture.aspect:
             problems.append(
                 f"{where}: figure {picture.number} carries marks, so it "

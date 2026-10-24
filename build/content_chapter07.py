@@ -2470,15 +2470,15 @@ IDNR_FIGURE = Figure(
              color="gold", at=(0.48, 0.90), size=0.30),
         Mark(2, "box", 0.36, 0.54, 0.43, 0.75,
              color="red", at=(0.47, 0.48), size=0.30),
-        Mark(3, "box", 0.47, 0.54, 0.70, 0.79,
-             color="blue", at=(0.73, 0.53), size=0.30),
+        Mark(3, "box", 0.40, 0.39, 0.49, 0.82,
+             color="blue", at=(0.55, 0.34), size=0.30),
     ),
     shows=("The book's ID/NR6 schematic: six numbered bars, with the sixth "
            "bar inside the prior range and the narrowest range, followed by "
            "long and short trigger levels."),
     notes=(
         "Count the last six bars in the source schematic, then locate its final inside bar and narrowest range.",
-        "The two trigger arrows show that direction is not built into ID/NR.",
+        "The blue mark identifies the narrowest inside bar. The two trigger arrows show that direction is not built into ID/NR.",
         "The next slide extends the same count to NR4, NR5, NR6, and NR7.",
     ),
     origin="Lim (2016), p. 232, Figure 7.38. The numbered marks are for teaching.",
@@ -2570,20 +2570,20 @@ INSIDE_BAR_FIGURE = Figure(
 )
 
 OSCILLATOR_BOUNDARY_FIGURE = Figure(
-    title="Figure 7.13: the labelled oscillator region",
+    title="Figure 7.13: an overextended bar after a parabolic rise",
     number="7.13",
     aspect=1200 / 600,
     marks=(
-        Mark(1, "box", 0.76, 0.73, 0.94, 0.84,
-             color="gold", at=(0.95, 0.70), size=0.30),
+        Mark(1, "box", 0.38, 0.07, 0.43, 0.52,
+             color="gold", at=(0.47, 0.04), size=0.30),
     ),
-    shows=("Figure 7.13's overextension chart, with mark 1 on the lower "
-           "labelled oscillator region."),
+    shows=("Figure 7.13's overextension chart, with mark 1 on the bar that "
+           "extends above the upper price barrier after the parabolic rise."),
     notes=(
-        "Point to the lower labelled oscillator region, not to a formula.",
-        "The book uses the label as context in Chapter 7; the method is deferred to Chapter 8.",
+        "Point to the marked overextended bar and the upper price barrier.",
+        "The book uses this price and volume context in Chapter 7; it does not teach an oscillator formula here.",
     ),
-    origin="Lim (2016), p. 218, Figure 7.13. The numbered mark is for teaching.",
+    origin="Lim (2016), p. 217, Figure 7.13. The numbered mark is for teaching.",
 )
 
 OOPS_CHART = Chart(
@@ -2654,8 +2654,8 @@ INSIDE_MONTH_CHART = Chart(
     letter="W",
     title="Inside Month/NR5: invented worked example",
     shows=("Six invented monthly bars with ranges 12, 10, 9, 7, and 5 PHP; "
-            "the fifth is inside the fourth, followed by an upward break "
-            "through PHP 31.00."),
+            "the fifth is inside the fourth, followed by an upward move of "
+            "PHP 8.00."),
     tier="core",
     marks=(
         Mark(1, "box", 0.53, 0.38, 0.70, 0.59,
@@ -2667,7 +2667,7 @@ INSIDE_MONTH_CHART = Chart(
     ),
     notes=(
         "The five counted monthly ranges are 12, 10, 9, 7, and 5 PHP; the fifth bar is inside the fourth.",
-        "The sixth bar breaks above PHP 31.00. The example is invented to show the extension.",
+        "The sixth bar moves upward by PHP 8.00 from the prior close. The example is invented to show the extension.",
     ),
     origin="Chart W is ours, with invented monthly PHP values to show Lim (2016), p. 232.",
 )
@@ -2699,7 +2699,7 @@ OOPS_REWORK_CHART = Chart(
 IDNR_REWORK_CHART = Chart(
     letter="O",
     title="ID/NR6 compresses the recent range",
-    shows=("Six invented daily bars show ranges of 4.0, 3.2, 2.8, 2.1, 2.2, "
+    shows=("Six invented daily bars show ranges of 4.0, 3.2, 2.8, 2.1, 1.6, "
             "and 1.2 PHP. The sixth bar is inside the fifth and is the "
             "narrowest of the six."),
     tier="core",
@@ -2731,15 +2731,15 @@ SECTION4 = Section(
             left=Content(
                 title="Williams' Oops starts with a gap beyond the previous range",
                 lines=(
-                    "Williams' Oops is a volatility breakout setup: a new bar opens beyond the previous high or low, then the order waits at that old extreme.",
-                    "Yesterday's high was PHP 52.00 and close was PHP 51.00. Today opens at PHP 53.00 [1], reaches PHP 54.00 [3], and places a sell-stop at PHP 52.00 [2].",
-                    "If price rises through the PHP 54.00 stoploss, Lim says to stop and reverse there. He prefers a bearish Oops in a downtrend, so this is a potential setup.",
+                    "An Oops gaps beyond the prior range. Sell-stop triggers below; buy-stop above; stoploss protects at the new extreme.",
+                    "Yesterday's high was PHP 52.00. Today opened PHP 53.00 [1], reached PHP 54.00 [3], then placed sell-stop PHP 52.00 [2].",
+                    "Above the stoploss, Lim says stop and reverse. He prefers bearish Oops in a downtrend.",
                 ),
-                accent="The gap identifies the setup; the previous extreme identifies the order.",
-                caption="Lim (2016), pp. 230 to 231. The PHP values are invented for teaching.",
+                accent="",
+                caption="",
             ),
             picture=OOPS_REWORK_CHART,
-            text_w=6.8,
+            text_w=3.8,
             picture_extra=0.2,
             notes=OOPS_REWORK_CHART.notes,
             origin=OOPS_REWORK_CHART.origin,
@@ -2748,9 +2748,9 @@ SECTION4 = Section(
             left=Content(
                 title="Figure 7.36 shows both directions of Williams' Oops",
                 lines=(
-                    "The idea is the same on either side of the market: a new bar opens beyond the previous range, then an order waits at the old extreme.",
-                    "On the left, mark 1 shows a gap down, mark 2 the buy-stop at the previous low, and mark 3 the stoploss at the new low. The right panel is the gap-up converse.",
-                    "If price reverses through the stoploss, Lim says to stop and reverse there. Figure 7.36 shows the order sequence, not a guaranteed result.",
+                    "The preceding Williams' Oops slide defined a buy-stop above its level and a stoploss at the new extreme.",
+                    "Left: mark 1 is the gap down, mark 2 the buy-stop at the prior low, and mark 3 the stoploss at the new low. Right: the gap-up converse.",
+                    "Lim says to stop and reverse at the stoploss. Figure 7.36 shows sequence, not result.",
                 ),
                 accent="The gap direction changes, but the order locations reverse exactly.",
                 caption="Lim (2016), p. 231, Figure 7.36. The marks are for teaching.",
@@ -2765,15 +2765,15 @@ SECTION4 = Section(
             left=Content(
                 title="The bullish Oops is the same rule after a gap down",
                 lines=(
-                    "The bullish Oops begins when a new bar opens below the previous low. The buy-stop then sits at that previous low, while the stoploss sits at the new low.",
-                    "Here is the same pattern with simple prices. Yesterday's low was PHP 48.00. Today opens at PHP 47.00 [1], reaches a new low of PHP 46.00 [3], and places a buy-stop at PHP 48.00 [2].",
-                    "If price falls through the PHP 46.00 stoploss, Lim says to stop and reverse there. He says to look for a bullish Oops in an uptrend, so the context still matters.",
+                    "The preceding slide defines buy-stop and stoploss. After a gap down, the bullish Oops reverses the order.",
+                    "Yesterday's low was PHP 48.00. Today opened PHP 47.00 [1], reached PHP 46.00 [3], and placed buy-stop PHP 48.00 [2].",
+                    "Below the stoploss, Lim says stop and reverse. He prefers bullish Oops in an uptrend.",
                 ),
-                accent="A gap down gives the bullish converse of the gap-up order sequence.",
-                caption="Lim (2016), pp. 230 to 231. The PHP values are invented for teaching.",
+                accent="",
+                caption="",
             ),
             picture=OOPS_BULLISH_CHART,
-            text_w=6.8,
+            text_w=3.8,
             picture_extra=0.15,
             notes=OOPS_BULLISH_CHART.notes,
             origin=OOPS_BULLISH_CHART.origin,
@@ -2782,9 +2782,9 @@ SECTION4 = Section(
             left=Content(
                 title="Figure 7.37 applies the bearish Oops rule to a daily chart",
                 lines=(
-                    "Now compare the rule with Lim's Dynegy example. Mark 1 shows the opening gap, mark 2 the sell-stop at the previous high, and mark 3 the current high where the stop-and-reverse buy would occur.",
-                    "The downside path drawn in the figure is the book's observed example, not a promise that every bearish Oops will fall in the same way.",
-                    "The four candlestick companions named in this passage are not defined in Chapter 7, so this slide uses only the Oops order sequence.",
+                    "Use the preceding Oops definitions. In Dynegy, marks 1, 2, and 3 show the gap, sell-stop, and stop-and-reverse high.",
+                    "That downside path is the book's example, not a promise.",
+                    "Chapter 7 leaves the four candlestick companions undefined.",
                 ),
                 accent="A worked chart shows where the rule sits; it does not complete a trade plan.",
                 caption="Lim (2016), p. 231, Figure 7.37. The figure is a Dynegy daily chart.",
@@ -2800,8 +2800,8 @@ SECTION4 = Section(
                 title="The trend gives Williams' Oops its preferred context",
                 lines=(
                     "A trend gives an Oops its context. Lim prefers a bullish Oops in an uptrend [1] and a bearish Oops in a downtrend [2].",
-                    "The book names morning star, evening star, piercing line, and dark cloud cover as possible candlestick companions, but Figure 7.36 does not show them.",
-                    "Chapter 7 defines none of those four, so they remain names rather than rules. Next, the question changes from direction to recent range.",
+                    "The book names four companions, but Figure 7.36 does not show them.",
+                    "Chapter 7 defines none, so the names are not rules. Next comes ID/NR.",
                 ),
                 accent="The trend supplies context, while the chapter leaves the companion definitions open.",
                 caption="Lim (2016), p. 231. The named candlestick companions are not defined in this chapter.",
@@ -2816,15 +2816,15 @@ SECTION4 = Section(
             left=Content(
                 title="ID/NR combines an inside day with a narrow recent range",
                 lines=(
-                    "ID/NR means an inside-day breakout from the narrowest range in the last n days. An inside day stays within the previous day's high and low, while the narrow range shows compressed recent movement.",
-                    "Here is an invented six-bar example. The ranges are 4.0, 3.2, 2.8, 2.1, 2.2, and 1.2 PHP. Bar 6 stays inside bar 5 [1] and has the narrowest range [2].",
-                    "A later breakout can occur in either direction [3]. ID/NR is therefore a volatility breakout pattern, not a bullish or bearish signal before the trigger.",
+                    "ID/NR means an inside-day breakout from the narrowest range in n days. Inside stays within the prior range.",
+                    "Six invented ranges are 4.0, 3.2, 2.8, 2.1, 1.6, and 1.2 PHP. Bar 6 is inside bar 5 [1] and narrowest [2].",
+                    "The later breakout can go either way [3]. ID/NR is neutral before its trigger.",
                 ),
-                accent="Count the window first, then wait for price to provide direction.",
-                caption="Lim (2016), p. 232. The PHP ranges are invented for teaching.",
+                accent="",
+                caption="",
             ),
             picture=IDNR_REWORK_CHART,
-            text_w=7.2,
+            text_w=3.8,
             picture_extra=0.2,
             notes=IDNR_REWORK_CHART.notes,
             origin=IDNR_REWORK_CHART.origin,
@@ -2833,9 +2833,9 @@ SECTION4 = Section(
             left=Content(
                 title="Figure 7.38 names the six-bar ID/NR6 window",
                 lines=(
-                    "The book uses ID/NR6 for an inside day with the narrowest range in a six-bar window. Mark 1 counts the bars, mark 2 shows the inside condition, and mark 3 identifies the narrowest range.",
+                    "ID/NR6 is an inside day with the narrowest range in six bars. Mark 1 counts bars, mark 2 shows containment, and mark 3 the narrowest bar.",
                     "Lim calls this a volatility breakout because recent movement has compressed. Before the breakout it is neutral, so either direction remains possible.",
-                    "Read the window and the inside condition first. The number 6 names the count, not the direction.",
+                    "Read the window and inside condition first. The number 6 names the count, not the direction.",
                 ),
                 accent="ID/NR6 names a six-bar count and a compressed range, not a forecast direction.",
                 caption="Lim (2016), p. 232, Figure 7.38.",
@@ -2849,9 +2849,9 @@ SECTION4 = Section(
         Content(
                 title="The number in ID/NR tells us how far back to count",
                 lines=(
-                    "ID/NR4 through ID/NR7 use the same idea with different look-back windows. The number tells us how many bars to count, and each version needs an inside day.",
-                    "For comparison, invented NR4 ranges are 3.1, 2.4, 2.0, and 1.6 PHP. Adding a fifth bar gives 1.2, a sixth gives 1.8, and a seventh gives 1.0 PHP.",
-                    "These values show the windows. The later breakout reveals direction.",
+                    "ID/NR4 through ID/NR7 use the same idea with different look-back windows. Each version counts its named number of bars and needs an inside day.",
+                    "NR4 counts four bars and its narrowest range is 1.6 PHP. NR5 counts five bars and reaches 1.2 PHP. NR6 counts six bars and remains at 1.2 PHP. NR7 counts seven bars and reaches 1.0 PHP.",
+                    "These are invented comparison values. The later breakout reveals direction.",
                 ),
                 accent="The count changes; the neutral-before-breakout rule does not.",
                 caption="Lim (2016), p. 232. The comparative ranges are invented for teaching.",
@@ -2865,9 +2865,9 @@ SECTION4 = Section(
             left=Content(
                 title="An ID/NR setup has no direction until price breaks",
                 lines=(
-                    "The inside and narrowest-range conditions describe compression, not sentiment. On Figure 7.38, mark 1 identifies the narrowest bar and mark 2 shows its containment inside the previous bar.",
-                    "Before the breakout, the same setup can trigger up or down at mark 3. Direction comes from the later price break, not from the ID/NR name.",
-                    "Count the window, confirm the inside condition, and wait for the trigger before calling the move bullish or bearish.",
+                    "ID/NR shows compressed range, not sentiment. Figure 7.38 mark 1 is narrowest; mark 2 is containment.",
+                    "Before breakout, mark 3 shows either direction. Direction comes later.",
+                    "Count, confirm inside, then wait for the trigger.",
                 ),
                 accent="ID/NR is neutral first and directional only after the breakout.",
                 caption="Lim (2016), p. 232. ID/NR has no bearish or bullish sentiment before its breakout.",
@@ -2882,15 +2882,15 @@ SECTION4 = Section(
             left=Content(
                 title="Inside Month/NR5 carries the same range idea to monthly bars",
                 lines=(
-                    "An Inside Month applies the ID/NR idea to monthly bars. The timeframe changes, but the inside relationship and the narrowest-range count remain the same.",
-                    "Here is an invented example with ranges of 12, 10, 9, 7, and 5 PHP. The fifth bar is inside the fourth and is the narrowest [1] [2]. A sixth bar breaks upward through PHP 31.00 [3].",
-                    "The invented example stays neutral until that break. Figure 7.39 is a separate Dynegy example, so its prices are not the source of these teaching values.",
+                    "Inside Month applies ID/NR to monthly bars. The timeframe changes; the rules stay.",
+                    "Invented ranges are 12, 10, 9, 7, and 5 PHP. Bar 5 is inside bar 4 and narrowest [1] [2].",
+                    "Bar 6 moves up PHP 8.00 [3]. Figure 7.39 is a separate Dynegy example.",
                 ),
-                accent="The timeframe changes, but the inside and narrowest-range logic stays.",
-                caption="Lim (2016), p. 232. The monthly values are invented for teaching.",
+                accent="",
+                caption="",
             ),
             picture=INSIDE_MONTH_CHART,
-            text_w=7.2,
+            text_w=3.8,
             picture_extra=0.2,
             notes=INSIDE_MONTH_CHART.notes,
             origin=INSIDE_MONTH_CHART.origin,
@@ -2899,9 +2899,9 @@ SECTION4 = Section(
             left=Content(
                 title="Figure 7.39 applies ID/NR to five monthly bars",
                 lines=(
-                    "The book extends the same neutral-before-breakout idea to monthly bars. Mark 1 shows the inside month, mark 2 spans the five-month range count, and mark 3 shows the later upside breakout.",
-                    "The upside move is what happened in this Dynegy example, not a promise that every Inside Month will break upward.",
-                    "Keep the pattern neutral until the monthly bar actually breaks, then read direction from price. Part 4 closes the book's pattern catalogue here.",
+                    "Figure 7.39 extends neutral ID/NR to monthly bars. Mark 1 is the inside month, mark 2 the five-month count, and mark 3 the later rise.",
+                    "The upside move is this Dynegy example, not a promise for every Inside Month.",
+                    "Stay neutral until the monthly bar breaks, then read direction from price.",
                 ),
                 accent="The monthly figure extends ID/NR without adding a new direction rule.",
                 caption="Lim (2016), p. 232, Figure 7.39. The monthly chart is Dynegy Inc.",
@@ -2925,7 +2925,7 @@ SECTION4 = Section(
                     stem="Why is ID/NR7 a volatility breakout pattern?",
                     options=("It always breaks upward", "It combines an inside day with the narrowest range in seven bars", "It counts seven volume readings only", "It requires seven bullish closes"),
                     answer="B",
-                    reason="ID/NR7 combines an inside day with the narrowest range in the last seven bars, so it describes compressed recent volatility before the breakout (p. 232).",
+                    reason="ID/NR7 combines an inside day with the narrowest seven-bar range (p. 232).",
                 ),
             ),
             picture=IDNR_FIGURE,
@@ -3022,9 +3022,9 @@ CHAPTER = Chapter(
             left=Content(
                 title="Review answers 5 and 6 return to volume and triple-bar structure",
                 lines=(
-                    "Volume is the first idea here. 5. High volume can strengthen a wide final reversal bar, while low volume can signal uncertainty. Pattern 1 allows larger middle volume to be more bearish.",
-                    "The two triple-bar structures are the second idea. 6. In Figure 7.6, pattern 1 [1] has first and third closes near their lows with a large middle bar, while pattern 2 [2] has a narrow, low-volume middle bar. Blue mark 3 shows their shared uptrend.",
-                    "Wider outer ranges and gaps may add potential reliability, but Chapter 7 supplies evidence rather than a complete trade plan.",
+                    "Volume can strengthen or weaken a reversal read. 5. High volume can strengthen a wide final reversal bar; low volume can signal uncertainty.",
+                    "6. Figure 7.6 shows pattern 1 [1] with a large middle bar and pattern 2 [2] with a narrow, low-volume middle bar. Blue mark 3 points to pattern 1's uptrend.",
+                    "Wider ranges and gaps may add reliability; Chapter 7 gives no complete trade plan.",
                 ),
                 accent="Pattern evidence does not make a complete trade plan.",
                 caption="",
@@ -3039,12 +3039,11 @@ CHAPTER = Chapter(
             left=Content(
                 title="Review answer 7 describes an ideal inside-bar reversal",
                 lines=(
-                    "An inside-bar reversal begins when the inside bar stays within the prior high and low, then breaks in the reversal direction.",
-                    "7. The ideal conditions are a wide, high-volume first bar and a narrow, very-low-volume second bar. Barrier and trend context can add weight.",
-                    "Figure 7.25 marks the wide bar [1], the narrow inside bar [2], and the labelled oscillator region [3]. Chapter 7 gives no oscillator formula.",
-                    "A Harami is one-fourth to one-third of the prior range, while an inside bar has no such size restriction.",
+                    "An inside-bar reversal begins when the inside bar stays within the prior high and low, then breaks in reversal direction.",
+                    "7. Ideal conditions are a wide, high-volume first bar and a narrow, very-low-volume second bar. Figure 7.25 marks them [1] [2], with oscillator label [3].",
+                    "Lim says the narrow candlestick in a Harami is no more than one-fourth to one-third the range of the larger preceding candlestick, while an inside bar has no such size restriction.",
                 ),
-                accent="The inside condition comes first; reversal direction comes from the later break.",
+                accent="",
                 caption="",
             ),
             picture=INSIDE_BAR_FIGURE,
@@ -3058,11 +3057,11 @@ CHAPTER = Chapter(
                 title="Review answer 8 belongs to Chapter 8",
                 lines=(
                     "The book asks how oscillators can help gauge bullishness or bearishness in bar reversal patterns.",
-                    "8. Figure 7.13 labels an oscillator region [1], but Chapter 7 does not teach the method or a formula for using oscillators.",
-                    "The full treatment belongs to Chapter 8. This slide points forward honestly rather than adding an unassessed Chapter 7 method.",
+                    "8. Figure 7.13 shows an overextended bar above its upper price barrier [1], not an oscillator method.",
+                    "The full treatment belongs to Chapter 8, so this slide adds no unassessed method.",
                 ),
-                accent="Use the figure as context only; do not import a method the chapter does not teach.",
-                caption="Lim (2016), p. 233, review question 8; Figure 7.13, p. 218. Oscillator method is deferred to Chapter 8.",
+                accent="",
+                caption="Lim (2016), p. 233, review question 8; Figure 7.13, p. 217. The price-bar context is shown here; oscillator method is deferred to Chapter 8.",
             ),
             picture=OSCILLATOR_BOUNDARY_FIGURE,
             text_w=6.2,

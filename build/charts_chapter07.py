@@ -73,11 +73,9 @@ def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Pat
                 (last_y, form_y, form_y),
                 color=ck.GREEN_DEEP if form_bullish else ck.GOLD,
                 linewidth=2.2, solid_capstyle="round")
-        ax.text(x + w / 2, y + 0.23 * h, result, ha="center", va="center",
-                fontsize=15, fontweight="bold", color=tone,
-                linespacing=0.95)
-        ax.text(x + w / 2, y + 0.08 * h, example, ha="center", va="center",
-                fontsize=10.5, color=ck.MUTED)
+        ax.text(x + w / 2, y + 0.20 * h, result.replace("\n", " "),
+                ha="center", va="center", fontsize=14, fontweight="bold",
+                color=tone, linespacing=0.95)
 
     ax.text((left + split_x) / 2, top + 0.08, "Bullish formation",
             ha="center", va="center", fontsize=14, fontweight="bold",

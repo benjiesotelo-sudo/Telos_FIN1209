@@ -1452,6 +1452,11 @@ def _beside_picture(slide, s: Check, reveal=False):
         left, top, right, bottom = picture.crop
         picture = replace(picture, crop=(left - 0.01, top,
                                          right - 0.01, bottom))
+    elif reveal and isinstance(picture, Chart):
+        # LibreOffice can paint a repeated chart image blank on the answer
+        # slide. A tiny crop distinction makes it render as a new picture
+        # operation while leaving the visible chart and marks unchanged.
+        picture = replace(picture, crop=(0.0005, 0.0, 0.0005, 0.0))
     _pair_picture(slide, picture, x, BESIDE_TOP,
                   CONTENT_W.inches - s.text_w - PAIR_GAP,
                   PAIR_BAND_BOTTOM - BESIDE_TOP)

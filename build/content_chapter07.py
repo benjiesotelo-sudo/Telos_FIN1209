@@ -386,12 +386,12 @@ WORKED_CHART = Chart(
     letter="U",
     title="Part 1 worked read",
     marks=(
-        Mark(1, "box", 0.43, 0.20, 0.91, 0.78,
-             color="gold", at=(0.38, 0.14), size=0.28),
-        Mark(2, "circle", 0.76, 0.28, 0.90, 0.80,
-             color="red", at=(0.94, 0.25), size=0.28),
-        Mark(3, "circle", 0.10, 0.25, 0.62, 0.78,
-             color="blue", at=(0.07, 0.17), size=0.28),
+        Mark(1, "box", 0.59, 0.18, 0.82, 0.78,
+             color="gold", at=(0.56, 0.15), size=0.22),
+        Mark(2, "circle", 0.74, 0.26, 0.80, 0.34,
+             color="red", at=(0.84, 0.24), size=0.20),
+        Mark(3, "arrow", 0.27, 0.65, 0.56, 0.42,
+             color="blue", at=(0.60, 0.38), size=0.20),
     ),
     shows=("Our invented five-bar chart makes the two-bar formation and its "
            "rising price context visible, including the first low 50.20 and "

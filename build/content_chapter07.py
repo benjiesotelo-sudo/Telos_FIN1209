@@ -1113,10 +1113,10 @@ FALSE_ONE_FIGURE = _book_figure(
     "Bearish non-failure swing. Price breaks above resistance, returns below it, "
     "and creates a short entry with a stop above the breakout high.",
     (
-        Mark(1, "line", 0.07, 0.10, 0.60, 0.10, color="gold", at=(0.08, 0.06)),
-        Mark(2, "circle", 0.29, 0.03, 0.36, 0.12, color="red", at=(0.40, 0.05)),
-        Mark(3, "circle", 0.36, 0.10, 0.42, 0.18, color="blue", at=(0.47, 0.20)),
-        Mark(4, "line", 0.27, 0.03, 0.42, 0.03, color="purple", at=(0.48, 0.04)),
+        Mark(1, "line", 0.07, 0.10, 0.60, 0.10, color="gold", at=(0.08, 0.20)),
+        Mark(2, "circle", 0.29, 0.03, 0.36, 0.12, color="red", at=(0.26, 0.18)),
+        Mark(3, "circle", 0.36, 0.10, 0.42, 0.18, color="blue", at=(0.48, 0.28)),
+        Mark(4, "line", 0.27, 0.03, 0.42, 0.03, color="purple", at=(0.62, 0.24)),
     ),
     (
         "Lim calls this a non-failure swing and attributes the setup to a 2B entry.",
@@ -1275,12 +1275,12 @@ INSIDE_CHART = Chart(
 SPIKE_CHART = Chart(
     letter="U",
     title="Emotion spike: a wide bar on high volume",
-    shows="Four invented PHP bars. The third bar is much wider and carries much higher volume, followed by a bearish three-bar reversal.",
+    shows="Six invented PHP bars. The third bar is much wider and carries much higher volume, followed by a bearish three-bar reversal.",
     tier="reinforcement",
     marks=(
         Mark(1, "box", 0.45, 0.14, 0.57, 0.56, color="gold", at=(0.39, 0.10)),
         Mark(2, "circle", 0.45, 0.72, 0.57, 0.88, color="red", at=(0.64, 0.92)),
-        Mark(3, "circle", 0.65, 0.24, 0.77, 0.43, color="blue", at=(0.82, 0.20)),
+        Mark(3, "box", 0.58, 0.28, 0.92, 0.66, color="blue", at=(0.94, 0.20)),
     ),
     notes=(
         "The ordinary bars have a PHP 3.0 range and 1.5 million shares. The spike has an 8.0 range and 6.0 million shares.",
@@ -1313,10 +1313,10 @@ FALSE_OWN_CHART = Chart(
     shows="A large invented two-bar false upside breakout with resistance, return, and stop values written on the drawing.",
     tier="core",
     marks=(
-        Mark(1, "line", 0.18, 0.36, 0.82, 0.36, color="gold", at=(0.12, 0.29)),
+        Mark(1, "line", 0.18, 0.43, 0.82, 0.43, color="gold", at=(0.12, 0.36)),
         Mark(2, "circle", 0.61, 0.14, 0.74, 0.28, color="red", at=(0.80, 0.10)),
         Mark(3, "circle", 0.61, 0.47, 0.74, 0.59, color="blue", at=(0.82, 0.63)),
-        Mark(4, "line", 0.61, 0.11, 0.74, 0.11, color="purple", at=(0.82, 0.04)),
+        Mark(4, "line", 0.61, 0.20, 0.74, 0.20, color="purple", at=(0.82, 0.12)),
     ),
     notes=(
         "The course drawing labels resistance PHP 60.00, high PHP 62.00, close PHP 59.40, and stop PHP 62.20.",
@@ -1350,7 +1350,7 @@ HIKKAKE_CHART = Chart(
     marks=(
         Mark(1, "box", 0.10, 0.32, 0.20, 0.76, color="gold", at=(0.07, 0.27)),
         Mark(2, "circle", 0.22, 0.15, 0.30, 0.34, color="red", at=(0.34, 0.13)),
-        Mark(3, "arrow", 0.34, 0.56, 0.40, 0.76, color="blue", at=(0.45, 0.80)),
+        Mark(3, "arrow", 0.66, 0.58, 0.75, 0.82, color="blue", at=(0.64, 0.70)),
     ),
     notes=(
         "In the bearish case, the inside high is PHP 52.00, the false high is PHP 53.00, and the short re-entry is below PHP 49.00.",
@@ -1370,7 +1370,7 @@ HIKKAKE_OWN_CHART = Chart(
         Mark(3, "circle", 0.42, 0.27, 0.50, 0.41, color="blue", at=(0.51, 0.20)),
         Mark(4, "box", 0.67, 0.25, 0.79, 0.72, color="gold", at=(0.63, 0.20)),
         Mark(5, "circle", 0.80, 0.14, 0.88, 0.29, color="red", at=(0.92, 0.10)),
-        Mark(6, "circle", 0.80, 0.61, 0.88, 0.77, color="blue", at=(0.92, 0.82)),
+        Mark(6, "circle", 0.80, 0.61, 0.88, 0.77, color="blue", at=(0.91, 0.55)),
     ),
     notes=(
         "Left: inside high 43.00, inside low 40.00, false low 39.00, long re-entry at 43.00.",
@@ -1753,7 +1753,6 @@ B4_SLIDES = (
         notes=COMBINED_FIGURE.notes,
         origin=COMBINED_FIGURE.origin,
     ),
-    COMBINED_CHECK,
     Content(
         title="Inside bar versus Harami",
         lines=(
@@ -1766,13 +1765,14 @@ B4_SLIDES = (
         notes=("State the proportion arithmetic. It is the distinction the book gives.", "The check now returns to the containment and volume rules."),
         origin="Lim (2016), p. 226. The 6.0-point example is ours, invented.",
     ),
+    COMBINED_CHECK,
     ISLAND_CHECK,
     Content(
         title="Exhaustion bar: plain words",
         lines=(
             "We now move from containment to a bar that can exhaust a trend.",
             "In an uptrend, it opens above the previous high, is larger in context, and closes near its low.",
-            "There is no gap between the exhaustion bar and the subsequent bar, unlike a single-bar island formation (Lim, p. 226).",
+            "There is no gap between the exhaustion bar and the subsequent bar (Lim, p. 226).",
             "Meaning/action: read the larger bar, trend context, close, and next-bar gap together; the pattern is a reversal warning, not certainty.",
         ),
         accent="The bullish exhaustion bar is the converse in a downtrend.",
@@ -1867,7 +1867,7 @@ B4_SLIDES = (
                 "Transition: compare exhaustion with pin's false-barrier story.",
                 "Exhaustion: O65.40 > prior high 65.00; H66.20; C60.50; next O60.20 means no gap [3].",
                 "Gold [1] open; red [2] close; blue [3] no-gap relationship in Figure 7.28.",
-                "No next-bar gap separates exhaustion from an island reversal (p. 226); trend may tire.",
+                "No next-bar gap separates the exhaustion bar from its next bar (p. 226); trend may tire.",
                 "Next: pin definition, barriers, low-volume tendency, marked return.",
             ),
             notes=(),
@@ -1894,6 +1894,16 @@ B4_SLIDES = (
         origin="Lim (2016), p. 227. The worked PHP values are ours, invented.",
     ),
     EXHAUSTION_CHECK,
+    Content(
+        title="From pin bar to false breakout",
+        lines=(
+            "We now generalise the pin-bar false-barrier read to support and resistance breakouts.",
+            "The next chart uses invented values to show both returned directions.",
+        ),
+        accent="Wait for the return through the barrier.",
+        notes=("Use this transition before showing the two-direction chart.",),
+        origin="Transition wording is ours; the next chart is invented.",
+    ),
     FALSE_CHART,
     FALSE_OWN_CHART,
     Pair(

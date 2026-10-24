@@ -1016,16 +1016,16 @@ SECTION3 = Section(
     covers=(),
     slides=(
         Pair(
-            origin="Book p.187 and Figure 6.18; the reasons are the book's. Barrier: Chapter 5, a support below price or a resistance above it.",
+            origin="Book p.187 and Figure 6.18. Barrier and retest: Chapter 5's words. The book gives no volume number for a peak or a dip.",
             left=Content(
                 title="6.1  Volume and the strength of a price barrier",
                 lines=(
-                    "Support or resistance formed at a volume peak: the most reliable, the strongest barrier to future retests.",
-                    "Why: even with the surge in volume, price could not get through. Traders expect it to hold.",
-                    "Formed across a volume dip or trough: less reliable. It held only for lack of interest.",
+                    "Barrier (Chapter 5): a resistance above price stops a rise; a support below price stops a fall.",
+                    "Retest (Chapter 5): price coming back later to a barrier it touched before.",
+                    "Volume peak: the tallest bar comes at the touch, the bar where price meets the barrier. Resistance 1, Support 1.",
+                    "Volume dip or trough: the shortest bar comes at the touch. Resistance 2, Support 2.",
                 ),
-                accent="In the figure, Resistance 1 and Support 1 are the more reliable barriers.",
-                caption="The book: since expectation is everything in the market, that confidence goes a long way.",
+                accent="The book: the peak is the most reliable.",
             ),
             picture=Figure(
                 number="6.18",
@@ -1033,22 +1033,44 @@ SECTION3 = Section(
             ),
             text_w=6.0,
             notes=(
-                "Ask the question on the figure before answering it. Then the reason: a barrier that held against the biggest effort is one traders believe in.",
-                "Barrier is Chapter 5's word, from barrier proximity: a support below price or a resistance above it.",
+                "Ask the question on the figure before answering it. Point at the touch in each sketch, then at the volume bar under it: tallest in the top row, shortest in the bottom row.",
+                "Barrier is Chapter 5's word, from barrier proximity: a support below price or a resistance above it. Retest was Chapter 5's too, price returning to a level it touched before.",
+                "Why the peak wins comes on the next slide, with numbers.",
             ),
         ),
         Pair(
-            origin="Book pp.187-188 and Figure 6.19.",
+            origin="Book p.187: the reasons are the book's. Ours: PHP 60 and every volume number, invented to show the two shapes.",
+            left=Content(
+                title="Why a volume peak makes the stronger barrier",
+                lines=(
+                    "Ours: twice, price rises to PHP 60 and turns down. Volume in millions of shares.",
+                    "A: 9 million at the touch, more than any other bar. Even that surge could not get through, so traders expect PHP 60 to hold.",
+                    "B: 0.5 million at the touch, less than any other bar. It held only for lack of buying: hardly anyone tried.",
+                ),
+                accent="On a retest, A is the stronger barrier.",
+                caption="The book: since expectation is everything in the market, that confidence goes a long way.",
+            ),
+            picture=Chart(
+                letter="RA",
+                shows="Two invented sketches side by side, each a price rising to a resistance at PHP 60, turning down, then coming back to it for a retest, over its volume in millions of shares with every bar numbered. A: 9 million at the touch, the most of the move, the most reliable. B: 0.5 million at the touch, the least, less reliable.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "Read A first: the biggest push of the move hit PHP 60 and still failed. Then B: nobody pushed, so the level was never really tested.",
+                "The chart does not draw what happens at the retest. The book says only which barrier is more reliable, not that B will break.",
+            ),
+        ),
+        Pair(
+            origin="Book pp.187-188 and Figure 6.19. Across: the book does not define it; this reading is ours, from the figure.",
             left=Content(
                 title="Five kinds of volume action at a barrier",
                 lines=(
-                    "1  Volume increasing across support or resistance.",
-                    "2  Volume decreasing across it.",
-                    "3  Volume peaking at it.",
-                    "4  Volume bottoming at it.",
-                    "5  Volume flatlining across it.",
+                    "Across: the bars before, at and after the touch, marked by the dashed arrow.",
+                    "1 Increasing: each bar taller. 2 Decreasing: each shorter.",
+                    "3 Peaking: tallest at the touch. 4 Bottoming: shortest. 5 Flatlining: all alike.",
                 ),
-                accent="Increasing or decreasing volume across a barrier signifies a change in sentiment there.",
+                accent="All five, twice: top row at a resistance, bottom row at a support.",
+                caption="The book: increasing or decreasing volume there signifies a change in sentiment, the crowd's mood (Chapter 1).",
             ),
             picture=Figure(
                 number="6.19",
@@ -1056,30 +1078,73 @@ SECTION3 = Section(
             ),
             text_w=5.2,
             notes=(
-                "Peaking and bottoming are the last slide's two cases. Increasing, decreasing and flatlining are new.",
-                "Across means through the whole touch: before price reaches the barrier and after it leaves.",
+                "Peaking and bottoming are the two cases of Figure 6.18. Increasing, decreasing and flatlining are new.",
+                "In every sketch the price curve is the same; only the volume bars change. Read the bars left to right.",
             ),
         ),
         Pair(
-            origin="Book p.188, what each tells. The chart is ours: sketches, not prices, each case at a support, with the book's outcome written on it.",
+            origin="Book p.188. Confirmation, bullish and bearish: Part 1. The chart is ours: sketches and invented volume.",
             left=Content(
                 title="What each of the five tells",
                 lines=(
-                    "Increasing: volume picks up as price reverses, driving it away with confirmation.",
-                    "Decreasing: too little force, and less on the way back. A retest is likely; in extreme cases, a penetration.",
-                    "Peaking: most reliable. Bottoming: less reliable. Flatlining: not enough information.",
+                    "Increasing, ours: 1, 2, 3 million on the way in, 4 at the touch, 5, 6, 7 on the way out.",
+                    "The book: rising volume on the way in looks strong enough to break through.",
+                    "But price turns, and volume keeps rising: that force drives price away instead.",
+                    "That is confirmation (Part 1): bullish at a support, bearish at a resistance.",
                 ),
-                accent="Rising volume backs a barrier; falling volume invites a retest.",
+                accent="Rising volume across a barrier backs it.",
             ),
             picture=Chart(
                 letter="R",
-                shows="Five small cases, each a price that falls to a support line and turns up, over its volume. Increasing: price driven away with confirmation. Decreasing: price drifts back for a retest. Peaking: the most reliable support. Bottoming: less reliable. Flatlining: not enough information.",
+                shows="Two small sketches, each a price over its volume in millions of shares, every bar numbered 1 to 7 and the touch in gold. At a resistance, price rises to the line and is driven down and away: bearish confirmation. At a support, price falls to the line and is driven up and away: bullish confirmation.",
             ),
             text_w=CHART_W,
             notes=(
-                "The book's sentences on increasing and decreasing volume are hard going. Read each case on the chart: what volume does, then what price does next.",
+                "The book's sentences on increasing and decreasing volume are hard going. This slide takes increasing alone: what volume does, then what price does next.",
+                "Bullish confirmation is Part 1's: price and volume both rising. At a support price turns up on rising volume. At a resistance price turns down on rising volume: bearish confirmation.",
+            ),
+        ),
+        Pair(
+            origin="Book p.188. Penetration: Chapter 2. The chart is ours: sketches and invented volume, its retests drawn from the book's words.",
+            left=Content(
+                title="Decreasing volume: a retest is likely",
+                lines=(
+                    "Decreasing, ours: 7, 6, 5 million on the way in, 4 at the touch, 3, 2, 1 on the way out.",
+                    "The book: falling volume on the way in looks like too little force to take price through.",
+                    "Price turns, and volume falls even further: little force is driving price away.",
+                    "So a retest is likely; in extreme cases price goes through, a penetration (Chapter 2).",
+                ),
+                accent="Falling volume across a barrier invites a retest.",
+            ),
+            picture=Chart(
+                letter="RB",
+                shows="Two small sketches, each a price over its volume in millions of shares, every bar numbered 7 down to 1 and the touch in gold. At a resistance, price turns down and then comes back up to the line: a retest. At a support, price turns up and then comes back down to the line: a retest.",
+            ),
+            text_w=CHART_W,
+            notes=(
                 "Decreasing volume across the barrier is the one to watch: the book says it tends to see a retest, and in more extreme circumstances price may return to penetrate it.",
-                "Flatlining tells nothing. The book's words: not enough information about the potential future action of price.",
+                "Figure 6.19 draws price turning cleanly in every case. The retests on our chart are drawn from the book's words, and the chart gives them no volume because the book gives none.",
+            ),
+        ),
+        Pair(
+            origin="Book pp.187-188. The chart is ours: sketches and invented volume. The book does not rank increasing against peaking.",
+            left=Content(
+                title="Peaking, bottoming and flatlining",
+                lines=(
+                    "Peaking, ours: 1, 2, 4, then 7 at the touch, then 4, 2, 1. Figure 6.18's peak: the most reliable.",
+                    "Bottoming: 7, 4, 2, then 1 at the touch, then 2, 4, 7. Figure 6.18's dip: less reliable.",
+                    "Flatlining: 4 on every bar. The book: not enough information about price's next move.",
+                ),
+                accent="Increasing backs a barrier, decreasing invites a retest, a peak is strongest, a dip weaker, flat tells nothing.",
+            ),
+            picture=Chart(
+                letter="RC",
+                shows="Six small sketches, top row at a resistance and bottom row at a support, each over its volume in millions of shares with every bar numbered and the touch in gold. Peaking, 7 at the touch: the most reliable. Bottoming, 1 at the touch: less reliable. Flatlining, 4 on every bar: not enough information.",
+            ),
+            text_w=CHART_W,
+            notes=(
+                "Peaking and bottoming are the volume peak and the volume dip of Figure 6.18, now with numbers. Flatlining is the only new one.",
+                "Flatlining is not a weak barrier or a strong one. The book says it gives too little information to tell.",
             ),
         ),
         Check(
@@ -1106,27 +1171,25 @@ SECTION3 = Section(
             ),
         ),
         Pair(
-            origin="Book p.188: the four, as listed. The chart is ours: one small sketch of each, on invented volume.",
+            origin="Book pp.188-189: the four are the book's, from among numerous ways. The chart is ours: one sketch of each, on invented volume.",
             left=Content(
                 title="Filtering volume action: four ways",
                 lines=(
-                    "Filtering picks out the most significant volume action. The book lists four ways:",
-                    "1  A moving average filter.",
-                    "2  A volatility filter.",
-                    "3  Prior volume peaks.",
-                    "4  Volume cycles.",
+                    "Filtering picks out the most significant volume: what may lead to a top or bottom.",
+                    "Ours, panel 1: bars average about 1 million. The 2.6 and 2.3 million bars clear it: kept.",
+                    "Four of the book's numerous ways: 1 a moving average filter, 2 a volatility filter, 3 prior volume peaks, 4 volume cycles.",
                 ),
-                accent="Each one draws a line, or a rhythm, that only significant volume crosses.",
-                caption="Prior volume peaks: the overextension levels of Part 2. Volume cycles: Part 5. The first two follow now.",
+                accent="Next, 1: the smoothed volume filter. Then 2: the two- or three-sigma filter.",
+                caption="The book does not explain 3 here; 4, volume cycles, comes in Part 5.",
             ),
             picture=Chart(
                 letter="S",
-                shows="Four small sketches of invented volume, one per filter. A moving average line with the bars that spike above it in gold. A band line set higher still, crossed only by the largest bar. A level drawn at a prior volume peak, reached again later. Volume that rises and falls in a repeating cycle, its peaks marked.",
+                shows="Four small sketches of invented volume in millions of shares, one per filter. 1: an average line near 1 million, with the two bars of 2.6 and 2.3 that spike above it in gold. 2: a line set higher still, crossed only by the bar of 3.2; a bar of 1.9 stays under it. 3: a level drawn at an earlier peak of 2.6, reached again later. 4: volume that rises and falls in a repeating cycle, its peaks marked.",
             ),
             text_w=CHART_W,
             notes=(
-                "This answers review question 5, the modes of volume filtering. Four ways, and the book explains two of them in this passage.",
-                "Prior volume peaks were Part 2's overextended levels, drawn at earlier spikes. Volume cycles get their own slides in Part 5.",
+                "This answers review question 5, the modes of volume filtering. Four ways, and the book explains two of them in this passage: the smoothed volume filter now, the two- or three-sigma filter after it.",
+                "Prior volume peaks: the book does not explain them here. Part 2's upper overextended volume level was set at the volume of earlier climaxes, which is the nearest the book comes. Volume cycles get their own slides in Part 5.",
             ),
         ),
         Pair(

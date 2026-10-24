@@ -1039,7 +1039,7 @@ COMBINED_FIGURE = _book_figure(
     ),
     (
         "The figure places three named reversal families on one chart.",
-        "Lim says the bullish and bearish examples line up with stochastic overbought and oversold indications.",
+        "The figure includes an oscillator panel, but this slide does not interpret its formula or readings.",
     ),
     226,
 )
@@ -1116,6 +1116,7 @@ FALSE_ONE_FIGURE = _book_figure(
         Mark(1, "line", 0.07, 0.10, 0.60, 0.10, color="gold", at=(0.08, 0.06)),
         Mark(2, "circle", 0.29, 0.03, 0.36, 0.12, color="red", at=(0.40, 0.05)),
         Mark(3, "circle", 0.36, 0.10, 0.42, 0.18, color="blue", at=(0.47, 0.20)),
+        Mark(4, "line", 0.27, 0.03, 0.42, 0.03, color="purple", at=(0.48, 0.04)),
     ),
     (
         "Lim calls this a non-failure swing and attributes the setup to a 2B entry.",
@@ -1188,18 +1189,50 @@ HIKKAKE_FIGURE = _book_figure(
     230,
 )
 
+BULLISH_HIKKAKE_FIGURE = _book_figure(
+    "7.34", "Figure 7.34: bullish Hikkake", 604 / 281,
+    "The bullish schematic: an inside bar, a failed downside breakout, and the "
+    "opposite re-entry above the inside high.",
+    (
+        Mark(1, "box", 0.26, 0.27, 0.58, 0.70, color="gold", at=(0.18, 0.22)),
+        Mark(2, "circle", 0.46, 0.53, 0.56, 0.72, color="red", at=(0.64, 0.75)),
+        Mark(3, "arrow", 0.73, 0.48, 0.86, 0.25, color="blue", at=(0.91, 0.20)),
+    ),
+    (
+        "Gold [1] marks the inside bar, red [2] the failed downside breakout, and blue [3] the bullish re-entry above the inside high.",
+        "Only the opposite re-entry is taken, and it must occur within three bars.",
+    ),
+    230, crop=(0.0, 0.0, 0.50, 0.0),
+)
+
+BEARISH_HIKKAKE_FIGURE = _book_figure(
+    "7.34", "Figure 7.34: bearish Hikkake", 604 / 281,
+    "The bearish schematic: an inside bar, a failed upside breakout, and the "
+    "opposite re-entry below the inside low.",
+    (
+        Mark(1, "box", 0.10, 0.27, 0.34, 0.70, color="gold", at=(0.04, 0.22)),
+        Mark(2, "circle", 0.36, 0.27, 0.60, 0.47, color="red", at=(0.66, 0.22)),
+        Mark(3, "arrow", 0.54, 0.52, 0.82, 0.72, color="blue", at=(0.91, 0.80)),
+    ),
+    (
+        "Gold [1] marks the inside bar, red [2] the failed upside breakout, and blue [3] the bearish re-entry below the inside low.",
+        "Only the opposite re-entry is taken, and it must occur within three bars.",
+    ),
+    230, crop=(0.50, 0.0, 0.0, 0.0),
+)
+
 HIKKAKE_EXAMPLE_FIGURE = _book_figure(
     "7.35", "Figure 7.35: a bullish Hikkake at a bottom", 622 / 513,
     "iShares Emerging Markets daily chart. A bullish Hikkake forms at a linear "
-    "regression channel bottom with high volume and an oversold stochastic label.",
+    "regression channel bottom.",
     (
         Mark(1, "box", 0.42, 0.42, 0.50, 0.56, color="gold", at=(0.37, 0.40)),
         Mark(2, "circle", 0.47, 0.52, 0.52, 0.63, color="red", at=(0.56, 0.66)),
         Mark(3, "arrow", 0.52, 0.58, 0.58, 0.38, color="blue", at=(0.62, 0.34)),
     ),
     (
-        "The book places the bullish Hikkake at a channel bottom, with high volume and an oversold stochastic label.",
-        "Those indicator names are observations in the figure; Chapter 7 does not define their formulas.",
+        "The figure includes indicator panels, but this slide does not interpret their formulas.",
+        "Read the formation, failed downside breakout, and upside re-entry only.",
     ),
     230,
 )
@@ -1280,7 +1313,7 @@ REPO_CHART = Chart(
     marks=(
         Mark(1, "circle", 0.64, 0.28, 0.70, 0.40, color="gold", at=(0.60, 0.22)),
         Mark(2, "circle", 0.70, 0.48, 0.76, 0.60, color="red", at=(0.78, 0.62)),
-        Mark(3, "arrow", 0.77, 0.38, 0.88, 0.68, color="blue", at=(0.90, 0.74)),
+        Mark(3, "box", 0.73, 0.28, 0.82, 0.60, color="blue", at=(0.86, 0.22)),
     ),
     notes=(
         "The forward-shifted three-day SMA is PHP 50.00. Invented closes cross above at 50.80, below at 49.60, then repeat after nine bullish days.",
@@ -1295,9 +1328,9 @@ HIKKAKE_CHART = Chart(
     shows="Two invented inside-bar cases. The breakout fails and the entry is taken only in the opposite direction within three bars.",
     tier="core",
     marks=(
-        Mark(1, "box", 0.31, 0.29, 0.44, 0.70, color="gold", at=(0.25, 0.24)),
-        Mark(2, "circle", 0.55, 0.29, 0.66, 0.47, color="red", at=(0.71, 0.24)),
-        Mark(3, "arrow", 0.64, 0.55, 0.80, 0.74, color="blue", at=(0.84, 0.80)),
+        Mark(1, "box", 0.10, 0.32, 0.20, 0.76, color="gold", at=(0.07, 0.27)),
+        Mark(2, "circle", 0.22, 0.15, 0.30, 0.34, color="red", at=(0.34, 0.13)),
+        Mark(3, "arrow", 0.34, 0.56, 0.40, 0.76, color="blue", at=(0.45, 0.80)),
     ),
     notes=(
         "In the bearish case, the inside high is PHP 52.00, the false high is PHP 53.00, and the short re-entry is below PHP 49.00.",
@@ -1307,14 +1340,83 @@ HIKKAKE_CHART = Chart(
 )
 
 
-INSIDE_CHECK = Check(
-    label="From inside and outside bars",
+OUTSIDE_CHECK = Check(
+    label="From outside bars",
     questions=(
         Q(
-            stem="What does an inside bar do to the preceding bar's range?",
-            options=("It stays inside it", "It engulfs it", "It gaps away from it", "It ignores it"),
+            stem="What must a bearish outside bar's range contain?",
+            options=("Only the current bar's body", "One or more preceding bars", "A gap on both sides", "Only the volume bars"),
+            answer="B",
+            reason="Lim defines an outside bar as engulfing one or more preceding bars (p. 223).",
+        ),
+        Q(
+            stem="Which close is more reliable for a bearish outside-bar reading?",
+            options=("A close near the low", "A close near the middle", "A close near the high", "The close does not matter"),
             answer="A",
-            reason="Lim describes an inside bar as contained within the preceding bar (p. 224).",
+            reason="Lim says closes near the low are generally more reliable for the bearish reading (p. 223).",
+        ),
+    ),
+    picture=OUTSIDE_FIGURE,
+    text_w=5.5,
+    layout="beside",
+    notes=("Answer from the preceding outside-bar definition and marked figure.",),
+    origin="Questions are ours and answerable from the preceding outside-bar slides.",
+)
+
+INSIDE_IDEAL_CHECK = Check(
+    label="From ideal inside bars",
+    questions=(
+        Q(
+            stem="Which bar should be wide in an ideal inside reversal?",
+            options=("The first bar", "The second bar", "Neither bar", "Only the volume bar"),
+            answer="A",
+            reason="Lim says the first bar should be wide (p. 224).",
+        ),
+        Q(
+            stem="Which bar should have very low volume?",
+            options=("The first bar", "The second bar", "Both bars", "The resistance line"),
+            answer="B",
+            reason="Lim says the second bar should be narrow on very low volume (p. 224).",
+        ),
+    ),
+    picture=INSIDE_FIGURE,
+    text_w=5.5,
+    layout="beside",
+    notes=("Keep the marked two tests visible while the room answers.",),
+    origin="Questions are ours and answerable from Lim (2016), p. 224.",
+)
+
+COMBINED_CHECK = Check(
+    label="From the reversal families",
+    questions=(
+        Q(
+            stem="Is every inside bar a Harami?",
+            options=("No; Harami has a stricter one-fourth to one-third proportion", "Yes; the terms are identical", "Only on high volume", "Only below support"),
+            answer="A",
+            reason="Lim keeps inside bar and Harami rules separate; Harami has the stricter proportion (p. 226).",
+        ),
+        Q(
+            stem="What proportion does the book give for a Harami body?",
+            options=("One-half to two-thirds", "One-fourth to one-third", "One to two points", "No proportion"),
+            answer="B",
+            reason="The book gives one-fourth to one-third of the preceding candlestick range (p. 226).",
+        ),
+    ),
+    picture=COMBINED_FIGURE,
+    text_w=5.5,
+    layout="beside",
+    notes=("The figure stays visible while the check tests the stricter Harami distinction.",),
+    origin="Questions are ours and answerable from Lim (2016), p. 226.",
+)
+
+ISLAND_CHECK = Check(
+    label="From island, outside, and inside bars",
+    questions=(
+        Q(
+            stem="What isolates an island reversal?",
+            options=("One wide bar", "A resistance line", "A gap up followed by a gap down", "Very low volume only"),
+            answer="C",
+            reason="The island is isolated by a gap up and a later gap down (Lim, p. 223).",
         ),
         Q(
             stem="Which volume pairing is ideal for an inside reversal?",
@@ -1326,8 +1428,8 @@ INSIDE_CHECK = Check(
     picture=INSIDE_FIGURE,
     text_w=5.5,
     layout="beside",
-    notes=("Answer from the earlier marked figure slides. Keep the question slide free of answers.",),
-    origin="Questions are ours and answerable from the preceding inside-bar slides.",
+    notes=("The island answer is supplied by the earlier Figure 7.23 slide; keep the approved Figure 7.25 crop readable.",),
+    origin="Questions are ours and answerable from Lim (2016), pp. 223 to 224.",
 )
 
 EXHAUSTION_CHECK = Check(
@@ -1369,11 +1471,126 @@ REVERSAL_CHECK = Check(
             reason="Lim says the breakout must occur within three bars of the initial failed breakout (p. 230).",
         ),
     ),
-    picture=HIKKAKE_FIGURE,
+    picture=BEARISH_HIKKAKE_FIGURE,
     text_w=5.5,
     layout="beside",
     notes=("Read the two directions separately, then reveal the timing rule.",),
     origin="Questions are ours and answerable from the preceding false-breakout and Hikkake slides.",
+)
+
+EXHAUSTION_FIGURE_CHECK = Check(
+    label="From the exhaustion figure",
+    questions=(
+        Q(
+            stem="What does the next bar help distinguish in an exhaustion reading?",
+            options=("Whether the next bar gaps away", "Whether volume is absent", "Whether resistance is horizontal", "Whether the bar is an inside bar"),
+            answer="A",
+            reason="Lim requires no gap between the exhaustion bar and the subsequent bar (p. 226).",
+        ),
+        Q(
+            stem="Where is the bullish exhaustion converse more reliable?",
+            options=("At the top of a downtrend", "Only in a flat market", "Only above resistance", "At the bottom of a downtrend"),
+            answer="D",
+            reason="The bullish converse appears in a downtrend at a bottom (p. 226).",
+        ),
+    ),
+    picture=EXHAUSTION_FIGURE,
+    text_w=5.5,
+    layout="beside",
+    notes=("Keep the gap and later rebound marks visible while the room answers.",),
+    origin="Questions are ours and answerable from Lim (2016), p. 226.",
+)
+
+PIN_FIGURE_CHECK = Check(
+    label="From the pin-bar figure",
+    questions=(
+        Q(
+            stem="What does a pin bar penetrate during the interval?",
+            options=("A volume average", "A prior close only", "A stochastic formula", "A barrier such as support or resistance"),
+            answer="D",
+            reason="Lim describes a pin bar as penetrating a barrier and then retracing (p. 227).",
+        ),
+        Q(
+            stem="What does the rapid retrace imply?",
+            options=("The barrier break is certain", "The apparent breakout may be false", "The trend must continue", "The volume is high"),
+            answer="B",
+            reason="The retrace shows that the initial impression of breaking the barrier was false (p. 227).",
+        ),
+    ),
+    picture=PIN_FIGURE,
+    text_w=5.5,
+    layout="beside",
+    notes=("Keep support, penetration, and close-back-above marks visible.",),
+    origin="Questions are ours and answerable from Lim (2016), p. 227.",
+)
+
+FALSE_BREAKOUT_CHECK = Check(
+    label="From false breakouts",
+    questions=(
+        Q(
+            stem="After a false upside breakout, the bearish entry is:",
+            options=("At a close below resistance", "At the new high", "Only after a gap down", "Above support"),
+            answer="A",
+            reason="The short is normally initiated when price closes below resistance after the false upside breakout (p. 229).",
+        ),
+        Q(
+            stem="After a false downside breakout, the bullish entry is:",
+            options=("Below support", "At the false low", "Only after a gap up", "At a close above support"),
+            answer="D",
+            reason="The opposite entry is taken when price closes back above support after the false downside breakout (p. 229).",
+        ),
+    ),
+    picture=FALSE_BOTH_FIGURE,
+    text_w=5.5,
+    layout="beside",
+    notes=("Keep both barrier directions visible; the question asks for the returned closes.",),
+    origin="Questions are ours and answerable from Lim (2016), p. 229.",
+)
+
+REPO_LIMITS_CHECK = Check(
+    label="From Double Repo limits",
+    questions=(
+        Q(
+            stem="How many crossing pairs generate the named Double Repo sell signal?",
+            options=("One pair", "Three pairs", "Two pairs", "No pairs"),
+            answer="C",
+            reason="The named bearish Double Repo has two closes above and below the forward-shifted SMA (p. 229).",
+        ),
+        Q(
+            stem="Where does Lim place the complete Double Repo method?",
+            options=("DiNapoli's original text", "The volume panel", "The Hikkake figure", "No source"),
+            answer="A",
+            reason="Lim sends readers to DiNapoli's original text for the detailed method (p. 229).",
+        ),
+    ),
+    picture=REPO_LIMITS_FIGURE,
+    text_w=5.5,
+    layout="beside",
+    notes=("Keep the SMA, bullish-day run, and topping formation marks visible.",),
+    origin="Questions are ours and answerable from Lim (2016), p. 229.",
+)
+
+HIKKAKE_EXAMPLE_CHECK = Check(
+    label="From the Hikkake example",
+    questions=(
+        Q(
+            stem="Within how many bars must the opposite Hikkake re-entry occur?",
+            options=("One bar", "Three bars", "Eight bars", "Ten bars"),
+            answer="B",
+            reason="Lim says the breakout must occur within three bars of the initial failed breakout (p. 230).",
+        ),
+        Q(
+            stem="Which direction is taken after the initial Hikkake failure?",
+            options=("The failed direction", "No direction", "The opposite direction", "Only the trend direction"),
+            answer="C",
+            reason="Hikkake takes the opposite re-entry after the inside-bar breakout fails (p. 230).",
+        ),
+    ),
+    picture=HIKKAKE_EXAMPLE_FIGURE,
+    text_w=5.45,
+    layout="beside",
+    notes=("Keep the marked formation, failed downside breakout, and upside re-entry visible.",),
+    origin="Questions are ours and answerable from Lim (2016), p. 230.",
 )
 
 
@@ -1421,6 +1638,7 @@ B4_SLIDES = (
         notes=OUTSIDE_FULL_FIGURE.notes,
         origin=OUTSIDE_FULL_FIGURE.origin,
     ),
+    OUTSIDE_CHECK,
     Content(
         title="Inside bar: quiet containment",
         lines=(
@@ -1464,6 +1682,7 @@ B4_SLIDES = (
         notes=INSIDE_FIGURE.notes,
         origin=INSIDE_FIGURE.origin,
     ),
+    INSIDE_IDEAL_CHECK,
     Pair(
         left=Content(
             title="Figure 7.26: lower inside bars",
@@ -1485,7 +1704,7 @@ B4_SLIDES = (
             lines=(
                 "Gold [1] is an inside-bar reversal; red [2] an outside-bar reversal; blue [3] a three-bar reversal.",
                 "Ours: inside range 6.0 points; outside bar contains four bars; outer volumes 4.0m and 4.2m.",
-                "Lim aligns them with stochastic overbought or oversold readings (p. 226). The figure does not define its formula.",
+                "The figure includes stochastic overbought or oversold labels, but this slide does not interpret their formula or readings.",
             ),
             notes=(),
         ),
@@ -1494,6 +1713,7 @@ B4_SLIDES = (
         notes=COMBINED_FIGURE.notes,
         origin=COMBINED_FIGURE.origin,
     ),
+    COMBINED_CHECK,
     Content(
         title="Inside bar versus Harami",
         lines=(
@@ -1506,7 +1726,7 @@ B4_SLIDES = (
         notes=("State the proportion arithmetic. It is the distinction the book gives.", "The check now returns to the containment and volume rules."),
         origin="Lim (2016), p. 226. The 6.0-point example is ours, invented.",
     ),
-    INSIDE_CHECK,
+    ISLAND_CHECK,
     Content(
         title="Exhaustion bar: plain words",
         lines=(
@@ -1545,6 +1765,7 @@ B4_SLIDES = (
         notes=EXHAUSTION_FIGURE.notes,
         origin=EXHAUSTION_FIGURE.origin,
     ),
+    EXHAUSTION_FIGURE_CHECK,
     SPIKE_CHART,
     Pair(
         left=Content(
@@ -1588,20 +1809,40 @@ B4_SLIDES = (
         notes=PIN_FIGURE.notes,
         origin=PIN_FIGURE.origin,
     ),
+    PIN_FIGURE_CHECK,
     Pair(
         left=Content(
             title="Exhaustion versus pin bar",
             lines=(
-                "Exhaustion: open 65.40 above prior high 65.00, high 66.20, close 60.50; next open 60.20, no gap.",
-                "Pin: support 40.00 is penetrated to 38.80, then close 40.60 returns above it.",
-                "Gold [1] marks exhaustion open; red [2] close; blue [3] no following gap in Figure 7.28. Meaning/action: exhaustion warns of a tiring trend; pin warns of a false barrier breakout.",
+                "The key-reversal converse is one warning; now compare two other single-bar warnings.",
+                "Exhaustion: open 65.40 above prior high 65.00, high 66.20, close 60.50; next open 60.20, no gap [3].",
+                "Gold [1] marks the exhaustion open; red [2] its close; blue [3] the no-gap relationship in Figure 7.28.",
+                "Lim distinguishes exhaustion from an island reversal by the absence of a gap to the next bar (p. 226). It warns that a trend may tire.",
+                "The next slide adds Lim's pin-bar definition, barrier types, low-volume tendency, and marked return.",
             ),
             notes=(),
         ),
         picture=EXHAUSTION_COMPARE_FIGURE,
-        text_w=5.5,
+        text_w=6.0,
         notes=EXHAUSTION_COMPARE_FIGURE.notes,
         origin="Lim (2016), pp. 226 to 227. The comparison values are ours, invented.",
+    ),
+    Pair(
+        left=Content(
+            title="Pin bar: the false barrier story",
+            lines=(
+                "Lim calls a pin bar a “single-bar misrepresentation of market strength or weakness” (p. 227).",
+                "Ours: support PHP 40.00, low PHP 38.80, close PHP 40.60, volume 0.8m.",
+                "Gold [1] marks support, red [2] the penetration, and blue [3] the close back above support in Figure 7.30.",
+                "The barrier may be a moving average, support or resistance, or a trendline. Pin bars usually form on low volume.",
+                "Meaning/action: wait for the return through the barrier; the penetration alone can give a false breakout impression.",
+            ),
+            notes=(),
+        ),
+        picture=PIN_FIGURE,
+        text_w=6.0,
+        notes=PIN_FIGURE.notes,
+        origin="Lim (2016), p. 227. The worked PHP values are ours, invented.",
     ),
     EXHAUSTION_CHECK,
     FALSE_CHART,
@@ -1610,7 +1851,7 @@ B4_SLIDES = (
             title="Figure 7.31: false upside breakout",
             lines=(
                 "Lim calls a false breakout a non-failure swing and attributes this two-sided setup to Victor Sperandeo's 2B entry (p. 228).",
-                "Gold [1] marks resistance, red [2] the false high, and blue [3] the close back below resistance.",
+                "Gold [1] marks resistance, red [2] the false high, blue [3] the close back below resistance, and purple [4] the stop above the breakout high.",
                 "Ours: resistance PHP 60.00, high PHP 62.00, close PHP 59.40, stop PHP 62.20.",
                 "Meaning/action: initiate the short after the return below resistance; place the stop just above the breakout high.",
             ),
@@ -1636,6 +1877,7 @@ B4_SLIDES = (
         notes=FALSE_BOTH_FIGURE.notes,
         origin=FALSE_BOTH_FIGURE.origin,
     ),
+    FALSE_BREAKOUT_CHECK,
     Content(
         title="Double Repo: the named crossings",
         lines=(
@@ -1679,6 +1921,7 @@ B4_SLIDES = (
         notes=REPO_LIMITS_FIGURE.notes,
         origin=REPO_LIMITS_FIGURE.origin,
     ),
+    REPO_LIMITS_CHECK,
     Content(
         title="Hikkake: trap, then the opposite entry",
         lines=(
@@ -1694,26 +1937,39 @@ B4_SLIDES = (
     HIKKAKE_CHART,
     Pair(
         left=Content(
-            title="Figure 7.34: two Hikkake directions",
+            title="Figure 7.34: bullish Hikkake",
             lines=(
-                "Gold [1] marks the inside bar, red [2] the failed breakout, and blue [3] the opposite re-entry on the right-hand bearish case.",
-                "The book shows bullish left and bearish right: bullish re-enters above the inside high; bearish below the inside low.",
-                "Meaning/action: only the opposite re-entry is taken within three bars (Lim, p. 230).",
+                "Gold [1] marks the inside bar, red [2] the failed downside breakout, and blue [3] the re-entry above the inside high.",
+                "Meaning/action: take only the opposite re-entry, within three bars (Lim, p. 230).",
             ),
             notes=(),
         ),
-        picture=HIKKAKE_FIGURE,
+        picture=BULLISH_HIKKAKE_FIGURE,
         text_w=5.5,
-        notes=HIKKAKE_FIGURE.notes,
-        origin=HIKKAKE_FIGURE.origin,
+        notes=BULLISH_HIKKAKE_FIGURE.notes,
+        origin=BULLISH_HIKKAKE_FIGURE.origin,
+    ),
+    Pair(
+        left=Content(
+            title="Figure 7.34: bearish Hikkake",
+            lines=(
+                "Gold [1] marks the inside bar, red [2] the failed upside breakout, and blue [3] the re-entry below the inside low.",
+                "Meaning/action: take only the opposite re-entry, within three bars (Lim, p. 230).",
+            ),
+            notes=(),
+        ),
+        picture=BEARISH_HIKKAKE_FIGURE,
+        text_w=5.5,
+        notes=BEARISH_HIKKAKE_FIGURE.notes,
+        origin=BEARISH_HIKKAKE_FIGURE.origin,
     ),
     Pair(
         left=Content(
             title="Figure 7.35: bullish Hikkake at a bottom",
             lines=(
                 "Gold [1] marks the Hikkake formation at the channel bottom, red [2] its failed downside breakout, and blue [3] the upside re-entry.",
-                "Ours: low PHP 40.00, false low PHP 39.20, re-entry PHP 41.00. The book also observes high volume and an oversold stochastic label.",
-                "Meaning/action: the re-entry is the signal described by the book; the indicator labels are context, not formulas taught here.",
+                "Ours: low PHP 40.00, false low PHP 39.20, re-entry PHP 41.00.",
+                "Meaning/action: the re-entry is the signal described by the book; this slide does not interpret the indicator panels.",
             ),
             notes=(),
         ),
@@ -1722,6 +1978,7 @@ B4_SLIDES = (
         notes=HIKKAKE_EXAMPLE_FIGURE.notes,
         origin=HIKKAKE_EXAMPLE_FIGURE.origin,
     ),
+    HIKKAKE_EXAMPLE_CHECK,
     REVERSAL_CHECK,
 )
 

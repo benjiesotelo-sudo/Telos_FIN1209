@@ -33,9 +33,13 @@ not carry the idea alone, or where a slide works a number through:
   * **AH to AL** Part 5: the four named bars, the two reversal bars, the
     rest and continuation bars, price leading volume, and the intraday
     volume cycle.
-  * **AM to AR** Part 6: the OBV worked, its disadvantage and weakness,
-    the ADL worked, its multiplying factor, the CMF worked, and the test of
-    a historical open interest level the COT report is read for.
+  * **FA, AM to AR, FB, FC** Part 6: the three readings of an oscillator
+    the part uses (FA), the OBV worked, its start date (AN) and its
+    weakness (FC), the ADL worked, its multiplying factor, the CMF worked,
+    the NYSE Up/Down Volume worked (FB), and the test of a historical open
+    interest level the COT report is read for. FA, FB and FC were added by
+    the Part 6 rework under letters of their own, so that ranges reworked in
+    parallel could not collide; they are lettered out of the deck's order.
 
 **Teach only what the textbook teaches.** Every label on these charts is a
 statement the book's Chapter 6 makes, or arithmetic it sets out. Where a
@@ -568,17 +572,44 @@ AL_BARS = _bars(_al_close, seed=802, reach=0.0004)
 AL_VOL = _noisy([0.6 + 2.4 * math.exp(-(((h % 24) - 13.5) ** 2) / 3.0)
                  for h in range(72)], seed=803, spread=0.10)
 
+# FA - an invented price and oscillator carrying the three readings Part 6
+# uses: A a divergence of peaks at bars 14 and 34, B a rising line under the
+# oscillator's lows at bars 5 and 22 that it falls through after bar 34, C a
+# flat oversold level it touches at the price low, bar 48.
+FA_LINE = _line(((0, 48.0), (14, 54.0), (22, 51.0), (34, 56.0), (48, 46.0),
+                 (56, 49.0)), seed=871, noise=0.002, wobble=0.03)
+
+
+def _fa_osc():
+    pivots = ((0, 0.0), (5, -0.4), (14, 0.9), (22, 0.1), (34, 0.55),
+              (48, -1.0), (56, -0.3))
+    out = []
+    for (x0, y0), (x1, y1) in zip(pivots, pivots[1:]):
+        for x in range(x0, x1):
+            out.append(y0 + (y1 - y0) * (x - x0) / (x1 - x0)
+                       + 0.04 * math.sin(x * 1.7))
+    out.append(pivots[-1][1])
+    return tuple(round(v, 4) for v in out)
+
+
+FA_OSC = _fa_osc()
+FA_FLOOR = -0.9
+
+
+def FA_RISE(x):
+    """The rising line through the oscillator's lows at bars 5 and 22."""
+    return round(-0.4 + (0.1 - -0.4) * (x - 5) / (22 - 5), 4)
+
+
 # AM - six days of OBV.
 AM_CLOSE = (50.00, 50.50, 50.20, 50.20, 50.80, 50.60)
 AM_VOL = (1.0, 2.0, 1.5, 1.0, 3.0, 1.0)
 AM_OBV = _obv(AM_CLOSE, AM_VOL)
 
-# AN - the same OBV from two start dates.
-_an_close = _line(((0, 50.0), (8, 53.0), (14, 51.0), (24, 55.0)), seed=811,
-                  noise=0.006)
-AN_VOL = _noisy([2.0] * 25, seed=812, spread=0.3)
-AN_EARLY = _obv(_an_close, AN_VOL)
-AN_LATE = tuple(round(v - AN_EARLY[0] - 6.0, 4) for v in AN_EARLY)
+# AN - AM's OBV started on day 3 instead of day 1: 0, 0, 3.0, 2.0 from day 3
+# to day 6, the same changes 2.0 lower.
+AN_LATE = tuple((i, round(v - AM_OBV[2], 4)) for i, v in enumerate(AM_OBV)
+                if i >= 2)
 
 # AR - a price top and its open interest testing an earlier peak.
 AR_LINE = _line(((0, 40.0), (20, 50.0), (30, 46.0), (56, 58.0), (64, 53.0)),
@@ -671,8 +702,8 @@ def AK_TL(x):
 AM_SIGNED = (0.0, 2.0, -1.5, 0.0, 3.0, -1.0)
 AM_SIGNS = ("start", "+2.0", "-1.5", "0", "+3.0", "-1.0")
 
-# AN - a bar that makes a new high and closes a little lower.
-AN_BARS = (Bar(open=50.0, high=51.0, low=49.6, close=50.8),
+# FC - a bar that makes a new high and closes a little lower.
+FC_BARS = (Bar(open=50.0, high=51.0, low=49.6, close=50.8),
            Bar(open=50.9, high=54.0, low=50.5, close=50.7))
 
 # AO - three bars from PHP 48 to PHP 52, closing at 52, 50 and 49.
@@ -1750,6 +1781,37 @@ CHARTS = (
         ),
     ),
     ChartArt(
+        letter="FA",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(line=FA_LINE, name="Price", height=1.2, top=0.30,
+                     bottom=0.10,
+                     strokes=(Stroke(points=((14, 54.4), (34, 56.4)),
+                                     arrow=True, label="A  higher peak",
+                                     at=0, dx=-6, dy=10),)),
+                Pane(line=FA_OSC, name="Oscillator", height=1.5, top=0.45,
+                     bottom=0.12,
+                     strokes=(Stroke(points=((14, 0.98), (34, 0.63)),
+                                     arrow=True, label="A  lower peak",
+                                     at=0, dx=10, dy=12),
+                              Stroke(points=((2, FA_RISE(2)),
+                                             (42, FA_RISE(42)))),
+                              Stroke(points=((0, FA_FLOOR), (56, FA_FLOOR)),
+                                     dashed=True, tone="quiet",
+                                     label="C  oversold level", at=0, dx=2,
+                                     dy=-14)),
+                     notes=(Note(x=27, y=FA_RISE(27), label="B  rising line",
+                                 dx=-50, dy=-30, dot=False),
+                            Note(x=38, label="B  falls through", dx=18,
+                                 dy=-14, notice=True))),
+            ),
+            size=ck.pair_size(7.2), xlabel="Time",
+            footnote="Invented price and oscillator. A, B and C: the three "
+                     "readings\nPart 6 uses, as the slide lists them.",
+        ),
+    ),
+    ChartArt(
         letter="AM",
         draw=ck.panels,
         kwargs=dict(
@@ -1774,32 +1836,49 @@ CHARTS = (
     ),
     ChartArt(
         letter="AN",
-        draw=ck.cells,
+        draw=ck.panels,
         kwargs=dict(
-            items=(
-                Cell(name="The start date",
-                     note="same shape, different height",
-                     panes=(Pane(line=AN_EARLY, top=0.20, bottom=0.20,
-                                 traces=(Trace(values=AN_LATE, tone="notice",
-                                               width=2.0),),
-                                 notes=(Note(x=20, label="started day 1",
-                                             dx=-4, dy=20, dot=False),
-                                        Note(x=20, y=AN_LATE[20],
-                                             label="started later", dx=-4,
-                                             dy=-20, dot=False))),)),
-                Cell(name="A new high, subtracted",
-                     note="it closed a little lower",
-                     panes=(Pane(bars=AN_BARS, height=1.4, top=0.25,
-                                 notes=(Note(x=1, y=AN_BARS[1].high,
-                                             label="new high", dx=10, dy=4,
-                                             dot=False),)),
-                            Pane(columns=(2.0, -3.0), picks=(1,), zero=True,
-                                 height=1.0, top=0.30, bottom=0.30,
-                                 tags=((0, "+2.0"), (1, "-3.0"))))),
+            panes=(
+                Pane(line=AM_OBV,
+                     name="OBV, black: started day 1. Gold: started day 3.",
+                     top=0.35, bottom=0.30,
+                     tags=((0, "0"), (2, "0.5"), (5, "2.5")),
+                     strokes=(Stroke(points=AN_LATE, tone="notice",
+                                     width=2.4),),
+                     notes=(Note(x=2, y=0.0, label="0", dx=-14, dy=-12),
+                            Note(x=5, y=2.0, label="2.0", dx=-6, dy=-18))),
             ),
-            cols=2, size=PAIR,
-            footnote=INVENTED + " Right: the second bar's whole 3.0 million "
-                     "is taken away.",
+            xticks=tuple((i, f"Day {i + 1}") for i in range(6)),
+            size=PAIR, xlabel="",
+            footnote="Our example, in million shares. From day 3 to day 6 "
+                     "both lines\nrise by 2.0: 0.5 to 2.5, and 0 to 2.0.",
+        ),
+    ),
+    ChartArt(
+        letter="FC",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(bars=FC_BARS, name="Two bars (PHP)", height=1.5,
+                     top=0.25, bottom=0.10,
+                     notes=(Note(x=0, y=51.0, label="high 51.00", dx=-14,
+                                 dy=10, dot=False),
+                            Note(x=0, y=50.8, label="close 50.80", dx=14,
+                                 dy=-14, dot=False),
+                            Note(x=1, y=54.0, label="new high 54.00",
+                                 dx=-20, dy=4, dot=False),
+                            Note(x=1, y=50.7, label="close 50.70",
+                                 dx=16, dy=-10, dot=False, notice=True))),
+                Pane(columns=(2.0, -3.0), picks=(1,), zero=True,
+                     name="OBV: volume, signed by the close", height=1.1,
+                     top=1.10, bottom=0.30,
+                     tags=((0, "+2.0"), (1, "-3.0"))),
+            ),
+            xticks=((0, "Bar 1"), (1, "Bar 2")),
+            size=PAIR, xlabel="",
+            footnote="Our example, in million shares. Bar 1 closed above the "
+                     "bar before it.\nBar 2 closed lower, so its whole 3.0 "
+                     "million is taken away.",
         ),
     ),
     ChartArt(
@@ -1873,26 +1952,48 @@ CHARTS = (
         ),
     ),
     ChartArt(
+        letter="FB",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                Cell(name="Volume, million shares",
+                     note="rising stocks 600, falling 400",
+                     panes=(Pane(columns=(600, 400),
+                                 tags=((0, "600 up"), (1, "400 down")),
+                                 top=0.30),)),
+                Cell(name="Up/Down Volume", note="600 / 400 = 1.5",
+                     tone="notice",
+                     panes=(Pane(columns=(1.0, 1.5), picks=(1,),
+                                 tags=((0, "1 = even"), (1, "1.5")),
+                                 top=0.30),)),
+            ),
+            cols=2, size=TERM,
+            footnote="Our example: one invented day. Above 1, more volume "
+                     "went into\nthe stocks that rose than the stocks that "
+                     "fell.",
+        ),
+    ),
+    ChartArt(
         letter="AR",
         draw=ck.panels,
         kwargs=dict(
             panes=(
                 Pane(line=AR_LINE, ylabel="Price", height=1.5, top=0.15,
                      notes=(Note(x=56, label="A top", dx=-30, dy=12),)),
-                Pane(line=AR_OI, ylabel="Open interest", height=1.2,
-                     top=0.35, bottom=0.10,
+                Pane(line=AR_OI, ylabel="Open interest", height=1.3,
+                     top=0.35, bottom=0.75,
                      strokes=(Stroke(points=((18, AR_LEVEL), (64, AR_LEVEL)),
                                      dashed=True, tone="quiet",
-                                     label="its earlier peak", at=0, dx=2,
-                                     dy=10),),
-                     notes=(Note(x=55, label="A test of a historical\nopen "
-                                 "interest level", dx=-30, dy=-30,
-                                 notice=True),)),
+                                     label="its earlier peak, 92,000", at=0,
+                                     dx=2, dy=10),),
+                     notes=(Note(x=55, label="back to 92,000: a test of\na "
+                                 "historical open interest level", dx=-40,
+                                 dy=-62, notice=True),)),
             ),
             size=TERM, xlabel="Time, weekly",
-            footnote="Invented prices and open interest.\nThe COT report "
-                     "gives the positions "
-                     "behind this open interest.",
+            footnote="Invented prices and open interest, in contracts.\nThe "
+                     "COT report gives the positions behind this open "
+                     "interest.",
         ),
     ),
 )

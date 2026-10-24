@@ -1861,13 +1861,13 @@ CHARTS = (
                                      tone="structure", width=1.8,
                                      label="trendline", at=0, dx=4,
                                      dy=10),),
-                     notes=(Note(x=AK_BREAK, label="1  A small breakout",
+                     notes=(Note(x=AK_BREAK, label="A small breakout",
                                  dx=-20, dy=-34, notice=True),)),
                 Pane(columns=AK_VOL, ylabel="Volume", height=1.0, top=0.35,
                      picks=tuple(range(52, 65)),
                      notes=(Note(x=AK_BREAK, label="ordinary volume",
                                  dx=-30, dy=26),
-                            Note(x=56, label="2  Then the volume", dx=-20,
+                            Note(x=56, label="Then the volume", dx=-60,
                                  dy=16, notice=True))),
             ),
             size=PAIR, xlabel="Time",
@@ -1989,7 +1989,7 @@ CHARTS = (
                             Note(x=1, y=54.0, label="new high 54.00",
                                  dx=-20, dy=4, dot=False),
                             Note(x=1, y=50.7, label="close 50.70",
-                                 dx=16, dy=-10, dot=False, notice=True))),
+                                 dx=44, dy=-16, dot=False, notice=True))),
                 Pane(columns=(2.0, -3.0), picks=(1,), zero=True,
                      name="OBV: volume, signed by the close", height=1.1,
                      top=1.10, bottom=0.30,
@@ -2550,11 +2550,11 @@ J_CHARTS = (
         kwargs=dict(
             panes=(
                 Pane(columns=AM_SIGNED, name="Volume, signed by the close",
-                     height=1.5, top=1.10, bottom=1.30, zero=True,
+                     height=1.6, top=1.70, bottom=1.30, zero=True,
                      picks=(1, 4), dims=(2, 5),
                      tags=tuple((i, t) for i, t in enumerate(AM_SIGNS)),
                      notes=(Note(x=4, y=3.0, label="up days: 2.0 + 3.0 "
-                                 "= 5.0", dx=-40, dy=10, dot=False,
+                                 "= 5.0", dx=-40, dy=30, dot=False,
                                  notice=True),
                             Note(x=2, y=-1.5, label="down days: 1.5 + "
                                  "1.0 = 2.5", dx=40, dy=-40, dot=False))),
@@ -2697,8 +2697,8 @@ J_CHARTS = (
                                  dy=-62, notice=True),)),
             ),
             size=ck.pair_size(6.6), xlabel="Time, weekly",
-            footnote="Invented prices and open interest, in contracts. Use "
-                     "1, net\npositions, is not drawn: the book never "
+            footnote="Invented prices and open interest, in contracts. The "
+                     "first use, net\npositions, is not drawn: the book never "
                      "defines net.",
         ),
     ),

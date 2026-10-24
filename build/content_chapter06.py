@@ -464,7 +464,7 @@ SECTION1 = Section(
                 ),
                 shows="Four columns, each a price path over a supporting series. Bearish divergence: price rising, the supporting series falling. Bullish confirmation: both rising. Bearish confirmation: price falling, the supporting series rising. Bullish divergence: both falling. The supporting series is listed as volume bars, a volume moving average, open interest, and the ATR in brackets.",
             ),
-            text_w=6.8,
+            text_w=6.0,
             notes=(
                 "The formal row is the book's own summary of all four scenarios, page 178. The next slide is what each one warns of.",
                 "Bullish or bearish comes from the term Bullish volume and bearish volume: together or apart. Divergence or confirmation from the term before this one: volume down or up.",
@@ -734,32 +734,57 @@ SECTION1 = Section(
             ),
         ),
         Pair(
-            origin="Book p.180 and Figure 6.8, its prices read off the figure. PVO and detrending are on the figure and not explained by the book.",
+            origin="Book p.180 and Figure 6.8, its prices read off the figure. Shown: its price and volume panels.",
             left=Content(
-                title="Both kinds on one chart",
+                title="Both kinds on one chart: price and volume",
                 lines=(
                     "[1] The trust rises from about 129 to 133, October to January.",
                     "[2] Volume and smoothed volume, a 20-day average, non-price-based: falling, against price: bearish divergence.",
-                    "[3] The PVO, a detrended volume oscillator the book never explains: non-price-based, falling: bearish divergence too.",
-                    "[4] ADL, price-based: rising, with price: bullish confirmation.",
                 ),
-                accent="Each kind read by its own rule.",
-                caption="The book gives no rule for which reading to believe. Smoothed volume: Part 3.",
+                accent="Plain volume falling under a rising price: bearish divergence.",
+                caption="Smoothed volume: Part 3. The figure's two lower panels come next.",
             ),
             picture=Figure(
                 number="6.8",
                 aspect=0.895,
+                crop=(0.0, 0.0, 0.0, 0.387),
                 marks=(
-                    Mark(1, "arrow", 0.346, 0.187, 0.754, 0.127),
-                    Mark(2, "box", 0.007, 0.422, 0.993, 0.610),
-                    Mark(3, "box", 0.007, 0.616, 0.993, 0.794),
-                    Mark(4, "box", 0.007, 0.800, 0.993, 0.997),
+                    Mark(1, "arrow", 0.346, 0.306, 0.754, 0.207),
+                    Mark(2, "box", 0.007, 0.689, 0.993, 0.995),
                 ),
-                shows="A daily chart of the Currency Shares Euro Trust rising, with three panels under it: volume with a smoothed line, labelled bearish divergence; a detrended volume oscillator, the PVO, also labelled bearish divergence; and the accumulation distribution line, labelled bullish confirmation.",
+                shows="The top of Figure 6.8: a daily chart of the Currency Shares Euro Trust rising from about 129 to 133, and under it volume with a smoothed line, labelled bearish divergence.",
             ),
-            text_w=7.0,
+            text_w=WIDE_W,
             notes=(
-                "Price rises across the arrow at the top. Two volume panels fall under it, bearish divergence; the ADL rises with it, bullish confirmation.",
+                "Price rises across the arrow at the top, mark 1. The volume panel under it falls, mark 2: non-price-based and falling, so bearish divergence.",
+                "The figure is cut in two so each panel can be read; the PVO and the ADL under it are the next slide.",
+            ),
+        ),
+        Pair(
+            origin="Book p.180 and Figure 6.8. Shown: its two lower panels. PVO and detrending are on the figure and not explained by the book.",
+            left=Content(
+                title="Both kinds on one chart: the PVO and the ADL",
+                lines=(
+                    "The same months, the same price rising from about 129 to 133.",
+                    "[1] The PVO, a detrended volume oscillator the book never explains: non-price-based, falling: bearish divergence too.",
+                    "[2] ADL, price-based: rising, with price: bullish confirmation.",
+                ),
+                accent="Each kind read by its own rule.",
+                caption="The book gives no rule for which reading to believe.",
+            ),
+            picture=Figure(
+                number="6.8",
+                aspect=0.895,
+                crop=(0.0, 0.606, 0.0, 0.0),
+                marks=(
+                    Mark(1, "box", 0.007, 0.024, 0.993, 0.476),
+                    Mark(2, "box", 0.007, 0.492, 0.993, 0.992),
+                ),
+                shows="The bottom of Figure 6.8: a detrended volume oscillator, the PVO, labelled bearish divergence, and under it the accumulation distribution line rising, labelled bullish confirmation.",
+            ),
+            text_w=WIDE_W,
+            notes=(
+                "The PVO falls, mark 1, bearish divergence; the ADL rises with price, mark 2, bullish confirmation.",
                 "Do not resolve the disagreement. The book shows the figure to show each kind read by its own rule; it does not say which to believe.",
             ),
         ),
@@ -857,14 +882,15 @@ SECTION2 = Section(
             picture=Figure(
                 number="6.9",
                 aspect=0.789,
+                crop=(0.0, 0.45, 0.0, 0.0),
                 marks=(
-                    Mark(1, "line", 0.010, 0.931, 0.990, 0.931),
-                    Mark(2, "box", 0.592, 0.568, 0.916, 0.700),
-                    Mark(3, "circle", 0.804, 0.852, 0.924, 0.953),
+                    Mark(1, "line", 0.010, 0.874, 0.990, 0.874),
+                    Mark(2, "box", 0.592, 0.215, 0.916, 0.456),
+                    Mark(3, "circle", 0.804, 0.731, 0.924, 0.914),
                 ),
                 shows="A daily Apple chart with a low volume level drawn across its volume panel. Circles mark two low volume reversals at time lines 1 and 2, a bearish divergence and a bearish confirmation, and later an accumulation box that price leaves on a low volume breakout signal.",
             ),
-            text_w=7.2,
+            text_w=7.0,
             notes=(
                 "Find the box at the bottom right of the price panel, then the circle under it where volume sits on the low volume level. The breakout follows.",
                 "The figure also labels a bearish divergence into the top and a bearish confirmation on the fall: Part 1's names on a real chart. The two circles at 1 and 2 are the next slide.",
@@ -1406,9 +1432,10 @@ SECTION2 = Section(
             picture=Figure(
                 number="6.17",
                 aspect=0.862,
+                crop=(0.0, 0.36, 0.0, 0.0),
                 marks=(
-                    Mark(1, "box", 0.876, 0.362, 0.944, 0.533),
-                    Mark(2, "box", 0.757, 0.620, 0.811, 0.992),
+                    Mark(1, "box", 0.876, 0.004, 0.944, 0.271),
+                    Mark(2, "box", 0.757, 0.406, 0.811, 0.988),
                 ),
                 shows="The continuous chart of gold with five volume panels under it: daily, weekly, monthly, quarterly and yearly. Lines over each mark where its volume peaks: in 2013 on the daily and weekly panels, in 2011 on the monthly, quarterly and yearly ones.",
             ),

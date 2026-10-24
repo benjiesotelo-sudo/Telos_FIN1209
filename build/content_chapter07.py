@@ -63,6 +63,27 @@ BULLISH_FIGURE = Figure(
             "invented to show the converse."),
 )
 
+KEY_CAVEAT_FIGURE = Figure(
+    title="Figure 7.15: consolidation before decline",
+    number="7.15",
+    aspect=701 / 413,
+    crop=(0.25, 0.04, 0.05, 0.02),
+    marks=(
+        Mark(1, "box", 0.49, 0.14, 0.60, 0.29,
+             color="gold", at=(0.44, 0.10), size=0.28),
+        Mark(2, "box", 0.65, 0.16, 0.76, 0.42,
+             color="red", at=(0.81, 0.45), size=0.28),
+    ),
+    shows=("The Apple daily chart, cropped to the key reversal day and the "
+           "later consolidation and decline."),
+    notes=(
+        "The book's point is timing: a decline may pause near the key bar. "
+        "Marks 1 and 2 identify the hover and the later decline.",
+    ),
+    origin=("Lim (2016), p. 219, Figure 7.15. The PHP path is ours, invented "
+            "to show consolidation."),
+)
+
 KEY_CROP_FIGURE = Figure(
     title="Figure 7.15: read the warning",
     number="7.15",
@@ -153,12 +174,18 @@ COMPARISON_CHART = Chart(
             "beyond the prior high and is followed without a gap. Right: a "
             "pin bar penetrates support and closes back above it."),
     marks=(
-        Mark(1, "circle", 0.25, 0.29, 0.30, 0.34,
-             color="gold", at=(0.12, 0.23)),
-        Mark(2, "circle", 0.25, 0.55, 0.30, 0.60,
-             color="red", at=(0.12, 0.69)),
-        Mark(3, "circle", 0.75, 0.45, 0.80, 0.50,
-             color="blue", at=(0.88, 0.58)),
+        Mark(1, "circle", 0.245, 0.225, 0.265, 0.265,
+             color="gold", at=(0.20, 0.16), size=0.25),
+        Mark(2, "circle", 0.245, 0.17, 0.265, 0.21,
+             color="red", at=(0.31, 0.15), size=0.25),
+        Mark(3, "circle", 0.245, 0.57, 0.27, 0.63,
+             color="blue", at=(0.30, 0.67), size=0.25),
+        Mark(4, "line", 0.27, 0.60, 0.37, 0.58,
+             color="purple", at=(0.42, 0.55), size=0.25),
+        Mark(5, "circle", 0.735, 0.60, 0.77, 0.67,
+             color="gold", at=(0.70, 0.73), size=0.25),
+        Mark(6, "circle", 0.735, 0.37, 0.77, 0.43,
+             color="red", at=(0.83, 0.38), size=0.25),
     ),
     tier="core",
     notes=(
@@ -435,16 +462,16 @@ KEY_CAVEAT = Pair(
     left=Content(
         title="Key reversal: consolidation can come first",
         lines=(
-            "Lim says a rapid decline may not follow. The market can hover near the key bar before falling (p. 219).",
-            "Ours: the key bar closes PHP 50.80, then prices hover at PHP 50.60 before declining to PHP 48.90.",
+            "Lim says a rapid decline may not follow. The market can hover near the key bar [1] before falling [2] (p. 219).",
+            "Ours: the key bar closes PHP 50.80, then prices hover at PHP 50.60 [1] before declining to PHP 48.90 [2].",
             "Meaning/action: treat the bar as a potential warning; wait for the surrounding context rather than assuming timing.",
         ),
         accent="A wide bar may make follow-through more reliable, but width does not guarantee it.",
     ),
-    picture=KEY_READ_FIGURE,
+    picture=KEY_CAVEAT_FIGURE,
     text_w=5.9,
     notes=(
-        "Point to the July 16 to 23 area marked 3 on the figure. The book's point is delayed follow-through.",
+        "Point to mark 1 for the hover and mark 2 for the later decline. The book's point is delayed follow-through.",
         "Separate the pattern definition from the later price path. The latter is a caveat, not part of the definition.",
     ),
     origin="Lim (2016), p. 219, Figure 7.15. The PHP path is ours, invented to show consolidation.",
@@ -459,10 +486,8 @@ KEY_16_FIGURE = Figure(
              color="gold", at=(0.34, 0.44), size=0.30),
         Mark(2, "circle", 0.44, 0.70, 0.54, 0.86,
              color="red", at=(0.34, 0.73), size=0.30),
-        Mark(3, "circle", 0.42, 0.84, 0.56, 0.99,
-             color="blue", at=(0.35, 0.93), size=0.30),
-        Mark(4, "circle", 0.43, 0.38, 0.52, 0.48,
-             color="purple", at=(0.62, 0.36), size=0.26),
+        Mark(3, "line", 0.47, 0.43, 0.49, 0.89,
+             color="blue", at=(0.63, 0.50), size=0.26),
     ),
     shows="The ITC Holdings daily chart: a bullish key reversal below the lower volatility band, an oversold StochRSI label, and high volume under the reversal bar.",
     notes=(
@@ -501,10 +526,8 @@ THREE_BEAR_FIGURE = Figure(
              color="gold", at=(0.59, 0.10), size=0.28),
         Mark(2, "box", 0.69, 0.13, 0.74, 0.35,
              color="red", at=(0.80, 0.10), size=0.28),
-        Mark(3, "box", 0.74, 0.12, 0.80, 0.36,
-             color="blue", at=(0.86, 0.38), size=0.28),
-        Mark(4, "box", 0.43, 0.70, 0.67, 0.82,
-             color="purple", at=(0.38, 0.86), size=0.24),
+        Mark(3, "line", 0.77, 0.24, 0.55, 0.76,
+             color="blue", at=(0.89, 0.55), size=0.26),
     ),
     shows="The Apple daily chart in a clear, strong uptrend: the first of three bars closes near its high, the third near its low, and the lower panel labels bearish +DM divergence.",
     notes=(
@@ -660,8 +683,8 @@ KEY_CONTEXT = Pair(
     left=Content(
         title="Key reversal: the bullish context",
         lines=(
-            "In a downtrend, the converse makes a new low, then closes near or above the previous close.",
-            "Ours: the prior low is PHP 42.00 and close PHP 41.00; the new low is PHP 40.50, then the close is PHP 43.20 on 4.0 million shares.",
+            "In a downtrend, the converse makes a new low [1], then closes near or above the previous close [2].",
+            "Ours: the prior low is PHP 42.00 and close PHP 41.00; the new low is PHP 40.50, then the close is PHP 43.20 on 4.0 million shares [3].",
             "Lim's Figure 7.14 observes a rapid rebound after a high-volume bullish key reversal.",
         ),
         accent="The direction changes, but the reading still uses the new extreme and the prior close.",
@@ -672,7 +695,7 @@ KEY_CONTEXT = Pair(
         "Walk the converse with the invented prices before reading the figure.",
         "The rapid rebound is the book's observation in Figure 7.14, not a promise for every bullish key reversal.",
     ),
-    origin="Lim (2016), pp. 218 to 220, Figures 7.14 and 7.16. The PHP values are ours, invented.",
+    origin="Lim (2016), p. 218, Figure 7.14. The PHP values are ours, invented.",
 )
 
 KEY_16_PAIR = Pair(
@@ -680,13 +703,13 @@ KEY_16_PAIR = Pair(
         title="Figure 7.16: context can strengthen the warning",
         lines=(
             "The bullish key reversal is below the lower Bollinger band [1], with StochRSI oversold [2].",
-            "It closes near its high [4] and has extreme volume [3], which Lim calls indicative of a selling climax (p. 220).",
+            "It closes near its high and has extreme volume [3], which Lim calls indicative of a selling climax (p. 220).",
             "The book gives no formulas here. These labels are context, not a promise of reversal.",
         ),
         accent="Use the labels as context, not as a promise of a reversal.",
     ),
     picture=KEY_16_FIGURE,
-    text_w=6.4,
+    text_w=7.0,
     notes=KEY_16_FIGURE.notes,
     origin=KEY_16_FIGURE.origin,
 )
@@ -741,7 +764,8 @@ THREE_WORKED = Pair(
         lines=(
             "Ours: the first bar ranges PHP 41.00 to 44.00 on 4.0 million shares [1].",
             "Middle: range PHP 43.20 to 44.10, volume 0.6 million [2]. Third: close PHP 46.50, volume 4.2 million [3].",
-            "Lim describes the 0.6 million middle volume as below average between the 4.0 and 4.2 million outer volumes. It shows uncertainty inside a potential bullish reversal.",
+            "Middle volume 0.6 million is below average: it sits between the 4.0 and 4.2 million outer volumes.",
+            "The quiet middle shows uncertainty inside a potential bullish reversal.",
         ),
         accent="High-volume outer bars and a below-average-volume middle bar are a clue, not a guarantee.",
     ),
@@ -756,7 +780,7 @@ THREE_WORKED = Pair(
             Mark(3, "circle", 0.73, 0.75, 0.80, 0.84, color="blue", at=(0.86, 0.70)),
         ),
     ),
-    text_w=6.4,
+    text_w=7.0,
     notes=(
         "Read volumes left to right: strong, quiet, strong.",
         "The arithmetic and volume are ours, invented; the interpretation follows Lim, pp. 221 to 223.",
@@ -769,7 +793,7 @@ THREE_BEAR_READ = Pair(
         title="Figure 7.18: the bearish three-bar structure",
         lines=(
             "In a clear, strong uptrend, mark 1 is the first bar, mark 2 the middle bar, and mark 3 the third bar.",
-            "The first closes near its high and the third near its low. The figure also labels bearish +DM divergence [4].",
+            "The first closes near its high and the third near its low. The figure also labels bearish +DM divergence [3].",
             "Meaning/action: read the three bars with trend and volume context; the later decline is not guaranteed.",
         ),
         accent="The first and third bars carry the outer close reading; the middle bar separates them.",
@@ -798,7 +822,7 @@ THREE_BULL_READ = Pair(
 
 THREE_CONTEXT_PAIR = Pair(
     left=Content(
-        title="Figure 7.20: oversold context",
+        title="Figure 7.20:\noversold context",
         lines=(
             "Mark 1 is the three-bar bullish reversal. The full pattern occurs at an oversold StochRSI [2].",
             "The last close sits between the Bollinger bands [3], which Lim calls bullish.",
@@ -830,7 +854,7 @@ THREE_OUTSIDE_PAIR = Pair(
 
 THREE_PATTERN6_PAIR = Pair(
     left=Content(
-        title="Figure 7.22: the pattern 6 link",
+        title="Figure 7.22:\nthe pattern 6 link",
         lines=(
             "Mark 1 is the first-bar volume. Mark 2 is the large middle-bar range.",
             "Mark 3 is the middle-bar volume, lower than the first. Lim links this arrangement to pattern 6 in Figure 7.9.",
@@ -1199,8 +1223,8 @@ SECTION3 = Section(
             left=Content(
                 title="Exhaustion bar versus pin bar",
                 lines=(
-                    "Exhaustion: in an uptrend, it opens at 65.40 above prior high 65.00, reaches 66.20, and closes at 60.50; the next bar opens at 60.20 with no gap.",
-                    "Pin bar: it penetrates support at 40.00 to 38.80, then rapidly retraces and closes at 40.60.",
+                    "Exhaustion: in an uptrend, it opens at 65.40 above prior high 65.00 [1], reaches 66.20 [2], and closes at 60.50 [3]; the next bar opens at 60.20 with no gap [4].",
+                    "Pin bar: it penetrates support at 40.00 to 38.80 [5], then rapidly retraces and closes at 40.60 [6].",
                     "Meaning/action: exhaustion warns of a tiring trend; a pin bar warns of a false breakout.",
                 ),
                 accent="",

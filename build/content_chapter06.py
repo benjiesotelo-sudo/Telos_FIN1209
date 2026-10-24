@@ -2198,7 +2198,7 @@ SECTION3 = Section(
                     Mark(1, "line", 0.03, 0.819, 0.97, 0.819),
                 ),
             ),
-            text_w=7.0,
+            layout="top",
         ),
     ),
 )

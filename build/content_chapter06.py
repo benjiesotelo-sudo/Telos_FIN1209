@@ -106,6 +106,7 @@ named on a slide, and no check rests on any of them.
 
 from deckkit import (
     Chapter,
+    Mark,
     Chart,
     Check,
     Content,
@@ -3000,18 +3001,30 @@ SECTION5 = Section(
                 "Narrow and wide are against the trend's usual bars, as low and high are against its usual volume. The next slide works all four with numbers.",
             ),
         ),
-        Content(
-            origin="Book p.197: the four names. Ours: every number, and the comparison with the usual bar, which the book does not put a number on.",
-            title="Naming a bar, step by step",
-            lines=(
-                "Step 1, the usual bar. Ours: about PHP 1.00 high to low, on 2 million shares.",
-                "Step 2, compare. PHP 0.20 on 1 million: narrow, low, Low Volume Rest Bar. PHP 0.20 on 5 million: narrow, high, High Volume Reversal Bar.",
-                "PHP 2.50 on 1 million: wide, low, Low Volume Reversal Bar. PHP 2.50 on 5 million: wide, high, High Volume Continuation Bar.",
-                "The book gives no number for narrow, wide, low or high; ours are for the example. Judge each bar against those around it.",
+        Pair(
+            origin="Book p.197: the four names. Ours: every number, the comparison with the usual bar, which the book does not put a number on, and the chart: sketches, not prices.",
+            left=Content(
+                title="Naming a bar, step by step",
+                lines=(
+                    "Step 1, the usual bar, grey: about PHP 1.00 high to low, on 2 million shares; ours, as the book gives no number.",
+                    "Step 2, compare. [1] PHP 0.20 on 1 million: narrow, low: Low Volume Rest Bar. [2] PHP 0.20 on 5 million: narrow, high: High Volume Reversal Bar.",
+                    "[3] PHP 2.50 on 1 million: wide, low: Low Volume Reversal Bar. [4] PHP 2.50 on 5 million: wide, high: High Volume Continuation Bar.",
+                ),
+                accent="Judge each bar against the bars around it.",
             ),
-            accent="Range against usual, volume against usual: four names.",
+            picture=Chart(
+                letter="JA",
+                shows="The four named bars on the slide's numbers, numbered 1 to 4. In each case seven grey usual bars, about PHP 1.00 on 2 million shares, then the named bar boxed in gold over its gold volume: 1 PHP 0.20 on 1 million, 2 PHP 0.20 on 5 million, 3 PHP 2.50 on 1 million, 4 PHP 2.50 on 5 million.",
+                marks=(
+                    Mark(1, "box", 0.392, 0.12, 0.453, 0.43, at=(0.35, 0.25)),
+                    Mark(2, "box", 0.884, 0.12, 0.944, 0.43, at=(0.845, 0.25)),
+                    Mark(3, "box", 0.392, 0.57, 0.453, 0.86, at=(0.35, 0.72)),
+                    Mark(4, "box", 0.884, 0.57, 0.944, 0.86, at=(0.845, 0.72)),
+                ),
+            ),
+            text_w=6.4,
             notes=(
-                "This slide has no picture: it is the arithmetic of the term slide, done four times. Say each pair of numbers, then the name.",
+                "Go round the chart 1 to 4. For each, say the range against the grey bars, then the volume against the grey columns, then the name.",
                 "Ask the room for a fifth: PHP 0.90 on 2.1 million. Neither narrow nor wide, neither low nor high: an ordinary bar, no name.",
             ),
         ),
@@ -3020,33 +3033,69 @@ SECTION5 = Section(
             left=Content(
                 title="The two reversal bars",
                 lines=(
-                    "High Volume Reversal Bar, narrow on high volume, chart left: a strong potential for reversal. Bearish in an uptrend; the converse, bullish, in a downtrend.",
-                    "Low Volume Reversal Bar, wide on low volume, right: a potential for reversal. The longer the bar, the more bearish in an uptrend, bullish in a downtrend.",
+                    "[1] High Volume Reversal Bar, narrow on high volume, chart left: a strong potential for reversal. Bearish in an uptrend; the converse, bullish, in a downtrend.",
+                    "[2] Low Volume Reversal Bar, wide on low volume, right: a potential for reversal. The longer the bar, the more bearish in an uptrend, bullish in a downtrend.",
                 ),
                 accent="Too little movement for the volume, or too little volume for the move.",
             ),
             picture=Chart(
                 letter="AI",
                 shows="Two small invented uptrends of price bars over volume. Left: a narrow bar on very high volume at the top, the high volume reversal bar, then price falls. Right: a very wide bar on low volume at the top, the low volume reversal bar, then price falls.",
+                marks=(
+                    Mark(1, "box", 0.285, 0.13, 0.324, 0.93, at=(0.37, 0.55)),
+                    Mark(2, "box", 0.778, 0.13, 0.817, 0.93, at=(0.87, 0.52)),
+                ),
             ),
-            text_w=CHART_W,
+            text_w=5.8,
             notes=(
                 "Left cell: find the tall gold volume bar, then the tiny price bar above it. Right cell: the short gold volume bar, then the long price bar above it.",
                 "In both cells price falls after the named bar, because both are drawn in an uptrend, where both are bearish.",
             ),
         ),
-        Content(
-            origin="Book p.197: both reasons are the book's, and the converse is its word for the downtrend case. Ours: every number.",
-            title="Why the reversal bars warn, with numbers",
-            lines=(
-                "Ours: the usual bar moves PHP 1.00 on 2 million shares. Today 5 million trade, 2.5 times usual, and price moves only PHP 0.20.",
-                "The book: were that volume buying, the range would be much wider. So sellers are attempting to take control. In a downtrend, the converse.",
-                "Ours: price jumps PHP 3.00 on 0.7 million shares, a third of usual. The book: a large move on little participation, its word for volume: a lack of interest.",
+        Pair(
+            origin="Book p.197: the reason is the book's, and the converse is its word for the downtrend case. Ours: every number, and the chart: a sketch, not prices.",
+            left=Content(
+                title="Why the reversal bars warn, with numbers",
+                lines=(
+                    "[1] Ours: the usual bar moves PHP 1.00 on 2 million shares. Today 5 million trade, 2.5 times usual, and price moves only PHP 0.20.",
+                    "The book: were that volume buying, the range would be much wider. So sellers are attempting to take control. In a downtrend, the converse.",
+                ),
+                accent="A warning of a potential turn, not a certainty: the book gives no entry rule.",
             ),
-            accent="A warning of a potential turn, not a certainty: the book gives no entry rule.",
+            picture=Chart(
+                letter="JB",
+                shows="The high volume reversal bar on the slide's numbers: a rise of usual bars, about PHP 1.00 on 2 million, topped by a PHP 0.20 bar on 5 million, boxed, then a fall.",
+                marks=(
+                    Mark(1, "box", 0.574, 0.14, 0.638, 0.875, at=(0.69, 0.50)),
+                ),
+            ),
+            text_w=6.8,
             notes=(
-                "This slide has no picture: it is the book's two reasons, worked with numbers.",
+                "Point at the tall gold volume column, then the tiny boxed bar above it: a lot of volume, almost no movement.",
                 "Participation is the book's word for volume: how many shares changed hands.",
+            ),
+        ),
+        Pair(
+            origin="Book p.197: the reason is the book's. Ours: every number, and the chart: a sketch, not prices.",
+            left=Content(
+                title="Why the low volume reversal bar warns, with numbers",
+                lines=(
+                    "[1] Ours: price jumps PHP 3.00 on 0.7 million shares, a third of the usual 2 million.",
+                    "The book: a large move on little participation, its word for volume: a lack of interest. Bearish in an uptrend, bullish in a downtrend.",
+                ),
+                accent="Too little volume for the move: a potential reversal.",
+            ),
+            picture=Chart(
+                letter="JN",
+                shows="The low volume reversal bar on the slide's numbers: a rise of usual bars, about PHP 1.00 on 2 million, topped by a PHP 3.00 bar on 0.7 million, boxed, then a fall.",
+                marks=(
+                    Mark(1, "box", 0.574, 0.14, 0.638, 0.875, at=(0.69, 0.50)),
+                ),
+            ),
+            text_w=6.8,
+            notes=(
+                "Point at the short gold volume column, then the long boxed bar above it: a big move that few shares paid for.",
+                "Both reversal bars warn of a turn; neither is a signal to trade on its own, the book gives no entry rule.",
             ),
         ),
         Pair(
@@ -3054,14 +3103,19 @@ SECTION5 = Section(
             left=Content(
                 title="The rest bar and the continuation bar",
                 lines=(
-                    "Low Volume Rest Bar, narrow on low volume: a lack of participation. In a strong, rapid trend, chart left, a potential reversal; in a weak to average one, middle, a point of rest.",
-                    "High Volume Continuation Bar, wide on high volume, right: backed by very large participation. Bullish in an uptrend, bearish in a downtrend.",
+                    "Low Volume Rest Bar, narrow on low volume: a lack of participation. In a strong, rapid trend [1], a potential reversal; in a weak to average one [2], a point of rest.",
+                    "[3] High Volume Continuation Bar, wide on high volume: backed by very large participation. Bullish in an uptrend, bearish in a downtrend.",
                 ),
                 accent="The rest bar reads by the trend's speed; the continuation bar, by its direction.",
             ),
             picture=Chart(
                 letter="AJ",
                 shows="Three small invented cases of price bars over volume. A rest bar, narrow on low volume, at the top of a strong, rapid rise, after which price reverses. A rest bar in a slow, average rise, after which price rests and rises again. A continuation bar, wide on high volume, after which the rise continues.",
+                marks=(
+                    Mark(1, "box", 0.178, 0.18, 0.211, 0.93, at=(0.25, 0.52)),
+                    Mark(2, "box", 0.496, 0.27, 0.527, 0.93, at=(0.45, 0.23)),
+                    Mark(3, "box", 0.836, 0.29, 0.868, 0.93, at=(0.785, 0.25)),
+                ),
             ),
             text_w=CHART_W,
             notes=(
@@ -3069,17 +3123,28 @@ SECTION5 = Section(
                 "The continuation bar is Chapter 5's trend promoting case, named.",
             ),
         ),
-        Content(
-            origin="Book p.197; Chapter 5, characteristic 15. Ours: every number, and a pause as the plain reading of point of rest. The book gives no reason speed matters.",
-            title="The rest bar's two readings, with numbers",
-            lines=(
-                "Ours: a rise of PHP 1.60 a bar stalls on a PHP 0.30 bar with a quarter of the usual volume. That fast, then that quiet: a potential reversal.",
-                "The same quiet bar in a rise of PHP 0.45 a bar: a point of rest, a pause before the rise goes on. The book gives no speed for strong and rapid.",
-                "Chapter 5 called both low volume bars only trend inhibiting, holding the trend back. Here each can also mark a reversal.",
+        Pair(
+            origin="Book p.197; Chapter 5, characteristic 15. Ours: every number, the chart, and a pause as the plain reading of point of rest. The book gives no reason speed matters.",
+            left=Content(
+                title="The rest bar's two readings, with numbers",
+                lines=(
+                    "[1] Ours: a rise of PHP 1.60 a bar stalls on a PHP 0.30 bar with a quarter of the usual volume. That fast, then that quiet: a potential reversal.",
+                    "[2] The same quiet bar in a rise of PHP 0.45 a bar: a point of rest, a pause before the rise goes on. The book gives no speed for strong and rapid.",
+                    "Chapter 5 called both low volume bars only trend inhibiting, holding the trend back. Here each can also mark a reversal.",
+                ),
+                accent="Read the rest bar with the trend's speed.",
             ),
-            accent="Read the rest bar with the trend's speed.",
+            picture=Chart(
+                letter="JC",
+                shows="Two sketched rises, each with the same quiet rest bar boxed over its short gold volume column. 1: a steep rise of PHP 1.60 a bar, after which price reverses. 2: a slow rise of PHP 0.45 a bar, after which price pauses and rises again.",
+                marks=(
+                    Mark(1, "box", 0.270, 0.18, 0.311, 0.91, at=(0.35, 0.47)),
+                    Mark(2, "box", 0.743, 0.29, 0.782, 0.91, at=(0.70, 0.23)),
+                ),
+            ),
+            text_w=6.4,
             notes=(
-                "This slide has no picture: it puts numbers on the last slide's two rest bars and sets them against Chapter 5.",
+                "Same boxed bar in both cells; only the slope before it differs. Point at the slope first, then the bar.",
                 "The change from Chapter 5 is the one to say twice: a quiet bar was only a brake there. Here it can be a turn.",
             ),
         ),
@@ -3111,15 +3176,21 @@ SECTION5 = Section(
             left=Content(
                 title="High volume reversal bars: a dollar fund",
                 lines=(
-                    "At 1 and 2: a narrow range candle on one of the tallest volume bars, about 11 to 13 million shares against 5 million most days.",
+                    "At [1] and [2]: a narrow range candle on one of the tallest volume bars, about 11 to 13 million shares against 5 million most days.",
                     "Point 1, late October, at a low: price then rises. Point 2, at the year end, ends a dip from about 22.6 to 22.35: price turns back up to 22.72.",
-                    "August: volume falls into a triangle's apex, where its lines meet: Part 2's low volume breakout signal. Then a volume surge.",
+                    "[3] August: volume falls into a triangle's apex, where its lines meet: Part 2's low volume breakout signal. Then a volume surge.",
                 ),
                 accent="Narrow bar, heavy volume, then a turn.",
             ),
             picture=Figure(
                 number="6.31",
                 shows="The daily dollar fund: narrow range candlesticks on high volume circled at 1, at a low, and 2, at a dip near the highs, lined to tall volume bars; a triangle at the left.",
+                aspect=1.639,
+                marks=(
+                    Mark(1, "circle", 0.51, 0.49, 0.62, 0.66, at=(0.50, 0.45)),
+                    Mark(2, "circle", 0.855, 0.16, 0.94, 0.29, at=(0.83, 0.13)),
+                    Mark(3, "box", 0.13, 0.48, 0.31, 0.95, at=(0.09, 0.47)),
+                ),
             ),
             text_w=6.0,
             notes=(
@@ -3132,14 +3203,19 @@ SECTION5 = Section(
             left=Content(
                 title="A reversal bar at a bottom",
                 lines=(
-                    "The dollar fund in 2010: a narrow range candlestick on high volume, circled at a low around the start of November.",
-                    "The volume bars under the circle are among the chart's tallest. Price then rebounds, from about 22.0 to about 23.5 within the month.",
+                    "The dollar fund in 2010: a narrow range candlestick on high volume, circled at a low around the start of November [1].",
+                    "The volume bars under the circle are among the chart's tallest. Price then rebounds [2], from about 22.0 to about 23.5 within the month.",
                 ),
                 accent="The converse case: in a decline, a high volume reversal bar is bullish.",
             ),
             picture=Figure(
                 number="6.32",
                 shows="The daily PowerShares DB U.S. Dollar Bullish Fund with a narrow range candlestick on high volume circled at a low at the start of November, followed by a strong rise.",
+                aspect=2.145,
+                marks=(
+                    Mark(1, "circle", 0.10, 0.79, 0.215, 0.99, at=(0.110, 0.800)),
+                    Mark(2, "arrow", 0.20, 0.74, 0.355, 0.17, at=(0.200, 0.680)),
+                ),
             ),
             text_w=5.8,
             notes=(
@@ -3152,16 +3228,23 @@ SECTION5 = Section(
             left=Content(
                 title="More reliable inside the larger trend",
                 lines=(
-                    "The dollar fund, 2011: a larger downtrend, about 23.4 in January to 21.0 in May. A short rally ends at a circled high volume reversal bar, May 23.",
-                    "Before it, bearish divergence: price rising while volume fell, and the MACD too.",
+                    "The dollar fund, 2011: a larger downtrend [1], about 23.4 in January to 21.0 in May. A short rally ends at a circled high volume reversal bar [2], May 23.",
+                    "Before it, bearish divergence [3]: price rising while volume fell, and the MACD too.",
                     "Bearish, the larger trend's way: potentially more reliable, the book says. Prices then fell.",
-                    "X, early May: a high volume continuation bar.",
+                    "[4] X, early May: a high volume continuation bar.",
                 ),
                 accent="Agreeing with the larger trend: more reliable.",
             ),
             picture=Figure(
                 number="6.33",
                 shows="The daily dollar fund in a long decline: a circled high volume reversal bar at a short rally's top in late May, falling lines over volume and the MACD before it, and a continuation bar at X.",
+                aspect=1.246,
+                marks=(
+                    Mark(1, "arrow", 0.17, 0.25, 0.70, 0.66, at=(0.170, 0.190)),
+                    Mark(2, "circle", 0.80, 0.47, 0.92, 0.59, at=(0.810, 0.480)),
+                    Mark(3, "box", 0.76, 0.60, 0.91, 0.72, at=(0.83, 0.765)),
+                    Mark(4, "circle", 0.69, 0.57, 0.765, 0.67, at=(0.66, 0.53)),
+                ),
             ),
             text_w=6.4,
             notes=(
@@ -3169,18 +3252,54 @@ SECTION5 = Section(
                 "The MACD is an oscillator the book has not taught. Point at its falling line and leave it there.",
             ),
         ),
-        Content(
-            origin="Book p.199. Ours: every number, the reading of larger trend as the whole move, and the reading of X. The book does not define the larger trend.",
-            title="Why the larger trend matters, with numbers",
-            lines=(
-                "Larger, or predominant, trend, our reading as the book gives none: the whole move. Ours: PHP 60 to 45 in six months, then a rally to 48.",
-                "A high volume reversal bar at PHP 48 is bearish, with the six-month fall: potentially more reliable. The book says the same of continuation bars.",
-                "Figure 6.33's X, by eye, as the book does not say: rising against the larger downtrend, the less reliable kind. Its rally lasted about two and a half weeks.",
+        Pair(
+            origin="Book p.199 and Figure 6.33. Ours: levels read by eye, and the larger trend read as the whole move. The book does not define the larger trend.",
+            left=Content(
+                title="Why the larger trend matters, with numbers",
+                lines=(
+                    "Larger, or predominant, trend: the whole move, our reading, as the book gives none. [1] Here, about 23.4 in January down to 21.0 in May.",
+                    "[2] The circled high volume reversal bar is bearish, with that fall: potentially more reliable, the book says.",
+                ),
+                accent="Ask which way the larger trend runs. The book gives no further reason.",
             ),
-            accent="Ask which way the larger trend runs. The book gives no further reason.",
+            picture=Figure(
+                number="6.33",
+                shows="The daily dollar fund in a long decline from about 23.4 in January to 21.0 in May, with a circled high volume reversal bar at a short rally's top in late May.",
+                aspect=1.246,
+                marks=(
+                    Mark(1, "arrow", 0.17, 0.25, 0.70, 0.66, at=(0.17, 0.19)),
+                    Mark(2, "circle", 0.80, 0.47, 0.92, 0.59, at=(0.81, 0.48)),
+                ),
+            ),
+            text_w=6.4,
             notes=(
-                "This slide has no picture: it puts numbers on the last slide's one sentence of reason.",
-                "The X reading is ours, from the figure. The book only says continuation bars are more reliable with the predominant trend.",
+                "Same figure as the last slide, read for its one sentence of reason: trace the fall at 1 with a finger, then the circle at 2.",
+                "The reversal bar points down, the same way as the six-month fall. That agreement is all the book means by more reliable.",
+            ),
+        ),
+        Pair(
+            origin="Book p.199 and Figure 6.33. Ours: the reading of X, and its length read by eye. The book does not discuss X.",
+            left=Content(
+                title="X: a continuation bar against the larger trend",
+                lines=(
+                    "The book: continuation bars, too, are more reliable in the direction of the predominant trend.",
+                    "[1] X, our reading, as the book does not say: a high volume continuation bar rising against the larger downtrend, so the less reliable kind.",
+                    "Its rally lasted about two and a half weeks before the fall went on.",
+                ),
+                accent="With the larger trend: more reliable. Against it: less.",
+            ),
+            picture=Figure(
+                number="6.33",
+                shows="The daily dollar fund in a long decline, with X marking a high volume continuation bar in early May that rises against the decline.",
+                aspect=1.246,
+                marks=(
+                    Mark(1, "circle", 0.69, 0.57, 0.765, 0.67, at=(0.66, 0.53)),
+                ),
+            ),
+            text_w=6.4,
+            notes=(
+                "Point at X: a wide bar up on heavy volume, but inside a decline. The book gives no reading of it; this one is ours.",
+                "The rally after X ran about two and a half weeks, then the decline resumed: the less reliable kind, as the rule would say.",
             ),
         ),
         Pair(
@@ -3188,17 +3307,23 @@ SECTION5 = Section(
             left=Content(
                 title="A reversal bar at an overextended level",
                 lines=(
-                    "The dollar fund, end of October 2011: a high volume reversal bar, circled.",
-                    "Its volume reaches the line across the volume panel, about 13 million: the book's historically overextended volume level, Part 2's upper level.",
-                    "Historically is not defined; the line runs level with the September peaks, the oval. Price had fallen into the bar, and rose after it.",
+                    "The dollar fund, end of October 2011: a high volume reversal bar, circled [1].",
+                    "Its volume reaches the line across the volume panel [2], about 13 million: the book's historically overextended volume level, Part 2's upper level.",
+                    "Historically is not defined; the line runs level with the September peaks, the oval [3]. Price had fallen into the bar, and rose after it.",
                 ),
                 accent="Two signals agree: the reversal bar, and Part 2's overextended volume.",
             ),
             picture=Figure(
                 number="6.34",
                 shows="The daily PowerShares DB U.S. Dollar Bullish Fund with a line across the volume panel labelled historically overextended volume level, and a circled reversal bar at the end of October whose volume reaches that line.",
+                aspect=2.133,
+                marks=(
+                    Mark(1, "circle", 0.755, 0.66, 0.845, 0.92, at=(0.765, 0.670)),
+                    Mark(2, "line", 0.44, 0.705, 0.93, 0.705, at=(0.93, 0.705)),
+                    Mark(3, "circle", 0.51, 0.62, 0.72, 0.81, at=(0.520, 0.630)),
+                ),
             ),
-            text_w=5.8,
+            text_w=6.2,
             notes=(
                 "The overextended level is Part 2's upper overextended volume level, drawn by eye. Here it runs through the September peaks.",
                 "The book says only that the bar sat at the level; which way price went is read off the figure.",
@@ -3209,15 +3334,21 @@ SECTION5 = Section(
             left=Content(
                 title="Constant volume charts find reversal bars",
                 lines=(
-                    "Chapter 3: a constant volume chart starts a new bar each time a set volume has traded, so every volume bar is the same height.",
+                    "Chapter 3: a constant volume chart starts a new bar each time a set volume has traded, so every volume bar is the same height [3].",
                     "So the book finds reversal bars from the bar range alone and its height against the rest of the bars.",
-                    "Figure 6.35: a narrow bar, sellers taking control; a very tall bar, a lack of interest in the rise. Both bearish.",
+                    "Figure 6.35: a narrow bar [1], sellers taking control; a very tall bar [2], a lack of interest in the rise. Both bearish.",
                 ),
                 accent="Especially useful for reversal bars on high or low volume.",
             ),
             picture=Figure(
                 number="6.35",
                 shows="Two sketches of a constant volume chart, all volume bars equal. Left: a rise topped by a narrow bar on relatively high volume. Right: by a very tall bar on relatively low volume. Both bearish.",
+                aspect=1.531,
+                marks=(
+                    Mark(1, "box", 0.265, 0.13, 0.34, 0.245, at=(0.375, 0.19)),
+                    Mark(2, "box", 0.835, 0.05, 0.895, 0.60, at=(0.8, 0.3)),
+                    Mark(3, "box", 0.11, 0.83, 0.455, 0.995, at=(0.080, 0.790)),
+                ),
             ),
             text_w=6.0,
             notes=(
@@ -3225,22 +3356,42 @@ SECTION5 = Section(
                 "That is this part's two reversal bars, read off a chart where volume never changes. The next slide puts numbers on it.",
             ),
         ),
-        Content(
+        Pair(
             origin="Book p.199 and Figure 6.35, whose labels say relatively high and relatively low volume. Ours: every number, and the per-peso reading.",
-            title="High and low volume when every bar's volume is fixed",
-            lines=(
-                "Ours: every bar holds 100,000 shares, and a usual bar spans PHP 1.00. That is 100,000 shares for each peso of range.",
-                "A PHP 0.20 bar: 100,000 shares moved price only 20 centavos, 500,000 shares a peso, five times usual. Figure 6.35's label: relatively high volume.",
-                "A PHP 4.00 bar: 100,000 shares moved price 4 pesos, 25,000 a peso, a quarter of usual. Its label: relatively low volume.",
+            left=Content(
+                title="High and low volume when every bar's volume is fixed",
+                lines=(
+                    "Ours: every bar holds 100,000 shares; a usual bar spans PHP 1.00: 100,000 shares a peso of range.",
+                    "[1] A PHP 0.20 bar: 100,000 shares moved price 20 centavos, 500,000 a peso, five times usual. Figure 6.35's label: relatively high volume.",
+                    "[2] A PHP 4.00 bar: 100,000 shares over 4 pesos, 25,000 a peso, a quarter of usual. Its label: relatively low volume.",
+                ),
+                accent="Volume is fixed, so the range alone says if it was a lot or a little.",
             ),
-            accent="Volume is fixed, so the range alone says whether it was a lot or a little for the move.",
+            picture=Figure(
+                number="6.35",
+                shows="Two sketches of a constant volume chart, all volume bars equal. 1, left: a rise topped by a narrow bar labelled relatively high volume. 2, right: a rise topped by a very tall bar labelled relatively low volume.",
+                aspect=1.531,
+                marks=(
+                    Mark(1, "box", 0.265, 0.13, 0.34, 0.245, at=(0.375, 0.19)),
+                    Mark(2, "box", 0.835, 0.05, 0.895, 0.60, at=(0.8, 0.3)),
+                ),
+            ),
+            text_w=6.2,
             notes=(
-                "This slide has no picture: it is the arithmetic behind the figure's two labels.",
+                "The figure again, for its two labels: 1 is the narrow bar on the left, 2 the tall bar on the right. Every volume bar under them is the same height.",
                 "Divide shares by pesos of range, three times: 100,000 over 1.00, over 0.20, over 4.00.",
             ),
         ),
         Check(
             label="Reversal bars on charts",
+            picture=Figure(
+                number="6.33",
+                shows="A band of the price panel of the daily dollar fund, February to June: the decline, and a circled high volume reversal bar at a short rally's top in late May.",
+                aspect=1.246,
+                crop=(0.25, 0.46, 0.0, 0.34),
+                marks=(Mark(1, "circle", 0.768, 0.08, 0.88, 0.74, at=(0.735, 0.14)),),
+            ),
+            layout="top",
             questions=(
                 Q(
                     stem="Why is the high volume reversal bar of Figure 6.33 regarded as potentially more reliable?",
@@ -3268,14 +3419,18 @@ SECTION5 = Section(
                 title="Volume leading price, or price leading volume",
                 lines=(
                     "Volume leading price, our reading: volume rises first, price moves after. Most agree price cannot move significantly without volume.",
-                    "Price leading volume: price breaks first. Signals need little volume to appear. Chart, 1: a small trendline breakout on ordinary volume.",
-                    "As the break becomes obvious it invites tremendous volume. Chart, 2: volume more than doubles.",
+                    "Price leading volume: price breaks first. Signals need little volume to appear. [1] A small trendline breakout on ordinary volume.",
+                    "As the break becomes obvious it invites tremendous volume. [2] Volume more than doubles.",
                 ),
                 accent="Price moved first: price led volume.",
             ),
             picture=Chart(
                 letter="AK",
                 shows="An invented share under a falling trendline. At 1 price breaks the trendline by a little, on ordinary volume. At 2 the breakout becomes obvious, price runs and volume surges: price leads, volume follows.",
+                marks=(
+                    Mark(1, "circle", 0.665, 0.33, 0.745, 0.42, at=(0.70, 0.27)),
+                    Mark(2, "box", 0.795, 0.655, 0.975, 0.885, at=(0.975, 0.60)),
+                ),
             ),
             text_w=CHART_W,
             notes=(
@@ -3283,18 +3438,29 @@ SECTION5 = Section(
                 "On the chart, the breakout at 1 comes first and the volume at 2 after it. That order is what price leading volume means.",
             ),
         ),
-        Content(
-            origin="Book p.200, one paragraph. Ours: the numbers. The book gives no test for when a light volume signal will draw volume in.",
-            title="What price leading volume means for a signal",
-            lines=(
-                "Ours: volume runs about 1.3 million a day. Price closes PHP 0.80 above a falling trendline that held for two months, on 1.3 million: an ordinary day.",
-                "By volume alone, nothing happened. But the break is on every chart, and days later 3 million trade as the move becomes obvious.",
-                "So light volume on the break does not cancel the signal: watch whether volume arrives in the days after. The book gives no rule for how long to wait.",
-                "Why more often now, the book says: the widespread use of technical analysis.",
+        Pair(
+            origin="Book p.200, one paragraph. Ours: the numbers and the chart, Chart AK's line with its numbers. The book gives no test for when a light volume signal will draw volume in.",
+            left=Content(
+                title="What price leading volume means for a signal",
+                lines=(
+                    "Ours: a usual day trades 1.3 million. [1] Price closes PHP 0.80 above a two-month falling trendline, [2] on 1.3 million: an ordinary day.",
+                    "By volume alone, nothing happened. But the break shows on every chart: [3] days later, 3 million trade.",
+                    "Light volume on a break does not cancel it: watch whether volume follows. The book does not say for how long.",
+                ),
+                accent="Volume can follow the signal: more often now, the book says, as technical analysis is widely used.",
             ),
-            accent="No significant move without volume, but volume can follow the signal.",
+            picture=Chart(
+                letter="JE",
+                shows="An invented share under a falling two-month trendline. 1: price closes PHP 0.80 above the line. 2: that day's volume, 1.3 million, an ordinary day. 3: days later the volume columns rise to about 3 million as price runs.",
+                marks=(
+                    Mark(1, "circle", 0.675, 0.335, 0.755, 0.435, at=(0.72, 0.495)),
+                    Mark(2, "box", 0.70, 0.75, 0.735, 0.88, at=(0.66, 0.84)),
+                    Mark(3, "box", 0.795, 0.60, 0.975, 0.885, at=(0.985, 0.64)),
+                ),
+            ),
+            text_w=6.8,
             notes=(
-                "This slide has no picture: it is the last slide's small breakout with its numbers said aloud.",
+                "Read the chart in the slide's order: the close above the line at 1, the ordinary column under it at 2, the tall gold columns at 3.",
                 "Do not turn this into a rule. The book describes the case and gives no test for when a light volume break will draw volume in.",
             ),
         ),
@@ -3303,12 +3469,17 @@ SECTION5 = Section(
             left=Term(
                 term="Intraday volume cycle",
                 plain="Intraday: within one day. Volume swells and fades daily, peaking at about the same hour each day.",
-                example="GMT, Greenwich Mean Time: 1:30 to 2:30 p.m. GMT is 9:30 to 10:30 p.m. in Manila. Our chart: reversals at 1 and 3, a continuation at 2.",
+                example="GMT, Greenwich Mean Time: 1:30 to 2:30 p.m. GMT is 9:30 to 10:30 p.m. in Manila. Our chart: reversals at [1] and [3], a continuation at [2].",
                 formal="The intraday volume cycle normally peaks around 1:30 p.m. to 2:30 p.m. GMT. At these volume peaks, price will either reverse or continue, but very rarely remain unchanged.",
             ),
             picture=Chart(
                 letter="AL",
                 shows="Three days of invented hourly bars over their volume. Volume swells to a peak each day between 13:30 and 14:30 GMT, shaded. At the peaks, numbered 1 to 3, price reverses, continues, and reverses again; it does not stay where it was.",
+                marks=(
+                    Mark(1, "circle", 0.235, 0.355, 0.315, 0.465, at=(0.20, 0.48)),
+                    Mark(2, "circle", 0.525, 0.18, 0.605, 0.29, at=(0.49, 0.30)),
+                    Mark(3, "circle", 0.81, 0.085, 0.89, 0.195, at=(0.93, 0.07)),
+                ),
             ),
             text_w=TERM_CHART_W,
             notes=(
@@ -3335,17 +3506,24 @@ SECTION5 = Section(
             left=Content(
                 title="Volume cycle peaks at support and resistance",
                 lines=(
-                    "30-minute EURUSD: almost every reversal comes at a peak in tick volume, Part 4's count of trades: the daily spikes in the bottom panel.",
-                    "Follow the solid line down from Market bottom: it lands on one of the tallest spikes.",
-                    "Especially useful when price retests a support or resistance level: comes back to one it turned at before.",
+                    "30-minute EURUSD: almost every reversal comes at a peak in tick volume, Part 4's count of trades: the daily spikes in the bottom panel [2].",
+                    "Follow the solid line down from Market bottom [1]: it lands on one of the tallest spikes [4].",
+                    "Especially useful when price retests a support or resistance level [3]: comes back to one it turned at before.",
                 ),
                 accent="Many straddle the peak: catch price either way.",
             ),
             picture=Figure(
                 number="6.36",
                 shows="A 30-minute EURUSD chart over weeks, with support and resistance lines, a triangle and a channel, over daily volume cycles; price turns at the peaks.",
+                aspect=1.948,
+                marks=(
+                    Mark(1, "circle", 0.335, 0.665, 0.39, 0.75, at=(0.31, 0.68)),
+                    Mark(2, "box", 0.02, 0.865, 0.98, 0.975, at=(0.985, 0.92)),
+                    Mark(3, "box", 0.45, 0.32, 0.63, 0.56, at=(0.43, 0.30)),
+                    Mark(4, "arrow", 0.45, 0.80, 0.372, 0.885, at=(0.47, 0.79)),
+                ),
             ),
-            text_w=6.0,
+            text_w=5.8,
             notes=(
                 "Straddle is the book's second name for the bidirectional entry: orders above and below, so either move is caught.",
                 "The daily spikes in the volume panel are the cycle. Line a few of them up with turns in price.",
@@ -3356,55 +3534,131 @@ SECTION5 = Section(
             left=Content(
                 title="Trendline retests at volume peaks",
                 lines=(
-                    "Hourly EURUSD: at 1, 4 and 5 price rebounds off a rising trendline, each time at a tick volume peak.",
-                    "A cycle-tuned stochastic, bottom panel, read oversold there: its line on the lower line, the grey boxes. The book never defines oversold.",
-                    "At 2 and 3 the trendline failed: at circles Y and X the stochastic was still mid-panel, not clearly oversold.",
+                    "Hourly EURUSD: price rebounds off a rising trendline at the book's 1 [1] and at its 4 and 5 [2], each time at a tick volume peak [3].",
+                    "At the book's 2 and 3, the trendline failed.",
                 ),
-                accent="Volume peak and oscillator both: the line held.",
+                accent="Retests at a volume peak: the line held three times of five.",
             ),
             picture=Figure(
                 number="6.37",
                 shows="Hourly EURUSD with rising trendlines and retests 1 to 5, daily volume cycles below, and a stochastic panel: oversold under 1, 4 and 5, not at X and Y.",
+                aspect=2.036,
+                marks=(
+                    Mark(1, "line", 0.015, 0.305, 0.30, 0.135, at=(0.015, 0.36)),
+                    Mark(2, "line", 0.645, 0.505, 0.955, 0.335, at=(0.62, 0.53)),
+                    Mark(3, "box", 0.005, 0.625, 0.995, 0.725, at=(0.985, 0.585)),
+                ),
             ),
-            text_w=6.0,
+            text_w=5.0,
             notes=(
                 "Match each number to the shaded marks in the bottom panel. The successful retests had the oscillator oversold; the failures did not.",
                 "Do not teach the stochastic. Oversold is used as in Part 2: named, not defined here.",
             ),
         ),
         Pair(
-            origin="Book p.202 and Figure 6.38. Point and figure, Renko, three line break and equivolume charts were Chapter 3 terms.",
+            origin="Book pp.201-202 and Figure 6.37, its volume and stochastic panels. Oversold and the cycle-tuned stochastic are named, not taught: oscillators are the book's Chapter 8.",
+            left=Content(
+                title="Retests and the stochastic",
+                lines=(
+                    "Bottom panel: a cycle-tuned stochastic. At the book's 1, 4 and 5 it read oversold: its line on the lower line, the grey boxes [1].",
+                    "At 2 and 3 the trendline failed: at circles Y [2] and X [3] the stochastic was still mid-panel, not clearly oversold.",
+                    "The book never defines oversold.",
+                ),
+                accent="Volume peak and oscillator both: the line held.",
+            ),
+            picture=Figure(
+                number="6.37",
+                shows="The volume and stochastic panels of Figure 6.37, enlarged: grey boxes where its line sits on the lower line, under the book's retests 1, 4 and 5, and circles Y and X where it does not.",
+                aspect=2.036,
+                crop=(0.0, 0.55, 0.0, 0.0),
+                marks=(
+                    Mark(1, "box", 0.08, 0.76, 0.95, 0.88, at=(0.04, 0.82)),
+                    Mark(2, "circle", 0.23, 0.58, 0.30, 0.78, at=(0.20, 0.56)),
+                    Mark(3, "circle", 0.52, 0.58, 0.59, 0.78, at=(0.49, 0.56)),
+                ),
+            ),
+            text_w=5.0,
+            notes=(
+                "Match each grey box to the retest above it on the last slide: 1, 4 and 5. The failures, Y and X, had the oscillator mid-panel.",
+                "Do not teach the stochastic. Oversold is used as in Part 2: named, not defined here.",
+            ),
+        ),
+        Pair(
+            origin="Book p.202 and Figure 6.38, its upper panel. Point and figure, Renko, three line break and equivolume charts were Chapter 3 terms.",
             left=Content(
                 title="Volume on non-constant time charts",
                 lines=(
                     "Chapter 3: point and figure, Renko and three line break charts are not plotted linearly in time: equal steps along the axis are not equal times.",
-                    "Equivolume: each bar covers the same time, but is wider on heavier volume, so its time axis is non-linear too.",
-                    "That changes the angle of trendlines, channels and chart patterns. Figure 6.38: same Apple prices, same line.",
+                    "That changes the angle of trendlines, channels and chart patterns. Figure 6.38, top: Apple on a standard daily chart, with a trendline [2].",
                 ),
-                accent="Circled, late May: price stays above the line on top, and cuts through it below.",
+                accent="[1] Circled, late May: on the standard chart, price stays above the line.",
             ),
             picture=Figure(
                 number="6.38",
-                shows="Apple, daily: a standard chart over an equivolume chart of the same months, the same trendline on both, circles where each is broken.",
+                shows="The upper panel of Figure 6.38: Apple on a standard daily chart, a rising trendline under it, and a circle in late May where price stays above the line.",
+                aspect=0.797,
+                crop=(0.0, 0.0, 0.0, 0.505),
+                marks=(
+                    Mark(1, "circle", 0.68, 0.44, 0.79, 0.63, at=(0.720, 0.430)),
+                    Mark(2, "line", 0.23, 0.905, 0.92, 0.475, at=(0.230, 0.845)),
+                ),
             ),
-            text_w=7.4,
+            text_w=6.4,
             notes=(
                 "Chapter 3 built these charts. The point here is only what a non-linear time axis does to a line drawn across it.",
-                "Wide bars on heavy days stretch the axis, so the line's angle changes and so does where price crosses it.",
+                "This is the top half of the book's figure. Find the line first, then the circle: price holds above it.",
             ),
         ),
-        Content(
-            origin="Book p.202. Ours: every number. The book says the angle is affected and shows the result; it does not work the arithmetic.",
-            title="Why the trendline moves, with numbers",
-            lines=(
-                "Ours: lows of PHP 100 and PHP 110, ten ordinary days apart, each day one step wide on both charts. The line rises PHP 1.00 a step.",
-                "Then five heavy days: one step each on the daily chart, two each on the equivolume chart. Five days on, the daily line is at PHP 115, the equivolume line at PHP 120.",
-                "A low of PHP 117 that day holds above the daily line and cuts the equivolume one. Equal widths would move nothing: unequal widths move the cut.",
+        Pair(
+            origin="Book p.202 and Figure 6.38, its lower panel: the same prices and the same line as the slide before, on an equivolume chart.",
+            left=Content(
+                title="The same line on the equivolume chart",
+                lines=(
+                    "Equivolume: each bar covers the same time, but is wider on heavier volume, so its time axis is non-linear too.",
+                    "Figure 6.38, bottom: the same Apple prices on an equivolume chart, and the same trendline [2].",
+                    "So the same line meets late May at a different place.",
+                ),
+                accent="[1] Circled, late May: on the equivolume chart, price cuts through the line.",
             ),
-            accent="The book shows the discrepancy and does not say which break to trust.",
+            picture=Figure(
+                number="6.38",
+                shows="The lower panel of Figure 6.38: the same Apple prices on an equivolume chart, the same trendline, and a circle in late May where price cuts through the line.",
+                aspect=0.797,
+                crop=(0.0, 0.51, 0.0, 0.0),
+                marks=(
+                    Mark(1, "circle", 0.70, 0.35, 0.82, 0.55, at=(0.710, 0.360)),
+                    Mark(2, "line", 0.25, 0.905, 0.84, 0.385, at=(0.250, 0.845)),
+                ),
+            ),
+            text_w=6.0,
             notes=(
-                "This slide has no picture: it is the geometry of the last slide's two charts, in numbers.",
-                "Count the steps: 15 on the daily chart, 10 plus 10 on the equivolume chart. If heavy days fell between the two lows instead, the line's angle itself would change, which is the book's word: angle.",
+                "Same prices, same line as the last slide. Point at the wide bars in early May: heavy days, so wide.",
+                "On top price held above the line in late May; here it cuts through. The next slide puts numbers on why.",
+            ),
+        ),
+        Pair(
+            origin="Book p.202. Ours: every number and the chart. The book says the angle is affected and shows the result in Figure 6.38; it does not work the arithmetic.",
+            left=Content(
+                title="Why the trendline moves, with numbers",
+                lines=(
+                    "Ours: lows of PHP 100 and 110, ten ordinary days apart, one step a day on both charts: the line rises PHP 1.00 a step.",
+                    "Then five heavy days: [1] one step each on the daily chart, [2] two each on the equivolume one. The lines reach PHP 115 and PHP 120.",
+                    "That day's low of PHP 117 holds above the daily line and cuts the equivolume one. Equal widths would move nothing.",
+                ),
+                accent="The book shows the discrepancy, not which break to trust.",
+            ),
+            picture=Chart(
+                letter="JG",
+                shows="The same trendline, rising PHP 1.00 a step from a low of 100 through a low of 110, on two charts. 1, daily: five heavy days take one step each and a low of 117 lands at step 15, above the line at 115. 2, equivolume: the same five days take two steps each and the low of 117 lands at step 20, under the line at 120.",
+                marks=(
+                    Mark(1, "circle", 0.695, 0.105, 0.765, 0.195, at=(0.84, 0.06)),
+                    Mark(2, "circle", 0.885, 0.535, 0.955, 0.635, at=(0.965, 0.675)),
+                ),
+            ),
+            text_w=6.8,
+            notes=(
+                "Count the steps on the chart: 15 on the daily chart at 1, 10 plus 10 on the equivolume chart at 2. The grey boxes are the five heavy days.",
+                "If heavy days fell between the two lows instead, the line's angle itself would change, which is the book's word: angle.",
             ),
         ),
         Check(
@@ -3465,7 +3719,7 @@ SECTION6 = Section(
                 lines=(
                     "Eight methods, taught in Chapter 8, listed below. Part 6 uses only three:",
                     "A  Price, a higher peak; oscillator, a lower one. Against price: divergence. Falling: bearish. Price then falls (method 4).",
-                    "B  A rising line under the oscillator; falling through it is a sell signal (Figure 6.43). No method is named.",
+                    "B  A rising line under the oscillator; falling through it is a sell signal (the Chaikin pair, later). No method is named.",
                     "C  An oversold level (method 1): a potential bottom, the book says (p.206). It never says how it is set.",
                 ),
                 caption="The eight: 1 OBOS (overbought and oversold) overextended levels, 2 equilibrium and zero line crossovers, 3 signal line crossovers, 4 price-oscillator divergence, 5 to 7 geometric, numeric and horizontal pattern analysis, 8 oscillator on oscillator.",
@@ -3498,17 +3752,29 @@ SECTION6 = Section(
                 "Only the direction of the close matters, not how far it moved. That is the weakness a few slides on.",
             ),
         ),
-        Content(
-            origin="Book p.203 gives the rule and no starting value. The arithmetic is ours, on the last slide's six days. The reading rule is Part 1's, Figure 6.7.",
-            title="What the OBV's number says, and which kind it is",
-            lines=(
-                "The book sets no start; we start at 0 on day 1, with no day before it. Up days: 2.0 + 3.0 = 5.0 million; down days: 1.5 + 1.0 = 2.5. OBV: 2.5.",
-                "Rising OBV: more volume on up closes than down closes. Falling: the reverse.",
-                "Price-based, as the close sets the sign. Part 1's two questions: rising (bullish) or falling (bearish)? With price (confirmation) or against it (divergence)?",
+        Pair(
+            origin="Book p.203 gives the rule and no starting value. The arithmetic and the chart are ours, on Chart AM's six days. The reading rule is Part 1's, Figure 6.7.",
+            left=Content(
+                title="What the OBV's number says, and which kind it is",
+                lines=(
+                    "The book sets no start; we start at 0 on day 1, with no day before it. [1] Up days: 2.0 + 3.0 = 5.0 million; [2] down days: 1.5 + 1.0 = 2.5. [3] OBV: 2.5.",
+                    "Rising OBV: more volume on up closes than down closes. Falling: the reverse.",
+                    "Price-based, as the close sets the sign. Part 1's two questions: rising (bullish) or falling (bearish)? With price (confirmation) or against it (divergence)?",
+                ),
+                accent="Read it by rises and falls against price, not by level: next slide.",
             ),
-            accent="Read it by rises and falls against price, not by level: next slide.",
+            picture=Chart(
+                letter="JH",
+                shows="The OBV's six invented days. Top: each day's volume signed by its close, the up days gold, 1, adding 2.0 + 3.0 = 5.0, and the down days grey, 2, adding 1.5 + 1.0 = 2.5. Bottom: the running total, ending at 3, 5.0 - 2.5 = 2.5.",
+                marks=(
+                    Mark(1, "box", 0.205, 0.08, 0.565, 0.145, at=(0.60, 0.11)),
+                    Mark(2, "box", 0.555, 0.445, 0.965, 0.51, at=(0.525, 0.475)),
+                    Mark(3, "circle", 0.765, 0.615, 0.835, 0.705, at=(0.87, 0.72)),
+                ),
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture: it reads the numbers of the last slide's example. Ask the room what day 6 would read had it closed up.",
+                "Point at the gold columns for 1, the grey ones for 2, and the last point of the line for 3. Ask the room what day 6 would read had it closed up.",
                 "Day 6 closing up would add 1.0 instead of taking it away: 3.5 + 1.0 = 4.5.",
             ),
         ),
@@ -3517,8 +3783,8 @@ SECTION6 = Section(
             left=Content(
                 title="The OBV's disadvantage: the start date",
                 lines=(
-                    "Its level, the book's absolute value, depends on the start date. Start our six days on day 3: day 6 reads 2.0, not 2.5.",
-                    "Its changes, the relative value, do not. Day 3 to day 6, both lines rise 2.0: 0.5 to 2.5, 0 to 2.0.",
+                    "Its level, the book's absolute value, depends on the start date. Start our six days on day 3: day 6 reads 2.0 [2], not 2.5 [1].",
+                    "Its changes, the relative value, do not. From day 3 [3] to day 6, both lines rise 2.0: 0.5 to 2.5, 0 to 2.0.",
                     "The book: so all eight methods may still be used. Divergence reads rises and falls.",
                 ),
                 accent="An OBV reading of 2.5 means nothing alone; a rise or a fall does.",
@@ -3526,8 +3792,13 @@ SECTION6 = Section(
             picture=Chart(
                 letter="AN",
                 shows="The OBV of the six days drawn twice. Started on day 1, it reads 0.5 on day 3 and 2.5 on day 6. Started on day 3, it reads 0 there and 2.0 on day 6. Two lines of the same shape at different heights, each rising 2.0 from day 3 to day 6.",
+                marks=(
+                    Mark(1, "circle", 0.77, 0.24, 0.83, 0.36, at=(0.87, 0.22)),
+                    Mark(2, "circle", 0.77, 0.37, 0.83, 0.45, at=(0.87, 0.47)),
+                    Mark(3, "box", 0.35, 0.54, 0.48, 0.75, at=(0.52, 0.79)),
+                ),
             ),
-            text_w=CHART_W,
+            text_w=5.8,
             notes=(
                 "Shift the start and the whole line moves up or down, but every rise and fall stays the same.",
                 "Absolute value and relative value are the book's words; level and changes are the plain ones.",
@@ -3539,16 +3810,21 @@ SECTION6 = Section(
                 title="The OBV's weakness: only the close counts",
                 lines=(
                     "Volume is added or subtracted regardless of the bar's own behavior.",
-                    "Ours: bar 1 has a high of 51.00 and closes 50.80. Bar 2 rallies to a new high of 54.00, far above, and closes 50.70, just under 50.80.",
-                    "Bar 2 closed lower, so all its 3.0 million is subtracted.",
+                    "Ours: bar 1 has a high of 51.00 and closes 50.80. Bar 2 rallies to a new high of 54.00 [1], far above, and closes 50.70 [2], just under 50.80.",
+                    "Bar 2 closed lower, so all its 3.0 million is subtracted [3].",
                 ),
                 accent="To redress it, that is, to put it right, many prefer the ADL or the two Chaikin indicators: next.",
             ),
             picture=Chart(
                 letter="FC",
                 shows="Two invented bars and their signed volume. Bar 1, high 51.00, closes 50.80 and adds 2.0 million. Bar 2 makes a new high of 54.00 far above it but closes at 50.70, just under 50.80, and its whole 3.0 million is marked as subtracted.",
+                marks=(
+                    Mark(1, "circle", 0.59, 0.07, 0.65, 0.14, at=(0.69, 0.10)),
+                    Mark(2, "circle", 0.60, 0.33, 0.70, 0.40, at=(0.73, 0.30)),
+                    Mark(3, "box", 0.54, 0.69, 0.70, 0.85, at=(0.50, 0.77)),
+                ),
             ),
-            text_w=CHART_W,
+            text_w=6.2,
             notes=(
                 "The second bar went far higher and still counts as a down day, because it closed a little lower.",
                 "Redress is the book's word: to put right.",
@@ -3559,16 +3835,22 @@ SECTION6 = Section(
             left=Content(
                 title="OBV bullish divergence: Citigroup",
                 lines=(
-                    "Price: a lower low, August to October 2011: the falling line.",
-                    "OBV: a higher low, same weeks: the rising line.",
+                    "[1] Price: a lower low, August to October 2011: the falling line.",
+                    "[2] OBV: a higher low, same weeks: the rising line.",
                     "Price-based rule: rising, so bullish; against price, so divergence.",
-                    "Then, the book: prices rebound strongly, here about 22 to 34 dollars.",
+                    "[3] Then, the book: prices rebound strongly, here about 22 to 34 dollars.",
                 ),
                 accent="On plain volume, bullish divergence is instead volume falling as price falls.",
             ),
             picture=Figure(
                 number="6.39",
                 shows="The daily chart of Citigroup with an On Balance Volume panel under it. A falling line marks price's lower lows in August to October 2011, and a rising line under the OBV, labelled bullish divergence, marks its higher lows.",
+                aspect=1.629,
+                marks=(
+                    Mark(1, "line", 0.68, 0.565, 0.81, 0.70, at=(0.66, 0.54)),
+                    Mark(2, "line", 0.66, 0.96, 0.79, 0.925, at=(0.64, 0.935)),
+                    Mark(3, "arrow", 0.835, 0.66, 0.875, 0.37, at=(0.885, 0.34)),
+                ),
             ),
             text_w=5.4,
             notes=(
@@ -3581,16 +3863,23 @@ SECTION6 = Section(
             left=Content(
                 title="OBV bearish divergence: copper",
                 lines=(
-                    "First arrow, March to April 2011: equal peaks near 4.5; the OBV falls.",
-                    "Second, June to August: price rises from about 4.1 to 4.5; the OBV falls.",
-                    "The book calls both bearish divergence: the OBV falls while price holds or rises.",
-                    "Prices then fell strongly, the book says: here to about 3.0 by October.",
+                    "[1] First arrow, March to April 2011: equal peaks near 4.5; the OBV falls.",
+                    "[2] Second, June to August: price rises from about 4.1 to 4.5; the OBV falls.",
+                    "The book calls both bearish divergence: the OBV falls [3] while price holds or rises.",
+                    "[4] Prices then fell strongly, the book says: here to about 3.0 by October.",
                 ),
                 accent="Bearish divergence: price flat or up, the price-based indicator down.",
             ),
             picture=Figure(
                 number="6.40",
                 shows="The daily chart of copper with an On Balance Volume panel under it. Two arrows mark price holding level and then rising to a peak in 2011 while two arrows under the OBV fall, labelled bearish divergence.",
+                aspect=1.787,
+                marks=(
+                    Mark(1, "box", 0.38, 0.07, 0.50, 0.15, at=(0.355, 0.20)),
+                    Mark(2, "box", 0.55, 0.06, 0.69, 0.24, at=(0.52, 0.27)),
+                    Mark(3, "box", 0.38, 0.73, 0.73, 0.85, at=(0.355, 0.70)),
+                    Mark(4, "arrow", 0.725, 0.22, 0.82, 0.64, at=(0.775, 0.20)),
+                ),
             ),
             text_w=5.4,
             notes=(
@@ -3639,17 +3928,29 @@ SECTION6 = Section(
                 "The name echoes the accumulation and distribution phases of Chapters 2 and 4. The book does not connect the two.",
             ),
         ),
-        Content(
-            origin="Book pp.204-205 gives the factor. The bars, volumes and arithmetic are ours, the last slide's.",
-            title="The ADL worked, bar by bar",
-            lines=(
-                "Each bar: low L = 48, high H = 52, range H - L = 4, volume 2.0 million. C - L: the close's height above the low. H - C: its depth below the high.",
-                "Close 52: (4 - 0) / 4 = 1, add 2.0.   Close 50: (2 - 2) / 4 = 0, add nothing.   Close 49: (1 - 3) / 4 = -0.5, take 1.0.",
-                "The running total, bar by bar: 2.0, then 2.0 + 0 = 2.0, then 2.0 - 1.0 = 1.0. That total is the ADL.",
+        Pair(
+            origin="Book pp.204-205 gives the factor. The bars, volumes, arithmetic and chart are ours, Chart AO's three bars.",
+            left=Content(
+                title="The ADL worked, bar by bar",
+                lines=(
+                    "Each bar: low L = 48, high H = 52, range H - L = 4, volume 2.0 million. C - L: the close's height above the low. H - C: its depth below the high.",
+                    "[1] Close 52: (4 - 0) / 4 = 1, add 2.0.   [2] Close 50: (2 - 2) / 4 = 0, add nothing.   [3] Close 49: (1 - 3) / 4 = -0.5, take 1.0.",
+                    "The running total, bar by bar: 2.0, then 2.0 + 0 = 2.0, then 2.0 - 1.0 = 1.0. That total is the ADL.",
+                ),
+                accent="The factor scores where the close sits: -1 at the low, 0 at the midpoint, +1 at the high.",
             ),
-            accent="The factor scores where the close sits: -1 at the low, 0 at the midpoint, +1 at the high.",
+            picture=Chart(
+                letter="JI",
+                shows="Three invented bars from 48 to 52, numbered 1 to 3 by their closes, 52, 50 and 49, each with its factor worked under it; the third bar's C - L of 1 and H - C of 3 measured beside it. Below, each factor times 2.0 million, +2.0, 0 and -1.0, and the ADL's running total, 2.0, 2.0, 1.0.",
+                marks=(
+                    Mark(1, "box", 0.34, 0.03, 0.46, 0.31, at=(0.31, 0.17)),
+                    Mark(2, "box", 0.50, 0.03, 0.62, 0.31, at=(0.62, 0.36)),
+                    Mark(3, "box", 0.66, 0.03, 0.77, 0.31, at=(0.76, 0.36)),
+                ),
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture: it works the last slide's example in numbers. Point back at the three bars as you go.",
+                "Work bar 3 off the chart: the green measure is C - L, 1; the gold one H - C, 3. So (1 - 3) / 4 = -0.5.",
                 "Ask the room for a close at 51: (3 - 1) / 4 = 0.5, so add 1.0 million.",
             ),
         ),
@@ -3658,15 +3959,19 @@ SECTION6 = Section(
             left=Content(
                 title="How the ADL redresses the OBV",
                 lines=(
-                    "Midpoint, nothing added: if C - L = H - C, then C = (H + L) / 2. For 48 and 52, 50.",
+                    "[1] Midpoint, nothing added: if C - L = H - C, then C = (H + L) / 2. For 48 and 52, 50.",
                     "Further above it, more is added; below it, more subtracted.",
-                    "At most the day's volume: at the high, C = H, the factor is (H - L) / (H - L) = 1, however wide the bar.",
+                    "[2] At most the day's volume: at the high, C = H, the factor is (H - L) / (H - L) = 1, however wide the bar.",
                 ),
                 accent="The ADL accounts for the current bar's price action. The OBV does not.",
             ),
             picture=Chart(
                 letter="AP",
                 shows="A straight line for the ADL's multiplying factor against where the close sits in its bar: minus 1 when the bar closes at its low, 0 at its midpoint, and plus 1 at its high.",
+                marks=(
+                    Mark(1, "circle", 0.515, 0.375, 0.595, 0.465, at=(0.525, 0.385)),
+                    Mark(2, "circle", 0.875, 0.11, 0.935, 0.19, at=(0.885, 0.27)),
+                ),
             ),
             text_w=CHART_W,
             notes=(
@@ -3674,18 +3979,29 @@ SECTION6 = Section(
                 "No matter how wide the range, the maximum is the day's volume, not some multiple of it: the book's words.",
             ),
         ),
-        Content(
-            origin="Ours: one invented bar, read by the book's two rules from pp.203 and 205.",
-            title="One bar, two answers: the OBV against the ADL",
-            lines=(
-                "Ours: yesterday closed 50.00. Today runs from 46.00 to 51.00 on 2.0 million shares and closes at 49.75.",
-                "OBV: 49.75 is below 50.00, so subtract all 2.0 million.",
-                "ADL: C - L = 3.75, H - C = 1.25, range 5. Factor (3.75 - 1.25) / 5 = 0.5: add 1.0 million.",
+        Pair(
+            origin="Ours: one invented bar and the chart, read by the book's two rules from pp.203 and 205.",
+            left=Content(
+                title="One bar, two answers: the OBV against the ADL",
+                lines=(
+                    "Ours: yesterday closed 50.00. Today runs from 46.00 to 51.00 on 2.0 million shares and closes at 49.75.",
+                    "[1] OBV: 49.75 is below 50.00, so subtract all 2.0 million.",
+                    "[2] ADL: C - L = 3.75, H - C = 1.25, range 5. Factor (3.75 - 1.25) / 5 = 0.5: add 1.0 million.",
+                ),
+                accent="The OBV sees only yesterday's close; the ADL sees where today closed in today's bar.",
             ),
-            accent="The OBV sees only yesterday's close; the ADL sees where today closed in today's bar.",
+            picture=Chart(
+                letter="JJ",
+                shows="Yesterday's bar closing at 50.00, dashed, and today's bar from 46.00 to 51.00 closing at 49.75, with C - L of 3.75 and H - C of 1.25 measured beside it. Beside them, what each adds for today: 1 the OBV, -2.0 million, and 2 the ADL, +1.0 million.",
+                marks=(
+                    Mark(1, "box", 0.62, 0.40, 0.735, 0.76, at=(0.590, 0.360)),
+                    Mark(2, "box", 0.765, 0.21, 0.885, 0.43, at=(0.735, 0.170)),
+                ),
+            ),
+            text_w=6.0,
             notes=(
-                "This slide has no picture: it is one bar read two ways. Draw it on the board if the room wants it.",
-                "Today closed near the top of its own range, which the ADL counts as buying. The OBV counts only the tiny fall from 50.00.",
+                "Today closed near the top of its own range, which the ADL counts as buying. The OBV counts only the tiny fall from 50.00, the dashed line.",
+                "The two columns are the whole point: one bar, minus 2.0 by one rule, plus 1.0 by the other.",
             ),
         ),
         Pair(
@@ -3693,15 +4009,21 @@ SECTION6 = Section(
             left=Content(
                 title="The ADL confirms, volume diverges: EURUSD",
                 lines=(
-                    "Hourly EURUSD, June 2011: price makes new highs.",
-                    "ADL, price-based: rising with price, so bullish confirmation.",
-                    "Volume, plain: falling as price rises, so bearish divergence: an underlying weakness, the book says.",
+                    "Hourly EURUSD, June 2011: price makes new highs [1].",
+                    "[2] ADL, price-based: rising with price, so bullish confirmation.",
+                    "[3] Volume, plain: falling as price rises, so bearish divergence: an underlying weakness, the book says.",
                 ),
-                accent="They disagree: wait for price to confirm a reversal, as in Figure 6.44, where price breaks its own trendline.",
+                accent="They disagree: wait for price itself to confirm a reversal, by breaking its own trendline.",
             ),
             picture=Figure(
                 number="6.41",
                 shows="An hourly EURUSD chart rising to a top, with an A/D line panel rising alongside it, labelled bullish confirmation, and a volume panel falling, labelled bearish divergence, under the heading divergence between volume and ADL.",
+                aspect=1.995,
+                marks=(
+                    Mark(1, "box", 0.53, 0.19, 0.78, 0.36, at=(0.50, 0.16)),
+                    Mark(2, "box", 0.54, 0.62, 0.75, 0.70, at=(0.51, 0.60)),
+                    Mark(3, "line", 0.45, 0.855, 0.71, 0.935, at=(0.43, 0.82)),
+                ),
             ),
             text_w=5.4,
             notes=(
@@ -3714,8 +4036,8 @@ SECTION6 = Section(
             left=Content(
                 title="OBV and ADL together: trend or range",
                 lines=(
-                    "Both rising, or both falling: price trends in a decisive manner. Right ellipse.",
-                    "Opposite directions: price tends to range or consolidate, going sideways. Left ellipse.",
+                    "Both rising, or both falling: price trends in a decisive manner. Right ellipse [1].",
+                    "Opposite directions: price tends to range or consolidate, going sideways. Left ellipse [2].",
                     "Regime: whether the market trends or ranges. Trend-following trades with a trend; range-bound, inside a range.",
                 ),
                 accent="The book: it may help choose. Together, trend-following; apart, range-bound.",
@@ -3723,8 +4045,13 @@ SECTION6 = Section(
             picture=Figure(
                 number="6.42",
                 shows="The daily chart of Exxon Mobil with OBV and ADL panels. On the left the two move apart, non-confirmation, under an erratic and volatile price; on the right they rise together, confirmation, under a pronounced trend.",
+                aspect=1.325,
+                marks=(
+                    Mark(1, "circle", 0.55, 0.59, 0.89, 0.96, at=(0.560, 0.600)),
+                    Mark(2, "circle", 0.02, 0.57, 0.50, 0.99, at=(0.530, 0.960)),
+                ),
             ),
-            text_w=5.4,
+            text_w=5.8,
             notes=(
                 "Left ellipse: the OBV falls while the ADL rises, and price goes nowhere; the figure calls it a lack of clarity and strength. Right ellipse: both rise, and price trends.",
                 "Range or consolidate, the book's words: Chapter 4's consolidation, price going sideways between a high and a low.",
@@ -3771,17 +4098,29 @@ SECTION6 = Section(
                 "What the CMF's number means comes next, then the oscillator step by step.",
             ),
         ),
-        Content(
-            origin="Ours: arithmetic on the book's p.206 definition and the ADL's factor, p.205. The book gives no reading of the CMF's value.",
-            title="What the CMF's number says",
-            lines=(
-                "The ADL's factor runs from -1 to +1, so no S is bigger than its bar's volume. So the CMF also runs from -1 to +1.",
-                "+1: every bar closed at its high. -1: every bar closed at its low. 0: on balance, the closes sat at their midpoints.",
-                "Our 0.17: of 6.0 million traded, a net 1.0 million counts as added. Above 0, on balance the volume came with closes above their midpoints.",
+        Pair(
+            origin="Ours: arithmetic on the book's p.206 definition and the ADL's factor, p.205, and the chart. The book gives no reading of the CMF's value.",
+            left=Content(
+                title="What the CMF's number says",
+                lines=(
+                    "The ADL's factor runs from -1 to +1, so no S exceeds its bar's volume: the CMF also runs from -1 to +1.",
+                    "[1] -1: every bar closed at its low. [2] 0: on balance, closes at their midpoints. +1: every bar closed at its high.",
+                    "[3] Our 0.17: of 6.0 million traded, a net 1.0 million counts as added: volume came, on balance, with closes above their midpoints.",
+                ),
+                accent="Our arithmetic. The book reads the CMF only by a line and an oversold level, three slides on.",
             ),
-            accent="That reading is our arithmetic. The book reads the CMF only by a line and an oversold level, Figure 6.43.",
+            picture=Chart(
+                letter="JK",
+                shows="The CMF's range as four columns: 1 at -1, every close at its low; 2 at 0, on balance at the midpoints; 3 our 0.17, 1.0 divided by 6.0, in gold; and +1, every close at its high.",
+                marks=(
+                    Mark(1, "box", 0.26, 0.39, 0.37, 0.71, at=(0.22, 0.55)),
+                    Mark(2, "circle", 0.43, 0.34, 0.49, 0.41, at=(0.46, 0.47)),
+                    Mark(3, "box", 0.555, 0.30, 0.66, 0.41, at=(0.69, 0.30)),
+                ),
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture: it reads the last slide's number. Ask what the CMF would be had all three bars closed at their highs: 6.0 / 6.0 = 1.",
+                "Our 0.17 sits just above the 0 column: a little more volume counted as added than taken away. Ask what the CMF would be had all three bars closed at their highs: 6.0 / 6.0 = 1.",
                 "Do not call a positive CMF bullish on the book's authority: the book does not say so.",
             ),
         ),
@@ -3791,15 +4130,20 @@ SECTION6 = Section(
                 title="The Chaikin oscillator, step by step",
                 lines=(
                     "1  Each bar's CMF, over its last N bars.",
-                    "2  A running total of the CMF, as for the ADL: black.",
-                    "3  Two EMAs of that total, here over 3 and 10 bars: gold and green.",
-                    "4  Oscillator = shorter EMA - longer EMA, bottom panel. At the dashed lines: 1.0 - 0.5 = +0.5; 0.6 - 0.8 = -0.2.",
+                    "[2] A running total of the CMF, as for the ADL: black.",
+                    "[3] Two EMAs of that total, here over 3 and 10 bars: gold and green.",
+                    "[4] Oscillator = shorter EMA - longer EMA, bottom panel. At the dashed lines: 1.0 - 0.5 = +0.5; 0.6 - 0.8 = -0.2.",
                 ),
                 accent="The oscillator is the gap between the two averages.",
             ),
             picture=Chart(
                 letter="FD",
                 shows="The Chaikin oscillator's steps on invented bars. Top, the running total of the CMF in black, with its 3-bar EMA in gold and its 10-bar EMA in green. Bottom, the oscillator, the 3-bar EMA less the 10-bar, as columns above and below zero. Two dashed lines mark a bar reading 1.0 less 0.5, plus 0.5, and a bar reading 0.6 less 0.8, minus 0.2.",
+                marks=(
+                    Mark(2, "arrow", 0.75, 0.06, 0.645, 0.13, at=(0.77, 0.06)),
+                    Mark(3, "box", 0.04, 0.10, 0.97, 0.38, at=(0.02, 0.24)),
+                    Mark(4, "box", 0.04, 0.58, 0.96, 0.83, at=(0.02, 0.70)),
+                ),
             ),
             text_w=6.6,
             notes=(
@@ -3807,17 +4151,28 @@ SECTION6 = Section(
                 "The gold average follows the total closely, the green one slowly. When the total turns down, gold crosses below green and the oscillator goes negative.",
             ),
         ),
-        Content(
-            origin="Book p.206 gives the steps, no EMA formula and no reading of the sign. The reading of the sign is our arithmetic.",
-            title="The EMA, and what the oscillator's sign says",
-            lines=(
-                "EMA, exponential moving average: a moving average of the last few values, like Part 3's smoothed volume. This chapter never says how it weights them.",
-                "A 3-bar EMA follows the running total closely; a 10-bar one follows it slowly.",
-                "Above 0, the recent average is above the longer one: the total has been rising lately. Below 0, falling. Ours: the book gives no reading of the sign.",
+        Pair(
+            origin="Book p.206 gives the steps, no EMA formula and no reading of the sign. The reading of the sign is our arithmetic; the chart is Chart FD's invented values.",
+            left=Content(
+                title="The EMA, and what the oscillator's sign says",
+                lines=(
+                    "EMA, exponential moving average: a moving average of the last few values, like Part 3's smoothed volume. This chapter never says how it weights them.",
+                    "A 3-bar EMA follows the running total closely; a 10-bar one follows it slowly.",
+                    "[1] Above 0, the recent average is above the longer one: the total has been rising lately. [2] Below 0, falling. Ours: the book gives no reading of the sign.",
+                ),
+                accent="The sign says which of the two averages is on top.",
             ),
-            accent="Figure 6.43, next: CMF(20) is N = 20; ChiOsc(3,10) is EMAs of 3 and 10 bars.",
+            picture=Chart(
+                letter="JL",
+                shows="Chart FD's running total of the CMF in black, its 3-bar EMA in gold hugging it and its 10-bar EMA in green trailing it. Below, the oscillator's columns: 1 gold above 0 while the total rises, 2 grey below 0 while it falls.",
+                marks=(
+                    Mark(1, "box", 0.35, 0.63, 0.785, 0.79, at=(0.31, 0.7)),
+                    Mark(2, "box", 0.07, 0.765, 0.37, 0.84, at=(0.040, 0.725)),
+                ),
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture: it reads the last slide's chart in words. The book gives no lengths; its figure prints them.",
+                "Follow the gold line hugging the black and the green one lagging. Where gold is above green, the columns below are gold, 1; where below, grey, 2.",
                 "A rising total means the CMFs being added are positive, by the last slides' arithmetic.",
             ),
         ),
@@ -3826,20 +4181,53 @@ SECTION6 = Section(
             left=Content(
                 title="The Chaikin pair on copper",
                 lines=(
-                    "Each indicator falls through the rising line under its lows: the sell signal.",
-                    "The oscillator falls through first, the CMF later. The dashed arrows run up to the price top near 4.5, early August.",
-                    "Copper then fell to about 3.0 by October, where both touched the line labelled oversold: a potential bottom, the book says.",
+                    "[1] Each indicator falls through the rising line under its lows: the sell signal.",
+                    "The oscillator falls through first, the CMF later. The dashed arrows run up to the price top near 4.5, early August [2].",
+                    "Copper then fell to about 3.0 by October, where both touched the line labelled oversold [3]: a potential bottom, the book says.",
                 ),
                 accent="The Chaikin oscillator gives the earlier sell, or bearish, signal.",
             ),
             picture=Figure(
                 number="6.43",
                 shows="The daily chart of copper with a Chaikin oscillator panel and a Chaikin Money Flow panel. Rising lines mark both before a top in August, with dashed arrows to the top, and both panels carry a line labelled oversold that both touch near the October low.",
+                aspect=1.278,
+                marks=(
+                    Mark(1, "box", 0.51, 0.61, 0.73, 0.95, at=(0.480, 0.570)),
+                    Mark(2, "circle", 0.61, 0.07, 0.72, 0.18, at=(0.620, 0.080)),
+                    Mark(3, "box", 0.775, 0.73, 0.86, 0.955, at=(0.745, 0.690)),
+                ),
             ),
             text_w=5.4,
             notes=(
                 "Follow the dashed arrows from each panel up to the top near 4.5 in early August: the oscillator's comes first.",
                 "Readings B and C of the part's second slide: a line on the indicator, and an oversold level, used and not defined.",
+            ),
+        ),
+        Pair(
+            origin="Book p.206 and Figure 6.43, its two indicator panels. The text gives no settings; the figure's labels print them.",
+            left=Content(
+                title="The Chaikin pair's settings, read off Figure 6.43",
+                lines=(
+                    "The book gives no lengths for the CMF or its EMAs. Figure 6.43's panel labels print them.",
+                    "[1] ChiOsc(3,10): the Chaikin oscillator, from EMAs of 3 and 10 bars.",
+                    "[2] CMF(20): the Chaikin Money Flow over N = 20 bars.",
+                ),
+                accent="Read the brackets as the settings: lengths in bars.",
+            ),
+            picture=Figure(
+                number="6.43",
+                shows="The two indicator panels of Figure 6.43, enlarged: the label ChiOsc(3,10) on the Chaikin oscillator and the label CMF(20) on the Chaikin Money Flow.",
+                aspect=1.278,
+                crop=(0.0, 0.57, 0.45, 0.05),
+                marks=(
+                    Mark(1, "box", 0.06, 0.06, 0.43, 0.16, at=(0.47, 0.11)),
+                    Mark(2, "box", 0.06, 0.54, 0.36, 0.64, at=(0.40, 0.59)),
+                ),
+            ),
+            text_w=5.6,
+            notes=(
+                "The same figure as the last slide, cut to its two indicator panels so the labels can be read.",
+                "The 3 and 10 are the two EMAs of the oscillator slides; the 20 is the CMF's N. The book's text never states them.",
             ),
         ),
         Pair(
@@ -3865,15 +4253,21 @@ SECTION6 = Section(
             left=Content(
                 title="The NYSE Up/Down Volume on a chart",
                 lines=(
-                    "Top: the indicator falls through its rising trendline in mid 2011: an early bearish signal.",
-                    "Bottom: the NYSE Composite, an index of NYSE share prices, breaks its own line later: price confirmation.",
-                    "The book says ratio; the figure's line is cumulative and runs below zero. It does not explain.",
+                    "[1] Top: the indicator falls through its rising trendline in mid 2011: an early bearish signal.",
+                    "[2] Bottom: the NYSE Composite, an index of NYSE share prices, breaks its own line later: price confirmation.",
+                    "The book says ratio; the figure's line is cumulative and runs below zero [3]. It does not explain.",
                 ),
                 accent="The volume line warned first; price confirmed later.",
             ),
             picture=Figure(
                 number="6.44",
                 shows="Two daily panels, 2009 to 2011: the NYSE Advance-Decline Volume line above, labelled cumulative, breaking its rising trendline at a point marked early bearish signal; and the NYSE Composite Index below, breaking its own trendline later, circled as price confirmation.",
+                aspect=1.625,
+                marks=(
+                    Mark(1, "circle", 0.72, 0.08, 0.81, 0.21, at=(0.730, 0.090)),
+                    Mark(2, "circle", 0.785, 0.72, 0.865, 0.86, at=(0.795, 0.730)),
+                    Mark(3, "box", 0.04, 0.60, 0.16, 0.71, at=(0.190, 0.560)),
+                ),
             ),
             text_w=5.6,
             notes=(
@@ -3910,18 +4304,29 @@ SECTION6 = Section(
                 "A test means open interest coming back to a level it reached before, the way price retests a barrier in Part 3.",
             ),
         ),
-        Content(
-            origin="Book p.208. It does not define net or non-cash positions and gives no worked figures. The what-to-do line is ours, from p.205.",
-            title="What traders read in the COT report",
-            lines=(
-                "Commercials: hedgers, holding non-cash positions, a phrase the book never explains.",
-                "The book: traders use it to identify potential tops and bottoms, by two things.",
-                "1  Changes in net commercial or non-commercial positions. Net: never defined.",
-                "2  Open interest testing a significant or historical level: back at an old level.",
+        Pair(
+            origin="Book p.208. It does not define net or non-cash positions and gives no worked figures. The what-to-do line is ours, from p.205; the chart is ours, invented.",
+            left=Content(
+                title="What traders read in the COT report",
+                lines=(
+                    "Commercials: hedgers, holding non-cash positions, a phrase the book never explains.",
+                    "The book: traders use it to identify potential tops and bottoms, by two things.",
+                    "One: changes in net commercial or non-commercial positions. Net: never defined, so not drawn.",
+                    "Two: open interest testing a significant or historical level: back at an old level [1].",
+                ),
+                accent="Ours: treat either as a warning, and wait for price to confirm [2], as for the ADL.",
             ),
-            accent="Ours: treat either as a warning, and wait for price to confirm (Figure 6.41).",
+            picture=Chart(
+                letter="JM",
+                shows="An invented futures price rising to a top over its open interest. 2: open interest climbs back to its earlier peak of 92,000 contracts, dashed, at the price top: a test of a historical level. 3: price then falls away, confirming.",
+                marks=(
+                    Mark(1, "circle", 0.80, 0.48, 0.88, 0.58, at=(0.810, 0.490)),
+                    Mark(2, "circle", 0.905, 0.09, 0.985, 0.21, at=(0.915, 0.100)),
+                ),
+            ),
+            text_w=6.6,
             notes=(
-                "This slide has no picture: it is the book's two uses. Do not supply a formula for net; the book gives none.",
+                "Use 1 has no picture because the book never says what net is. Use 2 is on the chart: open interest back at the dashed line.",
                 "Commercials are hedgers, Chapter 1's participants; non-commercials are hedge funds, financial institutions and large traders.",
             ),
         ),
@@ -4068,31 +4473,206 @@ CLOSING = (
             "Do not teach any of these today. Each is named where it appears.",
         ),
     ),
-    Content(
-        origin="This course's own list, drawn from the chapter's slides. Each is also named on its own slide.",
-        title="Where the book says two different things",
-        lines=(
-            "Above the VWMA (Part 2): the text calls price potentially bullish, then a paragraph later overvalued.",
-            "A bullish TRIN (Part 4): overbought in the text, oversold in Figure 6.25.",
-            "NYSE Up/Down Volume (Part 6): a ratio in the text; Figure 6.44's line runs below zero, which a ratio cannot.",
-            "Bullish divergence (Part 1): downtrends only, says the text; Figure 6.6 shows it in dips inside an uptrend.",
+    Pair(
+        origin="This course's own list. Book p.181 and Figure 6.11 (Part 2), its price panel. Each is also named on its own slide.",
+        left=Content(
+            title="Where the book says two different things: the VWMA",
+            lines=(
+                "Above the VWMA (Part 2): the text calls price potentially bullish, then, a paragraph later, overvalued, where institutions look to sell.",
+                "Figure 6.11, the book's VWMA picture, prints price above its line as bullish [1].",
+            ),
+            accent="No check rests on either. If asked, give both readings.",
         ),
-        accent="No check rests on any of these. If asked, give both readings.",
+        picture=Figure(
+            number="6.11",
+            shows="Part of Figure 6.11's price panel, enlarged: the label Price > VWAP = Bullish over price bars above the dotted VWAP line.",
+            aspect=1.724,
+            crop=(0.35, 0.0, 0.1, 0.55),
+            marks=(
+                Mark(1, "box", 0.28, 0.19, 0.61, 0.34, at=(0.24, 0.19)),
+            ),
+        ),
+        text_w=5.6,
         notes=(
             "Do not pick a side for the book. Say both readings and move on.",
-            "The captions that disagree with their charts are on the next slide.",
+            "The label in box 1 is the book's own, on its own figure.",
         ),
     ),
-    Content(
-        origin="This course's own list, from the book's figures and their captions. Each is also named on its own slide.",
-        title="Four figure captions that disagree with their chart or text",
-        lines=(
-            "Figure 6.6 (Part 1): captioned daily; the chart itself is labelled weekly.",
-            "Figure 6.11 (Part 2): captioned a VWMA on a daily chart; it is a VWAP on 10-minute bars.",
-            "Figure 6.23 (Part 3): captioned silver; the text calls it USDJPY, then silver.",
-            "Figures 6.25 and 6.26 (Part 4): captioned daily; both charts are intraday.",
+    Pair(
+        origin="This course's own list. Book p.193 and Figure 6.25 (Part 4), its tick and TRIN panels. Each is also named on its own slide.",
+        left=Content(
+            title="Where the book says two different things: the TRIN",
+            lines=(
+                "A bullish TRIN (Part 4): the text calls it overbought.",
+                "Figure 6.25 labels the same reading TRIN oversold [1].",
+            ),
+            accent="No check rests on either. Name both.",
         ),
-        accent="No check rests on any of these. Read the chart, and name both.",
+        picture=Figure(
+            number="6.25",
+            shows="The tick and TRIN panels of Figure 6.25, enlarged: dotted arrows labelled TICK oversold and TRIN oversold.",
+            aspect=1.382,
+            crop=(0.45, 0.55, 0.0, 0.0),
+            marks=(
+                Mark(1, "box", 0.62, 0.56, 0.90, 0.67, at=(0.58, 0.61)),
+            ),
+        ),
+        text_w=5.6,
+        notes=(
+            "The two words are opposites. The book uses both for the same reading and never reconciles them.",
+            "The caption's own slip on this figure is on a later slide.",
+        ),
+    ),
+    Pair(
+        origin="This course's own list. Book p.206 and Figure 6.44 (Part 6), its upper panel. Each is also named on its own slide.",
+        left=Content(
+            title="Where the book says two different things: the NYSE line",
+            lines=(
+                "NYSE Up/Down Volume (Part 6): the text calls it the ratio of advancing volume over declining volume.",
+                "Figure 6.44 labels its line Cumulative [1], and the line runs below zero [2], to about -4,500 in March 2009, which a ratio of two volumes cannot.",
+            ),
+            accent="The book does not reconcile them. If asked, give both.",
+        ),
+        picture=Figure(
+            number="6.44",
+            shows="The upper panel of Figure 6.44: the label $NYUD (Daily) Cumulative, and the line dipping below the zero of its scale in March 2009.",
+            aspect=1.625,
+            crop=(0.0, 0.0, 0.0, 0.25),
+            marks=(
+                Mark(1, "box", 0.0, 0.09, 0.42, 0.15, at=(0.46, 0.12)),
+                Mark(2, "box", 0.06, 0.82, 0.13, 0.94, at=(0.17, 0.80)),
+                Mark(2, "box", 0.89, 0.79, 0.965, 0.94, at=(0.86, 0.76)),
+            ),
+        ),
+        text_w=5.4,
+        notes=(
+            "A ratio of two volumes is never negative. Point at the two boxes 2: the low, and the scale beside it reading below 0.",
+            "Cumulative, box 1, suggests a running total. The book never says it is one.",
+        ),
+    ),
+    Pair(
+        origin="This course's own list. Book pp.176 and 178 and Figure 6.6 (Part 1), its price panel. Each is also named on its own slide.",
+        left=Content(
+            title="Where the book says two different things: divergence",
+            lines=(
+                "Bullish divergence (Part 1): the text says it can only occur in a downtrend.",
+                "Yet the book reads periods 4 [1] and 6 [2] of Figure 6.6 as bullish divergence: dips inside a four-year uptrend.",
+            ),
+            accent="No check rests on either. If asked, give both readings.",
+        ),
+        picture=Figure(
+            number="6.6",
+            shows="The price panel of Figure 6.6, enlarged: the SPDR Gold Trust rising over four years, with dotted lines dividing numbered periods; periods 4 and 6 are dips.",
+            aspect=1.396,
+            crop=(0.0, 0.0, 0.3, 0.38),
+            marks=(
+                Mark(1, "box", 0.765, 0.20, 0.835, 0.99, at=(0.80, 0.15)),
+                Mark(2, "box", 0.905, 0.25, 0.98, 0.99, at=(0.945, 0.20)),
+            ),
+        ),
+        text_w=5.6,
+        notes=(
+            "Point at the two boxed dips: price falls for a while, inside a rise of several years.",
+            "Our reading in Part 1 was a downtrend as price falling, for any stretch, and we said that reading was ours.",
+        ),
+    ),
+    Pair(
+        origin="This course's own list, from the book's figures and their captions. Book p.181 and Figure 6.11 (Part 2), its top left corner.",
+        left=Content(
+            title="Figure captions that disagree: the VWMA",
+            lines=(
+                "Figure 6.11 (Part 2) is captioned a VWMA on a daily chart.",
+                "Its own label reads SPY (10 min), over a line labelled VWAP [1]: 10-minute bars and a VWAP.",
+            ),
+            accent="No check rests on it. Read the chart, and name both.",
+        ),
+        picture=Figure(
+            number="6.11",
+            shows="The top left corner of Figure 6.11, enlarged: the labels SPY (10 min) 141.56 and VWAP 142.40.",
+            aspect=1.724,
+            crop=(0.0, 0.0, 0.6, 0.72),
+            marks=(
+                Mark(1, "box", 0.01, 0.17, 0.36, 0.30, at=(0.45, 0.06)),
+            ),
+        ),
+        text_w=5.6,
+        notes=(
+            "These are labelling slips in the book, not ideas to learn.",
+            "A VWAP is not a VWMA; the chapter names the VWAP only here, on the book's own figure.",
+        ),
+    ),
+    Pair(
+        origin="This course's own list, from the book's figures and their captions. Book p.193 and Figure 6.25 (Part 4), its left half.",
+        left=Content(
+            title="Figure captions that disagree: Figure 6.25",
+            lines=(
+                "Figure 6.25 (Part 4) is captioned daily.",
+                "Its own label reads $SPX (1 min) [1], and its time axis [2] runs from 10:00 to 3:00 within one day: an intraday chart.",
+            ),
+            accent="No check rests on it. Read the chart, and name both.",
+        ),
+        picture=Figure(
+            number="6.25",
+            shows="The left half of Figure 6.25's price panel, enlarged: the label $SPX (1 min) 1400.42 and a time axis from 10:00 to 3:00.",
+            aspect=1.382,
+            crop=(0.0, 0.0, 0.55, 0.36),
+            marks=(
+                Mark(1, "box", 0.06, 0.075, 0.43, 0.115, at=(0.025, 0.095)),
+                Mark(2, "box", 0.0, 0.955, 0.99, 0.999, at=(0.03, 0.92)),
+            ),
+        ),
+        text_w=5.6,
+        notes=(
+            "These are labelling slips in the book, not ideas to learn.",
+            "Read the time axis aloud: 10:00, 11:00, 12:00. That is one day, not a daily chart.",
+        ),
+    ),
+    Pair(
+        origin="This course's own list, from the book's figures and their captions. Book pp.189-190 and Figure 6.23 (Part 3), its top left corner.",
+        left=Content(
+            title="Figure captions that disagree: silver or USDJPY",
+            lines=(
+                "Figure 6.23 (Part 3) is captioned silver.",
+                "The text calls 6.23 the same daily chart of USDJPY, then, a sentence on, the Silver market.",
+                "The chart's own label [1] is too blurred in the book's print to read, so the figure cannot settle it.",
+            ),
+            accent="No check rests on it. Name both readings.",
+        ),
+        picture=Figure(
+            number="6.23",
+            shows="The top left of Figure 6.23, enlarged: its market label, blurred past reading, over the start of the price line.",
+            aspect=1.982,
+            crop=(0.0, 0.0, 0.5, 0.5),
+            marks=(
+                Mark(1, "box", 0.01, 0.0, 0.34, 0.09, at=(0.38, 0.05)),
+            ),
+        ),
+        text_w=5.6,
+        notes=(
+            "These are labelling slips in the book, not ideas to learn.",
+            "The label is unreadable in the book itself, not only on the slide; do not guess what it says.",
+        ),
+    ),
+    Pair(
+        origin="This course's own list, from the book's figures and their captions. Book p.194 and Figure 6.26 (Part 4), its top left corner.",
+        left=Content(
+            title="Figure captions that disagree: Figure 6.26",
+            lines=(
+                "Figure 6.26 (Part 4) is captioned daily.",
+                "Its own label reads $SPX (1 min) [1]: 1-minute bars, the S&P 500 within one afternoon, an intraday chart.",
+            ),
+            accent="No check rests on it. Read the chart, and name both.",
+        ),
+        picture=Figure(
+            number="6.26",
+            shows="The top left of Figure 6.26's price panel, enlarged: the label $SPX (1 min) 1414.20 over the falling S&P 500.",
+            aspect=1.401,
+            crop=(0.0, 0.0, 0.5, 0.62),
+            marks=(
+                Mark(1, "box", 0.05, 0.11, 0.38, 0.165, at=(0.42, 0.14)),
+            ),
+        ),
+        text_w=5.6,
         notes=(
             "These are labelling slips in the book, not ideas to learn.",
             "Next is Chapter 7, Bar Chart Analysis.",

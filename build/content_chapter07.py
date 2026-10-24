@@ -811,9 +811,9 @@ IDNR_FIGURE = Figure(
         Mark(1, "box", 0.27, 0.35, 0.55, 0.95,
              color="gold", at=(0.20, 0.50), size=0.30),
         Mark(2, "box", 0.50, 0.56, 0.55, 0.95,
-             color="red", at=(0.60, 0.90), size=0.30),
+             color="red", at=(0.58, 0.90), size=0.30),
         Mark(3, "line", 0.53, 0.57, 0.53, 0.95,
-             color="blue", at=(0.64, 0.86), size=0.30),
+             color="blue", at=(0.70, 0.90), size=0.30),
     ),
     shows=("The book's ID/NR6 schematic: six numbered bars, with the sixth "
            "bar inside the prior range and the narrowest range, followed by "
@@ -936,8 +936,8 @@ OOPS_CHART = Chart(
            "stoploss at the new high."),
     tier="core",
     marks=(
-        Mark(1, "circle", 0.61, 0.25, 0.67, 0.31,
-             color="gold", at=(0.52, 0.29), size=0.30),
+        Mark(1, "arrow", 0.67, 0.50, 0.67, 0.37,
+             color="gold", at=(0.75, 0.43), size=0.30),
         Mark(2, "circle", 0.61, 0.45, 0.67, 0.51,
              color="red", at=(0.75, 0.50), size=0.30),
         Mark(3, "circle", 0.61, 0.12, 0.67, 0.18,
@@ -1333,7 +1333,7 @@ CHAPTER = Chapter(
                 title="Review answer 7: ideal inside-bar reversal",
                 lines=(
                     "Inside reversal: the inside bar stays within the prior high and low, then breaks in the reversal direction.",
-                    "Ideal: first bar wide on high volume; second narrow on very low volume. Barrier and trend context strengthen the potential reading.",
+                    "Ideal: wide/high-volume first bar; narrow/very-low-volume second bar. Barrier and trend context add weight.",
                     "Figure 7.25 marks wide [1], narrow inside [2], and oscillator region [3]. Chapter 7 gives no formula.",
                     "Harami is one-fourth to one-third the prior range; an inside bar has no restriction.",
                 ),

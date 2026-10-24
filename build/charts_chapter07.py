@@ -1043,3 +1043,82 @@ CHARTS = CHARTS + (
         ),
     ),
 )
+
+# Part 4 rework charts.  The new range starts its own chart namespace at N so
+# the worked Oops and ID/NR examples can be identified without reusing an
+# earlier part's labels.
+CHARTS = CHARTS + (
+    ck.ChartArt(
+        letter="N",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="Williams' Oops after a gap up",
+                note="invented PHP values; sell-stop at the prior high",
+                panes=(ck.Pane(
+                    bars=_bars(((50.0, 52.0, 49.5, 51.0),
+                               (53.0, 54.0, 50.5, 51.5))),
+                    height=1.8,
+                    strokes=(
+                        ck.Stroke(points=((0, 52.0), (1, 52.0)),
+                                  tone="structure", dashed=True,
+                                  label="prior high 52.00", at=0,
+                                  dx=-24, dy=-10),
+                        ck.Stroke(points=((0, 54.0), (1, 54.0)),
+                                  tone="notice", dashed=True,
+                                  label="stoploss 54.00", at=1,
+                                  dx=20, dy=-10),
+                    ),
+                    notes=_bar_notes(
+                        (1, 53.0, "open 53.00", -24, 14, True),
+                        (1, 54.0, "high 54.00", 20, 8, True),
+                        (0, 52.0, "sell-stop 52.00", -24, 8, True),
+                    ),
+                ),),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Invented PHP values. The order sequence follows Lim (2016), p. 231.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="O",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="ID/NR6 compresses the recent range",
+                note="invented daily bars; the last bar is inside and narrowest",
+                panes=(ck.Pane(
+                    bars=_bars(((50.0, 54.0, 49.0, 52.0),
+                               (52.0, 55.2, 50.0, 53.5),
+                               (53.5, 56.3, 51.2, 54.0),
+                               (54.0, 56.1, 52.2, 55.0),
+                               (55.0, 56.6, 54.4, 55.8),
+                               (55.7, 56.5, 55.3, 56.1))),
+                    height=1.8,
+                    strokes=(
+                        ck.Stroke(points=((4.5, 56.6), (5.8, 56.6)),
+                                  tone="notice", dashed=True,
+                                  label="long trigger 56.60", at=1,
+                                  dx=0, dy=-10),
+                        ck.Stroke(points=((4.5, 54.4), (5.8, 54.4)),
+                                  tone="notice", dashed=True,
+                                  label="short trigger 54.40", at=1,
+                                  dx=0, dy=10),
+                    ),
+                    notes=_bar_notes(
+                        (0, 54.0, "range 4.0", -20, 10, False),
+                        (1, 55.2, "range 3.2", -12, 12, False),
+                        (2, 56.3, "range 2.8", -12, 10, False),
+                        (3, 56.1, "range 2.1", -12, 10, False),
+                        (4, 56.6, "range 2.2", 14, 8, False),
+                        (5, 56.5, "range 1.2", 14, 8, True),
+                    ),
+                ),),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Invented PHP ranges. The ID/NR6 rule follows Lim (2016), p. 232.",
+        ),
+    ),
+)

@@ -3386,10 +3386,10 @@ SECTION5 = Section(
             label="Reversal bars on charts",
             picture=Figure(
                 number="6.33",
-                shows="Part of the price panel of the daily dollar fund, March to June: the decline, and a circled high volume reversal bar at a short rally's top in late May.",
+                shows="A band of the price panel of the daily dollar fund, February to June: the decline, and a circled high volume reversal bar at a short rally's top in late May.",
                 aspect=1.246,
-                crop=(0.40, 0.42, 0.0, 0.31),
-                marks=(Mark(1, "circle", 0.71, 0.22, 0.85, 0.68, at=(0.65, 0.24)),),
+                crop=(0.25, 0.46, 0.0, 0.34),
+                marks=(Mark(1, "circle", 0.768, 0.08, 0.88, 0.74, at=(0.735, 0.14)),),
             ),
             layout="top",
             questions=(

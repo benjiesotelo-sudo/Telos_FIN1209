@@ -929,7 +929,7 @@ OSCILLATOR_BOUNDARY_FIGURE = Figure(
 )
 
 OOPS_CHART = Chart(
-    letter="T",
+    letter="TA",
     title="Williams' Oops: invented numbers",
     shows=("An invented bullish Oops example with every relevant price written "
            "on the chart: a gap-up open, sell-stop at the prior high, and "
@@ -947,7 +947,7 @@ OOPS_CHART = Chart(
         "The previous bar closes at 51.00 and has a high of 52.00. The next bar opens at 53.00, so it gaps above the prior range.",
         "The sell-stop is 52.00, the prior high. The stoploss is 54.00, the new bar's high.",
     ),
-    origin="Chart T is ours, with invented PHP values to show Lim (2016), p. 231.",
+    origin="Chart TA is ours, with invented PHP values to show Lim (2016), p. 231.",
 )
 
 OOPS_BULLISH_CHART = Chart(
@@ -972,7 +972,7 @@ OOPS_BULLISH_CHART = Chart(
 )
 
 IDNR_CHART = Chart(
-    letter="U",
+    letter="TB",
     title="ID/NR6: invented ranges",
     shows=("Six invented daily bars with ranges 4.0, 3.2, 2.8, 2.1, 1.6, "
            "and 1.2 PHP; the sixth is inside the fifth and is the narrowest."),
@@ -989,7 +989,7 @@ IDNR_CHART = Chart(
         "The six range labels are invented teaching numbers. Compare each with the same six-bar window.",
         "The last bar is the narrowest and remains inside the prior bar. A later break can go up or down.",
     ),
-    origin="Chart U is ours, with invented PHP ranges to show Lim (2016), p. 232.",
+    origin="Chart TB is ours, with invented PHP ranges to show Lim (2016), p. 232.",
 )
 
 INSIDE_MONTH_CHART = Chart(

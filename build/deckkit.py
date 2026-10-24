@@ -1446,12 +1446,12 @@ def _beside_picture(slide, s: Check, reveal=False):
     picture = s.picture
     # LibreOffice can paint a repeated cropped image blank when the answer
     # slide reuses the exact same source rectangle as the question slide.
-    # A sub-pixel crop change preserves the visible crop and keeps the marks
+    # A small crop change preserves the teaching crop and keeps the marks
     # aligned while giving the answer its own image paint operation.
     if reveal and isinstance(picture, Figure) and picture.crop:
         left, top, right, bottom = picture.crop
-        picture = replace(picture, crop=(left - 0.0001, top,
-                                         right - 0.0001, bottom))
+        picture = replace(picture, crop=(left - 0.01, top,
+                                         right - 0.01, bottom))
     _pair_picture(slide, picture, x, BESIDE_TOP,
                   CONTENT_W.inches - s.text_w - PAIR_GAP,
                   PAIR_BAND_BOTTOM - BESIDE_TOP)

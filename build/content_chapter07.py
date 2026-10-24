@@ -75,6 +75,8 @@ KEY_CROP_FIGURE = Figure(
              color="red", at=(0.63, 0.01), size=0.39),
         Mark(3, "circle", 0.50, 0.24, 0.58, 0.32,
              color="blue", at=(0.69, 0.35), size=0.39),
+        Mark(4, "circle", 0.46, 0.77, 0.54, 0.86,
+             color="purple", at=(0.72, 0.84), size=0.32),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked bar opens above the previous high, "
@@ -228,9 +230,9 @@ SECTION3 = Section(
             left=Content(
                 title="Bearish key reversal: the numbers first",
                 lines=(
-                    "Higher high, then close near or below prior close (Lim, p. 218).",
-                    "Prior O 50.80 H 52.00 L 50.60 C 51.10. New O 52.30 H 53.20 L 49.90 C 50.80. Ours.",
-                    "[1] Open above old high. [2] New high. [3] Close below old close. Volume shares: 4.2m versus 2.0m (Chapter 6). Next Figure 7.15.",
+                    "Step 1. The prior bar opens at 50.80, reaches a high of 52.00, falls to a low of 50.60, and closes at 51.10.",
+                    "Step 2. The new bar opens at 52.30, above the prior high of 52.00.",
+                    "Step 3. It reaches a new high of 53.20, then falls to a low of 49.90.",
                 ),
                 accent="",
                 caption="",
@@ -245,9 +247,9 @@ SECTION3 = Section(
             left=Content(
                 title="Figure 7.15: three observations",
                 lines=(
-                    "From “Three marked observations”: a key reversal makes a higher high, then closes near or below the previous close (Lim, p. 218).",
-                    "Figure 7.15: [1] open above prior high, [2] new high, [3] close below prior close (Lim, p. 219).",
-                    "Meaning/action: potential warning; consolidation may precede decline. Check Lim's 16-item p. 217 list, recalled in Chapter 5 slide “16 Volume and Price Action Reversal Characteristics”, and barrier context from “Barrier proximity”. No indicator formulas here. Next, compare the bullish converse.",
+                    "Step 4. The new bar closes at 50.80, below the prior close of 51.10.",
+                    "Step 5. Volume is 4.2 million shares, versus 2.0 million on the prior bar. On Figure 7.15, mark 4 identifies the volume reading.",
+                    "Meaning/action: this is a potential warning, not a promise. The book's chart shows consolidation may precede decline. Next, compare the bullish converse.",
                 ),
                 accent="",
                 caption="",
@@ -277,16 +279,16 @@ SECTION3 = Section(
             left=Content(
                 title="Exhaustion bar versus pin bar",
                 lines=(
-                    "Exhaustion: uptrend, open above prior high, close near low, no gap next bar (Lim, p. 226).",
-                    "Pin bar: false barrier penetration, then rapid retracement (Lim, p. 227).",
-                    "[1] O65.40 >65.00. [2] C60.50 near L; next O60.20, no gap. [3] L38.80 < support40.00. Ours. Next: key reversal.",
+                    "Exhaustion: in an uptrend, it opens at 65.40 above prior high 65.00, reaches 66.20, and closes at 60.50; the next bar opens at 60.20 with no gap.",
+                    "Pin bar: it penetrates support at 40.00 to 38.80, then rapidly retraces and closes at 40.60.",
+                    "Meaning/action: exhaustion warns of a tiring trend; a pin bar warns of a false breakout.",
                 ),
                 accent="",
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=3.5,
-            picture_extra=0.9,
+            text_w=3.6,
+            picture_extra=0.8,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,
         ),

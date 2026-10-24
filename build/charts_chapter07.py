@@ -45,7 +45,7 @@ CHARTS = (
                                     points=((0, 65.0), (2, 65.0)),
                                     tone="quiet", dashed=True,
                                     label="prior high 65.00", at=0,
-                                    dx=-34, dy=-10),),
+                                    dx=8, dy=-10),),
                                 notes=_bar_notes(
                                     (1, 65.4, "O 65.40", -14, 16, True),
                                     (1, 66.2, "H 66.20", 18, 8, False),

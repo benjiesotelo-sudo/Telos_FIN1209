@@ -746,3 +746,216 @@ CHARTS = (
         ),
     ),
 )
+
+
+# Charts S to X belong to the inside-bar through Hikkake range. The letters
+# deliberately start at S so parallel Chapter 7 workers can add their own
+# charts without colliding with this lane or with the approved A and B.
+CHARTS = CHARTS + (
+    ck.ChartArt(
+        letter="S",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="Outside bar",
+                note="contains two prior bars and closes near its low",
+                panes=(
+                    ck.Pane(
+                        bars=_bars(((49.0, 51.5, 48.0, 51.2),
+                                   (50.5, 52.0, 49.5, 51.8),
+                                   (52.0, 53.0, 47.0, 47.5))),
+                        height=1.8,
+                        strokes=(ck.Stroke(points=((0, 52.0), (2, 52.0)),
+                                           tone="quiet", dashed=True,
+                                           label="prior high 52.00", at=0,
+                                           dx=-18, dy=-10),),
+                        notes=_bar_notes(
+                            (2, 53.0, "H 53.00", 18, 8, True),
+                            (2, 47.0, "L 47.00", -18, -10, False),
+                            (2, 47.5, "C 47.50", 20, -4, True),
+                        ),
+                    ),
+                    ck.Pane(columns=(1.5, 1.4, 5.0), height=0.55,
+                            tags=((0, "1.5m"), (1, "1.4m"), (2, "5.0m"))),
+                ),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="T",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="Inside bar",
+                note="second bar stays inside the first",
+                panes=(
+                    ck.Pane(
+                        bars=_bars(((50.0, 53.0, 48.0, 52.4),
+                                   (51.8, 52.5, 49.2, 50.1))),
+                        height=1.8,
+                        strokes=(ck.Stroke(points=((0, 53.0), (1, 53.0)),
+                                           tone="quiet", dashed=True,
+                                           label="resistance 53.00", at=0,
+                                           dx=-20, dy=-10),),
+                        notes=_bar_notes(
+                            (0, 53.0, "H 53.00", -18, 8, True),
+                            (1, 52.5, "H 52.50", 18, 8, True),
+                            (1, 50.1, "C 50.10", 20, -6, True),
+                        ),
+                    ),
+                    ck.Pane(columns=(4.5, 0.5), height=0.55,
+                            tags=((0, "4.5m"), (1, "0.5m"))),
+                ),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="U",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="Emotion spike",
+                note="wide range and high volume",
+                panes=(
+                    ck.Pane(
+                        bars=_bars(((60.0, 61.5, 58.5, 61.0),
+                                   (61.0, 62.5, 59.5, 62.0),
+                                   (62.0, 70.0, 62.0, 63.0),
+                                   (63.0, 64.0, 59.0, 59.5))),
+                        height=1.8,
+                        notes=_bar_notes(
+                            (2, 70.0, "H 70.00", 18, 8, True),
+                            (2, 62.0, "L 62.00", -18, -10, False),
+                            (3, 59.5, "C 59.50", 18, -8, True),
+                        ),
+                    ),
+                    ck.Pane(columns=(1.5, 1.4, 6.0, 2.2), height=0.55,
+                            tags=((0, "1.5m"), (1, "1.4m"), (2, "6.0m"), (3, "2.2m"))),
+                ),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="V",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="False upside breakout",
+                    note="close returns below resistance",
+                    panes=(ck.Pane(
+                        bars=_bars(((58.0, 60.0, 57.0, 59.0),
+                                   (59.0, 62.0, 58.5, 59.4))),
+                        height=1.4,
+                        strokes=(ck.Stroke(points=((0, 60.0), (1, 60.0)),
+                                           tone="quiet", dashed=True,
+                                           label="resistance 60.00", at=0,
+                                           dx=-18, dy=-10),),
+                        notes=_bar_notes((1, 62.0, "H 62.00", 18, 8, True),
+                                         (1, 59.4, "C 59.40", 18, -6, True)),
+                    ),),
+                ),
+                ck.Cell(
+                    name="False downside breakout",
+                    note="close returns above support",
+                    panes=(ck.Pane(
+                        bars=_bars(((42.0, 43.0, 40.0, 41.0),
+                                   (41.0, 41.5, 38.5, 40.6))),
+                        height=1.4,
+                        strokes=(ck.Stroke(points=((0, 40.0), (1, 40.0)),
+                                           tone="quiet", dashed=True,
+                                           label="support 40.00", at=0,
+                                           dx=-18, dy=-10),),
+                        notes=_bar_notes((1, 38.5, "L 38.50", -18, -8, True),
+                                         (1, 40.6, "C 40.60", 18, 6, True)),
+                    ),),
+                ),
+            ),
+            cols=2,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP barriers and closes.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="W",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="Double Repo",
+                note="two crossings of a forward-shifted three-day SMA",
+                panes=(
+                    ck.Pane(
+                        bars=_bars(((48.0, 49.5, 47.5, 49.2),
+                                   (49.2, 51.0, 48.8, 50.8),
+                                   (50.8, 51.2, 49.0, 49.6),
+                                   (49.6, 50.5, 48.9, 49.4),
+                                   (49.4, 49.8, 47.0, 47.5))),
+                        height=1.8,
+                        strokes=(ck.Stroke(points=((0, 50.0), (4, 50.0)),
+                                           tone="quiet", dashed=True,
+                                           label="forward-shifted SMA 50.00", at=0,
+                                           dx=-24, dy=-10),),
+                        notes=_bar_notes((1, 50.8, "close above", 18, 8, True),
+                                         (2, 49.6, "close below", 18, -8, True),
+                                         (4, 47.5, "decline", 18, 4, True)),
+                    ),
+                ),
+            ),),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP closes and a three-day SMA.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="X",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Bearish Hikkake",
+                    note="false high, then short re-entry",
+                    panes=(ck.Pane(
+                        bars=_bars(((50.0, 52.0, 49.0, 51.0),
+                                   (51.0, 53.0, 50.0, 52.5),
+                                   (52.5, 52.8, 48.5, 49.0))),
+                        height=1.4,
+                        strokes=(ck.Stroke(points=((0, 52.0), (2, 52.0)),
+                                           tone="quiet", dashed=True,
+                                           label="inside high 52.00", at=0,
+                                           dx=-22, dy=-10),),
+                        notes=_bar_notes((1, 53.0, "false high", 18, 8, True),
+                                         (2, 49.0, "short below", 18, -8, True)),
+                    ),),
+                ),
+                ck.Cell(
+                    name="Bullish Hikkake",
+                    note="false low, then long re-entry",
+                    panes=(ck.Pane(
+                        bars=_bars(((41.0, 42.0, 40.0, 40.5),
+                                   (40.5, 41.2, 39.2, 40.0),
+                                   (40.0, 42.0, 39.8, 41.0))),
+                        height=1.4,
+                        strokes=(ck.Stroke(points=((0, 40.0), (2, 40.0)),
+                                           tone="quiet", dashed=True,
+                                           label="inside low 40.00", at=0,
+                                           dx=-22, dy=-10),),
+                        notes=_bar_notes((1, 39.2, "false low", -18, -8, True),
+                                         (2, 41.0, "long above", 18, 8, True)),
+                    ),),
+                ),
+            ),
+            cols=2,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP levels and entries.",
+        ),
+    ),
+)

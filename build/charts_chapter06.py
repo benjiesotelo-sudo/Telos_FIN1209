@@ -75,6 +75,12 @@ PAIR = ck.pair_size(5.6)
 TERM = ck.pair_size(6.6, term=True)
 # Beside a teaching slide whose text column is as wide as a term's.
 PAIR_66 = ck.pair_size(6.6)
+# And the other widths the Part 3 and 4 slides set to keep their text at
+# seventeen point beside a chart.
+PAIR_70 = ck.pair_size(7.0)
+PAIR_74 = ck.pair_size(7.4)
+TERM_70 = ck.pair_size(7.0, term=True)
+TERM_74 = ck.pair_size(7.4, term=True)
 # Beside a 6.0in text column, WIDE_W in content_chapter06.py.
 WIDE = ck.pair_size(6.0)
 
@@ -1420,7 +1426,7 @@ CHARTS = (
                             Note(x=64, y=U_MA[64], label="20-bar\naverage",
                                  dx=6, dy=26, dot=False))),
             ),
-            size=TERM, xlabel="Time",
+            size=TERM_74, xlabel="Time",
             footnote="Invented volume. Both lines are computed over the "
                      "last 20 bars.\nGold: the bars above the 3-sigma line. The "
                      "dotted line jumps when\na spike enters the last 20 "
@@ -1550,7 +1556,7 @@ CHARTS = (
                      notes=(Note(x=48, label="Holders who will not\nsell "
                                  "add no volume", dx=-30, dy=30),)),
             ),
-            size=TERM, xlabel="Time",
+            size=TERM_74, xlabel="Time",
             footnote=INVENTED + " One holder's story; the pesos are ours.",
         ),
     ),
@@ -1567,7 +1573,7 @@ CHARTS = (
                         "2.8 million a day"),
                    Span(x0=41, x1=80, label="Bear market volume:\nabout "
                         "1.3 million a day", tone="notice")),
-            size=PAIR, xlabel="Time",
+            size=WIDE, xlabel="Time",
             footnote=INVENTED + " The book gives three reasons; the chart "
                      "shows only the result.",
         ),
@@ -1583,9 +1589,9 @@ CHARTS = (
                      name="Turnover: traded / outstanding",
                      tags=((0, "0.25%"), (1, "2.5%")), top=0.65),
             ),
-            xticks=((0, "Share A: 2,000 million\nshares outstanding"),
-                    (1, "Share B: 40 million\nshares outstanding")),
-            size=PAIR, xlabel="",
+            xticks=((0, "Share A:\n2,000 million\noutstanding"),
+                    (1, "Share B:\n40 million\noutstanding")),
+            size=PAIR_66, xlabel="",
             footnote="Our example: two invented shares.",
         ),
     ),
@@ -1631,7 +1637,7 @@ CHARTS = (
                      "bullish: the selling drying up",
                      (False, False, False)),
                 )),
-            cols=2, size=PAIR,
+            cols=2, size=PAIR_70,
             footnote=SKETCH + " Each arrow is the direction of one series.",
         ),
     ),
@@ -1659,7 +1665,7 @@ CHARTS = (
                                  name="open interest: about 20,000",
                                  top=3.3))),
             ),
-            cols=2, size=PAIR,
+            cols=2, size=WIDE,
             footnote=SKETCH + " The open interest panels share one scale. "
                      "The book says may: a tendency.",
         ),
@@ -1702,7 +1708,7 @@ CHARTS = (
                                  tags=((0, "1.5"), (1, "0.75"), (2, "2.0")),
                                  top=0.30),)),
             ),
-            cols=3, size=TERM,
+            cols=3, size=TERM_70,
             footnote="Our example: invented counts and volumes.",
         ),
     ),
@@ -1720,7 +1726,7 @@ CHARTS = (
                      notes=(Note(x=62, label="Volume by time:\none bar a "
                                  "day", dx=8, dy=30, dot=False),)),
             ),
-            size=TERM, xlabel="Time",
+            size=TERM_70, xlabel="Time",
             footnote="Invented, million shares, 100 days. Sideways bars, volume "
                      "by price: the\nvolume of the days that closed in each "
                      "PHP 2 band.",
@@ -1741,7 +1747,7 @@ CHARTS = (
                          Stroke(points=((AG_PEAK - 30, AG_RES),
                                         (99, AG_RES)), tone="structure",
                                 label=f"4  Resistance, PHP {AG_RES:.2f}",
-                                at=1, dx=-2, dy=9, width=1.8),
+                                at=1, dx=-2, dy=-9, width=1.8),
                          Stroke(points=((AG_TROUGH - 30, AG_SUP),
                                         (99, AG_SUP)), tone="structure",
                                 label=f"4  Support, PHP {AG_SUP:.2f}",
@@ -1761,7 +1767,7 @@ CHARTS = (
             ),
             spans=tuple(Span(x0=a, x1=b, label="2", tone="notice")
                         for a, b in AG_SPANS),
-            size=PAIR, xlabel="Time",
+            size=PAIR_66, xlabel="Time",
             footnote="Invented. 1, 2 and 3 are the book's first three "
                      "steps; 4 is the two levels.",
         ),
@@ -2207,7 +2213,7 @@ CHARTS = CHARTS + (
             ),
             spans=(Span(x0=V_POINTS["3"], x1=V_X, label="28 bars",
                         tone="notice"),),
-            size=PAIR, xlabel="Bar",
+            size=WIDE, xlabel="Bar",
             xticks=tuple((x, str(x)) for x in (0, 20, 40, 60, 80)),
             footnote="Invented, ours: the channel of the step by step "
                      "chart.\nShaded: the 28 bars from trough 3 to X.",
@@ -2227,7 +2233,7 @@ CHARTS = CHARTS + (
                     (1, "Day 2\nnew\n+2"),
                     (2, "Day 3\nreplaced\n0"),
                     (3, "Day 4\nclosed\n-2")),
-            size=PAIR_66, xlabel="",
+            size=PAIR, xlabel="",
             footnote="Our example: traders A to E. Gold: day 3, where one "
                      "side\nis replaced and the count does not move.",
         ),
@@ -2240,7 +2246,7 @@ CHARTS = CHARTS + (
         kwargs=dict(
             items=tuple(
                 Cell(name=name, note=note, panes=(Pane(strokes=tuple(
-                    Stroke(points=((3, base + (0 if up else 1)),
+                    Stroke(points=((4.5, base + (0 if up else 1)),
                                    (8, base + (1 if up else 0))),
                            arrow=True, width=2.2,
                            tone="notice" if label == "price" else "structure",
@@ -2253,16 +2259,16 @@ CHARTS = CHARTS + (
                     ("1  All three rising",
                      "OI 50,000 to 60,000\nvolume 8,000 to 12,000",
                      (True, True, True)),
-                    ("2  Price up, the other two down",
+                    ("2  Price up, others down",
                      "OI 50,000 to 40,000\nvolume 8,000 to 5,000",
                      (True, False, False)),
-                    ("3  Price down, the other two up",
+                    ("3  Price down, others up",
                      "bearish confirmation", (False, True, True)),
                     ("4  All three falling",
                      "bullish divergence",
                      (False, False, False)),
                 )),
-            cols=2, size=PAIR_66,
+            cols=2, size=PAIR_74,
             footnote=SKETCH + " Each arrow is the direction of one series."
                      "\nOI: open interest, in contracts. Volume: contracts "
                      "a day.",
@@ -2275,16 +2281,16 @@ CHARTS = CHARTS + (
         draw=ck.cells,
         kwargs=dict(
             items=(
-                Cell(name="1  Advances / declines",
+                Cell(name="1  Advances /\ndeclines",
                      note="1,500 / 1,000 = 1.5",
                      panes=(Pane(columns=(1500, 1000),
                                  tags=((0, "1,500"), (1, "1,000")),
                                  top=0.30),)),
-                Cell(name="2  Up / down volume", note="600m / 800m = 0.75",
+                Cell(name="2  Up / down\nvolume", note="600m / 800m = 0.75",
                      panes=(Pane(columns=(600, 800),
                                  tags=((0, "600m"), (1, "800m")),
                                  top=0.30),)),
-                Cell(name="3  TRIN", note="1.5 / 0.75 = 2.0", tone="notice",
+                Cell(name="3  TRIN\n", note="1.5 / 0.75 = 2.0", tone="notice",
                      panes=(Pane(columns=(1.5, 0.75, 2.0), picks=(2,),
                                  tags=((0, "1.5"), (1, "0.75"), (2, "2.0")),
                                  top=0.30),)),
@@ -2307,7 +2313,7 @@ CHARTS = CHARTS + (
                          Stroke(points=((AG_PEAK - 30, AG_RES),
                                         (99, AG_RES)), tone="structure",
                                 label=f"Resistance, PHP {AG_RES:.2f}",
-                                at=1, dx=-2, dy=9, width=1.8),
+                                at=1, dx=-2, dy=-9, width=1.8),
                          Stroke(points=((AG_TROUGH - 30, AG_SUP),
                                         (99, AG_SUP)), tone="structure",
                                 label=f"Support, PHP {AG_SUP:.2f}",
@@ -2322,10 +2328,10 @@ CHARTS = CHARTS + (
                             Note(x=50, label="4  50.80", dx=-8, dy=20,
                                  notice=True),
                             Note(x=72, label="5  58.60, after\nthe break",
-                                 dx=12, dy=-6, notice=True))),
+                                 dx=-96, dy=4, notice=True))),
                 Pane(columns=AF_VOL, ylabel="Volume", height=0.9, top=0.30),
             ),
-            size=PAIR, xlabel="Time",
+            size=WIDE, xlabel="Time",
             footnote="Invented: the line of the four steps chart, and its "
                      "two step 4\nlevels. 1 and 2 turn up at support; 3 and "
                      "4 turn down at resistance.",

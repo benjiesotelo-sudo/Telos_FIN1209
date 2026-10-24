@@ -22,7 +22,7 @@ from __future__ import annotations
 import os
 import re
 import zipfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from pathlib import Path
 
@@ -233,6 +233,7 @@ class Mark:
     y1: float
     color: str = ""
     at: tuple[float, float] | None = None
+    size: float = 0.34
 
     @property
     def rgb(self) -> RGBColor:
@@ -372,6 +373,7 @@ class Pair(Slide):
     left: Slide | None = None
     picture: Slide | None = None
     text_w: float = 5.0
+    picture_extra: float = 0.0
 
 
 @dataclass
@@ -890,8 +892,8 @@ def _draw_marks(slide, marks, x, y, w, h):
             shape._element.remove(style)
         discs.append((m.number, color, label))
 
-    d = 0.34
     for number, color, (fx, fy) in discs:
+        d = next((m.size for m in marks if m.number == number), 0.34)
         cx, cy = at(fx, fy)
         disc = _rect(slide, cx - Inches(d / 2), cy - Inches(d / 2),
                      Inches(d), Inches(d), color, line=WHITE,
@@ -1372,7 +1374,7 @@ def render_pair(prs, s: Pair, marker):
 
     x = MARGIN.inches + s.text_w + PAIR_GAP
     _pair_picture(slide, s.picture, x, band_top,
-                  CONTENT_W.inches - s.text_w - PAIR_GAP,
+                  CONTENT_W.inches - s.text_w - PAIR_GAP + s.picture_extra,
                   PAIR_BAND_BOTTOM - band_top)
 
     _notes(slide, s.notes)
@@ -1434,15 +1436,23 @@ def render_recap(prs, s: Recap, marker):
 
 # The type sizes a check beside a picture steps through, largest first, and
 # never below twelve point.
-_BESIDE_SIZES = ((17.0, 15.0), (16.0, 14.0), (15.0, 13.5), (14.0, 13.0),
-                 (13.0, 12.0), (12.0, 12.0))
+_BESIDE_SIZES = ((17.0, 17.0),)
 BESIDE_TOP = 1.32
 BESIDE_BOTTOM = 6.30
 
 
-def _beside_picture(slide, s: Check):
+def _beside_picture(slide, s: Check, reveal=False):
     x = MARGIN.inches + s.text_w + PAIR_GAP
-    _pair_picture(slide, s.picture, x, BESIDE_TOP,
+    picture = s.picture
+    # LibreOffice can paint a repeated cropped image blank when the answer
+    # slide reuses the exact same source rectangle as the question slide.
+    # A small crop change preserves the teaching crop and keeps the marks
+    # aligned while giving the answer its own image paint operation.
+    if reveal and isinstance(picture, Figure) and picture.crop:
+        left, top, right, bottom = picture.crop
+        picture = replace(picture, crop=(left - 0.01, top,
+                                         right - 0.01, bottom))
+    _pair_picture(slide, picture, x, BESIDE_TOP,
                   CONTENT_W.inches - s.text_w - PAIR_GAP,
                   PAIR_BAND_BOTTOM - BESIDE_TOP)
 
@@ -1460,12 +1470,12 @@ def _render_check_beside(prs, s: Check, marker, index, total):
     _para(frame, s.label, size=15, color=WHITE, bold=True, first=True)
 
     inner_in = s.text_w - 0.5
-    gap = 0.18
+    gap = 0.10
 
     def card_heights(stem_pt, opt_pt):
-        return [0.50 + _text_height(q.stem, inner_in, stem_pt, "bold") + 0.18
-                + sum(_text_height(f"D.  {o}", inner_in, opt_pt) + 0.10
-                      for o in q.options) + 0.15
+        return [0.28 + _text_height(q.stem, inner_in, stem_pt, "bold") + 0.08
+                + sum(_text_height(f"D.  {o}", inner_in, opt_pt) + 0.04
+                      for o in q.options) + 0.08
                 for q in s.questions]
 
     for stem_pt, opt_pt in _BESIDE_SIZES:
@@ -1476,20 +1486,20 @@ def _render_check_beside(prs, s: Check, marker, index, total):
     y = BESIDE_TOP
     for i, (q, card_h) in enumerate(zip(s.questions, heights)):
         _rect(slide, MARGIN, Inches(y), Inches(s.text_w), Inches(card_h), GREEN)
-        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.18),
+        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.10),
                          Inches(inner_in), Inches(0.25))
         _para(frame, f"Q{i + 1}", size=12, color=GOLD, bold=True, first=True)
         stem_h = _text_height(q.stem, inner_in, stem_pt, "bold")
-        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.45),
+        frame = _textbox(slide, MARGIN + Inches(0.25), Inches(y + 0.32),
                          Inches(inner_in), Inches(stem_h + 0.1))
         _para(frame, q.stem, size=stem_pt, color=WHITE, bold=True, first=True,
               line_spacing=1.15)
         frame = _textbox(slide, MARGIN + Inches(0.25),
-                         Inches(y + 0.45 + stem_h + 0.18), Inches(inner_in),
-                         Inches(card_h - stem_h - 0.6))
+                         Inches(y + 0.32 + stem_h + 0.08), Inches(inner_in),
+                         Inches(card_h - stem_h - 0.48))
         for j, opt in enumerate(q.options):
             _para(frame, f"{'ABCD'[j]}.  {opt}", size=opt_pt, color=WHITE,
-                  first=(j == 0), space_after=6, line_spacing=1.12)
+                  first=(j == 0), space_after=2, line_spacing=1.05)
         y += card_h + gap
 
     _beside_picture(slide, s)
@@ -1524,9 +1534,7 @@ def _render_reveal_beside(prs, s: Check, marker, index, total):
                 + _text_height(q.reason, inner_in, reason_pt)
                 for q in s.questions]
 
-    for stem_pt, ans_pt, reason_pt in ((16.0, 20.0, 16.0), (15.0, 18.0, 15.0),
-                                       (14.0, 17.0, 14.0), (13.0, 15.0, 13.0),
-                                       (12.0, 14.0, 12.0)):
+    for stem_pt, ans_pt, reason_pt in ((17.0, 20.0, 17.0), (17.0, 18.0, 17.0)):
         heights = card_heights(stem_pt, ans_pt, reason_pt)
         if sum(heights) + 0.2 <= BESIDE_BOTTOM - BESIDE_TOP:
             break
@@ -1553,7 +1561,7 @@ def _render_reveal_beside(prs, s: Check, marker, index, total):
               line_spacing=1.15, refs=refs)
         y += card_h + 0.2
 
-    _beside_picture(slide, s)
+    _beside_picture(slide, s, reveal=True)
     _progress(slide, marker)
     _notes(slide, s.notes or (
         "Reveal one at a time. Say the reason out loud, not just the letter.",

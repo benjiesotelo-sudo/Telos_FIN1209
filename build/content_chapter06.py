@@ -1152,12 +1152,12 @@ SECTION3 = Section(
             left=Content(
                 title="Choosing the average's length",
                 lines=(
-                    "The lookback period: a simple backtest may be needed to find the right filtering.",
-                    "Some set it to the dominant trading cycle period, or half of it.",
-                    "Figure 6.20: spikes above the smoothed volume line, each at a top or a bottom.",
+                    "The lookback is how many bars the average covers. Short: hugs the bars closely, many signals, mostly false.",
+                    "Long: slow and flat, few signals, and some turns missed. The right length sits in between.",
+                    "Some set it to the dominant trading cycle period, or half of it; a simple backtest may be needed instead.",
                 ),
                 accent="The book gives no number for the length.",
-                caption="Backtest: run a method on past prices. Cycle period: how long a swing takes. Both Chapter 5. Dominant: undefined; our reading, the cycle most visible on the chart.",
+                caption="Backtest: run a method on past prices. Cycle period: how long a swing takes. Both Chapter 5.",
             ),
             picture=Figure(
                 number="6.20",
@@ -1173,9 +1173,9 @@ SECTION3 = Section(
             origin="Book p.189. Standard deviation, Chapter 5: how far values typically spread from their average. Bollinger Bands: named in Chapter 1, unexplained. Chart: ours, computed.",
             left=Term(
                 term="Two- or three-sigma volume filter",
-                plain="A line two or three standard deviations above average volume: only surges that cross it count.",
-                example="Our chart: the 20-bar average plus three standard deviations of those bars. Three bars cross it.",
-                formal="A two- or three-standard deviation, or sigma, filter, also called a volatility filter, keeps only the most significant surges: a 2 or 3 standard deviation Bollinger Band on volume, upper band only.",
+                plain="A rolling line: Upper = average + k x standard deviation, recomputed each bar from its last N bars.",
+                example="Worked, ours, N=5: volumes 8, 10, 12, 9, 11 million. Average 10, standard deviation 1.41. Upper = 10 + 3x1.41 = 14.2 million: 15 crosses, 12 does not.",
+                formal="A 2- or 3-sigma filter, also a volatility filter, keeps only the most significant surges: a Bollinger Band on volume, upper band only. The book does not say N or N-1, or whether the bar is in its own window.",
             ),
             picture=Chart(
                 letter="U",

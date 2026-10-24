@@ -2104,33 +2104,33 @@ SECTION5 = Section(
     covers=(),
     slides=(
         Pair(
-            origin="Book p.197 and Figure 6.30, against this course's Chapter 5, characteristic 15. Spread is the book's word for bar range here.",
+            origin="Book p.197 and Figure 6.30; Chapter 5, characteristic 15. The pesos are ours. Spread is the book's word for bar range here.",
             left=Content(
                 title="6.1  Volume and bar range: Chapter 5's four cases",
                 lines=(
-                    "Chapter 5's characteristic 15, volume spread action, set bar range against volume four ways.",
-                    "Here the book uses the four to forecast potential breakouts and reversals, and names each bar.",
-                    "Spread means bar range, as in Chapter 5: not Chapter 3's bid-ask spread.",
+                    "Bar range, as in Chapter 5: a bar's high minus its low. High PHP 52.00, low PHP 51.20: range PHP 0.80. The book also says spread, not Chapter 3's bid-ask spread.",
+                    "Set range against volume: four cases. Figure 6.30 draws each, 1 to 4, as an empty box, the range, over a black box, the volume.",
+                    "1 short range, low volume; 2 short, high; 3 tall, low; 4 tall, high. The book uses them to forecast breakouts and reversals.",
                 ),
-                accent="Chapter 5's squat bar is the High Volume Reversal Bar.",
-                caption="Chapter 6 reads two cases more strongly: both reversal bars. Chapter 5 called the large range on low volume only trend inhibiting.",
+                accent="Chapter 5's squat bar, a small range on large volume, is case 2.",
             ),
             picture=Figure(
                 number="6.30",
-                shows="Four numbered pairs, each an empty box for the bar range above a black box for the volume: 1 a short range on low volume, 2 a short range on high volume, 3 a tall range on low volume, 4 a tall range on high volume.",
+                shows="Four numbered pairs: an empty box for the bar range over a black box for the volume. 1 short on low, 2 short on high, 3 tall on low, 4 tall on high.",
             ),
-            text_w=7.0,
+            text_w=7.4,
             notes=(
                 "A recall first: Chapter 5 drew these four as Chart R and called the second one the squat bar.",
-                "The figure is the book's whole picture of them: a box for the range, a box for the volume. The next slides put each in a trend.",
+                "Do the subtraction out loud: 52.00 minus 51.20 is 0.80. That is all bar range means.",
+                "The figure is the book's whole picture of them: a box for the range, a box for the volume. The next slides name each and put it in a trend.",
             ),
         ),
         Pair(
             origin="Book p.197: the four names. The pesos and share counts in the example are ours. The chart is ours: sketches, not prices.",
             left=Term(
                 term="Rest, reversal and continuation bars",
-                plain="Four names for a bar's range against its volume: narrow or wide, on low or high volume.",
-                example="A fast uptrend's usual bar is PHP 1.00 on 2 million shares. A PHP 0.20 bar on 5 million: narrow range on high volume.",
+                plain="Four names for one bar: narrow or wide range, on low or high volume, each against the trend's usual bars.",
+                example="Usual bar: PHP 1.00 on 2 million shares. PHP 0.20 on 5 million: narrow, high, a High Volume Reversal Bar.",
                 formal="Narrow range on low volume: Low Volume Rest Bar. Narrow, high volume: High Volume Reversal Bar. Wide, low volume: Low Volume Reversal Bar. Wide, high volume: High Volume Continuation Bar.",
             ),
             picture=Chart(
@@ -2140,19 +2140,33 @@ SECTION5 = Section(
             text_w=TERM_CHART_W,
             notes=(
                 "The example is the second of the four, the high volume reversal bar: Chapter 5's squat bar, now with a name.",
-                "Narrow and wide are against the trend's usual bars, as low and high are against its usual volume. The book gives no number for either.",
+                "Narrow and wide are against the trend's usual bars, as low and high are against its usual volume. The next slide works all four with numbers.",
+            ),
+        ),
+        Content(
+            origin="Book p.197: the four names. Ours: every number, and the comparison with the usual bar, which the book does not put a number on.",
+            title="Naming a bar, step by step",
+            lines=(
+                "Step 1, the usual bar. Ours: about PHP 1.00 high to low, on 2 million shares.",
+                "Step 2, compare. PHP 0.20 on 1 million: narrow, low, Low Volume Rest Bar. PHP 0.20 on 5 million: narrow, high, High Volume Reversal Bar.",
+                "PHP 2.50 on 1 million: wide, low, Low Volume Reversal Bar. PHP 2.50 on 5 million: wide, high, High Volume Continuation Bar.",
+                "The book gives no number for narrow, wide, low or high; ours are for the example. Judge each bar against those around it.",
+            ),
+            accent="Range against usual, volume against usual: four names.",
+            notes=(
+                "This slide has no picture: it is the arithmetic of the term slide, done four times. Say each pair of numbers, then the name.",
+                "Ask the room for a fifth: PHP 0.90 on 2.1 million. Neither narrow nor wide, neither low nor high: an ordinary bar, no name.",
             ),
         ),
         Pair(
-            origin="Book p.197: the readings and reasons are the book's. The chart is ours: sketches, not prices.",
+            origin="Book p.197: the readings are the book's; the gold line is our summary. The chart is ours: sketches, not prices.",
             left=Content(
                 title="The two reversal bars",
                 lines=(
-                    "High Volume Reversal Bar: strong reversal potential. Were the volume buying, the range would be wider: sellers are in control. Bearish in an uptrend, the converse in a downtrend.",
-                    "Low Volume Reversal Bar: a big move on little participation. The longer the bar, the more bearish in an uptrend, bullish in a downtrend.",
+                    "High Volume Reversal Bar, narrow on high volume, chart left: a strong potential for reversal. Bearish in an uptrend; the converse, bullish, in a downtrend.",
+                    "Low Volume Reversal Bar, wide on low volume, right: a potential for reversal. The longer the bar, the more bearish in an uptrend, bullish in a downtrend.",
                 ),
                 accent="Too little movement for the volume, or too little volume for the move.",
-                caption="Chapter 5 called a large range on low volume only trend inhibiting.",
             ),
             picture=Chart(
                 letter="AI",
@@ -2160,8 +2174,22 @@ SECTION5 = Section(
             ),
             text_w=CHART_W,
             notes=(
-                "The book's reasoning for the first: in an uptrend, heavy buying would push the range wide. A narrow range on heavy volume means someone was selling into it.",
-                "The gold line is our one-line summary of the two, not the book's words.",
+                "Left cell: find the tall gold volume bar, then the tiny price bar above it. Right cell: the short gold volume bar, then the long price bar above it.",
+                "In both cells price falls after the named bar, because both are drawn in an uptrend, where both are bearish.",
+            ),
+        ),
+        Content(
+            origin="Book p.197: both reasons are the book's, and the converse is its word for the downtrend case. Ours: every number.",
+            title="Why the reversal bars warn, with numbers",
+            lines=(
+                "Ours: the usual bar moves PHP 1.00 on 2 million shares. Today 5 million trade, 2.5 times usual, and price moves only PHP 0.20.",
+                "The book: were that volume buying, the range would be much wider. So sellers are attempting to take control. In a downtrend, the converse.",
+                "Ours: price jumps PHP 3.00 on 0.7 million shares, a third of usual. The book: a large move on little participation, a lack of interest.",
+            ),
+            accent="A warning of a potential turn, not a certainty: the book gives no entry rule.",
+            notes=(
+                "This slide has no picture: it is the book's two reasons, worked with numbers.",
+                "Participation is the book's word for volume: how many shares changed hands.",
             ),
         ),
         Pair(
@@ -2169,11 +2197,10 @@ SECTION5 = Section(
             left=Content(
                 title="The rest bar and the continuation bar",
                 lines=(
-                    "Low Volume Rest Bar: a lack of participation. In a strong, rapid trend, a potential reversal; in a weak to average one, a point of rest.",
-                    "High Volume Continuation Bar: a big move on very large participation. Bullish in an uptrend, bearish in a downtrend.",
+                    "Low Volume Rest Bar, narrow on low volume: a lack of participation. In a strong, rapid trend, chart left, a potential reversal; in a weak to average one, middle, a point of rest.",
+                    "High Volume Continuation Bar, wide on high volume, right: backed by very large participation. Bullish in an uptrend, bearish in a downtrend.",
                 ),
-                accent="The rest bar's meaning depends on the trend's speed; the continuation bar continues whichever trend it is in.",
-                caption="Chapter 5: small range, low volume, trend inhibiting; large range, large volume, trend promoting.",
+                accent="The rest bar reads by the trend's speed; the continuation bar, by its direction.",
             ),
             picture=Chart(
                 letter="AJ",
@@ -2181,8 +2208,22 @@ SECTION5 = Section(
             ),
             text_w=CHART_W,
             notes=(
-                "The first two cells are the same bar in two trends. The book's point is that the trend decides what it means.",
+                "The first two cells are the same kind of bar in two trends. The book's point is that the trend decides what it means.",
                 "The continuation bar is Chapter 5's trend promoting case, named.",
+            ),
+        ),
+        Content(
+            origin="Book p.197; Chapter 5, characteristic 15. Ours: every number, and a pause as the plain reading of point of rest. The book gives no reason speed matters.",
+            title="The rest bar's two readings, with numbers",
+            lines=(
+                "Ours: a rise of PHP 1.60 a bar stalls on a PHP 0.30 bar with a quarter of the usual volume. That fast, then that quiet: a potential reversal.",
+                "The same quiet bar in a rise of PHP 0.45 a bar: a point of rest, a pause before the rise goes on. The book gives no speed for strong and rapid.",
+                "Chapter 5 called both low volume bars only trend inhibiting, holding the trend back. Here each can also mark a reversal.",
+            ),
+            accent="Read the rest bar with the trend's speed.",
+            notes=(
+                "This slide has no picture: it puts numbers on the last slide's two rest bars and sets them against Chapter 5.",
+                "The change from Chapter 5 is the one to say twice: a quiet bar was only a brake there. Here it can be a turn.",
             ),
         ),
         Check(
@@ -2209,75 +2250,90 @@ SECTION5 = Section(
             ),
         ),
         Pair(
-            origin="Book p.198 and Figure 6.31. Descending triangle: named in Chapter 4; its shape is in the book's Chapter 13.",
+            origin="Book p.198 and Figure 6.31, the PowerShares DB U.S. Dollar Bullish Fund. Ours: volumes read by eye. The curved lines are Bollinger Bands, not discussed.",
             left=Content(
                 title="High volume reversal bars: a dollar fund",
                 lines=(
-                    "Two narrow range candlesticks on high volume, at Points 1 and 2.",
-                    "After each, price reverses rapidly.",
-                    "Also: in August a low volume breakout signal at a descending triangle's apex, then a volume surge.",
+                    "At 1 and 2: a narrow range candle on one of the tallest volume bars, about 12 million shares against 5 million most days.",
+                    "Point 1, near a low: price then rises. Point 2, near a high: the chart ends before its reversal shows.",
+                    "August: volume falls into a triangle's apex, where its lines meet: Part 2's low volume breakout signal. Then a volume surge.",
                 ),
-                accent="Narrow bar, heavy volume, rapid reversal.",
-                caption="Apex: where the triangle's lines meet. The curved lines are Bollinger Bands, not discussed. After Point 2 the reversal runs past the chart's edge.",
+                accent="Narrow bar, heavy volume, then a turn.",
             ),
             picture=Figure(
                 number="6.31",
-                shows="The daily PowerShares DB U.S. Dollar Bullish Fund. Narrow range candlesticks on high volume are circled at 1, near a low, and at 2, near a high, with lines down to their tall volume bars. At the left a triangle narrows into a low volume breakout signal.",
+                shows="The daily dollar fund. Narrow range candlesticks on high volume circled at 1, near a low, and 2, near a high, lined to their tall volume bars. At the left, a triangle and a low volume breakout signal.",
             ),
-            text_w=5.4,
+            text_w=6.0,
             notes=(
                 "Point 1 is a reversal bar at a bottom, so the converse applies: bullish. Point 2 is at a top.",
-                "The triangle on the left is Part 2's low volume breakout signal again: volume falling into the apex, then surging.",
+                "The triangle on the left is Part 2's low volume breakout signal again: volume falling into the apex, then surging. The book calls it a descending triangle; its shape is the book's Chapter 13.",
             ),
         ),
         Pair(
-            origin="Book p.198 and Figure 6.32.",
+            origin="Book p.198 and Figure 6.32, the PowerShares DB U.S. Dollar Bullish Fund. Ours: the prices and volumes, read by eye.",
             left=Content(
                 title="A reversal bar at a bottom",
                 lines=(
-                    "A narrow range candlestick on high volume, around the beginning of November.",
-                    "It led to a significant rebound in price.",
+                    "The dollar fund in 2010: a narrow range candlestick on high volume, circled at a low around the start of November.",
+                    "The volume bars under the circle are among the chart's tallest. Price then rebounds, from about 22.0 to about 23.5 within the month.",
                 ),
-                accent="The converse case: a high volume reversal bar in a decline is bullish.",
+                accent="The converse case: in a decline, a high volume reversal bar is bullish.",
             ),
             picture=Figure(
                 number="6.32",
                 shows="The daily PowerShares DB U.S. Dollar Bullish Fund with a narrow range candlestick on high volume circled at a low at the start of November, followed by a strong rise.",
             ),
-            text_w=5.4,
+            text_w=5.8,
             notes=(
-                "Find the circle at the low. The volume bar under it is one of the tallest on the chart.",
-                "Converse is the book's word: in a downtrend the same bar means buyers taking control.",
+                "Find the circle at the low. The volume bars under it are some of the tallest on the chart.",
+                "Converse is the book's word: in a downtrend the same bar is bullish.",
             ),
         ),
         Pair(
-            origin="Book p.199 and Figure 6.33. The MACD is used here and not taught; Chapter 4 met it. The figure's RSI panel and two moving averages are not discussed.",
+            origin="Book p.199 and Figure 6.33, the dollar fund. Ours: prices read by eye. The MACD: met in Chapter 4, not taught. The RSI panel and the two moving averages are not discussed.",
             left=Content(
                 title="More reliable inside the larger trend",
                 lines=(
-                    "A high volume reversal bar around May 23, 2011, after bearish divergence in volume and on the MACD.",
-                    "It is potentially more reliable because it formed within a larger downtrend.",
-                    "At Point X, a high volume continuation bar. Continuation bars too are more reliable in the direction of the predominant trend.",
+                    "The dollar fund, 2011: a larger downtrend, about 23.4 in January to 21.0 in May. A short rally ends at a circled high volume reversal bar, May 23.",
+                    "Before it, bearish divergence: price rising while volume fell, and the MACD too.",
+                    "Bearish, the larger trend's way: potentially more reliable, the book says. Prices then fell.",
+                    "X, early May: a high volume continuation bar.",
                 ),
-                accent="A bar that agrees with the larger trend is the more reliable.",
+                accent="Agreeing with the larger trend: more reliable.",
             ),
             picture=Figure(
                 number="6.33",
-                shows="The daily PowerShares DB U.S. Dollar Bullish Fund in a long decline under its moving averages, with a circled high volume reversal bar at a short rally's top in late May, a falling line over volume and the MACD leading up to it, and a high volume continuation bar marked X.",
+                shows="The daily dollar fund in a long decline: a circled high volume reversal bar at a short rally's top in late May, falling lines over volume and the MACD before it, and a continuation bar at X.",
             ),
-            text_w=5.4,
+            text_w=6.4,
             notes=(
                 "Bearish divergence in volume is Part 1's: price rising into the bar while volume falls.",
                 "The MACD is an oscillator the book has not taught. Point at its falling line and leave it there.",
             ),
         ),
+        Content(
+            origin="Book p.199. Ours: every number, the reading of larger trend as the whole move, and the reading of X. The book does not define the larger trend.",
+            title="Why the larger trend matters, with numbers",
+            lines=(
+                "Larger, or predominant, trend: the whole move, not the last few bars. Ours: PHP 60 to PHP 45 in six months, then a two-week rally to PHP 48.",
+                "A high volume reversal bar at PHP 48 is bearish, with the six-month fall: potentially more reliable. The book says the same of continuation bars.",
+                "Figure 6.33's X, a high volume continuation bar, is a tall rising candle: against the larger downtrend. Its rally ended at the circle.",
+            ),
+            accent="Ask which way the larger trend runs. The book gives no further reason.",
+            notes=(
+                "This slide has no picture: it puts numbers on the last slide's one sentence of reason.",
+                "The X reading is ours, from the figure. The book only says continuation bars are more reliable with the predominant trend.",
+            ),
+        ),
         Pair(
-            origin="Book p.199 and Figure 6.34.",
+            origin="Book p.199 and Figure 6.34, the dollar fund. Ours: volume and direction read by eye. The book does not say which way price went.",
             left=Content(
                 title="A reversal bar at an overextended level",
                 lines=(
-                    "A high volume reversal bar around the end of October 2011.",
-                    "It occurred at a historically overextended volume level, drawn on the chart.",
+                    "The dollar fund, end of October 2011: a high volume reversal bar, circled.",
+                    "Its volume reaches the line across the volume panel, about 13 million: the book's historically overextended volume level, Part 2's upper level.",
+                    "Historically is not defined; the line runs level with the September peaks, the oval. Price had fallen into the bar, and rose after it.",
                 ),
                 accent="Two signals agree: the reversal bar, and Part 2's overextended volume.",
             ),
@@ -2285,10 +2341,10 @@ SECTION5 = Section(
                 number="6.34",
                 shows="The daily PowerShares DB U.S. Dollar Bullish Fund with a line across the volume panel labelled historically overextended volume level, and a circled reversal bar at the end of October whose volume reaches that line.",
             ),
-            text_w=5.4,
+            text_w=5.8,
             notes=(
-                "The overextended level is Part 2's upper overextended volume level, drawn by eye.",
-                "Two independent pieces of evidence at one bar is what the book keeps pointing to.",
+                "The overextended level is Part 2's upper overextended volume level, drawn by eye. Here it runs through the September peaks.",
+                "The book says only that the bar sat at the level; which way price went is read off the figure.",
             ),
         ),
         Pair(
@@ -2296,21 +2352,34 @@ SECTION5 = Section(
             left=Content(
                 title="Constant volume charts find reversal bars",
                 lines=(
-                    "Chapter 3: a constant volume chart draws a new bar once a set volume has traded.",
-                    "Volume is fixed per bar, so a reversal bar is found from its range and height alone.",
-                    "Figure 6.35: a narrow bar, bearish, sellers in control; a tall bar, no interest in the rise.",
+                    "Chapter 3: a constant volume chart starts a new bar each time a set volume has traded, so every volume bar is the same height.",
+                    "So the book finds reversal bars from the bar range alone and its height against the rest of the bars.",
+                    "Figure 6.35: a narrow bar, sellers taking control; a very tall bar, a lack of interest in the rise. Both bearish.",
                 ),
                 accent="Especially useful for reversal bars on high or low volume.",
-                caption="High and low against the range: a narrow bar packs the fixed volume into little movement, a tall bar spreads it over a big one.",
             ),
             picture=Figure(
                 number="6.35",
-                shows="Two sketches of a constant volume bar chart, every volume bar the same height. Left: a rise topped by a narrow range bar on relatively high volume, bearish. Right: a rise topped by one overextended, very tall bar on relatively low volume, bearish.",
+                shows="Two sketches of a constant volume chart, all volume bars equal. Left: a rise topped by a narrow bar on relatively high volume. Right: by a very tall bar on relatively low volume. Both bearish.",
             ),
-            text_w=5.8,
+            text_w=6.0,
             notes=(
                 "Every bar holds the same volume, so a narrow bar is a lot of volume for the price moved, and a tall bar is little volume for it.",
-                "That is the last part's two reversal bars, read off a chart where volume never changes.",
+                "That is this part's two reversal bars, read off a chart where volume never changes. The next slide puts numbers on it.",
+            ),
+        ),
+        Content(
+            origin="Book p.199 and Figure 6.35, whose labels say relatively high and relatively low volume. Ours: every number, and the per-peso reading.",
+            title="High and low volume when every bar's volume is fixed",
+            lines=(
+                "Ours: every bar holds 100,000 shares, and a usual bar spans PHP 1.00. That is 100,000 shares for each peso of range.",
+                "A PHP 0.20 bar: 100,000 shares moved price only 20 centavos, 500,000 shares a peso, five times usual. Figure 6.35's label: relatively high volume.",
+                "A PHP 4.00 bar: 100,000 shares moved price 4 pesos, 25,000 a peso, a quarter of usual. Its label: relatively low volume.",
+            ),
+            accent="Volume is fixed, so the range alone says whether it was a lot or a little for the move.",
+            notes=(
+                "This slide has no picture: it is the arithmetic behind the figure's two labels.",
+                "Divide shares by pesos of range, three times: 100,000 over 1.00, over 0.20, over 4.00.",
             ),
         ),
         Check(
@@ -2337,15 +2406,15 @@ SECTION5 = Section(
             ),
         ),
         Pair(
-            origin="Book p.200. The chart is ours, on invented prices. Breakout of a trendline: Chapter 5's use of the word.",
+            origin="Book p.200. Ours: the reading of leading, and the chart, on invented prices. Breakout of a trendline: Chapter 5's use of the word.",
             left=Content(
                 title="Volume leading price, or price leading volume",
                 lines=(
-                    "Most practitioners agree that without participation, volume, price cannot move significantly.",
-                    "Yet buy and sell signals need not have much volume to appear on the chart.",
-                    "A small breakout of a very significant trendline may set off a larger one, inviting tremendous volume.",
+                    "Most agree that without volume, price cannot move significantly: volume leading price.",
+                    "Yet signals need little volume to appear. Chart, 1: a small trendline breakout on ordinary volume.",
+                    "As the break becomes obvious it invites tremendous volume. Chart, 2: volume more than doubles.",
                 ),
-                accent="Then price leads volume: more often now, the book says.",
+                accent="Price moved first: price led volume. More often now, says the book.",
             ),
             picture=Chart(
                 letter="AK",
@@ -2357,12 +2426,27 @@ SECTION5 = Section(
                 "On the chart, the breakout at 1 comes first and the volume at 2 after it. That order is what price leading volume means.",
             ),
         ),
+        Content(
+            origin="Book p.200, one paragraph. Ours: the numbers. The book gives no test for when a light volume signal will draw volume in.",
+            title="What price leading volume means for a signal",
+            lines=(
+                "Ours: volume runs about 1.3 million a day. Price closes PHP 0.80 above a falling trendline that held for two months, on 1.3 million: an ordinary day.",
+                "By volume alone, nothing happened. But the break is on every chart, and days later 3 million trade as the move becomes obvious.",
+                "So a light volume signal is not dismissed for that alone, nor proven by it: the volume may come after.",
+                "Why more often now, the book says: the widespread use of technical analysis.",
+            ),
+            accent="No significant move without volume, but volume can follow the signal.",
+            notes=(
+                "This slide has no picture: it is the last slide's small breakout with its numbers said aloud.",
+                "Do not turn this into a rule. The book describes the case and gives no test for when a light volume break will draw volume in.",
+            ),
+        ),
         Pair(
             origin="Book p.200. The hours are the book's; its examples are EURUSD. The chart and the Manila time are ours.",
             left=Term(
                 term="Intraday volume cycle",
-                plain="Volume rises and falls on a daily rhythm, peaking at about the same hour each day.",
-                example="1:30 to 2:30 p.m. GMT is 9:30 to 10:30 p.m. in Manila. On our chart, price turns or breaks away at each peak.",
+                plain="Intraday: within one day. Volume swells and fades daily, peaking at about the same hour each day.",
+                example="GMT, Greenwich Mean Time: 1:30 to 2:30 p.m. GMT is 9:30 to 10:30 p.m. in Manila. Our chart: reversals at 1 and 3, a continuation at 2.",
                 formal="The intraday volume cycle normally peaks around 1:30 p.m. to 2:30 p.m. GMT. At these volume peaks, price will either reverse or continue, but very rarely remain unchanged.",
             ),
             picture=Chart(
@@ -2372,21 +2456,33 @@ SECTION5 = Section(
             text_w=TERM_CHART_W,
             notes=(
                 "This is review question 8: volume cycles, and where you find them. The book's answer is intraday, with the peak at that hour.",
-                "The book does not say the hour holds for every market; its examples are the euro against the dollar.",
                 "Reverse or continue: the peak does not say which. It says something is about to happen.",
             ),
         ),
+        Content(
+            origin="Book pp.200-201. Ours: the EURUSD prices and order levels. Bidirectional entry: a Chapter 5 term. Stop orders: Chapter 1.",
+            title="Using the cycle: when to watch, not which way",
+            lines=(
+                "The book: the cycle lets us anticipate potential price action. At the peak hour price will reverse or continue, very rarely stay put.",
+                "It does not say which way, so many use a straddle, Chapter 5's bidirectional entry: a buy stop above price and a sell stop below.",
+                "Ours: EURUSD, the euro against the US dollar, at 1.3000. Buy stop 1.3020, sell stop 1.2980: whichever price reaches first is the trade.",
+            ),
+            accent="The book gives no reason for the hour, no distance for the orders, and shows it only on EURUSD.",
+            notes=(
+                "This slide has no picture: it is the book's use of the cycle, with the straddle worked in one market.",
+                "The 20-point distance is ours. The book gives no distance for the two orders, and does not say what is done with the one not filled.",
+            ),
+        ),
         Pair(
-            origin="Book pp.200-201 and Figure 6.36. Bidirectional entry: a Chapter 5 term.",
+            origin="Book pp.200-201 and Figure 6.36. Retest: our plain reading; the book does not define it. The figure's apex and bottom labels are not in the text.",
             left=Content(
                 title="Volume cycle peaks at support and resistance",
                 lines=(
-                    "Almost every reversal on the 30-minute EURUSD comes at an intraday tick volume peak.",
-                    "Especially useful when price retests a previous support or resistance level.",
-                    "Many use a bidirectional, or straddle, entry at the peak, since price rarely stays unchanged.",
+                    "30-minute EURUSD: almost every reversal comes at an intraday tick volume peak, the daily spikes in the bottom panel.",
+                    "Tick volume, Part 4: a count of trades, given by fx brokers instead of volume.",
+                    "Especially useful when price retests a support or resistance level: comes back to one it turned at before.",
                 ),
-                accent="Know when the peak comes; catch price either way.",
-                caption="Chapter 5's bidirectional entry: a trade either way, depending on the breakout.",
+                accent="Many straddle the peak: catch price either way.",
             ),
             picture=Figure(
                 number="6.36",
@@ -2399,13 +2495,13 @@ SECTION5 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.201-202 and Figure 6.37. The cycle-tuned stochastic: named in Chapter 5; oscillators are Chapter 8.",
+            origin="Book pp.201-202 and Figure 6.37. Oversold and the cycle-tuned stochastic are named, not taught: oscillators are the book's Chapter 8. The pip label is not in the text.",
             left=Content(
                 title="Trendline retests at volume peaks",
                 lines=(
-                    "On hourly EURUSD, price rebounds off trendline retests at Points 1, 4 and 5, each during a tick volume cycle peak.",
-                    "A cycle-tuned stochastic oscillator showed oversold conditions there too.",
-                    "At Points 2 and 3 the trendline failed. There the stochastic showed no clear oversold condition, at X and Y.",
+                    "Hourly EURUSD: price comes back to a rising trendline and rebounds at 1, 4 and 5, each during a tick volume cycle peak.",
+                    "There a cycle-tuned stochastic, bottom panel, showed oversold too.",
+                    "At 2 and 3 the line failed, with no clear oversold reading: circles Y and X.",
                 ),
                 accent="The volume peak times the retest; the oscillator confirms it.",
             ),
@@ -2424,20 +2520,34 @@ SECTION5 = Section(
             left=Content(
                 title="Volume on non-constant time charts",
                 lines=(
-                    "Point and figure, Renko and three line break charts, Chapter 3: the time axis is not plotted in a linear fashion.",
-                    "That affects the angle of trendlines, channels and chart patterns.",
-                    "Equivolume charts are unique: constant time bars, but bar width varies with volume, so the time axis is non-linear too.",
+                    "Chapter 3: point and figure, Renko and three line break charts are not plotted linearly in time: equal steps along the axis are not equal times.",
+                    "Equivolume: each bar covers the same time, but is wider on heavier volume, so its time axis is non-linear too.",
+                    "That changes the angle of trendlines, channels and chart patterns. Figure 6.38: same Apple prices, same line.",
                 ),
-                accent="Figure 6.38: the same trendline is violated at different points on the two charts.",
+                accent="Circled, late May: price stays above the line on top, and cuts through it below.",
             ),
             picture=Figure(
                 number="6.38",
-                shows="Two daily Apple charts of the same months, a standard chart with a linear time axis above and an equivolume chart with a non-linear time axis below. The same rising trendline is drawn on both, and circles mark where each is violated, at different places.",
+                shows="Apple, daily: a standard chart over an equivolume chart of the same months, the same trendline on both, circles where each is broken.",
             ),
-            text_w=7.2,
+            text_w=7.4,
             notes=(
                 "Chapter 3 built these charts. The point here is only what a non-linear time axis does to a line drawn across it.",
                 "Wide bars on heavy days stretch the axis, so the line's angle changes and so does where price crosses it.",
+            ),
+        ),
+        Content(
+            origin="Book p.202. Ours: every number. The book says the angle is affected and shows the result; it does not work the arithmetic.",
+            title="Why the trendline moves, with numbers",
+            lines=(
+                "Ours: two lows, PHP 100 and PHP 110, ten days apart. On a daily chart each day is one step wide: the line rises PHP 1.00 a step.",
+                "On an equivolume chart those ten days, if heavy, are drawn wider, say 20 steps. The same two lows give a line rising PHP 0.50 a step.",
+                "Same prices, different angle, so later prices meet the line at different bars: cut on one chart, not on the other.",
+            ),
+            accent="The book shows the discrepancy and does not say which break to trust.",
+            notes=(
+                "This slide has no picture: it is the geometry of the last slide's two charts, in numbers.",
+                "Rise over run: 10 pesos over 10 steps, then 10 pesos over 20. Same rise, longer run, flatter line.",
             ),
         ),
         Check(

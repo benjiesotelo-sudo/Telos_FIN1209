@@ -1039,7 +1039,7 @@ COMBINED_FIGURE = _book_figure(
     ),
     (
         "The figure places three named reversal families on one chart.",
-        "The figure includes an oscillator panel, but this slide does not interpret its formula or readings.",
+        "This slide names the three price-bar families; the indicator panels are outside this slide's scope.",
     ),
     226,
 )
@@ -1133,6 +1133,7 @@ FALSE_BOTH_FIGURE = _book_figure(
         Mark(1, "circle", 0.29, 0.23, 0.36, 0.34, color="gold", at=(0.25, 0.20)),
         Mark(2, "circle", 0.53, 0.46, 0.61, 0.59, color="red", at=(0.67, 0.66)),
         Mark(3, "circle", 0.33, 0.29, 0.39, 0.37, color="blue", at=(0.43, 0.39)),
+        Mark(4, "circle", 0.77, 0.57, 0.84, 0.68, color="purple", at=(0.89, 0.53)),
     ),
     (
         "Read the two directions separately: short below resistance after a false upside break, long above support after a false downside break.",
@@ -1294,15 +1295,34 @@ FALSE_CHART = Chart(
     shows="Two invented cases. The upper case breaks PHP 60.00 and closes at 59.40; the lower case breaks PHP 40.00 and closes at 40.60.",
     tier="core",
     marks=(
-        Mark(1, "line", 0.12, 0.28, 0.88, 0.28, color="gold", at=(0.10, 0.20)),
-        Mark(2, "line", 0.12, 0.70, 0.88, 0.70, color="red", at=(0.10, 0.79)),
-        Mark(3, "circle", 0.56, 0.32, 0.66, 0.46, color="blue", at=(0.72, 0.50)),
+        Mark(1, "circle", 0.30, 0.20, 0.36, 0.30, color="gold", at=(0.28, 0.16)),
+        Mark(2, "circle", 0.79, 0.84, 0.87, 0.95, color="red", at=(0.72, 0.96)),
+        Mark(3, "circle", 0.30, 0.54, 0.36, 0.64, color="blue", at=(0.42, 0.52)),
+        Mark(4, "circle", 0.79, 0.53, 0.87, 0.63, color="purple", at=(0.91, 0.50)),
     ),
     notes=(
         "The upper barrier is resistance at PHP 60.00; the false high is PHP 62.00 and the short close is PHP 59.40.",
         "The lower barrier is support at PHP 40.00; the false low is PHP 38.50 and the long close is PHP 40.60.",
     ),
     origin="Chart V is ours, with invented PHP barriers and closes.",
+)
+
+FALSE_OWN_CHART = Chart(
+    letter="Y",
+    title="Figure 7.31: own course drawing",
+    shows="A large invented two-bar false upside breakout with resistance, return, and stop values written on the drawing.",
+    tier="core",
+    marks=(
+        Mark(1, "line", 0.18, 0.36, 0.82, 0.36, color="gold", at=(0.12, 0.29)),
+        Mark(2, "circle", 0.61, 0.14, 0.74, 0.28, color="red", at=(0.80, 0.10)),
+        Mark(3, "circle", 0.61, 0.47, 0.74, 0.59, color="blue", at=(0.82, 0.63)),
+        Mark(4, "line", 0.61, 0.11, 0.74, 0.11, color="purple", at=(0.82, 0.04)),
+    ),
+    notes=(
+        "The course drawing labels resistance PHP 60.00, high PHP 62.00, close PHP 59.40, and stop PHP 62.20.",
+        "The book's drawing follows on its own slide.",
+    ),
+    origin="Chart Y is ours, with invented PHP values; the book's drawing is shown separately.",
 )
 
 REPO_CHART = Chart(
@@ -1337,6 +1357,26 @@ HIKKAKE_CHART = Chart(
         "The bullish converse uses an inside low of PHP 40.00, a false low of PHP 39.20, and an upside re-entry at PHP 41.00.",
     ),
     origin="Chart X is ours, with invented PHP levels and entries.",
+)
+
+HIKKAKE_OWN_CHART = Chart(
+    letter="Z",
+    title="Figure 7.34: own course drawings",
+    shows="Large invented bullish and bearish Hikkake drawings with inside levels, failed breakouts, and opposite re-entries written on the bars.",
+    tier="core",
+    marks=(
+        Mark(1, "box", 0.16, 0.25, 0.29, 0.72, color="gold", at=(0.10, 0.20)),
+        Mark(2, "circle", 0.31, 0.61, 0.39, 0.77, color="red", at=(0.43, 0.82)),
+        Mark(3, "circle", 0.42, 0.27, 0.50, 0.41, color="blue", at=(0.51, 0.20)),
+        Mark(4, "box", 0.67, 0.25, 0.79, 0.72, color="gold", at=(0.63, 0.20)),
+        Mark(5, "circle", 0.80, 0.14, 0.88, 0.29, color="red", at=(0.92, 0.10)),
+        Mark(6, "circle", 0.80, 0.61, 0.88, 0.77, color="blue", at=(0.92, 0.82)),
+    ),
+    notes=(
+        "Left: inside high 43.00, inside low 40.00, false low 39.00, long re-entry at 43.00.",
+        "Right: inside high 52.00, inside low 49.00, false high 53.00, short re-entry at 49.00.",
+    ),
+    origin="Chart Z is ours, with invented PHP values; the book's drawing is shown separately.",
 )
 
 
@@ -1704,7 +1744,7 @@ B4_SLIDES = (
             lines=(
                 "Gold [1] is an inside-bar reversal; red [2] an outside-bar reversal; blue [3] a three-bar reversal.",
                 "Ours: inside range 6.0 points; outside bar contains four bars; outer volumes 4.0m and 4.2m.",
-                "The figure includes stochastic overbought or oversold labels, but this slide does not interpret their formula or readings.",
+                "This slide names the three price-bar families; the indicator panels are outside this slide's scope.",
             ),
             notes=(),
         ),
@@ -1766,6 +1806,16 @@ B4_SLIDES = (
         origin=EXHAUSTION_FIGURE.origin,
     ),
     EXHAUSTION_FIGURE_CHECK,
+    Content(
+        title="From exhaustion to emotion spike",
+        lines=(
+            "Next, the book shifts from exhaustion's next-bar gap test to an emotion spike read by range and volume.",
+            "The next chart uses invented values as context, not as a prediction.",
+        ),
+        accent="Read range and volume together.",
+        notes=("Use this line to signal the shift from the gap test to the range-and-volume read.",),
+        origin="Transition wording is ours; the next chart is invented.",
+    ),
     SPIKE_CHART,
     Pair(
         left=Content(
@@ -1814,11 +1864,11 @@ B4_SLIDES = (
         left=Content(
             title="Exhaustion versus pin bar",
             lines=(
-                "The key-reversal converse is one warning; now compare two other single-bar warnings.",
-                "Exhaustion: open 65.40 above prior high 65.00, high 66.20, close 60.50; next open 60.20, no gap [3].",
-                "Gold [1] marks the exhaustion open; red [2] its close; blue [3] the no-gap relationship in Figure 7.28.",
-                "Lim distinguishes exhaustion from an island reversal by the absence of a gap to the next bar (p. 226). It warns that a trend may tire.",
-                "The next slide adds Lim's pin-bar definition, barrier types, low-volume tendency, and marked return.",
+                "Transition: compare exhaustion with pin's false-barrier story.",
+                "Exhaustion: O65.40 > prior high 65.00; H66.20; C60.50; next O60.20 means no gap [3].",
+                "Gold [1] open; red [2] close; blue [3] no-gap relationship in Figure 7.28.",
+                "No next-bar gap separates exhaustion from an island reversal (p. 226); trend may tire.",
+                "Next: pin definition, barriers, low-volume tendency, marked return.",
             ),
             notes=(),
         ),
@@ -1831,11 +1881,10 @@ B4_SLIDES = (
         left=Content(
             title="Pin bar: the false barrier story",
             lines=(
-                "Lim calls a pin bar a “single-bar misrepresentation of market strength or weakness” (p. 227).",
-                "Ours: support PHP 40.00, low PHP 38.80, close PHP 40.60, volume 0.8m.",
-                "Gold [1] marks support, red [2] the penetration, and blue [3] the close back above support in Figure 7.30.",
-                "The barrier may be a moving average, support or resistance, or a trendline. Pin bars usually form on low volume.",
-                "Meaning/action: wait for the return through the barrier; the penetration alone can give a false breakout impression.",
+                "Lim calls a pin bar a “single bar misrepresentations of market strength or weakness” (p. 227).",
+                "Ours: support 40.00; low 38.80; close 40.60; volume 0.8m.",
+                "Gold [1] support; red [2] penetration; blue [3] close above it.",
+                "Barriers: moving average, support/resistance, or trendline; low volume is usual. Action: wait for return; penetration can look like a breakout.",
             ),
             notes=(),
         ),
@@ -1846,14 +1895,15 @@ B4_SLIDES = (
     ),
     EXHAUSTION_CHECK,
     FALSE_CHART,
+    FALSE_OWN_CHART,
     Pair(
         left=Content(
-            title="Figure 7.31: false upside breakout",
+            title="Figure 7.31: false upside breakout (the book's drawing)",
             lines=(
-                "Lim calls a false breakout a non-failure swing and attributes this two-sided setup to Victor Sperandeo's 2B entry (p. 228).",
-                "Gold [1] marks resistance, red [2] the false high, blue [3] the close back below resistance, and purple [4] the stop above the breakout high.",
-                "Ours: resistance PHP 60.00, high PHP 62.00, close PHP 59.40, stop PHP 62.20.",
-                "Meaning/action: initiate the short after the return below resistance; place the stop just above the breakout high.",
+                "Lim calls this a non-failure swing and credits Sperandeo's 2B entry (p. 228).",
+                "Gold [1] resistance; red [2] false high; blue [3] close back below; purple [4] stop above high.",
+                "Ours: resistance 60.00; high 62.00; close 59.40; stop 62.20.",
+                "Action: short after return below resistance; stop just above breakout high.",
             ),
             notes=(),
         ),
@@ -1866,7 +1916,7 @@ B4_SLIDES = (
         left=Content(
             title="Figure 7.32: both breakout directions",
             lines=(
-                "Gold [1] marks the false upside high, red [2] the false downside low, and blue [3] the upper close back below resistance. The lower case closes back above support.",
+                "Gold [1] marks the false upside high, red [2] the false downside low, blue [3] the upper close back below resistance, and purple [4] the lower close back above support.",
                 "Ours: upside barrier PHP 60.00 and downside barrier PHP 40.00; returned closes PHP 59.40 and PHP 40.60.",
                 "Meaning/action: short below resistance after a false upside break, or long above support after a false downside break.",
             ),
@@ -1935,6 +1985,7 @@ B4_SLIDES = (
         origin="Lim (2016), p. 230. The worked PHP values are ours, invented.",
     ),
     HIKKAKE_CHART,
+    HIKKAKE_OWN_CHART,
     Pair(
         left=Content(
             title="Figure 7.34: bullish Hikkake",

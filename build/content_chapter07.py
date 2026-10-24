@@ -726,7 +726,7 @@ TWO_DAY_WORKED = Pair(
         accent="The pattern is defined by the two closing positions; wider ranges are a preference, not a requirement.",
     ),
     picture=Chart(
-        letter="R",
+        letter="RA",
         title="Two-day bearish reversal",
         shows="Two invented PHP bars with OHLC values, closing positions and million-share volume labelled. Mark 1 is the first close near the high and mark 2 the second near the low.",
         tier="core",
@@ -740,7 +740,7 @@ TWO_DAY_WORKED = Pair(
         "Read the first close near the high, then the second near the low.",
         "The values and volume are ours, invented. The wider-range preference comes from Lim, p. 220.",
     ),
-    origin="Lim (2016), p. 220. Chart R is ours, with invented PHP bars and volume.",
+    origin="Lim (2016), p. 220. Chart RA is ours, with invented PHP bars and volume.",
 )
 
 TWO_DAY_READ = Pair(
@@ -771,7 +771,7 @@ THREE_WORKED = Pair(
         accent="Strong outer volumes and a quiet middle are a clue, not a guarantee.",
     ),
     picture=Chart(
-        letter="S",
+        letter="RB",
         title="Bullish three-bar reversal",
         shows="Three invented PHP bars with OHLC values and volumes labelled. Marks 1, 2 and 3 identify the first, middle and third volume readings.",
         tier="core",
@@ -786,7 +786,7 @@ THREE_WORKED = Pair(
         "Read volumes left to right: strong, quiet, strong.",
         "The arithmetic and volume are ours, invented; the interpretation follows Lim, pp. 221 to 223.",
     ),
-    origin="Lim (2016), pp. 221 to 223. Chart S is ours, with invented PHP bars and volume.",
+    origin="Lim (2016), pp. 221 to 223. Chart RB is ours, with invented PHP bars and volume.",
 )
 
 THREE_BEAR_READ = Pair(
@@ -881,7 +881,7 @@ ISLAND_WORKED = Pair(
         accent="Island means isolation by a gap up and a gap down, not merely several bars at a turning point.",
     ),
     picture=Chart(
-        letter="T",
+        letter="RC",
         title="Bearish island reversal",
         shows="Four invented PHP bars with the prior high, gap-up open, isolated bars, gap-down open and volume values labelled. Marks 1, 2 and 3 identify the two gaps and the island.",
         tier="core",
@@ -896,7 +896,7 @@ ISLAND_WORKED = Pair(
         "Read the gap up, the isolated bars, then the gap down.",
         "Gap meaning points back to Chapter 3. The prices and volume are ours, invented.",
     ),
-    origin="Lim (2016), pp. 223 to 224. Chart T is ours, with invented PHP bars and volume; gap meaning points to Chapter 3.",
+    origin="Lim (2016), pp. 223 to 224. Chart RC is ours, with invented PHP bars and volume; gap meaning points to Chapter 3.",
 )
 
 ISLAND_READ = Pair(

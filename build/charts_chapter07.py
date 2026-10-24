@@ -485,7 +485,7 @@ CHARTS = (
         ),
     ),
     ck.ChartArt(
-        letter="R",
+        letter="RA",
         draw=ck.cells,
         kwargs=dict(
             items=(
@@ -514,7 +514,7 @@ CHARTS = (
         ),
     ),
     ck.ChartArt(
-        letter="S",
+        letter="RB",
         draw=ck.cells,
         kwargs=dict(
             items=(
@@ -547,7 +547,7 @@ CHARTS = (
         ),
     ),
     ck.ChartArt(
-        letter="T",
+        letter="RC",
         draw=ck.cells,
         kwargs=dict(
             items=(

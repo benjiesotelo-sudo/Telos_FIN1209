@@ -636,7 +636,7 @@ def render_title(prs, s: TitleSlide):
           space_before=10, line_spacing=1.05)
 
     frame = _textbox(slide, MARGIN, Inches(5.35), CONTENT_W, Inches(1.0))
-    _para(frame, s.subtitle, size=16, color=WHITE, first=True)
+    _para(frame, s.subtitle, size=17, color=WHITE, first=True)
     _para(frame, s.presenter, size=14, color=GOLD, space_before=8)
 
     _notes(slide, s.notes)

@@ -338,29 +338,48 @@ FORMATION_FULL = Figure(
     origin="Lim (2016), p. 210, Figure 7.3. Marks are ours, added for teaching.",
 )
 
-FORMATION_CROP = Figure(
+WORKED_CROP = Figure(
     title="Figure 7.3: the worked classification read",
     number="7.3",
     aspect=697 / 409,
-    crop=(0.65, 0.02, 0.20, 0.0),
+    crop=(0.62, 0.02, 0.04, 0.0),
     marks=(
-        Mark(1, "circle", 0.08, 0.28, 0.24, 0.47,
-             color="gold", at=(0.03, 0.22), size=0.28),
-        Mark(2, "circle", 0.46, 0.18, 0.62, 0.39,
-             color="red", at=(0.67, 0.13), size=0.28),
-        Mark(3, "circle", 0.70, 0.10, 0.86, 0.30,
-             color="blue", at=(0.90, 0.07), size=0.28),
+        Mark(1, "box", 0.20, 0.54, 0.69, 0.96,
+             color="gold", at=(0.12, 0.52), size=0.28),
+        Mark(2, "circle", 0.51, 0.60, 0.68, 0.94,
+             color="red", at=(0.72, 0.58), size=0.28),
+        Mark(3, "circle", 0.55, 0.08, 0.80, 0.43,
+             color="blue", at=(0.84, 0.05), size=0.28),
     ),
-    shows=("Figure 7.3 crop showing two later intervals, their OHLC bars, "
-           "and the rising price context used in the worked read."),
+    shows=("Figure 7.3 crop showing the two counted OHLC bars, the second "
+           "bar's location, and the rising price context used in the worked read."),
     notes=(
-        "Gold 1 points to the first interval in the pair. Red 2 points to "
-        "the later interval sequence. Blue 3 points to the rising context "
-        "that supplies the trend sentiment in the worked read.",
-        "The crop is repeated on the check and answer so the picture claim "
-        "stays visible where it is tested.",
+        "Gold 1 brackets the two counted bars. Red 2 circles the second bar, "
+        "whose own close is the invented bearish example. Blue 3 circles the "
+        "rising price path that supplies bullish trend sentiment.",
+        "The crop is repeated wherever this classification evidence is read, "
+        "so the picture claim stays visible when it is tested.",
     ),
     origin="Lim (2016), p. 210, Figure 7.3. Crop and marks are ours, added for teaching.",
+)
+
+CLASSIFICATION_CROP = Figure(
+    title="Figure 7.3: three classification cues",
+    number="7.3",
+    aspect=697 / 409,
+    crop=(0.62, 0.02, 0.04, 0.0),
+    marks=WORKED_CROP.marks,
+    shows=WORKED_CROP.shows,
+    notes=WORKED_CROP.notes,
+    origin=WORKED_CROP.origin,
+)
+
+SENTIMENT_CHART = Chart(
+    letter="S",
+    title="Four invented sentiment cases",
+    shows=("Four invented numeric cases. Trend sentiment is the direction of "
+           "the existing trend; intrinsic sentiment is the formation's own "
+           "bullish or bearish bias."),
 )
 
 SECTION1 = Section(
@@ -374,14 +393,14 @@ SECTION1 = Section(
             left=Content(
                 title="The four prices in one bar",
                 lines=(
-                    "First recall Chapter 3's OHLC. Lim writes, \"A standard price bar comprises an open (O), high (H), low (L), and close (C) price\" (p. 209).",
-                    "Lim defines range as the absolute high-to-low distance, |H - L| (p. 209). Ours, invented: O 50.00, H 52.40, L 49.60, C 51.10; range = PHP 2.80.",
-                    "Meaning/action: read these four retained prices before interpreting a pattern. The figure marks the close [4].",
+                    "Lim writes, \"A standard price bar comprises an open (O), high (H), low (L), and close (C) price\" (p. 209).",
+                    "Lim defines range as |H - L| (p. 209). Ours, invented: O 50.00, H 52.40, L 49.60, C 51.10; range = Philippine pesos (PHP) 2.80.",
+                    "Action: read these four prices before a pattern. Figure 7.1 marks the close (4).",
                 ),
                 accent="Now show how five trades become these four prices.",
             ),
             picture=PRICE_BAR_FULL,
-            text_w=5.8,
+            text_w=6.2,
             notes=(
                 "Start with the book's definition and the invented arithmetic. The figure shows the same four prices as a compact record.",
                 "Point to gold 1, red 2 and blue 3 in the figure as the open, high and low. The close is named in the body and shown on the bar.",
@@ -392,14 +411,14 @@ SECTION1 = Section(
             left=Content(
                 title="Five minutes become one bar",
                 lines=(
-                    "Now trace the five invented trades that the book's Figure 7.1 filters into one bar: 50.00, 50.80, 49.60, 52.40, and 51.10 Philippine pesos.",
-                    "The first trade becomes O 50.00 [1]. The highest trade becomes H 52.40 [2], and the last trade becomes C 51.10 [3].",
-                    "The lowest trade, 49.60, supplies L [4]. Meaning/action: keep first, highest, lowest, and last; do not keep every trade.",
+                    "Now trace Figure 7.1's five invented trades: 50.00, 50.80, 49.60, 52.40, and 51.10 Philippine pesos.",
+                    "First becomes O 50.00 [1]; highest H 52.40 [2]; last C 51.10 [3].",
+                    "Lowest 49.60 supplies L [4]. Keep first, highest, lowest, and last.",
                 ),
                 accent="One interval is one OHLC bar. Next, combine several intervals.",
             ),
             picture=PRICE_BAR_CONSTRUCTION,
-            text_w=5.1,
+            text_w=5.8,
             notes=PRICE_BAR_CONSTRUCTION.notes,
             origin=PRICE_BAR_CONSTRUCTION.origin,
         ),
@@ -407,14 +426,14 @@ SECTION1 = Section(
             left=Content(
                 title="Three small bars become one larger bar",
                 lines=(
-                    "Now extend the same rule to three invented five-minute bars. Their first open is 50.00, highest high 50.90, lowest low 49.40, and last close 50.30.",
-                    "Figure 7.2 keeps first O [1], highest H [2], lowest L [3], and last C [4] in the 15-minute composite.",
-                    "Meaning/action: a higher-timeframe bar preserves first, extreme, and last values. It does not average intermediate opens or closes.",
+                    "Now extend the same rule to three invented five-minute bars: first O 50.00, highest H 50.90, lowest L 49.40, last C 50.30.",
+                    "Figure 7.2 keeps O [1], H [2], L [3], and C [4] in the 15-minute composite.",
+                    "Action: a higher-timeframe bar preserves first, extreme, and last values; it does not average intermediate opens or closes.",
                 ),
                 accent="The book's composite rule is the same four-price rule at a longer interval.",
             ),
             picture=HIGHER_TIMEFRAME_FIGURE,
-            text_w=5.0,
+            text_w=5.8,
             notes=HIGHER_TIMEFRAME_FIGURE.notes,
             origin=HIGHER_TIMEFRAME_FIGURE.origin,
         ),
@@ -422,14 +441,14 @@ SECTION1 = Section(
             left=Content(
                 title="Read each interval before naming it",
                 lines=(
-                    "The book next shows a series of five-minute intervals before it classifies any formation (Lim, p. 210).",
-                    "Gold [1] marks the first interval, red [2] a later price sequence, and blue [3] the OHLC bars made from those intervals.",
-                    "Meaning/action: read each interval first; only then count bars, identify intrinsic sentiment, and ask continuation or reversal.",
+                    "The book next shows five-minute intervals before it classifies a formation (Lim, p. 210).",
+                    "Gold [1] marks the first interval, red [2] a later sequence, and blue [3] the OHLC bar below one interval.",
+                    "Action: read each interval first; then count bars, identify intrinsic sentiment, and ask continuation or reversal.",
                 ),
                 accent="The three classification questions come after the interval read.",
             ),
             picture=FORMATION_FULL,
-            text_w=5.05,
+            text_w=5.8,
             notes=FORMATION_FULL.notes,
             origin=FORMATION_FULL.origin,
         ),
@@ -479,14 +498,14 @@ SECTION1 = Section(
             left=Content(
                 title="Part 1 in one worked read",
                 lines=(
-                    "Now combine the questions. Ours, invented: two bars make a double formation; the second closes at 49.80 below the first low of 50.20 [1].",
-                    "The second bar is intrinsically bearish [2]. Prices rise into the pair [3], so trend sentiment is bullish and the sentiments disagree.",
-                    "Read: a double-bar potential reversal, not a promise of a fall.",
+                    "Ours, invented: two bars make a double formation [1]. The second closes at 49.80 below first low 50.20.",
+                    "The second bar's intrinsic sentiment is bearish [2]. Prices rise into the pair [3], so bullish trend and bearish formation disagree.",
+                    "Read: potential reversal, not a promise of a fall.",
                 ),
                 accent="Count, intrinsic bias, and trend expectation now have one worked read.",
             ),
-            picture=FORMATION_CROP,
-            text_w=5.35,
+            picture=WORKED_CROP,
+            text_w=5.55,
             notes=(
                 "This worked read combines the three classification questions without introducing a new pattern name.",
                 "Say potential reversal, not reversal certainty. The next slide checks the construction arithmetic.",
@@ -509,8 +528,11 @@ SECTION1 = Section(
                     reason="The last trade becomes the close. The first trade becomes the open; extremes become high and low (Lim, p. 210).",
                 ),
             ),
+            picture=PRICE_BAR_FULL,
+            text_w=5.0,
+            layout="beside",
             notes=(
-                "Let students calculate before revealing. Both answers are stated in the preceding worked slides.",
+                "Let students calculate before revealing. Both answers are stated in the preceding worked slides and the marked bar remains visible.",
                 "Remind the room that range is a distance, not a fourth OHLC price.",
             ),
             origin="Questions are ours and answerable from the preceding Part 1 slides.",
@@ -531,7 +553,7 @@ SECTION1 = Section(
                     reason="Lim says agreement indicates continuation and disagreement indicates reversal (Lim, p. 211).",
                 ),
             ),
-            picture=FORMATION_CROP,
+            picture=CLASSIFICATION_CROP,
             text_w=5.0,
             layout="beside",
             notes=(
@@ -555,7 +577,7 @@ SECTION2 = Section(
             lines=(
                 "With the three questions in place, define the sentiments that decide the expectation.",
                 "Trend sentiment is bullish in an uptrend and bearish in a downtrend. Intrinsic sentiment is the formation's own bullish or bearish bias (Lim, p. 211).",
-                "Ours, invented: bullish formation plus uptrend means both sentiments are bullish and agree.",
+                "Ours, invented: an uptrend rises 4.0% over four bars; a bullish formation rises 2.0% over two bars. Both are bullish and agree.",
                 "Meaning/action: compare both before calling continuation or reversal.",
             ),
             accent="Agreement gives continuation; disagreement gives reversal.",
@@ -564,17 +586,20 @@ SECTION2 = Section(
             ),
             origin="Lim (2016), p. 211. The placement example is ours, invented to show agreement.",
         ),
-        Content(
-            title="The two-by-two rule",
-            lines=(
-                "Now apply the rule to four invented cases: bullish plus bullish is continuation; bearish plus bearish is continuation.",
-                "Bullish trend plus bearish intrinsic is potential reversal. Bearish trend plus bullish intrinsic is also potential reversal.",
-                "The book says agreement means continuation and disagreement means reversal (Lim, p. 211).",
-                "Meaning/action: use both sentiments; neither alone gives the classification.",
+        Pair(
+            left=Content(
+                title="The two-by-two rule",
+                lines=(
+                    "Now apply four invented cases: +4.0% trend/+2.0% formation and -4.0%/-2.0% agree, so both continue.",
+                    "+4.0%/-2.0% disagrees, so potential reversal; -4.0%/+2.0% also disagrees, so potential reversal.",
+                    "Lim's rule: agreement means continuation; disagreement means reversal (p. 211). Compare both sentiments.",
+                ),
+                accent="",
             ),
-            accent="The generic formations begin with this two-by-two reading.",
+            picture=SENTIMENT_CHART,
+            text_w=5.0,
             notes=(
-                "Read the four cases as a table even though the text is linear. Keep potential for every directional expectation.",
+                "Read the four cases as a table. Keep potential for every directional expectation.",
             ),
             origin="Lim (2016), p. 211. The four cases are ours, invented to show the rule.",
         ),
@@ -588,12 +613,15 @@ SECTION2 = Section(
                     reason="The bearish intrinsic bias disagrees with bullish trend sentiment in an uptrend, so Lim classifies it as a potential reversal (p. 211).",
                 ),
                 Q(
-                    stem="A bullish formation in an uptrend is a potential:",
+                    stem="An inverted head and shoulders in an uptrend is a potential:",
                     options=("Reversal", "Single bar", "Low volume", "Continuation"),
                     answer="D",
-                    reason="The bullish intrinsic bias agrees with bullish trend sentiment in an uptrend, so Lim classifies it as a potential continuation (p. 211).",
+                    reason="Chapter 4 calls it bullish. In an uptrend, bullish biases agree: potential continuation (p. 211).",
                 ),
             ),
+            picture=SENTIMENT_CHART,
+            text_w=5.0,
+            layout="beside",
             notes=(
                 "This check is the first Part 2 question. Its answers are stated on the two preceding slides.",
             ),
@@ -730,7 +758,7 @@ CHAPTER = Chapter(
         Content(
             title="What this chapter lets you do",
             lines=(
-                "A price bar is a compact record of opening, highest, lowest, and closing prices. This chapter teaches how to read that record as price action.",
+                "A price bar is a compact record of opening, highest, lowest, and closing prices. This chapter teaches how to read that four-price record.",
                 "You will calculate a bar, classify a formation by its number of bars and its own bullish or bearish bias, and judge a possible continuation or reversal.",
                 "You will also recall the book's 16 price and volume reversal characteristics. Every signal is a potential warning, not a promise.",
             ),

@@ -197,4 +197,80 @@ CHARTS = (
                       "50.00, highest H 50.90, lowest L 49.40, last C 50.30."),
         ),
     ),
+    ck.ChartArt(
+        letter="S",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="1  continuation",
+                    note="uptrend +4.0%; bullish +2.0%",
+                    tone="notice",
+                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
+                                   tags=((0, "+4.0% trend"), (1, "+2.0% form"))),),
+                ),
+                ck.Cell(
+                    name="2  continuation",
+                    note="downtrend -4.0%; bearish -2.0%",
+                    tone="notice",
+                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
+                                   tags=((0, "-4.0% trend"), (1, "-2.0% form"))),),
+                ),
+                ck.Cell(
+                    name="3  potential reversal",
+                    note="uptrend +4.0%; bearish -2.0%",
+                    panes=(ck.Pane(columns=(4.0, -2.0), height=1.0,
+                                   tags=((0, "+4.0% trend"), (1, "-2.0% form"))),),
+                ),
+                ck.Cell(
+                    name="4  potential reversal",
+                    note="downtrend -4.0%; bullish +2.0%",
+                    panes=(ck.Pane(columns=(-4.0, 2.0), height=1.0,
+                                   tags=((0, "-4.0% trend"), (1, "+2.0% form"))),),
+                ),
+            ),
+            cols=2,
+            size=ck.pair_size(3.6),
+            footnote=("Ours, invented percentage changes. Trend is the existing "
+                      "direction; form is intrinsic sentiment. Lim, p. 211."),
+        ),
+    ),
+    ck.ChartArt(
+        letter="T",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="1  continuation",
+                    note="uptrend +4.0%; bullish +2.0%",
+                    tone="notice",
+                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
+                                   tags=((0, "+4.0% trend"), (1, "+2.0% form"))),),
+                ),
+                ck.Cell(
+                    name="2  continuation",
+                    note="downtrend -4.0%; bearish -2.0%",
+                    tone="notice",
+                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
+                                   tags=((0, "-4.0% trend"), (1, "-2.0% form"))),),
+                ),
+                ck.Cell(
+                    name="3  potential reversal",
+                    note="uptrend +4.0%; bearish -2.0%",
+                    panes=(ck.Pane(columns=(4.0, -2.0), height=1.0,
+                                   tags=((0, "+4.0% trend"), (1, "-2.0% form"))),),
+                ),
+                ck.Cell(
+                    name="4  potential reversal",
+                    note="downtrend -4.0%; bullish +2.0%",
+                    panes=(ck.Pane(columns=(-4.0, 2.0), height=1.0,
+                                   tags=((0, "-4.0% trend"), (1, "+2.0% form"))),),
+                ),
+            ),
+            cols=2,
+            size=ck.pair_size(3.6),
+            footnote=("Ours, invented percentage changes. Agreement means "
+                      "continuation; disagreement means potential reversal. Lim, p. 211."),
+        ),
+    ),
 )

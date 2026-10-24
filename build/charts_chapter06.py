@@ -2338,3 +2338,359 @@ CHARTS = CHARTS + (
         ),
     ),
 )
+
+# --------------------------------------------------------------------------
+# JA to JM: the numbers slides of Parts 5 and 6, each drawn with the numbers
+# its slide walks through. Added by the rework that put a picture on every
+# slide that reads one, under the prefix J so that ranges reworked in
+# parallel cannot collide. Each is its parent chart again (AH, AI, AJ, AK,
+# AM, AO, FD, AR) with the slide's own numbers written on it, numbered 1, 2,
+# 3 in the order the slide reads them; JG and JJ are drawn fresh.
+# --------------------------------------------------------------------------
+
+# JA - AH's four named bars on the slide's numbers: a usual bar of about
+# PHP 1.00 on 2 million shares, then PHP 0.20 or PHP 2.50 on 1 or 5 million.
+def _ja_bars(span):
+    bars = _run(50.0, 0.6, 1.0, 7, seed=831)
+    return tuple(bars + [_named(bars, span)])
+
+
+# JB - AI's two reversal bars on the slide's numbers: usual PHP 1.00 on 2
+# million; PHP 0.20 on 5 million; PHP 3.00 on 0.7 million.
+_jb_up = _run(50.0, 0.8, 1.0, 7, seed=841)
+_jb_narrow = _jb_up + [_named(_jb_up, 0.20)]
+JB_NARROW = tuple(_jb_narrow + _after(_jb_narrow, -1.0, 1.0, 4, seed=842))
+_jb_wide = _jb_up + [_named(_jb_up, 3.0)]
+JB_WIDE = tuple(_jb_wide + _after(_jb_wide, -1.2, 1.0, 4, seed=843))
+JB_VOL_HIGH = (2.0, 2.1, 1.9, 2.0, 2.2, 1.9, 2.0, 5.0, 2.6, 2.4, 2.2, 2.0)
+JB_VOL_LOW = (2.0, 2.1, 1.9, 2.0, 2.2, 1.9, 2.0, 0.7, 2.4, 2.2, 2.0, 1.9)
+
+# JG - the trendline of slide "Why the trendline moves": lows of 100 and 110
+# ten steps apart, one step a peso; five heavy days take one step each on
+# the daily chart and two on the equivolume chart, and a low of 117 falls
+# on step 15 of one and step 20 of the other.
+JG_STEPS = 21
+
+
+def _jg_low_path(day_of_117):
+    """The day's lows, step by step: 100 at step 0, 110 at step 10, a dip
+    and recovery between, and 117 on the step the fifth heavy day lands."""
+    out = []
+    for x in range(JG_STEPS):
+        if x <= 10:
+            out.append(100.0 + x + 1.6 * math.sin(x * math.pi / 10))
+        elif x <= day_of_117:
+            out.append(110.0 + 7.0 * (x - 10) / (day_of_117 - 10) + 2.2)
+        else:
+            out.append(float("nan"))
+    out[0], out[10], out[day_of_117] = 100.0, 110.0, 117.0
+    return tuple(round(v, 3) for v in out)
+
+
+# JJ - one bar read two ways: yesterday closed 50.00; today 46.00 to 51.00,
+# closing 49.75, on 2.0 million shares.
+JJ_BARS = (Bar(open=49.6, high=50.4, low=49.4, close=50.0),
+           Bar(open=50.2, high=51.0, low=46.0, close=49.75))
+
+
+J_CHARTS = (
+    ChartArt(
+        letter="JA",
+        draw=ck.cells,
+        kwargs=dict(
+            items=tuple(
+                Cell(name=name, note=note, panes=(
+                    Pane(bars=_ja_bars(span), height=1.3, top=0.12,
+                         boxes=(Box(x0=6.55, x1=7.45,
+                                    lo=_ja_bars(span)[7].low - 0.15,
+                                    hi=_ja_bars(span)[7].high + 0.15,
+                                    tone="notice"),)),
+                    Pane(columns=(2.0, 2.1, 1.9, 2.0, 2.2, 1.9, 2.0, vol),
+                         picks=(7,), dims=tuple(range(7)), height=1.0,
+                         top=0.30, tags=((3, "2m"), (7, f"{vol:g}m")))))
+                for name, note, span, vol in (
+                    ("Low Volume Rest Bar", "PHP 0.20 on 1 million", 0.20,
+                     1.0),
+                    ("High Volume Reversal Bar", "PHP 0.20 on 5 million",
+                     0.20, 5.0),
+                    ("Low Volume Reversal Bar", "PHP 2.50 on 1 million",
+                     2.50, 1.0),
+                    ("High Volume Continuation Bar",
+                     "PHP 2.50 on 5 million", 2.50, 5.0),
+                )),
+            cols=2, size=ck.pair_size(6.4),
+            footnote=SKETCH + " Grey: the usual bar, about PHP 1.00 on 2 "
+                     "million.\nGold: the bar being named, boxed.",
+        ),
+    ),
+    ChartArt(
+        letter="JB",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                Cell(name="High Volume Reversal Bar",
+                     note="PHP 0.20 on 5 million, 2.5 times usual",
+                     panes=(Pane(bars=JB_NARROW, height=1.3, top=0.12,
+                                 boxes=(_box(JB_NARROW, 7),)),
+                            Pane(columns=JB_VOL_HIGH, picks=(7,),
+                                 dims=tuple(range(7)), height=1.0, top=0.30,
+                                 tags=((3, "2m"), (7, "5m"))))),
+                Cell(name="Low Volume Reversal Bar",
+                     note="PHP 3.00 on 0.7 million, a third of usual",
+                     panes=(Pane(bars=JB_WIDE, height=1.3, top=0.12,
+                                 boxes=(_box(JB_WIDE, 7),)),
+                            Pane(columns=JB_VOL_LOW, picks=(7,),
+                                 dims=tuple(range(7)), height=1.0, top=0.30,
+                                 tags=((3, "2m"), (7, "0.7m"))))),
+            ),
+            cols=2, size=ck.pair_size(6.4),
+            footnote=SKETCH + " Grey: usual bars, about PHP 1.00 on 2 "
+                     "million.\nGold: the named bar, boxed, and its volume.",
+        ),
+    ),
+    ChartArt(
+        letter="JC",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                Cell(name="Rise of PHP 1.60 a bar",
+                     note="then PHP 0.30 on a quarter of the\nvolume: a "
+                          "potential reversal",
+                     panes=(Pane(bars=AJ_FAST, height=1.3, top=0.12,
+                                 boxes=(_box(AJ_FAST, 6),)),
+                            Pane(columns=AJ_VOL_REST_FAST, picks=(6,),
+                                 height=1.0, top=0.30,
+                                 tags=((6, "1/4"),)))),
+                Cell(name="Rise of PHP 0.45 a bar",
+                     note="the same quiet bar: a point of\nrest, then the "
+                          "rise goes on",
+                     panes=(Pane(bars=AJ_SLOW, height=1.3, top=0.12,
+                                 boxes=(_box(AJ_SLOW, 6),)),
+                            Pane(columns=AJ_VOL_REST_SLOW, picks=(6,),
+                                 height=1.0, top=0.30,
+                                 tags=((6, "low"),)))),
+            ),
+            cols=2, size=ck.pair_size(6.4),
+            footnote=SKETCH + " The rest bar is boxed; its volume is gold.",
+        ),
+    ),
+    ChartArt(
+        letter="JE",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(line=AK_LINE, ylabel="Price (PHP)", ticks=(50, 55, 60),
+                     height=1.7, top=0.15, bottom=0.10,
+                     strokes=(Stroke(points=((8, AK_TL(8)), (60, AK_TL(60))),
+                                     tone="structure", width=1.8,
+                                     label="trendline, two months", at=0,
+                                     dx=4, dy=10),),
+                     notes=(Note(x=AK_BREAK,
+                                 label="closes PHP 0.80\nabove the line",
+                                 dx=-110, dy=-22, notice=True),)),
+                Pane(columns=AK_VOL, ylabel="Volume (m)", height=1.0,
+                     top=0.45, picks=tuple(range(52, 65)),
+                     dims=(AK_BREAK,),
+                     tags=((AK_BREAK, "1.3"), (55, "3.0")),
+                     notes=(Note(x=AK_BREAK, label="an ordinary day",
+                                 dx=-40, dy=30),
+                            Note(x=58, label="days later", dx=-30,
+                                 dy=22, notice=True))),
+            ),
+            size=ck.pair_size(6.4), xlabel="Days",
+            footnote=INVENTED + " Volume in million shares; about 1.3 on "
+                     "a usual day.",
+        ),
+    ),
+    ChartArt(
+        letter="JG",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(line=_jg_low_path(15), name="Daily chart: five heavy "
+                     "days, one step each", ticks=(100, 110, 120), height=1.0, top=0.30,
+                     bottom=0.15,
+                     strokes=(Stroke(points=((0, 100.0), (20, 120.0)),
+                                     tone="structure", width=1.8),),
+                     boxes=(Box(x0=10.5, x1=15.5, lo=111.5, hi=120.5),),
+                     notes=(Note(x=15, y=117.0, label="low 117: above\nthe "
+                                 "line at 115", dx=-40, dy=-40,
+                                 notice=True),)),
+                Pane(line=_jg_low_path(20), name="Equivolume: the same five "
+                     "days, two steps each", ticks=(100, 110, 120), height=1.0,
+                     top=0.30, bottom=0.15,
+                     strokes=(Stroke(points=((0, 100.0), (20, 120.0)),
+                                     tone="structure", width=1.8),),
+                     boxes=(Box(x0=10.5, x1=20.5, lo=111.5, hi=121.5),),
+                     notes=(Note(x=20, y=117.0, label="low 117: cuts\nthe "
+                                 "line at 120", dx=-30, dy=-30,
+                                 notice=True),)),
+            ),
+            xticks=((0, "low 100"), (10, "low 110"), (15, "step 15"),
+                    (20, "step 20")),
+            size=ck.pair_size(6.4), xlabel="Steps along the time axis",
+            footnote="Ours, not prices. The line rises PHP 1.00 a step on "
+                     "both charts.",
+        ),
+    ),
+    ChartArt(
+        letter="JH",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(columns=AM_SIGNED, name="Volume, signed by the close",
+                     height=1.5, top=1.10, bottom=1.30, zero=True,
+                     picks=(1, 4), dims=(2, 5),
+                     tags=tuple((i, t) for i, t in enumerate(AM_SIGNS)),
+                     notes=(Note(x=4, y=3.0, label="up days: 2.0 + 3.0 "
+                                 "= 5.0", dx=-40, dy=10, dot=False,
+                                 notice=True),
+                            Note(x=2, y=-1.5, label="down days: 1.5 + "
+                                 "1.0 = 2.5", dx=40, dy=-40, dot=False))),
+                Pane(line=AM_OBV, name="OBV, the running total",
+                     height=1.1, top=0.80, bottom=0.70, picks=(),
+                     tags=tuple((i, f"{v:.1f}") for i, v in
+                                enumerate(AM_OBV)),
+                     notes=(Note(x=5, label="5.0 - 2.5 = 2.5", dx=-30,
+                                 dy=-40, notice=True),)),
+            ),
+            xticks=tuple((i, f"Day {i + 1}") for i in range(6)),
+            size=ck.pair_size(6.6), xlabel="",
+            footnote="Our example, Chart AM's six days, in million shares. "
+                     "Day 1 starts at 0;\nday 4 is unchanged, so nothing "
+                     "is added.",
+        ),
+    ),
+    ChartArt(
+        letter="JI",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(bars=AO_BARS, ylabel="Bar (PHP)", ticks=(48, 50, 52),
+                     height=1.4, top=0.20, bottom=0.10,
+                     brackets=(Bracket(x=2.25, lo=48.0, hi=49.0,
+                                       label="C - L = 1"),
+                               Bracket(x=2.25, lo=49.0, hi=52.0,
+                                       label="H - C = 3", notice=True))),
+                Pane(columns=(2.0, 0.0, -1.0), zero=True,
+                     ylabel="x 2.0m", height=1.0, top=0.45,
+                     bottom=0.35,
+                     tags=((0, "+2.0"), (1, "0"), (2, "-1.0"))),
+                Pane(line=(2.0, 2.0, 1.0), ylabel="ADL",
+                     height=1.0, top=0.60, bottom=0.30,
+                     tags=((0, "2.0"), (1, "2.0 + 0"), (2, "2.0 - 1.0"))),
+            ),
+            xticks=((0, "Close 52\n(4 - 0) / 4\n= 1"),
+                    (1, "Close 50\n(2 - 2) / 4\n= 0"),
+                    (2, "Close 49\n(1 - 3) / 4\n= -0.5")),
+            size=ck.pair_size(6.6), xlabel="",
+            footnote="Chart AO's three bars: each L = 48, H = 52, H - L = "
+                     "4, on 2.0 million shares.",
+        ),
+    ),
+    ChartArt(
+        letter="JJ",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                Cell(name="Yesterday, then today",
+                     note="yesterday closed 50.00; today 46.00\nto 51.00, "
+                          "closing 49.75",
+                     panes=(Pane(bars=JJ_BARS, height=1.0, top=0.12,
+                                 bottom=0.06,
+                                 strokes=(Stroke(points=((-0.3, 50.0),
+                                                         (1.3, 50.0)),
+                                                 dashed=True, tone="quiet"),),
+                                 brackets=(Bracket(x=1.22, lo=46.0, hi=49.75,
+                                                   label="C - L\n3.75",
+                                                   notice=True),
+                                           Bracket(x=1.22, lo=49.75, hi=51.0,
+                                                   label="H - C 1.25"))),)),
+                Cell(name="What each adds",
+                     note="million shares, for today",
+                     panes=(Pane(columns=(-2.0, 1.0), zero=True, picks=(1,),
+                                 dims=(0,), top=0.35, bottom=0.35,
+                                 tags=((0, "OBV -2.0"),
+                                       (1, "ADL +1.0"))),)),
+            ),
+            cols=2, size=ck.pair_size(6.0),
+            footnote="Ours, on 2.0 million shares. OBV: 49.75 is below "
+                     "50.00.\nADL factor (3.75 - 1.25) / 5 = 0.5.",
+        ),
+    ),
+    ChartArt(
+        letter="JK",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(columns=(-1.0, 0.0, 0.17, 1.0), zero=True, picks=(2,),
+                     dims=(0, 1, 3), ticks=(-1, 0, 1),
+                     name="The CMF's value", height=1.0, top=0.30,
+                     bottom=0.30,
+                     tags=((0, "-1"), (1, "0"), (2, "0.17"),
+                           (3, "+1"))),
+            ),
+            xticks=((0, "all at\nlows"), (1, "at mid-\npoints"),
+                    (2, "ours,\n1.0 / 6.0"), (3, "all at\nhighs")),
+            size=ck.pair_size(6.4), xlabel="",
+            footnote="Our arithmetic: no bar's S is bigger than its volume, "
+                     "so the CMF\nruns from -1 to +1. The book gives no "
+                     "reading of its value.",
+        ),
+    ),
+    ChartArt(
+        letter="JL",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(line=FD_TOTAL, name="Running total of the CMF, black",
+                     height=1.4, top=0.75, bottom=0.45,
+                     traces=(Trace(values=FD_FAST, tone="notice"),
+                             Trace(values=FD_SLOW, tone="structure")),
+                     notes=(Note(x=14, y=FD_FAST[14], label="3-bar EMA, gold:"
+                                 " close", dx=-20, dy=40),
+                            Note(x=3, y=FD_SLOW[3], label="10-bar, green: "
+                                 "slow", dx=10, dy=-34))),
+                Pane(columns=FD_OSC, picks=tuple(range(10, 24)),
+                     dims=tuple(range(1, 10)) + tuple(range(24, 30)),
+                     zero=True, name="Oscillator: 3-bar EMA less 10-bar",
+                     height=1.1, top=0.90, bottom=0.30,
+                     notes=(Note(x=22, y=FD_OSC[22], label="above 0",
+                                 dx=20, dy=14,
+                                 notice=True),
+                            Note(x=7, y=FD_OSC[7], label="below 0: "
+                                 "falling", dx=40, dy=-14))),
+            ),
+            size=ck.pair_size(6.6), xlabel="Bars",
+            footnote="Chart FD's invented CMF values. Gold columns: above "
+                     "0; grey: below.",
+        ),
+    ),
+    ChartArt(
+        letter="JM",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                Pane(line=AR_LINE, ylabel="Price", height=1.5, top=0.15,
+                     notes=(Note(x=56, label="A top", dx=-30, dy=12),
+                            Note(x=63, label="price confirms:\nit falls "
+                                 "away", dx=-60, dy=-22, notice=True))),
+                Pane(line=AR_OI, ylabel="Open interest", height=1.3,
+                     top=0.35, bottom=0.75,
+                     strokes=(Stroke(points=((18, AR_LEVEL), (64, AR_LEVEL)),
+                                     dashed=True, tone="quiet",
+                                     label="its earlier peak, 92,000", at=0,
+                                     dx=2, dy=10),),
+                     notes=(Note(x=55, label="back at an old level:\na "
+                                 "test of a historical level", dx=-40,
+                                 dy=-62, notice=True),)),
+            ),
+            size=ck.pair_size(6.6), xlabel="Time, weekly",
+            footnote="Invented prices and open interest, in contracts. Use "
+                     "1, net\npositions, is not drawn: the book never "
+                     "defines net.",
+        ),
+    ),
+)
+
+CHARTS = CHARTS + J_CHARTS

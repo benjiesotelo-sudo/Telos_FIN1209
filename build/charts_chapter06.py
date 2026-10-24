@@ -20,8 +20,10 @@ not carry the idea alone, or where a slide works a number through:
     volume reversal, the VWMA and its two readings, the four kinds of top
     and bottom, a higher and a lower overextension level, a volume extreme
     read only in retrospect, and one volume record on two timeframes.
-  * **R to V** Part 3: the five volume actions at a barrier and what each
-    tells, the four filters, a smoothed volume filter, a three-sigma
+  * **R to V** Part 3: why a volume peak makes the stronger barrier (RA),
+    the five volume actions at a barrier and what each tells (R, RB, RC,
+    lettered beside R until the deck is lettered again), the four filters
+    and filters 1 and 2 in numbers (SA), a smoothed volume filter, a three-sigma
     filter and a channel drawn from volume filtered points.
   * **W to AG** Part 4: a trend on flat volume, loss aversion, bull and
     bear market volume, turnover, open interest day by day, the four cases
@@ -316,38 +318,87 @@ Q_BUSIEST = max(range(12), key=lambda m: Q_MONTHS[m])
 # Part 3
 # ==========================================================================
 
-_V_SHAPE = (6.0, 4.6, 3.4, 2.4, 1.6, 1.0, 1.6, 2.4, 3.4, 4.6, 6.0)
-_SUPPORT = Stroke(points=((2.5, 0.85), (7.5, 0.85)), tone="structure",
+# The barrier sketches of R and RB: seven bars, the touch on the middle one,
+# volume in whole millions of shares so every bar can carry its number. At
+# a support price falls to the line and turns up; at a resistance it rises
+# to the line and turns down, the two rows of the book's Figure 6.19.
+_V_SHAPE = (6.0, 4.0, 2.4, 1.0, 2.4, 4.0, 6.0)
+_A_SHAPE = (1.0, 3.0, 4.6, 6.0, 4.6, 3.0, 1.0)
+_TOUCH = 3
+
+
+def _barrier(name, note, volume, *, side, retest=False):
+    """One case at a support or a resistance, its volume numbered.
+
+    ``retest`` adds three bars after the turn in which price comes back to
+    the barrier, with no volume drawn under them: the book says a retest
+    is likely and gives no volume for it.
+    """
+    support = side == "support"
+    price = list(_V_SHAPE if support else _A_SHAPE)
+    vol = list(volume)
+    level = 0.85 if support else 6.15
+    x1 = 4.5
+    notes = ()
+    if retest:
+        price += [4.4, 2.6, 1.1] if support else [2.6, 4.4, 5.9]
+        vol += [0, 0, 0]
+        x1 = 9.5
+        notes = (Note(x=9, label="retest", dx=-2, dy=16 if support else -16,
+                      dot=True, notice=True),)
+    line = Stroke(points=((1.5, level), (x1, level)), tone="structure",
                   width=2.4)
+    return Cell(name=name, note=note, panes=(
+        Pane(line=tuple(price), strokes=(line,), notes=notes, height=1.3,
+             top=0.30 if not support else 0.12,
+             bottom=0.12 if not support else 0.30),
+        Pane(columns=tuple(vol), picks=(_TOUCH,),
+             dims=tuple(range(7, len(vol))),
+             tags=tuple((i, f"{v:g}") for i, v in enumerate(volume)),
+             height=1.0, top=0.30)))
 
 
-def _barrier(name, note, volume, after=None, tone="structure"):
-    price = list(_V_SHAPE)
-    if after:
-        price += list(after)
-    vol = list(volume) + [None] * 0
-    return Cell(name=name, note=note, tone=tone, panes=(
-        Pane(line=tuple(price), strokes=(_SUPPORT,), height=1.3, top=0.12,
-             bottom=0.20),
-        Pane(columns=tuple(vol), height=1.0, top=0.10)))
+# RA - two resistances at PHP 60, one touched on the most volume of the
+# move and one on the least, each followed by a retest whose outcome is not
+# drawn: the book says only which barrier is more reliable.
+RA_PRICE = (52.0, 55.0, 57.5, 59.0, 60.0, 59.0, 57.5, 55.5, 54.5, 56.0,
+            58.0, 59.8)
+RA_PEAK = (2, 3, 5, 7, 9, 6, 4, 3, 2)
+RA_DIP = (7, 5, 3, 1.5, 0.5, 1.5, 3, 5, 7)
+
+
+def _resistance_60(name, note, volume):
+    vol = list(volume) + [0, 0, 0]
+    return Cell(name=name, note=note, panes=(
+        Pane(line=RA_PRICE, height=1.4, top=0.42, bottom=0.10,
+             strokes=(Stroke(points=((2.5, 60.15), (11.5, 60.15)),
+                             tone="structure", width=2.4,
+                             label="PHP 60", at=0, dx=-4, dy=0),),
+             notes=(Note(x=11, y=59.8, label="retest", dx=-6, dy=-22,
+                         notice=True),)),
+        Pane(columns=tuple(vol), picks=(4,),
+             tags=tuple((i, f"{v:g}") for i, v in enumerate(volume)),
+             height=1.0, top=0.28)))
 
 
 # S - four filters, sketched on invented volume.
 _s_base = _noisy([1.0 + 0.25 * math.sin(i / 2.0) for i in range(30)],
                  seed=711, spread=0.2)
 S_MA_VOL = list(_s_base)
-for x, v in ((8, 2.6), (21, 2.3)):
+for x, v in ((8, 3.0), (21, 2.8)):
     S_MA_VOL[x] = v
 S_MA_VOL = tuple(S_MA_VOL)
 S_MA = _sma(S_MA_VOL, 8)
+# SA - our rule for "well above": more than twice the 8-bar average.
+S_TWICE = tuple(round(2 * v, 4) for v in S_MA)
 S_BAND_VOL = list(_s_base)
 S_BAND_VOL[17] = 3.2
 S_BAND_VOL[8] = 1.9
 S_BAND_VOL = tuple(S_BAND_VOL)
-S_BAND = tuple(round(v + 1.3, 3) for v in _sma(S_BAND_VOL, 8))
+S_BAND = tuple(round(v + 1.6, 3) for v in _sma(S_BAND_VOL, 8))
 S_PEAK_VOL = list(_s_base)
 S_PEAK_VOL[6] = 2.6
-S_PEAK_VOL[24] = 2.65
+S_PEAK_VOL[24] = 2.6
 S_PEAK_VOL = tuple(S_PEAK_VOL)
 S_CYCLE_VOL = _noisy([1.0 + 0.9 * max(0.0, math.sin(i * math.pi / 7.5))
                       for i in range(30)], seed=712, spread=0.10)
@@ -1030,28 +1081,86 @@ CHARTS = (
         ),
     ),
     ChartArt(
+        letter="RA",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                _resistance_60("A  9 million at the touch",
+                               "the most volume of the move:\nthe most "
+                               "reliable",
+                               RA_PEAK),
+                _resistance_60("B  0.5 million at the touch",
+                               "the least volume of the move:\nless "
+                               "reliable",
+                               RA_DIP),
+            ),
+            cols=2, size=PAIR,
+            footnote="Invented: price, and volume in millions of shares. "
+                     "Gold: the bar at the touch.\nThe retest's volume and "
+                     "whether PHP 60 holds are not drawn: the book gives "
+                     "neither.",
+        ),
+    ),
+    ChartArt(
         letter="R",
         draw=ck.cells,
         kwargs=dict(
             items=(
-                _barrier("1  Increasing", "driven away,\nwith confirmation",
-                         _ramp(0.8, 3.0, 11)),
-                _barrier("2  Decreasing", "a retest likely,\neven a "
-                         "penetration", _ramp(3.0, 0.8, 11)
-                         + [0.7, 0.6, 0.55, 0.5, 0.45],
-                         after=(5.0, 3.6, 2.2, 1.2, 1.4)),
-                _barrier("3  Peaking", "the most reliable\nsupport",
-                         (0.8, 1.2, 1.6, 2.2, 2.8, 3.4, 2.8, 2.2, 1.6, 1.2,
-                          0.8)),
-                _barrier("4  Bottoming", "less reliable:\nlack of interest",
-                         (3.4, 2.8, 2.2, 1.6, 1.2, 0.6, 1.2, 1.6, 2.2, 2.8,
-                          3.4)),
-                _barrier("5  Flatlining", "not enough\ninformation",
-                         (2.0,) * 11),
+                _barrier("Increasing, at a resistance",
+                         "driven down and away:\nbearish confirmation",
+                         (1, 2, 3, 4, 5, 6, 7), side="resistance"),
+                _barrier("Increasing, at a support",
+                         "driven up and away:\nbullish confirmation",
+                         (1, 2, 3, 4, 5, 6, 7), side="support"),
+            ),
+            cols=2, size=PAIR,
+            footnote=SKETCH + " Volume in millions of shares, invented. "
+                     "Gold: the touch.",
+        ),
+    ),
+    ChartArt(
+        letter="RB",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                _barrier("Decreasing, at a resistance",
+                         "price comes back up:\na retest is likely",
+                         (7, 6, 5, 4, 3, 2, 1), side="resistance",
+                         retest=True),
+                _barrier("Decreasing, at a support",
+                         "price comes back down:\na retest is likely",
+                         (7, 6, 5, 4, 3, 2, 1), side="support",
+                         retest=True),
+            ),
+            cols=2, size=PAIR,
+            footnote=SKETCH + " Volume in millions of shares, invented. "
+                     "Gold: the touch.\nThe retests are drawn from the "
+                     "book's words, with no volume under them; Figure 6.19 "
+                     "draws none.",
+        ),
+    ),
+    ChartArt(
+        letter="RC",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                _barrier("Peaking", "the most reliable",
+                         (1, 2, 4, 7, 4, 2, 1), side="resistance"),
+                _barrier("Bottoming", "less reliable",
+                         (7, 4, 2, 1, 2, 4, 7), side="resistance"),
+                _barrier("Flatlining", "not enough information",
+                         (4,) * 7, side="resistance"),
+                _barrier("Peaking", "the most reliable",
+                         (1, 2, 4, 7, 4, 2, 1), side="support"),
+                _barrier("Bottoming", "less reliable",
+                         (7, 4, 2, 1, 2, 4, 7), side="support"),
+                _barrier("Flatlining", "not enough information",
+                         (4,) * 7, side="support"),
             ),
             cols=3, size=PAIR,
-            footnote=SKETCH + " Each price falls to a support, the green "
-                     "line, and turns up.",
+            footnote=SKETCH + " Top row at a resistance, bottom row at a "
+                     "support. Volume in\nmillions of shares, invented. "
+                     "Gold: the touch.",
         ),
     ),
     ChartArt(
@@ -1062,29 +1171,73 @@ CHARTS = (
                 Cell(name="1  Moving average filter",
                      note="spikes above the average",
                      panes=(Pane(columns=S_MA_VOL, picks=(8, 21),
+                                 tags=((8, "3.0"), (21, "2.8")),
                                  traces=(Trace(values=S_MA, tone="deep",
                                                width=2.0),),
-                                 top=0.12),)),
+                                 notes=(Note(x=13.5, y=S_MA[13],
+                                             label="average\nabout 1",
+                                             dx=0, dy=30, dot=False),),
+                                 top=0.22),)),
                 Cell(name="2  Volatility filter",
                      note="only the largest crosses",
                      panes=(Pane(columns=S_BAND_VOL, picks=(17,),
+                                 tags=((17, "3.2"), (8, "1.9")),
                                  traces=(Trace(values=S_BAND, tone="deep",
                                                width=2.0),),
-                                 top=0.12),)),
+                                 top=0.22),)),
                 Cell(name="3  Prior volume peaks",
-                     note="a level at an earlier peak",
+                     note="ours: a level at an earlier peak",
                      panes=(Pane(columns=S_PEAK_VOL, picks=(24,),
+                                 tags=((6, "2.6"), (24, "2.6")),
                                  strokes=(Stroke(points=((6, 2.6),
                                                          (29, 2.6)),
                                                  dashed=True,
                                                  tone="structure"),),
-                                 top=0.15),)),
+                                 top=0.22),)),
                 Cell(name="4  Volume cycles", note="peaks that repeat",
                      panes=(Pane(columns=S_CYCLE_VOL, picks=S_CYCLE_PEAKS,
                                  top=0.15),)),
             ),
             cols=2, size=PAIR,
-            footnote=INVENTED + " Gold: the volume each filter picks out.",
+            footnote="Invented volume, in millions of shares. Gold: the "
+                     "volume each filter keeps.\nPanels 1 and 2 are worked "
+                     "in numbers next. Panel 3 is our reading.",
+        ),
+    ),
+    ChartArt(
+        letter="SA",
+        draw=ck.cells,
+        kwargs=dict(
+            items=(
+                Cell(name="Filter 1: the average of the last 8 bars",
+                     note="kept, by our rule: over twice the average",
+                     panes=(Pane(columns=S_MA_VOL, picks=(8, 21),
+                                 tags=((4, "1.4"), (8, "3.0"), (21, "2.8")),
+                                 traces=(Trace(values=S_MA, tone="deep",
+                                               width=2.0),
+                                         Trace(values=S_TWICE,
+                                               tone="notice", width=2.4,
+                                               dotted=True)),
+                                 notes=(Note(x=11, y=S_MA[11],
+                                             label="average", dx=0, dy=12,
+                                             dot=False),
+                                        Note(x=15, y=S_TWICE[15],
+                                             label="twice the average",
+                                             dx=0, dy=34, dot=False)),
+                                 top=0.75),)),
+                Cell(name="Filter 2: a higher line",
+                     note="kept: only the bar that crosses it",
+                     panes=(Pane(columns=S_BAND_VOL, picks=(17,),
+                                 tags=((8, "1.9"), (17, "3.2")),
+                                 traces=(Trace(values=S_BAND, tone="deep",
+                                               width=2.0),),
+                                 top=0.22),)),
+            ),
+            cols=1, size=PAIR,
+            footnote="Invented volume, in millions of shares. Filter 2's "
+                     "line is the average plus a fixed 1.6,\na stand-in: "
+                     "its real line is computed on the sigma filter's "
+                     "slides.",
         ),
     ),
     ChartArt(

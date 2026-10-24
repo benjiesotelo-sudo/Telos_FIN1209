@@ -13,7 +13,11 @@ checked without looking back to the prose.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import chartkit as ck
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 
 def _bars(values):
@@ -25,6 +29,74 @@ def _bar_notes(*items):
     return tuple(ck.Note(x=x, y=y, label=label, dx=dx, dy=dy,
                          notice=notice)
                  for x, y, label, dx, dy, notice in items)
+
+
+def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Path:
+    """Draw the four sentiment cases as a readable trend/form table."""
+    plt.close("all")
+    fig = plt.figure(figsize=size, dpi=ck.DPI)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_axis_off()
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+
+    left, right = 0.20, 0.98
+    bottom, top = 0.13, 0.80
+    split_x = left + (right - left) / 2
+    split_y = bottom + (top - bottom) / 2
+    cells = (
+        (left, split_y, split_x - left, top - split_y,
+         "CONTINUATION", "uptrend + bullish formation", ck.GREEN_DEEP),
+        (split_x, split_y, right - split_x, top - split_y,
+         "POTENTIAL\nREVERSAL", "uptrend + bearish formation", ck.GOLD),
+        (left, bottom, split_x - left, split_y - bottom,
+         "POTENTIAL\nREVERSAL", "downtrend + bullish formation", ck.GOLD),
+        (split_x, bottom, right - split_x, split_y - bottom,
+         "CONTINUATION", "downtrend + bearish formation", ck.GREEN_DEEP),
+    )
+    for x, y, w, h, result, example, tone in cells:
+        ax.add_patch(Rectangle((x, y), w, h, facecolor=ck.WHITE,
+                               edgecolor=ck.BORDER, linewidth=1.0))
+        # A small directional example makes the trend/form relationship
+        # visible without relying on percentages or a numerical axis.
+        rising = "uptrend" in example
+        form_bullish = "bullish formation" in example
+        x0, x1 = x + 0.07 * w, x + 0.93 * w
+        y0 = y + 0.70 * h
+        trend = [y0 - 0.10 * h, y0 + (0.11 if rising else -0.11) * h,
+                 y0 - (0.02 if rising else 0.02) * h]
+        ax.plot((x0, x + 0.47 * w, x1), trend, color=ck.GREEN_DEEP,
+                linewidth=2.2, solid_capstyle="round")
+        last_y = trend[-1]
+        form_y = last_y + (0.08 if form_bullish else -0.08) * h
+        ax.plot((x + 0.57 * w, x + 0.78 * w, x + 0.90 * w),
+                (last_y, form_y, form_y),
+                color=ck.GREEN_DEEP if form_bullish else ck.GOLD,
+                linewidth=2.2, solid_capstyle="round")
+        ax.text(x + w / 2, y + 0.23 * h, result, ha="center", va="center",
+                fontsize=15, fontweight="bold", color=tone,
+                linespacing=0.95)
+        ax.text(x + w / 2, y + 0.08 * h, example, ha="center", va="center",
+                fontsize=10.5, color=ck.MUTED)
+
+    ax.text((left + split_x) / 2, top + 0.08, "Bullish formation",
+            ha="center", va="center", fontsize=14, fontweight="bold",
+            color=ck.GREEN_DEEP)
+    ax.text((split_x + right) / 2, top + 0.08, "Bearish formation",
+            ha="center", va="center", fontsize=14, fontweight="bold",
+            color=ck.GREEN_DEEP)
+    ax.text(0.095, (split_y + top) / 2, "Uptrend\n(bullish trend)",
+            ha="center", va="center", fontsize=13.5, fontweight="bold",
+            color=ck.GREEN_DEEP, linespacing=1.0)
+    ax.text(0.095, (bottom + split_y) / 2, "Downtrend\n(bearish trend)",
+            ha="center", va="center", fontsize=13.5, fontweight="bold",
+            color=ck.GREEN_DEEP, linespacing=1.0)
+    if footnote:
+        fig.text(0.012, 0.018, footnote, fontsize=8.5, color=ck.MUTED,
+                 style="italic", ha="left", va="bottom")
+    fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
+    plt.close(fig)
+    return path
 
 
 CHARTS = (
@@ -199,40 +271,11 @@ CHARTS = (
     ),
     ck.ChartArt(
         letter="S",
-        draw=ck.cells,
+        draw=_sentiment_table,
         kwargs=dict(
-            items=(
-                ck.Cell(
-                    name="1  continuation",
-                    note="uptrend +4.0%; bullish +2.0%",
-                    tone="notice",
-                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
-                                   tags=((0, "+4.0% trend"), (1, "+2.0% form"))),),
-                ),
-                ck.Cell(
-                    name="2  continuation",
-                    note="downtrend -4.0%; bearish -2.0%",
-                    tone="notice",
-                    panes=(ck.Pane(columns=(4.0, 2.0), height=1.0,
-                                   tags=((0, "-4.0% trend"), (1, "-2.0% form"))),),
-                ),
-                ck.Cell(
-                    name="3  potential reversal",
-                    note="uptrend +4.0%; bearish -2.0%",
-                    panes=(ck.Pane(columns=(4.0, -2.0), height=1.0,
-                                   tags=((0, "+4.0% trend"), (1, "-2.0% form"))),),
-                ),
-                ck.Cell(
-                    name="4  potential reversal",
-                    note="downtrend -4.0%; bullish +2.0%",
-                    panes=(ck.Pane(columns=(-4.0, 2.0), height=1.0,
-                                   tags=((0, "-4.0% trend"), (1, "+2.0% form"))),),
-                ),
-            ),
-            cols=2,
-            size=ck.pair_size(3.6),
-            footnote=("Ours, invented percentage changes. Trend is the existing "
-                      "direction; form is intrinsic sentiment. Lim, p. 211."),
+            size=ck.pair_size(5.0),
+            footnote=("Ours, invented examples. Agreement means continuation; "
+                      "disagreement means potential reversal. Lim, p. 211."),
         ),
     ),
     ck.ChartArt(
@@ -271,6 +314,33 @@ CHARTS = (
             size=ck.pair_size(3.6),
             footnote=("Ours, invented percentage changes. Agreement means "
                       "continuation; disagreement means potential reversal. Lim, p. 211."),
+        ),
+    ),
+    ck.ChartArt(
+        letter="U",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                ck.Pane(
+                    name="Invented five-bar context and two-bar formation",
+                    bars=_bars(((45.0, 46.0, 44.2, 45.6),
+                                (45.6, 47.2, 45.0, 46.8),
+                                (46.8, 48.5, 46.2, 48.1),
+                                (49.7, 51.0, 50.2, 50.5),
+                                (50.6, 51.2, 49.4, 49.8))),
+                    notes=(
+                        ck.Note(x=3, y=50.2, label="first L 50.20",
+                                dx=-28, dy=-12, notice=True),
+                        ck.Note(x=4, y=49.8, label="second C 49.80",
+                                dx=-8, dy=-12, notice=True),
+                    ),
+                    ticks=(44.0, 46.0, 48.0, 50.0, 52.0),
+                    height=1.0,
+                ),
+            ),
+            size=ck.pair_size(5.55),
+            xticks=((2, "rising context"), (3, "first"), (4, "second")),
+            footnote="Ours, invented PHP bars. The final two bars are the double formation.",
         ),
     ),
 )

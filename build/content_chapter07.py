@@ -376,10 +376,34 @@ CLASSIFICATION_CROP = Figure(
 
 SENTIMENT_CHART = Chart(
     letter="S",
-    title="Four invented sentiment cases",
-    shows=("Four invented numeric cases. Trend sentiment is the direction of "
-           "the existing trend; intrinsic sentiment is the formation's own "
-           "bullish or bearish bias."),
+    title="The two-by-two sentiment table",
+    shows=("A plain two-by-two table. Rows are uptrend and downtrend; columns "
+           "are bullish and bearish formations. Each cell shows continuation "
+           "or potential reversal."),
+)
+
+WORKED_CHART = Chart(
+    letter="U",
+    title="Part 1 worked read",
+    marks=(
+        Mark(1, "box", 0.43, 0.20, 0.91, 0.78,
+             color="gold", at=(0.38, 0.14), size=0.28),
+        Mark(2, "circle", 0.76, 0.28, 0.90, 0.80,
+             color="red", at=(0.94, 0.25), size=0.28),
+        Mark(3, "circle", 0.10, 0.25, 0.62, 0.78,
+             color="blue", at=(0.07, 0.17), size=0.28),
+    ),
+    shows=("Our invented five-bar chart makes the two-bar formation and its "
+           "rising price context visible, including the first low 50.20 and "
+           "second close 49.80."),
+    notes=(
+        "Gold 1 brackets the two bars that make the double formation. Red 2 "
+        "marks the second bar and its close below the first low. Blue 3 marks "
+        "the rising context before the pair.",
+        "All prices are invented and written on our own chart so the worked "
+        "read can be checked without the prose alone.",
+    ),
+    origin="FIN1209 teaching chart U. All PHP values, marks and labels are ours, invented.",
 )
 
 SECTION1 = Section(
@@ -504,13 +528,13 @@ SECTION1 = Section(
                 ),
                 accent="Count, intrinsic bias, and trend expectation now have one worked read.",
             ),
-            picture=WORKED_CROP,
+            picture=WORKED_CHART,
             text_w=5.55,
             notes=(
                 "This worked read combines the three classification questions without introducing a new pattern name.",
                 "Say potential reversal, not reversal certainty. The next slide checks the construction arithmetic.",
             ),
-            origin="Lim (2016), pp. 210 to 211, Figure 7.3. The PHP values and classification are ours, invented to show the sequence.",
+            origin=WORKED_CHART.origin,
         ),
         Check(
             label="Building a price bar",
@@ -577,7 +601,7 @@ SECTION2 = Section(
             lines=(
                 "With the three questions in place, define trend sentiment: bullish in an uptrend, bearish in a downtrend. Intrinsic sentiment is a formation's own bullish or bearish bias (Lim, p. 211).",
                 "Chapter 4 defines an inverted head and shoulders as bullish; in an uptrend, bullish biases agree.",
-                "Four invented trend/form cells: +4.0%/+2.0% and -4.0%/-2.0% continue; +4.0%/-2.0% and -4.0%/+2.0% are potential reversals.",
+                "Four invented cells: uptrend plus bullish formation and downtrend plus bearish formation are continuation; the mixed pairs are potential reversals.",
             ),
             accent="Agreement gives continuation; disagreement gives reversal.",
             notes=(
@@ -589,8 +613,8 @@ SECTION2 = Section(
             left=Content(
                 title="The two-by-two rule",
                 lines=(
-                    "Now apply four invented cases: +4.0% trend/+2.0% formation and -4.0%/-2.0% agree, so both continue.",
-                    "+4.0%/-2.0% disagrees, so potential reversal; -4.0%/+2.0% also disagrees, so potential reversal.",
+                    "Read the rows first: an uptrend has bullish trend sentiment; a downtrend has bearish trend sentiment. Columns show bullish or bearish formation.",
+                    "The two agreement cells are continuation; the two mixed cells are potential reversal.",
                     "Lim's rule: agreement means continuation; disagreement means reversal (p. 211). Compare both sentiments.",
                 ),
                 accent="",

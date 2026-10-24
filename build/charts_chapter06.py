@@ -290,8 +290,10 @@ L_UPS, L_DOWNS = _crossings(L_CLOSE, L_VWMA)
 # N - four turns, each sketched over its volume.
 _TOP = (1.0, 2.0, 3.0, 3.6, 3.0, 2.0, 1.0)
 _BOTTOM = tuple(4.6 - v for v in _TOP)
-_EXTREME = (1.0, 1.2, 1.4, 4.0, 1.4, 1.2, 1.0)
-_MINIMAL = (2.0, 1.8, 1.6, 0.4, 1.6, 1.8, 2.0)
+# Volumes in millions of shares, the numbers the slides work: about 2 a day,
+# and the day of the turn at 9 or at 0.3.
+_EXTREME = (1.8, 2.0, 2.2, 9.0, 2.2, 2.0, 1.8)
+_MINIMAL = (2.2, 2.0, 1.8, 0.3, 1.8, 2.0, 2.2)
 
 # O - two major turns and three corrections, with two volume levels.
 O_TURNS = {"1": 30, "2": 70, "a": 14, "b": 48, "c": 88}
@@ -970,16 +972,18 @@ CHARTS = (
                      ),
                      notes=(Note(x=J_BREAK, label="2  Breakout", dx=-80,
                                  dy=22, notice=True),)),
-                Pane(columns=J_VOL, ylabel="Volume", height=1.0, top=0.28,
-                     picks=(J_BREAK,),
+                Pane(columns=J_VOL, ylabel="Volume (million)", height=1.0,
+                     top=0.28, ticks=(1, 2, 3), picks=(J_BREAK,),
+                     tags=((J_BREAK, "3.6"),),
                      strokes=(Stroke(points=((0, J_LOW), (72, J_LOW)),
                                      dashed=True, tone="quiet"),),
-                     notes=(Note(x=J_BREAK - 1, label="1  Volume tests\n"
-                                 "its lowest level", dx=-110, dy=20),)),
+                     notes=(Note(x=J_BREAK - 1, label="1  Lowest level:\n"
+                                 "0.42 million", dx=-110, dy=20),)),
             ),
             size=PAIR, xlabel="Time",
-            footnote=INVENTED + " Dashed: volume's lowest level.\nThe "
-                     "book says a breakout may be up or down; this one is up.",
+            footnote=INVENTED + " Volume in millions of shares. Dashed: "
+                     "volume's lowest level,\nby eye. The book says a "
+                     "breakout may be up or down; this one is up.",
         ),
     ),
     ChartArt(
@@ -993,15 +997,18 @@ CHARTS = (
                                  dy=12, notice=True),
                             Note(x=K_TROUGH, label="2  Turns up", dx=18,
                                  dy=-10, notice=True))),
-                Pane(columns=K_VOL, ylabel="Volume", height=1.0, top=0.25,
+                Pane(columns=K_VOL, ylabel="Volume (million)", height=1.0,
+                     top=0.25, ticks=(1, 2),
+                     notes=(Note(x=K_PEAK, label="0.55", dx=-34, dy=18),
+                            Note(x=K_TROUGH, label="0.55", dx=30, dy=18)),
                      strokes=(Stroke(points=((0, K_LOW), (78, K_LOW)),
                                      dashed=True, tone="quiet"),)),
             ),
             guides=(Guide(x=K_PEAK, label="1", notice=True),
                     Guide(x=K_TROUGH, label="2", notice=True)),
             size=TERM, xlabel="Time",
-            footnote=INVENTED + " Dashed: the low volume level, drawn by "
-                     "eye.",
+            footnote=INVENTED + " Volume in millions of shares.\nDashed: "
+                     "the low volume level, drawn by eye.",
         ),
     ),
     ChartArt(
@@ -1062,24 +1069,28 @@ CHARTS = (
                      note="blow-off, or buying climax",
                      panes=(Pane(line=_TOP, height=1.2, top=0.15),
                             Pane(columns=_EXTREME, dims=(0, 1, 2, 4, 5, 6),
-                                 height=1.0, top=0.10))),
+                                 tags=((3, "9.0"),), height=1.0,
+                                 top=0.22))),
                 Cell(name="Bottom, extreme volume",
                      note="sell-off, or selling climax",
                      panes=(Pane(line=_BOTTOM, height=1.2, top=0.15),
                             Pane(columns=_EXTREME, dims=(0, 1, 2, 4, 5, 6),
-                                 height=1.0, top=0.10))),
+                                 tags=((3, "9.0"),), height=1.0,
+                                 top=0.22))),
                 Cell(name="Top, minimal volume", note="low volume top",
                      panes=(Pane(line=_TOP, height=1.2, top=0.15),
                             Pane(columns=_MINIMAL, dims=(0, 1, 2, 4, 5, 6),
-                                 height=1.0, top=0.10))),
+                                 tags=((3, "0.3"),), height=1.0,
+                                 top=0.10))),
                 Cell(name="Bottom, minimal volume", note="low volume bottom",
                      panes=(Pane(line=_BOTTOM, height=1.2, top=0.15),
                             Pane(columns=_MINIMAL, dims=(0, 1, 2, 4, 5, 6),
-                                 height=1.0, top=0.10))),
+                                 tags=((3, "0.3"),), height=1.0,
+                                 top=0.10))),
             ),
             cols=2, size=PAIR,
-            footnote=SKETCH + " The green bar is the volume on the day of "
-                     "the turn.",
+            footnote=SKETCH + " Volume ours, in millions: about 2 a day; "
+                     "the green bar is the day of the turn.",
         ),
     ),
     ChartArt(
@@ -1089,23 +1100,29 @@ CHARTS = (
             panes=(
                 Pane(line=O_LINE, ylabel="Price (PHP)", ticks=(45, 50, 55, 60),
                      height=1.6, top=0.18, bottom=0.16),
-                Pane(columns=O_VOL, ylabel="Volume", height=1.2, top=0.10,
+                Pane(columns=O_VOL, ylabel="Volume (million)", height=1.2,
+                     top=0.22, ticks=(2, 4),
                      picks=(O_TURNS["1"], O_TURNS["2"]),
                      strokes=(
                          Stroke(points=((0, O_UPPER), (99, O_UPPER)),
                                 dashed=True, tone="notice",
-                                label="upper level", at=0, dx=2, dy=9),
-                         Stroke(points=((0, O_LOWER), (99, O_LOWER)),
+                                label="upper level, 4.0", at=0, dx=2,
+                                dy=9),
+                         # Labelled in the gap between b and 2, so that the
+                         # label does not hide the spike at a.
+                         Stroke(points=((0, O_LOWER), (67, O_LOWER),
+                                        (99, O_LOWER)),
                                 dashed=True, tone="quiet",
-                                label="lower level", at=0, dx=2, dy=9),
+                                label="lower, 2.2", at=1, dx=-3, dy=9),
                      )),
             ),
             guides=tuple(Guide(x=x, label=k, notice=k in "12")
                          for k, x in sorted(O_TURNS.items(),
                                             key=lambda kv: kv[1])),
             size=PAIR, xlabel="Time",
-            footnote="Invented. 1 and 2: the major turns. a to c: smaller "
-                     "corrections. Levels drawn by eye.",
+            footnote="Invented, volume in millions of shares. 1 and 2: the "
+                     "major turns. a to c: smaller\ncorrections. Levels drawn "
+                     "by eye.",
         ),
     ),
     ChartArt(
@@ -1117,16 +1134,18 @@ CHARTS = (
                      "retrospect",
                      panes=(Pane(line=_TOP, height=1.2, top=0.15),
                             Pane(columns=_EXTREME, dims=(0, 1, 2, 4, 5, 6),
-                                 height=1.0, top=0.10))),
+                                 tags=((3, "9.0"),), height=1.0,
+                                 top=0.16))),
                 Cell(name="After a fall", note="a bottom: oversold,\nin "
                      "retrospect",
                      panes=(Pane(line=_BOTTOM, height=1.2, top=0.15),
                             Pane(columns=_EXTREME, dims=(0, 1, 2, 4, 5, 6),
-                                 height=1.0, top=0.10))),
+                                 tags=((3, "9.0"),), height=1.0,
+                                 top=0.16))),
             ),
             cols=2, size=PAIR,
-            footnote=SKETCH + " The two volume records are identical; only "
-                     "price tells them apart.",
+            footnote=SKETCH + " Volume ours, in millions. The two records "
+                     "are identical; only price\ntells them apart.",
         ),
     ),
     ChartArt(
@@ -1137,20 +1156,22 @@ CHARTS = (
                 Cell(name="Daily volume", note="the tallest bar: one spike, "
                      "late, at 1",
                      panes=(Pane(columns=Q_DAYS, picks=(Q_SPIKE,),
-                                 notes=(Note(x=Q_SPIKE, label="1", dx=-14,
-                                             dy=-4, dot=False,
+                                 notes=(Note(x=Q_SPIKE, label="1: 6.0",
+                                             dx=-30, dy=-4, dot=False,
                                              notice=True),),
                                  top=0.10),)),
                 Cell(name="The same days, added up by month",
                      note="the tallest bar: a busy month, earlier, at 2",
                      panes=(Pane(columns=Q_MONTHS, picks=(Q_BUSIEST,),
-                                 tags=((Q_BUSIEST, "2"),
-                                       (Q_SPIKE // 20, "the spike's month")),
+                                 tags=((Q_BUSIEST,
+                                        f"2: {Q_MONTHS[Q_BUSIEST]:.1f}"),
+                                       (Q_SPIKE // 20, "the spike's month:\n"
+                                        f"{Q_MONTHS[Q_SPIKE // 20]:.1f}")),
                                  top=0.22),)),
             ),
             cols=1, size=PAIR,
-            footnote="Invented volume: 240 trading days, then twelve months "
-                     "of twenty days each.",
+            footnote="Invented volume, in millions of shares: 240 trading "
+                     "days, then twelve months of\ntwenty days each.",
         ),
     ),
     ChartArt(

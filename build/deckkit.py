@@ -373,6 +373,7 @@ class Pair(Slide):
     left: Slide | None = None
     picture: Slide | None = None
     text_w: float = 5.0
+    picture_extra: float = 0.0
 
 
 @dataclass
@@ -1373,7 +1374,7 @@ def render_pair(prs, s: Pair, marker):
 
     x = MARGIN.inches + s.text_w + PAIR_GAP
     _pair_picture(slide, s.picture, x, band_top,
-                  CONTENT_W.inches - s.text_w - PAIR_GAP,
+                  CONTENT_W.inches - s.text_w - PAIR_GAP + s.picture_extra,
                   PAIR_BAND_BOTTOM - band_top)
 
     _notes(slide, s.notes)

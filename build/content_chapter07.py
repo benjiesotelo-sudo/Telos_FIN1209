@@ -716,14 +716,13 @@ KEY_16_PAIR = Pair(
 
 TWO_DAY_WORKED = Pair(
     left=Content(
-        title="Two-day reversal: read the two closes",
+        title="Two-day reversal: read the closes",
         lines=(
-            "Now move from one-bar to a two-day pattern: read the first close near its high and the second near its low.",
-            "Ours: bar 1 ranges PHP 49.70 to 52.20 and closes PHP 51.80 near its high [1].",
-            "Bar 2 ranges PHP 49.00 to 52.00 and closes PHP 49.60 near its low [2]. Its range is wider, which Lim prefers.",
-            "The two-bar close sequence warns of a bearish reversal; the later decline is not guaranteed.",
+            "First close near high [1]; second near low [2].",
+            "Ours: PHP 51.80, then PHP 49.60; the second range is wider.",
+            "Meaning/action: potential bearish reversal, not a guarantee.",
         ),
-        accent="The pattern is defined by the two closing positions; wider ranges are a preference, not a requirement.",
+        accent="",
     ),
     picture=Chart(
         letter="RA",
@@ -735,7 +734,8 @@ TWO_DAY_WORKED = Pair(
             Mark(2, "circle", 0.64, 0.56, 0.72, 0.65, color="red", at=(0.80, 0.52), size=0.25),
         ),
     ),
-    text_w=7.6,
+    text_w=4.0,
+    picture_extra=0.1,
     notes=(
         "Read the first close near the high, then the second near the low.",
         "The values and volume are ours, invented. The wider-range preference comes from Lim, p. 220.",
@@ -761,14 +761,13 @@ TWO_DAY_READ = Pair(
 
 THREE_WORKED = Pair(
     left=Content(
-        title="Bullish three-bar reversal: volume around the middle",
+        title="Bullish three-bar reversal: volume",
         lines=(
-            "Three bars add a middle bar whose volume matters.",
-            "First bar ranges PHP 41.00 to 44.00. Volume: 4.0 million [1].",
-            "Middle ranges PHP 43.20 to 44.10. Volume: 0.6 million [2]. Third closes PHP 46.50. Volume: 4.2 million [3].",
-            "The quiet middle is below average and shows uncertainty inside a potential bullish reversal.",
+            "Read volume: strong [1], quiet [2], strong [3].",
+            "Ours: 4.0m, 0.6m, then 4.2m shares.",
+            "Meaning/action: a quiet middle shows uncertainty, not a guarantee.",
         ),
-        accent="Strong outer volumes and a quiet middle are a clue, not a guarantee.",
+        accent="",
     ),
     picture=Chart(
         letter="RB",
@@ -781,7 +780,8 @@ THREE_WORKED = Pair(
             Mark(3, "circle", 0.73, 0.75, 0.80, 0.84, color="blue", at=(0.86, 0.70)),
         ),
     ),
-    text_w=7.0,
+    text_w=4.0,
+    picture_extra=0.1,
     notes=(
         "Read volumes left to right: strong, quiet, strong.",
         "The arithmetic and volume are ours, invented; the interpretation follows Lim, pp. 221 to 223.",
@@ -871,14 +871,13 @@ THREE_PATTERN6_PAIR = Pair(
 
 ISLAND_WORKED = Pair(
     left=Content(
-        title="Island reversal: two gaps isolate the bars",
+        title="Island reversal: two gaps",
         lines=(
-            "Next, gaps can separate several bars from the surrounding trend into an island reversal.",
-            "Ours: price gaps up from PHP 50.00 to an open of PHP 50.80 [1]. Two bars sit alone [2].",
-            "It later gaps down to PHP 49.40 [3]. The gaps isolate the formation from surrounding bars.",
-            "Gap keeps Chapter 3's meaning in ‘Gaps’. The book shows an overbought stochastic label but gives no method here.",
+            "Read the gap up [1], isolated bars [2], then gap down [3].",
+            "Ours: PHP 50.00 to 50.80, then PHP 49.40.",
+            "Meaning/action: two gaps isolate a potential reversal warning.",
         ),
-        accent="Island means isolation by a gap up and a gap down, not merely several bars at a turning point.",
+        accent="",
     ),
     picture=Chart(
         letter="RC",
@@ -887,11 +886,12 @@ ISLAND_WORKED = Pair(
         tier="core",
         marks=(
             Mark(1, "circle", 0.30, 0.20, 0.39, 0.30, color="gold", at=(0.25, 0.15)),
-            Mark(2, "box", 0.48, 0.28, 0.64, 0.48, color="red", at=(0.68, 0.25)),
+            Mark(2, "box", 0.38, 0.22, 0.66, 0.52, color="red", at=(0.70, 0.54)),
             Mark(3, "circle", 0.70, 0.20, 0.80, 0.30, color="blue", at=(0.86, 0.15)),
         ),
     ),
-    text_w=6.9,
+    text_w=4.0,
+    picture_extra=0.1,
     notes=(
         "Read the gap up, the isolated bars, then the gap down.",
         "Gap meaning points back to Chapter 3. The prices and volume are ours, invented.",
@@ -1206,21 +1206,20 @@ SECTION3 = Section(
     slides=(
         Pair(
             left=Content(
-                title="Bearish key reversal: the numbers first",
+                title="Bearish key reversal: numbers first",
                 lines=(
-                    "With the agreement rule in place, now read a named reversal bar in five steps.",
-                    "Step 1. Prior bar: open 50.80, high 52.00, low 50.60, close 51.10.",
-                    "Step 2. It opens at 52.30 above prior high 52.00 [1].",
-                    "Step 3. It makes a new high of 53.20 [2].",
-                    "Step 4. It closes at 50.80 below prior close 51.10 [3].",
-                    "Step 5. Volume is 4.2 million versus 2.0 million [4]. That is a bearish key reversal (Lim, p. 218).",
+                    "Read the prior high and close first.",
+                    "1. Open 52.30 above prior high 52.00 [1].",
+                    "2. New high 53.20 [2]. 3. Close 50.80 below prior close 51.10 [3].",
+                    "4. Volume 4.2m versus 2.0m [4].",
+                    "Meaning/action: bearish key reversal, a potential warning (Lim, p. 218).",
                 ),
                 accent="",
                 caption="",
             ),
             picture=KEY_WORKED_CHART,
-            text_w=6.5,
-            picture_extra=0.0,
+            text_w=4.0,
+            picture_extra=0.1,
             notes=KEY_WORKED_CHART.notes,
             origin=KEY_WORKED_CHART.origin,
         ),

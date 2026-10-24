@@ -700,34 +700,48 @@ SECTION2 = Section(
     covers=(),
     slides=(
         Pair(
-            origin="Book p.180: the reason is the book's. Stop orders: Chapters 1 and 5. The chart is ours, on invented prices; where the stops sit is our drawing of the book's sentence.",
+            origin="Book p.180. Consolidation and breakout: Chapters 2 and 4. The chart is ours, on invented prices and volume; the numbers are read off it.",
             left=Content(
                 title="6.1  Volume as a timing indicator",
                 lines=(
-                    "When volume nears its lowest historical level, a breakout from the consolidation is expected.",
-                    "Why: most who wanted to buy have bought; most who wanted to sell have sold.",
-                    "Stop orders build up above and below the range: once triggered, the catalyst.",
+                    "Consolidation: price moving sideways in a range, here PHP 48 to 52.",
+                    "The book: as volume falls close to its lowest historical level, a breakout from the range is expected.",
+                    "Ours: an earlier low, 0.45 million, sets the dashed level. Volume falls back to 0.42 at 1, testing it; at 2 price breaks out on 3.6 million.",
                 ),
                 accent="No divergence reading in a range: price moves sideways.",
-                caption="So falling volume in a range is not weakness. Breakout here: out of a range, as in Chapters 2 and 4.",
+                caption="So falling volume in a range is not weakness. How far back historical reaches, the book does not say.",
             ),
             picture=Chart(
                 letter="J",
-                shows="An invented share ranging sideways in a box, with rows of buy stops marked above the box and sell stops below it. Under it the volume falls through the range to its lowest level, a dashed line. At 1 volume tests that level; at 2 price breaks out of the top of the box and volume surges.",
+                shows="An invented share ranging sideways between PHP 48 and PHP 52, with rows of buy stops marked above the box and sell stops below it. Under it the volume, in millions of shares: an early low of 0.45 sets a dashed level, and volume falls from about 2.5 back to it, 0.42 at 1. At 2 price breaks out of the top of the box on 3.6 million.",
             ),
             text_w=CHART_W,
             notes=(
                 "This answers the novice error from the first slide. Sideways price cannot diverge from anything, so shrinking volume inside a range is not a warning: it is the clock running down.",
-                "The stops are stop orders, Chapter 1 and Chapter 5: buy stops above the range, sell stops below it. Whichever side is hit first starts the move.",
-                "The book says either an upside or a downside breakout. Low volume does not say which way.",
+                "Read the numbers off the chart with the room: the earlier low of 0.45 that sets the line, 0.42 at 1 where volume tests it, 3.6 on the breakout bar at 2.",
+            ),
+        ),
+        Content(
+            origin="Book p.180: the reasons are the book's. Stop orders: Chapters 1 and 5. The PHP 48 and 52 edges are ours, from the last slide's chart.",
+            title="Why the lowest volume times the breakout",
+            lines=(
+                "1  Volume shrinks as each side finishes: most who wanted to buy have bought, most who wanted to sell have sold.",
+                "2  Stop orders pile up outside the range: buy stops above PHP 52, sell stops below PHP 48 (Chapter 1: they trade once price pushes through their level).",
+                "3  When price reaches one edge, those stops trigger together and push it out: the catalyst.",
+                "4  Up or down, the book does not say: let price show the way.",
+            ),
+            accent="What to do: volume back at an earlier low, expect a breakout.",
+            notes=(
+                "Walk the four steps in order. Step 2 is the one students miss: the orders that start the move were placed during the quiet range.",
+                "Step 4 is the book's either an upside or downside breakout. The signal is about timing only.",
             ),
         ),
         Pair(
-            origin="Book pp.180-181 and Figure 6.9.",
+            origin="Book pp.180-181 and Figure 6.9. Accumulation: Chapters 2 and 4.",
             left=Term(
                 term="Low volume breakout signal",
-                plain="Volume sinks to its lowest level inside a range: expect price to leave the range soon, either way.",
-                example="Figure 6.9: Apple ranges in an accumulation, the box, while volume falls to its lowest level. Price then breaks out of the box, upward.",
+                plain="A signal, not a trade: in a range, volume falls back to a low it has touched before, testing it. Expect price to leave the range soon, up or down.",
+                example="Figure 6.9, Apple: the dashed level sits at earlier lows, touched at time lines 1 and 2. In late March, inside the Accumulation box (a buying range, Chapters 2 and 4), volume falls back to it; in April price breaks out of the top.",
                 formal="Whenever the volume is testing a significant minimum or its lowest historical levels, a breakout is expected. We refer to this as a low volume breakout signal.",
             ),
             picture=Figure(
@@ -741,38 +755,39 @@ SECTION2 = Section(
             ),
         ),
         Pair(
-            origin="Book p.180 gives the term; Figure 6.9 (p.181) has two. The chart is ours, on invented prices, because that figure is dense.",
+            origin="Book p.180 gives the term; Figure 6.9 (p.181) has two. The chart is ours, on invented prices, because that figure is dense. The book does not say how the low is set.",
             left=Term(
                 term="Low volume reversal",
-                plain="Price turns while volume sits at its minimum.",
-                example="Figure 6.9 turns twice on low volume, at time lines 1 and 2. On our chart: at 1 a peak, at 2 a trough, each as volume touches its low level.",
+                plain="Price turns as volume sits at its minimum. In a trend, volume testing its low says the trend may turn, the book's tendency; price shows which way.",
+                example="Ours: volume shrinks to 0.55 million at 1, the PHP 56 peak, and price turns down. That low is the dashed line. At 2, PHP 47, volume falls back to it and price turns up.",
                 formal="There is a tendency for price to reverse when volume is at its minimum or lowest historical levels. We refer to such reversals as low volume reversals.",
             ),
             picture=Chart(
                 letter="K",
-                shows="An invented price that rises to a peak, falls to a trough and rises again, over its volume. A dashed low volume level runs across the volume panel. At 1, the peak, and at 2, the trough, volume touches the level and price turns.",
+                shows="An invented price that rises to a peak at PHP 56, falls to a trough at PHP 47 and rises again, over its volume in millions of shares. At 1, the peak, volume shrinks to 0.55 million and price turns down; a dashed line marks that low. At 2, the trough, volume falls back to it and price turns up.",
             ),
             text_w=TERM_CHART_W,
             notes=(
-                "Two uses of the same low volume: in a range it times a breakout, in a trend it marks a turn.",
-                "The book gives a tendency and no rule for where the low volume level goes. Figure 6.9 draws it by eye, and so does this chart.",
+                "Two uses of the same low volume: in a range it times a breakout, in a trend it marks a turn. Figure 6.9 has two, at its time lines 1 and 2.",
+                "The book gives a tendency and no rule for where the low volume level goes. Figure 6.9 draws it at earlier lows, and this chart draws it at the low set at 1.",
             ),
         ),
         Pair(
-            origin="Book p.181 and Figure 6.10.",
+            origin="Book p.181 and Figure 6.10. Accumulation and distribution: Chapters 2 and 4. The 10 million is read by eye off the figure's scale.",
             left=Content(
                 title="Breakouts at the lowest volume: silver",
                 lines=(
-                    "Three consolidation breakouts, each as the lowest or minimum volume level is tested.",
-                    "Volume increases on the breakout bars, bars 1, 2 and 3.",
+                    "The three boxes are consolidations. The low volume threshold runs low across the volume panel, near 10 million shares.",
+                    "Dotted arrows: volume falls to it in each box. Then price breaks out: up at 1, from an accumulation; down at 2 and 3, from distributions, ranges where informed holders sell.",
+                    "Volume rises on the breakout bars, 1, 2 and 3.",
                 ),
-                accent="Volume falls into the breakout, then surges on it.",
+                accent="One signal, three times: it said when; price chose the way.",
             ),
             picture=Figure(
                 number="6.10",
                 shows="The daily iShares Silver Trust with three consolidations boxed and a low volume threshold drawn across the volume panel. Dotted arrows show volume falling to the threshold in each box, and the breakouts at bars 1, 2 and 3 follow, with volume rising on each breakout bar.",
             ),
-            text_w=5.4,
+            text_w=5.6,
             notes=(
                 "The figure shows the signal three times: an accumulation breakout up at 1, distribution breakouts down at 2 and 3. Each comes as volume touches the line.",
                 "Notice the breakout bars themselves carry more volume than the bars before them.",
@@ -802,57 +817,71 @@ SECTION2 = Section(
             ),
         ),
         Pair(
-            origin="Book p.181. It defers the calculation to Chapter 11. The chart is ours, on invented prices; its line is a 10-bar VWMA we computed.",
+            origin="Book p.181. It defers the calculation to Chapter 11. Moving averages: met in Chapters 4 and 5. The chart is ours; its line is a 10-bar VWMA we computed.",
             left=Term(
                 term="Volume-weighted moving average, VWMA",
-                plain="A line of average price on the chart, weighted by volume as its name says. Chapter 11 says how.",
-                example="A share at PHP 52, above its VWMA at PHP 50: potentially bullish. At PHP 48, below it: potentially bearish.",
+                plain="A moving average: the average of the last few closes, redone at each new bar. Volume-weighted: each close counts by its volume, so heavy days pull the line toward their price.",
+                example="Line at PHP 50: price at 52, above it, is potentially bullish; at 48, below it, potentially bearish. Our chart: the gold dot crosses above, the green dot below.",
                 formal="A VWMA may be created to track overvalued and undervalued stock. Typically, price is considered potentially bullish when it is above the VWMA, and bearish when below it.",
             ),
             picture=Chart(
                 letter="L",
-                shows="An invented price line with its volume-weighted moving average drawn over it as a green line. Where price crosses above the line it is labelled potentially bullish, and where it crosses below, potentially bearish.",
+                shows="An invented price line with its volume-weighted moving average drawn over it as a green line. Where price crosses above the line, a gold dot, it is labelled potentially bullish, and where it crosses below, a green dot, potentially bearish.",
             ),
             text_w=TERM_CHART_W,
             notes=(
                 "The book's heading is Volume-Weighted Average Price/Moving Average, and its figure says VWAP. It treats the two names as one line here.",
-                "How the average is weighted is Chapter 11. Today it is a line over price, and what matters is which side of it price is on.",
-                "Moving averages were met in Chapters 4 and 5 and are taught in Chapter 11.",
+                "The arithmetic is the next slide, and it is ours: the book leaves its own calculation to Chapter 11.",
+            ),
+        ),
+        Content(
+            origin="Ours: how our charts compute the line, read from build/charts_chapter06.py, on invented numbers. The book's own calculation is in its Chapter 11.",
+            title="How our VWMA line is computed, with numbers",
+            lines=(
+                "Ours: three bars close at PHP 50, 52 and 54, on 1, 1 and 2 million shares.",
+                "Plain average: (50 + 52 + 54) / 3 = PHP 52. Every bar counts the same.",
+                "Volume-weighted: each close times its volume, added up, divided by the total volume: (50 x 1 + 52 x 1 + 54 x 2) / 4 = 210 / 4 = PHP 52.50.",
+                "The heavy PHP 54 day pulls the line up toward it. At the next bar, drop the oldest, add the newest, compute again; our charts use 10 bars.",
+            ),
+            accent="The VWMA: the average price, weighted by how much traded at it.",
+            notes=(
+                "Do the plain average first, then the weighted one, and ask why the second is higher. The answer is the heavy day.",
+                "Say plainly this is our computation, the one the two VWMA charts use. The book's own is in Chapter 11 and is not examined here.",
             ),
         ),
         Pair(
-            origin="Book p.181 and Figure 6.11. The figure is labelled VWAP on a 10-minute chart; the caption says VWMA, daily.",
+            origin="Book p.181 and Figure 6.11. The figure is labelled VWAP on a 10-minute chart; the caption says VWMA, daily. Support and resistance: Chapter 5.",
             left=Content(
                 title="The VWMA on a chart",
                 lines=(
-                    "Price rises decisively every time it crosses above the VWMA, and declines in a similar manner when it crosses below.",
-                    "The crossovers occur at the daily volume cycle peaks.",
-                    "The figure also marks the line acting as support and resistance.",
+                    "A 10-minute chart of the S&P 500 SPDR. Dashed: the line labelled VWAP, volume-weighted average price; the book treats VWAP and VWMA as one line here.",
+                    "Price rises decisively each time it crosses above the line, and falls after crossing below.",
+                    "Circles: each day's volume peak, its busiest stretch (Part 5). Dashed arrows run up from each: the crossovers came at those peaks.",
                 ),
-                accent="Above the line, bullish. Below it, bearish.",
-                caption="Volume cycles, and their peaks: Part 5.",
+                accent="Above the line, bullish; below it, bearish.",
+                caption="So watch each day's busiest stretch: the crossovers came there, and the book gives no rule beyond that. The line also acts as support, a floor, and resistance, a ceiling (Chapter 5).",
             ),
             picture=Figure(
                 number="6.11",
                 shows="A 10-minute chart of the S&P 500 SPDR over four days with a dashed volume weighted average price line, labelled price above it bullish and below it bearish, and the line marked as support and as resistance. Circles on the volume panel mark the daily volume cycle peaks, with arrows from them to the crossovers.",
             ),
-            text_w=5.4,
+            text_w=6.0,
             notes=(
                 "Follow each dashed arrow from a circled volume peak up to a crossover. That is the book's point about timing.",
                 "Name the mismatch and move on: the caption says VWMA and daily, the figure says VWAP and 10 minutes.",
             ),
         ),
         Pair(
-            origin="Book p.181. Both readings are the book's, a paragraph apart; it does not reconcile them. The chart is ours, on invented prices.",
+            origin="Book p.181. Both readings are the book's, a paragraph apart; it does not reconcile them. The chart and the PHP 50 example are ours.",
             left=Content(
                 title="Undervalued below, overvalued above",
                 lines=(
                     "The book also calls a stock undervalued below the VWMA and overvalued above it.",
-                    "Many institutional traders look for buy signals only when it is undervalued, and sell signals only when it is above.",
-                    "So above the line is potentially bullish, and also where institutions look to sell.",
+                    "Its buy signals come from another method, unnamed; the VWMA only decides whether to take one.",
+                    "Institutions buy only below the line, sell only above. Ours, line at PHP 50: a buy signal at 48, yes; at 52, no.",
+                    "So above the line is bullish for the trend, yet overvalued: not where institutions buy.",
                 ),
                 accent="Two readings of one line, both the book's.",
-                caption="Know both. The book leaves the tension between them unresolved, and so does this slide.",
             ),
             picture=Chart(
                 letter="M",
@@ -865,99 +894,148 @@ SECTION2 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.182-183, its four scenarios. Chapter 4 named the climaxes by who trades. The chart is ours: sketches, not prices.",
+            origin="Book pp.182-183, its four scenarios. Chapter 4 named the climaxes by who trades. The chart is ours: sketches, with our invented volumes.",
             left=Content(
                 title="Tops and bottoms: volume at the extremes",
                 lines=(
-                    "A top or bottom usually comes on relatively large or extreme volume, or on relatively low or minimal volume.",
-                    "Extreme volume: a top is a blow-off or buying climax, a bottom a sell-off or selling climax.",
-                    "Extremely low volume: a low volume top, or a low volume bottom.",
+                    "Back from the VWMA to volume itself: how much trades on the day a market turns?",
+                    "The book: tops and bottoms usually come on relatively large or extreme volume, or relatively low or minimal volume.",
+                    "Ours, usual volume 2 million a day. On 9 million: a top is a blow-off or buying climax; a bottom, a sell-off or selling climax.",
+                    "On 0.3 million: a low volume top, or a low volume bottom.",
                 ),
                 accent="Four turns, named by place and by volume.",
-                caption="Chapter 4 named the climaxes that end a trend. Chapter 6 adds their extreme volume.",
             ),
             picture=Chart(
                 letter="N",
-                shows="Four small cases, each a price turn over its volume. A top on one towering volume bar, the blow-off or buying climax. A bottom on a towering bar, the sell-off or selling climax. A top on the smallest bar, a low volume top. A bottom on the smallest bar, a low volume bottom.",
+                shows="Four small cases, each a price turn over its volume, the other days at about 2 million shares. A top on one towering bar of 9 million, the blow-off or buying climax. A bottom on a towering bar of 9 million, the sell-off or selling climax. A top on a bar of 0.3 million, a low volume top. A bottom on 0.3 million, a low volume bottom.",
             ),
             text_w=CHART_W,
             notes=(
                 "The climaxes are a recall: Chapter 4 told who buys and sells in them. What is new is the volume, and the two low volume names.",
-                "The low volume top and bottom get their own slide after the climax figures, in the book's order.",
+                "Ask for the two choices that make the four names: where the turn is, and whether volume is huge or tiny.",
+            ),
+        ),
+        Content(
+            origin="Book pp.182-185. Who trades in each climax: Chapter 4, its accumulation and distribution slides.",
+            title="Why the quiet pair matters, and why sell-off",
+            lines=(
+                "Ours: one peak at PHP 60. On 9 million the rise ends in a frenzy; on 0.3 million it runs out of interest. Watch only spikes and you miss the second.",
+                "Every trade has a buyer and a seller; the names say who was rushing.",
+                "Selling climax, Chapter 4: a deep fall ends as the uninformed sell at any price and the informed buy from them.",
+                "Buying climax, the mirror: a strong rise ends as the uninformed buy at any price and the informed sell to them.",
+            ),
+            accent="The quiet pair are the low volume reversals: turns on silence.",
+            notes=(
+                "This answers the question a student asks first: if every share sold was bought, why call it a sell-off? Because of who is rushing, and which way price had been going.",
+                "The heavy volume of a selling climax is the panicked selling, and the informed buyers absorbing it. The quiet turns get their own figure after the climaxes, in the book's order.",
             ),
         ),
         Pair(
             origin="Book p.183 and Figure 6.12. Exxon Mobil is spelt Exxon Mobile by the book.",
             left=Term(
                 term="Upper and lower overextended volume levels",
-                plain="A line across the volume panel that only extreme volume reaches. A lower one catches smaller turns.",
-                example="Figure 6.12: Exxon Mobil bottoms on two selling climaxes, and both spikes reach the upper level.",
-                formal="The extreme volume level is the upper overextended volume level, a signal for potential bottoms or tops. A lower overextended volume level forecasts less significant corrections.",
+                plain="Overextended volume: far above usual. The upper level is a line only the most extreme spikes reach; a lower one, still high, is reached more often.",
+                example="Figure 6.12, Exxon Mobil: the extreme volume of two selling climaxes, under the ellipse, sets the upper level.",
+                formal="The extreme volume level is the upper overextended volume level, a signal for predicting potential bottoms or tops. A lower overextended volume level forecasts less significant corrections.",
             ),
             picture=Figure(
                 number="6.12",
-                shows="The daily chart of Exxon Mobil from 2006 to 2013: an ellipse around a market bottom made by two selling climaxes, with arrows down to two volume spikes. Across the volume panel run two lines, upper level volume overextension and lower level volume overextension.",
+                shows="The daily chart of Exxon Mobil from 2006 to 2013: an ellipse around a market bottom made by two selling climaxes, with arrows down to two volume spikes. Across the volume panel run two lines, upper level volume overextension, near 120 million shares, and lower level volume overextension, near 70 million.",
             ),
             text_w=6.2,
             notes=(
-                "Point at the two spikes under the ellipse: each is a selling climax, and each reaches the upper line.",
-                "Upper for the big turns, lower for the corrections. Where to draw them is the slide after next.",
+                "Point at the two arrows from the ellipse down to the volume panel: each joins a selling climax to its spike.",
+                "Upper for the big turns, lower for the corrections. What each tells, with the figure's numbers, is the next slide.",
+            ),
+        ),
+        Content(
+            origin="Book p.183 and Figure 6.12, its scale read by eye. Correction: Chapter 5. Not a promise: the book's word potential, said plainly.",
+            title="What the two levels tell you",
+            lines=(
+                "Off Figure 6.12's scale: most days trade under 40 million shares; the lower line sits a little under 70 million, the upper a little above 120 million.",
+                "Both are high volume: lower means less extreme, not low volume.",
+                "Upper: potential tops or bottoms, a warning and not a promise. Lower: less significant corrections, smaller moves against the trend.",
+                "The figure shows only bottoms; the book says the same level signals tops too.",
+            ),
+            accent="Above the line: a potential turn. Which way: price, afterwards.",
+            notes=(
+                "The trap is the word lower. A lower overextended level is still high volume, only less extreme.",
+                "Which way the turn goes is the book's caution at the end of this part: overbought or oversold, only in retrospect.",
             ),
         ),
         Pair(
-            origin="Book p.183 and Figure 6.13.",
+            origin="Book p.183 and Figure 6.13. The volumes are read by eye off the figure's scale.",
             left=Content(
                 title="Blow-offs: buying climaxes",
                 lines=(
-                    "A couple of blow-offs, or buying climaxes, at relatively high volume.",
-                    "Each is a market top on a volume spike, and price falls after it.",
+                    "A blow-off, or buying climax: a market top on extreme volume, the mirror of Exxon's selling climaxes.",
+                    "Follow each arrow from BLOW-OFF to its circled volume spike, then up to the top above it. Price falls after each.",
+                    "Relatively high, the book says: the first spike tops 200 thousand shares, the second only about 100 thousand, yet each towers over its neighbours.",
                 ),
-                accent="The same overextension that marks a selling climax marks a buying one.",
+                accent="Compare a spike with its own neighbours, not with the biggest bar.",
             ),
             picture=Figure(
                 number="6.13",
-                shows="The daily chart of the E-TRACS UBS Bloomberg CMCI Food ETN with two circled volume spikes labelled blow-off, each under a market top.",
+                shows="The daily chart of the E-TRACS UBS Bloomberg CMCI Food ETN with two circled volume spikes labelled blow-off, each under a market top: the first above 200 thousand shares, the second about 100 thousand.",
             ),
-            text_w=5.4,
+            text_w=5.6,
             notes=(
                 "The mirror of the last figure: tops this time. Follow each arrow from BLOW-OFF to its spike and up to its top.",
                 "The second blow-off is on a much smaller spike than the first in absolute terms. Compare it with the volume around it, not with the first.",
             ),
         ),
         Pair(
-            origin="Book pp.183-184 and Figure 6.14. Sigma, a standard deviation, is taught in Part 3.",
+            origin="Book pp.183-184 and Figure 6.14. Support: Chapter 5.",
             left=Content(
                 title="Where to set the overextension level",
                 lines=(
-                    "Set by visual inspection, where only the most significant tops or bottoms are found.",
-                    "Set lower, it signals more often, at less significant tops and bottoms.",
-                    "Figure 6.14: the spikes are all above the rolling 100-day 2-sigma level; one breaks a significant support.",
+                    "By visual inspection, the book says: by eye, no formula. Find the spikes under the most significant tops and bottoms; draw the line just below them.",
+                    "Set lower, more spikes cross it: more frequent signals, at less significant tops and bottoms.",
+                    "Figure 6.14, gold: the circled spikes cross the dashed level. At the far right price breaks a significant support, a level where falls had stopped, on extreme volume.",
                 ),
                 accent="Higher level, fewer and bigger turns.",
+                caption="The figure's second, computed line: next slide.",
             ),
             picture=Figure(
                 number="6.14",
-                shows="The daily SPDR Gold Trust: a dashed volume overextension line across the volume panel with circled spikes above it, and a dashed support line on the price that is broken at the right on extreme volume, labelled above the rolling 100-day 2-sigma level.",
+                shows="The daily SPDR Gold Trust: a dashed volume overextension line across the volume panel with circled spikes above it, a stepped computed line under it, and a dashed support line on the price that is broken at the right on extreme volume, labelled above the rolling 100-day 2-sigma level.",
             ),
-            text_w=5.4,
+            text_w=5.6,
             notes=(
-                "By eye is the book's method: there is no formula for the line. The 2-sigma level is a second, computed line, and Part 3 builds one.",
+                "By eye is the book's method: there is no formula for the line. Ask the room where they would draw it on this chart to catch only the circled spikes.",
                 "Find the support break at the far right: price falls through a significant level on extreme volume.",
             ),
         ),
+        Content(
+            origin="Book p.184 names the line and notes the spikes are all above it. Ours: the arithmetic, the 20 and 10 million, and which line it is, by eye.",
+            title="The figure's second line: a rolling 2-sigma level",
+            lines=(
+                "On Figure 6.14: the solid line stepping under the dashed level.",
+                "Rolling 100-day 2-sigma level = 100-day average volume + 2 x sigma. Sigma, the standard deviation: how far volume typically strays from its average.",
+                "Ours: average 20 million, sigma 10 million: 20 + 2 x 10 = 40 million. A 35 million day stays under; 55 million crosses.",
+                "Rolling: redone daily over the latest 100 days. The August 2011 spikes lift it; some 100 days later, as they leave the window, it drops back.",
+            ),
+            accent="By eye or by formula: only volume above the line counts.",
+            notes=(
+                "Keep it to the arithmetic. Part 3 teaches the sigma filter properly, with its own worked example and the bar-by-bar method.",
+                "The point for today is that the eye-drawn line and the computed one agree on Figure 6.14: the circled spikes clear both.",
+            ),
+        ),
         Pair(
-            origin="Ours, drawing the book's p.183 rule on one invented chart. Both levels and every price are ours.",
+            origin="Ours, drawing the book's p.183 rule on one invented chart. Both levels, every price and every volume are ours.",
             left=Content(
                 title="Our example: a higher level and a lower one",
                 lines=(
-                    "Upper level: only two spikes reach it, at the two major turns, 1 and 2.",
-                    "Lower level: three more spikes reach it, at smaller corrections, a, b and c.",
+                    "Ours: ordinary bars trade 0.9 to 1.5 million shares. Upper level 4.0 million, lower 2.2, both by eye.",
+                    "Upper: only the spikes of 4.6 million cross it, at 1, the top at PHP 60, and at 2, the bottom at PHP 42. Two signals, both major turns.",
+                    "Lower: those two, plus spikes of 2.6 million at a, b and c, smaller corrections. Five signals.",
                 ),
                 accent="Where the line goes decides which turns it signals.",
+                caption="Only the major turns: the upper line. The corrections too: the lower, which flags smaller moves.",
             ),
             picture=Chart(
                 letter="O",
-                shows="An invented price with two major turns and three smaller corrections, over its volume. Two dashed lines cross the volume panel. Only the spikes at the major turns, numbered 1 and 2, reach the upper line; the spikes at the corrections, lettered a to c, reach only the lower one.",
+                shows="An invented price with two major turns and three smaller corrections, over its volume in millions of shares. Two dashed lines cross the volume panel, an upper level at 4.0 and a lower at 2.2. Only the spikes of 4.6 at the major turns, numbered 1 and 2, cross the upper line; the spikes of 2.6 at the corrections, lettered a to c, cross only the lower one.",
             ),
             text_w=CHART_W,
             notes=(
@@ -966,24 +1044,39 @@ SECTION2 = Section(
             ),
         ),
         Pair(
-            origin="Book p.184 and Figure 6.15. The book does not explain the Bollinger Bandwidth here.",
+            origin="Book p.184 and Figure 6.15. The book does not explain the Bollinger Bandwidth. The figure's caption calls 1 and 2 selling climaxes.",
             left=Content(
                 title="Volatility spikes at the same turns",
                 lines=(
-                    "A Bollinger Bandwidth oscillator times volatility in silver.",
-                    "The volatility spikes coincide with the volume overextensions, signaling tops and bottoms.",
+                    "Volatility: how widely price swings. The bottom panel, a Bollinger Bandwidth oscillator, is the book's gauge of it here; the chapter does not say how it is calculated.",
+                    "Thin upright lines join circled volatility spikes to volume crossing the overextension lines, and up to turns in price.",
+                    "At 1 and 2, lows after sharp falls, volume and volatility spike together.",
                 ),
-                accent="Many practitioners filter out volatility below a threshold and regard it as noise.",
-                caption="Bandwidth and Bollinger Bands are named and not explained in this chapter.",
+                accent="Two different measures flag the same turns.",
             ),
             picture=Figure(
                 number="6.15",
-                shows="The continuous daily chart of silver with an upper and a lower volume overextension line, and under it a bandwidth oscillator labelled volatility, with its own historical volatility level. Thin lines join circled volatility spikes to volume overextensions and to a top at 1 and a bottom at 2.",
+                shows="The continuous daily chart of silver with an upper and a lower volume overextension line, and under it a bandwidth oscillator labelled volatility, with its own historical volatility level. Thin lines join circled volatility spikes to volume overextensions and to two lows after sharp falls, at 1 and 2.",
             ),
-            text_w=5.4,
+            text_w=6.0,
             notes=(
-                "Two kinds of evidence agree at 1 and 2: volume overextended, and volatility spiking. The lower, wavy stretch is what the book calls noise.",
+                "Two kinds of evidence agree at 1 and 2: volume overextended, and volatility spiking.",
                 "Do not teach the bandwidth. Say it is a measure of volatility the book uses here and explains elsewhere.",
+            ),
+        ),
+        Content(
+            origin="Book p.184 and Figure 6.15. Evidence that corroborates: the chapter's first slide, p.173.",
+            title="What the volatility spike adds",
+            lines=(
+                "A second, separate measure, price's swings, agreeing with volume at the same turns: evidence that corroborates, the chapter's first idea.",
+                "Two lines, by eye off the scale: below the dashed one, near 15, is noise, which many practitioners filter out. All four circled spikes clear it.",
+                "Only the spikes at 1 and 2 reach the historical volatility level, near 40: the major turns, as on the volume panel's upper line.",
+                "Both crossing together is stronger evidence; the book gives no weighting.",
+            ),
+            accent="As on volume: a low line for noise, a high one for the major turns.",
+            notes=(
+                "The wavy stretch under the dashed line is what the figure labels noise. Point at the two small circles on the historical volatility level, under 1 and 2.",
+                "This slide goes with the one before: drop both or neither.",
             ),
         ),
         Check(
@@ -1010,11 +1103,11 @@ SECTION2 = Section(
             ),
         ),
         Pair(
-            origin="Book pp.183, 185 and Figure 6.16.",
+            origin="Book pp.183, 185 and Figure 6.16. The 2 and 0.3 million are ours.",
             left=Term(
                 term="Low volume top and low volume bottom",
-                plain="A top, or a bottom, made on very little volume.",
-                example="Figure 6.16: Apple turns at seven time lines, each where volume tests a lower volume threshold, circled. Some are tops and some are bottoms.",
+                plain="A top, or a bottom, made on very little volume. Ours: usual volume 2 million a day; a peak, or a trough, on 0.3 million.",
+                example="Figure 6.16, Apple: seven circles where volume dips to a lower threshold; the book does not say how it is set. Each time line runs up to a turn, top or bottom.",
                 formal="A market top associated with extremely low or minimal volume is called a low volume top. A market bottom associated with extremely low volume is called a low volume bottom.",
             ),
             picture=Figure(
@@ -1024,40 +1117,72 @@ SECTION2 = Section(
             text_w=6.2,
             notes=(
                 "These are the low volume reversals of the part's start, now named by where they turn: at a top or at a bottom.",
-                "The threshold is again drawn by eye, and the circles are where volume tests it.",
+                "The tops are in late 2007, the clearest bottom in March 2009. The book says only that the threshold is tested.",
+            ),
+        ),
+        Content(
+            origin="Book pp.180 and 185. The reason is the book's for breakouts, p.180; it gives none for these turns.",
+            title="Reading a low volume turn",
+            lines=(
+                "What it means: when volume falls to its threshold, expect a turn, the book's tendency.",
+                "Why, by the book's reason for breakouts: those who wanted to trade have traded, so the move runs out of participants. The book gives that reason for breakouts, not for turns.",
+                "Top or bottom: the touch does not say. Wait for price to show which it was.",
+            ),
+            accent="Volume going quiet says a turn may come; price says which.",
+            notes=(
+                "This is the quiet mirror of the climaxes: a turn on silence. The catch is the same as for the spikes on the next slide: volume does not say which way.",
+                "Be plain that the reason is borrowed from the breakout passage, and the slide says so.",
             ),
         ),
         Pair(
-            origin="Book p.186. The chart is ours: sketches, not prices. Overbought and oversold are used and not defined in this chapter.",
+            origin="Book p.186. The chart is ours: sketches, with our invented volumes. Overbought and oversold are used and not defined in this chapter.",
             left=Content(
                 title="Overbought or oversold? Only afterwards",
                 lines=(
-                    "Overextended volume can signal either a top or a bottom: extreme buying and selling both generate volume.",
-                    "So a volume extreme is not overbought or oversold until it is tied to a top or a bottom.",
+                    "Back to the spikes, with one caution.",
+                    "Overextended volume can signal a top or a bottom: extreme buying and selling both generate volume.",
+                    "Overbought: an extreme tied to a top; oversold, to a bottom: the book's usage. Plain words, ours: risen too far, fallen too far.",
+                    "Our chart: the same 9 million spike twice. Price rose into it, then fell: a top. Or fell, then rose: a bottom.",
                 ),
-                accent="We can pinpoint the overextension now. Overbought or oversold, only in retrospect.",
-                caption="Overbought and oversold: met in Chapters 1 and 5, never defined there or here. Oscillators are Chapter 8.",
+                accent="Overextension: pinpointed now. Overbought or oversold: only in retrospect.",
             ),
             picture=Chart(
                 letter="P",
-                shows="Two small cases with the same towering volume bar. In one, price had been rising and it turns out to be a top: overbought, in retrospect. In the other, price had been falling and it turns out to be a bottom: oversold, in retrospect.",
+                shows="Two small cases with the same volume record, one bar of 9 million among bars of about 2 million. In one, price had been rising and it turns out to be a top: overbought, in retrospect. In the other, price had been falling and it turns out to be a bottom: oversold, in retrospect.",
             ),
             text_w=CHART_W,
             notes=(
                 "The two volume bars are identical. Only what price did next tells you which one it was.",
-                "That is the book's reason for not calling volume overbought or oversold in advance.",
+                "This slide is where it is because the book puts the caution here, after the low volume tops and bottoms. Say so, and point back to the climaxes it is about.",
+            ),
+        ),
+        Content(
+            origin="Book p.186. Where the caution sits is the book's order. That it is silent on the quiet turns is a reading of p.186, which names overextensions only.",
+            title="What the caution teaches",
+            lines=(
+                "The point: a volume spike tells you something is happening, not what. Volume alone cannot call a market overbought or oversold.",
+                "So do not trade the spike alone: name the overextension now, and wait for price to show which way it turned.",
+                "It returns to the spikes because the book puts the caution here, p.186.",
+                "The book is silent on two things: whether the quiet turns carry it too, and what overbought and oversold mean.",
+            ),
+            accent="Volume says a turn is likely; price says which kind it was.",
+            notes=(
+                "This is the slide that answers why the deck goes back to high volume: it is the book's order, and the caution is about the spikes.",
+                "Do not extend the caution to the low volume turns. The book does not, so the course does not.",
             ),
         ),
         Pair(
-            origin="Book p.186 and Figure 6.17.",
+            origin="Book p.186 and Figure 6.17. The 10, 3 and 6 million are ours, to show the arithmetic.",
             left=Content(
                 title="Lower timeframes are more sensitive",
                 lines=(
-                    "The same gold volume, on five timeframes: daily, weekly, monthly, quarterly, yearly.",
-                    "Daily and weekly volume peak in 2013. Monthly and higher peak in 2011.",
-                    "Lower timeframe charts are more sensitive to volume action.",
+                    "Timeframe: the time one bar covers. A monthly bar adds up every day of the month.",
+                    "Figure 6.17, gold: daily and weekly volume peak in 2013, circled at far right; monthly, quarterly and yearly peak in 2011.",
+                    "Ours: a record 2013 day of 10 million, in a month of 19 quiet days of 3 million: 10 + 57 = 67 million.",
+                    "A 2011 month with no record day, 20 days of 6 million: 120 million, the monthly peak.",
                 ),
-                accent="At higher timeframes, the overall trend or behavior of volume is more obvious.",
+                accent="Lower timeframes are more sensitive: one day's burst shows. Higher ones show the overall trend of volume.",
+                caption="So: daily to spot a single burst, monthly or higher to see the trend in volume.",
             ),
             picture=Figure(
                 number="6.17",
@@ -1066,22 +1191,23 @@ SECTION2 = Section(
             text_w=7.2,
             notes=(
                 "Find the circled spike in 2013 on the daily and weekly panels. Then find where monthly and above peak: 2011.",
-                "One day's spike dominates a daily panel. Added into a month or a year, it is outweighed by the busy months around it.",
+                "Work the two sums on the board: 67 million for the record day's month against 120 million for the busy month.",
             ),
         ),
         Pair(
-            origin="Ours: the book's p.186 point on one invented volume record. The days, the spike and the months are ours.",
+            origin="Ours: the book's p.186 point on one invented volume record. The days, the spike and the months are ours, and the sums are read from it.",
             left=Content(
                 title="Our example: one record, two timeframes",
                 lines=(
-                    "Daily: the tallest bar is one spike, late in the record, at 1.",
-                    "Monthly: the same days added up by month. The busiest month, 2, comes earlier.",
+                    "Daily: the tallest bar is one spike of 6.0 million shares, late in the record, at 1.",
+                    "Monthly, the same days added twenty at a time: the spike's month comes to only 24.4 million, one big day and nineteen of about 1 million.",
+                    "The busiest month, 2, comes earlier: no day above 3.5 million, but twenty of them add to 55.7 million.",
                 ),
                 accent="One volume record, two different peaks: it depends on the timeframe.",
             ),
             picture=Chart(
                 letter="Q",
-                shows="One invented volume record drawn twice. Upper panel, daily bars: the tallest is a single spike late in the record, marked 1. Lower panel, the same days summed into monthly bars: the tallest is a busy month earlier on, marked 2, and the late spike's month is not the highest.",
+                shows="One invented volume record drawn twice. Upper panel, daily bars: the tallest is a single spike of 6.0 million late in the record, marked 1. Lower panel, the same days summed into monthly bars: the tallest is a busy month earlier on, 55.7 million, marked 2, and the late spike's month comes to only 24.4 million.",
             ),
             text_w=CHART_W,
             notes=(

@@ -1,9 +1,9 @@
 # Chapter 6 - Volume and Open Interest
 
-136 slides, six parts, 19 in-class checks carrying 38 multiple choice items,
-26 terms, all 44 of the book's figures, and 44 charts of our own. It ships
-in two editions: the teaching edition at 136 slides, and the student
-edition at 98, which is the same deck without the checks, the reveals and
+191 slides, six parts, 19 in-class checks carrying 38 multiple choice items,
+26 terms, all 44 of the book's figures, and 53 charts of our own. It ships
+in two editions: the teaching edition at 191 slides, and the student
+edition at 153, which is the same deck without the checks, the reveals and
 the speaker notes.
 
 **This chapter is built to the lean form the instructor approved in Chapter
@@ -19,7 +19,7 @@ outside the repository:
 | File | Who it is for | What it is | Generated from |
 |---|---|---|---|
 | `FIN1209-Chapter-06.pptx` | The room | The committed deck, teaching edition. Our own charts, and a placeholder where each of the book's figures goes. | `build/content_chapter06.py` |
-| `FIN1209-Chapter-06-Student-Edition.pptx` | The students | 98 slides. The same deck with the checks, the reveals and the speaker cues removed. | `build/content_chapter06.py` |
+| `FIN1209-Chapter-06-Student-Edition.pptx` | The students | 153 slides. The same deck with the checks, the reveals and the speaker cues removed. | `build/content_chapter06.py` |
 | `FIN1209-Chapter-06-Run-Card.pdf` | The instructor | 3 pages. Minutes per part, the two ways through the chapter, what to cut and what must never be cut. No answers. | `build/plan_chapter06.py` |
 | `FIN1209-Chapter-06-Lecture-Notes.pdf` | The students | 51 pages. What the lesson covered, in prose, with every figure and every chart the deck places. | `build/lecture_chapter06.py` |
 | `~/FIN1209-Chapter-06-In-Class-Checks (answer sheet).md` | The instructor | The answer sheet. **Not in this repository.** | `build/content_chapter06.py` |
@@ -51,21 +51,21 @@ or a speaker cue, and none by a slide the run card's Cut 1 drops.
 
 | Part | Book pages | Slides | Checks | Figures | Our charts | Terms |
 |---|---|---|---|---|---|---|
-| 1 Confirmation and divergence | 173 to 180 | 24 | 3 | 6.1 to 6.8 | A to I | Volume; bullish and bearish volume; volume divergence and confirmation; bullish and bearish divergence and confirmation; price-based and non-price-based volume oscillators |
-| 2 Timing, the VWMA, climaxes | 180 to 186 | 23 | 3 | 6.9 to 6.17 | J to Q | Low volume breakout signal; low volume reversal; VWMA; upper and lower overextended volume levels; low volume top and bottom |
-| 3 Barriers and filtering | 187 to 190 | 17 | 3 | 6.18 to 6.23 | R to V | Smoothed volume filter; two- or three-sigma volume filter; volume filtered inflection points |
-| 4 Open interest and breadth | 190 to 197 | 26 | 4 | 6.24 to 6.29 | W to AG | Loss aversion bias; open interest; tick volume; the TRIN; volume by price and by time |
-| 5 Bar range and cycles | 197 to 202 | 20 | 3 | 6.30 to 6.38 | AH to AL | Rest, reversal and continuation bars; intraday volume cycle |
-| 6 Volume oscillators | 203 to 208 | 20 | 3 | 6.39 to 6.44 | AM to AR | OBV; ADL; Chaikin Money Flow and Oscillator; NYSE Up/Down Volume; Herrick Payoff Index; COT report |
+| 1 Confirmation and divergence | 173 to 180 | 31 | 3 | 6.1 to 6.8 | A to I | Volume; bullish and bearish volume; volume divergence and confirmation; bullish and bearish divergence and confirmation; price-based and non-price-based volume oscillators |
+| 2 Timing, the VWMA, climaxes | 180 to 186 | 31 | 3 | 6.9 to 6.17 | J to Q | Low volume breakout signal; low volume reversal; VWMA; upper and lower overextended volume levels; low volume top and bottom |
+| 3 Barriers and filtering | 187 to 190 | 27 | 3 | 6.18 to 6.23 | R to V, RA to RC, SA, VA | Smoothed volume filter; two- or three-sigma volume filter; volume filtered inflection points |
+| 4 Open interest and breadth | 190 to 197 | 34 | 4 | 6.24 to 6.29 | W to AG | Loss aversion bias; open interest; tick volume; the TRIN; volume by price and by time |
+| 5 Bar range and cycles | 197 to 202 | 28 | 3 | 6.30 to 6.38 | AH to AL | Rest, reversal and continuation bars; intraday volume cycle |
+| 6 Volume oscillators | 203 to 208 | 30 | 3 | 6.39 to 6.44 | AM to AR, FA to FD | OBV; ADL; Chaikin Money Flow and Oscillator; NYSE Up/Down Volume; Herrick Payoff Index; COT report |
 
-The other six slides are the title, the objectives, the roadmap and three
+The other ten slides are the title, the objectives, the roadmap and seven
 closing slides.
 
 ## Every idea has a picture
 
-Of the 92 teaching slides, 88 carry a picture: all 44 of the book's figures
-and 44 charts of our own. Four carry none, and no two are next to each
-other: the book's two lists of volume oscillators, its eight oscillators and
+Of the 143 teaching slides, 97 carry a picture: all 44 of the book's figures
+and 53 charts of our own. Forty six carry none, and no two are next to each
+other. Four of them are where the book gives no figure: the book's two lists of volume oscillators, its eight oscillators and
 eight methods of reading them, the volume distortions, which the book gives
 in two sentences, and the Herrick Payoff Index, for which it gives no
 formula and no figure.
@@ -135,13 +135,13 @@ prints this table on every build.
 | Part | Slides | Minutes |
 |---|---|---|
 | Title, objectives, roadmap | 3 | 3.4 |
-| 1 Confirmation | 24 | 42.8 |
-| 2 Timing | 23 | 42.0 |
-| 3 Filtering | 17 | 30.2 |
-| 4 Open interest | 26 | 45.1 |
-| 5 Bar range | 20 | 35.9 |
-| 6 Oscillators | 20 | 35.1 |
-| Closing | 3 | 3.4 |
+| 1 Confirmation | 31 | 42.8 |
+| 2 Timing | 31 | 42.0 |
+| 3 Filtering | 27 | 30.2 |
+| 4 Open interest | 34 | 45.1 |
+| 5 Bar range | 28 | 35.9 |
+| 6 Oscillators | 30 | 35.1 |
+| Closing | 7 | 3.4 |
 
 **The run card gives two ways through it**, and `build_plan6.py` refuses a
 card whose minutes disagree with the deck:
@@ -195,13 +195,13 @@ From the repository root, in this order, every time the content module
 changes:
 
 ```
-.venv/bin/python build/build_chapter6.py                     # teaching, 136 slides, and the answer sheet in ~
-.venv/bin/python build/build_chapter6.py --edition student   # student, 98 slides
+.venv/bin/python build/build_chapter6.py                     # teaching, 191 slides, and the answer sheet in ~
+.venv/bin/python build/build_chapter6.py --edition student   # student, 153 slides
 .venv/bin/python build/build_plan6.py                        # instructor, 3 pages
 .venv/bin/python build/build_lecture_notes6.py               # students, 51 pages
 ```
 
-The two deck builds draw the 44 charts and are deterministic: a second run
+The two deck builds draw the 53 charts and are deterministic: a second run
 leaves `git status` clean. The two PDF builds are not byte reproducible,
 because Chrome stamps its own identifiers; compare them by `pdftotext`
 before committing a rebuild.
@@ -234,13 +234,13 @@ pdfunite /tmp/ch6/p-*.pdf ~/"FIN1209 Chapter 6 - Lim, Handbook of Technical Anal
 ```
 
 Before committing either deck, confirm it embeds no artwork that is not
-ours. Each must hold exactly 44 images, and their hashes must match this
+ours. Each must hold exactly 53 images, and their hashes must match this
 chapter's own chart folder. The student edition must also carry no notes
 part:
 
 ```
-unzip -l chapter-06/FIN1209-Chapter-06.pptx | grep -c ppt/media                    # 44
-unzip -l chapter-06/FIN1209-Chapter-06-Student-Edition.pptx | grep -c ppt/media    # 44
+unzip -l chapter-06/FIN1209-Chapter-06.pptx | grep -c ppt/media                    # 53
+unzip -l chapter-06/FIN1209-Chapter-06-Student-Edition.pptx | grep -c ppt/media    # 53
 unzip -l chapter-06/FIN1209-Chapter-06-Student-Edition.pptx | grep -c notesSlide   # 0
 unzip -o -d /tmp/media chapter-06/FIN1209-Chapter-06.pptx 'ppt/media/*'
 diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
@@ -249,7 +249,7 @@ diff <(shasum -a256 /tmp/media/ppt/media/*.png | awk '{print $1}' | sort) \
 
 For the notes PDF the same check is `pdfimages -list <pdf>`: 44 images, 24
 of them 1084 by 768 and 20 of them 884 by 692, and no others. The run card
-holds no images. The decks with the book's artwork in them hold 88: the 44
+holds no images. The decks with the book's artwork in them hold 97: the 53
 charts and one for each of the 44 figures.
 
 Then look at every page, as an image: both builds of the notes, the run

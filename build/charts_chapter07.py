@@ -83,11 +83,11 @@ def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Pat
     ax.text((split_x + right) / 2, top + 0.08, "Bearish formation",
             ha="center", va="center", fontsize=14, fontweight="bold",
             color=ck.GREEN_DEEP)
-    ax.text(0.095, (split_y + top) / 2, "Uptrend\n(bullish trend)",
-            ha="center", va="center", fontsize=13.5, fontweight="bold",
+    ax.text(0.13, (split_y + top) / 2, "Uptrend\n(bullish trend)",
+            ha="center", va="center", fontsize=12.5, fontweight="bold",
             color=ck.GREEN_DEEP, linespacing=1.0)
-    ax.text(0.095, (bottom + split_y) / 2, "Downtrend\n(bearish trend)",
-            ha="center", va="center", fontsize=13.5, fontweight="bold",
+    ax.text(0.13, (bottom + split_y) / 2, "Downtrend\n(bearish trend)",
+            ha="center", va="center", fontsize=12.5, fontweight="bold",
             color=ck.GREEN_DEEP, linespacing=1.0)
     if footnote:
         fig.text(0.012, 0.018, footnote, fontsize=8.5, color=ck.MUTED,
@@ -328,9 +328,9 @@ CHARTS = (
                                 (50.6, 51.2, 49.4, 49.8))),
                     notes=(
                         ck.Note(x=3, y=50.2, label="first L 50.20",
-                                dx=-28, dy=-12, notice=True),
+                                dx=-82, dy=-8, notice=True),
                         ck.Note(x=4, y=49.8, label="second C 49.80",
-                                dx=-8, dy=-12, notice=True),
+                                dx=-82, dy=-30, notice=True),
                     ),
                     ticks=(44.0, 46.0, 48.0, 50.0, 52.0),
                     height=1.0,

@@ -124,4 +124,77 @@ CHARTS = (
             footnote="Ours, invented PHP bars and million-share volume.",
         ),
     ),
+    ck.ChartArt(
+        letter="P",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                ck.Pane(
+                    name="One five-minute bar",
+                    bars=(ck.Bar(open=50.00, high=52.40, low=49.60,
+                                 close=51.10),),
+                    notes=(
+                                ck.Note(x=0, y=50.00, label="O 50.00", dx=-24, dy=18),
+                                ck.Note(x=0, y=52.40, label="H 52.40", dx=32, dy=12,
+                                notice=True),
+                                ck.Note(x=0, y=49.60, label="L 49.60", dx=28, dy=-10),
+                        ck.Note(x=0, y=51.10, label="C 51.10", dx=10, dy=-8),
+                    ),
+                    ticks=(49.60, 51.10, 52.40),
+                    height=2.0,
+                ),
+            ),
+            size=ck.pair_size(4.8),
+            xticks=((0, "one interval"),),
+            footnote=("Ours, invented PHP values. Range: |H - L| = "
+                      "|52.40 - 49.60| = PHP 2.80."),
+        ),
+    ),
+    ck.ChartArt(
+        letter="Q",
+        draw=ck.readings,
+        kwargs=dict(
+            series=(50.00, 50.80, 49.60, 52.40, 51.10),
+            marks=(
+                ck.Reading(x=0, label="1 first trade 50.00", dx=-8, dy=18),
+                ck.Reading(x=3, label="2 highest 52.40", dx=42, dy=18),
+                ck.Reading(x=4, label="3 last trade 51.10", dx=10, dy=-14),
+            ),
+            xlabel="Five one-minute observations inside one five-minute bar",
+            footnote=("Ours, invented PHP observations. First trade becomes O; "
+                      "highest and lowest become H and L; last becomes C."),
+        ),
+    ),
+    ck.ChartArt(
+        letter="R",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(
+                ck.Pane(
+                    name="Three lower-timeframe bars",
+                    bars=(
+                        ck.Bar(open=50.00, high=50.70, low=49.40,
+                               close=50.20),
+                        ck.Bar(open=50.20, high=50.90, low=49.80,
+                               close=50.00),
+                        ck.Bar(open=50.00, high=50.60, low=49.70,
+                               close=50.30),
+                    ),
+                    notes=(
+                        ck.Note(x=0, y=50.00, label="1 first O", dx=-8, dy=18),
+                        ck.Note(x=1, y=50.90, label="2 highest H", dx=28, dy=18,
+                                notice=True),
+                        ck.Note(x=1, y=49.40, label="3 lowest L", dx=10, dy=-12),
+                        ck.Note(x=2, y=50.30, label="4 last C", dx=10, dy=-12),
+                    ),
+                    ticks=(49.40, 50.30, 50.90),
+                    height=2.0,
+                ),
+            ),
+            size=ck.pair_size(4.8),
+            xticks=((0, "bar 1"), (1, "bar 2"), (2, "bar 3")),
+            footnote=("Ours, invented PHP bars. The composite keeps first O "
+                      "50.00, highest H 50.90, lowest L 49.40, last C 50.30."),
+        ),
+    ),
 )

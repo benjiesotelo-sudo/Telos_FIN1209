@@ -442,7 +442,7 @@ SECTION1 = Section(
                 title="Read each interval before naming it",
                 lines=(
                     "The book next shows five-minute intervals before it classifies a formation (Lim, p. 210).",
-                    "Gold [1] marks the first interval, red [2] a later sequence, and blue [3] the OHLC bar below one interval.",
+                    "Gold [1] marks the first interval, red [2] a later interval, and blue [3] the OHLC bar below one interval.",
                     "Action: read each interval first; then count bars, identify intrinsic sentiment, and ask continuation or reversal.",
                 ),
                 accent="The three classification questions come after the interval read.",
@@ -499,7 +499,7 @@ SECTION1 = Section(
                 title="Part 1 in one worked read",
                 lines=(
                     "Ours, invented: two bars make a double formation [1]. The second closes at 49.80 below first low 50.20.",
-                    "The second bar's intrinsic sentiment is bearish [2]. Prices rise into the pair [3], so bullish trend and bearish formation disagree.",
+                    "The second bar's intrinsic sentiment is bearish [2]. The rising upper price sequence beside the pair is bullish trend context [3].",
                     "Read: potential reversal, not a promise of a fall.",
                 ),
                 accent="Count, intrinsic bias, and trend expectation now have one worked read.",
@@ -575,10 +575,9 @@ SECTION2 = Section(
         Content(
             title="Trend sentiment and intrinsic sentiment",
             lines=(
-                "With the three questions in place, define the sentiments that decide the expectation.",
-                "Trend sentiment is bullish in an uptrend and bearish in a downtrend. Intrinsic sentiment is the formation's own bullish or bearish bias (Lim, p. 211).",
-                "Ours, invented: an uptrend rises 4.0% over four bars; a bullish formation rises 2.0% over two bars. Both are bullish and agree.",
-                "Meaning/action: compare both before calling continuation or reversal.",
+                "With the three questions in place, define trend sentiment: bullish in an uptrend, bearish in a downtrend. Intrinsic sentiment is a formation's own bullish or bearish bias (Lim, p. 211).",
+                "Chapter 4 defines an inverted head and shoulders as bullish; in an uptrend, bullish biases agree.",
+                "Four invented trend/form cells: +4.0%/+2.0% and -4.0%/-2.0% continue; +4.0%/-2.0% and -4.0%/+2.0% are potential reversals.",
             ),
             accent="Agreement gives continuation; disagreement gives reversal.",
             notes=(

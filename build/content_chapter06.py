@@ -1667,7 +1667,7 @@ SECTION4 = Section(
             origin="Book p.194 defines both. The chart is ours: the volume by price is added up from its own invented bars and volume.",
             left=Term(
                 term="Volume by price and volume by time",
-                plain="By time: the usual bars, one a period. By price: sideways bars, one per price level.",
+                plain="A different split from the tick and the TRIN: not a breadth count, but one share count sliced two ways. By time: the usual bars, one a period. By price: sideways bars, one per price level.",
                 example="Our chart, 100 days: 68 million shares at PHP 48 to 50, 12 million at PHP 54 to 56. The longest sideways bar: PHP 48 to 50.",
                 formal="Volume by time represents the total volume traded over a specified time interval or period. Volume by price identifies the total volume traded at each price level.",
             ),

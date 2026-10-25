@@ -747,7 +747,6 @@ CHARTS = (
     ),
 )
 
-
 # Charts SA to SH belong to the inside-bar through Hikkake range. The letters
 # deliberately start at S so parallel Chapter 7 workers can add their own
 # charts without colliding with this lane or with the approved A and B.
@@ -1041,7 +1040,7 @@ CHARTS = CHARTS + (
             size=ck.pair_size(2.8),
             footnote="Course drawing, invented PHP values; the book's drawing follows.",
         ),
-    ),,
+    ),
     ck.ChartArt(
         letter="QA", draw=ck.cells,
         kwargs=dict(items=(ck.Cell(name="Bearish close and volume",
@@ -1392,4 +1391,24 @@ CHARTS = CHARTS + (
                    ),)),
             cols=1, size=ck.pair_size(4.0),
             footnote="Ours, invented PHP bars and million-share volume; following Lim p. 216.")),
+)
+
+# A one-cell chart is still passed as a one-item sequence to ``cells``.
+for _art in CHARTS:
+    if _art.draw is ck.cells and isinstance(_art.kwargs.get("items"), ck.Cell):
+        _art.kwargs["items"] = (_art.kwargs["items"],)
+
+# Several Part 2 slides reuse one marked chart with a distinct slide letter.
+# Give each reused name its own generated file so the deck never falls back to
+# a placeholder when the source slide is expanded.
+_ALIASES = {
+    "QV": "QA", "QW": "QA", "QX": "QA",
+    "QY": "QB", "QZ": "QB", "RD": "QC",
+    "RE": "QT", "RF": "QK", "RG": "QA", "RH": "QB",
+}
+_BY_LETTER = {art.letter: art for art in CHARTS}
+CHARTS = CHARTS + tuple(
+    ck.ChartArt(letter=alias, draw=_BY_LETTER[base].draw,
+                kwargs=dict(_BY_LETTER[base].kwargs))
+    for alias, base in _ALIASES.items()
 )

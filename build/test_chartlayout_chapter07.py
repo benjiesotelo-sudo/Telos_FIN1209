@@ -78,6 +78,18 @@ class ChartLayoutTests(unittest.TestCase):
         titles = [s.title for s in charts if s.asset == 'r3a-a']
         self.assertEqual(titles, list(PAGE_TITLES['r3a-a']))
 
+    def test_look_alike_slides_come_after_both_bars_and_before_their_check(self):
+        slides = [s for section in CHAPTER.sections for s in section.slides]
+        at = [i for i, s in enumerate(slides) if getattr(s, 'asset', '') == 'r3a-a']
+        self.assertEqual(at, [at[0], at[0] + 1])
+        after = slides[at[-1] + 1]
+        self.assertIsInstance(after, deckkit.Check)
+        self.assertEqual(after.label, 'From exhaustion and pin bars')
+        taught = [i for i, s in enumerate(slides) if getattr(s, 'asset', '') in ('r3b-lc', 'r3b-lj')]
+        self.assertLess(max(taught), at[0])
+        for slide in slides[at[0]:at[-1] + 1]:
+            self.assertEqual(sorted(m.number for m in slide.marks), [1, 2, 3])
+
 
 if __name__ == '__main__':
     unittest.main()

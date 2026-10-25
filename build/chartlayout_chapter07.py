@@ -371,6 +371,7 @@ def layout(key, page=0):
     spec = DATA[key]
     fig = plt.figure(figsize=(WIDTH, HEIGHT), dpi=ck.DPI)
     labels, segments, targets, levels, tips, groups = [], [], {}, [], [], {}
+    columns = []   # labels keep off them; a volume badge sits on its own
     def text(x, y, value, *, ha='center', va='center', color=ck.INK):
         # A white backing breaks a dashed level line where it meets a label.
         artist = fig.text(x/WIDTH, y/HEIGHT, value, ha=ha, va=va,
@@ -522,11 +523,19 @@ def layout(key, page=0):
                 span=hi-lo or 1
                 ax=fig.add_axes([0,bottom/HEIGHT,1,(top-bottom)/HEIGHT])
                 ax.set_axis_off();ax.set_xlim(0,WIDTH);ax.set_ylim(lo,hi)
-                ax.bar(xs,cols,width=.23,color=ck.GREEN)
+                if lo < 0:
+                    ax.axhline(0,color=ck.MUTED,lw=.8,zorder=0)
+                for patch in ax.bar(xs,cols,width=.23,color=ck.GREEN):
+                    columns.append(patch.get_window_extent().padded(2))
                 for index,x,value in zip(range(start,end),xs,cols):
                     y=bottom+(value-lo)/span*(top-bottom)
                     label=f'{value:g}m' if has_volume else f'{value:g}'
-                    text(x,y+.07,label,va='bottom',color=ck.GREEN_DEEP)
+                    # A value sits beyond its column's end: above a rise,
+                    # below a fall, never on the column itself.
+                    if value < 0:
+                        text(x,y-.07,label,va='top',color=ck.GREEN_DEEP)
+                    else:
+                        text(x,y+.07,label,va='bottom',color=ck.GREEN_DEEP)
                     targets[cell_index,index,'volume']=(x*ck.DPI,(bottom+(value/2-lo)/span*(top-bottom))*ck.DPI)
     text(WIDTH/2,.02,CAPTION,color=ck.MUTED,va='bottom')
     fig.canvas.draw()
@@ -537,7 +546,7 @@ def layout(key, page=0):
             artist.set_position((x,y+direction*pixels/fig.bbox.height))
             box=artist.get_window_extent(renderer).padded(2)
             others=[t.get_window_extent(renderer).padded(2) for t in labels if t is not artist and t not in levels]
-            if not any(_overlaps(box,b) for b in others+segments):
+            if not any(_overlaps(box,b) for b in others+segments+columns):
                 break
     # Far-left level labels may advance upward, never horizontally away
     # from their level's left end. Actual renderer boxes determine the lane.
@@ -552,7 +561,7 @@ def layout(key, page=0):
         else:
             raise AssertionError(f'{key}: no level caption lane: {artist.get_text()}')
     try:
-        boxes=_assert_layout(fig,labels,segments)
+        boxes=_assert_layout(fig,labels,segments+columns)
         for bounds in groups.values():
             x0,y0,x1,y1=bounds
             edges=(((x0,y0),(x1,y0)),((x1,y0),(x1,y1)),((x1,y1),(x0,y1)),((x0,y1),(x0,y0)))

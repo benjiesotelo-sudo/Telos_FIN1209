@@ -76,30 +76,30 @@ def artwork(data):
 TEXT_H = 1.2   # four lines of 17 point teaching text above the chart
 
 
-def _sentences(content):
-    """Split a slide's text at sentence ends, keeping every word."""
-    result = []
-    for value in (*content.lines, content.accent, content.caption):
-        if value:
-            result.extend(re.split(r'(?<=[.!?])\s+(?=[A-Z\[])', value))
-    return result
+def _paragraphs(content):
+    """Split each paragraph of a slide at sentence ends, keeping every word."""
+    return [re.split(r'(?<=[.!?])\s+(?=[A-Z\[])', value)
+            for value in (*content.lines, content.accent, content.caption) if value]
 
 
 def _refs(sentence):
     return {int(n) for n in re.findall(r'\[(\d+)\]', sentence)}
 
 
-def _place(asset, sentences):
+def _place(asset, paragraphs):
     """Give each chart page the sentences that read it.
 
     A sentence naming marks goes to the page that carries them. The
     sentences before the first of those introduce the chart, so they open
     its first page and stand on any page no mark falls on. Any other
-    sentence goes with the next sentence that names a mark, or the last.
+    sentence stays with a marked sentence earlier in its own paragraph,
+    else goes with the next marked sentence, else the last.
     """
     from charts_chapter07 import DATA
     numbers = [{m.number for m in layout(asset, page)[1]}
                for page in range(len(page_specs(DATA[asset])))]
+    sentences = [s for paragraph in paragraphs for s in paragraph]
+    owner = [i for i, paragraph in enumerate(paragraphs) for _s in paragraph]
     homes = []
     for sentence in sentences:
         refs = _refs(sentence)
@@ -110,12 +110,15 @@ def _place(asset, sentences):
         return [list(sentences) for _ in numbers]
     first = next(i for i, home in enumerate(homes) if home is not None)
     opening = sentences[:first]
+    marked = list(homes)
     for i, home in enumerate(homes):
         if i < first:
             homes[i] = 0
         elif home is None:
-            later = [h for h in homes[i:] if h is not None]
-            homes[i] = later[0] if later else [h for h in homes[:i] if h is not None][-1]
+            same = [marked[j] for j in range(i) if owner[j] == owner[i] and marked[j] is not None]
+            later = [h for h in marked[i:] if h is not None]
+            homes[i] = (same[-1] if same else later[0] if later
+                        else [h for h in marked[:i] if h is not None][-1])
     placed = [[s for s, home in zip(sentences, homes) if home == page]
               for page in range(len(numbers))]
     return [page or list(opening) for page in placed]
@@ -178,9 +181,9 @@ def expand_chart_pages(chapter):
                 result.append(slide)
                 continue
             previous = slides[index - 1] if index else None
-            sentences = _sentences(previous) if isinstance(previous, dk.Content) else [slide.shows]
+            paragraphs = _paragraphs(previous) if isinstance(previous, dk.Content) else [[slide.shows]]
             specs = page_specs(DATA[slide.asset])
-            for page, selected in enumerate(_place(slide.asset, sentences)):
+            for page, selected in enumerate(_place(slide.asset, paragraphs)):
                 assert selected, (slide.asset, page + 1, 'chart page with no sentence')
                 title = slide.title
                 if slide.asset in PAGE_TITLES:
@@ -188,7 +191,7 @@ def expand_chart_pages(chapter):
                 elif slide.asset in CASE_TITLES:
                     title = DATA[slide.asset]['items'][specs[page][0]].name
                 marks = layout(slide.asset, page)[1]
-                if slide.asset in PAGE_TITLES:
+                if slide.asset in PAGE_TITLES or slide.asset in CASE_TITLES:
                     selected, marks = _renumber(selected, marks)
                 for chunk in _chunks(selected):
                     internal = chr(65 + serial // 26) + chr(65 + serial % 26)
@@ -219,13 +222,13 @@ def course_slide_renderer():
         dk._header_rule(slide,Inches(1.25))
         frame=dk._textbox(slide,dk.MARGIN,Inches(1.33),dk.CONTENT_W,Inches(TEXT_H))
         refs={mark.number: mark.rgb for mark in s.marks}
-        dk._para(frame,' '.join(s.teaching),size=17,color=dk.INK,first=True,line_spacing=1.05,refs=refs)
+        dk._para(frame,' '.join(s.teaching),size=17,color=dk.INK,first=True,line_spacing=1.0,refs=refs)
         x=(dk.SLIDE_W.inches-WIDTH)/2
-        y=2.58
+        y=2.62
         dk._rect(slide,Inches(x-.04),Inches(y-.04),Inches(WIDTH+.08),Inches(HEIGHT+.08),dk.WHITE,line=dk.BORDER)
         dk._add_picture(slide,s,Path(dk.CHARTS_DIR)/s.filename,x,y,WIDTH,HEIGHT)
         dk._draw_marks(slide,s.marks,x,y,WIDTH,HEIGHT)
-        frame=dk._textbox(slide,dk.MARGIN,Inches(6.48),dk.CONTENT_W,Inches(.25))
+        frame=dk._textbox(slide,dk.MARGIN,Inches(6.52),dk.CONTENT_W,Inches(.22))
         dk._para(frame,s.credit,size=11,color=dk.MUTED,first=True)
         dk._progress(slide,marker)
         dk._notes(slide,s.notes)

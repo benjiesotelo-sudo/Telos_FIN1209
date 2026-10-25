@@ -6431,7 +6431,7 @@ CHAPTER = Chapter(
                     notes=('Left: inside high 43.00, inside low 40.00, false low 39.00, long re-entry at 43.00.', 'Right: inside high 52.00, inside low 49.00, false high 53.00, short re-entry at 49.00.'),
                     origin="Course chart LI: invented PHP values; the book's drawing is shown separately.",
                     title='The bullish and bearish Hikkake drawings belong together',
-                    lines=('On the left, [1] marks the inside bar, [2] its false downside breakout, and [3] the long re-entry above PHP 43.00.', 'On the right, [4] marks the inside bar, [5] its false upside breakout, and [6] the short re-entry below PHP 49.00. The invented levels are left: high 43.00, low 40.00, false low 39.00; right: high 52.00, low 49.00, false high 53.00.'),
+                    lines=('In the bullish case, [1] marks the inside bar, [2] its false downside breakout, and [3] the long re-entry above PHP 43.00. Its invented levels are high 43.00, low 40.00 and false low 39.00.', 'In the bearish case, [4] marks the inside bar, [5] its false upside breakout, and [6] the short re-entry below PHP 49.00. Its invented levels are high 52.00, low 49.00 and false high 53.00.'),
                 ),
                 course_chart('r3b-li',
                     notes=('Left: inside high 43.00, inside low 40.00, false low 39.00, long re-entry at 43.00.', 'Right: inside high 52.00, inside low 49.00, false high 53.00, short re-entry at 49.00.'),

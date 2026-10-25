@@ -16,6 +16,7 @@ import deckkit as dk
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from matplotlib.lines import Line2D
+from matplotlib.textpath import TextPath
 from matplotlib.transforms import Bbox
 
 WIDTH, HEIGHT = ck.FIG_W, ck.FIG_H
@@ -135,6 +136,9 @@ def _assert_layout(fig, labels, bars):
         # Arial capitals at 16.5 pt have >=15 px of true ink at 100 dpi.
         # A rendered-PPTX raster audit also measures every actual label.
         assert label.get_fontsize() >= FONT
+        ink = TextPath((0,0),label.get_text(),size=label.get_fontsize(),
+                       prop=label.get_fontproperties()).get_extents().height*100/72
+        assert ink >= 14, f'Glyph ink below safe 100 dpi threshold: {label.get_text()}: {ink:.2f}px'
     return boxes
 
 
@@ -240,7 +244,8 @@ def layout(key, page=0):
         cell_index, start, end = page_specs(spec)[page]
         cell = spec['items'][cell_index]
         title = cell.name.replace('\n',' ')
-        text(WIDTH/2,3.64,title,color=ck.GREEN_DEEP)
+        if title:
+            text(WIDTH/2,3.64,title,color=ck.GREEN_DEEP)
         note = cell.note.replace('\n',' ')
         if note:
             text(WIDTH/2,3.32,note,color=ck.MUTED)
@@ -367,3 +372,27 @@ def draw(path, *, key, page=0, display_font=None):
     fig,_marks=layout(key,page)
     fig.savefig(path,dpi=ck.DPI,facecolor=ck.WHITE)
     return path
+
+
+def audit_pptx(path, charts_dir):
+    """Refuse a deck that scales the validated artwork below its contract."""
+    import hashlib
+    from pathlib import Path
+    from pptx import Presentation
+    from charts_chapter07 import DATA
+    assets={hashlib.sha256((Path(charts_dir)/f'chart-{key}-{page}.png').read_bytes()).hexdigest(): (key,page)
+            for key,spec in DATA.items() for page in range(len(page_specs(spec)))}
+    presentation=Presentation(path)
+    found=set()
+    for page,slide in enumerate(presentation.slides,1):
+        for shape in slide.shapes:
+            if shape.shape_type != 13:
+                continue
+            key=assets.get(hashlib.sha256(shape.image.blob).hexdigest())
+            if key is None:
+                continue
+            found.add(key)
+            scale=shape.width/914400/WIDTH
+            assert shape.width >= .55*presentation.slide_width, f'Slide {page}: chart is too narrow'
+            assert scale >= .999, f'Slide {page}: chart text scaled below validated size'
+    assert found==set(assets.values()), 'Missing chart pages in rendered deck'

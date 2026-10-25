@@ -7,6 +7,7 @@ This chapter-local renderer does not change the shared slide or chart kits.
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+from contextlib import contextmanager
 from functools import lru_cache
 import math
 import re
@@ -28,6 +29,7 @@ class CourseChart(dk.Chart):
     asset: str = ''
     page: int = 0
     display_letter: str = ''
+    teaching: tuple[str, ...] = ()
 
     @property
     def filename(self):
@@ -58,7 +60,8 @@ def page_specs(spec):
     for cell_index, cell in enumerate(spec['items']):
         count = max(max(len(p.bars), len(p.line), len(p.columns), 1) for p in cell.panes)
         # Three OHLC bars leave room for both side labels plus a level lane.
-        step = 3 if any(p.bars for p in cell.panes) else count
+        # A four-bar pattern stays whole: its sentences name all four bars.
+        step = (4 if count == 4 else 3) if any(p.bars for p in cell.panes) else count
         result.extend((cell_index, start, min(count, start + step)) for start in range(0, count, step))
     return tuple(result)
 
@@ -70,27 +73,167 @@ def artwork(data):
                  for page in range(len(page_specs(spec))))
 
 
+TEXT_H = 1.2   # four lines of 17 point teaching text above the chart
+
+
+def _sentences(content):
+    """Split a slide's text at sentence ends, keeping every word."""
+    result = []
+    for value in (*content.lines, content.accent, content.caption):
+        if value:
+            result.extend(re.split(r'(?<=[.!?])\s+(?=[A-Z\[])', value))
+    return result
+
+
+def _refs(sentence):
+    return {int(n) for n in re.findall(r'\[(\d+)\]', sentence)}
+
+
+def _place(asset, sentences):
+    """Give each chart page the sentences that read it.
+
+    A sentence naming marks goes to the page that carries them. The
+    sentences before the first of those introduce the chart, so they open
+    its first page and stand on any page no mark falls on. Any other
+    sentence goes with the next sentence that names a mark, or the last.
+    """
+    from charts_chapter07 import DATA
+    numbers = [{m.number for m in layout(asset, page)[1]}
+               for page in range(len(page_specs(DATA[asset])))]
+    homes = []
+    for sentence in sentences:
+        refs = _refs(sentence)
+        pages = [page for page, have in enumerate(numbers) if refs and refs <= have]
+        assert pages or not refs, (asset, 'sentence names marks on no single page', sentence)
+        homes.append(pages[0] if pages else None)
+    if all(home is None for home in homes):
+        return [list(sentences) for _ in numbers]
+    first = next(i for i, home in enumerate(homes) if home is not None)
+    opening = sentences[:first]
+    for i, home in enumerate(homes):
+        if i < first:
+            homes[i] = 0
+        elif home is None:
+            later = [h for h in homes[i:] if h is not None]
+            homes[i] = later[0] if later else [h for h in homes[:i] if h is not None][-1]
+    placed = [[s for s, home in zip(sentences, homes) if home == page]
+              for page in range(len(numbers))]
+    return [page or list(opening) for page in placed]
+
+
+def _chunks(sentences):
+    """Split a page's sentences across slides, never shrinking the text."""
+    chunks, chunk = [], []
+    for sentence in sentences:
+        if chunk and dk._text_height(' '.join((*chunk, sentence)), WIDTH, 17, spacing=1.26) > TEXT_H:
+            chunks.append(tuple(chunk))
+            chunk = []
+        chunk.append(sentence)
+    if chunk:
+        chunks.append(tuple(chunk))
+    for chunk in chunks:
+        assert dk._text_height(' '.join(chunk), WIDTH, 17, spacing=1.26) <= TEXT_H, chunk
+    return chunks
+
+
+# Look-alike patterns get their own slides (checklist 26); a two-case
+# comparison chart takes each page's title from the case it shows.
+PAGE_TITLES = {
+    'r3a-a': ('An exhaustion bar ends a long run',
+              'A pin bar pierces support and then snaps back inside'),
+}
+CASE_TITLES = ('r3b-le', 'r3b-li')
+
+
+def _renumber(sentences, marks):
+    """Number a look-alike's own slide from 1, in the order its text reads.
+
+    Colours stay with their marks: a leader line drawn into the chart
+    carries its mark's colour.
+    """
+    order = []
+    for sentence in sentences:
+        order.extend(n for n in map(int, re.findall(r'\[(\d+)\]', sentence)) if n not in order)
+    new = {old: i for i, old in enumerate(order, 1)}
+    sentences = [re.sub(r'\[(\d+)\]', lambda m: f'[{new[int(m.group(1))]}]', s) for s in sentences]
+    return sentences, tuple(replace(mark, number=new[mark.number]) for mark in marks)
+
+
 def expand_chart_pages(chapter):
-    """Make the extra space explicit in the deck's slide sequence."""
+    """Put each chart beside the sentences that read it, one page per slide.
+
+    The text slide written in front of a chart is folded onto the chart's
+    own slides, so a sentence that names a mark is read where the mark is.
+    """
     from charts_chapter07 import DATA
     serial = 0
     def expand(slides):
         nonlocal serial
         result = []
-        for slide in slides:
-            if isinstance(slide, CourseChart):
-                for page in range(len(page_specs(DATA[slide.asset]))):
+        for index, slide in enumerate(slides):
+            following = slides[index + 1] if index + 1 < len(slides) else None
+            if isinstance(slide, dk.Content) and isinstance(following, CourseChart):
+                continue
+            if not isinstance(slide, CourseChart):
+                result.append(slide)
+                continue
+            previous = slides[index - 1] if index else None
+            sentences = _sentences(previous) if isinstance(previous, dk.Content) else [slide.shows]
+            specs = page_specs(DATA[slide.asset])
+            for page, selected in enumerate(_place(slide.asset, sentences)):
+                assert selected, (slide.asset, page + 1, 'chart page with no sentence')
+                title = slide.title
+                if slide.asset in PAGE_TITLES:
+                    title = PAGE_TITLES[slide.asset][page]
+                elif slide.asset in CASE_TITLES:
+                    title = DATA[slide.asset]['items'][specs[page][0]].name
+                marks = layout(slide.asset, page)[1]
+                if slide.asset in PAGE_TITLES:
+                    selected, marks = _renumber(selected, marks)
+                for chunk in _chunks(selected):
                     internal = chr(65 + serial // 26) + chr(65 + serial % 26)
                     serial += 1
-                    result.append(replace(slide, page=page, letter=internal,
-                                          notes=slide.notes or (slide.shows,),
-                                          marks=layout(slide.asset, page)[1]))
-            else:
-                result.append(slide)
+                    result.append(replace(slide, page=page, letter=internal, title=title,
+                                          teaching=chunk, notes=slide.notes or (slide.shows,),
+                                          marks=marks))
         return tuple(result)
     openers = expand(chapter.openers or ())
     sections = tuple(replace(section, slides=expand(section.slides)) for section in chapter.sections)
     return replace(chapter, openers=openers, sections=sections, closing=expand(chapter.closing))
+
+
+@contextmanager
+def course_slide_renderer():
+    """Install the chapter-only wide chart/text form for this build only."""
+    original=dk.render_chart
+    def render(prs,s,marker):
+        if not isinstance(s,CourseChart):
+            return original(prs,s,marker)
+        from pathlib import Path
+        from pptx.util import Inches,Pt
+        slide=dk._blank(prs)
+        dk._ground(slide,dk.PAPER)
+        dk._rect(slide,0,0,dk.SLIDE_W,Inches(.16),dk.GREEN)
+        frame=dk._textbox(slide,dk.MARGIN,Inches(.42),dk.CONTENT_W,Inches(.84))
+        dk._para(frame,s.title,size=28,color=dk.GREEN,font=dk.DISPLAY_FONT,first=True,line_spacing=1.0)
+        dk._header_rule(slide,Inches(1.25))
+        frame=dk._textbox(slide,dk.MARGIN,Inches(1.33),dk.CONTENT_W,Inches(TEXT_H))
+        refs={mark.number: mark.rgb for mark in s.marks}
+        dk._para(frame,' '.join(s.teaching),size=17,color=dk.INK,first=True,line_spacing=1.05,refs=refs)
+        x=(dk.SLIDE_W.inches-WIDTH)/2
+        y=2.58
+        dk._rect(slide,Inches(x-.04),Inches(y-.04),Inches(WIDTH+.08),Inches(HEIGHT+.08),dk.WHITE,line=dk.BORDER)
+        dk._add_picture(slide,s,Path(dk.CHARTS_DIR)/s.filename,x,y,WIDTH,HEIGHT)
+        dk._draw_marks(slide,s.marks,x,y,WIDTH,HEIGHT)
+        frame=dk._textbox(slide,dk.MARGIN,Inches(6.48),dk.CONTENT_W,Inches(.25))
+        dk._para(frame,s.credit,size=11,color=dk.MUTED,first=True)
+        dk._progress(slide,marker)
+        dk._notes(slide,s.notes)
+    dk.render_chart=render
+    try:
+        yield
+    finally:
+        dk.render_chart=original
 
 
 def _overlaps(a, b):
@@ -279,9 +422,12 @@ def layout(key, page=0):
         has_volume = any(p.columns for p in cell.panes) and any(p.bars or p.line for p in cell.panes)
         price_bottom = 1.55 if has_volume else 1.0
         price_top = 2.72
+        count = end-start
         left = 3.6 if any(p.strokes for p in cell.panes) else 2.1
         right = WIDTH - 1.5
-        count = end-start
+        if count == 4:
+            # Four bars need the full width; a level caption climbs instead.
+            left, right = 1.5, WIDTH - 1.45
         xs = [left + (right-left) * i/max(1,count-1) for i in range(count)] if count>1 else [WIDTH/2]
         for pane_index, pane in enumerate(cell.panes):
             if pane.bars or pane.line:

@@ -6,7 +6,7 @@ from pathlib import Path
 import unittest
 
 from charts_chapter07 import DATA
-from chartlayout_chapter07 import CAPTION, CourseChart, layout, page_specs
+from chartlayout_chapter07 import CAPTION, PAGE_TITLES, CourseChart, _refs, layout, page_specs
 from content_chapter07 import CHAPTER
 import deckkit
 import chartkit
@@ -66,8 +66,17 @@ class ChartLayoutTests(unittest.TestCase):
         self.assertEqual(deckkit._validate(CHAPTER), [])
         pages = [s.filename for section in CHAPTER.sections
                  for s in section.slides if isinstance(s, CourseChart)]
-        self.assertEqual(len(pages), len(set(pages)))
-        self.assertEqual(len(pages), sum(len(page_specs(spec)) for spec in DATA.values()))
+        self.assertEqual(len(set(pages)), sum(len(page_specs(spec)) for spec in DATA.values()))
+
+    def test_every_sentence_is_read_beside_its_marks(self):
+        charts = [s for section in CHAPTER.sections for s in section.slides
+                  if isinstance(s, CourseChart)]
+        for slide in charts:
+            numbers = {mark.number for mark in slide.marks}
+            for sentence in slide.teaching:
+                self.assertLessEqual(_refs(sentence), numbers, (slide.asset, sentence))
+        titles = [s.title for s in charts if s.asset == 'r3a-a']
+        self.assertEqual(titles, list(PAGE_TITLES['r3a-a']))
 
 
 if __name__ == '__main__':

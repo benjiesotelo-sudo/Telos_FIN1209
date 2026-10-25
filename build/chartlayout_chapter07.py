@@ -12,6 +12,8 @@ from functools import lru_cache
 import math
 import re
 
+from pptx.util import Emu, Inches
+
 import chartkit as ck
 import deckkit as dk
 import matplotlib.pyplot as plt
@@ -205,10 +207,99 @@ def expand_chart_pages(chapter):
     return replace(chapter, openers=openers, sections=sections, closing=expand(chapter.closing))
 
 
+@dataclass
+class CourseCheck(dk.Check):
+    """A picture-free check whose stems, options and reasons stay at 17 point.
+
+    deckkit's own picture-free check sets options at 15 point and reasons at
+    16; the slide standard's floor is 17, and the shared kit cannot change
+    under the earlier chapters. The build fails rather than shrinking.
+    """
+
+
+def _course_check(prs, s, marker, index, total):
+    slide = dk._blank(prs)
+    dk._ground(slide, dk.GREEN_DEEP)
+    dk._rect(slide, 0, 0, dk.SLIDE_W, Inches(0.16), dk.GOLD)
+    dk._chip(slide, dk.MARGIN, Inches(0.55), f"CHECK {index} OF {total}",
+             fill=dk.GOLD, text_color=dk.INK, width=Inches(1.85))
+    frame = dk._textbox(slide, dk.MARGIN + Inches(2.1), Inches(0.57), Inches(8.0), Inches(0.4))
+    dk._para(frame, s.label, size=17, color=dk.WHITE, bold=True, first=True)
+    col_w = Emu(int((dk.CONTENT_W - Inches(0.7)) / 2))
+    inner = col_w.inches - 0.6
+    card_top, card_h = 1.32, 5.02
+    stem_pt, opt_pt = 18.0, 17.0
+    tallest = max(dk._text_height(q.stem, inner, stem_pt, "bold") for q in s.questions)
+    for q in s.questions:
+        options = sum(dk._text_height(f"D.  {o}", inner, opt_pt) + 0.13 for o in q.options)
+        assert tallest + 0.32 + options <= card_h - 0.95, (s.label, 'check text does not fit at 17 point')
+    for i, q in enumerate(s.questions):
+        x = dk.MARGIN + (col_w + Inches(0.7)) * i
+        dk._rect(slide, x, Inches(card_top), col_w, Inches(card_h), dk.GREEN)
+        frame = dk._textbox(slide, x + Inches(0.3), Inches(card_top + 0.27), col_w - Inches(0.6), Inches(0.25))
+        dk._para(frame, f"Q{i + 1}", size=12, color=dk.GOLD, bold=True, first=True)
+        stem_top = card_top + 0.58
+        frame = dk._textbox(slide, x + Inches(0.3), Inches(stem_top), col_w - Inches(0.6),
+                            Inches(dk._text_height(q.stem, inner, stem_pt, "bold") + 0.1))
+        dk._para(frame, q.stem, size=stem_pt, color=dk.WHITE, bold=True, first=True, line_spacing=1.15)
+        frame = dk._textbox(slide, x + Inches(0.3), Inches(stem_top + tallest + 0.32),
+                            col_w - Inches(0.6), Inches(3.2))
+        for j, option in enumerate(q.options):
+            dk._para(frame, f"{'ABCD'[j]}.  {option}", size=opt_pt, color=dk.WHITE,
+                     first=(j == 0), space_after=9, line_spacing=1.12)
+    dk._progress(slide, marker, on_dark=True)
+    dk._notes(slide, s.notes)
+
+
+def _course_reveal(prs, s, marker, index, total):
+    slide = dk._blank(prs)
+    dk._ground(slide, dk.PAPER)
+    dk._rect(slide, 0, 0, dk.SLIDE_W, Inches(0.16), dk.GOLD)
+    dk._chip(slide, dk.MARGIN, Inches(0.55), "ANSWERS", fill=dk.GREEN,
+             text_color=dk.WHITE, width=Inches(1.35))
+    frame = dk._textbox(slide, dk.MARGIN + Inches(1.6), Inches(0.57), Inches(8.5), Inches(0.4))
+    dk._para(frame, s.label, size=17, color=dk.GREEN, bold=True, first=True)
+    inner = dk.CONTENT_W.inches - 0.8
+    stem_pt, ans_pt, reason_pt = 17.0, 20.0, 17.0
+    cards = []
+    for i, q in enumerate(s.questions):
+        stem = f"Q{i + 1}   {q.stem}"
+        answer = f"{q.answer}.  {q.options['ABCD'.index(q.answer)]}"
+        heights = (dk._text_height(stem, inner, stem_pt), dk._text_height(answer, inner, ans_pt, "mono"),
+                   dk._text_height(q.reason, inner, reason_pt))
+        cards.append((stem, answer, q.reason, heights))
+    assert sum(0.95 + sum(h) for *_t, h in cards) + 0.27 <= 5.1, (s.label, 'answers do not fit at 17 point')
+    y = 1.32
+    for stem, answer, reason, (stem_h, ans_h, reason_h) in cards:
+        card_h = 0.95 + stem_h + ans_h + reason_h
+        dk._rect(slide, dk.MARGIN, Inches(y), dk.CONTENT_W, Inches(card_h), dk.WHITE, line=dk.BORDER)
+        dk._rect(slide, dk.MARGIN, Inches(y), Inches(0.1), Inches(card_h), dk.GOLD)
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.4), Inches(y + 0.26),
+                            dk.CONTENT_W - Inches(0.8), Inches(stem_h + 0.1))
+        dk._para(frame, stem, size=stem_pt, color=dk.MUTED, first=True, line_spacing=1.15)
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.4), Inches(y + 0.26 + stem_h + 0.28),
+                            dk.CONTENT_W - Inches(0.8), Inches(ans_h + 1.0))
+        dk._para(frame, answer, size=ans_pt, color=dk.GREEN, font=dk.MONO_FONT,
+                 bold=True, first=True, line_spacing=1.15)
+        dk._para(frame, reason, size=reason_pt, color=dk.INK, space_before=7, line_spacing=1.15)
+        y += card_h + 0.27
+    dk._progress(slide, marker)
+    dk._notes(slide, s.notes)
+
+
 @contextmanager
 def course_slide_renderer():
     """Install the chapter-only wide chart/text form for this build only."""
     original=dk.render_chart
+    original_check,original_reveal=dk.render_check,dk.render_reveal
+    def check(prs,s,marker,index,total):
+        if isinstance(s,CourseCheck) and s.picture is None:
+            return _course_check(prs,s,marker,index,total)
+        return original_check(prs,s,marker,index,total)
+    def reveal(prs,s,marker,index,total):
+        if isinstance(s,CourseCheck) and s.picture is None:
+            return _course_reveal(prs,s,marker,index,total)
+        return original_reveal(prs,s,marker,index,total)
     def render(prs,s,marker):
         if not isinstance(s,CourseChart):
             return original(prs,s,marker)
@@ -233,10 +324,12 @@ def course_slide_renderer():
         dk._progress(slide,marker)
         dk._notes(slide,s.notes)
     dk.render_chart=render
+    dk.render_check,dk.render_reveal=check,reveal
     try:
         yield
     finally:
         dk.render_chart=original
+        dk.render_check,dk.render_reveal=original_check,original_reveal
 
 
 def _overlaps(a, b):
@@ -469,15 +562,23 @@ def layout(key, page=0):
                     else:
                         y=pane.line[index]
                         targets[cell_index,index,'line']=(x*ck.DPI,y_inches(y)*ck.DPI)
-                        text(x,y_inches(y)+.19,f'{y:g}',va='bottom')
+                        label=spec.get('line_format','{:g}').format(y)
+                        # A trough's value sits under it, clear of the line climbing away.
+                        trough=(spec.get('trough_below') and 0<index<len(pane.line)-1
+                                and y<pane.line[index-1] and y<pane.line[index+1])
+                        if trough:
+                            text(x,y_inches(y)-.17,label,va='top')
+                        else:
+                            text(x,y_inches(y)+.19,label,va='bottom')
                 for target,group in spec.get('groups',{}).items():
                     ci,first,last=group
                     if pane.bars and ci==cell_index and start<=first<=last<end:
                         members=pane.bars[first:last+1]
                         bottom=min(b.low for b in members)
                         top=max(b.high for b in members)
-                        bounds=((x_inches(first)-1.45)*ck.DPI,(y_inches(bottom)-.45)*ck.DPI,
-                                (x_inches(last)+1.45)*ck.DPI,(y_inches(top)+.45)*ck.DPI)
+                        # A pair at the chart's edge keeps its box inside the picture.
+                        bounds=(max(.05,x_inches(first)-1.45)*ck.DPI,(y_inches(bottom)-.45)*ck.DPI,
+                                min(WIDTH-.05,x_inches(last)+1.45)*ck.DPI,(y_inches(top)+.45)*ck.DPI)
                         groups[target]=bounds
                         targets[target]=(bounds[2],(bounds[1]+bounds[3])/2)
                 if pane.line:
@@ -509,6 +610,10 @@ def layout(key, page=0):
                         elif box.x0<3:
                             artist.set_position((3/fig.bbox.width,.39/HEIGHT))
                             artist.set_ha('left')
+                elif pane.line and spec.get('line_captions'):
+                    # A line of trades is not a run of bars: name each point.
+                    for index,x in zip(range(start,end),xs):
+                        text(x,.39,spec['line_captions'][index],color=ck.MUTED)
                 elif pane.line:
                     semantic=[f'Bar {i+1}: {label}' for i in range(start,end) for label in semantic_labels(pane,i)]
                     for volume in cell.panes:

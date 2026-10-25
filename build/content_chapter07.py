@@ -5,7 +5,7 @@ Chart pairs use separate full-width artwork pages, preserving every sentence.
 
 import numpy as np
 from deckkit import Chapter, Check, Content, Figure, Mark, Pair, Question, Section, Term, Quote, Recap, Closing
-from chartlayout_chapter07 import CourseCheck, course_chart, expand_chart_pages
+from chartlayout_chapter07 import CourseCheck, WidePair, course_chart, expand_chart_pages
 
 # Part 1, the price bar (Lim, section 7.1). The book figures are read by
 # position only: they carry no prices, so every PHP value is ours and sits on
@@ -16,58 +16,57 @@ FIGURE_7_1 = Figure(
     number='7.1',
     shows='Figure 7.1: five minutes of price action on the left are summarized by one bar on the right, which keeps only its open, high, low and close.',
     marks=(
-        Mark(number=1, kind='circle', x0=0.557, y0=0.315, x1=0.607, y1=0.409, color='gold', at=(0.52, 0.25), size=0.3),
-        Mark(number=2, kind='circle', x0=0.597, y0=0.057, x1=0.647, y1=0.153, color='red', at=(0.7, 0.15), size=0.3),
-        Mark(number=3, kind='circle', x0=0.597, y0=0.765, x1=0.647, y1=0.859, color='blue', at=(0.7, 0.73), size=0.3),
-        Mark(number=4, kind='circle', x0=0.623, y0=0.43, x1=0.673, y1=0.524, color='purple', at=(0.74, 0.41), size=0.3),
+        Mark(number=1, kind='arrow', x0=0.53, y0=0.246, x1=0.583, y1=0.348, color='gold', size=0.3),
+        Mark(number=2, kind='arrow', x0=0.7, y0=0.157, x1=0.628, y1=0.098, color='red', size=0.3),
+        Mark(number=3, kind='arrow', x0=0.7, y0=0.727, x1=0.628, y1=0.795, color='blue', size=0.3),
+        Mark(number=4, kind='arrow', x0=0.72, y0=0.569, x1=0.66, y1=0.471, color='purple', size=0.3),
     ),
     aspect=1.386138613861386,
-    crop=(0.12, 0.18, 0.0, 0.17),
+    crop=(0.12, 0.18, 0.0, 0.158),
 )
 
 FIGURE_7_2 = Figure(
-    origin='Lim (2016), p. 210, Figure 7.2, the 15-minute bar. The crop and marks are ours, added for teaching.',
-    title='Figure 7.2: the 15-minute bar',
+    origin='Lim (2016), p. 210, Figure 7.2. The marks are ours, added for teaching.',
+    title='Figure 7.2: three intervals become one 15-minute bar',
     number='7.2',
-    shows='Figure 7.2, cropped to the 15-minute bar. It keeps the first open, the highest high, the lowest low and the last close of three five-minute intervals.',
+    shows='Figure 7.2: three five-minute intervals on the left are summarized by one 15-minute bar on the right, which keeps the first open, the highest high, the lowest low and the last close.',
     marks=(
-        Mark(number=1, kind='circle', x0=0.45, y0=0.279, x1=0.55, y1=0.373, color='gold', at=(0.34, 0.23), size=0.3),
-        Mark(number=2, kind='circle', x0=0.485, y0=0.025, x1=0.585, y1=0.119, color='red', at=(0.68, 0.14), size=0.3),
-        Mark(number=3, kind='circle', x0=0.485, y0=0.86, x1=0.585, y1=0.954, color='blue', at=(0.68, 0.83), size=0.3),
-        Mark(number=4, kind='circle', x0=0.52, y0=0.594, x1=0.62, y1=0.688, color='purple', at=(0.74, 0.56), size=0.3),
+        Mark(number=1, kind='arrow', x0=0.065, y0=0.26, x1=0.092, y1=0.345, color='gold', size=0.3),
+        Mark(number=2, kind='arrow', x0=0.235, y0=0.195, x1=0.16, y1=0.198, color='red', size=0.3),
+        Mark(number=3, kind='arrow', x0=0.25, y0=0.735, x1=0.327, y1=0.725, color='blue', size=0.3),
+        Mark(number=4, kind='arrow', x0=0.56, y0=0.65, x1=0.51, y1=0.565, color='purple', size=0.3),
     ),
     aspect=1.468888888888889,
-    crop=(0.6, 0.15, 0.0, 0.215),
 )
 
 FIGURE_7_3_TRACE = Figure(
-    origin='Lim (2016), p. 211, Figure 7.3, the price trace of intervals 1 to 4. The crop and marks are ours, added for teaching.',
-    title='Figure 7.3: price through four intervals',
+    origin='Lim (2016), p. 211, Figure 7.3, the price trace of intervals 1 and 2. The crop and marks are ours, added for teaching.',
+    title='Figure 7.3: price through two intervals',
     number='7.3',
-    shows='Figure 7.3, cropped to the price trace of its first four five-minute intervals. Each interval has its own open, high, low and close.',
+    shows='Figure 7.3, cropped to the price trace of its first two five-minute intervals. Each interval has its own open, high, low and close.',
     marks=(
-        Mark(number=1, kind='circle', x0=0.08, y0=0.329, x1=0.13, y1=0.401, color='gold', at=(0.035, 0.47), size=0.3),
-        Mark(number=2, kind='circle', x0=0.153, y0=0.149, x1=0.203, y1=0.221, color='red', at=(0.235, 0.16), size=0.3),
-        Mark(number=3, kind='circle', x0=0.235, y0=0.624, x1=0.285, y1=0.696, color='blue', at=(0.215, 0.75), size=0.3),
-        Mark(number=4, kind='circle', x0=0.268, y0=0.319, x1=0.318, y1=0.391, color='purple', at=(0.285, 0.25), size=0.3),
+        Mark(number=1, kind='arrow', x0=0.189, y0=0.5, x1=0.189, y1=0.372, color='gold', size=0.3),
+        Mark(number=2, kind='arrow', x0=0.435, y0=0.125, x1=0.333, y1=0.198, color='red', size=0.3),
+        Mark(number=3, kind='arrow', x0=0.367, y0=0.73, x1=0.456, y1=0.655, color='blue', size=0.3),
+        Mark(number=4, kind='arrow', x0=0.587, y0=0.2, x1=0.552, y1=0.348, color='purple', size=0.3),
     ),
     aspect=1.7041564792176038,
-    crop=(0.0, 0.0, 0.555, 0.47),
+    crop=(0.0, 0.0, 0.755, 0.47),
 )
 
 FIGURE_7_3_BARS = Figure(
-    origin='Lim (2016), p. 211, Figure 7.3, the bars drawn under intervals 1 and 2. The crop and marks are ours, added for teaching.',
+    origin='Lim (2016), p. 211, Figure 7.3, the bars drawn under intervals 1 to 4. The crop and marks are ours, added for teaching.',
     title='Figure 7.3: one bar for each interval',
     number='7.3',
-    shows='Figure 7.3, cropped to the price bars drawn under its first two intervals. Each interval becomes one OHLC bar directly below it.',
+    shows='Figure 7.3, cropped to the price bars drawn under its first four intervals. Each interval becomes one OHLC bar directly below it.',
     marks=(
-        Mark(number=1, kind='circle', x0=0.24, y0=0.445, x1=0.3, y1=0.505, color='gold', at=(0.2, 0.38), size=0.3),
-        Mark(number=2, kind='circle', x0=0.29, y0=0.25, x1=0.35, y1=0.31, color='red', at=(0.4, 0.25), size=0.3),
-        Mark(number=3, kind='circle', x0=0.29, y0=0.845, x1=0.35, y1=0.905, color='blue', at=(0.24, 0.87), size=0.3),
-        Mark(number=4, kind='circle', x0=0.335, y0=0.445, x1=0.395, y1=0.505, color='purple', at=(0.45, 0.39), size=0.3),
+        Mark(number=1, kind='arrow', x0=0.13, y0=0.6, x1=0.16, y1=0.475, color='gold', size=0.3),
+        Mark(number=2, kind='arrow', x0=0.24, y0=0.2, x1=0.185, y1=0.275, color='red', size=0.3),
+        Mark(number=3, kind='arrow', x0=0.11, y0=0.84, x1=0.177, y1=0.868, color='blue', size=0.3),
+        Mark(number=4, kind='arrow', x0=0.25, y0=0.6, x1=0.205, y1=0.475, color='purple', size=0.3),
     ),
     aspect=1.7041564792176038,
-    crop=(0.0, 0.55, 0.75, 0.02),
+    crop=(0.0, 0.55, 0.555, 0.02),
 )
 
 PART_1 = Section(
@@ -77,16 +76,16 @@ PART_1 = Section(
     minutes='16 minutes',
     covers=('OHLC', 'range', 'higher timeframe', 'three classifications'),
     slides=(
-        Pair(
+        WidePair(
             notes=("Start with why: every pattern in this chapter is read from price bars, so first we need to know what one bar keeps.", "Point to the four marks on Lim's bar: gold 1 the open, red 2 the high, blue 3 the low, purple 4 the close.", "The book's drawing has no price scale. Say only what it shows by position; the prices come on the next slide, on our own chart."),
             origin='Lim (2016), pp. 209 to 210, Figure 7.1. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='A price bar keeps four prices from one interval',
-                lines=("Everything in this chapter is read from price bars, so we start with what one bar records. Lim's bar keeps four prices from one interval: the open (O), high (H), low (L) and close (C), or OHLC (p. 209).", 'In Figure 7.1, five minutes of price become one bar: open gold [1], high red [2], low blue [3], close purple [4].'),
+                lines=("Everything in this chapter is read from price bars, so we start with what one bar records. Lim's bar keeps four prices from one interval: the open (O), high (H), low (L) and close (C), or OHLC (p. 209).", 'In Figure 7.1, five minutes of price become one bar: its open [1], high [2], low [3] and close [4].'),
                 accent='The drawing has no prices. Read it by position: its close ends a little below its open.',
             ),
             picture=FIGURE_7_1,
-            text_w=5.2,
+            text_w=4.3,
         ),
         Content(
             notes=('Now put numbers on the four prices.', 'Range is new in this chapter.'),
@@ -105,7 +104,7 @@ PART_1 = Section(
         Content(
             notes=('Why only four prices?', 'Five trades become one bar.'),
             title='Five minutes of trades become one price bar',
-            lines=("Why only four prices? Lim's bar sums up an interval with its first price, its highest, its lowest and its last, and lets every other trade go (p. 209). Here are five trades of ours inside one five-minute interval.", 'The first trade, PHP 50.00 [1], becomes the open. The highest, PHP 52.40 [2], is the high, and the lowest, PHP 49.60 [3], is the low. The last, PHP 51.10 [4], becomes the close.', 'The trade at PHP 50.80 leaves no mark on the bar. These are the same four prices as the bar we just read.'),
+            lines=("Why only four prices? As Chapter 3 put it, the open and close are the prices at the start and end of the interval, and the high and low are its extremes; every other trade drops out. Here are five trades of ours inside one five-minute interval.", 'The first trade, PHP 50.00 [1], becomes the open. The highest, PHP 52.40 [2], is the high, and the lowest, PHP 49.60 [3], is the low. The last, PHP 51.10 [4], becomes the close.', 'The trade at PHP 50.80 leaves no mark on the bar. These are the same four prices as the bar we just read.'),
         ),
         course_chart('r1-p',
             notes=('Walk the five trades left to right: 50.00, 50.80, 49.60, 52.40, 51.10.', 'Gold 1 is the first trade and becomes the open; red 2 is the highest and blue 3 the lowest; purple 4 is the last and becomes the close.', 'Ask the class what happened to the trade at 50.80. It is real trading, but the bar does not keep it.'),
@@ -122,10 +121,10 @@ PART_1 = Section(
             label='Building a price bar',
             questions=(
                 Question(
-                    stem='Which trade supplies the close of the bar we just built?',
+                    stem="In one interval, which trade supplies the bar's close?",
                     options=('The first trade', 'The highest trade', 'The lowest trade', 'The last trade'),
                     answer='D',
-                    reason='The last trade in the interval becomes the close; the first becomes the open, and the highest and lowest become the high and low (Lim, p. 209).',
+                    reason='As Chapter 3 put it, the price at the end of the interval is the close; the first trade is the open, and the highest and lowest are the high and low.',
                 ),
                 Question(
                     stem='What is the range when H is PHP 52.40 and L is PHP 49.60?',
@@ -137,16 +136,16 @@ PART_1 = Section(
             text_w=4.6,
             layout='top',
         ),
-        Pair(
+        WidePair(
             notes=('Move from one interval to a longer stretch: a 15-minute bar built from three five-minute intervals.', "Point to the marks on Lim's 15-minute bar: gold 1 the first open, red 2 the highest high, blue 3 the lowest low, purple 4 the last close.", 'Again the drawing has no prices; our own numbers come on the next slide.'),
             origin='Lim (2016), pp. 209 to 210, Figure 7.2. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='Three five-minute bars can make one 15-minute bar',
-                lines=('Sometimes we want one bar for a longer stretch of time, such as 15 minutes. Lim calls this a higher timeframe bar (p. 210).', 'His rule: keep the open of the first interval [1], the highest high [2] and the lowest low [3] of the whole stretch, and the close of the last interval [4] (p. 209).'),
-                accent="Lim's 15-minute bar has no prices either; in his drawing it closes below its open.",
+                lines=('One bar for a longer stretch is a higher timeframe bar (Lim, p. 210).', 'It keeps the first interval\'s open [1], the highest high [2], the lowest low [3] and the last interval\'s close [4] (p. 209). Dashed lines carry each to the 15-minute bar.'),
+                accent='The drawing has no prices; its 15-minute bar closes below its open.',
             ),
             picture=FIGURE_7_2,
-            text_w=5.6,
+            text_w=3.9,
         ),
         Content(
             notes=('Now the higher timeframe rule with numbers.', 'Bar 4 is built from bars 1 to 3.'),
@@ -180,37 +179,49 @@ PART_1 = Section(
                     reason='It keeps the highest high of the whole stretch (Lim, p. 209).',
                 ),
             ),
-            picture=FIGURE_7_2,
-            text_w=5.4,
         ),
-        Pair(
-            notes=('Patterns are several bars in a row, so the book now follows price through several intervals.', 'Trace interval 1 with your finger: gold 1 where it opens, red 2 its high, blue 3 its low, purple 4 where it ends.', "The full figure has eight intervals; this crop shows the first four so the letters can be read."),
+        WidePair(
+            notes=('Patterns are several bars in a row, so the book now follows price through several intervals.', 'Trace interval 1 with your finger: gold 1 where it opens, red 2 its high, blue 3 its low, purple 4 where it ends.', "The full figure has eight intervals; this crop shows the first two so the letters can be read."),
             origin='Lim (2016), pp. 210 to 211, Figure 7.3. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='Figure 7.3 follows price through several intervals',
-                lines=("Patterns are made of several bars in a row, so Lim next follows price through a run of five-minute intervals (p. 210). This crop shows the first four of the figure's eight intervals.", 'Take interval 1. Price opens at O [1], climbs to its high H [2], drops to its low L [3] and ends the interval at C [4].'),
+                lines=("Patterns are made of several bars in a row, so Lim next follows price through a run of five-minute intervals (p. 210). This crop shows the first two of the figure's eight.", 'Take interval 1. Price opens at O [1], climbs to its high H [2], drops to its low L [3] and ends the interval at C [4].'),
                 accent='Each interval is read on its own, just like one bar.',
             ),
             picture=FIGURE_7_3_TRACE,
-            text_w=5.0,
+            text_w=4.6,
         ),
-        Pair(
+        WidePair(
             notes=('The same figure, lower half: under each interval Lim draws the bar it becomes.', 'Bar 1 keeps the four prices of interval 1: gold 1 open, red 2 high, blue 3 low, purple 4 close.', 'Its open and close ticks are level because interval 1 ended about where it began.'),
             origin='Lim (2016), pp. 210 to 211, Figure 7.3. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='Below each interval, Lim draws the bar it becomes',
-                lines=('Under the price trace, Figure 7.3 draws one OHLC bar for each interval, directly below it (p. 210). This crop shows the bars for intervals 1 and 2.', "Bar 1 keeps interval 1's open [1], high [2], low [3] and close [4]. Its open and close ticks sit level, because interval 1 ended about where it began."),
-                accent='Read every interval as a bar first; only then name the formation.',
+                lines=('Under the price trace, Figure 7.3 draws one OHLC bar for each interval, directly below it (p. 210). This crop shows the bars for intervals 1 to 4.', "Bar 1 keeps interval 1's open [1], high [2], low [3] and close [4]. Its open and close ticks sit level, because interval 1 ended about where it began."),
+                accent='Read every interval as a bar first; only then name the pattern.',
             ),
             picture=FIGURE_7_3_BARS,
-            text_w=5.0,
+            text_w=3.9,
         ),
         Content(
             notes=("This is the first of Lim's three ways to classify a formation, on p. 210.", 'Say plainly that the book never says where multiple begins, so we do not set a number for it.', 'A count describes shape only; it predicts nothing by itself.'),
             origin='Lim (2016), p. 210.',
             title='The first way to sort a formation: count its bars',
-            lines=('With each interval turned into a bar, we can start naming patterns. A formation is the bar, or group of bars, that we read as one pattern.', 'Lim sorts formations in three ways, and the first is the number of bars that make it up (p. 210). One bar is a single formation, two a double and three a triple.', 'Longer groups are multiple formations; Lim does not say where multiple begins.'),
+            lines=('Now we can name patterns. Lim never defines formation; here it means the bar, or group of bars, read as one pattern.', 'Lim sorts formations in three ways, and the first is the number of bars that make it up (p. 210). One bar is a single formation, two a double and three a triple.', 'Longer groups are multiple formations; Lim does not say where multiple begins.'),
             accent='The count describes shape only; it does not make a formation bullish or bearish.',
+        ),
+        Content(
+            notes=('What the four names look like.', 'Groups of bars.'),
+            title='What single, double, triple and multiple look like',
+            lines=('Here is what those names look like, drawn by us. One bar on its own [1] is a single formation, two bars [2] a double and three bars [3] a triple.', 'We drew five bars [4] for a multiple formation, since Lim does not say where multiple begins. The bars carry no prices: only how many there are matters here.'),
+        ),
+        course_chart('r1-g',
+            notes=('Count each group aloud: gold 1 has one bar, red 2 two, blue 3 three and purple 4 five.', 'The shapes are only for counting. Whether a group leans bullish or bearish is the next question, not this one.', 'Lim gives no number at which multiple begins; five is simply our example.'),
+            origin='FIN1209 teaching chart G, drawn to show the four counts; Lim, p. 210.',
+            title='What single, double, triple and multiple look like',
+            letter='G',
+            shows='Four groups of plain bars drawn by us: one bar (single), two bars (double), three bars (triple) and five bars (multiple).',
+            tier='core',
+            marks=(),
         ),
         CourseCheck(
             notes=('Ask the class to name the count before discussing direction.', 'The second question separates shape from sentiment.'),
@@ -283,18 +294,11 @@ PART_1 = Section(
             accent='The formation never changed; only the trend around it did.',
         ),
         Content(
-            notes=('Four cases.', 'Agree or disagree.'),
+            notes=('Put the two inputs together: there are only four cases, and Lim names them on p. 211.', 'Read each case as agree or disagree first, then name the result.', 'Keep potential on the reversal cases; Lim considers them reversal patterns, not certainties.'),
+            origin='Lim (2016), p. 211.',
             title="Lim's rule gives four combinations",
-            lines=('Put the two sentiments together and there are four cases (p. 211); the percentage moves are invented.', 'An uptrend with a bullish formation [1] and a downtrend with a bearish one [2] agree, so each is a continuation. An uptrend with a bearish formation [3] and a downtrend with a bullish one [4] disagree, so each is a potential reversal.'),
-        ),
-        course_chart('r1-n',
-            notes=('Read the two agreeing cases first: gold 1, uptrend with a bullish formation, and red 2, downtrend with a bearish formation. Both are continuations.', 'Then the two disagreeing cases: blue 3, uptrend with a bearish formation, and purple 4, downtrend with a bullish formation. Both are potential reversals.', 'The percentage moves are invented; only the agreement rule is from the book.'),
-            origin='FIN1209 teaching chart U. The percentage changes are invented for teaching; Lim, p. 211.',
-            title="Lim's rule gives four combinations",
-            letter='U',
-            shows='A table of the four cases, with invented percentage moves. When trend sentiment and intrinsic sentiment agree the result is continuation; when they disagree it is a potential reversal.',
-            tier='core',
-            marks=(),
+            lines=('Put the two sentiments together and there are four cases (p. 211).', 'In an uptrend, a bullish formation agrees with the trend, so Lim considers it a continuation. A bearish formation disagrees, so it is a potential reversal.', 'In a downtrend, a bearish formation agrees, so it is a continuation. A bullish formation disagrees, so it is a potential reversal.'),
+            accent='Agreement suggests continuation; disagreement suggests a potential reversal.',
         ),
         CourseCheck(
             notes=('Trend sentiment describes the surrounding trend, not the formation.', 'The second question applies the rule to new prices: a bullish formation after a fall.'),
@@ -323,13 +327,34 @@ PART_1 = Section(
             lines=('Now we use all three questions together on an example of ours. First the trend: the closes rose from PHP 45.60 to PHP 48.10 [1], so trend sentiment is bullish.', "Next the count: the last two bars make a double formation [2]. Then the lean: bar 4 closes at PHP 47.50 [3], below bar 3's low of PHP 47.90, so by Lim's rule the formation leans bearish (p. 212).", 'Bullish trend sentiment against bearish intrinsic sentiment: they disagree, so this is a potential reversal (p. 211). Part 2 reads the book\'s own reversal patterns the same way.'),
         ),
         course_chart('r1-m',
-            notes=('Take the three questions in order: blue 1 the rising closes give bullish trend sentiment; gold 2 the last two bars are a double formation.', "Red 3: bar 4 closes at 47.50, below bar 3's low of 47.90, so the formation leans bearish.", 'Bullish against bearish disagree, so the reading is a potential reversal. Every bar is possible: each low is its lowest price.'),
+            notes=('Take the three questions in order: gold 1 the rising closes give bullish trend sentiment; red 2 the last two bars are a double formation.', "Blue 3: bar 4 closes at 47.50, below bar 3's low of 47.90, so the formation leans bearish.", 'Bullish against bearish disagree, so the reading is a potential reversal. Every bar is possible: each low is its lowest price.'),
             origin='FIN1209 teaching chart S. The PHP values are invented for teaching.',
             title='Using all three questions on one example',
             letter='S',
             shows='Four invented bars: closes rise from PHP 45.60 to PHP 48.10, then a two-bar formation in which bar 4 closes at PHP 47.50, below bar 3\'s low of PHP 47.90.',
             tier='core',
             marks=(),
+        ),
+        CourseCheck(
+            notes=('This closes Part 1: all three ways of sorting a formation.', 'Both answers come from the classification slides, not from any one chart.'),
+            origin='Questions are ours and answerable from the preceding classification slides.',
+            label='The three classifications',
+            questions=(
+                Question(
+                    stem='What do single, double, triple and multiple measure?',
+                    options=('The trend direction', 'The intrinsic sentiment', 'The number of bars in the formation', 'The size of the range'),
+                    answer='C',
+                    reason='They are the first of Lim\'s three classifications: the number of bars that make up the formation (p. 210).',
+                ),
+                Question(
+                    stem='When does Lim consider a formation a reversal pattern?',
+                    options=('When it has three bars', 'When its range is wide', 'When it closes where it opened', 'When its intrinsic sentiment disagrees with the trend sentiment'),
+                    answer='D',
+                    reason='When intrinsic and trend sentiment disagree, Lim considers the pattern a reversal (p. 211).',
+                ),
+            ),
+            text_w=4.6,
+            layout='top',
         ),
     ),
 )
@@ -7341,5 +7366,6 @@ CHAPTER = Chapter(
         ),
     ),
     dividers=False,
+    title_notes=('Open with what the chapter is about: reading price bars, the most basic skill in technical analysis, as Lim puts it on p. 209.', 'Say the route in one breath: one bar, then formations, then named reversal patterns, then breakouts.'),
 )
 CHAPTER = expand_chart_pages(CHAPTER)

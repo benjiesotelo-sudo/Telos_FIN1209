@@ -8,18 +8,15 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0.46, y0=0.64, x1=0.54, y1=0.72, color='gold', at=(0.24, 0.66), size=0.26), dk.Mark(number=2, kind='circle', x0=0.46, y0=0.2, x1=0.54, y1=0.28, color='red', at=(0.86, 0.13), size=0.23), dk.Mark(number=3, kind='circle', x0=0.46, y0=0.74, x1=0.54, y1=0.81, color='blue', at=(0.86, 0.89), size=0.23), dk.Mark(number=4, kind='circle', x0=0.46, y0=0.44, x1=0.54, y1=0.52, color='purple', at=(0.69, 0.56), size=0.26)),
 'old_size': (18.0, 3.5),
 'owner': 'r1',
+'caption': 'Prices are invented for teaching.',
 'letter': 'J'},
-'r1-n': {'items': (),
-'special': 'sentiment',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.49, y0=0.68, x1=0.55, y1=0.75, color='gold', at=(0.23, 0.75), size=0.2), dk.Mark(number=2, kind='circle', x0=0.91, y0=0.64, x1=0.97, y1=0.71, color='red', at=(0.95, 0.76), size=0.2), dk.Mark(number=3, kind='circle', x0=0.49, y0=0.38, x1=0.55, y1=0.45, color='blue', at=(0.23, 0.4), size=0.2), dk.Mark(number=4, kind='circle', x0=0.91, y0=0.33, x1=0.97, y1=0.4, color='purple', at=(0.95, 0.4), size=0.2)),
-'old_size': (18.0, 3.5),
-'owner': 'r1',
-'letter': 'U'},
 'r1-m': {'items': (ck.Cell(name='A rise, then a two-bar formation', panes=(ck.Pane(bars=(ck.Bar(open=45.0, high=46.0, low=44.2, close=45.6), ck.Bar(open=45.6, high=48.5, low=45.4, close=48.1), ck.Bar(open=48.1, high=49.2, low=47.9, close=49.0), ck.Bar(open=49.1, high=49.4, low=47.3, close=47.5)), notes=(ck.Note(x=0, label='the rise'), ck.Note(x=1, label='the rise'), ck.Note(x=2, label='first of the pair'), ck.Note(x=3, label='second of the pair'))),)),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=3, kind='circle', x0=0, y0=0, x1=0, y1=0)),
 'old_size': (18.0, 3.5),
 'owner': 'r1',
+'caption': 'Prices are invented for teaching.',
+'right_margin': 1.95,
 'letter': 'S'},
 'r1-p': {'items': (ck.Cell(name='Five trades of ours inside one five-minute interval', panes=(ck.Pane(line=(50.0, 50.8, 49.6, 52.4, 51.1)),)),),
 'special': '',
@@ -29,13 +26,25 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=3, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=4, kind='circle', x0=0, y0=0, x1=0, y1=0)),
 'old_size': (18.0, 3.5),
 'owner': 'r1',
+'caption': 'Prices are invented for teaching.',
+'protect_line': True,
 'letter': 'P'},
 'r1-r': {'items': (ck.Cell(name='Three five-minute bars of ours and the 15-minute bar they make', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=50.6, low=49.8, close=50.2), ck.Bar(open=50.2, high=50.9, low=49.4, close=50.1), ck.Bar(open=50.1, high=50.5, low=49.7, close=50.3), ck.Bar(open=50.0, high=50.9, low=49.4, close=50.3)), notes=(ck.Note(x=0, label='minutes 1 to 5'), ck.Note(x=1, label='minutes 6 to 10'), ck.Note(x=2, label='minutes 11 to 15'), ck.Note(x=3, label='the 15-minute bar'))),)),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=3, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=4, kind='circle', x0=0, y0=0, x1=0, y1=0)),
 'old_size': (18.0, 3.5),
 'owner': 'r1',
+'caption': 'Prices are invented for teaching.',
 'letter': 'R'},
+'r1-g': {'items': (),
+'special': 'counts',
+'count_groups': ((1, 'Single: 1 bar'), (2, 'Double: 2 bars'), (3, 'Triple: 3 bars'), (5, 'Multiple: 5 bars')),
+'count_centres': (1.2, 3.3, 5.9, 9.2),
+'caption': 'The bars are drawn only to be counted; they carry no prices.',
+'old_marks': (dk.Mark(number=1, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=3, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=4, kind='box', x0=0, y0=0, x1=0, y1=0)),
+'old_size': (18.0, 3.5),
+'owner': 'r1',
+'letter': 'G'},
 'b2-t': {'items': (ck.Cell(name='1  continuation', note='uptrend +4.0%; bullish +2.0%', panes=(ck.Pane(columns=(4.0, 2.0)),), tone='notice'), ck.Cell(name='2  continuation', note='downtrend -4.0%; bearish -2.0%', panes=(ck.Pane(columns=(4.0, 2.0)),), tone='notice'), ck.Cell(name='3  potential reversal', note='uptrend +4.0%; bearish -2.0%', panes=(ck.Pane(columns=(4.0, -2.0)),)), ck.Cell(name='4  potential reversal', note='downtrend -4.0%; bullish +2.0%', panes=(ck.Pane(columns=(-4.0, 2.0)),))),
 'special': '',
 'old_marks': (),
@@ -326,8 +335,8 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'letter': 'W'}}
 
 DATA['r1-j']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 0, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 0, 'low')}, {'number': 4, 'color': 'purple', 'target': (0, 0, 'close')}]
-DATA['r1-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'case')}, {'number': 2, 'color': 'red', 'target': (0, 3, 'case')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'case')}, {'number': 4, 'color': 'purple', 'target': (0, 2, 'case')}]
-DATA['r1-m']["targets"] = [{'number': 1, 'color': 'blue', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'gold', 'target': (0, 2, 'group')}, {'number': 3, 'color': 'red', 'target': (0, 3, 'close')}]
+DATA['r1-m']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'group')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'close')}]
+DATA['r1-g']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'group')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'group')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'group')}, {'number': 4, 'color': 'purple', 'target': (0, 3, 'group')}]
 DATA['r1-p']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'line')}, {'number': 2, 'color': 'red', 'target': (0, 3, 'line')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'line')}, {'number': 4, 'color': 'purple', 'target': (0, 4, 'line')}]
 DATA['r1-r']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'low')}, {'number': 4, 'color': 'purple', 'target': (0, 2, 'close')}]
 DATA['b2-qa']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'volume')}]

@@ -183,6 +183,24 @@ KEY_READ_FIGURE = Figure(
             "for teaching; no invented example is on this slide."),
 )
 
+KEY_READ_UNMARKED_FIGURE = Figure(
+    title="Figure 7.15: the same chart without teaching marks",
+    number="7.15",
+    aspect=701 / 413,
+    crop=KEY_FIGURE_CROP,
+    marks=(),
+    shows=("The Apple daily chart, cropped to the key reversal day and its "
+           "surrounding bars. The marked day opens above the previous high, "
+           "forms a new high, closes below the previous close, and has above "
+           "average volume."),
+    notes=(
+        "Use this unmarked chart while introducing the key reversal. The next "
+        "worked reading identifies the same features with teaching marks.",
+    ),
+    origin=("Lim (2016), pp. 218 to 219, Figure 7.15. The crop is for "
+            "teaching; no invented example is on this slide."),
+)
+
 KEY_WORKED_CHART = Chart(
     letter="B",
     title="Bearish key reversal: a two-bar worked example",
@@ -220,7 +238,7 @@ COMPARISON_CHART = Chart(
         Mark(2, "circle", 0.245, 0.17, 0.265, 0.21,
              color="red", at=(0.225, 0.14), size=0.25),
         Mark(3, "circle", 0.36, 0.48, 0.39, 0.54,
-             color="blue", at=(0.37, 0.55), size=0.25),
+             color="blue", at=(0.47, 0.55), size=0.25),
         Mark(4, "line", 0.64, 0.50, 0.82, 0.50,
              color="purple", at=(0.90, 0.50), size=0.25),
         Mark(5, "circle", 0.735, 0.82, 0.77, 0.91,
@@ -2334,19 +2352,17 @@ SECTION3 = Section(
                 accent="",
                 caption="",
             ),
-            picture=KEY_READ_FIGURE,
+            picture=KEY_READ_UNMARKED_FIGURE,
             text_w=5.5,
             picture_extra=0.1,
-            notes=KEY_READ_FIGURE.notes,
-            origin=KEY_READ_FIGURE.origin,
+            notes=KEY_READ_UNMARKED_FIGURE.notes,
+            origin=KEY_READ_UNMARKED_FIGURE.origin,
         ),
         Pair(
             left=Content(
                 title="Walking through one key reversal, price by price",
                 lines=(
-                    "Here is the same pattern with simple prices.",
-                    "Yesterday's high was 52.00 and close 51.10. Today opens at 52.30 [1] and reaches H 53.20 [2].",
-                    "It then closes C 50.80 below 51.10 [3]; volume rises from 2.0m to 4.2m [4].",
+                    "Here is the same pattern with simple prices, so you can see each step. Yesterday the stock reached 52.00 and closed at 51.10. Today it opens higher, at 52.30, already above yesterday's high (1). Buyers push it to 53.20, a new high (2). Then the selling starts, and by the close it has fallen to 50.80, below yesterday's close (3). Volume more than doubles, from 2.0 to 4.2 million shares (4), so many traders took part in that turn.",
                 ),
                 accent="",
                 caption="",

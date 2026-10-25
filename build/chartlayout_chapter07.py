@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from functools import lru_cache
 import math
+import re
 
 import chartkit as ck
 import deckkit as dk
@@ -230,6 +231,20 @@ def layout(key, page=0):
                           fontfamily=dk.BODY_FONT)
         labels.append(artist)
         return artist
+
+    def semantic_labels(pane,index):
+        result=[]
+        for note in pane.notes:
+            if note.x!=index or not note.label:
+                continue
+            value=note.label.replace('\n',' ')
+            # These old price callouts are now the four tick-anchored labels.
+            if re.match(r'^(?:(?:next|first|second|middle|wide)\s+)?[OHLC]\s+\d',value,re.I):
+                continue
+            if re.match(r'^(?:open|high|low|close|prior low)\s+\d',value,re.I):
+                continue
+            result.append(value)
+        return result
     def line(ax, x, y, **kwargs):
         artist, = ax.plot(x, y, **kwargs)
         return artist
@@ -329,7 +344,24 @@ def layout(key, page=0):
                         line(axis,[p[0] for p in points],[p[1] for p in points],color=ck.MUTED,lw=1,ls='--')
                 if pane.bars:
                     for index,x in zip(range(start,end),xs):
-                        text(x,.39,f'Bar {index+1}',color=ck.MUTED)
+                        semantic=semantic_labels(pane,index)
+                        caption=f'Bar {index+1}' + (': '+'; '.join(semantic) if semantic else '')
+                        artist=text(x,.39,caption,color=ck.MUTED)
+                        fig.canvas.draw()
+                        box=artist.get_window_extent(fig.canvas.get_renderer())
+                        if box.x1>fig.bbox.width-3:
+                            artist.set_position(((fig.bbox.width-3)/fig.bbox.width,.39/HEIGHT))
+                            artist.set_ha('right')
+                        elif box.x0<3:
+                            artist.set_position((3/fig.bbox.width,.39/HEIGHT))
+                            artist.set_ha('left')
+                elif pane.line:
+                    semantic=[f'Bar {i+1}: {label}' for i in range(start,end) for label in semantic_labels(pane,i)]
+                    for volume in cell.panes:
+                        if volume.columns:
+                            semantic.extend(f'Bar {i+1}: {label}' for i,label in volume.tags if not re.match(r'^[0-9.]+m$',label))
+                    if semantic:
+                        text(WIDTH/2,.39,'; '.join(semantic),color=ck.MUTED)
             elif pane.columns:
                 bottom,top = (.60,.80) if has_volume else (.72,2.7)
                 cols=pane.columns[start:end]

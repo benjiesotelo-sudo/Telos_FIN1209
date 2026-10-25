@@ -1330,9 +1330,9 @@ FALSE_OWN_CHART = Chart(
     shows="A large invented two-bar false upside breakout with resistance, return, and stop values written on the drawing.",
     tier="core",
     marks=(
-        Mark(1, "line", 0.30, 0.48, 0.68, 0.48, color="gold", at=(0.23, 0.43)),
-        Mark(2, "circle", 0.64, 0.16, 0.70, 0.27, color="red", at=(0.80, 0.11)),
-        Mark(3, "circle", 0.64, 0.52, 0.70, 0.60, color="blue", at=(0.80, 0.63)),
+        Mark(1, "line", 0.34, 0.50, 0.68, 0.50, color="gold", at=(0.25, 0.43)),
+        Mark(2, "circle", 0.645, 0.235, 0.674, 0.285, color="red", at=(0.80, 0.11)),
+        Mark(3, "circle", 0.645, 0.535, 0.674, 0.59, color="blue", at=(0.80, 0.63)),
         Mark(4, "line", 0.35, 0.23, 0.68, 0.23, color="purple", at=(0.81, 0.30)),
     ),
     notes=(
@@ -1348,9 +1348,9 @@ REPO_CHART = Chart(
     shows="Invented closes cross a forward-shifted three-day SMA twice after nine bullish days, then decline.",
     tier="reinforcement",
     marks=(
-        Mark(1, "circle", 0.61, 0.43, 0.67, 0.51, color="gold", at=(0.57, 0.38)),
-        Mark(2, "circle", 0.68, 0.50, 0.74, 0.59, color="red", at=(0.77, 0.65)),
-        Mark(3, "box", 0.73, 0.43, 0.85, 0.64, color="blue", at=(0.89, 0.38)),
+        Mark(1, "circle", 0.645, 0.40, 0.673, 0.45, color="gold", at=(0.57, 0.33)),
+        Mark(2, "circle", 0.708, 0.53, 0.735, 0.57, color="red", at=(0.77, 0.67)),
+        Mark(3, "box", 0.775, 0.32, 0.89, 0.70, color="blue", at=(0.94, 0.25)),
     ),
     notes=(
         "The forward-shifted three-day SMA is PHP 50.00. Invented closes cross above at 50.80, below at 49.60, then repeat after nine bullish days.",
@@ -1384,10 +1384,10 @@ HIKKAKE_OWN_CHART = Chart(
     marks=(
         Mark(1, "box", 0.16, 0.25, 0.29, 0.72, color="gold", at=(0.10, 0.20)),
         Mark(2, "circle", 0.23, 0.80, 0.27, 0.86, color="red", at=(0.40, 0.84)),
-        Mark(3, "circle", 0.35, 0.31, 0.39, 0.39, color="blue", at=(0.43, 0.25)),
+        Mark(3, "circle", 0.35, 0.34, 0.39, 0.38, color="blue", at=(0.43, 0.25)),
         Mark(4, "box", 0.62, 0.25, 0.68, 0.72, color="gold", at=(0.57, 0.20)),
-        Mark(5, "circle", 0.72, 0.14, 0.78, 0.25, color="red", at=(0.83, 0.10)),
-        Mark(6, "circle", 0.85, 0.72, 0.91, 0.80, color="blue", at=(0.95, 0.67)),
+        Mark(5, "circle", 0.73, 0.21, 0.77, 0.27, color="red", at=(0.93, 0.25)),
+        Mark(6, "circle", 0.85, 0.75, 0.878, 0.80, color="blue", at=(0.95, 0.67)),
     ),
     notes=(
         "Left: inside high 43.00, inside low 40.00, false low 39.00, long re-entry at 43.00.",
@@ -1402,12 +1402,12 @@ COMPARISON_REVISED = Chart(
     shows="Two invented side-by-side examples. The left exhaustion bar opens beyond a prior high and has no following gap; the right pin bar breaches support and closes back above it.",
     tier="core",
     marks=(
-        Mark(1, "line", 0.08, 0.30, 0.43, 0.30, color="gold", at=(0.07, 0.24)),
+        Mark(1, "line", 0.08, 0.33, 0.43, 0.33, color="gold", at=(0.07, 0.25)),
         Mark(2, "box", 0.25, 0.20, 0.34, 0.76, color="red", at=(0.22, 0.14)),
-        Mark(3, "line", 0.34, 0.68, 0.45, 0.68, color="blue", at=(0.47, 0.62)),
+        Mark(3, "line", 0.35, 0.73, 0.40, 0.73, color="blue", at=(0.45, 0.81)),
         Mark(4, "line", 0.56, 0.57, 0.94, 0.57, color="gold", at=(0.54, 0.64)),
-        Mark(5, "circle", 0.70, 0.76, 0.77, 0.84, color="red", at=(0.66, 0.91)),
-        Mark(6, "circle", 0.72, 0.42, 0.79, 0.50, color="blue", at=(0.84, 0.37)),
+        Mark(5, "circle", 0.81, 0.75, 0.835, 0.785, color="red", at=(0.88, 0.86)),
+        Mark(6, "circle", 0.80, 0.44, 0.84, 0.49, color="blue", at=(0.90, 0.36)),
     ),
     notes=(
         "Left: prior high 65.00, exhaustion open 65.40, high 66.20, low 60.00, close 60.50, and next open 60.20.",
@@ -2398,9 +2398,9 @@ B4_SLIDES_REVISED = (
             tier="core",
             notes=("Read the support line first, then the penetration and the close back above it.",),
             marks=(
-                Mark(1, "line", 0.20, 0.62, 0.80, 0.62, color="gold", at=(0.18, 0.55)),
-                Mark(2, "circle", 0.60, 0.72, 0.67, 0.80, color="red", at=(0.72, 0.84)),
-                Mark(3, "circle", 0.60, 0.50, 0.67, 0.58, color="blue", at=(0.72, 0.46)),
+                Mark(1, "line", 0.36, 0.53, 0.80, 0.53, color="gold", at=(0.18, 0.45)),
+                Mark(2, "circle", 0.648, 0.64, 0.672, 0.69, color="red", at=(0.71, 0.68)),
+                Mark(3, "circle", 0.648, 0.45, 0.672, 0.49, color="blue", at=(0.73, 0.38)),
             ),
         ),
         text_w=4.0,

@@ -2586,6 +2586,62 @@ OSCILLATOR_BOUNDARY_FIGURE = Figure(
     origin="Lim (2016), p. 217, Figure 7.13. The numbered mark is for teaching.",
 )
 
+REVIEW_EXHAUSTION_FIGURE = _book_figure(
+    "7.28", "Figure 7.28: exhaustion bar for review answer 1", 701 / 312,
+    "A crop of Figure 7.28 showing the marked exhaustion bar and the following price action.",
+    (
+        Mark(1, "circle", 0.33, 0.52, 0.47, 0.71,
+             color="gold", at=(0.25, 0.47), size=0.30),
+    ),
+    (
+        "Mark 1 identifies the exhaustion bar used in review answer 1.",
+    ),
+    226,
+    crop=(0.35, 0.0, 0.2, 0.0),
+)
+
+REVIEW_PIN_FIGURE = _book_figure(
+    "7.30", "Figure 7.30: pin bar for review answer 1", 750 / 329,
+    "A crop of Figure 7.30 showing the pin bar at the support barrier.",
+    (
+        Mark(1, "circle", 0.42, 0.64, 0.54, 0.85,
+             color="gold", at=(0.34, 0.58), size=0.30),
+    ),
+    (
+        "Mark 1 identifies the pin bar's penetration and retrace area used in review answer 1.",
+    ),
+    227,
+    crop=(0.0, 0.55, 0.55, 0.0),
+)
+
+REVIEW_IDNR_FIGURE = _book_figure(
+    "7.38", "Figure 7.38: ID/NR6 for review answer 2", 493 / 503,
+    "A crop of Figure 7.38 showing the final narrow inside bar in the ID/NR6 schematic.",
+    (
+        Mark(1, "box", 0.20, 0.54, 0.29, 0.75,
+             color="gold", at=(0.15, 0.48), size=0.30),
+    ),
+    (
+        "Mark 1 identifies the narrow inside bar that makes the ID/NR idea visible in review answer 2.",
+    ),
+    232,
+    crop=(0.2, 0.0, 0.0, 0.0),
+)
+
+REVIEW_KEY_FIGURE = _book_figure(
+    "7.15", "Figure 7.15: key reversal for review answer 3", 701 / 413,
+    "A crop of Figure 7.15 showing the key reversal day and its surrounding bars.",
+    (
+        Mark(1, "circle", 0.48, 0.065, 0.56, 0.105,
+             color="gold", at=(0.25, 0.09), size=0.30),
+    ),
+    (
+        "Mark 1 identifies the key reversal day used in review answer 3.",
+    ),
+    219,
+    crop=(0.35, 0.04, 0.27, 0.02),
+)
+
 OOPS_CHART = Chart(
     letter="TA",
     title="Williams' Oops: invented numbers",
@@ -2798,9 +2854,9 @@ SECTION4 = Section(
             left=Content(
                 title="The trend gives Williams' Oops its preferred context",
                 lines=(
-                    "A trend gives an Oops its context. Lim prefers a bullish Oops in an uptrend [1] and a bearish Oops in a downtrend [2].",
-                    "The book names morning star, evening star, piercing line, and dark cloud cover, but Figure 7.36 does not show them.",
-                    "Chapter 7 defines none of the four; they are names only here. Next comes ID/NR.",
+                    "A trend gives an Oops context. Figure 7.36 shows bullish buy setup [1] and bearish sell setup [2].",
+                    "Lim prefers bullish Oops in an uptrend and bearish Oops in a downtrend, but those trends are not drawn here.",
+                    "The book names morning star, evening star, piercing line, and dark cloud cover; Chapter 7 defines none of them. Next comes ID/NR.",
                 ),
                 accent="The trend supplies context, while the chapter leaves the companion definitions open.",
                 caption="Lim (2016), p. 231. The named candlestick companions are not defined in this chapter.",
@@ -2965,9 +3021,9 @@ CHAPTER = Chapter(
         Content(
             title="Here is the chapter's reading habit",
             lines=(
-                "Bar action, indicator action, and volume action may indicate future price activity, especially when significant indicator and volume action accompanies the bar.",
-                "To make that reading, Chapter 7 combines the bar's open, high, low, and close with formation count, trend sentiment, intrinsic sentiment, gaps, barriers, volume, and the 16 reversal characteristics.",
-                "The breakout patterns may catch continuations or reversals, but every reading remains potential. Chapter 7 names oscillator evidence without teaching the oscillator method, which belongs to Chapter 8.",
+                "Bar, indicator, and volume action may indicate future price activity.",
+                "Chapter 7 reads OHLC, formation count, trend and intrinsic sentiment, gaps, barriers, volume, and 16 reversal characteristics.",
+                "Breakout patterns may catch continuations or reversals, but every reading remains potential. Chapter 8 teaches the oscillator method.",
             ),
             accent="This is a reading habit, not a complete trade plan.",
             notes=(
@@ -2976,20 +3032,69 @@ CHAPTER = Chapter(
             ),
             origin="Lim (2016), p. 233. The chapter summary is paraphrased for teaching.",
         ),
-        Content(
-            title="Three early review answers separate structure from context",
-            lines=(
-                "These first three answers separate what a pattern is from the context that may make it more useful.",
-                "1. An exhaustion bar opens beyond the prior extreme and has no following gap, while a pin bar falsely penetrates a barrier and rapidly retraces.",
-                "2. ID/NR7 is a volatility breakout because it combines an inside day with the narrowest range in the last seven bars.",
-                "3. A key reversal makes a higher high and then closes near or below the prior close, or it makes the bullish converse in a downtrend. A wider bar and high volume may strengthen that potential reading.",
+        Pair(
+            left=Content(
+                title="Review answer 1 begins with the exhaustion-bar structure",
+                lines=(
+                    "An exhaustion bar opens beyond the prior extreme and has no following gap. Figure 7.28 mark 1 shows the exhaustion example.",
+                    "1. The pattern warns of a possible reversal; the figure supplies the observed context, not a guarantee.",
+                ),
+                accent="The exhaustion-bar structure comes before the pin-bar comparison.",
+                caption="",
             ),
-            accent="The first three answers distinguish pattern structure from reliability context.",
-            notes=(
-                "Ask students to say the difference before reading the answer text.",
-                "Keep the words may and potential: the book does not promise follow-through.",
+            picture=REVIEW_EXHAUSTION_FIGURE,
+            text_w=6.0,
+            picture_extra=0.1,
+            notes=REVIEW_EXHAUSTION_FIGURE.notes,
+            origin=REVIEW_EXHAUSTION_FIGURE.origin,
+        ),
+        Pair(
+            left=Content(
+                title="Review answer 1 continues with the pin-bar structure",
+                lines=(
+                    "A pin bar falsely penetrates a barrier and rapidly retraces. Figure 7.30 mark 1 locates the pin-bar area.",
+                    "1. The pin bar is another potential reversal reading, not a promise of follow-through.",
+                ),
+                accent="Both answers describe a structure before judging its reliability.",
+                caption="",
             ),
-            origin="Lim (2016), pp. 218 to 232. Review answers are written from the preceding slides.",
+            picture=REVIEW_PIN_FIGURE,
+            text_w=6.0,
+            picture_extra=0.1,
+            notes=REVIEW_PIN_FIGURE.notes,
+            origin=REVIEW_PIN_FIGURE.origin,
+        ),
+        Pair(
+            left=Content(
+                title="Review answer 2 names ID/NR7 as a volatility breakout",
+                lines=(
+                    "ID/NR7 combines an inside day with the narrowest range in the last seven bars. Figure 7.38 mark 1 shows the narrow inside-bar idea.",
+                    "2. The pattern is a volatility breakout because range has compressed before the later trigger.",
+                ),
+                accent="The narrow range describes compression; the later break supplies direction.",
+                caption="",
+            ),
+            picture=REVIEW_IDNR_FIGURE,
+            text_w=6.0,
+            picture_extra=0.1,
+            notes=REVIEW_IDNR_FIGURE.notes,
+            origin=REVIEW_IDNR_FIGURE.origin,
+        ),
+        Pair(
+            left=Content(
+                title="Review answer 3 identifies the key-reversal structure",
+                lines=(
+                    "A key reversal makes a higher high and then closes near or below the prior close. Figure 7.15 mark 1 shows the key-reversal day.",
+                    "3. The bullish converse makes a new low and closes near or above the prior close. A wider bar and high volume may strengthen the potential reading.",
+                ),
+                accent="Structure comes first; range and volume add context without certainty.",
+                caption="",
+            ),
+            picture=REVIEW_KEY_FIGURE,
+            text_w=6.0,
+            picture_extra=0.1,
+            notes=REVIEW_KEY_FIGURE.notes,
+            origin=REVIEW_KEY_FIGURE.origin,
         ),
         Content(
             title="Review answer 4 begins with the first eight reversal characteristics",
@@ -3017,12 +3122,24 @@ CHAPTER = Chapter(
             ),
             origin="Lim (2016), pp. 216 to 218; the 16 names follow the book's order.",
         ),
+        Content(
+            title="Review answer 5 explains how volume adds context",
+            lines=(
+                "Volume can strengthen or weaken a reversal read.",
+                "5. High volume can strengthen a wide final reversal bar; low volume can signal uncertainty.",
+            ),
+            accent="Volume adds context to a pattern; it does not guarantee the result.",
+            notes=(
+                "Read answer 5 before turning to the marked triple-bar structures.",
+                "Keep the qualification can: volume is context, not certainty.",
+            ),
+            origin="Lim (2016), p. 216. Review answer 5 is written from the preceding volume slides.",
+        ),
         Pair(
             left=Content(
-                title="Review answers 5 and 6 return to volume and triple-bar structure",
+                title="Review answer 6 returns to triple-bar structure",
                 lines=(
-                    "Volume can strengthen or weaken a reversal read. 5. High volume can strengthen a wide final reversal bar; low volume can signal uncertainty.",
-                    "6. Figure 7.6 shows pattern 1 [1] with a large middle bar and pattern 2 [2] with a narrow, low-volume middle bar. Blue mark 3 points to pattern 1's uptrend.",
+                    "Triple-bar structure separates the examples. 6. Figure 7.6 shows pattern 1 [1] with a large middle bar and pattern 2 [2] with a narrow, low-volume middle bar. Blue mark 3 points to pattern 1's uptrend.",
                     "Wider ranges and gaps may add reliability; Chapter 7 gives no complete trade plan.",
                 ),
                 accent="Pattern evidence does not make a complete trade plan.",
@@ -3067,6 +3184,20 @@ CHAPTER = Chapter(
             picture_extra=0.1,
             notes=OSCILLATOR_BOUNDARY_FIGURE.notes,
             origin=OSCILLATOR_BOUNDARY_FIGURE.origin,
+        ),
+        Content(
+            title="What to carry forward from Chapter 7",
+            lines=(
+                "A potential reversal is a reading, not a guarantee. Define the bar, show the numbers, and read the figure.",
+                "Then check the 16 reversal characteristics and name what the book leaves open.",
+                "Chapter 7 does not provide a complete trade plan, and its figures alone do not supply one.",
+            ),
+            accent="Read potential evidence honestly; it is not a promise.",
+            notes=(
+                "Use this as the final synthesis, not as a new method.",
+                "Close by naming the chapter's boundary: a reading is not a complete trade plan.",
+            ),
+            origin="Lim (2016), pp. 216 to 233. The closing synthesis follows the approved outline.",
         ),
     ),
     openers=(

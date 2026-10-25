@@ -2334,6 +2334,22 @@ FIG_74 = _book_figure("7.4", "Figure 7.4: seven bearish forms",
                           Mark(2, "line", .54, .48, .78, .48, color="red", at=(.84, .46)),
                           Mark(3, "line", .54, .18, .54, .56, color="blue", at=(.84, .18)),
                       ))
+FIG_74B = _book_figure("7.4", "Figure 7.4: bearish form 2",
+                       "A readable crop of bearish form 2: a large bar closes near or below the previous low.", 212,
+                       aspect=940 / 620, crop=(0.235, 0.0, 0.615, 0.419),
+                       marks=(
+                           Mark(1, "circle", .46, .38, .72, .58, color="gold", at=(.28, .66)),
+                           Mark(2, "line", .46, .18, .46, .42, color="red", at=(.82, .18)),
+                           Mark(3, "line", .46, .38, .46, .78, color="blue", at=(.82, .86)),
+                       ))
+FIG_74C = _book_figure("7.4", "Figure 7.4: bearish form 3",
+                       "A readable crop of bearish form 3: the bar closes below a gap between its open and the prior low.", 212,
+                       aspect=940 / 620, crop=(0.385, 0.0, 0.445, 0.419),
+                       marks=(
+                           Mark(1, "line", .28, .38, .72, .38, color="gold", at=(.20, .28)),
+                           Mark(2, "circle", .46, .18, .70, .60, color="red", at=(.82, .16)),
+                           Mark(3, "line", .50, .58, .50, .84, color="blue", at=(.84, .82)),
+                       ))
 FIG_75 = _book_figure("7.5", "Figure 7.5: seven bullish forms",
                       "A readable crop of one bullish single-bar formation: a large bar opens below the previous low and closes near or above the previous close.", 212,
                       aspect=940 / 620, crop=(0.085, 0.419, 0.761, 0.0),
@@ -2342,6 +2358,22 @@ FIG_75 = _book_figure("7.5", "Figure 7.5: seven bullish forms",
                           Mark(2, "line", .62, .52, .78, .52, color="red", at=(.86, .46)),
                           Mark(3, "line", .62, .58, .62, .95, color="blue", at=(.86, .92)),
                       ))
+FIG_75B = _book_figure("7.5", "Figure 7.5: bullish form 2",
+                       "A readable crop of bullish form 2: a large bar closes near or above the previous high.", 212,
+                       aspect=940 / 620, crop=(0.235, 0.419, 0.615, 0.0),
+                       marks=(
+                           Mark(1, "circle", .46, .46, .72, .66, color="gold", at=(.28, .38)),
+                           Mark(2, "line", .46, .54, .46, .82, color="red", at=(.82, .58)),
+                           Mark(3, "line", .46, .20, .46, .58, color="blue", at=(.82, .86)),
+                       ))
+FIG_75C = _book_figure("7.5", "Figure 7.5: bullish form 3",
+                       "A readable crop of bullish form 3: the bar closes above a gap between its open and the prior high.", 212,
+                       aspect=940 / 620, crop=(0.385, 0.419, 0.445, 0.0),
+                       marks=(
+                           Mark(1, "line", .28, .56, .72, .56, color="gold", at=(.20, .68)),
+                           Mark(2, "circle", .46, .34, .70, .76, color="red", at=(.82, .32)),
+                           Mark(3, "line", .50, .18, .50, .52, color="blue", at=(.84, .16)),
+                       ))
 FIG_76 = _book_figure("7.6", "Figure 7.6: triple bearish forms",
                       "A readable crop of the first triple bearish formation: a large middle bar closes near its low between two outer bars.", 213,
                       aspect=650 / 550, crop=(0.123, 0.0, 0.585, 0.364),
@@ -2417,9 +2449,112 @@ FIG_713 = _book_figure("7.13", "Figure 7.13: reversal context",
                                 color="gold", at=(.24, .38), size=.28),
                            Mark(2, "circle", .56, .64, .68, .80,
                                color="red", at=(.74, .60), size=.28),
-                           Mark(3, "circle", .41, .08, .52, .25,
-                                color="blue", at=(.58, .08), size=.28),
+                           Mark(3, "box", .365, .08, .445, .42,
+                                color="blue", at=(.52, .20), size=.28),
                        ))
+FIG_713_CHECK = _book_figure(
+    "7.13", "Figure 7.13: reversal context check", FIG_713.shows, 217,
+    aspect=2.0, crop=(0.001, 0.0, 0.001, 0.0), marks=FIG_713.marks,
+)
+
+
+def _figure_reading(figure, title, *lines):
+    """Attach the plain-language reading printed beside a source crop."""
+    figure.reading_title = title
+    figure.reading_lines = tuple(lines)
+    return figure
+
+
+_figure_reading(
+    FIG_74, "Figure 7.4, form 1: the key reversal bar",
+    "Gold [1] marks the final close near the previous close. Red [2] marks the opening above the previous high. Blue [3] marks the wide range.",
+    "Lim calls this generally bearish and potentially more reliable when context supports it. The book drawing has no volume panel; the course chart supplies the invented volume.",
+    "Next we compare the second bearish form.",
+)
+_figure_reading(
+    FIG_74B, "Figure 7.4, form 2: a close near the prior low",
+    "Gold [1] marks the large bar closing near the previous low. Red [2] marks the opening relationship, and blue [3] marks the wide range.",
+    "The book drawing shows shape and close direction only. Use the course chart for invented prices and volume.",
+    "Next we read the gap form.",
+)
+_figure_reading(
+    FIG_74C, "Figure 7.4, form 3: a gap before the close",
+    "Gold [1] marks the gap, red [2] the bearish bar, and blue [3] the close below the gap.",
+    "This is a potential bearish clue, not a promise. The crop has no volume panel.",
+    "Now we turn the same test upward for bullish forms.",
+)
+_figure_reading(
+    FIG_75, "Figure 7.5, form 1: the bullish key reversal",
+    "Gold [1] marks the final close near the previous close. Red [2] marks the opening below the previous low. Blue [3] marks the wide range.",
+    "The book's bullish reading is potential and context-dependent; its crop has no volume panel.",
+    "Next we compare the second bullish form.",
+)
+_figure_reading(
+    FIG_75B, "Figure 7.5, form 2: a close near the prior high",
+    "Gold [1] marks the large bar closing near the previous high. Red [2] marks the opening relationship, and blue [3] marks the range.",
+    "The crop shows the formation, not volume. The course chart carries the invented numerical example.",
+    "Next we read the bullish gap form.",
+)
+_figure_reading(
+    FIG_75C, "Figure 7.5, form 3: a gap before the close",
+    "Gold [1] marks the gap, red [2] the bullish bar, and blue [3] the close above the gap.",
+    "The shape suggests a potential bullish reversal when the broader trend is down.",
+    "The triple-bar families add a middle bar next.",
+)
+_figure_reading(
+    FIG_76, "Figure 7.6, form 1: three bearish bars",
+    "Gold [1] marks the first outer close, red [2] the middle bar, and blue [3] the final outer close.",
+    "The outer closes and the middle bar frame a potential bearish reversal; the crop has no volume panel.",
+    "The next triple drawing adds an island gap.",
+)
+_figure_reading(
+    FIG_77, "Figure 7.7, form 4: the island reversal",
+    "Gold [1] marks the gap up, red [2] the island bar, and blue [3] the gap down into the bearish close.",
+    "The figure shows the gap structure and close direction. Volume belongs to the invented course chart, not this crop.",
+    "Now compare the bullish triple forms.",
+)
+_figure_reading(
+    FIG_78, "Figure 7.8, form 1: three bullish bars",
+    "Gold [1] marks the first bar closing near its low, red [2] the middle bar closing near its high, and blue [3] the final bar closing near its high.",
+    "Those close directions give the formation its potential bullish reading. The crop has no volume panel.",
+    "The next bullish drawing keeps the same close-direction test.",
+)
+_figure_reading(
+    FIG_79, "Figure 7.9, form 4: the bullish island reversal",
+    "Gold [1] marks the gap down, red [2] the middle bar, and blue [3] the final bar closing near its high after the gap up.",
+    "The figure shows the bars and gaps only. Use the course chart for invented volume values.",
+    "Multiple-bar forms now add a longer intermediate sequence.",
+)
+_figure_reading(
+    FIG_712, "Figure 7.12, continuation form 1",
+    "Gold [1] marks the prior high, red [2] the second bar, and blue [3] its close near the high.",
+    "Lim presents this as bullish continuation when the pattern agrees with the trend. The crop has no volume panel.",
+    "The second continuation form adds a midpoint retrace.",
+)
+_figure_reading(
+    FIG_712B, "Figure 7.12, continuation form 2",
+    "Gold [1] marks the first bar, red [2] the 50% midpoint retrace, and blue [3] the rebound through the old high.",
+    "The crop shows the midpoint level but no volume panel; the course chart supplies invented volume separately.",
+    "The 16 reversal characteristics explain when a move may be losing energy.",
+)
+_figure_reading(
+    FIG_710, "Figure 7.10: multiple bearish forms",
+    "Gold [1] marks the first bar, red [2] the intermediate sequence, and blue [3] the final close near its low.",
+    "The crop has no volume panel. Lim's volume exception belongs to the surrounding explanation, not this mark.",
+    "The bullish multiple family reverses this direction.",
+)
+_figure_reading(
+    FIG_711, "Figure 7.11: multiple bullish forms",
+    "Gold [1] marks the first bar, red [2] the narrow middle sequence, and blue [3] the final close near its high.",
+    "The crop has no volume panel, so its marks do not claim the pattern 2 volume exception.",
+    "We finish by reading the warning context in Figure 7.13.",
+)
+_figure_reading(
+    FIG_713, "Figure 7.13: reversal context",
+    "Gold [1] marks characteristic 8, the rapid rise and changing momentum; red [2] marks characteristic 10, the fewer oscillations; blue [3] marks characteristic 14, the actual overextended price bar against the upper band.",
+    "The source label is not the target: the blue box sits on the price bar itself. The book names the upper band but gives no formula here.",
+    "Barrier proximity is the next reliability rule.",
+)
 
 # The checks repeat the book crop with marks, because the question and answer
 # must carry the visual evidence they ask students to read. The ordinary
@@ -2523,8 +2658,8 @@ CHART_QT = _form_chart("QT", "Chart QT: continuation pattern one",
                        ))
 CHART_QU = _form_chart("QU", "Chart QU: continuation pattern two",
                        "Our invented continuation form with the 50 percent midpoint and rebound.", (
-                           Mark(1, "circle", .44, .52, .52, .62, color="gold", at=(.34, .68)),
-                           Mark(2, "circle", .68, .48, .76, .58, color="red", at=(.58, .40)),
+                           Mark(1, "circle", .20, .42, .30, .58, color="gold", at=(.14, .68)),
+                           Mark(2, "circle", .46, .48, .54, .58, color="red", at=(.62, .40)),
                            Mark(3, "line", .76, .25, .84, .25, color="blue", at=(.92, .16)),
                        ))
 CHART_QK = _form_chart("QK", "Chart QK: reversal context",
@@ -2556,20 +2691,24 @@ def _p(left, picture, *, companion=None, text_w=5.55, notes=(), origin="Lim (201
 
 
 SECTION2_SLIDES = (
-    _c("First compare the trend with the pattern's own sentiment", (
-        "We are comparing trend sentiment with intrinsic sentiment, the pattern's own bullish or bearish bias.",
-        "In an uptrend trend sentiment is bullish; in a downtrend it is bearish. The book uses intrinsic sentiment where Chapter 4 used intrinsic bias.",
-        "Here is the simple case: a bullish pattern in an uptrend has two bullish labels. Call it a reversal only when the labels disagree.",
+    _p(_c("First compare the trend with the pattern's own sentiment", (
+        "Trend sentiment is the direction of the wider move: bullish in an uptrend and bearish in a downtrend.",
+        "Intrinsic sentiment is the pattern's own bullish or bearish direction. The four invented percentage cases on the chart keep the two ideas separate.",
+        "For example, a +4.0% uptrend with a -2.0% bearish pattern disagrees and is a potential reversal.",
     ), accent="The book uses intrinsic sentiment where Chapter 4 used intrinsic bias."),
-    _c("Agreement suggests continuation; disagreement suggests reversal", (
-        "The two-by-two rule compares intrinsic and trend sentiment. Agreement suggests continuation; disagreement suggests reversal.",
-        "Bullish with a bullish uptrend, or bearish with a bearish downtrend, is continuation.",
-        "Bearish in an uptrend, or bullish in a downtrend, is a reversal case. These labels are potential, not certainty.",
-    ), accent="The expectation is potential continuation or potential reversal, not certainty."),
+       Chart(letter="T", title="Chart T: four sentiment cases",
+             shows="Four invented percentage cases: two agreements are continuation and two disagreements are potential reversal.", marks=()), text_w=3.75),
+    _p(_c("Agreement suggests continuation; disagreement suggests reversal", (
+        "The four invented combinations make the rule concrete: +4.0% with +2.0%, and -4.0% with -2.0%, agree and suggest continuation.",
+        "+4.0% with -2.0%, and -4.0% with +2.0%, disagree and suggest a potential reversal.",
+        "The chart's percentages are invented teaching values. The labels describe potential, not certainty.",
+    ), accent="Agreement suggests continuation; disagreement suggests a potential reversal."),
+       Chart(letter="S", title="Chart S: sentiment agreement matrix",
+             shows="An invented two-by-two matrix matching trend sentiment with intrinsic sentiment.", marks=()), text_w=3.75),
     _c("The book's pattern polarity", (
-        "The book's head and shoulders example is bearish.",
-        "Its inverted head and shoulders example is bullish. (Lim, p. 211.)",
-        "Use these intrinsic labels with the trend sentiment before classifying the pattern.",
+        "Pattern polarity means the pattern's own bullish or bearish direction.",
+        "The book's head and shoulders example is bearish; its inverted head and shoulders example is bullish. (Lim, p. 211.)",
+        "Use this polarity with trend sentiment before classifying the pattern.",
     ), accent="The examples supply the polarity used in the next check."),
     Check(
         label="Continuation or reversal",
@@ -2582,6 +2721,9 @@ SECTION2_SLIDES = (
               answer="B", reason="Both the pattern's intrinsic sentiment and the uptrend are bullish, so they agree."),
         ),
         notes=("Ask for the two sentiments before accepting an answer.",),
+        picture=Chart(letter="T", title="Chart T: four sentiment cases",
+                      shows="Four invented percentage cases that make agreement and disagreement visible.", marks=()),
+        layout="beside", text_w=5.1,
         origin="Questions are ours and answerable from the preceding two slides.",
     ),
     _c("Answer: continuation or reversal", (
@@ -2596,30 +2738,31 @@ SECTION2_SLIDES = (
         "The final bar is wide, closes near its low, and carries 4.0 million shares. Red [2] marks the range; blue [3] marks volume.",
         "A narrow or low-volume bar shows uncertainty. A wide bar that closes near its low on high volume is potentially more reliable, not guaranteed to follow through.",
     )), Chart(letter="QA", title="Chart QA: bearish close and volume", shows="Two invented PHP bars. Mark 1 is the close below the prior close; mark 2 is the wide final range; mark 3 is the 4.0 million volume.", marks=(
-        Mark(1, "circle", .64, .48, .70, .54, color="gold", at=(.54, .55)),
-        Mark(2, "line", .64, .21, .70, .21, color="red", at=(.78, .14)),
+        Mark(1, "circle", .63, .36, .69, .43, color="gold", at=(.56, .50)),
+        Mark(2, "line", .66, .22, .66, .72, color="red", at=(.78, .48)),
         Mark(3, "circle", .64, .78, .70, .84, color="blue", at=(.80, .88)),
     ), tier="core"), text_w=5.45),
     _p(_c("Now let us compare the first three bearish forms", (
         "We are comparing the book's first three generic bearish forms, where the final bar turns against the preceding move.",
         "On our course chart, gold [1] marks the final close near the previous close. Red [2] marks the final bar opening above the previous high; blue [3] marks its large range and volume.",
+        "Lim's first three forms become stronger when the close falls below the previous low; a narrow or low-volume bar shows uncertainty.",
         "The next slide supplies the book's cropped drawing with the same numbered reading. (Lim, p. 212.)",
-        "Lim's definition is generally bearish, not a promise of follow-through.",
     )), CHART_QL, companion=FIG_74, text_w=5.45),
     _p(_c("The next three bearish forms use the same test", (
         "These forms still ask whether the final bar turns bearish against the preceding move.",
         "Our chart repeats the generic bearish form: gold [1] is the final close; red [2] is the opening relationship; blue [3] is the wide range and volume.",
+        "A close below the previous low strengthens the bearish reading, while a narrow or low-volume bar shows uncertainty.",
         "The next slide supplies the book's drawing, cropped to this same form. (Lim, p. 212.)",
         "The book figure has no volume panel. Use our chart for the invented PHP and volume example.",
         "The shape is a potential reversal clue, not a guaranteed outcome.",
-    )), CHART_QV, companion=FIG_74, text_w=5.45),
+    )), CHART_QV, companion=FIG_74B, text_w=5.45),
     _p(_c("The seventh bearish form adds a reliability question", (
         "After identifying the bearish form, we ask whether its context makes the reading more reliable.",
         "Our course chart marks the close, opening relationship, and large range with gold [1], red [2], and blue [3].",
         "The next slide supplies the book's cropped drawing with the same numbered reading. (Lim, p. 212.)",
         "The book figure has no volume panel, so do not infer volume from it. Lim discusses high volume in the surrounding text.",
         "Treat the pattern as potentially more reliable, then check its context.",
-    )), CHART_QW, companion=FIG_74, text_w=5.45),
+    )), CHART_QW, companion=FIG_74C, text_w=5.45),
     Check(
         label="Generic single and double reversals",
         questions=(
@@ -2638,6 +2781,7 @@ SECTION2_SLIDES = (
     _p(_c("The bullish converse starts with the same question", (
         "We are now looking for the bullish converse: does the final bar close above the previous close or high while the broader trend is down?",
         "Gold [1] marks the final close above the previous close; red [2] the opening relationship; blue [3] the large range.",
+        "A close above the previous high strengthens the bullish reading; a narrow or low-volume bar shows uncertainty.",
         "The crop has no volume panel, so volume is read from the surrounding book text, not from this image.",
         "A bullish pattern in a downtrend is a potential reversal. (Lim, p. 212.)",
     )), CHART_QM, companion=FIG_75, text_w=5.45),
@@ -2649,14 +2793,14 @@ SECTION2_SLIDES = (
         "The figure has no volume panel; Lim discusses high volume in the surrounding text.",
         "The opposite-trend caveat remains: bullish intrinsic sentiment in a downtrend is a reversal.",
         "Do not treat a shape or volume clue as a guarantee.",
-    )), CHART_QY, companion=FIG_75, text_w=5.45),
+    )), CHART_QY, companion=FIG_75B, text_w=5.45),
     _p(_c("The seventh bullish form asks whether the close is convincing", (
         "The last bullish form still depends on the final close finishing above the previous close, with context deciding how convincing it is.",
         "Gold [1] marks the final close above the previous close; red [2] the opening relationship; blue [3] the large range.",
         "The crop's near-high close is the visible bullish reliability clue.",
         "The figure has no volume panel, so do not claim that blue [3] marks volume.",
         "Lim's qualifiers apply in the converse direction: potential, not certainty. (Lim, p. 212.)",
-    )), CHART_QZ, companion=FIG_75, text_w=5.45),
+    )), CHART_QZ, companion=FIG_75C, text_w=5.45),
 
     _p(_c("In a triple bearish form, the gaps add pressure", (
         "We are looking at a triple bearish form, where gaps between the bars add to the pressure of the reversal reading.",
@@ -2665,9 +2809,9 @@ SECTION2_SLIDES = (
         "A larger gap adds a stronger bearish clue in the triple pattern; the gap term keeps Chapter 3's meaning.",
         "The first three drawings share rules; they are not a shopping list of promises.",
     )), Chart(letter="QC", title="Chart QC: triple bearish gaps", shows="Three invented bars with gaps of PHP 0.30, PHP 0.60, and PHP 1.10 marked in the sequence.", marks=(
-        Mark(1, "circle", .42, .25, .54, .37, color="gold", at=(.34, .20)),
-        Mark(2, "circle", .49, .35, .61, .51, color="red", at=(.42, .32)),
-        Mark(3, "line", .70, .42, .82, .42, color="blue", at=(.88, .28)),
+        Mark(1, "circle", .24, .22, .30, .30, color="gold", at=(.14, .16)),
+        Mark(2, "circle", .48, .34, .54, .49, color="red", at=(.42, .60)),
+        Mark(3, "line", .72, .62, .78, .62, color="blue", at=(.86, .54)),
     ), tier="core"), text_w=5.45),
     _p(_c("The first three triple bearish drawings", (
         "The book's first triple group uses the outer-bar closes and the gaps to frame the reversal.",
@@ -2711,7 +2855,7 @@ SECTION2_SLIDES = (
     _p(_c("The bullish triple pattern reverses the outer closes", (
         "We are now reading the bullish triple form. Its outer bars reverse the close direction: the first is near its low and the final bar near its high.",
         "Gold [1], red [2], and blue [3] mark the first, middle, and final bars in the crop.",
-        "The figure shows bar shape and close direction, but no volume panel. Chart QJ carries the invented volume example.",
+        "The figure shows bar shape and close direction, but no volume panel. The course chart carries the invented volume example.",
         "The same potential range and volume tests apply in the bullish direction.",
     )), Chart(letter="QE", title="Chart QE: triple bullish outer bars", shows="Three invented bars with strong outer closes and a quiet middle bar.", marks=(
         Mark(1, "circle", .18, .55, .24, .61, color="gold", at=(.12, .58)),
@@ -2721,7 +2865,7 @@ SECTION2_SLIDES = (
     _p(_c("The first three triple bullish drawings", (
         "The first three bullish drawings reverse the outer-bar close direction.",
         "Gold [1] marks the first bar, red [2] the middle bar, and blue [3] the final bar near its high.",
-        "The figure has no volume panel. Use Chart QJ for the invented quiet-middle and high-volume comparison.",
+        "The figure has no volume panel. Use the course chart for the invented quiet-middle and high-volume comparison.",
         "Read the next group for the remaining three forms. (Lim, p. 214.)",
     )), CHART_QP, companion=FIG_78, text_w=5.45),
     _p(_c("The final bullish group uses the same volume test", (
@@ -2738,7 +2882,7 @@ SECTION2_SLIDES = (
     _p(_c("The next triple bullish drawings complete the group", (
         "Gold [1] marks the gap, red [2] the middle bar, and blue [3] the final bar near its high.",
         "The outer bars carry the bullish direction while the middle bar is commonly quieter.",
-        "The figure has no volume panel, so its marks do not claim volume. Pattern 2's volume exception is taught on Chart QJ.",
+        "The figure has no volume panel, so its marks do not claim volume. The course chart teaches pattern 2's volume exception.",
         "Keep the final-bar rule potential, not certain. (Lim, p. 215.)",
     )), CHART_QQ, companion=FIG_79, text_w=5.45),
     _p(_c("Multiple bearish forms can contain a volume exception", (
@@ -2755,31 +2899,31 @@ SECTION2_SLIDES = (
     _p(_c("The bullish multiple forms reverse that sequence", (
         "The bullish multiple forms use the same idea in the other direction: intermediate bars are usually quiet, with a possible wide, high-volume exception.",
         "Here is the invented sequence: the two quiet middle volumes are 0.6 and 0.8 million shares; the wide exception is 3.8 million.",
-        "The bullish converse normally has low intermediate volume and a final close near its high.",
-        "Gold [1] marks narrow bars, red [2] the high-volume exception, and blue [3] the final close.",
+        "The bullish converse normally has one narrow intermediate bar and a final close near its high.",
+        "Gold [1] marks that narrow bar, red [2] the high-volume exception, and blue [3] the final close.",
         "In pattern 2, a wide-ranging intermediate bar on high or above-average volume can support the bullish reading.",
         "Narrow intermediate bars on very low volume show the quiet case.",
     )), Chart(letter="QG", title="Chart QG: multiple bullish sequence", shows="Four invented bars with quiet middle bars, a high-volume exception, and a final high close.", marks=(
-        Mark(1, "circle", .42, .56, .48, .68, color="gold", at=(.34, .76)),
-        Mark(2, "line", .60, .43, .68, .43, color="red", at=(.56, .24)),
+        Mark(1, "circle", .38, .55, .45, .68, color="gold", at=(.30, .48)),
+        Mark(2, "box", .54, .76, .66, .96, color="red", at=(.72, .70)),
         Mark(3, "line", .76, .26, .82, .26, color="blue", at=(.90, .16)),
     ), tier="core"), text_w=5.45),
 
     _p(_c("A continuation bar can confirm the trend", (
-        "We are now looking at a bullish continuation pattern: price stays aligned with the uptrend when a later bar breaks the previous high.",
-        "Here is the invented example. The prior high is PHP 52.00; the second bar reaches PHP 53.20 on 4.0 million shares versus 2.0 million.",
+        "Continuation keeps the pattern aligned with an uptrend when a later bar breaks the previous high.",
+        "Invented example: prior high PHP 52.00; second high PHP 53.20, with volume 4.0 million versus 2.0 million.",
         "Gold [1] marks the prior high, red [2] the breach, and blue [3] the high volume.",
         "The second bar breaches the previous high on high volume, so intrinsic and trend sentiment agree.",
         "This is continuation, not a reversal. (Lim, p. 216.)",
     )), Chart(letter="QH", title="Chart QH: bullish continuation breach", shows="Two invented PHP bars: the second breaches prior high 52.00 at 53.20 on 4.0 million shares.", marks=(
         Mark(1, "line", .18, .35, .80, .35, color="gold", at=(.14, .30)),
-        Mark(2, "line", .70, .20, .75, .20, color="red", at=(.86, .10)),
-        Mark(3, "circle", .70, .80, .76, .86, color="blue", at=(.84, .88)),
+        Mark(2, "line", .70, .20, .75, .20, color="red", at=(.75, .30)),
+        Mark(3, "circle", .68, .78, .78, .93, color="blue", at=(.84, .88)),
     ), tier="core"), text_w=5.45),
     _p(_c("The book's first continuation example breaks the prior high", (
         "We are checking the same continuation rule in the book figure: the second bar takes out the previous high and closes near its high.",
         "Gold [1] marks the prior high, red [2] the breach, and blue [3] the second bar closing near its high.",
-        "The book crop shows the second bar taking out the previous high. It has no volume panel.",
+        "The book crop has no volume panel; the course chart adds invented volume only to illustrate Lim's surrounding comment.",
         "Lim presents this as a bullish continuation example, where the pattern and trend agree.",
         "The bearish reverse uses the same structure downward. (Lim, p. 216.)",
     )), CHART_QT, companion=FIG_712, text_w=5.45),
@@ -2812,20 +2956,20 @@ SECTION2_SLIDES = (
     _p(_c("The book's second continuation example retraces halfway", (
         "Gold [1] marks the first continuation bar, red [2] the midpoint retrace, and blue [3] the rebound above it.",
         "The book labels the midpoint as 50% of the first bar. The crop has no volume panel.",
-        "The second bar rebounds to the upside. Lim says large volume may mean the trend remains potentially strong, but it is not visible here.",
+        "The second bar rebounds to the upside. The book crop has no volume panel; the course chart adds invented volume only to illustrate Lim's surrounding comment.",
         "The bearish reverse applies the same structure downward. (Lim, p. 216.)",
     )), CHART_QU, companion=FIG_712B, text_w=5.45),
 
     _c("Four characteristics show a move losing energy", (
         "We are starting the 16 reversal characteristics with the way a price move can lose energy before a reversal or retracement.",
-        "Cycle amplitude decreases from 40 to 30 points, and cycle period decreases from 20 to 12 bars.",
-        "Bar retracement symmetry changes from 28, 30, and 26 bars to 14 bars; average range decreases from 3.0 to 2.0.",
+        "Characteristics 1 and 2 are cycle amplitude and cycle period: amplitude decreases from 40 to 30 points, while period decreases from 20 to 12 bars.",
+        "Characteristics 3 and 4 are bar retracement symmetry and average range: symmetry changes from 28, 30, and 26 bars to 14 bars, while range falls from 3.0 to 2.0.",
         "These are invented values showing the direction. The characteristics indicate potential, never certainty.",
     )),
     _c("Four more characteristics describe weaker follow-through", (
-        "The next group asks whether price persists and bar measures weaken.",
-        "Price persistence loses quality; bar stochastic falls from 0.80 to 0.40. BRR falls from 0.60 to 0.25.",
-        "Angular symmetry and momentum change from 20 to 35 degrees. Chapter 5 taught stochastic and BRR.",
+        "Characteristics 5 to 8 ask whether price persists and bar measures weaken.",
+        "Characteristic 5 is price persistence, whose quality falls; characteristic 6 is bar stochastic, which falls from 0.80 to 0.40.",
+        "Characteristic 7 is BRR, which falls from 0.60 to 0.25; characteristic 8 is angular symmetry and momentum, changing from 20 to 35 degrees.",
     ), accent="The book's terms stay connected to their earlier FIN1209 definitions."),
     Check(
         label="The 16 characteristics, first half",
@@ -2839,32 +2983,32 @@ SECTION2_SLIDES = (
         ), origin="Questions are ours and answerable from the preceding numbered list.",
     ),
     _c("Location and consolidation add four more warnings", (
-        "This group moves from bar behaviour to context: a reversal matters more when price is close to a significant barrier.",
-        "Price is PHP 1.00 below resistance, and trend oscillations become fewer or shallower, from 6 to 2.",
-        "Consolidations become larger and longer, from 3 to 12 bars, and an exhaustion gap appears at PHP 0.80.",
+        "Characteristics 9 to 12 move from bar behaviour to context: barrier proximity, fewer oscillations, larger consolidation, and an exhaustion gap.",
+        "Characteristic 9 is PHP 1.00 below resistance; characteristic 10 is fewer or shallower oscillations, from 6 to 2.",
+        "Characteristic 11 is consolidation becoming larger and longer, from 3 to 12 bars; characteristic 12 is an exhaustion gap at PHP 0.80.",
         "The gap and barrier terms keep the meanings taught in Chapters 3 and 5.",
     ), accent="The location of the pattern matters as much as its shape."),
     _c("The last four characteristics combine range, volume, and divergence", (
-        "The final group asks whether the move is nearly complete, overextended, unusually active, or diverging.",
-        "Range completes 9 of 10 points; price extends PHP 1.00 above resistance. Volume is 5.0 million versus 1.2 million.",
-        "Standard divergences compare price, volume, and oscillators. The warning chart combines several; Chapter 7 gives no oscillator formula.",
+        "Characteristics 13 to 16 ask whether the move is nearly complete, overextended, unusually active, or diverging.",
+        "Characteristics 13 and 14 are range completion at 9 of 10 points and overextension at PHP 1.00 above resistance.",
+        "Characteristics 15 and 16 are extreme volume at 5.0 million versus 1.2 million and standard divergence. Chapter 7 gives no oscillator formula.",
     ), accent="The list ends with range completion, overextension, volume, and divergence."),
     _p(_c("Three reversal warnings appear together", (
         "We are using this warning chart to see several reversal characteristics on one price path: changing momentum, fewer oscillations, and overextension.",
         "Here is our invented path: price rises from PHP 40.00 to PHP 80.00 in 12 bars, with only two pullbacks.",
-        "Gold [1] marks the changing angular rise and momentum; red [2] marks the few oscillations.",
-        "Blue [3] marks the overextended bar against the upper band.",
+        "Gold [1] marks characteristic 8, changing angular rise and momentum; red [2] marks characteristic 10, the few oscillations.",
+        "Blue [3] marks characteristic 14, the overextended bar against the upper band.",
         "The book names the Bollinger upper band but never gives its formula here. These are potential warnings, not certainty.",
     )), CHART_QK, companion=FIG_713, text_w=5.45),
     _p(_c("The book figure shows reversal context", (
-        "Gold [1] marks the exponential rise and changing momentum; red [2] marks the few trend oscillations.",
-        "Blue [3] marks price overextension against the Bollinger upper band.",
+        "Gold [1] marks characteristic 8, the exponential rise and changing momentum; red [2] marks characteristic 10, the few trend oscillations.",
+        "Blue [3] marks characteristic 14, price overextension against the Bollinger upper band.",
         "The figure has no separate volume panel, so this reading does not mark volume.",
         "Read the chart as potential evidence, then apply the barrier rule.",
     )), FIG_713, text_w=5.45),
     _p(_c("Barrier proximity is the reliability rule", (
         "Lim defines barrier proximity as one of the most important reversal characteristics: patterns are more reliable at significant barriers.",
-        "In Figure 7.13, gold [1] marks the rapid rise, red [2] the few oscillations, and blue [3] the overextended bar against the upper band.",
+        "In Figure 7.13, gold [1] marks characteristic 8, red [2] characteristic 10, and blue [3] characteristic 14: the overextended bar against the upper band.",
         "The upper band is the visible barrier in this book figure. The scan does not provide a numeric barrier level.",
         "Check the pattern's barrier context. A barrier raises potential reliability, not certainty.",
     )), CHART_RF, companion=FIG_713, text_w=5.45),
@@ -2877,7 +3021,7 @@ SECTION2_SLIDES = (
                 "8, 10, and 14", "1, 2, and 3", "5, 7, and 9", "13, 15, and 16"),
               answer="A", reason="The figure reads characteristic 8, fewer oscillations in 10, and overextension against a barrier in 14."),
         ),
-        picture=FIG_713,
+        picture=FIG_713_CHECK,
         layout="beside",
         text_w=5.1,
         origin="Questions are ours and answerable from the preceding numbered list and Figure 7.13.",
@@ -2890,26 +3034,26 @@ SECTION2_SLIDES = (
     )), FIG_713, text_w=5.45),
     _p(_c("Let us read the first dedicated bearish figure", (
         "We are matching the book's drawing to the generic bearish test: gold [1] points to the final close, red [2] to the opening relationship, and blue [3] to the large range.",
-        "The next slide supplies the book's cropped drawing with the same numbered reading. It has no volume panel.",
+        "The book crop has no volume panel; the course chart adds invented volume only to illustrate Lim's surrounding comment.",
         "The book's wording is generally and potentially: context changes reliability.",
         "Next we compare the bullish converse.",
     )), CHART_RG, companion=FIG_74, text_w=5.45),
     _p(_c("Now let us read the dedicated bullish figure", (
         "We are matching the bullish converse to its book drawing: the formation closes above the prior close or high.",
         "On our course chart, gold [1] points to the final close, red [2] to the opening relationship, and blue [3] to the large range.",
-        "The next slide supplies the book's cropped drawing with the same numbered reading and has no volume panel.",
+        "The book crop has no volume panel; the course chart adds invented volume only to illustrate Lim's surrounding comment.",
         "A bullish pattern in a downtrend is a potential reversal; the same bias in an uptrend is continuation.",
     )), CHART_RH, companion=FIG_75, text_w=5.45),
     _p(_c("The dedicated multiple-bearish figure shows the final turn", (
         "We are reading the multiple-bearish family from left to right: a high first close, narrow intermediate bars, and a final close near its low.",
         "Gold [1] marks the first bar, red [2] the intermediate sequence, and blue [3] the final bearish bar.",
-        "The crop has no volume panel. Lim's volume exceptions belong to the surrounding text, not this mark.",
+        "The book crop has no volume panel; the course chart adds invented volume only to illustrate Lim's surrounding comment.",
         "The final bar remains the potential decision point.",
     )), CHART_QR, companion=FIG_710, text_w=5.45),
     _p(_c("The dedicated multiple-bullish figure reverses that direction", (
         "We are reading the multiple-bullish family as the directional converse of Figure 7.10.",
         "Gold [1] marks the first bar, red [2] the narrow middle sequence, and blue [3] the final close near its high.",
-        "The crop has no volume panel, so it cannot show the pattern 2 volume exception.",
+        "The book crop has no volume panel; the course chart adds invented volume only to illustrate Lim's surrounding comment.",
         "The figure supplies a potential reading, not a complete trade plan.",
     )), CHART_QS, companion=FIG_711, text_w=5.45),
     _p(_c("The dedicated warning chart keeps the context visible", (
@@ -2936,7 +3080,7 @@ def _chart_reading_slides(slides):
         if not isinstance(slide, Pair) or not isinstance(slide.picture, Chart):
             expanded.append(slide)
             continue
-        first_count = 2 if slide.left.title == "Barrier proximity is the reliability rule" else 3
+        first_count = 2
         first = Content(
             title=slide.left.title,
             lines=slide.left.lines[:first_count],
@@ -2956,14 +3100,33 @@ def _chart_reading_slides(slides):
         first_pair.companion = None
         expanded.append(first_pair)
         if len(slide.left.lines) > first_count:
+            remaining = slide.left.lines[first_count:]
             expanded.append(Content(
-                title=f"{slide.left.title} (continued)",
-                lines=slide.left.lines[first_count:],
+                title=slide.left.title,
+                lines=(f"Continuing this reading: {remaining[0]}",) + remaining[1:],
                 notes=slide.left.notes,
                 origin=slide.left.origin,
             ))
         if slide.companion is not None:
-            expanded.append(slide.companion)
+            companion = slide.companion
+            companion_pair = Pair(
+                left=Content(
+                    title=getattr(companion, "reading_title", companion.title),
+                    lines=getattr(companion, "reading_lines", (
+                        companion.shows,
+                        "The marked crop carries the same numbered reading as the course chart.",
+                        "Carry this potential rule into the next example.",
+                    )),
+                    notes=companion.notes,
+                    origin=companion.credit,
+                ),
+                picture=companion,
+                text_w=4.2,
+                notes=companion.notes,
+                origin=companion.credit,
+            )
+            companion_pair.companion = None
+            expanded.append(companion_pair)
     return tuple(expanded)
 
 

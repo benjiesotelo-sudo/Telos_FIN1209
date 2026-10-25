@@ -597,24 +597,23 @@ CHARTS = (
                 ck.Cell(name="1  continuation", note="uptrend +4.0%; bullish +2.0%",
                         tone="notice", panes=(ck.Pane(
                             columns=(4.0, 2.0), height=1.0,
-                            tags=((0, "+4.0% trend"), (1, "+2.0% form"))),)),
+                            tags=()),)),
                 ck.Cell(name="2  continuation", note="downtrend -4.0%; bearish -2.0%",
                         tone="notice", panes=(ck.Pane(
                             columns=(4.0, 2.0), height=1.0,
-                            tags=((0, "-4.0% trend"), (1, "-2.0% form"))),)),
+                            tags=()),)),
                 ck.Cell(name="3  potential reversal", note="uptrend +4.0%; bearish -2.0%",
                         panes=(ck.Pane(
                             columns=(4.0, -2.0), height=1.0,
-                            tags=((0, "+4.0% trend"), (1, "-2.0% form"))),)),
+                            tags=()),)),
                 ck.Cell(name="4  potential reversal", note="downtrend -4.0%; bullish +2.0%",
                         panes=(ck.Pane(
                             columns=(-4.0, 2.0), height=1.0,
-                            tags=((0, "-4.0% trend"), (1, "+2.0% form"))),)),
+                            tags=()),)),
             ),
             cols=2,
             size=ck.pair_size(3.6),
-            footnote=("Ours, invented percentage changes. Agreement means "
-                      "continuation; disagreement means potential reversal. Lim, p. 211."),
+            footnote="",
         ),
     ),
     ck.ChartArt(
@@ -1058,11 +1057,11 @@ CHARTS = CHARTS + (
         letter="QB", draw=ck.cells,
         kwargs=dict(items=(ck.Cell(name="Bullish close and volume",
             note="invented bars: the final close is above the prior high",
-            panes=(ck.Pane(bars=_bars(((45.0, 46.0, 44.2, 44.5),
-                                       (44.8, 47.2, 44.4, 47.0))),
+            panes=(ck.Pane(bars=_bars(((44.0, 46.0, 43.0, 45.0),
+                                       (46.2, 47.6, 44.6, 47.2))),
                            height=1.8,
-                           notes=_bar_notes((1, 47.2, "C 47.00", 16, -8, True),
-                                            (1, 47.2, "high 47.20", 16, 8, True))),
+                           notes=_bar_notes((1, 47.2, "C 47.20", 16, -8, True),
+                                            (1, 47.6, "high 47.60", 16, 8, True))),
                    ck.Pane(columns=(1.5, 4.5), height=0.55,
                            tags=((1, "4.5m"),))),)),
             cols=1, size=ck.pair_size(4.0),
@@ -1195,8 +1194,8 @@ CHARTS = CHARTS + (
                            height=1.8,
                            strokes=(ck.Stroke(points=((0, 50.0), (2, 50.0)),
                                               tone="quiet", dashed=True,
-                                              label="50% midpoint 50.00", at=0,
-                                              dx=-22, dy=-10),),
+                                              label="", at=0,
+                                              dx=0, dy=0),),
                            notes=_bar_notes((1, 50.0, "midpoint", -28, -8, True),
                                             (2, 52.4, "breach", 16, 8, True))),),)),
             cols=1, size=ck.pair_size(4.0),
@@ -1382,8 +1381,8 @@ CHARTS = CHARTS + (
                            height=1.8,
                            strokes=(ck.Stroke(points=((0, 50.0), (2, 50.0)),
                                               tone="quiet", dashed=True,
-                                              label="50% midpoint 50.00", at=0,
-                                              dx=-22, dy=-10),),
+                                              label="", at=0,
+                                              dx=0, dy=0),),
                            notes=_bar_notes((1, 50.0, "midpoint", -28, -8, True),
                                             (2, 52.4, "breach", 16, 8, True))),
                    ck.Pane(columns=(2.0, 1.0, 4.0), height=0.55,
@@ -1397,6 +1396,18 @@ CHARTS = CHARTS + (
 for _art in CHARTS:
     if _art.draw is ck.cells and isinstance(_art.kwargs.get("items"), ck.Cell):
         _art.kwargs["items"] = (_art.kwargs["items"],)
+
+# Part 2 charts sit beside teaching text.  The shared ``cells`` form is too
+# small for that projected use, so redraw this range with the chapter's
+# larger cell renderer and the wider 3.7-inch text-column geometry.
+_PART2_CHARTS = {
+    "QA", "QB", "QC", "QD", "QE", "QF", "QG", "QH", "QI", "QJ",
+    "QK", "QL", "QM", "QN", "QO", "QP", "QQ", "QR", "QS", "QT", "QU", "T",
+}
+for _art in CHARTS:
+    if _art.letter in _PART2_CHARTS:
+        _art.draw = _readable_cells
+        _art.kwargs["size"] = ck.pair_size(3.7)
 
 # Several Part 2 slides reuse one marked chart with a distinct slide letter.
 # Give each reused name its own generated file so the deck never falls back to

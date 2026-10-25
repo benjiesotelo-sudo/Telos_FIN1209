@@ -91,14 +91,16 @@ KEY_CROP_FIGURE = Figure(
     # Keep the marked day readable on the check answer slides. The earlier
     # narrow crop made the picture portrait-shaped and too small beside the
     # two answer cards.
-    crop=(0.20, 0.0, 0.05, 0.02),
+    crop=(0.05, 0.0, 0.05, 0.02),
     marks=(
-        Mark(1, "circle", 0.42, 0.10, 0.47, 0.18,
-             color="gold", at=(0.36, 0.06), size=0.34),
-        Mark(2, "circle", 0.45, 0.02, 0.49, 0.10,
-             color="red", at=(0.55, 0.01), size=0.34),
-        Mark(3, "circle", 0.47, 0.24, 0.52, 0.32,
-             color="blue", at=(0.59, 0.35), size=0.34),
+        Mark(1, "circle", 0.405, 0.135, 0.455, 0.175,
+             color="gold", at=(0.37, 0.09), size=0.24),
+        Mark(2, "circle", 0.405, 0.085, 0.455, 0.125,
+             color="red", at=(0.49, 0.12), size=0.24),
+        Mark(3, "circle", 0.409, 0.17, 0.459, 0.21,
+             color="blue", at=(0.53, 0.25), size=0.24),
+        Mark(4, "circle", 0.405, 0.86, 0.455, 0.94,
+             color="purple", at=(0.55, 0.80), size=0.24),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked bar opens above the previous high, "
@@ -117,16 +119,21 @@ KEY_READ_FIGURE = Figure(
     title="Figure 7.15: the same reading on a real chart",
     number="7.15",
     aspect=701 / 413,
-    crop=(0.35, 0.04, 0.27, 0.02),
+    # Keep the chart wide enough for the header and the volume panel to read
+    # on the paired teaching slide and on both check slides.
+    crop=(0.05, 0.0, 0.05, 0.02),
     marks=(
-        Mark(1, "circle", 0.48, 0.065, 0.56, 0.105,
-             color="gold", at=(0.25, 0.09), size=0.30),
-        Mark(2, "circle", 0.49, 0.035, 0.55, 0.075,
-             color="red", at=(0.73, 0.06), size=0.30),
-        Mark(3, "circle", 0.51, 0.15, 0.59, 0.195,
-             color="blue", at=(0.75, 0.22), size=0.30),
-        Mark(4, "circle", 0.48, 0.77, 0.56, 0.85,
-             color="purple", at=(0.64, 0.84), size=0.30),
+        # On the visible crop the key bar's open tick is about (0.43, 0.15),
+        # its high is (0.43, 0.11), its close tick is (0.44, 0.19), and the
+        # volume bar below it is about (0.43, 0.75). Badges stay in whitespace.
+        Mark(1, "circle", 0.405, 0.135, 0.455, 0.175,
+             color="gold", at=(0.37, 0.09), size=0.24),
+        Mark(2, "circle", 0.405, 0.085, 0.455, 0.125,
+             color="red", at=(0.49, 0.12), size=0.24),
+        Mark(3, "circle", 0.409, 0.17, 0.459, 0.21,
+             color="blue", at=(0.53, 0.25), size=0.24),
+        Mark(4, "circle", 0.405, 0.86, 0.455, 0.94,
+             color="purple", at=(0.55, 0.80), size=0.24),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked day opens above the previous high, "
@@ -164,7 +171,7 @@ KEY_WORKED_CHART = Chart(
         "closes at 50.80, below the prior close of 51.10. Mark 4 identifies "
         "the 4.2 million-share volume bar.",
     ),
-    origin="Chart B is ours, with invented PHP bars and million-share volume.",
+    origin="Chart B is ours. These prices and volume values are invented for teaching.",
 )
 
 COMPARISON_CHART = Chart(
@@ -177,15 +184,15 @@ COMPARISON_CHART = Chart(
         Mark(1, "circle", 0.245, 0.225, 0.265, 0.265,
              color="gold", at=(0.20, 0.16), size=0.25),
         Mark(2, "circle", 0.245, 0.17, 0.265, 0.21,
-             color="red", at=(0.31, 0.15), size=0.25),
+             color="red", at=(0.43, 0.10), size=0.25),
         Mark(3, "circle", 0.245, 0.57, 0.27, 0.63,
              color="blue", at=(0.30, 0.67), size=0.25),
         Mark(4, "line", 0.27, 0.60, 0.37, 0.58,
-             color="purple", at=(0.42, 0.55), size=0.25),
+             color="purple", at=(0.47, 0.55), size=0.25),
         Mark(5, "circle", 0.735, 0.60, 0.77, 0.67,
-             color="gold", at=(0.84, 0.66), size=0.25),
+             color="gold", at=(0.91, 0.55), size=0.25),
         Mark(6, "circle", 0.735, 0.37, 0.77, 0.43,
-             color="red", at=(0.94, 0.30), size=0.25),
+             color="red", at=(0.91, 0.28), size=0.25),
     ),
     tier="core",
     notes=(
@@ -2303,9 +2310,26 @@ SECTION3 = Section(
             left=Content(
                 title="The key reversal is when a strong move suddenly turns",
                 lines=(
-                    "A bearish key reversal is an uptrend bar that makes a higher high, then closes near or below the previous close.",
-                    "It warns that buyers may be losing control. Lim defines it: \"A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar\" (p. 218).",
-                    "Now use simple prices: yesterday H 52.00 and C 51.10; today O 52.30 [1], H 53.20 [2], C 50.80 [3], volume 2.0 to 4.2 million shares [4].",
+                    "In an uptrend, buyers push each bar higher. A bearish key reversal is the day that habit breaks: the bar makes a new high, but sellers take over and it closes near or below the previous day's close.",
+                    "Lim defines it this way: \"A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar\" (p. 218).",
+                    "Why we care: it is an early warning that an uptrend may be running out of buyers. It is a warning, not a promise. In the book's example, the market drifts sideways before it falls.",
+                ),
+                accent="",
+                caption="",
+            ),
+            picture=KEY_READ_FIGURE,
+            text_w=5.5,
+            picture_extra=0.1,
+            notes=KEY_READ_FIGURE.notes,
+            origin=KEY_READ_FIGURE.origin,
+        ),
+        Pair(
+            left=Content(
+                title="Walking through one key reversal, price by price",
+                lines=(
+                    "Here is the same pattern with simple prices, so you can see each step.",
+                    "Yesterday the stock reached 52.00 and closed at 51.10. Today it opens higher, at 52.30, already above yesterday's high [1]. Buyers push it to 53.20, a new high [2].",
+                    "Then the selling starts, and by the close it has fallen to 50.80, below yesterday's close [3]. Volume more than doubles, from 2.0 to 4.2 million shares [4], so many traders took part in that turn.",
                 ),
                 accent="",
                 caption="",
@@ -2315,17 +2339,12 @@ SECTION3 = Section(
                 title="Walking through one key reversal, price by price",
                 shows="Two invented PHP bars with every OHLC value and volume value labelled. Marks 1 to 4 show the opening price above the previous high, the new high, the close below the previous close, and the volume increase.",
                 tier="core",
-                marks=(
-                    Mark(1, "circle", 0.64, 0.29, 0.69, 0.34, color="gold", at=(0.52, 0.34)),
-                    Mark(2, "circle", 0.64, 0.18, 0.69, 0.23, color="red", at=(0.88, 0.18)),
-                    Mark(3, "circle", 0.64, 0.52, 0.69, 0.57, color="blue", at=(0.77, 0.62)),
-                    Mark(4, "circle", 0.64, 0.78, 0.70, 0.84, color="purple", at=(0.80, 0.88), size=0.32),
-                ),
+                marks=KEY_WORKED_CHART.marks,
             ),
-            text_w=5.0,
-            picture_extra=0.1,
+            text_w=4.8,
+            picture_extra=0.8,
             notes=KEY_WORKED_CHART.notes,
-            origin="Chart K is ours, with invented PHP bars and million-share volume.",
+            origin="Chart K is ours. These prices and volume values are invented for teaching.",
         ),
         Pair(
             left=Content(
@@ -2347,16 +2366,15 @@ SECTION3 = Section(
             left=Content(
                 title="Figure 7.15 shows the key reversal on the book's chart",
                 lines=(
-                    "The worked example gives us the rule. On the book's chart, Lim defines it as: \"A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar.\" (p. 218).",
-                    "Gold [1] marks the key reversal day opening above the prior high. Red [2] marks its new high.",
-                    "Blue [3] marks its close below the prior close. Purple [4] marks the above-average volume under it.",
-                    "Why we care: the chart gives a potential warning, not a promise. It shows consolidation before the decline, so timing still needs context.",
+                    "On the book's chart, the same definition is visible: a higher high, then a close near or below the previous close (p. 218).",
+                    "Marks 1 and 2 show the open above the prior high and the new high. Marks 3 and 4 show the close below the prior close and the above-average volume.",
+                    "Why we care: the chart gives a potential warning, not a promise. The market consolidates before the later decline.",
                 ),
                 accent="",
                 caption="",
             ),
             picture=KEY_READ_FIGURE,
-            text_w=7.3,
+            text_w=5.5,
             notes=KEY_READ_FIGURE.notes,
             origin=KEY_READ_FIGURE.origin,
         ),
@@ -2364,15 +2382,15 @@ SECTION3 = Section(
             left=Content(
                 title="Two bars can look alike but warn for different reasons",
                 lines=(
-                "Exhaustion ends a long run and has no gap to the next bar. Pin pierces a barrier, then snaps back, making the break false.",
-                "Simple prices: exhaustion O 65.40 above H 65.00, H 66.20, C 60.50, next O 60.20 with no gap. Pin L 38.80 through support 40.00, C 40.60. Exhaustion warns of a tiring trend; pin warns of a false break.",
-                "The distinction is about context and price action, not the tail's size alone.",
+                "An exhaustion bar ends a long run. It opens beyond the previous high [1], reaches a new high [2], then gives most of it back. The next bar does not gap away [3]. The book counts it as a reversal bar (p. 226).",
+                "A pin bar pokes through support [4], then snaps back inside it [6]. Lim calls pin bars \"single bar misrepresentations of market strength or weakness\" (p. 227). Its volume is low here [5].",
+                "Ask: did the bar end a tiring move, or did it break a level and snap back? Those point to exhaustion and a pin bar.",
                 ),
                 accent="",
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=5.0,
+            text_w=4.8,
             picture_extra=0.8,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,

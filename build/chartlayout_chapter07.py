@@ -9,7 +9,6 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from functools import lru_cache
 import math
-import textwrap
 
 import chartkit as ck
 import deckkit as dk
@@ -17,7 +16,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from matplotlib.lines import Line2D
 from matplotlib.textpath import TextPath
-from matplotlib.transforms import Bbox
 
 WIDTH, HEIGHT = ck.FIG_W, ck.FIG_H
 FONT = 16.5
@@ -122,6 +120,13 @@ def _segment_box(start, end, box):
     return True
 
 
+def _segment_distance(start, end, point):
+    dx,dy=end[0]-start[0],end[1]-start[1]
+    length=dx*dx+dy*dy
+    t=max(0,min(1,((point[0]-start[0])*dx+(point[1]-start[1])*dy)/length)) if length else 0
+    return math.hypot(point[0]-start[0]-t*dx,point[1]-start[1]-t*dy)
+
+
 def _assert_layout(fig, labels, bars):
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
@@ -176,6 +181,10 @@ def _marks(fig, targets, specs, boxes, segments, groups):
                 start=(cx+radius*ux,cy+radius*uy)
                 end=(bx-badge_r*ux,by-badge_r*uy)
                 if extra and any(_segment_box(start,end,b.padded(1)) for b in boxes+segments):
+                    continue
+                if extra and any(_segment_distance(start,end,point)<r+1 for point,r in circles):
+                    continue
+                if extra and any(point != (cx,cy) and _segment_distance(start,end,point)<r+1 for point,r in future):
                     continue
                 found=(bx,by,start,end,extra)
                 break
@@ -365,6 +374,7 @@ def layout(key, page=0):
         plt.close(fig)
         raise AssertionError(f'{key} page {page+1}: {error}') from error
     plt.close(fig)
+    fig.chart_targets=targets
     return fig,marks
 
 

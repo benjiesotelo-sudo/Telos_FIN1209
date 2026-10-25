@@ -9,6 +9,7 @@ from charts_chapter07 import DATA
 from chartlayout_chapter07 import CAPTION, CourseChart, layout, page_specs
 from content_chapter07 import CHAPTER
 import deckkit
+import chartkit
 
 
 class ChartLayoutTests(unittest.TestCase):
@@ -45,6 +46,21 @@ class ChartLayoutTests(unittest.TestCase):
                     for bar in pane.bars[start:end]:
                         for prefix, value in zip('OHLC', dataclasses.astuple(bar)):
                             self.assertIn(f'{prefix} {value:.2f}', labels)
+
+    def test_open_and_close_labels_stay_on_their_real_price_ticks(self):
+        for key, spec in DATA.items():
+            if spec['special']:
+                continue
+            for page, (cell, start, end) in enumerate(page_specs(spec)):
+                fig, _marks = layout(key, page)
+                for pane in spec['items'][cell].panes:
+                    for index, bar in enumerate(pane.bars[start:end], start):
+                        for prefix, name, value in (('O', 'open', bar.open), ('C', 'close', bar.close)):
+                            tick_x, tick_y = fig.chart_targets[cell, index, name]
+                            candidates = [t for t in fig.texts if t.get_text() == f'{prefix} {value:.2f}']
+                            same_y = [t for t in candidates if abs(t.get_position()[1]*fig.bbox.height-tick_y)<.01]
+                            self.assertTrue(same_y, (key, index, name))
+                            self.assertTrue(any((t.get_position()[0]*fig.bbox.width<tick_x if prefix=='O' else t.get_position()[0]*fig.bbox.width>tick_x) for t in same_y))
 
     def test_full_deck_and_unique_asset_pages_validate(self):
         self.assertEqual(deckkit._validate(CHAPTER), [])

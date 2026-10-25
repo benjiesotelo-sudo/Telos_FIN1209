@@ -15,6 +15,7 @@ import chartkit as ck
 import deckkit as dk
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
+from matplotlib.lines import Line2D
 from matplotlib.transforms import Bbox
 
 WIDTH, HEIGHT = ck.FIG_W, ck.FIG_H
@@ -49,6 +50,10 @@ def course_chart(asset, **kwargs):
 def page_specs(spec):
     if spec['special']:
         return ((0, 0, 0),)
+    if spec['owner']=='r3b' and spec['letter']=='LG':
+        # Keep both crossing pairs intact rather than splitting the second
+        # pair at a page boundary.
+        return ((0,0,3),(0,3,6),(0,6,9),(0,9,11),(0,11,14))
     result = []
     for cell_index, cell in enumerate(spec['items']):
         count = max(max(len(p.bars), len(p.line), len(p.columns), 1) for p in cell.panes)
@@ -98,6 +103,24 @@ def _circle_box(cx, cy, radius, box):
     return math.hypot(x - cx, y - cy) < radius
 
 
+def _segment_box(start, end, box):
+    """Exact line/rectangle intersection, not the line's enclosing box."""
+    x,y=start
+    dx,dy=end[0]-x,end[1]-y
+    lower,upper=0.,1.
+    for p,q in ((-dx,x-box.x0),(dx,box.x1-x),(-dy,y-box.y0),(dy,box.y1-y)):
+        if abs(p)<1e-12:
+            if q<0:
+                return False
+        elif p<0:
+            lower=max(lower,q/p)
+        else:
+            upper=min(upper,q/p)
+        if lower>upper:
+            return False
+    return True
+
+
 def _assert_layout(fig, labels, bars):
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
@@ -115,38 +138,61 @@ def _assert_layout(fig, labels, bars):
     return boxes
 
 
-def _marks(fig, targets, specs, boxes, segments):
+def _marks(fig, targets, specs, boxes, segments, groups):
     """Compute exact data-anchored rings and touching, collision-free badges."""
-    radius, badge_r = .048 * ck.DPI, .14 * ck.DPI
+    ring_radius, badge_r = .048 * ck.DPI, .14 * ck.DPI
     circles = []
     result = []
-    future = [(targets[tuple(s['target'])], radius) for s in specs if tuple(s['target']) in targets]
+    leaders = []
+    future = [(targets[tuple(s['target'])], 0 if tuple(s['target']) in groups else ring_radius) for s in specs if tuple(s['target']) in targets]
     for spec in specs:
         target = tuple(spec['target'])
         if target not in targets:
             continue
         cx, cy = targets[target]
+        radius=0 if target in groups else ring_radius
         assert not any(_circle_box(cx, cy, radius, b) for b in boxes), (spec, 'ring crosses text')
-        distance = radius + badge_r
-        for angle in range(0, 360, 5):
-            theta = math.radians(angle)
-            bx, by = cx + distance * math.cos(theta), cy + distance * math.sin(theta)
-            if not (badge_r + 2 <= bx <= fig.bbox.width - badge_r - 2 and badge_r + 2 <= by <= fig.bbox.height - badge_r - 2):
-                continue
-            if any(_circle_box(bx, by, badge_r + 1, b) for b in boxes + segments):
-                continue
-            if any(math.hypot(bx - x, by - y) < badge_r + r + 1 for ((x,y),r) in circles):
-                continue
-            if any(math.hypot(bx - x, by - y) < badge_r + r - .01 for ((x,y),r) in future):
-                continue
-            break
-        else:
+        found = None
+        # Try direct contact first. Firstmate's 012 instruction permits the
+        # nearest clear badge joined to its ring by a same-colour hairline.
+        for extra in range(0, int(2*ck.DPI), 4):
+            distance = radius + badge_r + extra
+            for angle in range(0, 360, 5):
+                theta = math.radians(angle)
+                ux,uy=math.cos(theta),math.sin(theta)
+                bx, by = cx + distance * ux, cy + distance * uy
+                if not (badge_r + 2 <= bx <= fig.bbox.width - badge_r - 2 and badge_r + 2 <= by <= fig.bbox.height - badge_r - 2):
+                    continue
+                if any(_circle_box(bx, by, badge_r + 1, b) for b in boxes + segments):
+                    continue
+                if any(math.hypot(bx - x, by - y) < badge_r + r + 1 for ((x,y),r) in circles):
+                    continue
+                if any(math.hypot(bx - x, by - y) < badge_r + r - .01 for ((x,y),r) in future):
+                    continue
+                start=(cx+radius*ux,cy+radius*uy)
+                end=(bx-badge_r*ux,by-badge_r*uy)
+                if extra and any(_segment_box(start,end,b.padded(1)) for b in boxes+segments):
+                    continue
+                found=(bx,by,start,end,extra)
+                break
+            if found:
+                break
+        if found is None:
             raise AssertionError(f'No touching badge position for {spec}')
+        bx,by,start,end,extra=found
+        if extra:
+            color='#'+str(dk.MARK_COLORS[spec['color']])
+            fig.add_artist(Line2D((start[0]/ck.DPI,end[0]/ck.DPI),
+                                  (start[1]/ck.DPI,end[1]/ck.DPI),
+                                  transform=fig.dpi_scale_trans,color=color,lw=1))
+            leaders.append((spec['number'],extra/ck.DPI))
         circles.extend((((cx, cy), radius), ((bx, by), badge_r)))
-        result.append(dk.Mark(spec['number'], 'circle',
-                              (cx-radius)/fig.bbox.width, 1-(cy+radius)/fig.bbox.height,
-                              (cx+radius)/fig.bbox.width, 1-(cy-radius)/fig.bbox.height,
+        bounds=groups.get(target,(cx-radius,cy-radius,cx+radius,cy+radius))
+        result.append(dk.Mark(spec['number'], 'box' if target in groups else 'circle',
+                              bounds[0]/fig.bbox.width, 1-bounds[3]/fig.bbox.height,
+                              bounds[2]/fig.bbox.width, 1-bounds[1]/fig.bbox.height,
                               color=spec['color'], at=(bx/fig.bbox.width, 1-by/fig.bbox.height), size=.28))
+    fig.chart_leaders=tuple(leaders)
     return tuple(result)
 
 
@@ -161,7 +207,7 @@ def layout(key, page=0):
     from charts_chapter07 import DATA
     spec = DATA[key]
     fig = plt.figure(figsize=(WIDTH, HEIGHT), dpi=ck.DPI)
-    labels, segments, targets, levels, tips = [], [], {}, [], []
+    labels, segments, targets, levels, tips, groups = [], [], {}, [], [], {}
     def text(x, y, value, *, ha='center', va='center', color=ck.INK):
         artist = fig.text(x/WIDTH, y/HEIGHT, value, ha=ha, va=va,
                           fontsize=FONT, color=color, fontweight='bold',
@@ -199,7 +245,7 @@ def layout(key, page=0):
         if note:
             text(WIDTH/2,3.32,note,color=ck.MUTED)
         has_volume = any(p.columns for p in cell.panes) and any(p.bars or p.line for p in cell.panes)
-        price_bottom = 1.65 if has_volume else 1.0
+        price_bottom = 1.55 if has_volume else 1.0
         price_top = 2.72
         left = 3.6 if any(p.strokes for p in cell.panes) else 2.1
         right = WIDTH - 1.5
@@ -237,6 +283,16 @@ def layout(key, page=0):
                     else:
                         y=pane.line[index]
                         targets[cell_index,index,'line']=(x*ck.DPI,y_inches(y)*ck.DPI)
+                for target,group in spec.get('groups',{}).items():
+                    ci,first,last=group
+                    if pane.bars and ci==cell_index and start<=first<=last<end:
+                        members=pane.bars[first:last+1]
+                        bottom=min(b.low for b in members)
+                        top=max(b.high for b in members)
+                        bounds=((x_inches(first)-.29)*ck.DPI,(y_inches(bottom)-.14)*ck.DPI,
+                                (x_inches(last)+.29)*ck.DPI,(y_inches(top)+.14)*ck.DPI)
+                        groups[target]=bounds
+                        targets[target]=(bounds[2],(bounds[1]+bounds[3])/2)
                 if pane.line:
                     line(axis,xs,pane.line[start:end],color=ck.INK,lw=2.4)
                 for stroke in pane.strokes:
@@ -257,7 +313,7 @@ def layout(key, page=0):
                     for index,x in zip(range(start,end),xs):
                         text(x,.39,f'Bar {index+1}',color=ck.MUTED)
             elif pane.columns:
-                bottom,top = (.60,.90) if has_volume else (.72,2.7)
+                bottom,top = (.60,.80) if has_volume else (.72,2.7)
                 cols=pane.columns[start:end]
                 lo,hi=min(0,min(cols)),max(cols)
                 span=hi-lo or 1
@@ -294,7 +350,11 @@ def layout(key, page=0):
             raise AssertionError(f'{key}: no level caption lane: {artist.get_text()}')
     try:
         boxes=_assert_layout(fig,labels,segments)
-        marks=_marks(fig,targets,_target_specs(key,spec),boxes,segments)
+        for bounds in groups.values():
+            x0,y0,x1,y1=bounds
+            edges=(((x0,y0),(x1,y0)),((x1,y0),(x1,y1)),((x1,y1),(x0,y1)),((x0,y1),(x0,y0)))
+            assert not any(_segment_box(a,b,box) for a,b in edges for box in boxes), 'group box crosses text'
+        marks=_marks(fig,targets,_target_specs(key,spec),boxes,segments,groups)
     except AssertionError as error:
         plt.close(fig)
         raise AssertionError(f'{key} page {page+1}: {error}') from error

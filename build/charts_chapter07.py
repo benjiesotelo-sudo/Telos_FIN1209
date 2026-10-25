@@ -1137,7 +1137,7 @@ CHARTS = CHARTS + (
                 ),),
             ),),
             cols=1,
-            size=ck.pair_size(4.6),
+            size=(14.0, 3.3),
             title_pt=14.5,
             note_pt=13.0,
             label_pt=13.5,
@@ -1165,7 +1165,7 @@ CHARTS = CHARTS + (
         letter="L",
         draw=_sentiment_table_r1,
         kwargs=dict(
-            size=ck.pair_size(4.6),
+            size=(14.0, 3.3),
             footnote="Invented percentage changes for teaching. Lim, p. 211.",
         ),
     ),
@@ -1189,7 +1189,7 @@ CHARTS = CHARTS + (
                 ticks=(44.0, 46.0, 48.0, 50.0, 52.0),
                 height=1.0,
             ),),
-            size=ck.pair_size(4.6),
+            size=(14.0, 3.3),
             xticks=((2, "rising context"), (3, "first"), (4, "second")),
             footnote=("Invented PHP bars for teaching. The last two bars form "
                       "the double formation."),
@@ -1199,7 +1199,7 @@ CHARTS = CHARTS + (
         letter="N",
         draw=_sentiment_table_r1,
         kwargs=dict(
-            size=ck.pair_size(4.6),
+            size=(14.0, 3.3),
             footnote="Invented percentage changes for teaching. Lim, p. 211.",
         ),
     ),

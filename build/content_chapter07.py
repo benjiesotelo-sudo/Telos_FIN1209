@@ -266,14 +266,14 @@ PRICE_BAR_FULL = Figure(
     number="7.1",
     aspect=560 / 404,
     marks=(
-        Mark(1, "circle", 0.62, 0.38, 0.69, 0.46,
-             color="gold", at=(0.57, 0.38), size=0.30),
-        Mark(2, "circle", 0.62, 0.20, 0.69, 0.28,
-             color="red", at=(0.76, 0.15), size=0.30),
-        Mark(3, "circle", 0.62, 0.68, 0.69, 0.76,
-             color="blue", at=(0.76, 0.82), size=0.30),
-        Mark(4, "circle", 0.69, 0.45, 0.76, 0.53,
-             color="purple", at=(0.83, 0.53), size=0.30),
+        Mark(1, "circle", 0.63, 0.39, 0.69, 0.45,
+             color="gold", at=(0.55, 0.38), size=0.22),
+        Mark(2, "circle", 0.63, 0.17, 0.69, 0.23,
+             color="red", at=(0.77, 0.14), size=0.22),
+        Mark(3, "circle", 0.63, 0.68, 0.69, 0.74,
+             color="blue", at=(0.77, 0.80), size=0.22),
+        Mark(4, "circle", 0.70, 0.47, 0.76, 0.53,
+             color="purple", at=(0.84, 0.53), size=0.22),
     ),
     shows=("Figure 7.1: five minutes of changing price are filtered into one "
            "bar that keeps only the open, high, low and close. The range is "
@@ -293,14 +293,14 @@ PRICE_BAR_CONSTRUCTION = Figure(
     aspect=560 / 404,
     crop=(0.0, 0.08, 0.49, 0.08),
     marks=(
-        Mark(1, "circle", 0.23, 0.36, 0.33, 0.48,
-             color="gold", at=(0.18, 0.48), size=0.30),
-        Mark(2, "circle", 0.38, 0.15, 0.48, 0.28,
-             color="red", at=(0.53, 0.09), size=0.30),
-        Mark(3, "circle", 0.46, 0.68, 0.56, 0.80,
-             color="blue", at=(0.60, 0.84), size=0.30),
-        Mark(4, "circle", 0.50, 0.42, 0.60, 0.55,
-             color="purple", at=(0.65, 0.58), size=0.30),
+        Mark(1, "circle", 0.22, 0.39, 0.29, 0.48,
+             color="gold", at=(0.14, 0.50), size=0.22),
+        Mark(2, "circle", 0.40, 0.17, 0.47, 0.27,
+             color="red", at=(0.53, 0.11), size=0.22),
+        Mark(3, "circle", 0.48, 0.69, 0.55, 0.79,
+             color="blue", at=(0.59, 0.86), size=0.22),
+        Mark(4, "circle", 0.51, 0.45, 0.58, 0.54,
+             color="purple", at=(0.67, 0.57), size=0.22),
     ),
     shows=("Figure 7.1 construction panel, cropped to the five-minute price "
            "path. The first trade, highest trade and last trade become the "
@@ -326,7 +326,7 @@ HIGHER_TIMEFRAME_FIGURE = Figure(
         Mark(2, "circle", 0.68, 0.18, 0.77, 0.27,
              color="red", at=(0.85, 0.13), size=0.27),
         Mark(3, "circle", 0.68, 0.77, 0.77, 0.86,
-             color="blue", at=(0.85, 0.91), size=0.27),
+             color="blue", at=(0.32, 0.89), size=0.23),
         Mark(4, "circle", 0.68, 0.56, 0.77, 0.65,
              color="purple", at=(0.85, 0.69), size=0.27),
     ),
@@ -347,74 +347,75 @@ FORMATION_FULL = Figure(
     title="Figure 7.3: read each interval before classifying it",
     number="7.3",
     aspect=697 / 409,
+    crop=(0.0, 0.03, 0.05, 0.48),
     marks=(
-        Mark(1, "circle", 0.035, 0.28, 0.105, 0.43,
-             color="gold", at=(0.02, 0.23), size=0.28),
-        Mark(2, "circle", 0.56, 0.30, 0.63, 0.45,
-             color="red", at=(0.67, 0.25), size=0.28),
-        Mark(3, "circle", 0.57, 0.66, 0.64, 0.80,
-             color="blue", at=(0.68, 0.84), size=0.28),
+        Mark(1, "circle", 0.06, 0.10, 0.12, 0.22,
+             color="gold", at=(0.16, 0.78), size=0.22),
+        Mark(2, "circle", 0.39, 0.08, 0.46, 0.20,
+             color="red", at=(0.53, 0.31), size=0.22),
+        Mark(3, "circle", 0.68, 0.27, 0.75, 0.39,
+             color="blue", at=(0.82, 0.78), size=0.22),
     ),
-    shows=("Figure 7.3 shows a series of five-minute price intervals above "
-           "the corresponding OHLC bars below. Each interval becomes one "
-           "bar before a formation is classified."),
+    shows=("Figure 7.3 shows the price intervals that are read before a "
+           "formation is classified. Each interval becomes one bar before "
+           "the formation receives its name."),
     notes=(
-        "Read one interval at a time from left to right. Gold 1 identifies "
-        "the first interval, red 2 a later sequence, and blue 3 the "
-        "corresponding OHLC bars below.",
+        "Read the interval sequence from left to right. Gold 1 identifies "
+        "the first interval, red 2 a later high, and blue 3 another later "
+        "interval in the same sequence.",
         "The figure shows the book's sequence, not a new trading signal. "
         "Classification comes only after the intervals have been read.",
     ),
-    origin="Lim (2016), p. 210, Figure 7.3. Marks are ours, added for teaching.",
+    origin="Lim (2016), p. 211, Figure 7.3. The crop and marks are ours, added for teaching.",
 )
 
 WORKED_CROP = Figure(
     title="Figure 7.3: the worked classification read",
     number="7.3",
     aspect=697 / 409,
-    crop=(0.62, 0.02, 0.04, 0.0),
+    crop=(0.0, 0.03, 0.05, 0.48),
     marks=(
-        Mark(1, "box", 0.20, 0.54, 0.69, 0.96,
-             color="gold", at=(0.12, 0.52), size=0.28),
-        Mark(2, "circle", 0.51, 0.60, 0.68, 0.94,
-             color="red", at=(0.72, 0.58), size=0.28),
-        Mark(3, "circle", 0.55, 0.08, 0.80, 0.43,
-             color="blue", at=(0.84, 0.05), size=0.28),
+        Mark(1, "circle", 0.06, 0.10, 0.12, 0.22,
+             color="gold", at=(0.16, 0.78), size=0.22),
+        Mark(2, "circle", 0.39, 0.08, 0.46, 0.20,
+             color="red", at=(0.53, 0.31), size=0.22),
+        Mark(3, "circle", 0.68, 0.27, 0.75, 0.39,
+             color="blue", at=(0.82, 0.78), size=0.22),
     ),
-    shows=("Figure 7.3 crop showing the two counted OHLC bars, the second "
-           "bar's location, and the rising price context used in the worked read."),
+    shows=("Figure 7.3 crop showing the interval sequence used before the "
+           "formation is classified."),
     notes=(
-        "Gold 1 brackets the two counted bars. Red 2 circles the second bar, "
-        "whose own close is the invented bearish example. Blue 3 circles the "
-        "rising price path that supplies bullish trend sentiment.",
+        "Gold 1 identifies the first interval, red 2 a later high, and blue "
+        "3 another later interval. The same crop is repeated wherever this "
+        "classification evidence is read.",
         "The crop is repeated wherever this classification evidence is read, "
         "so the picture claim stays visible when it is tested.",
     ),
-    origin="Lim (2016), p. 210, Figure 7.3. Crop and marks are ours, added for teaching.",
+    origin="Lim (2016), p. 211, Figure 7.3. The crop and marks are ours, added for teaching.",
 )
 
 CLASSIFICATION_CROP = Figure(
     title="Figure 7.3: three classification cues",
     number="7.3",
     aspect=697 / 409,
-    crop=(0.0, 0.08, 0.0, 0.10),
+    crop=(0.0, 0.03, 0.05, 0.48),
     marks=(
-        Mark(1, "circle", 0.08, 0.19, 0.16, 0.32,
-             color="gold", at=(0.03, 0.15), size=0.25),
-        Mark(2, "circle", 0.64, 0.25, 0.72, 0.38,
-             color="red", at=(0.77, 0.20), size=0.25),
-        Mark(3, "circle", 0.64, 0.70, 0.72, 0.84,
-             color="blue", at=(0.77, 0.89), size=0.25),
+        Mark(1, "circle", 0.06, 0.10, 0.12, 0.22,
+             color="gold", at=(0.16, 0.78), size=0.22),
+        Mark(2, "circle", 0.39, 0.08, 0.46, 0.20,
+             color="red", at=(0.53, 0.31), size=0.22),
+        Mark(3, "circle", 0.68, 0.27, 0.75, 0.39,
+             color="blue", at=(0.82, 0.78), size=0.22),
     ),
-    shows=("Figure 7.3, enlarged vertically so the interval sequence and the "
-           "corresponding price bars can be read together."),
+    shows=("Figure 7.3 crop enlarged so the interval sequence used for "
+           "classification can be read without the full sheet."),
     notes=(
-        "Gold 1 marks the first interval, red 2 a later interval sequence, "
-        "and blue 3 the corresponding price bars below.",
+        "Gold 1 marks the first interval, red 2 a later high, and blue 3 "
+        "another interval in the sequence.",
         "The figure is the book's construction sequence, not a new signal. "
         "Classification comes only after the intervals have been read.",
     ),
-    origin="Lim (2016), p. 210, Figure 7.3. The crop and marks are ours, added for teaching.",
+    origin="Lim (2016), p. 211, Figure 7.3. The crop and marks are ours, added for teaching.",
 )
 
 SENTIMENT_CHART = Chart(
@@ -460,9 +461,9 @@ PRICE_BAR_CHART_R1 = Chart(
         Mark(1, "circle", 0.46, 0.64, 0.54, 0.72,
              color="gold", at=(0.35, 0.62), size=0.26),
         Mark(2, "circle", 0.46, 0.20, 0.54, 0.28,
-             color="red", at=(0.64, 0.17), size=0.26),
+             color="red", at=(0.86, 0.13), size=0.23),
         Mark(3, "circle", 0.46, 0.80, 0.54, 0.88,
-             color="blue", at=(0.64, 0.91), size=0.26),
+             color="blue", at=(0.86, 0.89), size=0.23),
         Mark(4, "circle", 0.46, 0.53, 0.54, 0.61,
              color="purple", at=(0.69, 0.56), size=0.26),
     ),
@@ -508,14 +509,14 @@ SENTIMENT_CHART_R1 = Chart(
            "continuation; disagreement suggests potential reversal."),
     tier="core",
     marks=(
-        Mark(1, "box", 0.22, 0.15, 0.49, 0.45,
-             color="gold", at=(0.16, 0.35), size=0.22),
-        Mark(2, "box", 0.51, 0.15, 0.78, 0.45,
-             color="red", at=(0.92, 0.35), size=0.22),
-        Mark(3, "box", 0.22, 0.48, 0.49, 0.78,
-             color="blue", at=(0.16, 0.70), size=0.22),
-        Mark(4, "box", 0.51, 0.48, 0.78, 0.78,
-             color="purple", at=(0.92, 0.70), size=0.22),
+        Mark(1, "circle", 0.49, 0.68, 0.55, 0.75,
+             color="gold", at=(0.23, 0.75), size=0.20),
+        Mark(2, "circle", 0.91, 0.64, 0.97, 0.71,
+             color="red", at=(0.95, 0.76), size=0.20),
+        Mark(3, "circle", 0.49, 0.38, 0.55, 0.45,
+             color="blue", at=(0.23, 0.40), size=0.20),
+        Mark(4, "circle", 0.91, 0.33, 0.97, 0.40,
+             color="purple", at=(0.95, 0.40), size=0.20),
     ),
     notes=(
         "The chart writes each invented percentage change in its cell. Read "
@@ -547,7 +548,7 @@ WORKED_READ_CHART_R1 = Chart(
         Mark(2, "circle", 0.74, 0.23, 0.80, 0.30,
              color="red", at=(0.84, 0.23), size=0.18),
         Mark(3, "arrow", 0.27, 0.65, 0.56, 0.42,
-             color="blue", at=(0.60, 0.38), size=0.20),
+             color="blue", at=(0.74, 0.58), size=0.20),
     ),
     notes=(
         "Gold 1 brackets the final two bars, red 2 marks the second close, "
@@ -2181,14 +2182,14 @@ SECTION1 = Section(
             left=Content(
                 title="A price bar keeps four prices so we can read one interval",
                 lines=(
-                "A price bar records what price did in one interval. We need its four prices before we can read direction, range, or a pattern.",
-                "Chapter 3 called these four prices OHLC. On this slide, gold 1 is the open, red 2 the high, blue 3 the low, and purple 4 the close.",
-                "Here is one possible bar: O PHP 50.00, H PHP 52.40, L PHP 49.60, and C PHP 51.10. The low is lowest and the high is highest.",
+                "A price bar records open, high, low, and close in one interval. Its four prices let us read a pattern.",
+                "Here is one possible bar: O PHP 50.00, H PHP 52.40, L PHP 49.60, and C PHP 51.10. Chapter 3 calls them OHLC; L is lowest and H is highest.",
                 ),
                 accent="First understand the record; then give each price its proper term.",
             ),
             picture=PRICE_BAR_CHART_R1,
-            text_w=4.6,
+            text_w=4.35,
+            picture_extra=0.7,
             notes=(
                 "Start with what a price bar is for. The chart is a simple, possible bar, not a book figure.",
                 "Read the four labels on Chart J, then explain why the high and low define the range.",
@@ -2199,9 +2200,8 @@ SECTION1 = Section(
             left=Content(
                 title="Lim gives the four parts of a standard price bar names",
                 lines=(
-                    "The same four prices have the book's proper terms. Lim writes, \"A standard price bar comprises an open (O), high (H), low (L), and close (C) price\" (p. 209).",
-                    "On Figure 7.1, gold 1 is O 50.00, red 2 is H 52.40, blue 3 is L 49.60, and purple 4 is C 51.10.",
-                    "Lim defines range as |H - L| (p. 209): here it is PHP 2.80, the distance from high to low.",
+                    "The book names open (O), high (H), low (L), and close (C) as the four prices of a bar (Lim, p. 209).",
+                    "Figure 7.1 maps gold 1 to O, red 2 to H, blue 3 to L, and purple 4 to C. Range is |H - L| = PHP 2.80.",
                 ),
                 accent="Once the four prices have names, we can trace the trades that produced them.",
             ),
@@ -2217,9 +2217,8 @@ SECTION1 = Section(
             left=Content(
                 title="Five minutes of trades become one price bar",
                 lines=(
-                    "Now we can see how one interval becomes one price bar. The book keeps the first trade, the extremes, and the last trade rather than averaging them.",
-                    "Gold 1 is first at PHP 50.00, red 2 highest at PHP 52.40, blue 3 lowest at PHP 49.60, and purple 4 last at PHP 51.10.",
-                    "The first trade becomes O, the highest H, the lowest L, and the last C (Lim, p. 210).",
+                    "The book keeps the first trade, the extremes, and the last trade to make one bar, rather than averaging them.",
+                    "Gold 1 is first PHP 50.00; red 2 highest PHP 52.40; blue 3 lowest PHP 49.60; purple 4 last PHP 51.10. These become O, H, L, and C (Lim, p. 210).",
                 ),
                 accent="One interval is enough for one bar. Several intervals can become one longer bar.",
             ),
@@ -2246,7 +2245,7 @@ SECTION1 = Section(
             ),
             picture=PRICE_BAR_CHART_R1,
             text_w=4.6,
-            layout="beside",
+            layout="top",
             notes=("Answer from the four marked prices and the construction sentence before advancing.",),
             origin="Questions are ours and answerable from the preceding price-bar slides.",
         ),
@@ -2254,9 +2253,9 @@ SECTION1 = Section(
             left=Content(
                 title="Three small bars become one larger bar",
                 lines=(
-                    "A higher-timeframe bar combines shorter intervals into one summary. Figure 7.2 shows three five-minute bars becoming one 15-minute bar.",
-                    "Gold 1 is the first open, red 2 the highest high, blue 3 the lowest low, and purple 4 the last close.",
-                    "Our possible composite values are O 50.00, H 50.90, L 49.40, and C 50.30. Intermediate opens and closes do not survive.",
+                    "A higher-timeframe bar combines shorter intervals into one 15-minute summary.",
+                    "Gold 1 is first O, red 2 highest H, blue 3 lowest L, and purple 4 last C.",
+                    "The possible composite is O 50.00, H 50.90, L 49.40, C 50.30; intermediate opens and closes disappear.",
                 ),
                 accent="The composite rule is the same four-price rule at a longer interval.",
             ),
@@ -2291,14 +2290,15 @@ SECTION1 = Section(
             left=Content(
                 title="Before naming a pattern, read each interval as a price bar",
                 lines=(
-                    "Figure 7.3 says to read each interval before deciding whether bars form a single, double, triple, or multiple formation.",
-                    "Gold [1] marks the first interval, red [2] a later interval, and blue [3] the corresponding price bar below it.",
-                    "The figure is setup, not signal. Convert each interval to its four-price record, then classify it.",
+                    "Figure 7.3 shows the interval sequence we read before naming a single, double, triple, or multiple formation.",
+                    "Gold [1] marks the first interval, red [2] a later high, and blue [3] another later interval.",
+                    "The figure is setup, not signal. Read each interval first, then classify it.",
                 ),
                 accent="Read the interval first; name the formation second.",
             ),
             picture=FORMATION_FULL,
             text_w=4.6,
+            picture_extra=0.6,
             notes=FORMATION_FULL.notes,
             origin=FORMATION_FULL.origin,
         ),
@@ -2316,6 +2316,28 @@ SECTION1 = Section(
             ),
             origin="Lim (2016), p. 210. The counts and examples are invented to show the classification.",
         ),
+        Check(
+            label="Counting bars in a formation",
+            questions=(
+                Q(
+                    stem="Which formation uses three bars?",
+                    options=("Single", "Double", "Triple", "Multiple"),
+                    answer="C",
+                    reason="Triple means that the formation contains three bars (Lim, p. 210).",
+                ),
+                Q(
+                    stem="Does the number of bars by itself make a formation bullish?",
+                    options=("Yes", "Only in an uptrend", "No", "Only with volume"),
+                    answer="C",
+                    reason="The count describes structure; it does not decide bullish or bearish sentiment.",
+                ),
+            ),
+            notes=(
+                "Ask the class to name the count before discussing direction.",
+                "The second question separates structure from sentiment.",
+            ),
+            origin="Questions are ours and answerable from the preceding formation-count slide.",
+        ),
         Content(
             title="Intrinsic sentiment is the formation's own bullish or bearish lean",
             lines=(
@@ -2329,6 +2351,28 @@ SECTION1 = Section(
                 "The placement example is only a classification test, not a claim that every bullish pattern works in every trend.",
             ),
             origin="Lim (2016), p. 211, with a pointer to Chapter 4. The placement example is invented.",
+        ),
+        Check(
+            label="Reading intrinsic sentiment",
+            questions=(
+                Q(
+                    stem="What does intrinsic sentiment describe?",
+                    options=("The formation's own bullish or bearish lean", "The surrounding trend", "Trading volume", "The number of bars"),
+                    answer="A",
+                    reason="Intrinsic sentiment is the formation's own bullish or bearish lean (Lim, p. 211).",
+                ),
+                Q(
+                    stem="Does the formation's location change its intrinsic sentiment?",
+                    options=("Yes", "Only in a downtrend", "No", "Only on a daily chart"),
+                    answer="C",
+                    reason="A bullish or bearish formation keeps its intrinsic sentiment in either trend context.",
+                ),
+            ),
+            notes=(
+                "Keep the formation's own bias separate from the trend around it.",
+                "Chapter 4 supplies the earlier intrinsic-bias term.",
+            ),
+            origin="Questions are ours and answerable from the preceding intrinsic-sentiment slide.",
         ),
         Content(
             title="Trend sentiment tells us which way the surrounding trend is pointing",
@@ -2344,44 +2388,42 @@ SECTION1 = Section(
             ),
             origin="Lim (2016), p. 211. The two placements illustrate the book's agreement rule.",
         ),
+        Check(
+            label="Comparing the two sentiments",
+            questions=(
+                Q(
+                    stem="What does trend sentiment describe?",
+                    options=("The surrounding trend's direction", "The formation's own bias", "The bar's range", "The number of bars"),
+                    answer="A",
+                    reason="Trend sentiment describes the surrounding move as bullish or bearish (Lim, p. 211).",
+                ),
+                Q(
+                    stem="When intrinsic and trend sentiment disagree, what is the potential expectation?",
+                    options=("Continuation", "A higher timeframe", "A wider range", "Reversal"),
+                    answer="D",
+                    reason="Lim gives disagreement a potential reversal expectation (p. 211).",
+                ),
+            ),
+            notes=(
+                "Ask for the direction question before introducing the two-by-two table.",
+                "Keep the word potential because the rule is an expectation, not a guarantee.",
+            ),
+            origin="Questions are ours and answerable from the preceding trend-sentiment slide.",
+        ),
         Pair(
             left=Content(
                 title="Here is one reading from bar count to expectation",
                 lines=(
-                    "We read one formation in order: count its bars, identify intrinsic sentiment, then compare the surrounding trend.",
-                    "Gold [1] brackets two bars, a double formation. The second closes PHP 49.80 below the first low PHP 50.20 [2], while prices rose from PHP 45.60 to PHP 48.10 [3]. The disagreement gives a potential reversal.",
+                    "We count two bars, then see the second close PHP 49.80 below the first low PHP 50.20 [2]. Earlier prices rose from PHP 45.60 to PHP 48.10 [3].",
+                    "Gold [1] brackets the double formation. That disagreement gives a potential reversal.",
                 ),
                 accent="The three questions now work together in one possible reading.",
             ),
             picture=WORKED_READ_CHART_R1,
-            text_w=4.6,
+            text_w=4.35,
+            picture_extra=0.7,
             notes=WORKED_READ_CHART_R1.notes,
             origin=WORKED_READ_CHART_R1.origin,
-        ),
-        Check(
-            label="Classifying a formation",
-            questions=(
-                Q(
-                    stem="Which part of a formation do the names single, double, triple, and multiple describe?",
-                    options=("Number of bars", "Trading volume", "The high price", "The trend duration"),
-                    answer="A",
-                    reason="The first classification asks for the number of bars in the formation (Lim, p. 210).",
-                ),
-                Q(
-                    stem="When the two sentiments disagree, Lim calls the result a:",
-                    options=("Continuation", "Wider range", "Potential reversal", "New timeframe"),
-                    answer="C",
-                    reason="Disagreement suggests a potential reversal (Lim, p. 211).",
-                ),
-            ),
-            picture=CLASSIFICATION_CROP,
-            text_w=4.6,
-            layout="beside",
-            notes=(
-                "Ask the room to separate bar count, intrinsic sentiment, and expected direction.",
-                "The crop keeps the three classification cues visible. Part 2 adds the four-cell table.",
-            ),
-            origin="Questions are ours and answerable from the preceding Part 1 slides and Figure 7.3.",
         ),
     ),
 )
@@ -2417,7 +2459,8 @@ SECTION2 = Section(
                 accent="Agreement suggests continuation; disagreement suggests potential reversal.",
             ),
             picture=SENTIMENT_CHECK_CHART_R1,
-            text_w=4.6,
+            text_w=4.35,
+            picture_extra=0.7,
             notes=(
                 "Read the trend row and formation column together. The invented percentage changes are written in each cell.",
             ),
@@ -2441,7 +2484,7 @@ SECTION2 = Section(
             ),
             picture=SENTIMENT_CHECK_CHART_R1,
             text_w=4.6,
-            layout="beside",
+            layout="top",
             notes=(
                 "This check is the first Part 2 question. Its answers are stated on the two preceding slides.",
             ),

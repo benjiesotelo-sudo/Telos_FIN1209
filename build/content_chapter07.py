@@ -10,6 +10,31 @@ from deckkit import (Chapter, Check, Chart, Content, Figure, Mark, Pair,
 
 Q = Question
 
+
+def _source_circle(number, color, x, y, *, width, height, crop=(),
+                   radius_x=10, radius_y=10, badge=(0.5, 0.5), size=0.24):
+    """Place a ring from source-image pixels, then transform it through crop.
+
+    The textbook figures are repeatedly cropped and resized by the renderer.
+    Keeping the target in source pixels prevents a later crop edit from moving
+    a mark off the bar it names.
+    """
+    left, top, right, bottom = crop or (0.0, 0.0, 0.0, 0.0)
+
+    def visible(px, py):
+        fx = px / width
+        fy = py / height
+        return ((fx - left) / (1.0 - left - right),
+                (fy - top) / (1.0 - top - bottom))
+
+    x0, y0 = visible(x - radius_x, y - radius_y)
+    x1, y1 = visible(x + radius_x, y + radius_y)
+    return Mark(number, "circle", x0, y0, x1, y1,
+                color=color, at=badge, size=size)
+
+
+KEY_FIGURE_CROP = (0.05, 0.0, 0.05, 0.02)
+
 KEY_FIGURE = Figure(
     title="Bearish key reversal: the five steps",
     number="7.15",
@@ -43,12 +68,12 @@ BULLISH_FIGURE = Figure(
     number="7.14",
     aspect=701 / 416,
     marks=(
-        Mark(1, "circle", 0.415, 0.55, 0.485, 0.78,
-             color="gold", at=(0.36, 0.55)),
-        Mark(2, "circle", 0.415, 0.69, 0.485, 0.86,
-             color="red", at=(0.35, 0.86)),
-        Mark(3, "circle", 0.405, 0.78, 0.50, 0.99,
-             color="blue", at=(0.34, 0.98)),
+        _source_circle(1, "gold", 252, 229, width=560, height=330,
+                       radius_x=10, radius_y=10, badge=(0.29, 0.47)),
+        _source_circle(2, "red", 258, 215, width=560, height=330,
+                       radius_x=10, radius_y=8, badge=(0.44, 0.43)),
+        _source_circle(3, "blue", 252, 285, width=560, height=330,
+                       radius_x=12, radius_y=22, badge=(0.44, 0.68)),
     ),
     shows=("Apple daily chart. The marked bar makes a new low, closes above "
            "the previous close, and is followed by a rapid rebound on high "
@@ -93,14 +118,18 @@ KEY_CROP_FIGURE = Figure(
     # two answer cards.
     crop=(0.05, 0.0, 0.05, 0.02),
     marks=(
-        Mark(1, "circle", 0.405, 0.135, 0.455, 0.175,
-             color="gold", at=(0.37, 0.09), size=0.24),
-        Mark(2, "circle", 0.405, 0.085, 0.455, 0.125,
-             color="red", at=(0.49, 0.12), size=0.24),
-        Mark(3, "circle", 0.409, 0.17, 0.459, 0.21,
-             color="blue", at=(0.53, 0.25), size=0.24),
-        Mark(4, "circle", 0.405, 0.86, 0.455, 0.94,
-             color="purple", at=(0.55, 0.80), size=0.24),
+        _source_circle(1, "gold", 318, 66, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=10, radius_y=8,
+                       badge=(0.35, 0.25)),
+        _source_circle(2, "red", 318, 45, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=10, radius_y=8,
+                       badge=(0.54, 0.10)),
+        _source_circle(3, "blue", 322, 82, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=10, radius_y=8,
+                       badge=(0.54, 0.25)),
+        _source_circle(4, "purple", 318, 300, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=11, radius_y=12,
+                       badge=(0.54, 0.80)),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked bar opens above the previous high, "
@@ -121,19 +150,20 @@ KEY_READ_FIGURE = Figure(
     aspect=701 / 413,
     # Keep the chart wide enough for the header and the volume panel to read
     # on the paired teaching slide and on both check slides.
-    crop=(0.05, 0.0, 0.05, 0.02),
+    crop=KEY_FIGURE_CROP,
     marks=(
-        # On the visible crop the key bar's open tick is about (0.43, 0.15),
-        # its high is (0.43, 0.11), its close tick is (0.44, 0.19), and the
-        # volume bar below it is about (0.43, 0.75). Badges stay in whitespace.
-        Mark(1, "circle", 0.405, 0.135, 0.455, 0.175,
-             color="gold", at=(0.37, 0.09), size=0.24),
-        Mark(2, "circle", 0.405, 0.085, 0.455, 0.125,
-             color="red", at=(0.49, 0.12), size=0.24),
-        Mark(3, "circle", 0.409, 0.17, 0.459, 0.21,
-             color="blue", at=(0.53, 0.25), size=0.24),
-        Mark(4, "circle", 0.405, 0.86, 0.455, 0.94,
-             color="purple", at=(0.55, 0.80), size=0.24),
+        _source_circle(1, "gold", 318, 66, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=10, radius_y=8,
+                       badge=(0.35, 0.25)),
+        _source_circle(2, "red", 318, 45, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=10, radius_y=8,
+                       badge=(0.54, 0.10)),
+        _source_circle(3, "blue", 322, 82, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=10, radius_y=8,
+                       badge=(0.54, 0.25)),
+        _source_circle(4, "purple", 318, 300, width=560, height=330,
+                       crop=KEY_FIGURE_CROP, radius_x=11, radius_y=12,
+                       badge=(0.54, 0.80)),
     ),
     shows=("The Apple daily chart, cropped to the key reversal day and its "
            "surrounding bars. The marked day opens above the previous high, "
@@ -182,14 +212,14 @@ COMPARISON_CHART = Chart(
             "pin bar penetrates support and closes back above it."),
     marks=(
         Mark(1, "circle", 0.245, 0.225, 0.265, 0.265,
-             color="gold", at=(0.20, 0.16), size=0.25),
+             color="gold", at=(0.15, 0.22), size=0.25),
         Mark(2, "circle", 0.245, 0.17, 0.265, 0.21,
-             color="red", at=(0.43, 0.10), size=0.25),
+             color="red", at=(0.43, 0.24), size=0.25),
         Mark(3, "circle", 0.245, 0.57, 0.27, 0.63,
              color="blue", at=(0.30, 0.67), size=0.25),
-        Mark(4, "line", 0.27, 0.60, 0.37, 0.58,
-             color="purple", at=(0.47, 0.55), size=0.25),
-        Mark(5, "circle", 0.735, 0.60, 0.77, 0.67,
+        Mark(4, "line", 0.64, 0.60, 0.82, 0.60,
+             color="purple", at=(0.91, 0.63), size=0.25),
+        Mark(5, "circle", 0.735, 0.82, 0.77, 0.91,
              color="gold", at=(0.91, 0.55), size=0.25),
         Mark(6, "circle", 0.735, 0.37, 0.77, 0.43,
              color="red", at=(0.91, 0.28), size=0.25),

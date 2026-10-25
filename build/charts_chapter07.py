@@ -271,11 +271,11 @@ CHARTS = (
                                     label="prior high 65.00", at=0,
                                     dx=8, dy=-10),),
                                 notes=_bar_notes(
-                                    (1, 65.4, "O 65.40", -28, 18, True),
+                                    (1, 65.4, "O 65.40", -38, 28, True),
                                     (1, 66.2, "H 66.20", 28, 18, False),
                                     (1, 60.0, "L 60.00", -30, -16, False),
                                     (1, 60.5, "C 60.50", 28, -5, False),
-                                    (2, 60.2, "next O 60.20", -8, 24, True))),
+                                    (2, 60.2, "next O 60.20", -12, 55, True))),
                         ck.Pane(columns=(1.8, 4.8, 2.1), height=0.55,
                                 tags=((0, "1.8m"), (1, "4.8m"), (2, "2.1m"))),
                     ),
@@ -294,7 +294,7 @@ CHARTS = (
                                     label="support 40.00", at=0,
                                     dx=15, dy=-14),),
                                 notes=_bar_notes(
-                                    (1, 38.8, "low 38.80", -42, -2, True),
+                                    (1, 38.8, "low 38.80", -42, 22, True),
                                     (1, 40.6, "close 40.60", 24, 5, False),
                                     (1, 41.5, "pin bar", 24, 16, True))),
                         ck.Pane(columns=(1.6, 0.8, 1.5), height=0.55,

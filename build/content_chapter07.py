@@ -1244,9 +1244,9 @@ OUTSIDE_CHART = Chart(
     shows="Three invented PHP bars. The third range contains the first two and closes near its low on high volume.",
     tier="core",
     marks=(
-        Mark(1, "box", 0.55, 0.18, 0.69, 0.62, color="gold", at=(0.50, 0.13)),
-        Mark(2, "circle", 0.61, 0.18, 0.70, 0.28, color="red", at=(0.76, 0.18)),
-        Mark(3, "circle", 0.61, 0.55, 0.70, 0.68, color="blue", at=(0.77, 0.73)),
+        Mark(1, "box", 0.70, 0.18, 0.80, 0.65, color="gold", at=(0.64, 0.24)),
+        Mark(2, "circle", 0.735, 0.175, 0.775, 0.225, color="red", at=(0.84, 0.12)),
+        Mark(3, "circle", 0.72, 0.58, 0.79, 0.66, color="blue", at=(0.84, 0.70)),
     ),
     notes=(
         "The first two bars run from PHP 48.00 to PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50.",
@@ -1261,9 +1261,9 @@ INSIDE_CHART = Chart(
     shows="Two invented PHP bars at resistance. The second bar stays inside the first and has much lower volume.",
     tier="core",
     marks=(
-        Mark(1, "box", 0.35, 0.18, 0.56, 0.76, color="gold", at=(0.27, 0.13)),
-        Mark(2, "box", 0.61, 0.31, 0.72, 0.64, color="red", at=(0.77, 0.28)),
-        Mark(3, "line", 0.28, 0.20, 0.77, 0.20, color="blue", at=(0.80, 0.14)),
+        Mark(1, "box", 0.32, 0.16, 0.40, 0.78, color="gold", at=(0.25, 0.12)),
+        Mark(2, "box", 0.63, 0.21, 0.69, 0.55, color="red", at=(0.75, 0.28)),
+        Mark(3, "line", 0.28, 0.20, 0.77, 0.20, color="blue", at=(0.82, 0.12)),
     ),
     notes=(
         "The first bar is O 50.00, H 53.00, L 48.00, C 52.40 on 4.5 million shares.",
@@ -1280,7 +1280,7 @@ EXHAUSTION_CHART = Chart(
     marks=(
         Mark(1, "line", 0.18, 0.27, 0.48, 0.27, color="gold", at=(0.17, 0.21)),
         Mark(2, "box", 0.48, 0.12, 0.60, 0.78, color="red", at=(0.66, 0.19)),
-        Mark(3, "line", 0.59, 0.27, 0.78, 0.27, color="blue", at=(0.80, 0.21)),
+        Mark(3, "line", 0.72, 0.60, 0.80, 0.60, color="blue", at=(0.84, 0.54)),
     ),
     notes=(
         "The prior high is PHP 65.00. The exhaustion bar opens at 65.40, reaches 66.20, falls to 60.00, and closes at 60.50.",
@@ -1295,8 +1295,8 @@ SPIKE_CHART = Chart(
     shows="Six invented PHP bars. The third bar is much wider and carries much higher volume, followed by a bearish three-bar reversal.",
     tier="reinforcement",
     marks=(
-        Mark(1, "box", 0.45, 0.14, 0.57, 0.56, color="gold", at=(0.39, 0.10)),
-        Mark(2, "circle", 0.45, 0.72, 0.57, 0.88, color="red", at=(0.64, 0.92)),
+        Mark(1, "box", 0.40, 0.14, 0.46, 0.58, color="gold", at=(0.34, 0.22)),
+        Mark(2, "circle", 0.40, 0.70, 0.46, 0.80, color="red", at=(0.51, 0.84)),
         Mark(3, "box", 0.58, 0.28, 0.92, 0.66, color="blue", at=(0.94, 0.20)),
     ),
     notes=(
@@ -1330,10 +1330,10 @@ FALSE_OWN_CHART = Chart(
     shows="A large invented two-bar false upside breakout with resistance, return, and stop values written on the drawing.",
     tier="core",
     marks=(
-        Mark(1, "line", 0.18, 0.43, 0.82, 0.43, color="gold", at=(0.12, 0.36)),
-        Mark(2, "circle", 0.61, 0.14, 0.74, 0.28, color="red", at=(0.80, 0.05)),
-        Mark(3, "circle", 0.61, 0.47, 0.74, 0.59, color="blue", at=(0.82, 0.63)),
-        Mark(4, "line", 0.61, 0.20, 0.74, 0.20, color="purple", at=(0.88, 0.18)),
+        Mark(1, "line", 0.30, 0.48, 0.68, 0.48, color="gold", at=(0.23, 0.43)),
+        Mark(2, "circle", 0.64, 0.16, 0.70, 0.27, color="red", at=(0.80, 0.11)),
+        Mark(3, "circle", 0.64, 0.52, 0.70, 0.60, color="blue", at=(0.80, 0.63)),
+        Mark(4, "line", 0.35, 0.23, 0.68, 0.23, color="purple", at=(0.81, 0.30)),
     ),
     notes=(
         "The course drawing labels resistance PHP 60.00, high PHP 62.00, close PHP 59.40, and stop PHP 62.20.",
@@ -1348,9 +1348,9 @@ REPO_CHART = Chart(
     shows="Invented closes cross a forward-shifted three-day SMA twice after nine bullish days, then decline.",
     tier="reinforcement",
     marks=(
-        Mark(1, "circle", 0.64, 0.28, 0.70, 0.40, color="gold", at=(0.60, 0.22)),
-        Mark(2, "circle", 0.70, 0.48, 0.76, 0.60, color="red", at=(0.78, 0.62)),
-        Mark(3, "box", 0.73, 0.28, 0.82, 0.60, color="blue", at=(0.86, 0.22)),
+        Mark(1, "circle", 0.61, 0.43, 0.67, 0.51, color="gold", at=(0.57, 0.38)),
+        Mark(2, "circle", 0.68, 0.50, 0.74, 0.59, color="red", at=(0.77, 0.65)),
+        Mark(3, "box", 0.73, 0.43, 0.85, 0.64, color="blue", at=(0.89, 0.38)),
     ),
     notes=(
         "The forward-shifted three-day SMA is PHP 50.00. Invented closes cross above at 50.80, below at 49.60, then repeat after nine bullish days.",
@@ -1365,9 +1365,9 @@ HIKKAKE_CHART = Chart(
     shows="Two invented inside-bar cases. The breakout fails and the entry is taken only in the opposite direction within three bars.",
     tier="core",
     marks=(
-        Mark(1, "box", 0.10, 0.32, 0.20, 0.76, color="gold", at=(0.07, 0.27)),
-        Mark(2, "circle", 0.22, 0.15, 0.30, 0.34, color="red", at=(0.34, 0.13)),
-        Mark(3, "arrow", 0.66, 0.58, 0.75, 0.82, color="blue", at=(0.64, 0.70)),
+        Mark(1, "box", 0.22, 0.35, 0.29, 0.78, color="gold", at=(0.16, 0.30)),
+        Mark(2, "circle", 0.47, 0.18, 0.53, 0.28, color="red", at=(0.58, 0.14)),
+        Mark(3, "arrow", 0.67, 0.60, 0.75, 0.77, color="blue", at=(0.65, 0.55)),
     ),
     notes=(
         "In the bearish case, the inside high is PHP 52.00, the false high is PHP 53.00, and the short re-entry is below PHP 49.00.",
@@ -1383,11 +1383,11 @@ HIKKAKE_OWN_CHART = Chart(
     tier="core",
     marks=(
         Mark(1, "box", 0.16, 0.25, 0.29, 0.72, color="gold", at=(0.10, 0.20)),
-        Mark(2, "circle", 0.31, 0.61, 0.39, 0.77, color="red", at=(0.43, 0.82)),
-        Mark(3, "circle", 0.42, 0.27, 0.50, 0.41, color="blue", at=(0.51, 0.20)),
-        Mark(4, "box", 0.67, 0.25, 0.79, 0.72, color="gold", at=(0.63, 0.20)),
-        Mark(5, "circle", 0.80, 0.14, 0.88, 0.29, color="red", at=(0.92, 0.10)),
-        Mark(6, "circle", 0.80, 0.61, 0.88, 0.77, color="blue", at=(0.91, 0.55)),
+        Mark(2, "circle", 0.23, 0.80, 0.27, 0.86, color="red", at=(0.40, 0.84)),
+        Mark(3, "circle", 0.35, 0.31, 0.39, 0.39, color="blue", at=(0.43, 0.25)),
+        Mark(4, "box", 0.62, 0.25, 0.68, 0.72, color="gold", at=(0.57, 0.20)),
+        Mark(5, "circle", 0.72, 0.14, 0.78, 0.25, color="red", at=(0.83, 0.10)),
+        Mark(6, "circle", 0.85, 0.72, 0.91, 0.80, color="blue", at=(0.95, 0.67)),
     ),
     notes=(
         "Left: inside high 43.00, inside low 40.00, false low 39.00, long re-entry at 43.00.",
@@ -1404,10 +1404,10 @@ COMPARISON_REVISED = Chart(
     marks=(
         Mark(1, "line", 0.08, 0.30, 0.43, 0.30, color="gold", at=(0.07, 0.24)),
         Mark(2, "box", 0.25, 0.20, 0.34, 0.76, color="red", at=(0.22, 0.14)),
-        Mark(3, "line", 0.34, 0.52, 0.45, 0.52, color="blue", at=(0.47, 0.46)),
-        Mark(4, "line", 0.56, 0.70, 0.94, 0.70, color="gold", at=(0.54, 0.77)),
-        Mark(5, "circle", 0.70, 0.76, 0.77, 0.88, color="red", at=(0.66, 0.92)),
-        Mark(6, "circle", 0.70, 0.58, 0.77, 0.68, color="blue", at=(0.83, 0.54)),
+        Mark(3, "line", 0.34, 0.68, 0.45, 0.68, color="blue", at=(0.47, 0.62)),
+        Mark(4, "line", 0.56, 0.57, 0.94, 0.57, color="gold", at=(0.54, 0.64)),
+        Mark(5, "circle", 0.70, 0.76, 0.77, 0.84, color="red", at=(0.66, 0.91)),
+        Mark(6, "circle", 0.72, 0.42, 0.79, 0.50, color="blue", at=(0.84, 0.37)),
     ),
     notes=(
         "Left: prior high 65.00, exhaustion open 65.40, high 66.20, low 60.00, close 60.50, and next open 60.20.",
@@ -1747,13 +1747,13 @@ B4_SLIDES = (
         left=Content(
             title="Here is an inside bar with simple prices",
             lines=(
-                "The first bar is wide and the second is narrower: [1] marks the first bar, which runs from PHP 48.00 to PHP 53.00 on 4.5 million shares, and [2] marks the narrower second bar.",
-                "The second bar runs from PHP 49.20 to PHP 52.50 on 0.5 million shares, so it stays inside the first range. [3] marks resistance at PHP 53.00.",
-                "The wide, high-volume [1] bar and narrow, very-low-volume [2] bar show Lim's ideal volume relationship (p. 224).",
+                "The wide first bar [1] runs PHP 48.00 to PHP 53.00 on 4.5 million shares; the narrow second [2] runs PHP 49.20 to PHP 52.50 on 0.5 million.",
+                "[2] stays inside [1]. [3] marks resistance at PHP 53.00. This volume contrast is Lim's ideal relationship (p. 224).",
             ),
             notes=("Compare the two ranges and then compare their volume bars.",),
         ),
         picture=INSIDE_CHART,
+        # The two short paragraphs keep the worked read at the 17 pt floor.
         text_w=4.0,
         picture_extra=0.5,
         notes=INSIDE_CHART.notes,
@@ -1892,9 +1892,9 @@ B4_SLIDES = (
         left=Content(
             title="Here is an emotion spike with simple prices",
             lines=(
-                "The middle bar is the unusually wide spike: [1] marks its 8.0-point range. The ordinary bars have a 3.0-point range, so the marked bar is much wider.",
-                "[2] marks the spike's 6.0 million shares, compared with 1.5 million on the ordinary bars. [3] marks the three-bar reversal context.",
-                "The wider range and higher volume are why the middle bar fits Lim's emotion-spike description (p. 227).",
+                "The middle bar is the spike: [1] marks its 8.0-point range, versus 3.0 on ordinary bars.",
+                "[2] marks its 6.0 million shares, versus 1.5 million. [3] marks the reversal context.",
+                "This wide range and high volume fit Lim's emotion-spike description (p. 227).",
             ),
             notes=("Compare the middle bar with the ordinary bars before reading Figure 7.29.",),
         ),
@@ -2155,7 +2155,7 @@ B4_SLIDES_REVISED = (
             notes=("Walk through the contained range, the new high and low, and the close near the low.",),
         ),
         picture=OUTSIDE_CHART,
-        text_w=4.0,
+        text_w=4.2,
         picture_extra=0.5,
         notes=OUTSIDE_CHART.notes,
         origin=OUTSIDE_CHART.origin,
@@ -2205,9 +2205,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is an inside bar with simple prices",
             lines=(
-                "The first bar is wide and the second is narrower: [1] marks the first bar, which runs from PHP 48.00 to PHP 53.00 on 4.5 million shares, and [2] marks the narrower second bar.",
-                "The second bar runs from PHP 49.20 to PHP 52.50 on 0.5 million shares, so it stays inside the first range. [3] marks resistance at PHP 53.00.",
-                "The wide, high-volume [1] bar and narrow, very-low-volume [2] bar show Lim's ideal volume relationship (p. 224).",
+                "The wide first bar [1] runs PHP 48.00 to PHP 53.00 on 4.5 million shares; the narrow second [2] runs PHP 49.20 to PHP 52.50 on 0.5 million.",
+                "[2] stays inside [1]. [3] marks resistance at PHP 53.00. This volume contrast is Lim's ideal relationship (p. 224).",
             ),
             notes=("Compare the two ranges and then compare their volume bars.",),
         ),
@@ -2346,14 +2345,14 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is an emotion spike with simple prices",
             lines=(
-                "The middle bar is the unusually wide spike: [1] marks its 8.0-point range. The ordinary bars have a 3.0-point range, so the marked bar is much wider.",
-                "[2] marks the spike's 6.0 million shares, compared with 1.5 million on the ordinary bars. [3] marks the three-bar reversal context.",
-                "The wider range and higher volume are why the middle bar fits Lim's emotion-spike description (p. 227).",
+                "The middle bar is the spike: [1] marks its 8.0-point range, versus 3.0 on ordinary bars.",
+                "[2] marks its 6.0 million shares, versus 1.5 million. [3] marks the reversal context.",
+                "This wide range and high volume fit Lim's emotion-spike description (p. 227).",
             ),
             notes=("Compare the middle bar with the ordinary bars before reading Figure 7.29.",),
         ),
         picture=SPIKE_CHART,
-        text_w=4.0,
+        text_w=4.2,
         picture_extra=0.5,
         notes=SPIKE_CHART.notes,
         origin=SPIKE_CHART.origin,
@@ -2456,9 +2455,9 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here are false breakouts in both directions",
             lines=(
-                "The upper case returns below resistance: [1] marks the false high at PHP 62.00, and [3] the short close at PHP 59.40 below the dashed resistance at PHP 60.00.",
-                "[2] marks the lower false low at PHP 38.50, and [4] the long close at PHP 40.60 above the dashed support at PHP 40.00.",
-                "The returned closes are back inside their barriers. That is why the upper case can support a short and the lower case a long (p. 229).",
+                "The two cases show a break that returns inside its barrier.",
+                "[1] marks the PHP 62.00 false high; [3] marks the PHP 59.40 close below PHP 60.00 resistance.",
+                "[2] marks the PHP 38.50 false low; [4] marks the PHP 40.60 close above PHP 40.00 support (p. 229).",
             ),
             notes=("Compare the returned close with each barrier, not with the extreme.",),
         ),
@@ -2472,8 +2471,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="The course drawing makes the bearish entry explicit",
             lines=(
-                "The course drawing shows a false upside break: [1] marks resistance at PHP 60.00. [2] marks the false high at PHP 62.00, [3] the close at PHP 59.40 below resistance, and [4] the stop at PHP 62.20.",
-                "After [3] returns below resistance, the short entry follows; [4] sits just above the breakout high. These are invented teaching values; the book's drawing follows next.",
+                "On the course drawing, [1] is PHP 60.00 resistance, [2] the PHP 62.00 false high, [3] the PHP 59.40 returned close, and [4] the PHP 62.20 stop.",
+                "The short follows [3] below resistance; [4] stays above the breakout high. These values are invented, and the book's drawing follows.",
             ),
             notes=("Point out the barrier, false high, returned close, and stop in order.",),
         ),

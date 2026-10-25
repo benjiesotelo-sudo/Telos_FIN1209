@@ -970,7 +970,7 @@ OUTSIDE_FIGURE = _book_figure(
     "bars, breaks the uptrend line, and closes near its low.",
     (
         Mark(1, "box", 0.35, 0.08, 0.54, 0.42, color="gold", at=(0.29, 0.06)),
-        Mark(2, "line", 0.54, 0.08, 0.54, 0.42, color="red", at=(0.60, 0.22)),
+        Mark(2, "box", 0.50, 0.08, 0.60, 0.42, color="red", at=(0.66, 0.22)),
         Mark(3, "circle", 0.49, 0.34, 0.55, 0.41, color="blue", at=(0.60, 0.46)),
     ),
     (
@@ -1099,7 +1099,7 @@ PIN_FIGURE = _book_figure(
     (
         Mark(1, "line", 0.08, 0.86, 0.70, 0.86, color="gold", at=(0.05, 0.92)),
         Mark(2, "circle", 0.19, 0.84, 0.24, 0.93, color="red", at=(0.16, 0.95)),
-        Mark(3, "circle", 0.19, 0.45, 0.25, 0.56, color="blue", at=(0.29, 0.41)),
+        Mark(3, "circle", 0.22, 0.81, 0.29, 0.89, color="blue", at=(0.34, 0.77)),
     ),
     (
         "Mark 1 is the support barrier, mark 2 the penetration, and mark 3 the rapid retrace.",
@@ -1279,7 +1279,7 @@ EXHAUSTION_CHART = Chart(
     tier="core",
     marks=(
         Mark(1, "line", 0.18, 0.27, 0.48, 0.27, color="gold", at=(0.17, 0.21)),
-        Mark(2, "box", 0.48, 0.12, 0.60, 0.78, color="red", at=(0.63, 0.10)),
+        Mark(2, "box", 0.48, 0.12, 0.60, 0.78, color="red", at=(0.66, 0.19)),
         Mark(3, "line", 0.59, 0.27, 0.78, 0.27, color="blue", at=(0.80, 0.21)),
     ),
     notes=(
@@ -1331,9 +1331,9 @@ FALSE_OWN_CHART = Chart(
     tier="core",
     marks=(
         Mark(1, "line", 0.18, 0.43, 0.82, 0.43, color="gold", at=(0.12, 0.36)),
-        Mark(2, "circle", 0.61, 0.14, 0.74, 0.28, color="red", at=(0.80, 0.10)),
+        Mark(2, "circle", 0.61, 0.14, 0.74, 0.28, color="red", at=(0.80, 0.05)),
         Mark(3, "circle", 0.61, 0.47, 0.74, 0.59, color="blue", at=(0.82, 0.63)),
-        Mark(4, "line", 0.61, 0.20, 0.74, 0.20, color="purple", at=(0.82, 0.12)),
+        Mark(4, "line", 0.61, 0.20, 0.74, 0.20, color="purple", at=(0.88, 0.18)),
     ),
     notes=(
         "The course drawing labels resistance PHP 60.00, high PHP 62.00, close PHP 59.40, and stop PHP 62.20.",
@@ -1394,6 +1394,26 @@ HIKKAKE_OWN_CHART = Chart(
         "Right: inside high 52.00, inside low 49.00, false high 53.00, short re-entry at 49.00.",
     ),
     origin="Course chart LI: invented PHP values; the book's drawing is shown separately.",
+)
+
+COMPARISON_REVISED = Chart(
+    letter="LK",
+    title="Exhaustion and pin bar: two warnings, different reasons",
+    shows="Two invented side-by-side examples. The left exhaustion bar opens beyond a prior high and has no following gap; the right pin bar breaches support and closes back above it.",
+    tier="core",
+    marks=(
+        Mark(1, "line", 0.08, 0.30, 0.43, 0.30, color="gold", at=(0.07, 0.24)),
+        Mark(2, "box", 0.25, 0.20, 0.34, 0.76, color="red", at=(0.22, 0.14)),
+        Mark(3, "line", 0.34, 0.52, 0.45, 0.52, color="blue", at=(0.47, 0.46)),
+        Mark(4, "line", 0.56, 0.70, 0.94, 0.70, color="gold", at=(0.54, 0.77)),
+        Mark(5, "circle", 0.70, 0.76, 0.77, 0.88, color="red", at=(0.66, 0.92)),
+        Mark(6, "circle", 0.70, 0.58, 0.77, 0.68, color="blue", at=(0.83, 0.54)),
+    ),
+    notes=(
+        "Left: prior high 65.00, exhaustion open 65.40, high 66.20, low 60.00, close 60.50, and next open 60.20.",
+        "Right: support 40.00, pin-bar low 38.80, close 40.60, and low volume of 0.8 million shares.",
+    ),
+    origin="Course chart LK: invented PHP bars and million-share volume.",
 )
 
 
@@ -1668,8 +1688,8 @@ B4_SLIDES = (
         left=Content(
             title="Here is an outside bar with simple prices",
             lines=(
-                "The formation is an outside bar because the last range contains both earlier ranges.",
-                "The earlier bars stay between PHP 48.00 and PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50, near its low.",
+                "The outside bar contains both earlier ranges: [1] marks its range, and [2] marks its high at PHP 53.00.",
+                "The earlier bars stay between PHP 48.00 and PHP 52.00. [3] marks the outside bar's close at PHP 47.50, near its low of PHP 47.00.",
                 "Those prices show why the wider range and bearish close can support a short reading (pp. 223 to 224).",
             ),
             notes=("Walk through the contained range, the new high and low, and the close near the low.",),
@@ -1727,9 +1747,9 @@ B4_SLIDES = (
         left=Content(
             title="Here is an inside bar with simple prices",
             lines=(
-                "The second bar is inside because its high and low stay within the first bar's range.",
-                "The first bar runs from PHP 48.00 to PHP 53.00 on 4.5 million shares. The second runs from PHP 49.20 to PHP 52.50 on 0.5 million shares.",
-                "The wide, high-volume first bar and narrow, very-low-volume second bar show Lim's ideal volume relationship (p. 224).",
+                "The first bar is wide and the second is narrower: [1] marks the first bar, which runs from PHP 48.00 to PHP 53.00 on 4.5 million shares, and [2] marks the narrower second bar.",
+                "The second bar runs from PHP 49.20 to PHP 52.50 on 0.5 million shares, so it stays inside the first range. [3] marks resistance at PHP 53.00.",
+                "The wide, high-volume [1] bar and narrow, very-low-volume [2] bar show Lim's ideal volume relationship (p. 224).",
             ),
             notes=("Compare the two ranges and then compare their volume bars.",),
         ),
@@ -1872,7 +1892,8 @@ B4_SLIDES = (
         left=Content(
             title="Here is an emotion spike with simple prices",
             lines=(
-                "The ordinary bars have a 3.0-point range and 1.5 million shares. The spike has an 8.0-point range and 6.0 million shares.",
+                "The middle bar is the unusually wide spike: [1] marks its 8.0-point range. The ordinary bars have a 3.0-point range, so the marked bar is much wider.",
+                "[2] marks the spike's 6.0 million shares, compared with 1.5 million on the ordinary bars. [3] marks the three-bar reversal context.",
                 "The wider range and higher volume are why the middle bar fits Lim's emotion-spike description (p. 227).",
             ),
             notes=("Compare the middle bar with the ordinary bars before reading Figure 7.29.",),
@@ -2127,8 +2148,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is an outside bar with simple prices",
             lines=(
-                "The formation is an outside bar because the last range contains both earlier ranges.",
-                "The earlier bars stay between PHP 48.00 and PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50, near its low.",
+                "The outside bar contains both earlier ranges: [1] marks its range, and [2] marks its high at PHP 53.00.",
+                "The earlier bars stay between PHP 48.00 and PHP 52.00. [3] marks the outside bar's close at PHP 47.50, near its low of PHP 47.00.",
                 "Those prices show why the wider range and bearish close can support a short reading (pp. 223 to 224).",
             ),
             notes=("Walk through the contained range, the new high and low, and the close near the low.",),
@@ -2176,7 +2197,7 @@ B4_SLIDES_REVISED = (
             "The outside bar expanded the range. An inside bar does the opposite: its high and low stay within the preceding bar's range, so price is pausing inside it.",
             "Lim treats it as a reversal bar when the first bar is wide on high volume and the second is narrow on very low volume (p. 224), especially at a barrier such as resistance.",
         ),
-        accent="Inside means contained, not engulfing. It is not automatically a Harami.",
+        accent="Inside means contained, not engulfing. We will compare the names after this example.",
         notes=("Define inside bar before giving its invented values.", "Keep the first wide and high-volume, second narrow and very-low-volume condition."),
         origin="Lim (2016), p. 224. The worked PHP values are ours, invented.",
     ),
@@ -2184,9 +2205,9 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is an inside bar with simple prices",
             lines=(
-                "The second bar is inside because its high and low stay within the first bar's range.",
-                "The first bar runs from PHP 48.00 to PHP 53.00 on 4.5 million shares. The second runs from PHP 49.20 to PHP 52.50 on 0.5 million shares.",
-                "The wide, high-volume first bar and narrow, very-low-volume second bar show Lim's ideal volume relationship (p. 224).",
+                "The first bar is wide and the second is narrower: [1] marks the first bar, which runs from PHP 48.00 to PHP 53.00 on 4.5 million shares, and [2] marks the narrower second bar.",
+                "The second bar runs from PHP 49.20 to PHP 52.50 on 0.5 million shares, so it stays inside the first range. [3] marks resistance at PHP 53.00.",
+                "The wide, high-volume [1] bar and narrow, very-low-volume [2] bar show Lim's ideal volume relationship (p. 224).",
             ),
             notes=("Compare the two ranges and then compare their volume bars.",),
         ),
@@ -2284,13 +2305,13 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is the exhaustion rule, price by price",
             lines=(
-                "For this exhaustion bar, the previous high is PHP 65.00. It opens at PHP 65.40, reaches PHP 66.20, falls to PHP 60.00, and closes at PHP 60.50.",
-                "The next bar opens at PHP 60.20, inside the range, so there is no gap. The open, wide range, low close, and no-gap follow-on fit Lim's description (p. 226).",
+                "Mark [1] shows the prior high at PHP 65.00. Mark [2] encloses the exhaustion bar: it opens at PHP 65.40, reaches PHP 66.20, falls to PHP 60.00, and closes at PHP 60.50.",
+                "Mark [3] shows the next open at PHP 60.20 inside the range, so there is no gap. This is Lim's exhaustion rule (p. 226).",
             ),
-            accent="The numbers show why the name applies.",
+            accent="",
         ),
         picture=EXHAUSTION_CHART,
-        text_w=4.0,
+        text_w=4.8,
         picture_extra=0.5,
         notes=EXHAUSTION_CHART.notes,
         origin=EXHAUSTION_CHART.origin,
@@ -2325,7 +2346,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is an emotion spike with simple prices",
             lines=(
-                "The ordinary bars have a 3.0-point range and 1.5 million shares. The spike has an 8.0-point range and 6.0 million shares.",
+                "The middle bar is the unusually wide spike: [1] marks its 8.0-point range. The ordinary bars have a 3.0-point range, so the marked bar is much wider.",
+                "[2] marks the spike's 6.0 million shares, compared with 1.5 million on the ordinary bars. [3] marks the three-bar reversal context.",
                 "The wider range and higher volume are why the middle bar fits Lim's emotion-spike description (p. 227).",
             ),
             notes=("Compare the middle bar with the ordinary bars before reading Figure 7.29.",),
@@ -2365,7 +2387,7 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is a pin bar with simple prices",
             lines=(
-                "Support is PHP 40.00. The bar trades down to PHP 38.80, then closes back above support at PHP 40.60 on 0.8 million shares.",
+                "The pin bar tests support and then returns: [1] marks support at PHP 40.00. The bar trades down to PHP 38.80 at [2], then closes back above support at PHP 40.60 at [3] on 0.8 million shares.",
                 "The low is the bar's lowest price and the close is below its high, so the prices are possible. The return above support is the false-break clue (p. 227).",
             ),
             notes=("Read the barrier, penetration, and close in that order.",),
@@ -2407,16 +2429,17 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Two bars can look alike but warn for different reasons",
             lines=(
-                "An exhaustion bar comes at the end of a long run: it opens beyond the previous high, gives most of the move back, and is followed without a gap (p. 226).",
-                "A pin bar instead pokes through a barrier and snaps back inside it. Lim calls that a false impression of strength or weakness (p. 227).",
-                "So ask: did the trend tire, or did price misrepresent a barrier break? The answer keeps the two names apart.",
+                "The patterns share a reversal warning, but Lim gives them different names.",
+                "On the left, [1] marks the prior high at PHP 65.00. The [2] exhaustion bar opens at PHP 65.40 and closes at PHP 60.50. At [3], the next open is PHP 60.20 inside the range, so there is no gap (p. 226).",
+                "On the right, [4] marks support at PHP 40.00. The [5] pin-bar low is PHP 38.80, and [6] marks its close at PHP 40.60 back above support (p. 227).",
             ),
             notes=("Use the side-by-side drawing after both pattern definitions are familiar.",),
         ),
-        picture=EXHAUSTION_COMPARE_FIGURE,
-        text_w=5.9,
-        notes=EXHAUSTION_COMPARE_FIGURE.notes,
-        origin="Lim (2016), pp. 226 to 227. The comparison values are ours, invented.",
+        picture=COMPARISON_REVISED,
+        text_w=5.0,
+        picture_extra=0.5,
+        notes=COMPARISON_REVISED.notes,
+        origin=COMPARISON_REVISED.origin,
     ),
     EXHAUSTION_CHECK,
     Content(
@@ -2433,7 +2456,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here are false breakouts in both directions",
             lines=(
-                "The upper case crosses resistance at PHP 60.00, reaches PHP 62.00, and returns to PHP 59.40. The lower case crosses support at PHP 40.00, reaches PHP 38.50, and returns to PHP 40.60.",
+                "The upper case returns below resistance: [1] marks the false high at PHP 62.00, and [3] the short close at PHP 59.40 below the dashed resistance at PHP 60.00.",
+                "[2] marks the lower false low at PHP 38.50, and [4] the long close at PHP 40.60 above the dashed support at PHP 40.00.",
                 "The returned closes are back inside their barriers. That is why the upper case can support a short and the lower case a long (p. 229).",
             ),
             notes=("Compare the returned close with each barrier, not with the extreme.",),
@@ -2448,8 +2472,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="The course drawing makes the bearish entry explicit",
             lines=(
-                "In the upper example, resistance is PHP 60.00, the false high is PHP 62.00, the return is PHP 59.40, and the stop is PHP 62.20.",
-                "The stop sits above the breakout high. These are invented teaching values; the book's drawing follows on the next slide.",
+                "The course drawing shows a false upside break: [1] marks resistance at PHP 60.00. [2] marks the false high at PHP 62.00, [3] the close at PHP 59.40 below resistance, and [4] the stop at PHP 62.20.",
+                "After [3] returns below resistance, the short entry follows; [4] sits just above the breakout high. These are invented teaching values; the book's drawing follows next.",
             ),
             notes=("Point out the barrier, false high, returned close, and stop in order.",),
         ),
@@ -2504,8 +2528,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is a Double Repo with simple closes",
             lines=(
-                "The forward-shifted three-day SMA is PHP 50.00. The first crossing pair closes at PHP 50.80 above it and PHP 49.60 below it.",
-                "After nine bullish days, the second pair closes at PHP 50.70 above and PHP 49.00 below. The two pairs are the named structure; the full method is in DiNapoli's text.",
+                "The forward-shifted three-day SMA is PHP 50.00. [1] marks the first close above it at PHP 50.80, and [2] the first close below it at PHP 49.60.",
+                "After nine bullish days, [3] encloses the second pair: PHP 50.70 above and PHP 49.00 below. The two pairs are the named structure; the full method is in DiNapoli's text.",
             ),
             notes=("Count the first pair, the nine bullish days, and the second pair.",),
         ),
@@ -2560,8 +2584,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="Here is a bearish Hikkake with simple prices",
             lines=(
-                "The inside bar has a high of PHP 52.00 and a low of PHP 49.00. Price breaks above the inside high to PHP 53.00, then re-enters below PHP 49.00 within three bars.",
-                "The failed upside break is not the entry. The bearish entry is the opposite re-entry (p. 230).",
+                "The bearish Hikkake begins with an inside bar: [1] marks its high of PHP 52.00 and low of PHP 49.00. Price breaks above the inside high to PHP 53.00 at [2].",
+                "Price re-enters below PHP 49.00 at [3] within three bars. The failed upside break is not the entry; the bearish entry is the opposite re-entry (p. 230).",
             ),
             notes=("Point to the inside range, the false high, and the opposite re-entry.",),
         ),
@@ -2575,8 +2599,8 @@ B4_SLIDES_REVISED = (
         left=Content(
             title="The bullish and bearish Hikkake drawings belong together",
             lines=(
-                "The left case has an inside high of PHP 43.00, an inside low of PHP 40.00, a false low of PHP 39.00, and a long re-entry at PHP 43.00.",
-                "The right case has an inside high of PHP 52.00, an inside low of PHP 49.00, a false high of PHP 53.00, and a short re-entry at PHP 49.00.",
+                "On the left, [1] marks the inside bar, [2] its false downside breakout, and [3] the long re-entry above PHP 43.00.",
+                "On the right, [4] marks the inside bar, [5] its false upside breakout, and [6] the short re-entry below PHP 49.00. The invented levels are left: high 43.00, low 40.00, false low 39.00; right: high 52.00, low 49.00, false high 53.00.",
             ),
             notes=("Read the bullish case left to right, then the bearish case.",),
         ),

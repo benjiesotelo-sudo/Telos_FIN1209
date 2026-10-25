@@ -748,12 +748,12 @@ CHARTS = (
 )
 
 
-# Charts LA to LJ belong to the inside-bar through Hikkake range. The letters
+# Charts LA to LK belong to the inside-bar through Hikkake range. The letters
 # deliberately start at L so this range has its own chart namespace.
 CHARTS = CHARTS + (
     ck.ChartArt(
         letter="LA",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(ck.Cell(
                 name="Outside bar",
@@ -785,7 +785,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LB",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(ck.Cell(
                 name="Inside bar",
@@ -816,7 +816,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LC",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(ck.Cell(
                 name="Exhaustion bar",
@@ -880,7 +880,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LD",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(ck.Cell(
                 name="Emotion spike",
@@ -914,7 +914,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LE",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(
                 ck.Cell(
@@ -955,7 +955,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LF",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(ck.Cell(
                 name="False upside breakout",
@@ -983,7 +983,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LG",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(ck.Cell(
                 name="Double Repo",
@@ -1009,11 +1009,11 @@ CHARTS = CHARTS + (
                                            tone="quiet", dashed=True,
                                            label="SMA 50.00", at=0,
                                            dx=12, dy=-10),),
-                        notes=_bar_notes((9, 50.8, "1st above 50.80", 18, 8, True),
-                                         (10, 49.6, "1st below 49.60", 18, -8, True),
-                                         (11, 50.7, "2nd above 50.70", 18, 8, True),
-                                         (12, 49.0, "2nd below 49.00", 18, -8, True),
-                                         (13, 47.5, "decline", 18, 4, True)),
+                        notes=_bar_notes((9, 50.8, "50.80 up", 10, 8, True),
+                                         (10, 49.6, "49.60 down", 10, -8, True),
+                                         (11, 50.7, "50.70 up", -10, 8, True),
+                                         (12, 49.0, "49.00 down", -10, -8, True),
+                                         (13, 47.5, "47.50", -10, 4, True)),
                     ),
                 ),
             ),),
@@ -1024,7 +1024,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LH",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(ck.Cell(
                 name="Bearish Hikkake",
@@ -1050,7 +1050,7 @@ CHARTS = CHARTS + (
     ),
     ck.ChartArt(
         letter="LI",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(
                 ck.Cell(
@@ -1071,9 +1071,9 @@ CHARTS = CHARTS + (
                                       label="inside low 40.00", at=0,
                                       dx=8, dy=10),
                         ),
-                        notes=_bar_notes((0, 43.0, "inside high", -18, 8, True),
+                        notes=_bar_notes((0, 43.0, "", -18, 8, True),
                                          (1, 39.0, "false low", -18, -8, True),
-                                         (2, 43.0, "long above", 18, 8, True)),
+                                         (2, 43.0, "long >43.00", -12, 8, True)),
                     ),),
                 ),
                 ck.Cell(
@@ -1094,15 +1094,65 @@ CHARTS = CHARTS + (
                                       label="inside low 49.00", at=0,
                                       dx=8, dy=10),
                         ),
-                        notes=_bar_notes((0, 52.0, "inside high", -18, 8, True),
+                        notes=_bar_notes((0, 52.0, "", -18, 8, True),
                                          (1, 53.0, "false high", 18, 8, True),
-                                         (2, 49.0, "short below", 18, -8, True)),
+                                         (2, 49.0, "short <49.00", -12, -8, True)),
                     ),),
                 ),
             ),
             cols=2,
             size=ck.pair_size(2.8),
             footnote="Course drawing, invented PHP values; the book's drawing follows.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="LK",
+        draw=_readable_cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Exhaustion",
+                    note="above prior high; no gap after",
+                    panes=(ck.Pane(
+                        bars=_bars(((62.0, 65.0, 61.0, 64.0),
+                                   (65.4, 66.2, 60.0, 60.5),
+                                   (60.2, 62.0, 59.8, 61.6))),
+                        height=1.0,
+                        bottom=0.25,
+                        strokes=(ck.Stroke(points=((0, 65.0), (2, 65.0)),
+                                           tone="quiet", dashed=True,
+                                           label="prior H 65.00", at=0,
+                                           dx=22, dy=-10),),
+                        notes=_bar_notes((1, 65.4, "O 65.40", -12, 16, True),
+                                         (1, 66.2, "H 66.20", 12, 8, False),
+                                         (1, 60.0, "L 60.00", -18, -8, False),
+                                         (1, 60.5, "C 60.50", 14, 20, False),
+                                         (2, 60.2, "O 60.20", -10, -12, True)),
+                    ),),
+                ),
+                ck.Cell(
+                    name="Pin bar",
+                    note="through support; back above",
+                    panes=(ck.Pane(
+                        bars=_bars(((41.0, 42.0, 40.2, 41.5),
+                                   (41.5, 42.0, 38.8, 40.6))),
+                        height=1.0,
+                        bottom=0.25,
+                        strokes=(ck.Stroke(points=((0, 40.0), (1, 40.0)),
+                                           tone="quiet", dashed=True,
+                                           label="support 40.00", at=0,
+                                           dx=18, dy=-10),),
+                        notes=_bar_notes((1, 38.8, "L 38.80", -12, -10, True),
+                                         (1, 40.6, "C 40.60", 12, 8, True)),
+                    ),),
+                ),
+            ),
+            cols=2,
+            size=ck.pair_size(5.0),
+            title_pt=13.5,
+            note_pt=11.5,
+            label_pt=11.5,
+            footnote="Course chart LK: invented PHP bars.",
         ),
     ),
 )

@@ -1043,3 +1043,164 @@ CHARTS = CHARTS + (
         ),
     ),
 )
+
+
+# Revision 1 charts for the opening and Parts 1 to 2. These letters begin at
+# J so they stay separate from the earlier sample charts and from the charts
+# owned by the other Chapter 7 ranges.
+def _sentiment_table_r1(path: Path, *, size, footnote="", display_font=None) -> Path:
+    """Draw a readable two-by-two table with the invented values on it."""
+    plt.close("all")
+    fig = plt.figure(figsize=size, dpi=ck.DPI)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_axis_off()
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+
+    left, right = 0.20, 0.98
+    bottom, top = 0.14, 0.80
+    split_x = left + (right - left) / 2
+    split_y = bottom + (top - bottom) / 2
+    cells = (
+        (left, split_y, split_x - left, top - split_y,
+         "CONTINUATION", "uptrend +4.0%\nbullish formation +2.0%", ck.GREEN_DEEP),
+        (split_x, split_y, right - split_x, top - split_y,
+         "POTENTIAL REVERSAL", "uptrend +4.0%\nbearish formation -2.0%", ck.GOLD),
+        (left, bottom, split_x - left, split_y - bottom,
+         "POTENTIAL REVERSAL", "downtrend -4.0%\nbullish formation +2.0%", ck.GOLD),
+        (split_x, bottom, right - split_x, split_y - bottom,
+         "CONTINUATION", "downtrend -4.0%\nbearish formation -2.0%", ck.GREEN_DEEP),
+    )
+    for x, y, w, h, result, example, tone in cells:
+        ax.add_patch(Rectangle((x, y), w, h, facecolor=ck.WHITE,
+                               edgecolor=ck.BORDER, linewidth=1.0))
+        rising = "uptrend" in example
+        form_bullish = "bullish formation" in example
+        x0, x1 = x + 0.07 * w, x + 0.93 * w
+        y0 = y + 0.72 * h
+        trend = [y0 - 0.10 * h, y0 + (0.11 if rising else -0.11) * h,
+                 y0 - (0.02 if rising else 0.02) * h]
+        ax.plot((x0, x + 0.47 * w, x1), trend, color=ck.GREEN_DEEP,
+                linewidth=2.2, solid_capstyle="round")
+        last_y = trend[-1]
+        form_y = last_y + (0.08 if form_bullish else -0.08) * h
+        ax.plot((x + 0.57 * w, x + 0.78 * w, x + 0.90 * w),
+                (last_y, form_y, form_y),
+                color=ck.GREEN_DEEP if form_bullish else ck.GOLD,
+                linewidth=2.2, solid_capstyle="round")
+        ax.text(x + w / 2, y + 0.22 * h, result,
+                ha="center", va="center", fontsize=13.5, fontweight="bold",
+                color=tone, linespacing=0.95)
+        ax.text(x + w / 2, y + 0.43 * h, example,
+                ha="center", va="center", fontsize=11.5, color=ck.MUTED,
+                linespacing=1.05)
+
+    ax.text((left + split_x) / 2, top + 0.08, "Bullish formation",
+            ha="center", va="center", fontsize=14, fontweight="bold",
+            color=ck.GREEN_DEEP)
+    ax.text((split_x + right) / 2, top + 0.08, "Bearish formation",
+            ha="center", va="center", fontsize=14, fontweight="bold",
+            color=ck.GREEN_DEEP)
+    ax.text(0.13, (split_y + top) / 2, "Uptrend\n(bullish trend)",
+            ha="center", va="center", fontsize=12.5, fontweight="bold",
+            color=ck.GREEN_DEEP, linespacing=1.0)
+    ax.text(0.13, (bottom + split_y) / 2, "Downtrend\n(bearish trend)",
+            ha="center", va="center", fontsize=12.5, fontweight="bold",
+            color=ck.GREEN_DEEP, linespacing=1.0)
+    if footnote:
+        fig.text(0.012, 0.018, footnote, fontsize=8.5, color=ck.MUTED,
+                 style="italic", ha="left", va="bottom")
+    fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
+    plt.close(fig)
+    return path
+
+
+CHARTS = CHARTS + (
+    ck.ChartArt(
+        letter="J",
+        draw=_readable_cells,
+        kwargs=dict(
+            items=(ck.Cell(
+                name="One price bar",
+                note="the four prices are labelled on the bar",
+                panes=(ck.Pane(
+                    bars=_bars(((50.00, 52.40, 49.60, 51.10),)),
+                    ticks=(49.60, 51.10, 52.40),
+                    notes=(
+                        ck.Note(x=0, y=50.00, label="O 50.00", dx=-30, dy=18),
+                        ck.Note(x=0, y=52.40, label="H 52.40", dx=32, dy=12,
+                                notice=True),
+                        ck.Note(x=0, y=49.60, label="L 49.60", dx=32, dy=-10),
+                        ck.Note(x=0, y=51.10, label="C 51.10", dx=20, dy=-8),
+                    ),
+                    height=2.0,
+                ),),
+            ),),
+            cols=1,
+            size=ck.pair_size(5.8),
+            title_pt=14.5,
+            note_pt=13.0,
+            label_pt=13.5,
+            footnote_pt=12.5,
+            footnote="Invented PHP values for teaching. Range = PHP 2.80.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="K",
+        draw=ck.readings,
+        kwargs=dict(
+            series=(50.00, 50.80, 49.60, 52.40, 51.10),
+            marks=(
+                ck.Reading(x=0, label="1 first trade 50.00", dx=-8, dy=18),
+                ck.Reading(x=2, label="3 lowest 49.60", dx=-12, dy=-14),
+                ck.Reading(x=3, label="2 highest 52.40", dx=42, dy=18),
+                ck.Reading(x=4, label="4 last trade 51.10", dx=10, dy=-14),
+            ),
+            xlabel="Five trades inside one interval",
+            footnote=("Invented PHP trades for teaching. First becomes O, "
+                      "highest H, lowest L, and last C."),
+        ),
+    ),
+    ck.ChartArt(
+        letter="L",
+        draw=_sentiment_table_r1,
+        kwargs=dict(
+            size=ck.pair_size(5.0),
+            footnote="Invented percentage changes for teaching. Lim, p. 211.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="M",
+        draw=ck.panels,
+        kwargs=dict(
+            panes=(ck.Pane(
+                name="Rising context and a two-bar formation",
+                bars=_bars(((45.0, 46.0, 44.2, 45.6),
+                            (45.6, 47.2, 45.0, 46.8),
+                            (46.8, 48.5, 46.2, 48.1),
+                            (49.7, 51.0, 50.2, 50.5),
+                            (50.6, 51.2, 49.4, 49.8))),
+                notes=(
+                    ck.Note(x=3, y=50.2, label="first low 50.20",
+                            dx=-82, dy=-8, notice=True),
+                    ck.Note(x=4, y=49.8, label="second close 49.80",
+                            dx=-82, dy=-30, notice=True),
+                ),
+                ticks=(44.0, 46.0, 48.0, 50.0, 52.0),
+                height=1.0,
+            ),),
+            size=ck.pair_size(5.55),
+            xticks=((2, "rising context"), (3, "first"), (4, "second")),
+            footnote=("Invented PHP bars for teaching. The last two bars form "
+                      "the double formation."),
+        ),
+    ),
+    ck.ChartArt(
+        letter="N",
+        draw=_sentiment_table_r1,
+        kwargs=dict(
+            size=ck.pair_size(5.0),
+            footnote="Invented percentage changes for teaching. Lim, p. 211.",
+        ),
+    ),
+)

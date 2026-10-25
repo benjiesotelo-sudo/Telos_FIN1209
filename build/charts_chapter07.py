@@ -202,13 +202,13 @@ def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Pat
     split_y = bottom + (top - bottom) / 2
     cells = (
         (left, split_y, split_x - left, top - split_y,
-         "CONTINUATION", "uptrend + bullish formation", ck.GREEN_DEEP),
+         "CONTINUATION\n+4.0% / +2.0%", "uptrend + bullish formation", ck.GREEN_DEEP),
         (split_x, split_y, right - split_x, top - split_y,
-         "POTENTIAL\nREVERSAL", "uptrend + bearish formation", ck.GOLD),
+         "POTENTIAL\nREVERSAL\n+4.0% / -2.0%", "uptrend + bearish formation", ck.GOLD),
         (left, bottom, split_x - left, split_y - bottom,
-         "POTENTIAL\nREVERSAL", "downtrend + bullish formation", ck.GOLD),
+         "POTENTIAL\nREVERSAL\n-4.0% / +2.0%", "downtrend + bullish formation", ck.GOLD),
         (split_x, bottom, right - split_x, split_y - bottom,
-         "CONTINUATION", "downtrend + bearish formation", ck.GREEN_DEEP),
+         "CONTINUATION\n-4.0% / -2.0%", "downtrend + bearish formation", ck.GREEN_DEEP),
     )
     for x, y, w, h, result, example, tone in cells:
         ax.add_patch(Rectangle((x, y), w, h, facecolor=ck.WHITE,
@@ -227,9 +227,9 @@ def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Pat
                 (last_y, form_y, form_y),
                 color=ck.GREEN_DEEP if form_bullish else ck.GOLD,
                 linewidth=2.2, solid_capstyle="round")
-        ax.text(x + w / 2, y + 0.20 * h, result.replace("\n", " "),
-                ha="center", va="center", fontsize=14, fontweight="bold",
-                color=tone, linespacing=0.95)
+        ax.text(x + w / 2, y + 0.18 * h, result,
+                ha="center", va="center", fontsize=11.5, fontweight="bold",
+                color=tone, linespacing=0.90)
 
     ax.text((left + split_x) / 2, top + 0.08, "Bullish formation",
             ha="center", va="center", fontsize=14, fontweight="bold",
@@ -245,6 +245,35 @@ def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Pat
             color=ck.GREEN_DEEP, linespacing=1.0)
     if footnote:
         fig.text(0.012, 0.018, footnote, fontsize=8.5, color=ck.MUTED,
+                 style="italic", ha="left", va="bottom")
+    fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
+    plt.close(fig)
+    return path
+
+
+def _characteristic_table(path: Path, *, size, footnote="", display_font=None) -> Path:
+    """Draw the two numbered characteristics recalled by Check 7."""
+    plt.close("all")
+    fig = plt.figure(figsize=size, dpi=ck.DPI)
+    ax = fig.add_axes([0.02, 0.08, 0.96, 0.84])
+    ax.set_axis_off()
+    rows = (
+        ("7", "BRR", "real body ÷ total range", ck.GOLD),
+        ("8", "Angular symmetry and momentum", "the angle and momentum change", ck.GREEN_DEEP),
+    )
+    for i, (number, name, meaning, tone) in enumerate(rows):
+        y = 0.72 - i * 0.42
+        ax.add_patch(Rectangle((0.02, y - 0.16), 0.96, 0.30,
+                               facecolor=ck.WHITE, edgecolor=ck.BORDER,
+                               linewidth=1.0))
+        ax.text(0.07, y, number, ha="center", va="center", fontsize=22,
+                fontweight="bold", color=tone)
+        ax.text(0.16, y + 0.035, name, ha="left", va="center", fontsize=16,
+                fontweight="bold", color=ck.GREEN_DEEP)
+        ax.text(0.16, y - 0.075, meaning, ha="left", va="center", fontsize=13,
+                color=ck.MUTED)
+    if footnote:
+        fig.text(0.03, 0.015, footnote, fontsize=9.5, color=ck.MUTED,
                  style="italic", ha="left", va="bottom")
     fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
     plt.close(fig)
@@ -338,7 +367,7 @@ CHARTS = (
                             notes=_bar_notes(
                                 (1, 52.30, "O 52.30", -18, 16, True),
                                 (1, 53.20, "H 53.20", 18, 9, True),
-                                (1, 50.80, "C 50.80", 20, -8, True),
+                                (1, 50.80, "C 50.80", 32, -8, True),
                                 (0, 50.60, "L 50.60", -18, -8, False),
                             ),
                         ),
@@ -1056,12 +1085,17 @@ CHARTS = CHARTS + (
     ck.ChartArt(
         letter="QB", draw=ck.cells,
         kwargs=dict(items=(ck.Cell(name="Bullish close and volume",
-            note="invented bars: the final close is above the prior high",
+            note="invented bars: prior high 46.00; final close 47.20; range 3.00; volume 4.5m",
             panes=(ck.Pane(bars=_bars(((44.0, 46.0, 43.0, 45.0),
-                                       (46.2, 47.6, 44.6, 47.2))),
+                                       (46.2, 47.2, 44.2, 47.2))),
                            height=1.8,
+                           strokes=(ck.Stroke(points=((0, 46.0), (1, 46.0)),
+                                              tone="quiet", dashed=True,
+                                              label="prior high 46.00", at=0,
+                                              dx=8, dy=-10),),
                            notes=_bar_notes((1, 47.2, "C 47.20", 16, -8, True),
-                                            (1, 47.6, "high 47.60", 16, 8, True))),
+                                            (1, 44.2, "L 44.20", 16, -8, False),
+                                            (1, 45.7, "range 3.00", 16, 10, True))),
                    ck.Pane(columns=(1.5, 4.5), height=0.55,
                            tags=((1, "4.5m"),))),)),
             cols=1, size=ck.pair_size(4.0),
@@ -1390,6 +1424,10 @@ CHARTS = CHARTS + (
                    ),)),
             cols=1, size=ck.pair_size(4.0),
             footnote="Ours, invented PHP bars and million-share volume; following Lim p. 216.")),
+    ck.ChartArt(
+        letter="QV", draw=_characteristic_table,
+        kwargs=dict(size=ck.pair_size(5.5),
+                    footnote="Ours, a plain-language recall of characteristics 7 and 8.")),
 )
 
 # A one-cell chart is still passed as a one-item sequence to ``cells``.
@@ -1407,13 +1445,26 @@ _PART2_CHARTS = {
 for _art in CHARTS:
     if _art.letter in _PART2_CHARTS:
         _art.draw = _readable_cells
-        _art.kwargs["size"] = ck.pair_size(3.7)
+        _art.kwargs["size"] = (7.4, 3.4)
+
+# The sentiment matrix is retained as a reusable teaching chart for audit
+# builds; give it the same wide projected geometry as the bar charts.
+for _art in CHARTS:
+    if _art.letter == "S":
+        _art.kwargs["size"] = (7.4, 3.4)
+
+# Check 3 uses the four-cell chart in a full-width strip.  Keep its artwork
+# wide enough that the chart itself, not its surrounding credit, exceeds the
+# 55 percent projected-width rule.
+for _art in CHARTS:
+    if _art.letter == "T":
+        _art.kwargs["size"] = (11.5, 2.8)
 
 # Several Part 2 slides reuse one marked chart with a distinct slide letter.
 # Give each reused name its own generated file so the deck never falls back to
 # a placeholder when the source slide is expanded.
 _ALIASES = {
-    "QV": "QA", "QW": "QA", "QX": "QA",
+    "QW": "QA", "QX": "QA",
     "QY": "QB", "QZ": "QB", "RD": "QC",
     "RE": "QT", "RF": "QK", "RG": "QA", "RH": "QB",
 }

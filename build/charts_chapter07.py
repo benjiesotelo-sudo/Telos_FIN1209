@@ -1148,7 +1148,7 @@ CHARTS = CHARTS + (
                 ),
             ),
             cols=2,
-            size=ck.pair_size(5.0),
+            size=(ck.pair_size(5.0)[0] + 1.6, ck.pair_size(5.0)[1]),
             title_pt=13.5,
             note_pt=11.5,
             label_pt=11.5,

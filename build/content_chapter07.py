@@ -2682,10 +2682,10 @@ OOPS_REWORK_CHART = Chart(
     marks=(
         Mark(1, "circle", 0.64, 0.27, 0.69, 0.33,
              color="gold", at=(0.51, 0.37)),
-        Mark(2, "circle", 0.64, 0.14, 0.69, 0.20,
-             color="red", at=(0.88, 0.18)),
-        Mark(3, "circle", 0.64, 0.49, 0.69, 0.55,
-             color="blue", at=(0.78, 0.62)),
+        Mark(2, "circle", 0.64, 0.49, 0.69, 0.55,
+             color="red", at=(0.78, 0.62)),
+        Mark(3, "circle", 0.64, 0.14, 0.69, 0.20,
+             color="blue", at=(0.88, 0.18)),
     ),
     notes=(
         "The first bar reaches PHP 52.00 and closes at PHP 51.00. The next "
@@ -2782,15 +2782,14 @@ SECTION4 = Section(
             left=Content(
                 title="Figure 7.37 applies the bearish Oops rule to a daily chart",
                 lines=(
-                    "Use the preceding Oops definitions. In Dynegy, marks 1, 2, and 3 show the gap, sell-stop, and stop-and-reverse high.",
-                    "That downside path is the book's example, not a promise.",
-                    "Chapter 7 leaves the four candlestick companions undefined.",
+                    "Figure 7.37 applies the preceding bearish Oops rule to Dynegy. Marks 1, 2, and 3 show the gap, sell-stop, and stop-and-reverse high.",
+                    "That downside path is the book's example, not a promise; Chapter 7 leaves the four candlestick companions undefined.",
                 ),
-                accent="A worked chart shows where the rule sits; it does not complete a trade plan.",
-                caption="Lim (2016), p. 231, Figure 7.37. The figure is a Dynegy daily chart.",
+                accent="",
+                caption="",
             ),
             picture=OOPS_EXAMPLE_FIGURE,
-            text_w=6.8,
+            text_w=4.8,
             picture_extra=0.1,
             notes=OOPS_EXAMPLE_FIGURE.notes,
             origin=OOPS_EXAMPLE_FIGURE.origin,
@@ -2800,8 +2799,8 @@ SECTION4 = Section(
                 title="The trend gives Williams' Oops its preferred context",
                 lines=(
                     "A trend gives an Oops its context. Lim prefers a bullish Oops in an uptrend [1] and a bearish Oops in a downtrend [2].",
-                    "The book names four companions, but Figure 7.36 does not show them.",
-                    "Chapter 7 defines none, so the names are not rules. Next comes ID/NR.",
+                    "The book names morning star, evening star, piercing line, and dark cloud cover, but Figure 7.36 does not show them.",
+                    "Chapter 7 defines none of the four; they are names only here. Next comes ID/NR.",
                 ),
                 accent="The trend supplies context, while the chapter leaves the companion definitions open.",
                 caption="Lim (2016), p. 231. The named candlestick companions are not defined in this chapter.",
@@ -2816,9 +2815,9 @@ SECTION4 = Section(
             left=Content(
                 title="ID/NR combines an inside day with a narrow recent range",
                 lines=(
-                    "ID/NR means an inside-day breakout from the narrowest range in n days. Inside stays within the prior range.",
-                    "Six invented ranges are 4.0, 3.2, 2.8, 2.1, 1.6, and 1.2 PHP. Bar 6 is inside bar 5 [1] and narrowest [2].",
-                    "The later breakout can go either way [3]. ID/NR is neutral before its trigger.",
+                    "After Williams' Oops, ID/NR asks whether an inside day stays within the prior range and has the narrowest range in n days.",
+                    "Six invented ranges are 4.0, 3.2, 2.8, 2.1, 1.6, and 1.2 PHP.",
+                    "Bar 6 is inside bar 5 [1] and narrowest [2]. The final bar [3] can break up or down; ID/NR is neutral before its trigger.",
                 ),
                 accent="",
                 caption="",

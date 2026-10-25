@@ -2398,12 +2398,12 @@ OOPS_FIGURE = Figure(
     aspect=920 / 450,
     crop=(),
     marks=(
-        Mark(1, "line", 0.16, 0.66, 0.29, 0.66,
-             color="gold", at=(0.12, 0.55), size=0.30),
-        Mark(2, "line", 0.30, 0.57, 0.46, 0.57,
-             color="red", at=(0.51, 0.52), size=0.30),
-        Mark(3, "line", 0.30, 0.75, 0.48, 0.75,
-             color="blue", at=(0.53, 0.81), size=0.30),
+        Mark(1, "arrow", 0.06, 0.62, 0.24, 0.62,
+             color="gold", at=(0.12, 0.53), size=0.30),
+        Mark(2, "line", 0.15, 0.49, 0.36, 0.49,
+             color="red", at=(0.43, 0.42), size=0.30),
+        Mark(3, "line", 0.15, 0.72, 0.36, 0.72,
+             color="blue", at=(0.44, 0.79), size=0.30),
     ),
     shows=("The book's two Williams' Oops schematics: a gap below the prior "
            "range with a buy-stop at the prior low, and a gap above it with "
@@ -2425,9 +2425,9 @@ OOPS_EXAMPLE_FIGURE = Figure(
         Mark(1, "circle", 0.735, 0.55, 0.79, 0.68,
              color="gold", at=(0.68, 0.70), size=0.30),
         Mark(2, "line", 0.78, 0.615, 0.91, 0.615,
-             color="red", at=(0.72, 0.48), size=0.30),
+             color="red", at=(0.76, 0.73), size=0.30),
         Mark(3, "line", 0.78, 0.565, 0.91, 0.565,
-             color="blue", at=(0.72, 0.52), size=0.30),
+             color="blue", at=(0.76, 0.35), size=0.30),
     ),
     shows=("The book's daily Dynegy chart marked at the bearish Oops opening "
            "gap, sell-stop at the prior high, stop-and-reverse buy level, and "
@@ -2529,18 +2529,19 @@ INSIDE_MONTH_FIGURE = Figure(
 
 TRIPLE_BEARISH_FIGURE = Figure(
     title="Figure 7.6: two bearish triple-bar structures",
-    number="7.06",
+    number="7.6",
     aspect=650 / 550,
+    crop=(0.0, 0.0, 0.34, 0.0),
     marks=(
-        Mark(1, "box", 0.07, 0.02, 0.34, 0.34,
+        Mark(1, "box", 0.11, 0.02, 0.52, 0.34,
              color="gold", at=(0.05, 0.38), size=0.30),
-        Mark(2, "box", 0.40, 0.02, 0.57, 0.34,
-             color="red", at=(0.38, 0.38), size=0.30),
-        Mark(3, "circle", 0.15, 0.33, 0.24, 0.63,
-             color="blue", at=(0.10, 0.30), size=0.30),
+        Mark(2, "box", 0.61, 0.02, 0.86, 0.34,
+             color="red", at=(0.57, 0.38), size=0.30),
+        Mark(3, "circle", 0.23, 0.33, 0.36, 0.63,
+             color="blue", at=(0.17, 0.30), size=0.30),
     ),
-    shows=("Figure 7.6's three bearish triple-bar schematics, with the first "
-           "two structures marked for the review answer."),
+    shows=("Figure 7.6's first two bearish triple-bar schematics, marked for "
+           "the review answer."),
     notes=(
         "Gold mark 1 brackets pattern 1 and red mark 2 brackets pattern 2.",
         "Blue mark 3 sits beside the source's uptrend context. Read the source conditions rather than inventing a trade rule.",
@@ -2671,7 +2672,7 @@ OOPS_BULLISH_CHART = Chart(
             "buy-stop, and new low with stoploss labelled on the chart."),
     tier="core",
     marks=(
-        Mark(1, "arrow", 0.67, 0.55, 0.67, 0.65,
+        Mark(1, "arrow", 0.67, 0.55, 0.67, 0.70,
              color="gold", at=(0.76, 0.58), size=0.30),
         Mark(2, "line", 0.39, 0.54, 0.63, 0.54,
              color="red", at=(0.78, 0.47), size=0.30),
@@ -2696,8 +2697,8 @@ IDNR_CHART = Chart(
              color="gold", at=(0.63, 0.48), size=0.30),
         Mark(2, "line", 0.80, 0.22, 0.80, 0.43,
              color="red", at=(0.88, 0.47), size=0.30),
-        Mark(3, "line", 0.73, 0.21, 0.73, 0.40,
-             color="blue", at=(0.68, 0.55), size=0.30),
+        Mark(3, "line", 0.88, 0.18, 0.88, 0.49,
+             color="blue", at=(0.92, 0.60), size=0.30),
     ),
     notes=(
         "The six range labels are invented teaching numbers. Compare each with the same six-bar window.",
@@ -2740,8 +2741,8 @@ OOPS_REWORK_CHART = Chart(
              color="gold", at=(0.51, 0.37)),
         Mark(2, "circle", 0.64, 0.49, 0.69, 0.55,
              color="red", at=(0.78, 0.62)),
-        Mark(3, "circle", 0.64, 0.14, 0.69, 0.20,
-             color="blue", at=(0.88, 0.18)),
+        Mark(3, "circle", 0.64, 0.21, 0.69, 0.27,
+             color="blue", at=(0.78, 0.13)),
     ),
     notes=(
         "The first bar reaches PHP 52.00 and closes at PHP 51.00. The next "
@@ -2764,8 +2765,8 @@ IDNR_REWORK_CHART = Chart(
              color="gold", at=(0.63, 0.48)),
         Mark(2, "line", 0.80, 0.22, 0.80, 0.43,
              color="red", at=(0.88, 0.47)),
-        Mark(3, "line", 0.73, 0.21, 0.73, 0.40,
-             color="blue", at=(0.68, 0.55)),
+        Mark(3, "line", 0.88, 0.18, 0.88, 0.49,
+             color="blue", at=(0.92, 0.60)),
     ),
     notes=(
         "Compare each range over the same six-bar window. The final bar is "
@@ -3100,7 +3101,7 @@ CHAPTER = Chapter(
             title="Review answer 4 begins with the first eight reversal characteristics",
             lines=(
                 "The 16 reversal characteristics are potential clues that add context to a bar pattern. The first four are a decrease in price-cycle amplitude, a decrease in price-cycle period, a change in bar-retracement symmetry, and a decrease in average bar range.",
-                "The next four are a lack of price persistence, a decrease in average bar stochastic ratio, a decrease in average candlestick real-body-to-range ratio, and changes in angular symmetry and momentum.",
+                "The next four are a lack of the quality of price persistence, a decrease in average bar stochastic ratio, a decrease in average candlestick real-body-to-range ratio, and changes in angular symmetry and momentum.",
             ),
             accent="These first eight are potential reversal clues, not guarantees. Chapter 5 gives the detailed discussion.",
             notes=(

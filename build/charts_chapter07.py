@@ -13,11 +13,14 @@ checked without looking back to the prose.
 
 from __future__ import annotations
 
+from functools import lru_cache
 from pathlib import Path
 
 import chartkit as ck
+import deckkit
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Circle
+from matplotlib.transforms import Bbox
 
 
 def _bars(values):
@@ -187,6 +190,240 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
     return path
 
 
+SAMPLE_SIZE = (7.36, 3.84)
+SAMPLE_PRICES = {
+    "K": (((50.80, 52.00, 50.60, 51.10),
+           (52.30, 53.20, 49.90, 50.80)),),
+    "A": (((62.0, 65.0, 61.0, 64.0),
+           (65.4, 66.2, 60.0, 60.5),
+           (60.2, 62.0, 59.8, 61.6)),
+          ((41.0, 42.0, 40.2, 41.5),
+           (41.5, 42.0, 38.8, 40.6),
+           (40.6, 42.2, 40.0, 41.8))),
+}
+SAMPLE_VOLUMES = {"K": ((2.0, 4.2),),
+                  "A": ((1.8, 4.8, 2.1), (1.6, 0.8, 1.5))}
+
+
+def _sample_layout(kind):
+    """Lay out all prices at their data coordinates, then measure collisions.
+
+    Temporary Matplotlib rings and badges have the same geometry as the
+    returned deckkit Marks. They are measured with the text and removed before
+    saving, so PowerPoint remains the single owner of the visible overlays.
+    """
+    width, height = SAMPLE_SIZE
+    fig = plt.figure(figsize=SAMPLE_SIZE, dpi=ck.DPI)
+    labels, segments, targets, level_labels = [], [], {}, []
+
+    def text(axis, x, y, value, *, ha="center", va="center", pt=15,
+             color=ck.INK):
+        artist = axis.text(x, y, value, ha=ha, va=va, fontsize=pt,
+                           color=color, fontweight="bold", clip_on=False,
+                           fontfamily=deckkit.BODY_FONT,
+                           bbox=dict(facecolor=ck.WHITE, edgecolor="none", pad=0.06))
+        labels.append(artist)
+        return artist
+
+    def in_figure(axis, x, y):
+        return fig.transFigure.inverted().transform(axis.transData.transform((x, y)))
+
+    for panel, prices in enumerate(SAMPLE_PRICES[kind]):
+        if kind == "K":
+            title, bottom, plot_h, vol_bottom, vol_h = (
+                "Key reversal: yesterday and today", 1.35, 1.8, 0.32, 0.48)
+            header_y = 3.63
+        else:
+            title = ("Exhaustion bar", "Pin bar")[panel]
+            bottom, plot_h, vol_bottom, vol_h = (
+                (2.77, 0.33, 2.06, 0.16) if panel == 0
+                else (1.06, 0.63, 0.345, 0.16))
+            header_y = 3.70 if panel == 0 else 1.97
+        heading_x = 0.38 if kind == "A" and panel == 1 else 0.5
+        heading = fig.text(heading_x, header_y / height, title, ha="center",
+                           va="center", fontsize=16, fontweight="bold",
+                           color=ck.GREEN_DEEP, fontfamily=deckkit.BODY_FONT)
+        labels.append(heading)
+        axis = fig.add_axes([0.015, bottom / height, 0.97, plot_h / height])
+        axis.set_axis_off()
+        low = min(bar[2] for bar in prices)
+        high = max(bar[1] for bar in prices)
+        axis.set_xlim(0, 10)
+        axis.set_ylim(low, high)
+        xs = (2.5, 7.5) if len(prices) == 2 else (2.1, 5.275, 8.45)
+        dx = 0.10 / (width * 0.97) * 10
+        dy = 0.11 / plot_h * (high - low)
+        for index, (x, values) in enumerate(zip(xs, prices)):
+            o, h, l, c = values
+            assert l <= min(o, c) <= max(o, c) <= h, (kind, values)
+            for start, end in (((x, l), (x, h)),
+                               ((x - 0.30, o), (x, o)),
+                               ((x, c), (x + 0.30, c))):
+                line, = axis.plot((start[0], end[0]), (start[1], end[1]),
+                                  color=ck.INK, lw=2.4, clip_on=False)
+                segments.append(line)
+            text(axis, x - 0.30 - dx, o, f"O {o:.2f}", ha="right")
+            text(axis, x + 0.30 + dx, c, f"C {c:.2f}", ha="left")
+            high_inches = 0.27 if kind == "A" and panel == 0 else 0.15
+            high_gap = high_inches / plot_h * (high - low)
+            text(axis, x, h + high_gap, f"H {h:.2f}", va="bottom")
+            text(axis, x, l - dy, f"L {l:.2f}", va="top")
+            for name, px, py in (("open", x - 0.30, o),
+                                 ("high", x, h),
+                                 ("close", x + 0.30, c)):
+                targets[panel, index, name] = in_figure(axis, px, py)
+
+        levels = ((52.00, "Prior high 52.00"),
+                  (51.10, "Prior close 51.10")) if kind == "K" else (
+                      ((65.00, "Prior high 65.00"),) if panel == 0 else
+                      ((40.00, "Support 40.00"),))
+        for value, caption in levels:
+            # The far-left level label occupies its own lane before bar 1.
+            axis.plot((0.05, 9.7), (value, value), color=ck.MUTED,
+                      ls=(0, (4, 4)), lw=0.8, zorder=0, clip_on=False)
+            label = text(axis, 0.05, value + dy * 0.6, caption,
+                         ha="left", va="bottom", pt=15, color=ck.MUTED)
+            level_labels.append((label, axis, header_y + 0.12))
+        if kind == "A" and panel == 1:
+            targets[panel, 1, "support"] = in_figure(axis, xs[1] + 0.05, 40.00)
+
+        volume = fig.add_axes([0.015, vol_bottom / height, 0.97, vol_h / height])
+        volume.set_axis_off()
+        volume.set_xlim(0, 10)
+        values = SAMPLE_VOLUMES[kind][panel]
+        volume.set_ylim(0, max(values))
+        volume.bar(xs, values, width=0.70, color=ck.GREEN)
+        for index, (x, value) in enumerate(zip(xs, values)):
+            volume_gap = 0.125 if kind == "A" and panel == 1 else 0.055
+            text(volume, x, value + volume_gap / vol_h * max(values),
+                 f"{value:.1f}m", va="bottom", color=ck.GREEN_DEEP)
+            targets[panel, index, "volume"] = in_figure(volume, x, value / 2)
+    labels.append(fig.text(0.5, 0.015 / height,
+                           "Prices and volume are invented for teaching.",
+                           ha="center", va="bottom", fontsize=15,
+                           color=ck.MUTED, style="italic",
+                           fontfamily=deckkit.BODY_FONT))
+    specs = ((1, "gold", (0, 1, "open")),
+             (2, "red", (0, 1, "high")),
+             (3, "blue", (0, 1, "close")),
+             (4, "purple", (0, 1, "volume"))) if kind == "K" else (
+                 (1, "gold", (0, 1, "open")),
+                 (2, "red", (0, 1, "high")),
+                 (3, "blue", (0, 2, "open")),
+                 (4, "purple", (1, 1, "support")),
+                 (5, "gold", (1, 1, "volume")),
+                 (6, "red", (1, 1, "close")))
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+
+    def box(artist):
+        bounds = artist.get_window_extent(renderer)
+        patch = artist.get_bbox_patch() if hasattr(artist, "get_bbox_patch") else None
+        return Bbox.union((bounds, patch.get_window_extent(renderer))) if patch else bounds
+
+    def overlaps(a, b):
+        return a.x0 < b.x1 and b.x0 < a.x1 and a.y0 < b.y1 and b.y0 < a.y1
+
+    # Larger level captions keep their far-left anchor and advance upward
+    # above the level until the renderer finds a clear lane.
+    for artist, axis, ceiling in level_labels:
+        x, y = artist.get_position()
+        step = (axis.get_ylim()[1] - axis.get_ylim()[0]) / axis.bbox.height
+        others = [box(other) for other in labels if other is not artist]
+        obstacles = others + [box(line).padded(1) for line in segments]
+        for pixels in range(int(fig.bbox.height)):
+            artist.set_position((x, y + pixels * step))
+            artist.update_bbox_position_size(renderer)
+            bounds = box(artist)
+            if (fig.bbox.contains(bounds.x0, bounds.y0)
+                    and fig.bbox.contains(bounds.x1, bounds.y1)
+                    and bounds.y1 <= ceiling * ck.DPI
+                    and not any(overlaps(bounds, b) for b in obstacles)):
+                break
+        else:
+            raise AssertionError(f"Chart {kind}: no clear level caption {artist.get_text()}")
+
+    text_boxes = [box(artist) for artist in labels]
+    line_boxes = [box(line).padded(1) for line in segments]
+    for i, artist in enumerate(labels):
+        assert "\n" not in artist.get_text(), artist.get_text()
+        bounds = text_boxes[i]
+        assert fig.bbox.contains(bounds.x0, bounds.y0) and fig.bbox.contains(
+            bounds.x1, bounds.y1), f"Text outside Chart {kind}: {artist.get_text()}"
+        for j in range(i):
+            assert not overlaps(bounds, text_boxes[j]), (
+                f"Chart {kind}: text overlap {artist.get_text()} / {labels[j].get_text()}")
+        assert not any(overlaps(bounds, line) for line in line_boxes), (
+            f"Chart {kind}: text crosses bar or tick: {artist.get_text()}")
+
+    overlays, overlay_boxes, marks = [], [], []
+    future_rings = []
+    for _number, _tone, target in specs:
+        fx, fy = targets[target]
+        proxy = Circle((fx * width, fy * height), 0.085,
+                       transform=fig.dpi_scale_trans)
+        fig.add_artist(proxy)
+        future_rings.append(box(proxy))
+        proxy.remove()
+    for number, tone, target in specs:
+        fx, fy = targets[target]
+        # Inches keep ring and badge circular even for a shallow picture.
+        radius, badge_radius, gap = 0.085, 0.13, 0.012
+        color = "#" + str(deckkit.MARK_COLORS[tone])
+        ring = Circle((fx * width, fy * height), radius,
+                      transform=fig.dpi_scale_trans, fill=False,
+                      edgecolor=color, lw=3.5)
+        fig.add_artist(ring)
+        ring_box = box(ring)
+        assert not any(overlaps(ring_box, b) for b in text_boxes + overlay_boxes), (
+            f"Chart {kind}: ring {number} overlaps text or another overlay")
+        distance = radius + badge_radius + gap
+        for dx, dy in ((distance, 0), (-distance, 0), (0, distance), (0, -distance)):
+            bx, by = fx * width + dx, fy * height + dy
+            badge = Circle((bx, by), badge_radius,
+                           transform=fig.dpi_scale_trans, color=color)
+            fig.add_artist(badge)
+            badge_box = box(badge)
+            if (fig.bbox.contains(badge_box.x0, badge_box.y0)
+                    and fig.bbox.contains(badge_box.x1, badge_box.y1)
+                    and not any(overlaps(badge_box, b)
+                                for b in text_boxes + overlay_boxes + future_rings)
+                    and not any(overlaps(badge_box, b) for b in line_boxes)):
+                break
+            badge.remove()
+        else:
+            plt.close(fig)
+            raise AssertionError(f"Chart {kind}: no clear touching badge {number}")
+        digit = fig.text(bx / width, by / height, str(number), ha="center",
+                         va="center", fontsize=13, fontweight="bold", color="white",
+                         fontfamily=deckkit.BODY_FONT)
+        digit_box = box(digit)
+        assert not any(overlaps(digit_box, b) for b in text_boxes + overlay_boxes)
+        overlays.extend((ring, badge, digit))
+        overlay_boxes.extend((ring_box, badge_box))
+        marks.append(deckkit.Mark(
+            number, "circle", fx - radius / width, 1 - fy - radius / height,
+            fx + radius / width, 1 - fy + radius / height,
+            color=tone, at=(bx / width, 1 - by / height), size=badge_radius * 2))
+    for artist in overlays:
+        artist.remove()
+    return fig, tuple(marks)
+
+
+@lru_cache(maxsize=2)
+def sample_marks(kind):
+    fig, marks = _sample_layout(kind)
+    plt.close(fig)
+    return marks
+
+
+def _draw_sample(path, *, kind, display_font=None):
+    fig, _marks = _sample_layout(kind)
+    fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
+    plt.close(fig)
+    return path
+
+
 def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Path:
     """Draw the four sentiment cases as a readable trend/form table."""
     plt.close("all")
@@ -271,11 +508,11 @@ CHARTS = (
                                     label="prior high 65.00", at=0,
                                     dx=8, dy=-10),),
                                 notes=_bar_notes(
-                                    (1, 65.4, "O 65.40", -14, 16, True),
-                                    (1, 66.2, "H 66.20", 18, 8, False),
-                                    (1, 60.0, "L 60.00", -18, -10, False),
-                                    (1, 60.5, "C 60.50", 20, 8, False),
-                                    (2, 60.2, "next O 60.20", 18, 22, True))),
+                                    (1, 65.4, "O 65.40", -38, 28, True),
+                                    (1, 66.2, "H 66.20", 28, 18, False),
+                                    (1, 60.0, "L 60.00", -30, -16, False),
+                                    (1, 60.5, "C 60.50", 28, -5, False),
+                                    (2, 60.2, "next O 60.20", -22, 35, True))),
                         ck.Pane(columns=(1.8, 4.8, 2.1), height=0.55,
                                 tags=((0, "1.8m"), (1, "4.8m"), (2, "2.1m"))),
                     ),
@@ -292,11 +529,11 @@ CHARTS = (
                                     points=((0, 40.0), (2, 40.0)),
                                     tone="quiet", dashed=True,
                                     label="support 40.00", at=0,
-                                    dx=-20, dy=-10),),
+                                    dx=52, dy=-14),),
                                 notes=_bar_notes(
-                                    (1, 38.8, "low 38.80", -22, -20, True),
-                                    (1, 40.6, "close 40.60", 18, 5, False),
-                                    (1, 41.5, "pin bar", 18, 12, True))),
+                                    (1, 38.8, "low 38.80", 20, 22, True),
+                                    (1, 40.6, "close 40.60", 24, 5, False),
+                                    (1, 42.0, "pin bar", 24, 16, True))),
                         ck.Pane(columns=(1.6, 0.8, 1.5), height=0.55,
                                 tags=((0, "1.6m"), (1, "0.8m"), (2, "1.5m"))),
                     ),
@@ -306,10 +543,9 @@ CHARTS = (
             size=ck.pair_size(2.8),
             title_pt=13.5,
             note_pt=11.5,
-            label_pt=11.5,
+            label_pt=10.5,
             footnote_pt=11.5,
-            footnote=("Ours, invented PHP bars and million-share volume. "
-                      "The comparison follows Lim pp. 226 to 227."),
+            footnote="These prices and volume values are invented for teaching.",
         ),
     ),
     ck.ChartArt(
@@ -349,7 +585,7 @@ CHARTS = (
             ),
             cols=1,
             size=ck.pair_size(2.8),
-            footnote="Ours, invented PHP bars and million-share volume.",
+            footnote="These prices and volume values are invented for teaching.",
         ),
     ),
     ck.ChartArt(
@@ -732,7 +968,7 @@ CHARTS = (
                             notes=_bar_notes(
                                 (1, 50.8, "gap-up O 50.80", -85, 15, True),
                                 (2, 51.5, "island", 18, -8, True),
-                                (3, 49.4, "gap-down O 49.40", 18, 15, True)),
+                                (3, 49.4, "gap-down O 49.40", -82, 15, True)),
                         ),
                         ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), height=0.55,
                                 tags=((0, "2.3m"), (1, "0.7m"),
@@ -747,6 +983,24 @@ CHARTS = (
     ),
 )
 
+
+# The reworked first-half examples use fresh K-series filenames. Their data
+# keeps the approved OHLC values, while the new names prevent an old chart
+# image from being mistaken for this pass's artwork.
+_CHART_BY_LETTER = {art.letter: art for art in CHARTS}
+CHARTS = CHARTS + tuple(
+    ck.ChartArt(letter=new, draw=_CHART_BY_LETTER[source].draw,
+               kwargs=dict(_CHART_BY_LETTER[source].kwargs))
+    for new, source in (("K", "B"), ("L", "RA"), ("M", "RB"), ("N", "RC"))
+)
+
+# The two reviewed samples share their measured layout with the slide Marks.
+CHARTS = tuple(
+    ck.ChartArt(letter=art.letter, draw=_draw_sample,
+                kwargs=dict(kind=art.letter))
+    if art.letter in ("A", "K") else art
+    for art in CHARTS
+)
 
 # Charts SA to SH belong to the inside-bar through Hikkake range. The letters
 # deliberately start at S so parallel Chapter 7 workers can add their own

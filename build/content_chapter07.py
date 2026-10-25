@@ -1779,15 +1779,20 @@ B4_SLIDES = (
         notes=("Keep all four book conditions visible before the figure.", "The next slide works the numbers without artwork."),
         origin="Lim (2016), p. 226. The transition wording is ours.",
     ),
-    Content(
-        title="Exhaustion bar: worked numbers",
-        lines=(
-            "Ours, invented: prior high 65.00; exhaustion O 65.40, H 66.20, L 60.00, C 60.50.",
-            "65.40 is above 65.00; the 6.20-point range is large in this uptrend; 60.50 is near low 60.00.",
-            "Next O 60.20 lies inside 60.00 to 66.20, so there is no following gap. Meaning/action: all four observations support the reading; now read Figure 7.28.",
+    Pair(
+        left=Content(
+            title="Exhaustion bar: worked numbers",
+            lines=(
+                "Ours, invented: prior high 65.00; exhaustion O 65.40, H 66.20, L 60.00, C 60.50.",
+                "65.40 is above 65.00; the 6.20-point range is large in this uptrend; 60.50 is near low 60.00.",
+                "Next O 60.20 lies inside 60.00 to 66.20, so there is no following gap. Meaning/action: all four observations support the reading; now read Figure 7.28.",
+            ),
+            accent="Numbers first: compare each value with the named level.",
+            notes=("Say the comparison aloud: 65.40 > 65.00 and 60.20 lies between 60.00 and 66.20.",),
         ),
-        accent="Numbers first: compare each value with the named level.",
-        notes=("Say the comparison aloud: 65.40 > 65.00 and 60.20 lies between 60.00 and 66.20.",),
+        picture=EXHAUSTION_FIGURE,
+        text_w=6.0,
+        notes=EXHAUSTION_FIGURE.notes,
         origin="The worked PHP values are ours, invented to show Lim's p. 226 rule.",
     ),
     Pair(
@@ -2414,15 +2419,15 @@ OOPS_FIGURE = Figure(
 OOPS_EXAMPLE_FIGURE = Figure(
     title="Figure 7.37: bearish Williams' Oops example",
     number="7.37",
-    aspect=1120 / 450,
+    aspect=750 / 338,
     crop=(),
     marks=(
-        Mark(1, "circle", 0.74, 0.60, 0.80, 0.68,
-             color="gold", at=(0.69, 0.72), size=0.30),
-        Mark(2, "line", 0.78, 0.66, 0.91, 0.66,
-             color="red", at=(0.70, 0.73), size=0.30),
-        Mark(3, "line", 0.78, 0.61, 0.91, 0.61,
-             color="blue", at=(0.94, 0.50), size=0.30),
+        Mark(1, "circle", 0.735, 0.55, 0.79, 0.68,
+             color="gold", at=(0.68, 0.70), size=0.30),
+        Mark(2, "line", 0.78, 0.615, 0.91, 0.615,
+             color="red", at=(0.72, 0.48), size=0.30),
+        Mark(3, "line", 0.78, 0.565, 0.91, 0.565,
+             color="blue", at=(0.72, 0.52), size=0.30),
     ),
     shows=("The book's daily Dynegy chart marked at the bearish Oops opening "
            "gap, sell-stop at the prior high, stop-and-reverse buy level, and "
@@ -2458,15 +2463,15 @@ OOPS_CONTEXT_FIGURE = Figure(
 IDNR_FIGURE = Figure(
     title="Figure 7.38: ID/NR6",
     number="7.38",
-    aspect=1180 / 680,
+    aspect=493 / 503,
     crop=(0.015, 0.0, 0.015, 0.0),
     marks=(
-        Mark(1, "box", 0.27, 0.06, 0.55, 0.98,
-             color="gold", at=(0.15, 0.82), size=0.30),
-        Mark(2, "box", 0.50, 0.56, 0.55, 0.95,
-             color="red", at=(0.58, 0.90), size=0.30),
-        Mark(3, "line", 0.53, 0.57, 0.53, 0.95,
-             color="blue", at=(0.70, 0.90), size=0.30),
+        Mark(1, "box", 0.00, 0.04, 0.43, 0.84,
+             color="gold", at=(0.48, 0.90), size=0.30),
+        Mark(2, "box", 0.36, 0.54, 0.43, 0.75,
+             color="red", at=(0.47, 0.48), size=0.30),
+        Mark(3, "box", 0.47, 0.54, 0.70, 0.79,
+             color="blue", at=(0.73, 0.53), size=0.30),
     ),
     shows=("The book's ID/NR6 schematic: six numbered bars, with the sixth "
            "bar inside the prior range and the narrowest range, followed by "
@@ -2482,14 +2487,14 @@ IDNR_FIGURE = Figure(
 IDNR_DIRECTION_FIGURE = Figure(
     title="Figure 7.38: neutral until breakout",
     number="7.38",
-    aspect=1180 / 680,
+    aspect=493 / 503,
     marks=(
-        Mark(1, "line", 0.53, 0.57, 0.53, 0.95,
-             color="gold", at=(0.59, 0.90), size=0.30),
-        Mark(2, "box", 0.50, 0.56, 0.55, 0.95,
-             color="red", at=(0.58, 0.40), size=0.30),
-        Mark(3, "box", 0.58, 0.61, 0.65, 0.78,
-             color="blue", at=(0.90, 0.86), size=0.30),
+        Mark(1, "line", 0.36, 0.58, 0.36, 0.74,
+             color="gold", at=(0.31, 0.50), size=0.30),
+        Mark(2, "box", 0.34, 0.54, 0.43, 0.75,
+             color="red", at=(0.47, 0.48), size=0.30),
+        Mark(3, "box", 0.47, 0.54, 0.70, 0.79,
+             color="blue", at=(0.73, 0.53), size=0.30),
     ),
     shows=("Figure 7.38's ID/NR6 schematic, with the narrowest inside bar "
            "and both possible trigger directions visible."),
@@ -2503,14 +2508,14 @@ IDNR_DIRECTION_FIGURE = Figure(
 INSIDE_MONTH_FIGURE = Figure(
     title="Figure 7.39: Inside Month/NR5",
     number="7.39",
-    aspect=1120 / 440,
+    aspect=688 / 316,
     marks=(
-        Mark(1, "circle", 0.47, 0.62, 0.53, 0.80,
-             color="gold", at=(0.42, 0.84), size=0.30),
-        Mark(2, "arrow", 0.22, 0.88, 0.54, 0.88,
-             color="red", at=(0.18, 0.93), size=0.30),
-        Mark(3, "circle", 0.53, 0.17, 0.59, 0.42,
-             color="blue", at=(0.63, 0.12), size=0.30),
+        Mark(1, "circle", 0.325, 0.59, 0.365, 0.70,
+             color="gold", at=(0.30, 0.74), size=0.30),
+        Mark(2, "arrow", 0.10, 0.88, 0.36, 0.88,
+             color="red", at=(0.50, 0.92), size=0.30),
+        Mark(3, "circle", 0.375, 0.18, 0.425, 0.70,
+             color="blue", at=(0.45, 0.15), size=0.30),
     ),
     shows=("The book's monthly Dynegy chart: an inside month after five "
            "monthly ranges, followed by an upside breakout."),
@@ -2525,14 +2530,14 @@ INSIDE_MONTH_FIGURE = Figure(
 TRIPLE_BEARISH_FIGURE = Figure(
     title="Figure 7.6: two bearish triple-bar structures",
     number="7.06",
-    aspect=1100 / 670,
+    aspect=650 / 550,
     marks=(
-        Mark(1, "box", 0.22, 0.02, 0.40, 0.68,
-             color="gold", at=(0.17, 0.34), size=0.30),
-        Mark(2, "box", 0.45, 0.02, 0.63, 0.68,
-             color="red", at=(0.40, 0.34), size=0.30),
-        Mark(3, "circle", 0.24, 0.48, 0.32, 0.60,
-             color="blue", at=(0.16, 0.58), size=0.30),
+        Mark(1, "box", 0.07, 0.02, 0.34, 0.34,
+             color="gold", at=(0.05, 0.38), size=0.30),
+        Mark(2, "box", 0.40, 0.02, 0.57, 0.34,
+             color="red", at=(0.38, 0.38), size=0.30),
+        Mark(3, "circle", 0.15, 0.33, 0.24, 0.63,
+             color="blue", at=(0.10, 0.30), size=0.30),
     ),
     shows=("Figure 7.6's three bearish triple-bar schematics, with the first "
            "two structures marked for the review answer."),
@@ -2567,9 +2572,9 @@ INSIDE_BAR_FIGURE = Figure(
 OSCILLATOR_BOUNDARY_FIGURE = Figure(
     title="Figure 7.13: the labelled oscillator region",
     number="7.13",
-    aspect=1060 / 450,
+    aspect=1200 / 600,
     marks=(
-        Mark(1, "box", 0.76, 0.74, 0.93, 0.98,
+        Mark(1, "box", 0.76, 0.73, 0.94, 0.84,
              color="gold", at=(0.95, 0.70), size=0.30),
     ),
     shows=("Figure 7.13's overextension chart, with mark 1 on the lower "

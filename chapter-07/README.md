@@ -6,7 +6,9 @@ plan folder outside the public repository.
 
 The committed build is the placeholder teaching deck. The textbook figures
 are copyrighted and are never committed. The 39 extracted figures live in
-`assets/figures/` only on the artwork build machine.
+the canonical folder `~/.fin1209-figures/chapter-07/` only on the artwork
+build machine. Keeping one canonical extraction makes the teaching marks and
+crops agree across all parts.
 
 Build the committed foundation deck:
 
@@ -19,6 +21,7 @@ Build the artwork deck outside the repository:
 ```
 .venv/bin/python build/build_chapter7.py \
     --with-figures \
+    --figures-dir ~/.fin1209-figures/chapter-07 \
     --out ~/FIN1209-Chapter-07-with-figures-and-charts.pptx
 soffice --headless --convert-to pdf --outdir ~ \
     ~/FIN1209-Chapter-07-with-figures-and-charts.pptx

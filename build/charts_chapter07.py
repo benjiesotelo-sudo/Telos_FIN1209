@@ -214,9 +214,9 @@ def _sample_layout(kind):
     """
     width, height = SAMPLE_SIZE
     fig = plt.figure(figsize=SAMPLE_SIZE, dpi=ck.DPI)
-    labels, segments, targets = [], [], {}
+    labels, segments, targets, level_labels = [], [], {}, []
 
-    def text(axis, x, y, value, *, ha="center", va="center", pt=10,
+    def text(axis, x, y, value, *, ha="center", va="center", pt=15,
              color=ck.INK):
         artist = axis.text(x, y, value, ha=ha, va=va, fontsize=pt,
                            color=color, fontweight="bold", clip_on=False,
@@ -236,11 +236,12 @@ def _sample_layout(kind):
         else:
             title = ("Exhaustion bar", "Pin bar")[panel]
             bottom, plot_h, vol_bottom, vol_h = (
-                (2.65, 0.68, 2.04, 0.18) if panel == 0
-                else (0.94, 0.68, 0.33, 0.18))
-            header_y = 3.68 if panel == 0 else 1.97
-        heading = fig.text(0.5, header_y / height, title, ha="center",
-                           va="center", fontsize=11, fontweight="bold",
+                (2.77, 0.33, 2.06, 0.16) if panel == 0
+                else (1.06, 0.63, 0.345, 0.16))
+            header_y = 3.70 if panel == 0 else 1.97
+        heading_x = 0.38 if kind == "A" and panel == 1 else 0.5
+        heading = fig.text(heading_x, header_y / height, title, ha="center",
+                           va="center", fontsize=16, fontweight="bold",
                            color=ck.GREEN_DEEP, fontfamily=deckkit.BODY_FONT)
         labels.append(heading)
         axis = fig.add_axes([0.015, bottom / height, 0.97, plot_h / height])
@@ -249,7 +250,7 @@ def _sample_layout(kind):
         high = max(bar[1] for bar in prices)
         axis.set_xlim(0, 10)
         axis.set_ylim(low, high)
-        xs = (2.5, 7.5) if len(prices) == 2 else (3.4, 6.1, 8.8)
+        xs = (2.5, 7.5) if len(prices) == 2 else (2.1, 5.275, 8.45)
         dx = 0.10 / (width * 0.97) * 10
         dy = 0.11 / plot_h * (high - low)
         for index, (x, values) in enumerate(zip(xs, prices)):
@@ -259,11 +260,13 @@ def _sample_layout(kind):
                                ((x - 0.30, o), (x, o)),
                                ((x, c), (x + 0.30, c))):
                 line, = axis.plot((start[0], end[0]), (start[1], end[1]),
-                                  color=ck.INK, lw=1.8, clip_on=False)
+                                  color=ck.INK, lw=2.4, clip_on=False)
                 segments.append(line)
             text(axis, x - 0.30 - dx, o, f"O {o:.2f}", ha="right")
             text(axis, x + 0.30 + dx, c, f"C {c:.2f}", ha="left")
-            text(axis, x, h + dy, f"H {h:.2f}", va="bottom")
+            high_inches = 0.27 if kind == "A" and panel == 0 else 0.15
+            high_gap = high_inches / plot_h * (high - low)
+            text(axis, x, h + high_gap, f"H {h:.2f}", va="bottom")
             text(axis, x, l - dy, f"L {l:.2f}", va="top")
             for name, px, py in (("open", x - 0.30, o),
                                  ("high", x, h),
@@ -278,10 +281,11 @@ def _sample_layout(kind):
             # The far-left level label occupies its own lane before bar 1.
             axis.plot((0.05, 9.7), (value, value), color=ck.MUTED,
                       ls=(0, (4, 4)), lw=0.8, zorder=0, clip_on=False)
-            text(axis, 0.05, value + dy * 0.6, caption,
-                 ha="left", va="bottom", pt=9.5, color=ck.MUTED)
+            label = text(axis, 0.05, value + dy * 0.6, caption,
+                         ha="left", va="bottom", pt=15, color=ck.MUTED)
+            level_labels.append((label, axis, header_y + 0.12))
         if kind == "A" and panel == 1:
-            targets[panel, 1, "support"] = in_figure(axis, 6.15, 40.00)
+            targets[panel, 1, "support"] = in_figure(axis, xs[1] + 0.05, 40.00)
 
         volume = fig.add_axes([0.015, vol_bottom / height, 0.97, vol_h / height])
         volume.set_axis_off()
@@ -290,12 +294,13 @@ def _sample_layout(kind):
         volume.set_ylim(0, max(values))
         volume.bar(xs, values, width=0.70, color=ck.GREEN)
         for index, (x, value) in enumerate(zip(xs, values)):
-            text(volume, x, value + 0.055 / vol_h * max(values),
+            volume_gap = 0.125 if kind == "A" and panel == 1 else 0.055
+            text(volume, x, value + volume_gap / vol_h * max(values),
                  f"{value:.1f}m", va="bottom", color=ck.GREEN_DEEP)
             targets[panel, index, "volume"] = in_figure(volume, x, value / 2)
     labels.append(fig.text(0.5, 0.015 / height,
                            "Prices and volume are invented for teaching.",
-                           ha="center", va="bottom", fontsize=9.5,
+                           ha="center", va="bottom", fontsize=15,
                            color=ck.MUTED, style="italic",
                            fontfamily=deckkit.BODY_FONT))
     specs = ((1, "gold", (0, 1, "open")),
@@ -319,6 +324,25 @@ def _sample_layout(kind):
     def overlaps(a, b):
         return a.x0 < b.x1 and b.x0 < a.x1 and a.y0 < b.y1 and b.y0 < a.y1
 
+    # Larger level captions keep their far-left anchor and advance upward
+    # above the level until the renderer finds a clear lane.
+    for artist, axis, ceiling in level_labels:
+        x, y = artist.get_position()
+        step = (axis.get_ylim()[1] - axis.get_ylim()[0]) / axis.bbox.height
+        others = [box(other) for other in labels if other is not artist]
+        obstacles = others + [box(line).padded(1) for line in segments]
+        for pixels in range(int(fig.bbox.height)):
+            artist.set_position((x, y + pixels * step))
+            artist.update_bbox_position_size(renderer)
+            bounds = box(artist)
+            if (fig.bbox.contains(bounds.x0, bounds.y0)
+                    and fig.bbox.contains(bounds.x1, bounds.y1)
+                    and bounds.y1 <= ceiling * ck.DPI
+                    and not any(overlaps(bounds, b) for b in obstacles)):
+                break
+        else:
+            raise AssertionError(f"Chart {kind}: no clear level caption {artist.get_text()}")
+
     text_boxes = [box(artist) for artist in labels]
     line_boxes = [box(line).padded(1) for line in segments]
     for i, artist in enumerate(labels):
@@ -336,7 +360,7 @@ def _sample_layout(kind):
     future_rings = []
     for _number, _tone, target in specs:
         fx, fy = targets[target]
-        proxy = Circle((fx * width, fy * height), 0.065,
+        proxy = Circle((fx * width, fy * height), 0.085,
                        transform=fig.dpi_scale_trans)
         fig.add_artist(proxy)
         future_rings.append(box(proxy))
@@ -344,7 +368,7 @@ def _sample_layout(kind):
     for number, tone, target in specs:
         fx, fy = targets[target]
         # Inches keep ring and badge circular even for a shallow picture.
-        radius, badge_radius, gap = 0.065, 0.09, 0.012
+        radius, badge_radius, gap = 0.085, 0.13, 0.012
         color = "#" + str(deckkit.MARK_COLORS[tone])
         ring = Circle((fx * width, fy * height), radius,
                       transform=fig.dpi_scale_trans, fill=False,

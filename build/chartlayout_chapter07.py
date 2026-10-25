@@ -154,7 +154,10 @@ def _marks(fig, targets, specs, boxes, segments, groups):
     result = []
     leaders = []
     future = [(targets[tuple(s['target'])], 0 if tuple(s['target']) in groups else ring_radius) for s in specs if tuple(s['target']) in targets]
-    for spec in specs:
+    # Reserve a middle-of-bar badge before its high/low neighbours. Greedy
+    # extreme-first placement can otherwise close both escape lanes.
+    ordered=sorted(specs,key=lambda spec: 0 if spec['target'][2] in ('range','group') else 1)
+    for spec in ordered:
         target = tuple(spec['target'])
         if target not in targets:
             continue

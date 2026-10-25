@@ -361,6 +361,8 @@ DATA['r4-o']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'high
 DATA['r4-w']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 4, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'close')}]
 
 DATA['r1-m']['targets'][0]['target'] = (0,3,'group')
+DATA['b2-qi']['targets'][0]['target'] = (0,0,'range')
+DATA['b2-qi']['targets'][1]['target'] = (0,1,'low')
 DATA['r1-m']['groups'] = {(0,3,'group'): (0,3,4)}
 DATA['r3b-lg']['targets'][2]['target'] = (0,11,'group')
 DATA['r3b-lg']['groups'] = {(0,11,'group'): (0,11,12)}

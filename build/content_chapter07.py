@@ -7,6 +7,7 @@ full deck that follows approval.
 
 from deckkit import (Chapter, Check, Chart, Content, Figure, Mark, Pair,
                      Question, Section)
+from charts_chapter07 import sample_marks
 
 Q = Question
 
@@ -229,26 +230,13 @@ KEY_WORKED_CHART = Chart(
 COMPARISON_CHART = Chart(
     letter="A",
     title="Exhaustion bar and pin bar: same-looking warning, different reason",
-    shows=("Two invented three-bar examples. Left: an exhaustion bar opens "
-            "beyond the prior high and is followed without a gap. Right: a "
+    shows=("Two invented three-bar examples. Above: an exhaustion bar opens "
+            "beyond the prior high and is followed without a gap. Below: a "
             "pin bar penetrates support and closes back above it."),
-    marks=(
-        Mark(1, "circle", 0.245, 0.225, 0.265, 0.265,
-             color="gold", at=(0.29, 0.24), size=0.25),
-        Mark(2, "circle", 0.245, 0.17, 0.265, 0.21,
-             color="red", at=(0.225, 0.14), size=0.25),
-        Mark(3, "circle", 0.36, 0.48, 0.39, 0.54,
-             color="blue", at=(0.43, 0.51), size=0.25),
-        Mark(4, "line", 0.64, 0.50, 0.82, 0.50,
-             color="purple", at=(0.90, 0.50), size=0.25),
-        Mark(5, "circle", 0.735, 0.82, 0.77, 0.91,
-             color="gold", at=(0.81, 0.86), size=0.25),
-        Mark(6, "circle", 0.735, 0.37, 0.77, 0.43,
-             color="red", at=(0.70, 0.43), size=0.25),
-    ),
+    marks=sample_marks("A"),
     tier="core",
     notes=(
-        "Read left to right. The exhaustion bar opens beyond the previous high, "
+        "Read the upper example first. The exhaustion bar opens beyond the previous high, "
         "but its distinction is the absence of a following gap.",
         "The pin bar gives a false impression of breaking support, then retraces "
         "back above it. Its volume is low in the invented example.",
@@ -2373,10 +2361,10 @@ SECTION3 = Section(
                 title="Walking through one key reversal, price by price",
                 shows="Two invented PHP bars with every OHLC value and volume value labelled. Marks 1 to 4 show the opening price above the previous high, the new high, the close below the previous close, and the volume increase.",
                 tier="core",
-                marks=KEY_WORKED_CHART.marks,
+                marks=sample_marks("K"),
             ),
-            text_w=4.8,
-            picture_extra=0.8,
+            text_w=4.5,
+            picture_extra=0.84,
             notes=KEY_WORKED_CHART.notes,
             origin="Chart K is ours. These prices and volume values are invented for teaching.",
         ),
@@ -2426,8 +2414,8 @@ SECTION3 = Section(
                 caption="",
             ),
             picture=COMPARISON_CHART,
-            text_w=4.8,
-            picture_extra=0.8,
+            text_w=4.5,
+            picture_extra=0.84,
             notes=COMPARISON_CHART.notes,
             origin=COMPARISON_CHART.origin,
         ),

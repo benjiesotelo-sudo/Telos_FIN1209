@@ -369,9 +369,11 @@ def layout(key, page=0):
     fig = plt.figure(figsize=(WIDTH, HEIGHT), dpi=ck.DPI)
     labels, segments, targets, levels, tips, groups = [], [], {}, [], [], {}
     def text(x, y, value, *, ha='center', va='center', color=ck.INK):
+        # A white backing breaks a dashed level line where it meets a label.
         artist = fig.text(x/WIDTH, y/HEIGHT, value, ha=ha, va=va,
                           fontsize=FONT, color=color, fontweight='bold',
-                          fontfamily=dk.BODY_FONT)
+                          fontfamily=dk.BODY_FONT,
+                          bbox=dict(facecolor=ck.WHITE, edgecolor='none', pad=1))
         labels.append(artist)
         return artist
 
@@ -425,9 +427,11 @@ def layout(key, page=0):
         count = end-start
         left = 3.6 if any(p.strokes for p in cell.panes) else 2.1
         right = WIDTH - 1.5
+        side = .50   # tick end to its O or C label
         if count == 4:
-            # Four bars need the full width; a level caption climbs instead.
-            left, right = 1.5, WIDTH - 1.45
+            # Four bars need the full width; a level caption climbs instead,
+            # and each side label sits nearer its own tick than its neighbour's.
+            left, right, side = 1.36, WIDTH - 1.32, .36
         xs = [left + (right-left) * i/max(1,count-1) for i in range(count)] if count>1 else [WIDTH/2]
         for pane_index, pane in enumerate(cell.panes):
             if pane.bars or pane.line:
@@ -452,8 +456,8 @@ def layout(key, page=0):
                         for xx,yy in (((x,x),(b.low,b.high)),((x-.17,x),(b.open,b.open)),((x,x+.17),(b.close,b.close))):
                             artist=line(axis,xx,yy,color=ck.INK,lw=2.4,clip_on=False)
                             segments.append(artist.get_window_extent().padded(2))
-                        text(x-.50,y_inches(b.open),f'O {b.open:.2f}',ha='right')
-                        text(x+.50,y_inches(b.close),f'C {b.close:.2f}',ha='left')
+                        text(x-side,y_inches(b.open),f'O {b.open:.2f}',ha='right')
+                        text(x+side,y_inches(b.close),f'C {b.close:.2f}',ha='left')
                         tips.append((text(x,y_inches(b.high)+.19,f'H {b.high:.2f}',va='bottom'),1))
                         tips.append((text(x,y_inches(b.low)-.17,f'L {b.low:.2f}',va='top'),-1))
                         for name,xx,yy in (('open',x-.17,b.open),('high',x,b.high),('low',x,b.low),('close',x+.17,b.close),('range',x,(b.low+b.high)/2)):

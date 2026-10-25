@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import chartkit
 import deckkit
+from chartlayout_chapter07 import audit_pptx, course_slide_renderer
 from charts_chapter07 import CHARTS
 from content_chapter07 import CHAPTER
 
@@ -111,13 +112,15 @@ def main() -> int:
 
     chartkit.generate(CHARTS, CHARTS_DIR)
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    slides, checks = deckkit.build(
-        CHAPTER,
-        args.out,
-        figures_dir=args.figures_dir if args.with_figures else None,
-        charts_dir=CHARTS_DIR,
-        edition=args.edition,
-    )
+    with course_slide_renderer():
+        slides, checks = deckkit.build(
+            CHAPTER,
+            args.out,
+            figures_dir=args.figures_dir if args.with_figures else None,
+            charts_dir=CHARTS_DIR,
+            edition=args.edition,
+        )
+    audit_pptx(args.out, CHARTS_DIR)
     figures = deckkit.figure_status(CHAPTER,
                                     args.figures_dir if args.with_figures else None)
     placed = sum(1 for _n, _f, have in figures if have)

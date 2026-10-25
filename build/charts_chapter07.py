@@ -18,6 +18,7 @@ from pathlib import Path
 import chartkit as ck
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from matplotlib.transforms import Bbox
 
 
 def _bars(values):
@@ -31,10 +32,78 @@ def _bar_notes(*items):
                  for x, y, label, dx, dy, notice in items)
 
 
+def _assert_layout(fig, labels, bars, overlays):
+    """Fail if rendered labels, bars, rings or badges collide."""
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    text_boxes = []
+    seen = set()
+    for artist, target in labels:
+        if id(artist) in seen or not artist.get_visible():
+            continue
+        seen.add(id(artist))
+        box = artist.get_window_extent(renderer)
+        if box.width and box.height:
+            text_boxes.append((artist.get_text(), box, target))
+    for artist in (text for axis in fig.axes for text in axis.texts):
+        if id(artist) in seen or not artist.get_visible():
+            continue
+        box = artist.get_window_extent(renderer)
+        if box.width and box.height:
+            text_boxes.append((artist.get_text(), box, None))
+
+    def overlaps(left, right):
+        return (left.x0 < right.x1 and right.x0 < left.x1 and
+                left.y0 < right.y1 and right.y0 < left.y1)
+
+    failures = []
+    for i, (name, box, _target) in enumerate(text_boxes):
+        for other_name, other_box, _other_target in text_boxes[i + 1:]:
+            if overlaps(box, other_box):
+                failures.append(f"text boxes overlap: {name!r} / {other_name!r}")
+
+    bar_segments = []
+    for axis, index, bar in bars:
+        trans = axis.transData
+        points = tuple(trans.transform(point) for point in (
+            (index, bar.low), (index, bar.high),
+            (index - 0.30, bar.open), (index, bar.open),
+            (index, bar.close), (index + 0.30, bar.close),
+        ))
+        segments = (
+            (points[0], points[1]),
+            (points[2], points[3]),
+            (points[4], points[5]),
+        )
+        for start, end in segments:
+            bar_segments.append((axis, index, Bbox.from_extents(
+                min(start[0], end[0]) - 2,
+                min(start[1], end[1]) - 2,
+                max(start[0], end[0]) + 2,
+                max(start[1], end[1]) + 2)))
+    for name, box, target in text_boxes:
+        if target is not None and target[0] == "stroke":
+            continue
+        for axis, index, bar_box in bar_segments:
+            if target is not None and target[0] is axis and target[1] == index:
+                continue
+            if target is not None and target[0] is not axis:
+                continue
+            if overlaps(box, bar_box):
+                failures.append(f"label box overlaps bar {index}: {name!r}")
+
+    for i, (name, box) in enumerate(overlays):
+        for other_name, other_box in overlays[i + 1:]:
+            if overlaps(box, other_box):
+                failures.append(f"overlay boxes overlap: {name!r} / {other_name!r}")
+    if failures:
+        raise AssertionError("Chart A layout validation failed: " + "; ".join(failures))
+
+
 def _readable_cells(path: Path, items, *, cols, size, footnote="",
                     display_font=None, title_pt=14.5, note_pt=13.0,
                     label_pt=13.5, footnote_pt=12.5, tag_offset=10,
-                    tag_dx=0) -> Path:
+                    tag_dx=0, validate_layout=False) -> Path:
     """Draw the Chapter 7 cells with projection-sized labels.
 
     The shared cell form is intentionally compact for ordinary chart bands.
@@ -51,6 +120,8 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
     cell_w = (w_in - pad) / cols
     cell_h = (h_in - foot - pad) / rows
     tones = {"structure": ck.GREEN, "notice": ck.GOLD, "quiet": ck.MUTED}
+    labels = []
+    bars = []
 
     for i, cell in enumerate(items):
         row, col = divmod(i, cols)
@@ -70,15 +141,17 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
         frame.set_facecolor(ck.WHITE)
         frame.set_zorder(0)
         if cell.name:
-            fig.text((x + (cell_w - pad) / 2) / w_in, (top - 0.05) / h_in,
-                     cell.name, ha="center", va="top", fontsize=title_pt,
-                     color=ck.GOLD if cell.tone == "notice" else ck.GREEN_DEEP,
-                     fontweight="bold", linespacing=1.05)
+            fig.text(
+                (x + (cell_w - pad) / 2) / w_in, (top - 0.05) / h_in,
+                cell.name, ha="center", va="top", fontsize=title_pt,
+                color=ck.GOLD if cell.tone == "notice" else ck.GREEN_DEEP,
+                fontweight="bold", linespacing=1.05)
         if cell.note:
-            fig.text((x + (cell_w - pad) / 2) / w_in,
-                     (top - 0.07 - 0.17 * name_lines) / h_in,
-                     cell.note, ha="center", va="top", fontsize=note_pt,
-                     color=ck.MUTED, style="italic", linespacing=1.05)
+            fig.text(
+                (x + (cell_w - pad) / 2) / w_in,
+                (top - 0.07 - 0.17 * name_lines) / h_in,
+                cell.note, ha="center", va="top", fontsize=note_pt,
+                color=ck.MUTED, style="italic", linespacing=1.05)
 
         n = max(len(p.bars) or len(p.line) or len(p.columns) or 1
                 for p in cell.panes)
@@ -119,17 +192,19 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
                         zorder=4, solid_capstyle="round")
                 if stroke.label:
                     point = stroke.points[stroke.at]
-                    ax.annotate(stroke.label, xy=point,
-                                xytext=(stroke.dx, stroke.dy),
-                                textcoords="offset points",
-                                ha="right" if stroke.dx < 0 else
-                                ("left" if stroke.dx > 0 else "center"),
-                                va="center", fontsize=label_pt,
-                                color=ck.GREEN_DEEP if stroke.tone == "structure"
-                                else (ck.GOLD if stroke.tone == "notice" else ck.MUTED),
-                                fontweight="bold", zorder=7,
-                                bbox=dict(boxstyle="square,pad=0.12",
-                                          facecolor=ck.WHITE, edgecolor="none"))
+                    artist = ax.annotate(
+                        stroke.label, xy=point,
+                        xytext=(stroke.dx, stroke.dy),
+                        textcoords="offset points",
+                        ha="right" if stroke.dx < 0 else
+                        ("left" if stroke.dx > 0 else "center"),
+                        va="center", fontsize=label_pt,
+                        color=ck.GREEN_DEEP if stroke.tone == "structure"
+                        else (ck.GOLD if stroke.tone == "notice" else ck.MUTED),
+                        fontweight="bold", zorder=7,
+                        bbox=dict(boxstyle="square,pad=0.12",
+                                  facecolor=ck.WHITE, edgecolor="none"))
+                    labels.append((artist, ("stroke", ax)))
 
             if pane.columns:
                 colors = [ck.GOLD if j in pane.picks else
@@ -138,6 +213,7 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
                 ax.bar(range(len(pane.columns)), pane.columns, width=0.62,
                        color=colors, zorder=3, linewidth=0)
             if pane.bars:
+                bars.extend((ax, j, bar) for j, bar in enumerate(pane.bars))
                 for j, bar in enumerate(pane.bars):
                     ax.plot([j, j], [bar.low, bar.high], color=ck.INK,
                             lw=2.4, zorder=3, solid_capstyle="butt")
@@ -153,13 +229,20 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
                     return pane.line[int(index)]
                 return pane.columns[int(index)]
 
-            for index, label in pane.tags:
+            for tag in pane.tags:
+                index, label = tag[:2]
+                tag_dx_value, tag_offset_value = (
+                    (tag[2], tag[3]) if len(tag) >= 4
+                    else (tag_dx, tag_offset)
+                )
                 value = value_at(index)
-                ax.annotate(label, xy=(index, value),
-                            xytext=(tag_dx, tag_offset),
-                            textcoords="offset points", ha="center",
-                            va="bottom", fontsize=label_pt,
-                            color=ck.GREEN_DEEP, fontweight="bold", zorder=7)
+                artist = ax.annotate(
+                    label, xy=(index, value),
+                    xytext=(tag_dx_value, tag_offset_value),
+                    textcoords="offset points", ha="center",
+                    va="bottom", fontsize=label_pt,
+                    color=ck.GREEN_DEEP, fontweight="bold", zorder=7)
+                labels.append((artist, None))
             for note in pane.notes:
                 value = value_at(note.x) if note.y is None else note.y
                 if note.dot:
@@ -167,21 +250,50 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
                                color=ck.GOLD if note.notice else ck.GREEN,
                                edgecolors=ck.INK, linewidths=0.5, zorder=6)
                 if note.label:
-                    ax.annotate(note.label, xy=(note.x, value),
-                                xytext=(note.dx, note.dy),
-                                textcoords="offset points",
-                                ha="right" if note.dx < 0 else "left",
-                                va="center", fontsize=label_pt,
-                                color=ck.GREEN_DEEP if note.notice else ck.INK,
-                                fontweight="bold", zorder=7,
-                                bbox=dict(boxstyle="square,pad=0.12",
-                                          facecolor=ck.WHITE,
-                                          edgecolor=ck.BORDER))
+                    artist = ax.annotate(
+                        note.label, xy=(note.x, value),
+                        xytext=(note.dx, note.dy),
+                        textcoords="offset points",
+                        ha="center" if note.dx == 0 else
+                        ("right" if note.dx < 0 else "left"),
+                        va="center", fontsize=label_pt,
+                        color=ck.GREEN_DEEP if note.notice else ck.INK,
+                        fontweight="bold", zorder=7,
+                        bbox=dict(boxstyle="square,pad=0.12",
+                                  facecolor=ck.WHITE,
+                                  edgecolor=ck.BORDER))
+                    labels.append((artist, (ax, int(note.x))))
             y -= gap
 
     if footnote:
         fig.text(0.008, 0.012, footnote, fontsize=footnote_pt, color=ck.MUTED,
                  style="italic", ha="left", va="bottom", linespacing=1.1)
+    if validate_layout:
+        width, height = fig.bbox.width, fig.bbox.height
+
+        def norm_box(x0, y0, x1, y1):
+            return Bbox.from_extents(x0 * width, (1 - y1) * height,
+                                     x1 * width, (1 - y0) * height)
+
+        overlays = []
+        rings = (
+            ("ring 1", 0.245, 0.225, 0.265, 0.265),
+            ("ring 2", 0.245, 0.170, 0.265, 0.210),
+            ("ring 3", 0.360, 0.480, 0.390, 0.540),
+            ("ring 5", 0.735, 0.820, 0.770, 0.910),
+            ("ring 6", 0.735, 0.370, 0.770, 0.430),
+        )
+        badges = (
+            ("badge 1", 0.290, 0.240), ("badge 2", 0.225, 0.140),
+            ("badge 3", 0.430, 0.510), ("badge 4", 0.900, 0.500),
+            ("badge 5", 0.810, 0.860), ("badge 6", 0.700, 0.430),
+        )
+        overlays.extend((name, norm_box(x0, y0, x1, y1))
+                        for name, x0, y0, x1, y1 in rings)
+        overlays.extend((name, norm_box(x - 0.018, y - 0.028,
+                                        x + 0.018, y + 0.028))
+                        for name, x, y in badges)
+        _assert_layout(fig, labels, bars, overlays)
     fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
     plt.close(fig)
     return path
@@ -274,8 +386,8 @@ CHARTS = (
                                     (1, 65.4, "O 65.40", -38, 28, True),
                                     (1, 66.2, "H 66.20", 28, 18, False),
                                     (1, 60.0, "L 60.00", -30, -16, False),
-                                    (1, 60.5, "C 60.50", 28, -5, False),
-                                    (2, 60.2, "next O 60.20", -22, 35, True))),
+                                    (1, 60.5, "C 60.50", 28, -30, False),
+                                    (2, 60.2, "next O\n60.20", -8, -2, True))),
                         ck.Pane(columns=(1.8, 4.8, 2.1), height=0.55,
                                 tags=((0, "1.8m"), (1, "4.8m"), (2, "2.1m"))),
                     ),
@@ -294,11 +406,12 @@ CHARTS = (
                                     label="support 40.00", at=0,
                                     dx=52, dy=-14),),
                                 notes=_bar_notes(
-                                    (1, 38.8, "low 38.80", 20, 22, True),
-                                    (1, 40.6, "close 40.60", 24, 5, False),
-                                    (1, 42.0, "pin bar", 24, 16, True))),
+                                    (1, 38.8, "low 38.80", 4, 0, True),
+                                    (1, 40.6, "close 40.60", 5, -50, False),
+                                    (1, 42.0, "pin bar", 0, -24, True))),
                         ck.Pane(columns=(1.6, 0.8, 1.5), height=0.55,
-                                tags=((0, "1.6m"), (1, "0.8m"), (2, "1.5m"))),
+                                tags=((0, "1.6m"), (1, "0.8m"),
+                                      (2, "1.5m", 24, 28))),
                     ),
                 ),
             ),
@@ -308,7 +421,9 @@ CHARTS = (
             note_pt=11.5,
             label_pt=10.5,
             footnote_pt=11.5,
+            tag_offset=10,
             footnote="These prices and volume values are invented for teaching.",
+            validate_layout=True,
         ),
     ),
     ck.ChartArt(

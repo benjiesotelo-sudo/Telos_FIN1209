@@ -238,7 +238,7 @@ COMPARISON_CHART = Chart(
         Mark(2, "circle", 0.245, 0.17, 0.265, 0.21,
              color="red", at=(0.225, 0.14), size=0.25),
         Mark(3, "circle", 0.36, 0.48, 0.39, 0.54,
-             color="blue", at=(0.47, 0.55), size=0.25),
+             color="blue", at=(0.43, 0.51), size=0.25),
         Mark(4, "line", 0.64, 0.50, 0.82, 0.50,
              color="purple", at=(0.90, 0.50), size=0.25),
         Mark(5, "circle", 0.735, 0.82, 0.77, 0.91,
@@ -2362,7 +2362,8 @@ SECTION3 = Section(
             left=Content(
                 title="Walking through one key reversal, price by price",
                 lines=(
-                    "Here is the same pattern with simple prices, so you can see each step. Yesterday the stock reached 52.00 and closed at 51.10. Today it opens higher, at 52.30, already above yesterday's high (1). Buyers push it to 53.20, a new high (2). Then the selling starts, and by the close it has fallen to 50.80, below yesterday's close (3). Volume more than doubles, from 2.0 to 4.2 million shares (4), so many traders took part in that turn.",
+                    "Here is the same pattern with simple prices, so you can see each step.",
+                    "Yesterday the stock reached 52.00 and closed at 51.10. Today it opens higher, at 52.30, already above yesterday's high [1]. Buyers push it to 53.20, a new high [2]. Then the selling starts, and by the close it has fallen to 50.80, below yesterday's close [3]. Volume more than doubles, from 2.0 to 4.2 million shares [4], so many traders took part in that turn.",
                 ),
                 accent="",
                 caption="",

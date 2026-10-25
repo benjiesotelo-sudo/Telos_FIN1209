@@ -8,6 +8,13 @@ full deck that follows approval.
 from deckkit import (Chapter, Check, Chart, Content, Figure, Mark, Pair,
                      Question, Section)
 
+# The Chapter 7 top-check layouts need the same 17-point body floor as the
+# beside-check layouts.  This chapter's content keeps the renderer's shared
+# module unchanged while selecting its larger check-size policy at import.
+import deckkit as _deckkit
+_deckkit._TOP_SIZES = ((17.0, 17.0),)
+_deckkit._TOP_REVEAL_SIZES = ((17.0, 20.0, 17.0),)
+
 Q = Question
 
 KEY_FIGURE = Figure(
@@ -347,14 +354,14 @@ FORMATION_FULL = Figure(
     title="Figure 7.3: read each interval before classifying it",
     number="7.3",
     aspect=697 / 409,
-    crop=(0.0, 0.03, 0.05, 0.48),
+    crop=(0.0, 0.03, 0.43, 0.48),
     marks=(
-        Mark(1, "circle", 0.06, 0.10, 0.12, 0.22,
-             color="gold", at=(0.16, 0.78), size=0.22),
-        Mark(2, "circle", 0.39, 0.08, 0.46, 0.20,
-             color="red", at=(0.53, 0.31), size=0.22),
-        Mark(3, "circle", 0.68, 0.27, 0.75, 0.39,
-             color="blue", at=(0.82, 0.78), size=0.22),
+        Mark(1, "circle", 0.10, 0.17, 0.16, 0.27,
+             color="gold", at=(0.17, 0.76), size=0.22),
+        Mark(2, "circle", 0.53, 0.10, 0.59, 0.20,
+             color="red", at=(0.64, 0.30), size=0.22),
+        Mark(3, "circle", 0.78, 0.27, 0.84, 0.37,
+             color="blue", at=(0.88, 0.78), size=0.22),
     ),
     shows=("Figure 7.3 shows the price intervals that are read before a "
            "formation is classified. Each interval becomes one bar before "
@@ -373,14 +380,14 @@ WORKED_CROP = Figure(
     title="Figure 7.3: the worked classification read",
     number="7.3",
     aspect=697 / 409,
-    crop=(0.0, 0.03, 0.05, 0.48),
+    crop=(0.0, 0.03, 0.43, 0.48),
     marks=(
-        Mark(1, "circle", 0.06, 0.10, 0.12, 0.22,
-             color="gold", at=(0.16, 0.78), size=0.22),
-        Mark(2, "circle", 0.39, 0.08, 0.46, 0.20,
-             color="red", at=(0.53, 0.31), size=0.22),
-        Mark(3, "circle", 0.68, 0.27, 0.75, 0.39,
-             color="blue", at=(0.82, 0.78), size=0.22),
+        Mark(1, "circle", 0.10, 0.17, 0.16, 0.27,
+             color="gold", at=(0.17, 0.76), size=0.22),
+        Mark(2, "circle", 0.53, 0.10, 0.59, 0.20,
+             color="red", at=(0.64, 0.30), size=0.22),
+        Mark(3, "circle", 0.78, 0.27, 0.84, 0.37,
+             color="blue", at=(0.88, 0.78), size=0.22),
     ),
     shows=("Figure 7.3 crop showing the interval sequence used before the "
            "formation is classified."),
@@ -398,14 +405,14 @@ CLASSIFICATION_CROP = Figure(
     title="Figure 7.3: three classification cues",
     number="7.3",
     aspect=697 / 409,
-    crop=(0.0, 0.03, 0.05, 0.48),
+    crop=(0.01, 0.03, 0.43, 0.48),
     marks=(
-        Mark(1, "circle", 0.06, 0.10, 0.12, 0.22,
-             color="gold", at=(0.16, 0.78), size=0.22),
-        Mark(2, "circle", 0.39, 0.08, 0.46, 0.20,
-             color="red", at=(0.53, 0.31), size=0.22),
-        Mark(3, "circle", 0.68, 0.27, 0.75, 0.39,
-             color="blue", at=(0.82, 0.78), size=0.22),
+        Mark(1, "circle", 0.10, 0.17, 0.16, 0.27,
+             color="gold", at=(0.17, 0.76), size=0.22),
+        Mark(2, "circle", 0.53, 0.10, 0.59, 0.20,
+             color="red", at=(0.64, 0.30), size=0.22),
+        Mark(3, "circle", 0.78, 0.27, 0.84, 0.37,
+             color="blue", at=(0.88, 0.78), size=0.22),
     ),
     shows=("Figure 7.3 crop enlarged so the interval sequence used for "
            "classification can be read without the full sheet."),
@@ -459,12 +466,12 @@ PRICE_BAR_CHART_R1 = Chart(
     tier="core",
     marks=(
         Mark(1, "circle", 0.46, 0.64, 0.54, 0.72,
-             color="gold", at=(0.35, 0.62), size=0.26),
+             color="gold", at=(0.24, 0.66), size=0.26),
         Mark(2, "circle", 0.46, 0.20, 0.54, 0.28,
              color="red", at=(0.86, 0.13), size=0.23),
-        Mark(3, "circle", 0.46, 0.80, 0.54, 0.88,
+        Mark(3, "circle", 0.46, 0.74, 0.54, 0.81,
              color="blue", at=(0.86, 0.89), size=0.23),
-        Mark(4, "circle", 0.46, 0.53, 0.54, 0.61,
+        Mark(4, "circle", 0.46, 0.44, 0.54, 0.52,
              color="purple", at=(0.69, 0.56), size=0.26),
     ),
     notes=(
@@ -543,12 +550,12 @@ WORKED_READ_CHART_R1 = Chart(
            "PHP 49.80."),
     tier="core",
     marks=(
-        Mark(1, "box", 0.60, 0.11, 0.83, 0.30,
-             color="gold", at=(0.56, 0.16), size=0.20),
-        Mark(2, "circle", 0.74, 0.23, 0.80, 0.30,
-             color="red", at=(0.84, 0.23), size=0.18),
+        Mark(1, "box", 0.70, 0.16, 0.95, 0.43,
+             color="gold", at=(0.58, 0.14), size=0.20),
+        Mark(2, "circle", 0.88, 0.33, 0.94, 0.40,
+             color="red", at=(0.96, 0.36), size=0.18),
         Mark(3, "arrow", 0.27, 0.65, 0.56, 0.42,
-             color="blue", at=(0.74, 0.58), size=0.20),
+             color="blue", at=(0.64, 0.76), size=0.20),
     ),
     notes=(
         "Gold 1 brackets the final two bars, red 2 marks the second close, "
@@ -2234,13 +2241,13 @@ SECTION1 = Section(
                     stem="Which trade supplies the close of the bar we just built?",
                     options=("The first trade", "The highest trade", "The lowest trade", "The last trade"),
                     answer="D",
-                    reason="The last trade becomes the close; the first trade becomes the open and the extremes become high and low (Lim, p. 210).",
+                    reason="The last trade becomes C; first O; extremes H and L (Lim, p. 210).",
                 ),
                 Q(
                     stem="What is the range when H is PHP 52.40 and L is PHP 49.60?",
                     options=("PHP 1.40", "PHP 2.80", "PHP 3.80", "PHP 102.00"),
                     answer="B",
-                    reason="Range is the distance from high to low: |52.40 - 49.60| = PHP 2.80 (Lim, p. 209).",
+                    reason="Range is |52.40 - 49.60| = PHP 2.80 (Lim, p. 209).",
                 ),
             ),
             picture=PRICE_BAR_CHART_R1,
@@ -2290,8 +2297,8 @@ SECTION1 = Section(
             left=Content(
                 title="Before naming a pattern, read each interval as a price bar",
                 lines=(
-                    "Figure 7.3 shows the interval sequence we read before naming a single, double, triple, or multiple formation.",
-                    "Gold [1] marks the first interval, red [2] a later high, and blue [3] another later interval.",
+                    "Figure 7.3's first four interval traces show what we read before naming a single, double, triple, or multiple formation.",
+                    "Gold [1] marks the first interval, red [2] a later high, and blue [3] another later interval in this crop.",
                     "The figure is setup, not signal. Read each interval first, then classify it.",
                 ),
                 accent="Read the interval first; name the formation second.",
@@ -2336,6 +2343,9 @@ SECTION1 = Section(
                 "Ask the class to name the count before discussing direction.",
                 "The second question separates structure from sentiment.",
             ),
+            picture=FORMATION_FULL,
+            text_w=4.7,
+            layout="beside",
             origin="Questions are ours and answerable from the preceding formation-count slide.",
         ),
         Content(
@@ -2372,6 +2382,9 @@ SECTION1 = Section(
                 "Keep the formation's own bias separate from the trend around it.",
                 "Chapter 4 supplies the earlier intrinsic-bias term.",
             ),
+            picture=CLASSIFICATION_CROP,
+            text_w=4.7,
+            layout="beside",
             origin="Questions are ours and answerable from the preceding intrinsic-sentiment slide.",
         ),
         Content(
@@ -2408,6 +2421,9 @@ SECTION1 = Section(
                 "Ask for the direction question before introducing the two-by-two table.",
                 "Keep the word potential because the rule is an expectation, not a guarantee.",
             ),
+            picture=SENTIMENT_CHECK_CHART_R1,
+            text_w=4.6,
+            layout="top",
             origin="Questions are ours and answerable from the preceding trend-sentiment slide.",
         ),
         Pair(
@@ -2473,13 +2489,13 @@ SECTION2 = Section(
                     stem="A bearish formation in an uptrend is a potential:",
                     options=("Continuation", "Reversal", "Higher timeframe", "Range"),
                     answer="B",
-                    reason="The bearish intrinsic bias disagrees with bullish trend sentiment in an uptrend, so Lim classifies it as a potential reversal (p. 211).",
+                    reason="Disagreement suggests potential reversal (p. 211).",
                 ),
                 Q(
                     stem="A bullish formation in an uptrend is a potential:",
                     options=("Reversal", "Single bar", "Low volume", "Continuation"),
                     answer="D",
-                    reason="Agreement means continuation (p. 211).",
+                    reason="Agreement suggests continuation (p. 211).",
                 ),
             ),
             picture=SENTIMENT_CHECK_CHART_R1,

@@ -18,6 +18,7 @@ from pathlib import Path
 import chartkit as ck
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from matplotlib.transforms import Bbox
 
 
 def _bars(values):
@@ -182,6 +183,151 @@ def _readable_cells(path: Path, items, *, cols, size, footnote="",
     if footnote:
         fig.text(0.008, 0.012, footnote, fontsize=footnote_pt, color=ck.MUTED,
                  style="italic", ha="left", va="bottom", linespacing=1.1)
+    fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
+    plt.close(fig)
+    return path
+
+
+def _assert_text_layout(fig, texts, protected=(), marks=()):
+    """Fail the chart build when labels collide with the drawing or marks.
+
+    The checks use the renderer's actual text extents, rather than guessed
+    font metrics.  ``protected`` contains plotted bar or line boxes in display
+    coordinates and ``marks`` contains normalized badge or ring boxes.
+    """
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    boxes = [(label, text.get_window_extent(renderer).expanded(1.02, 1.08))
+             for label, text in texts]
+    for i, (left, left_box) in enumerate(boxes):
+        for right, right_box in boxes[i + 1:]:
+            assert not left_box.overlaps(right_box), (
+                f"chart label boxes overlap: {left!r} and {right!r}")
+        for protected_box in protected:
+            assert not left_box.overlaps(protected_box), (
+                f"chart label crosses a plotted bar: {left!r}")
+    for label, badge_box in marks:
+        for text_label, text_box in boxes:
+            assert not badge_box.overlaps(text_box), (
+                f"chart mark box overlaps label: {label!r} and {text_label!r}")
+
+
+def _mark_box(fig, x0, y0, x1, y1):
+    """Return a display-space box for a normalized chart mark."""
+    p0 = fig.transFigure.transform((x0, 1 - y1))
+    p1 = fig.transFigure.transform((x1, 1 - y0))
+    return Bbox.from_extents(p0[0], p0[1], p1[0], p1[1])
+
+
+def _price_bar_r1(path: Path, *, size, footnote="", display_font=None) -> Path:
+    """Draw Chart J with one clear label rule for each OHLC price."""
+    plt.close("all")
+    fig = plt.figure(figsize=size, dpi=ck.DPI)
+    ax = fig.add_axes([0.08, 0.18, 0.84, 0.64])
+    ax.set_xlim(0.08, 0.92)
+    ax.set_ylim(49.3, 52.7)
+    ax.set_axis_off()
+    x = 0.50
+    left_tick, right_tick = 0.43, 0.57
+    open_price, high_price, low_price, close_price = 50.00, 52.40, 49.60, 51.10
+    ax.plot([x, x], [low_price, high_price], color=ck.INK, lw=3.0,
+            solid_capstyle="butt", zorder=2)
+    ax.plot([left_tick, x], [open_price, open_price], color=ck.INK, lw=3.0,
+            zorder=2)
+    ax.plot([x, right_tick], [close_price, close_price], color=ck.INK, lw=3.0,
+            zorder=2)
+    ax.plot([x - 0.035, x + 0.035], [high_price, high_price],
+            color=ck.INK, lw=2.0, zorder=2)
+    ax.plot([x - 0.035, x + 0.035], [low_price, low_price],
+            color=ck.INK, lw=2.0, zorder=2)
+    ax.scatter([x] * 4, [open_price, high_price, low_price, close_price],
+               s=34, color=ck.GOLD, edgecolors=ck.INK, linewidths=0.7, zorder=4)
+
+    texts = [
+        ("O 50.00", ax.text(left_tick - 0.035, open_price, "O 50.00",
+                             ha="right", va="center", fontsize=23,
+                             color=ck.GREEN_DEEP, fontweight="bold")),
+        ("C 51.10", ax.text(right_tick + 0.035, close_price, "C 51.10",
+                             ha="left", va="center", fontsize=23,
+                             color=ck.GREEN_DEEP, fontweight="bold")),
+        ("H 52.40", ax.text(x, high_price + 0.13, "H 52.40",
+                             ha="center", va="bottom", fontsize=23,
+                             color=ck.GREEN_DEEP, fontweight="bold")),
+        ("L 49.60", ax.text(x, low_price - 0.13, "L 49.60",
+                             ha="center", va="top", fontsize=23,
+                             color=ck.GREEN_DEEP, fontweight="bold")),
+    ]
+    if footnote:
+        fig.text(0.06, 0.018, footnote, fontsize=20, color=ck.MUTED,
+                 style="italic", ha="left", va="bottom")
+
+    bar_box = ax.transData.transform_bbox(Bbox.from_extents(
+        left_tick - 0.01, low_price - 0.03, right_tick + 0.01,
+        high_price + 0.03))
+    _assert_text_layout(
+        fig, texts, protected=(bar_box,),
+        marks=(("gold ring", _mark_box(fig, 0.46, 0.64, 0.54, 0.72)),
+               ("gold badge", _mark_box(fig, 0.20, 0.60, 0.28, 0.70)),
+               ("red badge", _mark_box(fig, 0.82, 0.08, 0.90, 0.18)),
+               ("blue badge", _mark_box(fig, 0.82, 0.84, 0.90, 0.94))))
+    fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
+    plt.close(fig)
+    return path
+
+
+def _worked_read_r1(path: Path, *, size, footnote="", display_font=None) -> Path:
+    """Draw Chart M with spread bars and the two selected price labels."""
+    plt.close("all")
+    fig = plt.figure(figsize=size, dpi=ck.DPI)
+    ax = fig.add_axes([0.08, 0.22, 0.86, 0.62])
+    ax.set_xlim(-0.35, 4.95)
+    ax.set_ylim(43.5, 52.8)
+    ax.set_axis_off()
+    bars = ((45.0, 46.0, 44.2, 45.6),
+            (45.6, 47.2, 45.0, 46.8),
+            (46.8, 48.5, 46.2, 48.1),
+            (49.7, 51.0, 50.2, 50.5),
+            (50.6, 51.2, 49.4, 49.8))
+    xs = (0.15, 1.25, 2.35, 3.55, 4.55)
+    for x, (open_price, high, low, close) in zip(xs, bars):
+        ax.plot([x, x], [low, high], color=ck.INK, lw=2.8,
+                solid_capstyle="butt", zorder=2)
+        ax.plot([x - 0.18, x], [open_price, open_price], color=ck.INK,
+                lw=2.8, zorder=2)
+        ax.plot([x, x + 0.18], [close, close], color=ck.INK, lw=2.8,
+                zorder=2)
+    ax.annotate("", xy=(2.8, 48.3), xytext=(0.25, 45.1),
+                arrowprops=dict(arrowstyle="-|>", color=ck.GREEN,
+                                lw=3.0, mutation_scale=22))
+    ax.text(0.02, 1.04, "Rising context and a two-bar formation",
+            transform=ax.transAxes, ha="left", va="bottom", fontsize=22,
+            color=ck.GREEN_DEEP, fontweight="bold")
+    labels = [
+        ("first low 50.20", ax.text(xs[3] - 0.45, 50.2, "first low 50.20",
+                                     ha="right", va="center", fontsize=22,
+                                     color=ck.GREEN_DEEP, fontweight="bold",
+                                     bbox=dict(facecolor=ck.WHITE,
+                                               edgecolor=ck.BORDER,
+                                               pad=2.0))),
+        ("second close 49.80", ax.text(4.75, 46.7,
+                                        "second close 49.80", ha="right",
+                                        va="center", fontsize=22,
+                                        color=ck.GREEN_DEEP, fontweight="bold",
+                                        bbox=dict(facecolor=ck.WHITE,
+                                                  edgecolor=ck.BORDER,
+                                                  pad=2.0))),
+    ]
+    if footnote:
+        fig.text(0.06, 0.018, footnote, fontsize=20, color=ck.MUTED,
+                 style="italic", ha="left", va="bottom")
+    protected = tuple(ax.transData.transform_bbox(Bbox.from_extents(
+        x - 0.20, low - 0.03, x + 0.20, high + 0.03))
+        for x, (_o, high, low, _c) in zip(xs, bars))
+    _assert_text_layout(
+        fig, labels, protected=protected,
+        marks=(("gold ring", _mark_box(fig, 0.70, 0.14, 0.94, 0.42)),
+               ("red badge", _mark_box(fig, 0.88, 0.30, 0.96, 0.40)),
+               ("blue badge", _mark_box(fig, 0.60, 0.70, 0.68, 0.80))))
     fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
     plt.close(fig)
     return path
@@ -1071,6 +1217,7 @@ def _sentiment_table_r1(path: Path, *, size, footnote="", display_font=None) -> 
         (split_x, bottom, right - split_x, split_y - bottom,
          "CONTINUATION", "downtrend -4.0%\nbearish formation -2.0%", ck.GREEN_DEEP),
     )
+    texts = []
     for x, y, w, h, result, example, tone in cells:
         ax.add_patch(Rectangle((x, y), w, h, facecolor=ck.WHITE,
                                edgecolor=ck.BORDER, linewidth=1.0))
@@ -1088,28 +1235,40 @@ def _sentiment_table_r1(path: Path, *, size, footnote="", display_font=None) -> 
                 (last_y, form_y, form_y),
                 color=ck.GREEN_DEEP if form_bullish else ck.GOLD,
                 linewidth=2.2, solid_capstyle="round")
-        ax.text(x + w / 2, y + 0.22 * h, result,
-                ha="center", va="center", fontsize=13.5, fontweight="bold",
-                color=tone, linespacing=0.95)
-        ax.text(x + w / 2, y + 0.43 * h, example,
-                ha="center", va="center", fontsize=11.5, color=ck.MUTED,
-                linespacing=1.05)
+        texts.append((result, ax.text(
+            x + w / 2, y + 0.10 * h, result,
+                ha="center", va="center", fontsize=23, fontweight="bold",
+            color=tone, linespacing=0.95)))
+        texts.append((example, ax.text(
+            x + w / 2, y + 0.55 * h, example,
+            ha="center", va="center", fontsize=21, color=ck.MUTED,
+            linespacing=1.05)))
 
-    ax.text((left + split_x) / 2, top + 0.08, "Bullish formation",
-            ha="center", va="center", fontsize=14, fontweight="bold",
-            color=ck.GREEN_DEEP)
-    ax.text((split_x + right) / 2, top + 0.08, "Bearish formation",
-            ha="center", va="center", fontsize=14, fontweight="bold",
-            color=ck.GREEN_DEEP)
-    ax.text(0.13, (split_y + top) / 2, "Uptrend\n(bullish trend)",
-            ha="center", va="center", fontsize=12.5, fontweight="bold",
-            color=ck.GREEN_DEEP, linespacing=1.0)
-    ax.text(0.13, (bottom + split_y) / 2, "Downtrend\n(bearish trend)",
-            ha="center", va="center", fontsize=12.5, fontweight="bold",
-            color=ck.GREEN_DEEP, linespacing=1.0)
+    texts.append(("Bullish formation", ax.text(
+        (left + split_x) / 2, top + 0.08, "Bullish formation",
+        ha="center", va="center", fontsize=23, fontweight="bold",
+        color=ck.GREEN_DEEP)))
+    texts.append(("Bearish formation", ax.text(
+        (split_x + right) / 2, top + 0.08, "Bearish formation",
+        ha="center", va="center", fontsize=23, fontweight="bold",
+        color=ck.GREEN_DEEP)))
+    texts.append(("Uptrend", ax.text(
+        0.13, (split_y + top) / 2, "Uptrend\n(bullish trend)",
+        ha="center", va="center", fontsize=21, fontweight="bold",
+        color=ck.GREEN_DEEP, linespacing=1.0)))
+    texts.append(("Downtrend", ax.text(
+        0.13, (bottom + split_y) / 2, "Downtrend\n(bearish trend)",
+        ha="center", va="center", fontsize=21, fontweight="bold",
+        color=ck.GREEN_DEEP, linespacing=1.0)))
     if footnote:
-        fig.text(0.012, 0.018, footnote, fontsize=8.5, color=ck.MUTED,
+        fig.text(0.06, 0.018, footnote, fontsize=20, color=ck.MUTED,
                  style="italic", ha="left", va="bottom")
+    _assert_text_layout(
+        fig, texts,
+        marks=(("gold ring", _mark_box(fig, 0.49, 0.68, 0.55, 0.75)),
+               ("red ring", _mark_box(fig, 0.91, 0.64, 0.97, 0.71)),
+               ("blue ring", _mark_box(fig, 0.49, 0.38, 0.55, 0.45)),
+               ("purple ring", _mark_box(fig, 0.91, 0.33, 0.97, 0.40))))
     fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
     plt.close(fig)
     return path
@@ -1118,30 +1277,9 @@ def _sentiment_table_r1(path: Path, *, size, footnote="", display_font=None) -> 
 CHARTS = CHARTS + (
     ck.ChartArt(
         letter="J",
-        draw=_readable_cells,
+        draw=_price_bar_r1,
         kwargs=dict(
-            items=(ck.Cell(
-                name="One price bar",
-                note="the four prices are labelled on the bar",
-                panes=(ck.Pane(
-                    bars=_bars(((50.00, 52.40, 49.60, 51.10),)),
-                    ticks=(49.60, 51.10, 52.40),
-                    notes=(
-                        ck.Note(x=0, y=50.00, label="O 50.00", dx=-30, dy=18),
-                        ck.Note(x=0, y=52.40, label="H 52.40", dx=32, dy=12,
-                                notice=True),
-                        ck.Note(x=0, y=49.60, label="L 49.60", dx=32, dy=-10),
-                        ck.Note(x=0, y=51.10, label="C 51.10", dx=20, dy=-8),
-                    ),
-                    height=2.0,
-                ),),
-            ),),
-            cols=1,
-            size=(14.0, 3.3),
-            title_pt=14.5,
-            note_pt=13.0,
-            label_pt=13.5,
-            footnote_pt=12.5,
+            size=(18.0, 3.5),
             footnote="Invented PHP values for teaching. Range = PHP 2.80.",
         ),
     ),
@@ -1165,32 +1303,15 @@ CHARTS = CHARTS + (
         letter="L",
         draw=_sentiment_table_r1,
         kwargs=dict(
-            size=(14.0, 3.3),
+            size=(18.0, 3.5),
             footnote="Invented percentage changes for teaching. Lim, p. 211.",
         ),
     ),
     ck.ChartArt(
         letter="M",
-        draw=ck.panels,
+        draw=_worked_read_r1,
         kwargs=dict(
-            panes=(ck.Pane(
-                name="Rising context and a two-bar formation",
-                bars=_bars(((45.0, 46.0, 44.2, 45.6),
-                            (45.6, 47.2, 45.0, 46.8),
-                            (46.8, 48.5, 46.2, 48.1),
-                            (49.7, 51.0, 50.2, 50.5),
-                            (50.6, 51.2, 49.4, 49.8))),
-                notes=(
-                    ck.Note(x=3, y=50.2, label="first low 50.20",
-                            dx=-82, dy=-8, notice=True),
-                    ck.Note(x=4, y=49.8, label="second close 49.80",
-                            dx=-82, dy=-30, notice=True),
-                ),
-                ticks=(44.0, 46.0, 48.0, 50.0, 52.0),
-                height=1.0,
-            ),),
-            size=(14.0, 3.3),
-            xticks=((2, "rising context"), (3, "first"), (4, "second")),
+            size=(18.0, 3.5),
             footnote=("Invented PHP bars for teaching. The last two bars form "
                       "the double formation."),
         ),
@@ -1199,7 +1320,7 @@ CHARTS = CHARTS + (
         letter="N",
         draw=_sentiment_table_r1,
         kwargs=dict(
-            size=(14.0, 3.3),
+            size=(18.0, 3.5),
             footnote="Invented percentage changes for teaching. Lim, p. 211.",
         ),
     ),

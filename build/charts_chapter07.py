@@ -31,6 +31,162 @@ def _bar_notes(*items):
                  for x, y, label, dx, dy, notice in items)
 
 
+def _readable_cells(path: Path, items, *, cols, size, footnote="",
+                    display_font=None, title_pt=14.5, note_pt=13.0,
+                    label_pt=13.5, footnote_pt=12.5, tag_offset=10,
+                    tag_dx=0) -> Path:
+    """Draw the Chapter 7 cells with projection-sized labels.
+
+    The shared cell form is intentionally compact for ordinary chart bands.
+    These five worked charts are projected on their own slides, so their
+    values, callouts and pane labels need the larger teaching size here.
+    """
+    plt.close("all")
+    fig = plt.figure(figsize=size, dpi=ck.DPI)
+    w_in, h_in = size
+    rows = -(-len(items) // cols)
+    foot_lines = footnote.count("\n") + 1 if footnote else 0
+    foot = 0.08 + 0.16 * foot_lines
+    pad = 0.08
+    cell_w = (w_in - pad) / cols
+    cell_h = (h_in - foot - pad) / rows
+    tones = {"structure": ck.GREEN, "notice": ck.GOLD, "quiet": ck.MUTED}
+
+    for i, cell in enumerate(items):
+        row, col = divmod(i, cols)
+        x = pad + col * cell_w
+        top = h_in - pad - row * cell_h
+        name_lines = cell.name.count("\n") + 1 if cell.name else 0
+        note_lines = cell.note.count("\n") + 1 if cell.note else 0
+        label_h = 0.17 * name_lines + 0.14 * note_lines + 0.06
+        frame = fig.add_axes([x / w_in, (top - cell_h + pad) / h_in,
+                              (cell_w - pad) / w_in,
+                              (cell_h - pad) / h_in])
+        frame.set_xticks([])
+        frame.set_yticks([])
+        for side in ("top", "right", "left", "bottom"):
+            frame.spines[side].set_color(ck.BORDER)
+            frame.spines[side].set_linewidth(0.9)
+        frame.set_facecolor(ck.WHITE)
+        frame.set_zorder(0)
+        if cell.name:
+            fig.text((x + (cell_w - pad) / 2) / w_in, (top - 0.05) / h_in,
+                     cell.name, ha="center", va="top", fontsize=title_pt,
+                     color=ck.GOLD if cell.tone == "notice" else ck.GREEN_DEEP,
+                     fontweight="bold", linespacing=1.05)
+        if cell.note:
+            fig.text((x + (cell_w - pad) / 2) / w_in,
+                     (top - 0.07 - 0.17 * name_lines) / h_in,
+                     cell.note, ha="center", va="top", fontsize=note_pt,
+                     color=ck.MUTED, style="italic", linespacing=1.05)
+
+        n = max(len(p.bars) or len(p.line) or len(p.columns) or 1
+                for p in cell.panes)
+        inner_top = top - label_h - 0.05
+        inner_h = inner_top - (top - cell_h + pad) - 0.06
+        total = sum(p.height for p in cell.panes)
+        gap = 0.05
+        avail = inner_h - gap * (len(cell.panes) - 1)
+        y = inner_top
+        for pane in cell.panes:
+            pane_h = avail * pane.height / total
+            y -= pane_h
+            ax = fig.add_axes([(x + 0.10) / w_in, y / h_in,
+                               (cell_w - pad - 0.20) / w_in,
+                               pane_h / h_in])
+            ax.set_axis_off()
+            xs = [pt[0] for stroke in pane.strokes for pt in stroke.points]
+            x_hi = max([n - 0.5] + xs) + 0.5
+            x_lo = min([-0.5] + xs) - 0.5
+            reach = [v for bar in pane.bars for v in (bar.low, bar.high)]
+            reach += list(pane.line)
+            reach += [v for v in pane.columns]
+            reach += [pt[1] for stroke in pane.strokes for pt in stroke.points]
+            lo, hi = min(reach), max(reach)
+            span = (hi - lo) or 1.0
+            if pane.columns and not (pane.bars or pane.line) and lo >= 0:
+                ax.set_ylim(0, hi + span * pane.top)
+            else:
+                ax.set_ylim(lo - span * pane.bottom,
+                            hi + span * pane.top)
+            ax.set_xlim(x_lo, x_hi)
+
+            for stroke in pane.strokes:
+                color = tones[stroke.tone]
+                ax.plot([p[0] for p in stroke.points],
+                        [p[1] for p in stroke.points], color=color,
+                        lw=stroke.width, ls=(0, (5, 4)) if stroke.dashed else "-",
+                        zorder=4, solid_capstyle="round")
+                if stroke.label:
+                    point = stroke.points[stroke.at]
+                    ax.annotate(stroke.label, xy=point,
+                                xytext=(stroke.dx, stroke.dy),
+                                textcoords="offset points",
+                                ha="right" if stroke.dx < 0 else
+                                ("left" if stroke.dx > 0 else "center"),
+                                va="center", fontsize=label_pt,
+                                color=ck.GREEN_DEEP if stroke.tone == "structure"
+                                else (ck.GOLD if stroke.tone == "notice" else ck.MUTED),
+                                fontweight="bold", zorder=7,
+                                bbox=dict(boxstyle="square,pad=0.12",
+                                          facecolor=ck.WHITE, edgecolor="none"))
+
+            if pane.columns:
+                colors = [ck.GOLD if j in pane.picks else
+                          (ck.BORDER if j in pane.dims else ck.GREEN)
+                          for j in range(len(pane.columns))]
+                ax.bar(range(len(pane.columns)), pane.columns, width=0.62,
+                       color=colors, zorder=3, linewidth=0)
+            if pane.bars:
+                for j, bar in enumerate(pane.bars):
+                    ax.plot([j, j], [bar.low, bar.high], color=ck.INK,
+                            lw=2.4, zorder=3, solid_capstyle="butt")
+                    ax.plot([j - 0.30, j], [bar.open, bar.open], color=ck.INK,
+                            lw=2.4, zorder=3, solid_capstyle="butt")
+                    ax.plot([j, j + 0.30], [bar.close, bar.close], color=ck.INK,
+                            lw=2.4, zorder=3, solid_capstyle="butt")
+
+            def value_at(index):
+                if pane.bars:
+                    return pane.bars[int(index)].close
+                if pane.line:
+                    return pane.line[int(index)]
+                return pane.columns[int(index)]
+
+            for index, label in pane.tags:
+                value = value_at(index)
+                ax.annotate(label, xy=(index, value),
+                            xytext=(tag_dx, tag_offset),
+                            textcoords="offset points", ha="center",
+                            va="bottom", fontsize=label_pt,
+                            color=ck.GREEN_DEEP, fontweight="bold", zorder=7)
+            for note in pane.notes:
+                value = value_at(note.x) if note.y is None else note.y
+                if note.dot:
+                    ax.scatter([note.x], [value], s=34,
+                               color=ck.GOLD if note.notice else ck.GREEN,
+                               edgecolors=ck.INK, linewidths=0.5, zorder=6)
+                if note.label:
+                    ax.annotate(note.label, xy=(note.x, value),
+                                xytext=(note.dx, note.dy),
+                                textcoords="offset points",
+                                ha="right" if note.dx < 0 else "left",
+                                va="center", fontsize=label_pt,
+                                color=ck.GREEN_DEEP if note.notice else ck.INK,
+                                fontweight="bold", zorder=7,
+                                bbox=dict(boxstyle="square,pad=0.12",
+                                          facecolor=ck.WHITE,
+                                          edgecolor=ck.BORDER))
+            y -= gap
+
+    if footnote:
+        fig.text(0.008, 0.012, footnote, fontsize=footnote_pt, color=ck.MUTED,
+                 style="italic", ha="left", va="bottom", linespacing=1.1)
+    fig.savefig(path, dpi=ck.DPI, facecolor=ck.WHITE)
+    plt.close(fig)
+    return path
+
+
 def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Path:
     """Draw the four sentiment cases as a readable trend/form table."""
     plt.close("all")
@@ -98,7 +254,7 @@ def _sentiment_table(path: Path, *, size, footnote="", display_font=None) -> Pat
 CHARTS = (
     ck.ChartArt(
         letter="A",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(
                 ck.Cell(
@@ -118,8 +274,8 @@ CHARTS = (
                                     (1, 65.4, "O 65.40", -14, 16, True),
                                     (1, 66.2, "H 66.20", 18, 8, False),
                                     (1, 60.0, "L 60.00", -18, -10, False),
-                                    (1, 60.5, "C 60.50", 20, -2, False),
-                                    (2, 60.2, "next O 60.20", 18, 10, True))),
+                                    (1, 60.5, "C 60.50", 20, 8, False),
+                                    (2, 60.2, "next O 60.20", 18, 22, True))),
                         ck.Pane(columns=(1.8, 4.8, 2.1), height=0.55,
                                 tags=((0, "1.8m"), (1, "4.8m"), (2, "2.1m"))),
                     ),
@@ -138,7 +294,7 @@ CHARTS = (
                                     label="support 40.00", at=0,
                                     dx=-20, dy=-10),),
                                 notes=_bar_notes(
-                                    (1, 38.8, "low 38.80", -22, -10, True),
+                                    (1, 38.8, "low 38.80", -22, -20, True),
                                     (1, 40.6, "close 40.60", 18, 5, False),
                                     (1, 41.5, "pin bar", 18, 12, True))),
                         ck.Pane(columns=(1.6, 0.8, 1.5), height=0.55,
@@ -148,13 +304,17 @@ CHARTS = (
             ),
             cols=2,
             size=ck.pair_size(2.8),
+            title_pt=13.5,
+            note_pt=11.5,
+            label_pt=11.5,
+            footnote_pt=11.5,
             footnote=("Ours, invented PHP bars and million-share volume. "
                       "The comparison follows Lim pp. 226 to 227."),
         ),
     ),
     ck.ChartArt(
         letter="B",
-        draw=ck.cells,
+        draw=_readable_cells,
         kwargs=dict(
             items=(
                 ck.Cell(
@@ -482,6 +642,107 @@ CHARTS = (
             size=ck.pair_size(5.55),
             xticks=((2, "rising context"), (3, "first"), (4, "second")),
             footnote="Ours, invented PHP bars. The final two bars are the double formation.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="RA",
+        draw=_readable_cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Two-day bearish reversal",
+                    note="first close near high; second near low",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((50.0, 52.2, 49.7, 51.8),
+                                       (51.7, 52.0, 49.0, 49.6))),
+                            height=1.7,
+                            notes=_bar_notes(
+                                (0, 51.8, "C 51.80", -20, 8, True),
+                                (1, 49.6, "C 49.60", 55, -8, True),
+                                (0, 52.2, "H 52.20", -18, 10, False),
+                                (1, 49.0, "L 49.00", 18, -10, False)),
+                        ),
+                        ck.Pane(columns=(2.4, 3.1), height=0.55,
+                                tags=((0, "2.4m"), (1, "3.1m"))),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            tag_dx=-35,
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="RB",
+        draw=_readable_cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Bullish three-bar reversal",
+                    note="strong outer bars; quiet middle bar",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((42.0, 44.0, 41.0, 43.8),
+                                       (43.7, 44.1, 43.2, 43.5),
+                                       (43.4, 46.8, 43.0, 46.5))),
+                            height=1.7,
+                            notes=_bar_notes(
+                                (0, 41.0, "L 41.00", -20, -10, False),
+                                (0, 44.0, "H 44.00", -20, 8, False),
+                                (1, 43.2, "L 43.20", -20, -10, False),
+                                (1, 44.1, "H 44.10", 18, 8, False),
+                                (1, 43.5, "middle C 43.50", 18, 7, True),
+                                (2, 46.5, "C 46.50", 18, -8, True)),
+                        ),
+                        ck.Pane(columns=(4.0, 0.6, 4.2), height=0.55,
+                                tags=((0, "4.0m"), (1, "0.6m"),
+                                      (2, "4.2m"))),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            tag_offset=32,
+            footnote="Ours, invented PHP bars and million-share volume.",
+        ),
+    ),
+    ck.ChartArt(
+        letter="RC",
+        draw=_readable_cells,
+        kwargs=dict(
+            items=(
+                ck.Cell(
+                    name="Bearish island reversal",
+                    note="gap up, isolated bars, gap down",
+                    panes=(
+                        ck.Pane(
+                            bars=_bars(((48.0, 50.0, 47.5, 49.5),
+                                       (50.8, 52.0, 50.6, 51.5),
+                                       (51.4, 52.2, 50.9, 51.1),
+                                       (49.4, 50.0, 48.2, 48.8))),
+                            height=1.7,
+                            strokes=(
+                                ck.Stroke(points=((0, 50.0), (3, 50.0)),
+                                          tone="quiet", dashed=True,
+                                          label="prior high 50.00", at=0,
+                                          dx=-24, dy=-10),
+                            ),
+                            notes=_bar_notes(
+                                (1, 50.8, "gap-up O 50.80", -85, 15, True),
+                                (2, 51.5, "island", 18, -8, True),
+                                (3, 49.4, "gap-down O 49.40", 18, 15, True)),
+                        ),
+                        ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), height=0.55,
+                                tags=((0, "2.3m"), (1, "0.7m"),
+                                      (2, "0.6m"), (3, "2.1m"))),
+                    ),
+                ),
+            ),
+            cols=1,
+            size=ck.pair_size(2.8),
+            footnote="Ours, invented PHP bars and million-share volume.",
         ),
     ),
 )

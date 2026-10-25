@@ -283,14 +283,15 @@ def layout(key, page=0):
                     else:
                         y=pane.line[index]
                         targets[cell_index,index,'line']=(x*ck.DPI,y_inches(y)*ck.DPI)
+                        text(x,y_inches(y)+.19,f'{y:g}',va='bottom')
                 for target,group in spec.get('groups',{}).items():
                     ci,first,last=group
                     if pane.bars and ci==cell_index and start<=first<=last<end:
                         members=pane.bars[first:last+1]
                         bottom=min(b.low for b in members)
                         top=max(b.high for b in members)
-                        bounds=((x_inches(first)-.29)*ck.DPI,(y_inches(bottom)-.14)*ck.DPI,
-                                (x_inches(last)+.29)*ck.DPI,(y_inches(top)+.14)*ck.DPI)
+                        bounds=((x_inches(first)-1.45)*ck.DPI,(y_inches(bottom)-.45)*ck.DPI,
+                                (x_inches(last)+1.45)*ck.DPI,(y_inches(top)+.45)*ck.DPI)
                         groups[target]=bounds
                         targets[target]=(bounds[2],(bounds[1]+bounds[3])/2)
                 if pane.line:

@@ -298,7 +298,7 @@ class WidePair(dk.Pair):
     """
 
 
-WIDE_TOP, WIDE_BOTTOM = 1.42, 6.42
+WIDE_TOP, WIDE_BOTTOM, CREDIT_Y = 1.36, 6.68, 6.24
 
 
 def _wide_pair(prs, s, marker):
@@ -327,7 +327,7 @@ def _wide_pair(prs, s, marker):
         dk._para(frame, s.left.accent, size=18, color=dk.INK, bold=True, first=True,
                  line_spacing=1.0, refs=refs)
         top += accent_h
-    assert top <= dk.SAFE_BOTTOM, (s.left.title, 'text does not fit at 17 point')
+    assert top <= CREDIT_Y - 0.06, (s.left.title, 'text does not fit at 17 point')
     picture = s.picture
     root = dk.FIGURES_DIR if isinstance(picture, dk.Figure) else dk.CHARTS_DIR
     path = None if root is None else Path(root) / picture.filename
@@ -344,8 +344,8 @@ def _wide_pair(prs, s, marker):
     else:
         dk._placeholder_plate(slide, picture, pic_x, pic_y, pic_w, pic_h)
     dk._draw_marks(slide, picture.marks, pic_x, pic_y, pic_w, pic_h)
-    frame = dk._textbox(slide, Inches(pic_x), Inches(pic_y + pic_h + .08),
-                        Inches(dk.MARGIN.inches + dk.CONTENT_W.inches - pic_x), Inches(.25))
+    # The credit closes the text column, so the picture can take the full height.
+    frame = dk._textbox(slide, dk.MARGIN, Inches(CREDIT_Y), Inches(s.text_w), Inches(.42))
     dk._para(frame, picture.credit, size=11, color=dk.MUTED, first=True)
     dk._progress(slide, marker)
     dk._notes(slide, s.notes)
@@ -464,7 +464,8 @@ def _marks(fig, targets, specs, boxes, segments, groups):
     circles = []
     result = []
     leaders = []
-    future = [(targets[tuple(s['target'])], 0 if tuple(s['target']) in groups else ring_radius) for s in specs if tuple(s['target']) in targets]
+    group_gap = getattr(fig, 'group_gap', 0) * ck.DPI   # keeps a box's badge off its border
+    future = [(targets[tuple(s['target'])], group_gap if tuple(s['target']) in groups else ring_radius) for s in specs if tuple(s['target']) in targets]
     # Reserve a middle-of-bar badge before its high/low neighbours. Greedy
     # extreme-first placement can otherwise close both escape lanes.
     ordered=sorted(specs,key=lambda spec: 0 if spec['target'][2] in ('range','group') else 1)
@@ -473,7 +474,7 @@ def _marks(fig, targets, specs, boxes, segments, groups):
         if target not in targets:
             continue
         cx, cy = targets[target]
-        radius=0 if target in groups else ring_radius
+        radius=group_gap if target in groups else ring_radius
         assert not any(_circle_box(cx, cy, radius, b) for b in boxes), (spec, 'ring crosses text')
         found = None
         # Try direct contact first. Firstmate's 012 instruction permits the
@@ -686,7 +687,12 @@ def layout(key, page=0):
                     points = [(x_inches(x),y) for x,y in stroke.points]
                     if len({y for _,y in points}) == 1:
                         value=points[0][1]
-                        line(axis,(.12,WIDTH-.2),(value,value),color=ck.MUTED,lw=.8,ls=(0,(4,4)),zorder=0)
+                        if spec.get('span_levels'):
+                            # A comparison level drawn only from its own bar to the bar read against it.
+                            level=line(axis,(points[0][0],points[-1][0]+.02),(value,value),color=ck.INK,lw=1.6,ls=(0,(4,3)),zorder=0)
+                            ink.append(level.get_window_extent().padded(3))
+                        else:
+                            line(axis,(.12,WIDTH-.2),(value,value),color=ck.MUTED,lw=.8,ls=(0,(4,4)),zorder=0)
                         for index,x in zip(range(start,end),xs):
                             targets[cell_index,index,'level:'+str(value)] = (x*ck.DPI,y_inches(value)*ck.DPI)
                         if stroke.label:
@@ -768,6 +774,7 @@ def layout(key, page=0):
             x0,y0,x1,y1=bounds
             edges=(((x0,y0),(x1,y0)),((x1,y0),(x1,y1)),((x1,y1),(x0,y1)),((x0,y1),(x0,y0)))
             assert not any(_segment_box(a,b,box) for a,b in edges for box in boxes), 'group box crosses text'
+        fig.group_gap=spec.get('group_gap',0)
         marks=_marks(fig,targets,_target_specs(key,spec),boxes,segments+ink,groups)
     except AssertionError as error:
         plt.close(fig)

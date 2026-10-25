@@ -11,18 +11,17 @@ from chartlayout_chapter07 import CourseCheck, WidePair, course_chart, expand_ch
 # position only: they carry no prices, so every PHP value is ours and sits on
 # one of our own charts. Marks were read off a 0.05 grid of each placed crop.
 FIGURE_7_1 = Figure(
-    origin='Lim (2016), p. 210, Figure 7.1. The crop and marks are ours, added for teaching.',
+    origin='Lim (2016), p. 210, Figure 7.1. The marks are ours, added for teaching.',
     title='Figure 7.1: five minutes of price become one bar',
     number='7.1',
     shows='Figure 7.1: five minutes of price action on the left are summarized by one bar on the right, which keeps only its open, high, low and close.',
     marks=(
-        Mark(number=1, kind='arrow', x0=0.53, y0=0.246, x1=0.583, y1=0.348, color='gold', size=0.3),
-        Mark(number=2, kind='arrow', x0=0.7, y0=0.157, x1=0.628, y1=0.098, color='red', size=0.3),
-        Mark(number=3, kind='arrow', x0=0.7, y0=0.727, x1=0.628, y1=0.795, color='blue', size=0.3),
-        Mark(number=4, kind='arrow', x0=0.72, y0=0.569, x1=0.66, y1=0.471, color='purple', size=0.3),
+        Mark(number=1, kind='arrow', x0=0.6, y0=0.32, x1=0.635, y1=0.408, color='gold', size=0.3),
+        Mark(number=2, kind='arrow', x0=0.74, y0=0.29, x1=0.672, y1=0.24, color='red', size=0.3),
+        Mark(number=3, kind='arrow', x0=0.74, y0=0.66, x1=0.672, y1=0.705, color='blue', size=0.3),
+        Mark(number=4, kind='arrow', x0=0.76, y0=0.58, x1=0.7, y1=0.495, color='purple', size=0.3),
     ),
     aspect=1.386138613861386,
-    crop=(0.12, 0.18, 0.0, 0.158),
 )
 
 FIGURE_7_2 = Figure(
@@ -45,7 +44,7 @@ FIGURE_7_3_TRACE = Figure(
     number='7.3',
     shows='Figure 7.3, cropped to the price trace of its first two five-minute intervals. Each interval has its own open, high, low and close.',
     marks=(
-        Mark(number=1, kind='arrow', x0=0.189, y0=0.5, x1=0.189, y1=0.372, color='gold', size=0.3),
+        Mark(number=1, kind='arrow', x0=0.189, y0=0.5, x1=0.189, y1=0.36, color='gold', size=0.3),
         Mark(number=2, kind='arrow', x0=0.435, y0=0.125, x1=0.333, y1=0.198, color='red', size=0.3),
         Mark(number=3, kind='arrow', x0=0.367, y0=0.73, x1=0.456, y1=0.655, color='blue', size=0.3),
         Mark(number=4, kind='arrow', x0=0.587, y0=0.2, x1=0.552, y1=0.348, color='purple', size=0.3),
@@ -78,14 +77,14 @@ PART_1 = Section(
     slides=(
         WidePair(
             notes=("Start with why: every pattern in this chapter is read from price bars, so first we need to know what one bar keeps.", "Point to the four marks on Lim's bar: gold 1 the open, red 2 the high, blue 3 the low, purple 4 the close.", "The book's drawing has no price scale. Say only what it shows by position; the prices come on the next slide, on our own chart."),
-            origin='Lim (2016), pp. 209 to 210, Figure 7.1. The crop and marks are ours, added for teaching.',
+            origin='Lim (2016), pp. 209 to 210, Figure 7.1. The marks are ours, added for teaching.',
             left=Content(
                 title='A price bar keeps four prices from one interval',
-                lines=("Everything in this chapter is read from price bars, so we start with what one bar records. Lim's bar keeps four prices from one interval: the open (O), high (H), low (L) and close (C), or OHLC (p. 209).", 'In Figure 7.1, five minutes of price become one bar: its open [1], high [2], low [3] and close [4].'),
-                accent='The drawing has no prices. Read it by position: its close ends a little below its open.',
+                lines=("Every pattern here is read from price bars. Lim's bar keeps four prices from one interval: open (O), high (H), low (L) and close (C), or OHLC (p. 209).", "In Figure 7.1, five minutes of price become one bar: open [1], high [2], low [3], close [4]. Lim's caption calls it four pieces of information."),
+                accent='The drawing has no prices; its close ends below its open.',
             ),
             picture=FIGURE_7_1,
-            text_w=4.3,
+            text_w=3.8,
         ),
         Content(
             notes=('Now put numbers on the four prices.', 'Range is new in this chapter.'),
@@ -104,7 +103,7 @@ PART_1 = Section(
         Content(
             notes=('Why only four prices?', 'Five trades become one bar.'),
             title='Five minutes of trades become one price bar',
-            lines=("Why only four prices? As Chapter 3 put it, the open and close are the prices at the start and end of the interval, and the high and low are its extremes; every other trade drops out. Here are five trades of ours inside one five-minute interval.", 'The first trade, PHP 50.00 [1], becomes the open. The highest, PHP 52.40 [2], is the high, and the lowest, PHP 49.60 [3], is the low. The last, PHP 51.10 [4], becomes the close.', 'The trade at PHP 50.80 leaves no mark on the bar. These are the same four prices as the bar we just read.'),
+            lines=("Why only four prices? As Chapter 3 put it, the open and close are the prices at the start and end of the interval, and the high and low are its extremes; every other trade drops out. Here are five trades of ours inside one five-minute interval.", 'The first trade, PHP 50.00 [1], becomes the open. The highest, PHP 52.40 [2], is the high, and the lowest, PHP 49.60 [3], is the low. The last, PHP 51.10 [4], becomes the close.', 'The trade at PHP 50.80 leaves no mark on the bar. So this interval\'s bar is open 50.00, high 52.40, low 49.60 and close 51.10.'),
         ),
         course_chart('r1-p',
             notes=('Walk the five trades left to right: 50.00, 50.80, 49.60, 52.40, 51.10.', 'Gold 1 is the first trade and becomes the open; red 2 is the highest and blue 3 the lowest; purple 4 is the last and becomes the close.', 'Ask the class what happened to the trade at 50.80. It is real trading, but the bar does not keep it.'),
@@ -137,8 +136,8 @@ PART_1 = Section(
             layout='top',
         ),
         WidePair(
-            notes=('Move from one interval to a longer stretch: a 15-minute bar built from three five-minute intervals.', "Point to the marks on Lim's 15-minute bar: gold 1 the first open, red 2 the highest high, blue 3 the lowest low, purple 4 the last close.", 'Again the drawing has no prices; our own numbers come on the next slide.'),
-            origin='Lim (2016), pp. 209 to 210, Figure 7.2. The crop and marks are ours, added for teaching.',
+            notes=('Move from one interval to a longer stretch: a 15-minute bar built from three five-minute intervals.', 'Point to the marks on the five-minute trace: gold 1 where the first interval opens, red 2 the highest high, blue 3 the lowest low, purple 4 where the last interval closes. Then follow each dashed line across to the 15-minute bar.', 'Again the drawing has no prices; our own numbers come on the next slide.'),
+            origin='Lim (2016), pp. 209 to 210, Figure 7.2. The marks are ours, added for teaching.',
             left=Content(
                 title='Three five-minute bars can make one 15-minute bar',
                 lines=('One bar for a longer stretch is a higher timeframe bar (Lim, p. 210).', 'It keeps the first interval\'s open [1], the highest high [2], the lowest low [3] and the last interval\'s close [4] (p. 209). Dashed lines carry each to the 15-minute bar.'),
@@ -162,7 +161,7 @@ PART_1 = Section(
             marks=(),
         ),
         CourseCheck(
-            notes=("Point to the same four marks on Lim's 15-minute bar on the question and answer slides.", 'Both answers come from the rule on the Figure 7.2 slide.'),
+            notes=('Both answers come from the rule on the Figure 7.2 slide: first open, highest high, lowest low, last close.', 'Ask which prices drop out before revealing the answers.'),
             origin='Questions are ours and answerable from the preceding higher timeframe slides.',
             label='Reading a higher timeframe bar',
             questions=(
@@ -283,7 +282,7 @@ PART_1 = Section(
             notes=("The third classification is the directional expectation: continuation or reversal. It is not trend sentiment.", 'Trend sentiment and intrinsic sentiment are the two inputs; the expectation is the result.', 'Keep the word potential on a reversal: the book calls these patterns, not promises.'),
             origin='Lim (2016), p. 211.',
             title='The third way: will the trend continue or reverse?',
-            lines=("Lim's third way of sorting is the directional expectation: does the formation suggest the trend will carry on, a continuation, or turn, a reversal (p. 211)?", 'To decide, compare its intrinsic sentiment with the trend sentiment, which is bullish in an uptrend and bearish in a downtrend (p. 211).', 'If the two agree, Lim considers it a continuation; if they disagree, a reversal, which warns of a potential trend change (p. 211).'),
+            lines=("Lim's third way of sorting is the directional expectation: does the formation suggest the trend will carry on, a continuation, or turn, a reversal (p. 211)?", 'To decide, compare its intrinsic sentiment with the trend sentiment, which is bullish in an uptrend and bearish in a downtrend (p. 211).', 'If the two agree, Lim considers it a continuation; if they disagree, a reversal (p. 211), an early sign of the potential trend change the chapter promised (p. 209).'),
             accent='Compare the two sentiments to get the expectation.',
         ),
         Content(
@@ -324,14 +323,14 @@ PART_1 = Section(
         Content(
             notes=('All three questions together.', 'One worked reading.'),
             title='Using all three questions on one example',
-            lines=('Now we use all three questions together on an example of ours. First the trend: the closes rose from PHP 45.60 to PHP 48.10 [1], so trend sentiment is bullish.', "Next the count: the last two bars make a double formation [2]. Then the lean: bar 4 closes at PHP 47.50 [3], below bar 3's low of PHP 47.90, so by Lim's rule the formation leans bearish (p. 212).", 'Bullish trend sentiment against bearish intrinsic sentiment: they disagree, so this is a potential reversal (p. 211). Part 2 reads the book\'s own reversal patterns the same way.'),
+            lines=('Now we use all three questions together on an example of ours. First the trend: the closes rose from PHP 45.60 [1] to PHP 48.10 [2], so trend sentiment is bullish.', "Next the count: the last two bars make a double formation [3]. Then the lean: bar 4 closes at PHP 47.50 [4], below bar 3's low of PHP 47.90 on the dashed line, so by Lim's rule the formation leans bearish (p. 212).", 'Bullish trend sentiment against bearish intrinsic sentiment: they disagree, so this is a potential reversal (p. 211). Part 2 reads the book\'s own reversal patterns the same way.'),
         ),
         course_chart('r1-m',
-            notes=('Take the three questions in order: gold 1 the rising closes give bullish trend sentiment; red 2 the last two bars are a double formation.', "Blue 3: bar 4 closes at 47.50, below bar 3's low of 47.90, so the formation leans bearish.", 'Bullish against bearish disagree, so the reading is a potential reversal. Every bar is possible: each low is its lowest price.'),
+            notes=('Take the three questions in order: the closes rise from gold 1 at 45.60 to red 2 at 48.10, so trend sentiment is bullish; blue 3 boxes the double formation.', "Purple 4: bar 4 closes at 47.50, below the dashed line at bar 3's low of 47.90, so the formation leans bearish.", 'Bullish against bearish disagree, so the reading is a potential reversal. Every bar is possible: each low is its lowest price.'),
             origin='FIN1209 teaching chart S. The PHP values are invented for teaching.',
             title='Using all three questions on one example',
             letter='S',
-            shows='Four invented bars: closes rise from PHP 45.60 to PHP 48.10, then a two-bar formation in which bar 4 closes at PHP 47.50, below bar 3\'s low of PHP 47.90.',
+            shows='Four invented bars: closes rise from PHP 45.60 to PHP 48.10, then a two-bar formation in which bar 4 closes at PHP 47.50, below the dashed line at bar 3\'s low of PHP 47.90.',
             tier='core',
             marks=(),
         ),

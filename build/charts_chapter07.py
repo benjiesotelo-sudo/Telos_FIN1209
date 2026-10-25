@@ -10,13 +10,15 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'owner': 'r1',
 'caption': 'Prices are invented for teaching.',
 'letter': 'J'},
-'r1-m': {'items': (ck.Cell(name='A rise, then a two-bar formation', panes=(ck.Pane(bars=(ck.Bar(open=45.0, high=46.0, low=44.2, close=45.6), ck.Bar(open=45.6, high=48.5, low=45.4, close=48.1), ck.Bar(open=48.1, high=49.2, low=47.9, close=49.0), ck.Bar(open=49.1, high=49.4, low=47.3, close=47.5)), notes=(ck.Note(x=0, label='the rise'), ck.Note(x=1, label='the rise'), ck.Note(x=2, label='first of the pair'), ck.Note(x=3, label='second of the pair'))),)),),
+'r1-m': {'items': (ck.Cell(name='A rise, then a two-bar formation', panes=(ck.Pane(bars=(ck.Bar(open=45.0, high=46.0, low=44.2, close=45.6), ck.Bar(open=45.6, high=48.5, low=45.4, close=48.1), ck.Bar(open=48.1, high=49.2, low=47.9, close=49.0), ck.Bar(open=49.1, high=49.4, low=47.3, close=47.5)), strokes=(ck.Stroke(points=((2, 47.9), (3, 47.9)), dashed=True),), notes=(ck.Note(x=0, label='the rise'), ck.Note(x=1, label='the rise'), ck.Note(x=2, label='first of the pair'), ck.Note(x=3, label='second of the pair'))),)),),
 'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=3, kind='circle', x0=0, y0=0, x1=0, y1=0)),
+'old_marks': (dk.Mark(number=1, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=3, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=4, kind='circle', x0=0, y0=0, x1=0, y1=0)),
 'old_size': (18.0, 3.5),
 'owner': 'r1',
 'caption': 'Prices are invented for teaching.',
 'right_margin': 1.95,
+'span_levels': True,
+'group_gap': 0.1,
 'letter': 'S'},
 'r1-p': {'items': (ck.Cell(name='Five trades of ours inside one five-minute interval', panes=(ck.Pane(line=(50.0, 50.8, 49.6, 52.4, 51.1)),)),),
 'special': '',
@@ -41,6 +43,7 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'count_groups': ((1, 'Single: 1 bar'), (2, 'Double: 2 bars'), (3, 'Triple: 3 bars'), (5, 'Multiple: 5 bars')),
 'count_centres': (1.2, 3.3, 5.9, 9.2),
 'caption': 'The bars are drawn only to be counted; they carry no prices.',
+'group_gap': 0.1,
 'old_marks': (dk.Mark(number=1, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=3, kind='box', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=4, kind='box', x0=0, y0=0, x1=0, y1=0)),
 'old_size': (18.0, 3.5),
 'owner': 'r1',
@@ -335,7 +338,7 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'letter': 'W'}}
 
 DATA['r1-j']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 0, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 0, 'low')}, {'number': 4, 'color': 'purple', 'target': (0, 0, 'close')}]
-DATA['r1-m']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'group')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'close')}]
+DATA['r1-m']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'close')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'group')}, {'number': 4, 'color': 'purple', 'target': (0, 3, 'close')}]
 DATA['r1-g']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'group')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'group')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'group')}, {'number': 4, 'color': 'purple', 'target': (0, 3, 'group')}]
 DATA['r1-p']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'line')}, {'number': 2, 'color': 'red', 'target': (0, 3, 'line')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'line')}, {'number': 4, 'color': 'purple', 'target': (0, 4, 'line')}]
 DATA['r1-r']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'low')}, {'number': 4, 'color': 'purple', 'target': (0, 2, 'close')}]

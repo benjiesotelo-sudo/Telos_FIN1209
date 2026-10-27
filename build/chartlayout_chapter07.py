@@ -836,6 +836,32 @@ def layout(key, page=0):
             bounds=((xs[0]-.35)*ck.DPI,1.25*ck.DPI,(xs[-1]+.35)*ck.DPI,2.75*ck.DPI)
             groups[0,gi,'group']=bounds
             targets[0,gi,'group']=(bounds[2],(bounds[1]+bounds[3])/2)
+    elif spec['special'] == 'nr_table':
+        # ID/NR4 to NR7 as a table: each window counted back from the last
+        # bar, its narrowest range, and whether the last bar is that bar.
+        ranges=spec['nr_ranges']
+        last=len(ranges)
+        text(.6,3.2,'Bar',ha='left',color=ck.GREEN_DEEP)
+        text(.6,2.82,'Range',ha='left',color=ck.GREEN_DEEP)
+        for i,value in enumerate(ranges):
+            x=2.6+i*1.2
+            text(x,3.2,str(i+1),color=ck.MUTED)
+            text(x,2.82,f'{value:.1f}')
+        heads=((.6,'Window','left'),(3.3,'Bars counted','center'),
+               (5.9,'Narrowest range','center'),(8.7,f'Is bar {last} the narrowest?','center'))
+        for x,value,ha in heads:
+            text(x,2.25,value,ha=ha,color=ck.GREEN_DEEP)
+        for row,count in enumerate(range(4,last+1)):
+            y=1.85-row*.36
+            window=ranges[last-count:]
+            low=min(window)
+            where=last-count+window.index(low)+1
+            answer='Yes' if where==last and window.count(low)==1 else 'No'
+            text(.6,y,f'NR{count}',ha='left')
+            text(3.3,y,f'bars {last-count+1} to {last}')
+            text(5.9,y,f'{low:.1f}, bar {where}')
+            text(8.7,y,answer,color=ck.GREEN_DEEP if answer=='Yes' else ck.GOLD)
+            targets[0,count,'answer']=(9.25*ck.DPI,y*ck.DPI)
     elif spec['special'] == 'characteristics':
         for y, number, title, meaning in ((2.8,'7','BRR','real body ÷ total range'),
                 (1.35,'8','Angular symmetry and momentum','the angle and momentum change')):

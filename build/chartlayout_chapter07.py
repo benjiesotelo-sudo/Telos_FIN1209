@@ -557,6 +557,25 @@ def _course_figure_check(prs, s, marker, index, total):
     dk._notes(slide, s.notes)
 
 
+def _arial_lines(text, width_in, pt, weight='regular'):
+    """Lines the text wraps to in Arial, or deckkit's estimate without the font."""
+    from pathlib import Path
+    from PIL import ImageFont
+    path = Path('/System/Library/Fonts/Supplemental') / ('Arial Bold.ttf' if weight == 'bold' else 'Arial.ttf')
+    if not path.is_file():
+        return dk._line_count(text, width_in, pt, weight)
+    font = ImageFont.truetype(str(path), int(pt * 10))
+    limit = width_in * 72 * 10 * .98   # PowerPoint's text inset leaves a little less
+    lines, line = 1, ''
+    for word in text.split():
+        trial = f'{line} {word}'.strip()
+        if line and font.getlength(trial) > limit:
+            lines, line = lines + 1, word
+        else:
+            line = trial
+    return lines
+
+
 def _course_figure_reveal(prs, s, marker, index, total):
     from pptx.util import Inches
     slide = dk._blank(prs)
@@ -568,24 +587,26 @@ def _course_figure_reveal(prs, s, marker, index, total):
     dk._para(frame, s.label, size=17, color=dk.GREEN, bold=True, first=True)
     refs = {m.number: m.rgb for m in s.picture.marks}
     inner = s.text_w - 0.6
+    def height(text, pt, weight='regular'):
+        # PowerPoint draws a 1.15 spaced line about 1.2 em apart, and wraps
+        # by the font's real widths, so both are measured here (fm 008).
+        return _arial_lines(text, inner, pt, weight) * pt * 1.15 * 1.2 / 72
     y = 1.32
     for i, q in enumerate(s.questions):
         stem = f"Q{i + 1}   {q.stem}"
         answer = f"{q.answer}.  {q.options['ABCD'.index(q.answer)]}"
-        stem_h = dk._text_height(stem, inner, 17)
-        ans_h = dk._text_height(answer, inner, 18, "bold")
-        reason_h = dk._text_height(q.reason, inner, 17)
-        card_h = 0.42 + stem_h + ans_h + reason_h + 0.16
+        stem_h, ans_h, reason_h = height(stem, 17), height(answer, 18, 'bold'), height(q.reason, 17)
+        card_h = 0.12 + stem_h + 0.08 + ans_h + 0.08 + reason_h + 0.2
         dk._rect(slide, dk.MARGIN, Inches(y), Inches(s.text_w), Inches(card_h), dk.WHITE, line=dk.BORDER)
         dk._rect(slide, dk.MARGIN, Inches(y), Inches(0.1), Inches(card_h), dk.GOLD)
-        frame = dk._textbox(slide, dk.MARGIN + Inches(0.3), Inches(y + 0.12), Inches(inner), Inches(stem_h + 0.1))
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.3), Inches(y + 0.12), Inches(inner), Inches(stem_h))
         dk._para(frame, stem, size=17, color=dk.MUTED, first=True, line_spacing=1.15, refs=refs)
-        frame = dk._textbox(slide, dk.MARGIN + Inches(0.3), Inches(y + 0.2 + stem_h),
-                            Inches(inner), Inches(ans_h + reason_h + 0.3))
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.3), Inches(y + 0.12 + stem_h + 0.08),
+                            Inches(inner), Inches(ans_h + 0.08 + reason_h))
         dk._para(frame, answer, size=18, color=dk.GREEN, bold=True, first=True, line_spacing=1.15)
         dk._para(frame, q.reason, size=17, color=dk.INK, space_before=6, line_spacing=1.15)
         y += card_h + 0.15
-    assert y <= 6.45, (s.label, 'answers do not fit at 17 point')
+    assert y - 0.15 <= 6.45, (s.label, 'answers do not fit at 17 point')
     _figure_column(slide, s, 1.32)
     dk._progress(slide, marker)
     dk._notes(slide, s.notes)

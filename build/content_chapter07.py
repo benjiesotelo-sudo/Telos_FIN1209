@@ -4691,7 +4691,7 @@ CHAPTER = Chapter(
                             stem='Why is ID/NR7 a volatility breakout pattern, like the inside bar [1] in Figure 7.38?',
                             options=('It always breaks upward', 'It is an inside day breaking out from the narrowest bar of the last seven (p. 232)', 'It counts volume', 'It needs seven up closes'),
                             answer='B',
-                            reason='Lim calls it a volatility breakout pattern and defines ID/NR n as an inside day breakout from the narrowest bar over the last n days (p. 232). He gives no further reason; that the narrowest bar is the quietest is our reading.',
+                            reason='Lim names it one and defines ID/NR n (p. 232) but gives no further reason; that the narrowest bar is the quietest is our reading.',
                         ),
                     ),
                     picture=Figure(

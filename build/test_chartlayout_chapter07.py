@@ -29,7 +29,7 @@ class ChartLayoutTests(unittest.TestCase):
             for page in range(len(page_specs(spec))):
                 fig, marks = layout(key, page)
                 texts = [text.get_text() for text in fig.texts]
-                self.assertEqual(texts.count(CAPTION), 1, key)
+                self.assertEqual(texts.count(spec.get('caption', CAPTION)), 1, key)
                 self.assertTrue(all('Ours, invented' not in text for text in texts))
                 self.assertTrue(all(mark.size >= .24 for mark in marks))
                 seen.update(mark.number for mark in marks)

@@ -359,10 +359,10 @@ P2['p2-wa'] = {'items': (ck.Cell(name='An exponential rise into an upper band', 
                    ck.Pane(line=(40, 41, 42, 44, 43, 46, 49, 53, 52, 58, 66, 80),
                            strokes=(ck.Stroke(points=((0, 77), (11, 77)), dashed=True,
                                               label='upper band 77'),)),)),),
-               'special': '', 'owner': 'p2', 'letter': 'WA', 'old_marks': (),
-               'targets': [{'number': 1, 'color': 'gold', 'target': (0, 10, 'line')},
-                           {'number': 2, 'color': 'red', 'target': (0, 8, 'line')},
-                           {'number': 3, 'color': 'blue', 'target': (0, 11, 'line')}]}
+               'special': '', 'owner': 'p2', 'letter': 'WA', 'old_marks': (), 'level_ink': True,
+               'targets': [{'number': 1, 'color': 'gold', 'target': (0, 10, 'line'), 'angles': (300, 315)},
+                           {'number': 2, 'color': 'red', 'target': (0, 8, 'line'), 'angles': (270, 255)},
+                           {'number': 3, 'color': 'blue', 'target': (0, 11, 'line'), 'angles': (50, 40, 60)}]}
 DATA.update(P2)
 
 
@@ -371,6 +371,80 @@ for _key in ('r4-n', 'r4-v', 'r4-o', 'r4-w', 'r4-t'):
 
 # Chart M: volume is the point, so its columns get the Part 2 boxes and room.
 DATA['r3a-m'].update(volume_boxes=True, volume_top=0.9)
+
+# Slides that named a shape or a price relationship without showing it
+# (28 October 2026 audit). A close against the previous low is an ordinary
+# two-bar chart; the rest are painted by shapecharts_chapter07.
+import shapecharts_chapter07 as sc
+
+
+def _paint(letter, painter, targets, caption):
+    return {'items': (), 'special': 'paint', 'paint': painter, 'owner': 'sh', 'letter': letter,
+            'old_marks': (), 'caption': caption, 'group_gap': .18,
+            'targets': [{'number': n, 'color': t[0], 'target': t[1], **({'angles': t[2]} if len(t) > 2 else {})}
+                        for n, t in enumerate(targets, 1)]}
+
+
+DRAWN = 'The shapes are sketches of ours; they carry no prices.'
+SH = {
+    'sh-hs': _paint('HS', sc.paint_head_shoulders,
+                    (('gold', (0, 0, 'group')), ('red', (0, 1, 'group'))), DRAWN),
+    'sh-b': {'items': (ck.Cell(name='A close below the previous low', panes=(ck.Pane(
+        bars=(ck.Bar(open=48.1, high=49.2, low=47.9, close=49.0), ck.Bar(open=49.1, high=49.4, low=47.3, close=47.5)),
+        strokes=(ck.Stroke(points=((0, 47.9), (1, 47.9)), dashed=True),),
+        notes=(ck.Note(x=0, label='the previous bar'), ck.Note(x=1, label='the next bar'))),)),),
+        'special': '', 'owner': 'sh', 'letter': 'LW', 'old_marks': (), 'span_levels': True,
+        'caption': 'Prices are invented for teaching.', 'group_gap': .1,
+        'targets': [{'number': 1, 'color': 'gold', 'target': (0, 0, 'low')},
+                    {'number': 2, 'color': 'red', 'target': (0, 1, 'close')}]},
+    'sh-x': _paint('EX', sc.paint_expectation,
+                   (('gold', (0, 0, 'group')), ('red', (0, 1, 'group'))),
+                   'The bars are drawn to show direction only; they carry no prices.'),
+    'sh-t': _paint('TT', sc.paint_two_trends,
+                   (('gold', (0, 11, 'close')), ('red', (0, 10, 'high')),
+                    ('blue', (0, 0, 'group')), ('purple', (0, 1, 'group'))),
+                   'Prices are invented for teaching.'),
+    'sh-c': _paint('FC', sc.paint_four_cases,
+                   (('gold', (0, 0, 'group')), ('red', (0, 1, 'group')),
+                    ('blue', (0, 2, 'group')), ('purple', (0, 3, 'group'))),
+                   'The bars are drawn to show direction only; they carry no prices.'),
+    'sh-hn': _paint('HN', sc.paint_head_shoulders_trend if hasattr(sc, 'paint_head_shoulders_trend') else sc.paint_trend_shapes,
+                    (('gold', (0, 0, 'group'), (90, 60)), ('red', (0, 1, 'group')), ('blue', (0, 2, 'group'))),
+                    'Prices are invented for teaching.'),
+    'sh-pu': _paint('PU', lambda c: sc.paint_prior_bar(c, up=True),
+                    (('gold', (0, 0, 'ref'), (45, 60, 75)), ('red', (0, 1, 'today')),
+                     ('blue', (0, 2, 'today')), ('purple', (0, 3, 'ref'), (45, 60, 75))),
+                    'Prices are invented for teaching.'),
+    'sh-pd': _paint('PD', lambda c: sc.paint_prior_bar(c, up=False),
+                    (('gold', (0, 0, 'ref'), (45, 60, 75)), ('red', (0, 1, 'today')),
+                     ('blue', (0, 2, 'today')), ('purple', (0, 3, 'ref'), (315, 300, 285))),
+                    'Prices are invented for teaching.'),
+    'sh-g': _paint('GP', sc.paint_gap,
+                   (('gold', (0, 0, 'group')), ('red', (0, 1, 'group'))),
+                   'Prices are invented for teaching.'),
+}
+SH['sh-t']['group_gap'] = .22   # the rise's box sits close to the formation's bars
+DATA.update(SH)
+
+# The 16 reversal characteristics, two sketches to a slide (slides 111 to 118
+# of the earlier build). Marks 1 and 2 are the first sketch's, 3 and 4 the second's.
+def _characteristic_chart(n):
+    left, right = sc.CHARACTERISTICS[n], sc.CHARACTERISTICS[n + 1]
+    targets = []
+    for number, feature in enumerate(left['features'] + right['features'], 1):
+        box = feature[0] == 'box'
+        targets.append((('gold', 'red', 'blue', 'purple')[number - 1],
+                        (0, number, 'group' if box else 'dot'), *(((0, 15, 345),) if box else ())))
+    volume = n in (15,)
+    caption = ('The sketches and the volumes are invented from the numbers on the slide.'
+               if n + 1 == 16 or n == 15 else
+               'The sketches are invented from the numbers on the slide.')
+    return _paint('K%d' % n, sc.paint_characteristics(left, right), targets, caption)
+
+
+SH.update({'sh-k%d' % n: _characteristic_chart(n) for n in range(1, 16, 2)})
+DATA.update({'sh-k%d' % n: SH['sh-k%d' % n] for n in range(1, 16, 2)})
+
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

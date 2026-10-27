@@ -831,15 +831,22 @@ def _marks(fig, targets, specs, boxes, segments, groups, brackets=None, authored
             cx, cy, radius = bracket[0], (bracket[1]+bracket[2])/2, 5
         own = [b for b in segments if bracket and abs((b.x0+b.x1)/2-cx) < 1 and b.width < 10]
         obstacles = boxes + [b for b in segments if not any(b is o for o in own)]
+        if getattr(fig, 'paint_boxes', False):
+            # Another mark's box is never a place for this badge.
+            from matplotlib.transforms import Bbox as _B
+            obstacles = obstacles + [_B([[g[0], g[1]], [g[2], g[3]]]) for t, g in groups.items() if t != target]
         if target in groups and authored:
             # A boxed feature keeps its badge outside the box (rp2x2 finding 2).
             from matplotlib.transforms import Bbox
             x0, y0, x1, y1 = groups[target]
-            own_box = Bbox([[x0, y0], [x1, y1]])
+            pad = .05 * ck.DPI if getattr(fig, 'paint_boxes', False) else 0   # never touching its own box
+            own_box = Bbox([[x0 - pad, y0 - pad], [x1 + pad, y1 + pad]])
         else:
             own_box = None
-        assert not any(_circle_box(cx, cy, radius, b) for b in boxes), (spec, 'ring crosses text')
+        assert not any(_circle_box(cx, cy, radius, b) for b in boxes), (spec, 'ring crosses text', (cx, cy, radius), [(b.x0, b.y0, b.x1, b.y1) for b in boxes if _circle_box(cx, cy, radius, b)])
         found = None
+        # A mark may name the directions its badge should try first.
+        order = list(spec.get('angles', ())) + [a for a in range(0, 360, 5) if a not in spec.get('angles', ())]
         if bracket and target[2] == 'span':
             # A range bracket keeps its badge at mid-height, a badge-width
             # clear to its left, joined by a hairline (rp4x2 finding 1).
@@ -854,7 +861,7 @@ def _marks(fig, targets, specs, boxes, segments, groups, brackets=None, authored
         # nearest clear badge joined to its ring by a same-colour hairline.
         for extra in ([] if found else range(0, int(2*ck.DPI), 4)):
             distance = radius + badge_r + extra
-            for angle in range(0, 360, 5):
+            for angle in order:
                 theta = math.radians(angle)
                 ux,uy=math.cos(theta),math.sin(theta)
                 bx, by = cx + distance * ux, cy + distance * uy
@@ -934,7 +941,7 @@ def layout(key, page=0):
     ink = []       # plotted ink that only badges must avoid
     # Part 2 marks a range as a box along the bar and a volume as a box
     # round its column, with every badge clear of both (rp2x1 findings 3, 4).
-    authored = spec.get('owner') == 'p2'
+    authored = spec.get('owner') in ('p2', 'sh')
     vbox = authored or spec.get('volume_boxes', False)
     brackets = {}
     def text(x, y, value, *, ha='center', va='center', color=ck.INK):
@@ -1026,6 +1033,10 @@ def layout(key, page=0):
             brackets[0,0,'yes']=(9.25*ck.DPI,(min(yes)-.13)*ck.DPI,(max(yes)+.13)*ck.DPI)
             targets[0,0,'yes']=(9.25*ck.DPI,(min(yes)+max(yes))/2*ck.DPI)
             ink.append(Bbox.from_extents(9.25*ck.DPI-3,(min(yes)-.13)*ck.DPI,9.25*ck.DPI+3,(max(yes)+.13)*ck.DPI))
+    elif spec['special'] == 'paint':
+        import shapecharts_chapter07 as sc
+        canvas = sc.Canvas(fig, W, text, segments, ink, groups, targets)
+        spec['paint'](canvas)
     elif spec['special'] == 'characteristics':
         for y, number, title, meaning in ((2.8,'7','BRR','real body ÷ total range'),
                 (1.35,'8','Angular symmetry and momentum','the angle and momentum change')):
@@ -1183,7 +1194,9 @@ def layout(key, page=0):
                             level=line(axis,(points[0][0],points[-1][0]+.02),(value,value),color=ck.INK,lw=1.6,ls=(0,(4,3)),zorder=0)
                             ink.append(level.get_window_extent().padded(3))
                         else:
-                            line(axis,(.12,W-.2),(value,value),color=ck.MUTED,lw=.8,ls=(0,(4,4)),zorder=0)
+                            band=line(axis,(.12,W-.2),(value,value),color=ck.MUTED,lw=.8,ls=(0,(4,4)),zorder=0)
+                            if spec.get('level_ink'):
+                                ink.append(band.get_window_extent().padded(3))   # a badge keeps off the level
                         for index,x in zip(range(start,end),xs):
                             targets[cell_index,index,'level:'+str(value)] = (x*ck.DPI,y_inches(value)*ck.DPI)
                         if stroke.label:
@@ -1257,7 +1270,7 @@ def layout(key, page=0):
                             groups[c_,first,name]=bounds
                             targets[c_,first,name]=(bounds[2],(bounds[1]+bounds[3])/2)
     caption = spec.get('caption', CAPTION)
-    if (authored or spec['owner'] in ('r3a','r3b')) and not any(p.columns for c in spec['items'] for p in c.panes):
+    if (spec.get('owner') == 'p2' or spec['owner'] in ('r3a','r3b')) and not any(p.columns for c in spec['items'] for p in c.panes):
         # Say volume only where the chart draws it (rp2x3 finding 4).
         caption = PRICE_CAPTION
     text(W/2,.02,caption,color=ck.MUTED,va='bottom')
@@ -1298,8 +1311,10 @@ def layout(key, page=0):
         for bounds in groups.values():
             x0,y0,x1,y1=bounds
             edges=(((x0,y0),(x1,y0)),((x1,y0),(x1,y1)),((x1,y1),(x0,y1)),((x0,y1),(x0,y0)))
-            assert not any(_segment_box(a,b,box) for a,b in edges for box in boxes), 'group box crosses text'
+            clash = [i for i, box in enumerate(boxes) if any(_segment_box(a, b, box) for a, b in edges)]
+            assert not clash, f'group box crosses text: {[labels[i].get_text() for i in clash]}'
         fig.group_gap=spec.get('group_gap',0)
+        fig.paint_boxes=spec.get('special') == 'paint'
         marks=_marks(fig,targets,_target_specs(key,spec),boxes,
                      segments+ink+(columns if vbox else []),groups,brackets,vbox)
     except AssertionError as error:

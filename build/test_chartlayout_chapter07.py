@@ -6,7 +6,7 @@ from pathlib import Path
 import unittest
 
 from charts_chapter07 import DATA
-from chartlayout_chapter07 import CAPTION, PAGE_TITLES, CourseChart, _refs, layout, page_specs
+from chartlayout_chapter07 import CAPTION, PRICE_CAPTION, PAGE_TITLES, CourseChart, _refs, layout, page_specs
 from content_chapter07 import CHAPTER
 import deckkit
 import chartkit
@@ -29,11 +29,14 @@ class ChartLayoutTests(unittest.TestCase):
             for page in range(len(page_specs(spec))):
                 fig, marks = layout(key, page)
                 texts = [text.get_text() for text in fig.texts]
-                self.assertEqual(texts.count(spec.get('caption', CAPTION)), 1, key)
+                caption = spec.get('caption', CAPTION)
+                if spec.get('owner') == 'p2' and not any(p.columns for c in spec['items'] for p in c.panes):
+                    caption = PRICE_CAPTION   # volume is claimed only where it is drawn
+                self.assertEqual(texts.count(caption), 1, key)
                 self.assertTrue(all('Ours, invented' not in text for text in texts))
                 self.assertTrue(all(mark.size >= .24 for mark in marks))
                 seen.update(mark.number for mark in marks)
-            self.assertEqual(seen, {m.number for m in spec['old_marks']}, key)
+            self.assertEqual(seen, {t['number'] for t in spec.get('targets', ())}, key)
 
     def test_all_ohlc_values_have_one_line_labels_on_their_page(self):
         for key, spec in DATA.items():
@@ -77,6 +80,11 @@ class ChartLayoutTests(unittest.TestCase):
                 self.assertLessEqual(_refs(sentence), numbers, (slide.asset, sentence))
         titles = [s.title for s in charts if s.asset == 'r3a-a']
         self.assertEqual(titles, list(PAGE_TITLES['r3a-a']))
+
+    def test_part_2_side_by_side_text_is_17_point_or_more(self):
+        for slide in CHAPTER.sections[1].slides:
+            if isinstance(slide, deckkit.Pair):
+                self.assertGreaterEqual(deckkit._pair_fit(slide)[0], 17.0, slide.left.title)
 
     def test_look_alike_slides_come_after_both_bars_and_before_their_check(self):
         slides = [s for section in CHAPTER.sections for s in section.slides]

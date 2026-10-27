@@ -110,6 +110,7 @@ def main() -> int:
                 print(f"  {problem}", file=sys.stderr)
             return 1
 
+    CHARTS_DIR.mkdir(parents=True, exist_ok=True)
     chartkit.generate(CHARTS, CHARTS_DIR)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with course_slide_renderer():

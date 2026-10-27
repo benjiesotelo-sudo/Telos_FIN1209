@@ -30,9 +30,9 @@ FIGURE_7_2 = Figure(
     number='7.2',
     shows='Figure 7.2: three five-minute intervals on the left are summarized by one 15-minute bar on the right, which keeps the first open, the highest high, the lowest low and the last close.',
     marks=(
-        Mark(number=1, kind='arrow', x0=0.065, y0=0.26, x1=0.092, y1=0.345, color='gold', size=0.3),
-        Mark(number=2, kind='arrow', x0=0.235, y0=0.195, x1=0.16, y1=0.198, color='red', size=0.3),
-        Mark(number=3, kind='arrow', x0=0.25, y0=0.735, x1=0.327, y1=0.725, color='blue', size=0.3),
+        Mark(number=1, kind='arrow', x0=0.065, y0=0.26, x1=0.096, y1=0.354, color='gold', size=0.3),
+        Mark(number=2, kind='arrow', x0=0.235, y0=0.195, x1=0.151, y1=0.207, color='red', size=0.3),
+        Mark(number=3, kind='arrow', x0=0.25, y0=0.735, x1=0.336, y1=0.722, color='blue', size=0.3),
         Mark(number=4, kind='arrow', x0=0.56, y0=0.65, x1=0.51, y1=0.565, color='purple', size=0.3),
     ),
     aspect=1.468888888888889,
@@ -180,11 +180,11 @@ PART_1 = Section(
             ),
         ),
         WidePair(
-            notes=('Patterns are several bars in a row, so the book now follows price through several intervals.', 'Trace interval 1 with your finger: gold 1 where it opens, red 2 its high, blue 3 its low, purple 4 where it ends.', "The full figure has eight intervals; this crop shows the first two so the letters can be read."),
+            notes=('Many patterns use several bars in a row, so the book now follows price through several intervals.', 'Trace interval 1 with your finger: gold 1 where it opens, red 2 its high, blue 3 its low, purple 4 where it ends.', "The full figure has eight intervals; this crop shows the first two so the letters can be read."),
             origin='Lim (2016), pp. 210 to 211, Figure 7.3. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='Figure 7.3 follows price through several intervals',
-                lines=("Patterns are made of several bars in a row, so Lim next follows price through a run of five-minute intervals (p. 210). This crop shows the first two of the figure's eight.", 'Take interval 1. Price opens at O [1], climbs to its high H [2], drops to its low L [3] and ends the interval at C [4].'),
+                lines=("Many patterns use more than one bar, so Lim next follows price through a run of five-minute intervals (p. 210). This crop shows the first two of the figure's eight.", 'Take interval 1. Price opens at O [1], climbs to its high H [2], drops to its low L [3] and ends the interval at C [4].'),
                 accent='Each interval is read on its own, just like one bar.',
             ),
             picture=FIGURE_7_3_TRACE,
@@ -7346,7 +7346,7 @@ CHAPTER = Chapter(
             notes=("Start with what bar chart analysis is and why it matters: Lim calls it the most fundamental skill a technician should have (p. 209).", "Keep the word potential. The chapter teaches warnings to weigh, not certainty."),
             origin="Lim (2016), p. 209, the chapter's learning objectives.",
             title='What this chapter will teach you to do',
-            lines=("Bar chart analysis means reading price bars to judge what the market is doing. Lim calls it the basis of pure price action analysis and the most fundamental skill every technician should have (p. 209).", 'By the end of the chapter you should be able to explain how bar patterns help us forecast potential tops and bottoms, and recognise early signs that a trend may be about to change (p. 209).'),
+            lines=("Bar chart analysis is the study of bar chart patterns. Lim calls it the basis of pure price action analysis and the most fundamental skill every technician should have (p. 209).", 'By the end of the chapter you should be able to explain how bar patterns help us forecast potential tops and bottoms, and recognise early signs that a trend may be about to change (p. 209).'),
             accent='Everything here is read from price bars, one bar at a time.',
         ),
         Content(

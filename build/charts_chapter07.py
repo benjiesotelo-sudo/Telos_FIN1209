@@ -179,7 +179,8 @@ DATA['r3a-a']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'ope
 DATA['r3a-l']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'close')}]
 DATA['r3a-m']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'volume')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'volume')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'volume')}]
 DATA['r3a-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'open')}]
-DATA['r3b-la']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 2, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
+DATA['r3b-la'].update(spans={(0, 2, 'span')})
+DATA['r3b-la']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 2, 'span')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
 DATA['r3b-lb']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 0, 'high')}]
 DATA['r3b-lc']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'open')}]
 DATA['r3b-ld']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 2, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'volume')}]
@@ -367,6 +368,9 @@ DATA.update(P2)
 
 for _key in ('r4-n', 'r4-v', 'r4-o', 'r4-w', 'r4-t'):
     DATA[_key]['marks_by_sentence'] = True
+
+# Chart M: volume is the point, so its columns get the Part 2 boxes and room.
+DATA['r3a-m'].update(volume_boxes=True, volume_top=0.9)
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

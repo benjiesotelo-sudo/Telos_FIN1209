@@ -935,6 +935,7 @@ def layout(key, page=0):
     # Part 2 marks a range as a box along the bar and a volume as a box
     # round its column, with every badge clear of both (rp2x1 findings 3, 4).
     authored = spec.get('owner') == 'p2'
+    vbox = authored or spec.get('volume_boxes', False)
     brackets = {}
     def text(x, y, value, *, ha='center', va='center', color=ck.INK):
         # A white backing breaks a dashed level line where it meets a label.
@@ -1221,7 +1222,7 @@ def layout(key, page=0):
                     if semantic:
                         text(W/2,.39,'; '.join(semantic),color=ck.MUTED)
             elif pane.columns:
-                bottom,top = (.60,.80) if has_volume else (.72,2.7)
+                bottom,top = (.60,spec.get('volume_top',.80)) if has_volume else (.72,2.7)
                 cols=pane.columns[start:end]
                 lo,hi=min(0,min(cols)),max(cols)
                 span=hi-lo or 1
@@ -1241,13 +1242,13 @@ def layout(key, page=0):
                     else:
                         text(x,y+.07,label,va='bottom',color=ck.GREEN_DEEP)
                     targets[cell_index,index,'volume']=(x*ck.DPI,(bottom+(value/2-lo)/span*(top-bottom))*ck.DPI)
-                    if authored and value > 0:
+                    if vbox and value > 0:
                         bounds=((x-.17)*ck.DPI,(bottom-.03)*ck.DPI,(x+.17)*ck.DPI,(y+.03)*ck.DPI)
                         groups[cell_index,index,'volume']=bounds
                         targets[cell_index,index,'volume']=(bounds[2],(bounds[1]+bounds[3])/2)
                 for t in spec.get('targets', ()):
                     c_, first, name = t['target']
-                    if authored and c_ == cell_index and name.startswith('volumes:'):
+                    if vbox and c_ == cell_index and name.startswith('volumes:'):
                         last = int(name.split(':')[1])
                         if start <= first <= last < end:
                             peak = bottom+(max(cols[first-start:last-start+1])-lo)/span*(top-bottom)
@@ -1300,7 +1301,7 @@ def layout(key, page=0):
             assert not any(_segment_box(a,b,box) for a,b in edges for box in boxes), 'group box crosses text'
         fig.group_gap=spec.get('group_gap',0)
         marks=_marks(fig,targets,_target_specs(key,spec),boxes,
-                     segments+ink+(columns if authored else []),groups,brackets,authored)
+                     segments+ink+(columns if vbox else []),groups,brackets,vbox)
     except AssertionError as error:
         plt.close(fig)
         raise AssertionError(f'{key} page {page+1}: {error}') from error

@@ -33,7 +33,7 @@ FIGURE_7_2 = Figure(
         Mark(number=1, kind='arrow', x0=0.065, y0=0.26, x1=0.096, y1=0.354, color='gold', size=0.3),
         Mark(number=2, kind='arrow', x0=0.235, y0=0.195, x1=0.151, y1=0.207, color='red', size=0.3),
         Mark(number=3, kind='arrow', x0=0.25, y0=0.735, x1=0.336, y1=0.722, color='blue', size=0.3),
-        Mark(number=4, kind='arrow', x0=0.56, y0=0.65, x1=0.51, y1=0.565, color='purple', size=0.3),
+        Mark(number=4, kind='arrow', x0=0.56, y0=0.65, x1=0.502, y1=0.556, color='purple', size=0.3),
     ),
     aspect=1.468888888888889,
 )

@@ -126,6 +126,11 @@ def page_specs(spec):
     result = []
     for cell_index, cell in enumerate(spec['items']):
         count = max(max(len(p.bars), len(p.line), len(p.columns), 1) for p in cell.panes)
+        if spec.get('one_page'):
+            # A pattern read across all its bars stays on one page; only the
+            # bars its sentences read carry price labels (bar_labels).
+            result.append((cell_index, 0, count))
+            continue
         # Three OHLC bars leave room for both side labels plus a level lane.
         # A four-bar pattern stays whole: its sentences name all four bars.
         step = (4 if count == 4 else 3) if any(p.bars for p in cell.panes) else count
@@ -277,9 +282,14 @@ def expand_chart_pages(chapter):
                 for chunk in _chunks(selected):
                     internal = chr(65 + serial // 26) + chr(65 + serial % 26)
                     serial += 1
+                    shown = marks
+                    if DATA[slide.asset].get('marks_by_sentence'):
+                        # Each slide carries only the marks its own sentences name.
+                        named = set().union(*(_refs(sentence) for sentence in chunk))
+                        shown = tuple(m for m in marks if m.number in named)
                     result.append(replace(slide, page=page, letter=internal, title=title,
                                           teaching=chunk, notes=slide.notes or (slide.shows,),
-                                          marks=marks))
+                                          marks=shown))
         return tuple(result)
     openers = expand(chapter.openers or ())
     sections = tuple(replace(section, slides=expand(section.slides)) for section in chapter.sections)
@@ -474,6 +484,114 @@ def _course_reveal(prs, s, marker, index, total):
 
 
 @dataclass
+class CourseFigureCheck(dk.Check):
+    """A check with its figure beside the questions, every run at 17 point.
+
+    deckkit's own check with a picture sets options at 15 point; this form
+    stacks the two questions in a column ``text_w`` wide and draws the
+    figure, marks and all, in the rest of the slide. The build fails rather
+    than shrinking the text.
+    """
+
+
+FIGURE_CHECK_W = 3.3   # the figure's column on a check's question slide
+
+
+def _figure_column(slide, s, top, x0=None):
+    """The check's figure, fitted right of the text column."""
+    from pathlib import Path
+    from pptx.util import Inches
+    picture = s.picture
+    path = None if dk.FIGURES_DIR is None else Path(dk.FIGURES_DIR) / picture.filename
+    if x0 is None:
+        x0 = dk.MARGIN.inches + s.text_w + 0.35
+    width, height = dk.MARGIN.inches + dk.CONTENT_W.inches - x0, 6.3 - top
+    px_w, px_h = dk._picture_size(picture, path) or (picture.aspect * 1000.0, 1000.0)
+    scale = min(width / px_w, height / px_h)
+    pic_w, pic_h = px_w * scale, px_h * scale
+    pic_x = x0 + (width - pic_w) / 2
+    dk._rect(slide, Inches(pic_x - .04), Inches(top - .04), Inches(pic_w + .08),
+             Inches(pic_h + .08), dk.WHITE, line=dk.BORDER)
+    if path is not None and path.is_file():
+        dk._add_picture(slide, picture, path, pic_x, top, pic_w, pic_h)
+    else:
+        dk._placeholder_plate(slide, picture, pic_x, top, pic_w, pic_h)
+    dk._draw_marks(slide, picture.marks, pic_x, top, pic_w, pic_h)
+    frame = dk._textbox(slide, Inches(pic_x), Inches(top + pic_h + .1), Inches(pic_w), Inches(.3))
+    dk._para(frame, picture.credit, size=11, color=dk.MUTED, first=True)
+
+
+def _course_figure_check(prs, s, marker, index, total):
+    """Two question cards side by side, the figure in a third column."""
+    from pptx.util import Inches
+    slide = dk._blank(prs)
+    dk._ground(slide, dk.GREEN_DEEP)
+    dk._rect(slide, 0, 0, dk.SLIDE_W, Inches(0.16), dk.GOLD)
+    dk._chip(slide, dk.MARGIN, Inches(0.55), f"CHECK {index} OF {total}",
+             fill=dk.GOLD, text_color=dk.INK, width=Inches(1.85))
+    frame = dk._textbox(slide, dk.MARGIN + Inches(2.1), Inches(0.57), Inches(8.0), Inches(0.4))
+    dk._para(frame, s.label, size=17, color=dk.WHITE, bold=True, first=True)
+    refs = {m.number: dk.GOLD for m in s.picture.marks}
+    card_w = (dk.CONTENT_W.inches - FIGURE_CHECK_W - 0.7) / 2
+    inner = card_w - 0.6
+    card_top, card_h = 1.32, 5.02
+    tallest = max(dk._text_height(q.stem, inner, 17, "bold") for q in s.questions)
+    for q in s.questions:
+        options = sum(dk._text_height(f"D.  {o}", inner, 17) + 0.13 for o in q.options)
+        assert 0.58 + tallest + 0.32 + options <= card_h - 0.15, (s.label, 'check text does not fit at 17 point')
+    for i, q in enumerate(s.questions):
+        x = dk.MARGIN.inches + (card_w + 0.35) * i
+        dk._rect(slide, Inches(x), Inches(card_top), Inches(card_w), Inches(card_h), dk.GREEN)
+        frame = dk._textbox(slide, Inches(x + 0.3), Inches(card_top + 0.27), Inches(inner), Inches(0.25))
+        dk._para(frame, f"Q{i + 1}", size=12, color=dk.GOLD, bold=True, first=True)
+        frame = dk._textbox(slide, Inches(x + 0.3), Inches(card_top + 0.58), Inches(inner),
+                            Inches(dk._text_height(q.stem, inner, 17, "bold") + 0.1))
+        dk._para(frame, q.stem, size=17, color=dk.WHITE, bold=True, first=True, line_spacing=1.15, refs=refs)
+        frame = dk._textbox(slide, Inches(x + 0.3), Inches(card_top + 0.58 + tallest + 0.32),
+                            Inches(inner), Inches(3.2))
+        for j, option in enumerate(q.options):
+            dk._para(frame, f"{'ABCD'[j]}.  {option}", size=17, color=dk.WHITE,
+                     first=(j == 0), space_after=9, line_spacing=1.12)
+    _figure_column(slide, s, card_top, dk.MARGIN.inches + dk.CONTENT_W.inches - FIGURE_CHECK_W)
+    dk._progress(slide, marker, on_dark=True)
+    dk._notes(slide, s.notes)
+
+
+def _course_figure_reveal(prs, s, marker, index, total):
+    from pptx.util import Inches
+    slide = dk._blank(prs)
+    dk._ground(slide, dk.PAPER)
+    dk._rect(slide, 0, 0, dk.SLIDE_W, Inches(0.16), dk.GOLD)
+    dk._chip(slide, dk.MARGIN, Inches(0.55), "ANSWERS", fill=dk.GREEN,
+             text_color=dk.WHITE, width=Inches(1.35))
+    frame = dk._textbox(slide, dk.MARGIN + Inches(1.6), Inches(0.57), Inches(8.5), Inches(0.4))
+    dk._para(frame, s.label, size=17, color=dk.GREEN, bold=True, first=True)
+    refs = {m.number: m.rgb for m in s.picture.marks}
+    inner = s.text_w - 0.6
+    y = 1.32
+    for i, q in enumerate(s.questions):
+        stem = f"Q{i + 1}   {q.stem}"
+        answer = f"{q.answer}.  {q.options['ABCD'.index(q.answer)]}"
+        stem_h = dk._text_height(stem, inner, 17)
+        ans_h = dk._text_height(answer, inner, 18, "bold")
+        reason_h = dk._text_height(q.reason, inner, 17)
+        card_h = 0.42 + stem_h + ans_h + reason_h + 0.16
+        dk._rect(slide, dk.MARGIN, Inches(y), Inches(s.text_w), Inches(card_h), dk.WHITE, line=dk.BORDER)
+        dk._rect(slide, dk.MARGIN, Inches(y), Inches(0.1), Inches(card_h), dk.GOLD)
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.3), Inches(y + 0.12), Inches(inner), Inches(stem_h + 0.1))
+        dk._para(frame, stem, size=17, color=dk.MUTED, first=True, line_spacing=1.15, refs=refs)
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.3), Inches(y + 0.2 + stem_h),
+                            Inches(inner), Inches(ans_h + reason_h + 0.3))
+        dk._para(frame, answer, size=18, color=dk.GREEN, bold=True, first=True, line_spacing=1.15)
+        dk._para(frame, q.reason, size=17, color=dk.INK, space_before=6, line_spacing=1.15)
+        y += card_h + 0.15
+    assert y <= 6.45, (s.label, 'answers do not fit at 17 point')
+    _figure_column(slide, s, 1.32)
+    dk._progress(slide, marker)
+    dk._notes(slide, s.notes)
+
+
+@dataclass
 class WidePair(dk.Pair):
     """A book figure drawn as large as the slide allows, beside a narrow column.
 
@@ -549,6 +667,8 @@ def course_slide_renderer():
         _paint_masks(prs.slides[-1],s.picture)
         return result
     def check(prs,s,marker,index,total):
+        if isinstance(s,CourseFigureCheck):
+            return _course_figure_check(prs,s,marker,index,total)
         if isinstance(s,CourseCheck) and s.picture is None:
             return _course_check(prs,s,marker,index,total)
         if s.picture is None and _check_fits(s):
@@ -565,6 +685,8 @@ def course_slide_renderer():
                 dk._text_height = measure
         return original_check(prs,s,marker,index,total)
     def reveal(prs,s,marker,index,total):
+        if isinstance(s,CourseFigureCheck):
+            return _course_figure_reveal(prs,s,marker,index,total)
         if isinstance(s,CourseCheck) and s.picture is None:
             return _course_reveal(prs,s,marker,index,total)
         if s.picture is None and _check_fits(s):
@@ -673,7 +795,9 @@ def _marks(fig, targets, specs, boxes, segments, groups, brackets=None, authored
     result = []
     leaders = []
     group_gap = getattr(fig, 'group_gap', 0) * ck.DPI   # keeps a box's badge off its border
-    future = [(targets[tuple(s['target'])], group_gap if tuple(s['target']) in groups else ring_radius) for s in specs if tuple(s['target']) in targets]
+    future = [(targets[tuple(s['target'])], group_gap if tuple(s['target']) in groups
+               else 5 if tuple(s['target']) in (brackets or {}) else ring_radius)
+              for s in specs if tuple(s['target']) in targets]
     # Reserve a middle-of-bar badge before its high/low neighbours. Greedy
     # extreme-first placement can otherwise close both escape lanes.
     ordered=sorted(specs,key=lambda spec: 0 if spec['target'][2] in ('range','group') else 1)
@@ -851,6 +975,7 @@ def layout(key, page=0):
                (5.9,'Narrowest range','center'),(8.7,f'Is bar {last} the narrowest?','center'))
         for x,value,ha in heads:
             text(x,2.25,value,ha=ha,color=ck.GREEN_DEEP)
+        rows=[]
         for row,count in enumerate(range(4,last+1)):
             y=1.85-row*.36
             window=ranges[last-count:]
@@ -860,8 +985,15 @@ def layout(key, page=0):
             text(.6,y,f'NR{count}',ha='left')
             text(3.3,y,f'bars {last-count+1} to {last}')
             text(5.9,y,f'{low:.1f}, bar {where}')
-            text(8.7,y,answer,color=ck.GREEN_DEEP if answer=='Yes' else ck.GOLD)
+            text(8.7,y,answer,color=ck.GREEN_DEEP if answer=='Yes' else '#'+str(dk.MARK_COLORS['red']))
             targets[0,count,'answer']=(9.25*ck.DPI,y*ck.DPI)
+            rows.append((answer,y))
+        yes=[y for answer,y in rows if answer=='Yes']
+        if yes:
+            # One bracket spans every window the last bar wins.
+            brackets[0,0,'yes']=(9.25*ck.DPI,(min(yes)-.13)*ck.DPI,(max(yes)+.13)*ck.DPI)
+            targets[0,0,'yes']=(9.25*ck.DPI,(min(yes)+max(yes))/2*ck.DPI)
+            ink.append(Bbox.from_extents(9.25*ck.DPI-3,(min(yes)-.13)*ck.DPI,9.25*ck.DPI+3,(max(yes)+.13)*ck.DPI))
     elif spec['special'] == 'characteristics':
         for y, number, title, meaning in ((2.8,'7','BRR','real body ÷ total range'),
                 (1.35,'8','Angular symmetry and momentum','the angle and momentum change')):
@@ -893,6 +1025,8 @@ def layout(key, page=0):
             # Four bars need the full width; a level caption climbs instead,
             # and each side label sits nearer its own tick than its neighbour's.
             left, right, side = 1.36, W - spec.get('right_margin', 1.32), .36
+        if spec.get('one_page') and count > 4:
+            left, right = .95, W - 1.4
         xs = [left + (right-left) * i/max(1,count-1) for i in range(count)] if count>1 else [W/2]
         for pane_index, pane in enumerate(cell.panes):
             if pane.bars or pane.line:
@@ -917,8 +1051,17 @@ def layout(key, page=0):
                         for xx,yy in (((x,x),(b.low,b.high)),((x-.17,x),(b.open,b.open)),((x,x+.17),(b.close,b.close))):
                             artist=line(axis,xx,yy,color=ck.INK,lw=2.4,clip_on=False)
                             segments.append(artist.get_window_extent().padded(2))
-                        text(x-side,y_inches(b.open),f'O {b.open:.2f}',ha='right')
-                        text(x+side,y_inches(b.close),f'C {b.close:.2f}',ha='left')
+                        shown=spec.get('bar_labels',{}).get(index,'OHLC')
+                        if 'O' in shown:
+                            text(x-side,y_inches(b.open),f'O {b.open:.2f}',ha='right')
+                        if 'C' in shown:
+                            text(x+side,y_inches(b.close),f'C {b.close:.2f}',ha='left')
+                        if (cell_index,index,'span') in spec.get('spans',()):
+                            # A range drawn as a bracket beside the bar, on its open side.
+                            sx=(x-.32)*ck.DPI
+                            brackets[cell_index,index,'span']=(sx,y_inches(b.low)*ck.DPI,y_inches(b.high)*ck.DPI)
+                            targets[cell_index,index,'span']=(sx,y_inches((b.low+b.high)/2)*ck.DPI)
+                            ink.append(Bbox.from_extents(sx-3,y_inches(b.low)*ck.DPI,sx+3,y_inches(b.high)*ck.DPI))
                         prev = pane.bars[index-1] if index > start else None
                         # A label that would sit inside the gap before its bar
                         # moves to the side, level with its own tick.
@@ -933,6 +1076,8 @@ def layout(key, page=0):
                                 elif abs(y_inches(value)-y_inches(b.open)) >= .26:
                                     beside[name] = (x-side, value, 'right')
                         for name, value, direction, offset, va in (('H', b.high, 1, .19, 'bottom'), ('L', b.low, -1, -.17, 'top')):
+                            if name not in shown:
+                                continue
                             if name in beside:
                                 bx_, val, ha = beside[name]
                                 text(bx_, y_inches(val), f'{name} {value:.2f}', ha=ha)
@@ -1018,14 +1163,18 @@ def layout(key, page=0):
                     for index,x in zip(range(start,end),xs):
                         semantic=semantic_labels(pane,index)
                         caption=f'Bar {index+1}' + (': '+'; '.join(semantic) if semantic else '')
-                        artist=text(x,.39,caption,color=ck.MUTED)
+                        caption_y=.39
+                        if spec.get('stack_captions') and semantic:
+                            # Six bars to a page leave no room for a one-line caption.
+                            caption, caption_y = f'Bar {index+1}\n'+'; '.join(semantic), .5
+                        artist=text(x,caption_y,caption,color=ck.MUTED)
                         fig.canvas.draw()
                         box=artist.get_window_extent(fig.canvas.get_renderer())
                         if box.x1>fig.bbox.width-3:
-                            artist.set_position(((fig.bbox.width-3)/fig.bbox.width,.39/HEIGHT))
+                            artist.set_position(((fig.bbox.width-3)/fig.bbox.width,caption_y/HEIGHT))
                             artist.set_ha('right')
                         elif box.x0<3:
-                            artist.set_position((3/fig.bbox.width,.39/HEIGHT))
+                            artist.set_position((3/fig.bbox.width,caption_y/HEIGHT))
                             artist.set_ha('left')
                 elif pane.line and spec.get('line_captions'):
                     # A line of trades is not a run of bars: name each point.

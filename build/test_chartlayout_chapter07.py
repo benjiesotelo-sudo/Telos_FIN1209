@@ -46,9 +46,11 @@ class ChartLayoutTests(unittest.TestCase):
                 fig, _marks = layout(key, page)
                 labels = [text.get_text() for text in fig.texts]
                 for pane in spec['items'][cell].panes:
-                    for bar in pane.bars[start:end]:
+                    for index, bar in enumerate(pane.bars[start:end], start):
+                        shown = spec.get('bar_labels', {}).get(index, 'OHLC')
                         for prefix, value in zip('OHLC', dataclasses.astuple(bar)):
-                            self.assertIn(f'{prefix} {value:.2f}', labels)
+                            if prefix in shown:
+                                self.assertIn(f'{prefix} {value:.2f}', labels)
 
     def test_open_and_close_labels_stay_on_their_real_price_ticks(self):
         for key, spec in DATA.items():
@@ -59,6 +61,8 @@ class ChartLayoutTests(unittest.TestCase):
                 for pane in spec['items'][cell].panes:
                     for index, bar in enumerate(pane.bars[start:end], start):
                         for prefix, name, value in (('O', 'open', bar.open), ('C', 'close', bar.close)):
+                            if prefix not in spec.get('bar_labels', {}).get(index, 'OHLC'):
+                                continue
                             tick_x, tick_y = fig.chart_targets[cell, index, name]
                             candidates = [t for t in fig.texts if t.get_text() == f'{prefix} {value:.2f}']
                             same_y = [t for t in candidates if abs(t.get_position()[1]*fig.bbox.height-tick_y)<.01]

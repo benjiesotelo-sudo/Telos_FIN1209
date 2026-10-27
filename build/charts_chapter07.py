@@ -187,15 +187,20 @@ DATA['r4-t'] = {'items': (), 'special': 'nr_table', 'owner': 'r4', 'letter': 'T'
     'old_marks': (dk.Mark(number=1, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='circle', x0=0, y0=0, x1=0, y1=0)),
     'caption': 'The ranges are invented for teaching.',
     'nr_ranges': (1.0, 4.0, 3.2, 2.8, 2.1, 1.6, 1.2),
-    'targets': [{'number': 1, 'color': 'gold', 'target': (0, 6, 'answer')}, {'number': 2, 'color': 'red', 'target': (0, 7, 'answer')}]}
+    'targets': [{'number': 1, 'color': 'gold', 'target': (0, 0, 'yes')}, {'number': 2, 'color': 'red', 'target': (0, 7, 'answer')}]}
 DATA['r4-n']['caption'] = 'Prices are invented for teaching.'
 DATA['r4-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'level:52.0')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'high')}]
 DATA['r4-v']['caption'] = 'Prices are invented for teaching.'
 DATA['r4-v']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'level:48.0')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'low')}]
 DATA['r4-o']['caption'] = 'Prices are invented for teaching.'
-DATA['r4-o']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 4, 'low')}]
+DATA['r4-o']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'span')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 4, 'low')}]
+# All six bars on one page; prices only where the sentences read them.
+DATA['r4-o'].update(one_page=True, stack_captions=True, spans={(0, 5, 'span')},
+                    bar_labels={0: '', 1: '', 2: '', 3: '', 4: 'HL', 5: 'HL'})
 DATA['r4-w']['caption'] = 'Prices are invented for teaching.'
-DATA['r4-w']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 4, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'close')}]
+DATA['r4-w']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 4, 'span')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'close')}]
+DATA['r4-w'].update(one_page=True, stack_captions=True, spans={(0, 4, 'span')},
+                    bar_labels={0: '', 1: '', 2: '', 3: 'HL', 4: 'HLC', 5: 'HC'})
 
 DATA['r1-m']['groups'] = {(0,2,'group'): (0,2,3)}
 DATA['r3b-lg']['targets'][2]['target'] = (0,11,'group')
@@ -352,6 +357,9 @@ P2['p2-wa'] = {'items': (ck.Cell(name='An exponential rise into an upper band', 
                            {'number': 3, 'color': 'blue', 'target': (0, 11, 'line')}]}
 DATA.update(P2)
 
+
+for _key in ('r4-n', 'r4-v', 'r4-o', 'r4-w', 'r4-t'):
+    DATA[_key]['marks_by_sentence'] = True
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

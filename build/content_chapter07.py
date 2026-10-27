@@ -5,7 +5,7 @@ Chart pairs use separate full-width artwork pages, preserving every sentence.
 
 import numpy as np
 from deckkit import Chapter, Check, Content, Figure, Mark, Pair, Question, Section, Term, Quote, Recap, Closing
-from chartlayout_chapter07 import CourseCheck, WidePair, book_crop, chart_slides, course_chart, expand_chart_pages
+from chartlayout_chapter07 import CourseCheck, CourseFigureCheck, WidePair, book_crop, chart_slides, course_chart, expand_chart_pages
 
 # Part 1, the price bar (Lim, section 7.1). The book figures are read by
 # position only: they carry no prices, so every PHP value is ours and sits on
@@ -4391,25 +4391,25 @@ CHAPTER = Chapter(
             covers=('Williams’ Oops', 'ID/NR4 to NR7'),
             slides=(
                 Content(
-                    notes=("Name the section first: Lim's 7.4 is volatility-based breakout patterns, and Part 4 reads two of them.", 'Recall Chapter 5: a sell-stop waits below the market and fills only if price falls to it; a stoploss closes a position that moves against us.', 'Say why the Oops matters: the order fills only if price comes back against the gap.'),
-                    origin="Lim (2016), pp. 230 to 231, with Chapter 5's stop orders.",
-                    title="Williams' Oops trades against a gap that fails",
-                    lines=("Part 4 covers the last section of Chapter 7, which Lim calls volatility-based breakout patterns (p. 230). We read two of them: Larry Williams' Oops entry and the inside day narrow range pattern.", "Williams' Oops starts with a bar that opens beyond the range of the previous bar (p. 231). If the new bar opens above the previous bar's high, Lim places a sell-stop entry order at the previous bar's high and a stoploss at the new bar's high."),
+                    notes=("Name the section first: Lim's 7.4 is volatility-based breakout patterns. It opens with the Hikkake, already read at the end of Part 3.", 'Recall Chapter 5 before any number: a sell-stop fills only if price falls to it, a buy-stop only if price rises to it, and a stoploss closes a position that moves against us.'),
+                    origin="Lim (2016), p. 230, with Chapter 5's stop orders.",
+                    title="Part 4 turns to Lim's volatility-based breakouts",
+                    lines=("Part 4 covers the last section of Chapter 7, which Lim calls volatility-based breakout patterns (p. 230). It opens with the Hikkake, which we read at the end of Part 3; now we read the other two, Larry Williams' Oops entry and the inside day narrow range pattern.", 'The Oops uses three orders from Chapter 5. A sell-stop waits below the market and is filled only if price falls to it, and a buy-stop waits above the market and is filled only if price rises to it. A stoploss closes a position that moves against us.'),
                 ),
                 Content(
-                    notes=('Recall the two orders from Chapter 5 before any number.', 'The point: the order fills only if price comes back against the gap.'),
-                    origin="Lim (2016), p. 231, with Chapter 5's stop orders.",
-                    title='The Oops uses two orders we met in Chapter 5',
-                    lines=('Chapter 5 taught both orders. A sell-stop waits below the market and is filled only if price falls to it. A stoploss closes a position that moves against us.', 'So the bearish Oops trade is taken only if price falls back to the previous high, against the gap, and the stoploss at the new high limits the loss if the gap keeps going.'),
+                    notes=('Define the Oops in the book\'s words, then name the gap-up case: it is the bearish Oops.', 'The point: the order fills only if price comes back against the gap.'),
+                    origin='Lim (2016), p. 231.',
+                    title="Williams' Oops trades against a gap that fails",
+                    lines=("Williams' Oops starts with a bar that opens beyond the range of the previous bar (p. 231). If the new bar opens above the previous bar's high, Lim places a sell-stop entry order at the previous bar's high and a stoploss at the new bar's high.", 'That gap-up case is the bearish Oops: we sell. The trade is taken only if price falls back to the previous high, against the gap, and the stoploss at the new high limits the loss if the gap keeps going.'),
                     accent='The Oops waits for the gap to fail before it acts.',
                 ),
                 Content(
-                    notes=('Walk the bars in time order: the open first, then the high, then the fall.', 'Gold 1 is the open above bar 1, red 2 the sell-stop at 52.00, blue 3 the new high where the stoploss sits.', 'Then say the stop and reverse in words: close the short and go long.'),
+                    notes=('Walk the bars in time order: the open first, then the high, then the fall.', 'Gold 1 is the open above bar 1, red 2 the sell-stop at 52.00, blue 3 the new high where the stoploss sits.', 'Then say the stop and reverse in words: once short, close the short and go long.'),
                     title='Here is a bearish Oops with simple prices',
-                    lines=("Here are two bars of ours. Bar 1 is the previous bar, with a high of PHP 52.00. Bar 2 opens at PHP 53.00 [1], above that high, so as it opens we place a sell-stop at PHP 52.00 [2] and a stoploss at bar 2's high.", 'Bar 2 climbs to a high of PHP 54.00 [3], so that is where the stoploss sits. Then price falls to PHP 50.50, through PHP 52.00, and the sell-stop is filled: we are now short.', 'If price had instead turned up through PHP 54.00, the stoploss would close the short. Lim adds that a stop and reverse order is initiated at the stoploss level (p. 231), so we would also go long there.'),
+                    lines=("Here are two bars of ours. Bar 1 is the previous bar, with a high of PHP 52.00. Bar 2 opens at PHP 53.00 [1], above that high, so as it opens we place a sell-stop at PHP 52.00 [2] and a stoploss at bar 2's high. Bar 2 climbs to a high of PHP 54.00 [3], so that is where the stoploss sits.", 'Then price falls to PHP 50.50, through the sell-stop at PHP 52.00 [2], and the order is filled: we are now short. Once we are short, if price turned back up through the stoploss at PHP 54.00 [3], the stoploss would close the short. Lim adds that a stop and reverse order is initiated at the stoploss level (p. 231), so we would also go long there.'),
                 ),
                 course_chart('r4-n',
-                    notes=('Walk the bars in time order: the open first, then the high, then the fall.', 'Gold 1 is the open above bar 1, red 2 the sell-stop at 52.00, blue 3 the new high where the stoploss sits.', 'Then say the stop and reverse in words: close the short and go long.'),
+                    notes=('Walk the bars in time order: the open first, then the high, then the fall.', 'Gold 1 is the open above bar 1, red 2 the sell-stop at 52.00, blue 3 the new high where the stoploss sits.', 'Then say the stop and reverse in words: once short, close the short and go long.'),
                     origin='Chart N is ours, with invented PHP values to show Lim (2016), p. 231.',
                     title='Here is a bearish Oops with simple prices',
                     letter='N',
@@ -4418,11 +4418,11 @@ CHAPTER = Chapter(
                     marks=(),
                 ),
                 WidePair(
-                    notes=('Start on the right-hand drawing, setup 2: gold 1 the gap-up open, red 2 the sell-stop level, blue 3 the stop and reverse level.', 'Then the left-hand drawing, setup 1, purple 4: the gap down. Its buy-stop and stop and reverse levels are the mirror image.'),
+                    notes=('Start on the right-hand drawing, the sell setup: gold 1 the gap-up open, red 2 the sell-stop level, blue 3 the stop and reverse level.', 'Then the left-hand drawing, the buy setup: purple 4 the gap down, red 5 the buy-stop at the previous low, blue 6 the stop and reverse level at the new low.'),
                     origin='Lim (2016), p. 231, Figure 7.36. The marks are ours, added for teaching.',
                     left=Content(
                         title='Figure 7.36 draws both Oops setups',
-                        lines=('Lim draws both setups in Figure 7.36 (p. 231). On the right is the bearish one: the bar gaps up [1], the sell-stop sits at the previous high [2], and the stop and reverse level is at the new high [3].', 'On the left is the bullish mirror image: the bar gaps down [4], the buy-stop waits at the previous low, and the stop and reverse level is at the new low.'),
+                        lines=('Lim draws both setups in Figure 7.36 (p. 231). On the right is the bearish one: the bar gaps up [1], the sell-stop sits at the previous high [2], and the stop and reverse level is at the new high [3].', 'On the left is the bullish mirror image: the bar gaps down [4], the buy-stop waits at the previous low [5], and the stop and reverse level is at the new low [6].'),
                     ),
                     picture=Figure(
                         origin='Lim (2016), p. 231, Figure 7.36. The marks are ours, added for teaching.',
@@ -4434,6 +4434,8 @@ CHAPTER = Chapter(
                             Mark(number=2, kind='line', x0=0.57, y0=0.41, x1=0.85, y1=0.41, color='red', at=(0.885, 0.41), size=0.3),
                             Mark(number=3, kind='line', x0=0.565, y0=0.236, x1=0.845, y1=0.236, color='blue', at=(0.885, 0.236), size=0.3),
                             Mark(number=4, kind='circle', x0=0.15, y0=0.585, x1=0.185, y1=0.655, color='purple', at=(0.215, 0.565), size=0.3),
+                            Mark(number=5, kind='line', x0=0.06, y0=0.495, x1=0.34, y1=0.495, color='red', at=(0.03, 0.495), size=0.3),
+                            Mark(number=6, kind='line', x0=0.06, y0=0.69, x1=0.25, y1=0.69, color='blue', at=(0.10, 0.765), size=0.3),
                         ),
                         aspect=2.0202702702702702,
                     ),
@@ -4442,7 +4444,7 @@ CHAPTER = Chapter(
                 Content(
                     notes=('The bullish Oops is the mirror image: gap down, buy-stop at the previous low, stoploss at the new low.', 'Gold 1 the open below bar 1, red 2 the buy-stop at 48.00, blue 3 the new low where the stoploss sits.'),
                     title='The bullish Oops is the same rule after a gap down',
-                    lines=("The bullish Oops is the mirror image. If the new bar opens below the previous bar's low, Lim places a buy-stop entry order at the previous bar's low and a stoploss at the new bar's low (p. 231). A buy-stop waits above the market and is filled only if price rises to it.", "Here are prices of ours. Bar 1's low is PHP 48.00. Bar 2 opens at PHP 47.00 [1], below bar 1's low, so as it opens we place a buy-stop at PHP 48.00 [2] and a stoploss at bar 2's low.", 'Bar 2 dips to PHP 46.00 [3], where the stoploss now sits, then rises to PHP 49.00, through PHP 48.00, so the buy-stop is filled and we are long. Had price instead fallen through PHP 46.00, the stoploss would close the long and the stop and reverse order would go short.'),
+                    lines=("The bullish Oops is the mirror image. If the new bar opens below the previous bar's low, Lim places a buy-stop entry order at the previous bar's low and a stoploss at the new bar's low (p. 231). Here are prices of ours, and bar 1's low is PHP 48.00.", "Bar 2 opens at PHP 47.00 [1], below bar 1's low, so as it opens we place a buy-stop at PHP 48.00 [2] and a stoploss at bar 2's low. Bar 2 dips to PHP 46.00 [3], where the stoploss now sits, then rises to PHP 49.00, through PHP 48.00, so the buy-stop is filled and we are long.", 'Once we are long, if price fell back through the stoploss at PHP 46.00 [3], the stoploss would close the long and the stop and reverse order would go short.'),
                 ),
                 course_chart('r4-v',
                     notes=('The bullish Oops is the mirror image: gap down, buy-stop at the previous low, stoploss at the new low.', 'Gold 1 the open below bar 1, red 2 the buy-stop at 48.00, blue 3 the new low where the stoploss sits.'),
@@ -4452,6 +4454,25 @@ CHAPTER = Chapter(
                     shows="Two invented bars: bar 1's low is PHP 48.00; bar 2 opens at PHP 47.00, dips to PHP 46.00 and rises to PHP 49.00, with the buy-stop at 48.00 and the stoploss at 46.00 drawn as levels.",
                     tier='core',
                     marks=(),
+                ),
+                CourseCheck(
+                    notes=('Both answers are on the Oops slides: the buy-stop at the previous low, and stop and reverse once the entry has filled.',),
+                    origin='Questions are ours and answerable from the preceding Oops slides.',
+                    label="From the two Oops setups",
+                    questions=(
+                        Question(
+                            stem="After a gap down, where does Lim place the Williams' Oops buy-stop?",
+                            options=("At the new bar's low", "At the previous bar's high", "At the previous bar's low", "At the new bar's open"),
+                            answer='C',
+                            reason="If the new bar opens below the previous bar's low, Lim places the buy-stop at the previous bar's low; the stoploss goes at the new bar's low (p. 231).",
+                        ),
+                        Question(
+                            stem='A bearish Oops sell-stop has filled. What does Lim say happens if price then rises through the stoploss?',
+                            options=('Nothing; we hold the short', 'A stop and reverse order is initiated there', 'We add to the short', 'We move the stoploss higher'),
+                            answer='B',
+                            reason='If price reverses, a stop and reverse order is initiated at the stoploss level (p. 231): the short is closed and a long is opened.',
+                        ),
+                    ),
                 ),
                 WidePair(
                     notes=('This is the book\'s own bearish Oops. Gold 1 is the Oops bar, which opens above the previous bar\'s high.', 'Red 2 is the sell-stop at the previous high and blue 3 the stop and reverse buy-stop at the current bar\'s high, both as the book labels them.', 'Keep it honest: the arrow is the expected move in this example, not a promise.'),
@@ -4467,37 +4488,37 @@ CHAPTER = Chapter(
                         number='7.37',
                         shows="The right side of the book's daily Dynegy chart: the bearish Oops bar, the sell-stop at the previous bar's high, the stop and reverse buy-stop at the current bar's high, and the expected downside move.",
                         marks=(
-                            Mark(number=1, kind='box', x0=0.588, y0=0.545, x1=0.615, y1=0.71, color='gold', at=(0.567, 0.515), size=0.3),
-                            Mark(number=2, kind='line', x0=0.561, y0=0.61, x1=0.821, y1=0.61, color='red', at=(0.86, 0.625), size=0.3),
-                            Mark(number=3, kind='line', x0=0.54, y0=0.558, x1=0.821, y1=0.558, color='blue', at=(0.86, 0.5), size=0.3),
+                            Mark(number=1, kind='box', x0=0.588, y0=0.5376, x1=0.615, y1=0.7053, color='gold', at=(0.567, 0.5071), size=0.3),
+                            Mark(number=2, kind='line', x0=0.561, y0=0.6037, x1=0.821, y1=0.6037, color='red', at=(0.86, 0.619), size=0.3),
+                            Mark(number=3, kind='line', x0=0.54, y0=0.5508, x1=0.821, y1=0.5508, color='blue', at=(0.86, 0.4919), size=0.3),
                         ),
                         aspect=2.2189349112426036,
-                        crop=(0.4, 0.06, 0.0, 0.0),
+                        crop=(0.4, 0.075, 0.0, 0.0),
                     ),
                     text_w=4.6,
                 ),
                 WidePair(
-                    notes=('Lim says where to look: a bullish Oops in an uptrend, a bearish Oops in a downtrend.', 'Gold 1 is the fall from about 23.00 to about 19.50; red 2 is the bearish Oops bar in October.', 'The four candlestick names are only named in Chapter 7. Do not define them.'),
+                    notes=('Lim says where to look: a bullish Oops in an uptrend, a bearish Oops in a downtrend.', 'Gold 1 is the steep fall at the start of the chart; red 2 is the bearish Oops bar.', 'The four candlestick names are only named in Chapter 7. Do not define them.'),
                     origin='Lim (2016), p. 231, Figure 7.37. The marks are ours, added for teaching.',
                     left=Content(
                         title='Lim looks for each Oops in the direction of the trend',
-                        lines=('Lim adds when to look for an Oops: a bullish Oops in an uptrend and a bearish Oops in a downtrend (p. 231).', 'In Figure 7.37, Dynegy falls from about 23.00 in late July to about 19.50 in August [1], then drifts sideways, so the bearish Oops in October [2] comes after a fall.', 'Lim adds that the morning and evening star, piercing line and dark cloud cover candlestick patterns can help find Oops setups; Chapter 7 does not define them.'),
+                        lines=('Lim adds when to look: a bullish Oops in an uptrend and a bearish Oops in a downtrend (p. 231).', 'In Figure 7.37, Dynegy falls steeply [1], then drifts sideways, so the bearish Oops [2] comes after a fall.', 'Lim says the morning and evening star, piercing line and dark cloud cover candlesticks can help find setups; Chapter 7 does not define them.'),
                     ),
                     picture=Figure(
                         origin='Lim (2016), p. 231, Figure 7.37. The marks are ours, added for teaching.',
                         title="Figure 7.37: the trend before the Oops",
                         number='7.37',
-                        shows="The book's whole daily Dynegy chart: a fall from about 23.00 to about 19.50, a sideways stretch, and the bearish Oops bar in October.",
+                        shows="The book's whole daily Dynegy chart: a steep fall, a sideways stretch, and the bearish Oops bar.",
                         marks=(
                             Mark(number=1, kind='arrow', x0=0.12, y0=0.10, x1=0.21, y1=0.52, color='gold', at=(0.22, 0.30), size=0.3),
                             Mark(number=2, kind='box', x0=0.753, y0=0.57, x1=0.769, y1=0.73, color='red', at=(0.81, 0.47), size=0.3),
                         ),
                         aspect=2.2189349112426036,
                     ),
-                    text_w=5.2,
+                    text_w=4.0,
                 ),
                 Content(
-                    notes=('Name the pattern and its two parts before any number: an inside day, and the narrowest range of the last n bars.', 'Both parts are already known: the inside bar from Part 3 and the range from Part 1.', 'Lim gives no reason for the name volatility breakout; say that our plain reading is ours.'),
+                    notes=('Name the pattern and its two parts before any number: an inside day, and the narrowest range of the last n bars.', 'Both parts are already known: the inside bar from Part 3 and the range from Part 1.'),
                     origin='Lim (2016), p. 232, with the inside bar from Part 3 and the range from Part 1.',
                     title='ID/NR looks for the quietest bar, sitting inside the one before',
                     lines=('The second pattern is the Inside Day Narrow Range pattern, or ID/NR. Lim calls it a volatility breakout pattern and says an ID/NR n pattern is an inside day breakout from the narrowest bar over the last n days (p. 232).', "It joins two ideas we already have. An inside day is a bar whose high and low stay within the previous bar's range, the inside bar of Part 3. Narrow range uses Part 1's range, the high minus the low: the bar must be the narrowest of the last n bars."),
@@ -4510,12 +4531,12 @@ CHAPTER = Chapter(
                     accent='ID/NR tells us when to watch, not which way price will go.',
                 ),
                 Content(
-                    notes=('Read the six ranges first, then bar 6: gold 1 its range of 1.2, inside bar 5.', "Red 2 and blue 3 are bar 5's high and low, the two trigger levels, as the book's drawing on the next slide places them."),
+                    notes=('Read the six ranges first: each bar is quieter than the one before.', 'Gold 1 is bar 6\'s range, inside bar 5. Red 2 and blue 3 are bar 5\'s high and low, the two trigger levels, as the book\'s drawing on the next slide places them.'),
                     title='Here is an ID/NR6 with prices of ours',
-                    lines=('Here are six daily bars of ours, with each range, the high minus the low, written under its bar. The ranges are 4.0, 3.2, 2.8, 2.1, 1.6 and 1.2, so each bar is quieter than the one before.', "Bar 6's range of 1.2 is the narrowest of all six [1], and its high of 54.60 and low of 53.40 stay inside bar 5's range, 53.20 to 54.80. So bar 6 is an inside day and the narrowest of the last six bars: an ID/NR6.", "We set the trigger levels where Lim's drawing on the next slide puts them, at the bar that holds the inside bar: a long trigger at bar 5's high, PHP 54.80 [2], and a short trigger at its low, PHP 53.20 [3]. A break above 54.80 points up; a break below 53.20 points down."),
+                    lines=('Here are six daily bars of ours, with each range, the high minus the low, written under its bar. The ranges are 4.0, 3.2, 2.8, 2.1, 1.6 and 1.2, so each bar is quieter than the one before.', "Bar 6's range of 1.2 is the narrowest of all six [1], and its high of 54.60 and low of 53.40 stay inside bar 5's range, 53.20 to 54.80. That makes bar 6 an inside day and the narrowest of the last six bars: an ID/NR6.", "We set the trigger levels where Lim's drawing on the next slide puts them, at the bar that holds the inside bar: a long trigger at bar 5's high, PHP 54.80 [2], and a short trigger at its low, PHP 53.20 [3]. A break above 54.80 points up; a break below 53.20 points down."),
                 ),
                 course_chart('r4-o',
-                    notes=('Read the six ranges first, then bar 6: gold 1 its range of 1.2, inside bar 5.', "Red 2 and blue 3 are bar 5's high and low, the two trigger levels, as the book's drawing on the next slide places them."),
+                    notes=('Read the six ranges first: each bar is quieter than the one before.', 'Gold 1 is bar 6\'s range, inside bar 5. Red 2 and blue 3 are bar 5\'s high and low, the two trigger levels, as the book\'s drawing on the next slide places them.'),
                     origin='Chart O is ours, with invented PHP ranges to show Lim (2016), p. 232.',
                     title='Here is an ID/NR6 with prices of ours',
                     letter='O',
@@ -4539,8 +4560,8 @@ CHAPTER = Chapter(
                         marks=(
                             Mark(number=1, kind='line', x0=0.08, y0=0.86, x1=0.465, y1=0.86, color='gold', at=(0.045, 0.86), size=0.3),
                             Mark(number=2, kind='box', x0=0.36, y0=0.575, x1=0.47, y1=0.74, color='red', at=(0.40, 0.785), size=0.3),
-                            Mark(number=3, kind='line', x0=0.48, y0=0.585, x1=0.62, y1=0.585, color='blue', at=(0.56, 0.635), size=0.3),
-                            Mark(number=4, kind='line', x0=0.48, y0=0.72, x1=0.62, y1=0.72, color='purple', at=(0.56, 0.77), size=0.3),
+                            Mark(number=3, kind='line', x0=0.53, y0=0.585, x1=0.62, y1=0.585, color='blue', at=(0.575, 0.635), size=0.3),
+                            Mark(number=4, kind='line', x0=0.53, y0=0.72, x1=0.62, y1=0.72, color='purple', at=(0.575, 0.77), size=0.3),
                         ),
                         aspect=0.9801192842942346,
                     ),
@@ -4560,6 +4581,25 @@ CHAPTER = Chapter(
                     tier='core',
                     marks=(),
                 ),
+                CourseCheck(
+                    notes=('Both answers are in the body text: the n counts the last n bars, and Lim gives ID/NR no sentiment.',),
+                    origin='Questions are ours and answerable from the preceding ID/NR slides.',
+                    label='Counting an ID/NR pattern',
+                    questions=(
+                        Question(
+                            stem='What does the 6 in ID/NR6 count?',
+                            options=('Six inside days in a row', 'Six days of rising volume', 'Six bars after the breakout', 'The last six bars, the inside bar included'),
+                            answer='D',
+                            reason='An ID/NR n pattern is an inside day breakout from the narrowest bar over the last n days, so ID/NR6 counts the last six bars (p. 232).',
+                        ),
+                        Question(
+                            stem='Does an ID/NR pattern carry bullish sentiment?',
+                            options=('No; Lim says it has no bearish or bullish sentiment', 'Yes; it always breaks upward', 'Only in an uptrend', 'Only on monthly bars'),
+                            answer='A',
+                            reason='Lim says the pattern has no bearish or bullish sentiment associated with it; the breakout can occur in either direction (p. 232).',
+                        ),
+                    ),
+                ),
                 WidePair(
                     notes=('Lim: no bearish or bullish sentiment, and the breakout can go either way.', 'Gold 1 and red 2 are the two triggers. Blue 3 is the long arrow in this drawing, which runs down through the short trigger.', 'The practical rule: count, confirm the inside bar, then wait.'),
                     origin='Lim (2016), p. 232, Figure 7.38. The marks are ours, added for teaching.',
@@ -4573,8 +4613,8 @@ CHAPTER = Chapter(
                         number='7.38',
                         shows="Figure 7.38's ID/NR6 drawing, with its long and short trigger levels and the long arrow from bar 7 running down through the short trigger.",
                         marks=(
-                            Mark(number=1, kind='line', x0=0.48, y0=0.585, x1=0.62, y1=0.585, color='gold', at=(0.56, 0.635), size=0.3),
-                            Mark(number=2, kind='line', x0=0.48, y0=0.72, x1=0.62, y1=0.72, color='red', at=(0.56, 0.77), size=0.3),
+                            Mark(number=1, kind='line', x0=0.53, y0=0.585, x1=0.62, y1=0.585, color='gold', at=(0.575, 0.635), size=0.3),
+                            Mark(number=2, kind='line', x0=0.53, y0=0.72, x1=0.62, y1=0.72, color='red', at=(0.575, 0.77), size=0.3),
                             Mark(number=3, kind='circle', x0=0.41, y0=0.93, x1=0.47, y1=0.995, color='blue', at=(0.52, 0.955), size=0.3),
                         ),
                         aspect=0.9801192842942346,
@@ -4584,7 +4624,7 @@ CHAPTER = Chapter(
                 Content(
                     notes=('Same rule, one bar a month. Gold 1 is bar 5, the inside month and the narrowest of five.', "Red 2 is bar 5's high, PHP 30.00; blue 3 is bar 6's close, PHP 36.00, after the upward breakout."),
                     title='The same pattern works on monthly bars',
-                    lines=('Lim also applies the pattern to monthly bars, where he calls it Inside Month/NR5 (p. 232). Here are six monthly bars of ours, one bar a month. The first five have ranges of 12, 10, 9, 7 and 5.', "Bar 5's range of 5 is the narrowest of the five [1], and its high of 30.00 and low of 25.00 stay inside bar 4's range, 24.00 to 31.00. So bar 5 is an inside month and the narrowest of the last five: an Inside Month/NR5.", "Then bar 6 breaks out upward. It rises through bar 5's high of PHP 30.00 [2] and bar 4's high of PHP 31.00, and closes at PHP 36.00 [3], PHP 8.00 above bar 5's close of PHP 28.00."),
+                    lines=('Lim also applies the pattern to monthly bars, where he calls it Inside Month/NR5 (p. 232). Here are six monthly bars of ours, one bar a month. The first five have ranges of 12, 10, 9, 7 and 5.', "Bar 5's range of 5 is the narrowest of the five [1], and its high of 30.00 and low of 25.00 stay inside bar 4's range, 24.00 to 31.00. That makes bar 5 an inside month and the narrowest of the last five: an Inside Month/NR5.", "Bar 6 then breaks out upward: it rises through bar 5's high of PHP 30.00 [2] and bar 4's high of PHP 31.00, and closes at PHP 36.00 [3], PHP 8.00 above bar 5's close of PHP 28.00."),
                 ),
                 course_chart('r4-w',
                     notes=('Same rule, one bar a month. Gold 1 is bar 5, the inside month and the narrowest of five.', "Red 2 is bar 5's high, PHP 30.00; blue 3 is bar 6's close, PHP 36.00, after the upward breakout."),
@@ -4600,13 +4640,13 @@ CHAPTER = Chapter(
                     origin='Lim (2016), p. 232, Figure 7.39. The crop and marks are ours, added for teaching.',
                     left=Content(
                         title='Figure 7.39 shows an Inside Month/NR5 breakout',
-                        lines=("Figure 7.39 is Lim's Inside Month/NR5 on the monthly chart of Dynegy Inc. (p. 232). February [1] sits inside January and is the narrowest of the last five months, October to February [2].", "Here the dotted lines sit at February's own high and low, while Figure 7.38 drew them from the bar before the inside bar. Lim's text does not say which to use. In this example it does not matter: March [3] rises above both February's high and January's high."),
+                        lines=("Figure 7.39 is Lim's Inside Month/NR5 on Dynegy's monthly chart (p. 232). February [1] sits inside January and is the narrowest of the five months from October to February [2].", "Its dotted lines sit at February's own high and low, while Figure 7.38 drew them from the bar before the inside bar; Lim's text does not say which to use. Here March [3] rises above both, so the breakout is upward either way."),
                     ),
                     picture=Figure(
                         origin='Lim (2016), p. 232, Figure 7.39. The crop and marks are ours, added for teaching.',
                         title='Figure 7.39: Inside Month/NR5',
                         number='7.39',
-                        shows="The left part of the book's monthly Dynegy chart, September to April: February inside January, the five months October to February, and March's upside breakout.",
+                        shows="The left part of the book's monthly Dynegy chart, September to May: February inside January, the five months October to February, and March's upside breakout.",
                         marks=(
                             Mark(number=1, kind='box', x0=0.575, y0=0.517, x1=0.646, y1=0.674, color='gold', at=(0.611, 0.721), size=0.3),
                             Mark(number=2, kind='box', x0=0.116, y0=0.449, x1=0.661, y1=0.944, color='red', at=(0.082, 0.483), size=0.3),
@@ -4615,9 +4655,28 @@ CHAPTER = Chapter(
                         aspect=2.1772151898734178,
                         crop=(0.0, 0.11, 0.44, 0.0),
                     ),
-                    text_w=5.2,
+                    text_w=4.0,
                 ),
                 CourseCheck(
+                    notes=('Both answers are in the body text of the monthly slides: the timeframe changes, the inside-and-narrowest rule stays.',),
+                    origin='Questions are ours and answerable from the preceding Inside Month/NR5 slides.',
+                    label='From Inside Month/NR5',
+                    questions=(
+                        Question(
+                            stem='What changes when ID/NR is read as Inside Month/NR5?',
+                            options=('The pattern turns bullish', 'Volume replaces range', 'Each bar is one month', 'The inside bar must be the widest'),
+                            answer='C',
+                            reason='Lim applies the same pattern to monthly bars, so each bar is one month (p. 232).',
+                        ),
+                        Question(
+                            stem='What stays the same in Inside Month/NR5?',
+                            options=('The breakout must be upward', 'The count is always seven bars', 'Every bar must close higher', 'The bar must sit inside the one before and be the narrowest of the last n'),
+                            answer='D',
+                            reason='The monthly pattern still needs an inside bar that is the narrowest of the last n bars, here five (p. 232).',
+                        ),
+                    ),
+                ),
+                CourseFigureCheck(
                     notes=('Both answers come from the body of the Part 4 slides: the Oops order rule and the ID/NR definition.', 'Do not reveal the answers here; the next slide gives the reasons.'),
                     origin="Questions are ours and answerable from the preceding Part 4 slides.",
                     label="From Williams' Oops and ID/NR",
@@ -4626,15 +4685,26 @@ CHAPTER = Chapter(
                             stem="After a gap up, the Williams' Oops sell-stop is placed at:",
                             options=("The previous bar's high", "The new bar's high", "The previous bar's low", 'The midpoint of both bars'),
                             answer='A',
-                            reason="If the new bar opens above the previous bar's high, Lim places the sell-stop at the previous bar's high; the new bar's high is the stoploss (p. 231).",
+                            reason="Lim places the sell-stop at the previous bar's high; the new bar's high is the stoploss (p. 231).",
                         ),
                         Question(
-                            stem='Why is ID/NR7 a volatility breakout pattern?',
-                            options=('It always breaks upward', 'It combines an inside day with the narrowest range in seven bars', 'It counts seven volume readings only', 'It requires seven bullish closes'),
+                            stem='Why is ID/NR7 a volatility breakout pattern, like the inside bar [1] in Figure 7.38?',
+                            options=('It always breaks upward', 'It breaks out of the narrowest, quietest bar of the last seven', 'It counts seven volume readings', 'It needs seven bullish closes'),
                             answer='B',
-                            reason='Lim names it a volatility breakout and defines ID/NR n as an inside day breakout from the narrowest bar over the last n days; for ID/NR7, n is seven (p. 232).',
+                            reason='Lim names it one and defines ID/NR n (p. 232) but gives no further reason. Our reading: the narrowest range is the quietest bar, so the breakout comes out of low volatility.',
                         ),
                     ),
+                    picture=Figure(
+                        origin='Lim (2016), p. 232, Figure 7.38. The mark is ours, added for teaching.',
+                        title='Figure 7.38: ID/NR6',
+                        number='7.38',
+                        shows="The book's ID/NR6 drawing, with the inside bar the book's arrow names, bar 7, marked inside bar 6.",
+                        marks=(
+                            Mark(number=1, kind='box', x0=0.36, y0=0.575, x1=0.47, y1=0.74, color='gold', at=(0.40, 0.785), size=0.3),
+                        ),
+                        aspect=0.9801192842942346,
+                    ),
+                    text_w=7.8,
                 ),
             ),
         ),
@@ -4652,8 +4722,8 @@ CHAPTER = Chapter(
             origin='Lim (2016), pp. 226 and 233, Figure 7.28. The crop and mark are ours, added for teaching.',
             left=Content(
                 title='Review question 1 starts with the exhaustion bar',
-                lines=('Review question 1 asks for the difference between exhaustion bars and pin bars (p. 233). Start with the exhaustion bar, which Lim regards as a reversal bar (p. 226).', "In an uptrend it opens above the previous bar's high and should close at or near its low, and there is no gap between it and the next bar. In a downtrend the reverse is true, as in Figure 7.28's bullish exhaustion bar [1] at a bottom (p. 226)."),
-                accent='An exhaustion bar marks the tired end of a run.',
+                lines=("Review question 1 asks how exhaustion bars and pin bars differ (p. 233). In an uptrend an exhaustion bar opens above the previous bar's high and should close at or near its low, and no gap follows it.", "In a downtrend the reverse is true, as in Figure 7.28's bullish exhaustion bar [1] at a bottom (p. 226).", "Its Gap label is the opening gap from the previous bar; the rule is that no gap follows the exhaustion bar."),
+                accent='Lim regards it as a reversal bar (p. 226).',
             ),
             picture=Figure(
                 origin='Lim (2016), p. 226, Figure 7.28. The crop and mark are ours, added for teaching.',
@@ -4666,7 +4736,7 @@ CHAPTER = Chapter(
                 aspect=2.246794871794872,
                 crop=(0.38, 0.25, 0.26, 0.0),
             ),
-            text_w=5.5,
+            text_w=5.8,
         ),
         WidePair(
             notes=("Gold 1 is the pin bar's tail below support; red 2 is the support line it breaches.", "Then give Lim's own answer to the question, from p. 227: the false impression and the low volume."),
@@ -4702,10 +4772,10 @@ CHAPTER = Chapter(
                 number='7.38',
                 shows="A crop of Figure 7.38 around bars 4 to 7, the inside bar the book's arrow names, and the two trigger levels.",
                 marks=(
-                    Mark(number=1, kind='box', x0=0.233, y0=0.467, x1=0.28, y1=0.64, color='gold', at=(0.33, 0.70), size=0.3),
+                    Mark(number=1, kind='box', x0=0.2123, y0=0.4444, x1=0.2603, y1=0.625, color='gold', at=(0.3116, 0.6875), size=0.3),
                 ),
                 aspect=0.9801192842942346,
-                crop=(0.25, 0.25, 0.0, 0.0),
+                crop=(0.27, 0.28, 0.0, 0.0),
             ),
             text_w=6.0,
         ),
@@ -4722,11 +4792,11 @@ CHAPTER = Chapter(
                 number='7.15',
                 shows="A crop of Figure 7.15: Apple's key reversal day after the uptrend, and its volume bar above the 20-day average.",
                 marks=(
-                    Mark(number=1, kind='box', x0=0.455, y0=0.02, x1=0.49, y1=0.21, color='gold', at=(0.53, 0.05), size=0.3),
-                    Mark(number=2, kind='box', x0=0.458, y0=0.86, x1=0.49, y1=1.0, color='red', at=(0.53, 0.81), size=0.3),
+                    Mark(number=1, kind='box', x0=0.455, y0=0.004, x1=0.49, y1=0.197, color='gold', at=(0.53, 0.07), size=0.3),
+                    Mark(number=2, kind='box', x0=0.458, y0=0.858, x1=0.49, y1=1.0, color='red', at=(0.53, 0.807), size=0.3),
                 ),
                 aspect=1.6973365617433414,
-                crop=(0.22, 0.06, 0.05, 0.0),
+                crop=(0.22, 0.075, 0.05, 0.0),
             ),
             text_w=5.5,
         ),
@@ -4783,8 +4853,8 @@ CHAPTER = Chapter(
                 number='7.25',
                 shows="The price panel of Figure 7.25 around the two inside bars the book numbers 1 and 2, both at the same resistance level.",
                 marks=(
-                    Mark(number=1, kind='box', x0=0.258, y0=0.082, x1=0.352, y1=0.313, color='gold', at=(0.30, 0.38), size=0.3),
-                    Mark(number=2, kind='box', x0=0.436, y0=0.082, x1=0.515, y1=0.381, color='red', at=(0.475, 0.45), size=0.3),
+                    Mark(number=1, kind='box', x0=0.258, y0=0.082, x1=0.314, y1=0.313, color='gold', at=(0.29, 0.38), size=0.3),
+                    Mark(number=2, kind='box', x0=0.436, y0=0.082, x1=0.487, y1=0.381, color='red', at=(0.467, 0.45), size=0.3),
                 ),
                 aspect=1.671641791044776,
                 crop=(0.45, 0.0, 0.0, 0.33),
@@ -4796,7 +4866,7 @@ CHAPTER = Chapter(
             origin='Lim (2016), pp. 217, 225 and 233, Figure 7.25. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='Review question 8 points ahead to Chapter 8',
-                lines=('Review question 8 asks how we would use oscillators to gauge how bearish or bullish a bar reversal pattern is (p. 233). Chapter 7 shows only that they can agree.', 'In Figure 7.25, the book labels a bearish divergence [2] between the oscillator panel, StochRSI, and inside bar 2 [1] (p. 225). Lim also lists divergences between price, volume and oscillators as the 16th reversal characteristic (p. 217).', 'How to read the oscillators themselves is Chapter 8, so for now we treat their agreement as extra evidence, not a method.'),
+                lines=('Review question 8 asks how we would use oscillators to gauge how bearish or bullish a bar reversal pattern is (p. 233). Chapter 7 shows only that they can agree.', 'In Figure 7.25, the book labels a bearish divergence [2] between the oscillator panel, StochRSI, and inside bar 2 [1] (p. 225): the oscillator falls while price makes inside bar 2 at resistance, so it agrees with the bearish reversal reading. Lim also lists divergences between price, volume and oscillators as the 16th reversal characteristic (p. 217).', 'How to read the oscillators themselves is Chapter 8, so for now we treat their agreement as extra evidence, not a method.'),
             ),
             picture=Figure(
                 origin='Lim (2016), p. 225, Figure 7.25. The crop and marks are ours, added for teaching.',
@@ -4804,7 +4874,7 @@ CHAPTER = Chapter(
                 number='7.25',
                 shows="The right part of Figure 7.25: inside bar 2 at resistance and, below it, the StochRSI panel with the book's bearish divergence line.",
                 marks=(
-                    Mark(number=1, kind='box', x0=0.436, y0=0.055, x1=0.515, y1=0.255, color='gold', at=(0.40, 0.30), size=0.3),
+                    Mark(number=1, kind='box', x0=0.436, y0=0.055, x1=0.487, y1=0.255, color='gold', at=(0.40, 0.30), size=0.3),
                     Mark(number=2, kind='box', x0=0.273, y0=0.736, x1=0.473, y1=0.815, color='red', at=(0.24, 0.775), size=0.3),
                 ),
                 aspect=1.671641791044776,

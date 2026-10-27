@@ -119,10 +119,6 @@ def chart_slides(asset, title, lines, *, figure=None, notes=(), origin=''):
 def page_specs(spec):
     if spec['special']:
         return ((0, 0, 0),)
-    if spec['owner']=='r3b' and spec['letter']=='LG':
-        # Keep both crossing pairs intact rather than splitting the second
-        # pair at a page boundary.
-        return ((0,0,3),(0,3,6),(0,6,9),(0,9,11),(0,11,14))
     result = []
     for cell_index, cell in enumerate(spec['items']):
         count = max(max(len(p.bars), len(p.line), len(p.columns), 1) for p in cell.panes)
@@ -1216,7 +1212,9 @@ def layout(key, page=0):
                     for index,x in zip(range(start,end),xs):
                         text(x,.39,spec['line_captions'][index],color=ck.MUTED)
                 elif pane.line:
-                    semantic=[f'Bar {i+1}: {label}' for i in range(start,end) for label in semantic_labels(pane,i)]
+                    # A cell that continues an earlier one keeps the bar numbers it began with.
+                    offset=spec.get('bar_offsets',{}).get(cell_index,0)
+                    semantic=[f'Bar {i+1+offset}: {label}' for i in range(start,end) for label in semantic_labels(pane,i)]
                     for volume in cell.panes:
                         if volume.columns:
                             semantic.extend(f'Bar {i+1}: {label}' for i,label in volume.tags if not re.match(r'^[0-9.]+m$',label))
@@ -1258,7 +1256,7 @@ def layout(key, page=0):
                             groups[c_,first,name]=bounds
                             targets[c_,first,name]=(bounds[2],(bounds[1]+bounds[3])/2)
     caption = spec.get('caption', CAPTION)
-    if authored and not any(p.columns for c in spec['items'] for p in c.panes):
+    if (authored or spec['owner'] in ('r3a','r3b')) and not any(p.columns for c in spec['items'] for p in c.panes):
         # Say volume only where the chart draws it (rp2x3 finding 4).
         caption = PRICE_CAPTION
     text(W/2,.02,caption,color=ck.MUTED,va='bottom')

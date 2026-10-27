@@ -823,12 +823,19 @@ def _marks(fig, targets, specs, boxes, segments, groups, brackets=None, authored
             own_box = None
         assert not any(_circle_box(cx, cy, radius, b) for b in boxes), (spec, 'ring crosses text')
         found = None
+        if bracket and target[2] == 'span':
+            # A range bracket keeps its badge at mid-height, a badge-width
+            # clear to its left, joined by a hairline (rp4x2 finding 1).
+            gap = .3 * ck.DPI
+            bx, by = cx - gap - badge_r, cy
+            assert not any(_circle_box(bx, by, badge_r + 2, b) for b in boxes), (spec, 'bracket badge crosses text')
+            found = (bx, by, (cx - 5, cy), (bx + badge_r, by), gap)
         # Authored charts keep each badge clearly off every tick and label
         # (rp2x2 finding 2); the owners' charts keep their validated layout.
         clear = 8 if authored else 1
         # Try direct contact first. Firstmate's 012 instruction permits the
         # nearest clear badge joined to its ring by a same-colour hairline.
-        for extra in range(0, int(2*ck.DPI), 4):
+        for extra in ([] if found else range(0, int(2*ck.DPI), 4)):
             distance = radius + badge_r + extra
             for angle in range(0, 360, 5):
                 theta = math.radians(angle)
@@ -867,6 +874,13 @@ def _marks(fig, targets, specs, boxes, segments, groups, brackets=None, authored
             leaders.append((spec['number'],extra/ck.DPI))
         circles.extend((((cx, cy), radius), ((bx, by), badge_r)))
         bounds=groups.get(target,(cx-radius,cy-radius,cx+radius,cy+radius))
+        if bracket and target[2] == 'span':
+            # Caps at the high and low ticks make the bracket read as a span.
+            color='#'+str(dk.MARK_COLORS[spec['color']])
+            for y in (bracket[1], bracket[2]):
+                fig.add_artist(Line2D(((bracket[0]-1)/ck.DPI,(bracket[0]+.09*ck.DPI)/ck.DPI),
+                                      (y/ck.DPI,y/ck.DPI),transform=fig.dpi_scale_trans,
+                                      color=color,lw=3.5))
         if bracket:
             result.append(dk.Mark(spec['number'], 'line',
                                   bracket[0]/fig.bbox.width, 1-bracket[1]/fig.bbox.height,

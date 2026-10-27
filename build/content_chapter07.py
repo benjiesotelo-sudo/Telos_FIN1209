@@ -4558,8 +4558,8 @@ CHAPTER = Chapter(
                         number='7.38',
                         shows="The book's ID/NR6 drawing: seven numbered bars, bar 7 labelled as the inside bar with the narrowest range of the last six, and long and short trigger levels at bar 6's high and low.",
                         marks=(
-                            Mark(number=1, kind='line', x0=0.08, y0=0.86, x1=0.465, y1=0.86, color='gold', at=(0.045, 0.86), size=0.3),
-                            Mark(number=2, kind='box', x0=0.36, y0=0.575, x1=0.47, y1=0.74, color='red', at=(0.40, 0.785), size=0.3),
+                            Mark(number=1, kind='line', x0=0.08, y0=0.86, x1=0.43, y1=0.86, color='gold', at=(0.045, 0.86), size=0.3),
+                            Mark(number=2, kind='box', x0=0.36, y0=0.575, x1=0.46, y1=0.74, color='red', at=(0.40, 0.785), size=0.3),
                             Mark(number=3, kind='line', x0=0.53, y0=0.585, x1=0.62, y1=0.585, color='blue', at=(0.575, 0.635), size=0.3),
                             Mark(number=4, kind='line', x0=0.53, y0=0.72, x1=0.62, y1=0.72, color='purple', at=(0.575, 0.77), size=0.3),
                         ),
@@ -4601,11 +4601,11 @@ CHAPTER = Chapter(
                     ),
                 ),
                 WidePair(
-                    notes=('Lim: no bearish or bullish sentiment, and the breakout can go either way.', 'Gold 1 and red 2 are the two triggers. Blue 3 is the long arrow in this drawing, which runs down through the short trigger.', 'The practical rule: count, confirm the inside bar, then wait.'),
+                    notes=('Lim: no bearish or bullish sentiment, and the breakout can go either way.', 'Gold 1 and red 2 are the two triggers. Blue 3 is the tall arrow in this drawing, which points down through the short trigger.', 'The practical rule: count, confirm the inside bar, then wait.'),
                     origin='Lim (2016), p. 232, Figure 7.38. The marks are ours, added for teaching.',
                     left=Content(
                         title='ID/NR has no direction until price breaks a trigger',
-                        lines=('Lim says the ID/NR pattern has no bearish or bullish sentiment associated with it, and the breakout can occur in either direction (p. 232).', 'That is why Figure 7.38 draws two triggers. A break above the long trigger level [1] would point up, and a break below the short trigger level [2] would point down. In this drawing the long arrow from bar 7 [3] runs down through the short trigger.', 'So we count the bars, confirm the inside bar, and then wait to see which trigger price breaks.'),
+                        lines=('Lim says the ID/NR pattern has no bearish or bullish sentiment associated with it, and the breakout can occur in either direction (p. 232).', 'That is why Figure 7.38 draws two triggers. A break above the long trigger level [1] would point up, and a break below the short trigger level [2] would point down. In this drawing the tall arrow from bar 7 [3] points down through the short trigger.', 'So we count the bars, confirm the inside bar, and then wait to see which trigger price breaks.'),
                     ),
                     picture=Figure(
                         origin='Lim (2016), p. 232, Figure 7.38. The marks are ours, added for teaching.',
@@ -4689,20 +4689,21 @@ CHAPTER = Chapter(
                         ),
                         Question(
                             stem='Why is ID/NR7 a volatility breakout pattern, like the inside bar [1] in Figure 7.38?',
-                            options=('It always breaks upward', 'It breaks out of the narrowest, quietest bar of the last seven', 'It counts seven volume readings', 'It needs seven bullish closes'),
+                            options=('It always breaks upward', 'It is an inside day breaking out from the narrowest bar of the last seven (p. 232)', 'It counts volume', 'It needs seven up closes'),
                             answer='B',
-                            reason='Lim names it one and defines ID/NR n (p. 232) but gives no further reason. Our reading: the narrowest range is the quietest bar, so the breakout comes out of low volatility.',
+                            reason='Lim calls it a volatility breakout pattern and defines ID/NR n as an inside day breakout from the narrowest bar over the last n days (p. 232). He gives no further reason; that the narrowest bar is the quietest is our reading.',
                         ),
                     ),
                     picture=Figure(
                         origin='Lim (2016), p. 232, Figure 7.38. The mark is ours, added for teaching.',
                         title='Figure 7.38: ID/NR6',
                         number='7.38',
-                        shows="The book's ID/NR6 drawing, with the inside bar the book's arrow names, bar 7, marked inside bar 6.",
+                        shows="A crop of the book's ID/NR6 drawing around bars 5 to 7, with bar 7, the inside bar the book's arrow names, marked.",
                         marks=(
-                            Mark(number=1, kind='box', x0=0.36, y0=0.575, x1=0.47, y1=0.74, color='gold', at=(0.40, 0.785), size=0.3),
+                            Mark(number=1, kind='box', x0=0.2123, y0=0.4444, x1=0.2603, y1=0.625, color='gold', at=(0.3116, 0.6875), size=0.3),
                         ),
                         aspect=0.9801192842942346,
+                        crop=(0.27, 0.28, 0.0, 0.0),
                     ),
                     text_w=7.8,
                 ),

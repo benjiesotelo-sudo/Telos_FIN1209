@@ -30,7 +30,7 @@ class ChartLayoutTests(unittest.TestCase):
                 fig, marks = layout(key, page)
                 texts = [text.get_text() for text in fig.texts]
                 caption = spec.get('caption', CAPTION)
-                if spec.get('owner') == 'p2' and not any(p.columns for c in spec['items'] for p in c.panes):
+                if spec.get('owner') in ('p2', 'r3a', 'r3b') and not any(p.columns for c in spec['items'] for p in c.panes):
                     caption = PRICE_CAPTION   # volume is claimed only where it is drawn
                 self.assertEqual(texts.count(caption), 1, key)
                 self.assertTrue(all('Ours, invented' not in text for text in texts))

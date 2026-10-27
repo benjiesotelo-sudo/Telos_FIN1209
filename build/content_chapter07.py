@@ -4533,7 +4533,7 @@ CHAPTER = Chapter(
                 Content(
                     notes=('Read the six ranges first: each bar is quieter than the one before.', 'Gold 1 is bar 6\'s range, inside bar 5. Red 2 and blue 3 are bar 5\'s high and low, the two trigger levels, as the book\'s drawing on the next slide places them.'),
                     title='Here is an ID/NR6 with prices of ours',
-                    lines=('Here are six daily bars of ours, with each range, the high minus the low, written under its bar. The ranges are 4.0, 3.2, 2.8, 2.1, 1.6 and 1.2, so each bar is quieter than the one before.', "Bar 6's range of 1.2 is the narrowest of all six [1], and its high of 54.60 and low of 53.40 stay inside bar 5's range, 53.20 to 54.80. That makes bar 6 an inside day and the narrowest of the last six bars: an ID/NR6.", "We set the trigger levels where Lim's drawing on the next slide puts them, at the bar that holds the inside bar: a long trigger at bar 5's high, PHP 54.80 [2], and a short trigger at its low, PHP 53.20 [3]. A break above 54.80 points up; a break below 53.20 points down."),
+                    lines=('Here are six daily bars of ours, with each range, the high minus the low, written under its bar. The ranges are 4.0, 3.2, 2.8, 2.1, 1.6 and 1.2, so each bar is quieter than the one before.', "Bar 6's range of 1.2 is the narrowest of all six [1], and its high of 54.60 and low of 53.40 stay inside bar 5's range, 53.20 to 54.80. That makes bar 6 an inside day and the narrowest of the last six bars [1]: an ID/NR6.", "We set the trigger levels where Lim's drawing on the next slide puts them, at the bar that holds the inside bar: a long trigger at bar 5's high, PHP 54.80 [2], and a short trigger at its low, PHP 53.20 [3]. A break above 54.80 points up; a break below 53.20 points down."),
                 ),
                 course_chart('r4-o',
                     notes=('Read the six ranges first: each bar is quieter than the one before.', 'Gold 1 is bar 6\'s range, inside bar 5. Red 2 and blue 3 are bar 5\'s high and low, the two trigger levels, as the book\'s drawing on the next slide places them.'),
@@ -4624,7 +4624,7 @@ CHAPTER = Chapter(
                 Content(
                     notes=('Same rule, one bar a month. Gold 1 is bar 5, the inside month and the narrowest of five.', "Red 2 is bar 5's high, PHP 30.00; blue 3 is bar 6's close, PHP 36.00, after the upward breakout."),
                     title='The same pattern works on monthly bars',
-                    lines=('Lim also applies the pattern to monthly bars, where he calls it Inside Month/NR5 (p. 232). Here are six monthly bars of ours, one bar a month. The first five have ranges of 12, 10, 9, 7 and 5.', "Bar 5's range of 5 is the narrowest of the five [1], and its high of 30.00 and low of 25.00 stay inside bar 4's range, 24.00 to 31.00. That makes bar 5 an inside month and the narrowest of the last five: an Inside Month/NR5.", "Bar 6 then breaks out upward: it rises through bar 5's high of PHP 30.00 [2] and bar 4's high of PHP 31.00, and closes at PHP 36.00 [3], PHP 8.00 above bar 5's close of PHP 28.00."),
+                    lines=('Lim also applies the pattern to monthly bars, where he calls it Inside Month/NR5 (p. 232). Here are six monthly bars of ours, one bar a month. The first five have ranges of 12, 10, 9, 7 and 5.', "Bar 5's range of 5 is the narrowest of the five [1], and its high of 30.00 and low of 25.00 stay inside bar 4's range, 24.00 to 31.00. That makes bar 5 an inside month and the narrowest of the last five [1]: an Inside Month/NR5.", "Bar 6 then breaks out upward: it rises through bar 5's high of PHP 30.00 [2] and bar 4's high of PHP 31.00, and closes at PHP 36.00 [3], PHP 8.00 above bar 5's close of PHP 28.00."),
                 ),
                 course_chart('r4-w',
                     notes=('Same rule, one bar a month. Gold 1 is bar 5, the inside month and the narrowest of five.', "Red 2 is bar 5's high, PHP 30.00; blue 3 is bar 6's close, PHP 36.00, after the upward breakout."),
@@ -4689,9 +4689,9 @@ CHAPTER = Chapter(
                         ),
                         Question(
                             stem='Why is ID/NR7 a volatility breakout pattern, like the inside bar [1] in Figure 7.38?',
-                            options=('It always breaks upward', 'It is an inside day breaking out from the narrowest bar of the last seven (p. 232)', 'It counts volume', 'It needs seven up closes'),
+                            options=('It always breaks upward', 'It is an inside day breaking out from the narrowest bar of the last seven', 'It counts volume', 'It needs seven up closes'),
                             answer='B',
-                            reason='Lim names it one and defines ID/NR n (p. 232) but gives no further reason; that the narrowest bar is the quietest is our reading.',
+                            reason='Lim calls ID/NR a volatility breakout pattern and defines ID/NR n as an inside day breakout from the narrowest bar over the last n days (p. 232). He gives no other reason. Reading the narrowest bar as the quietest is ours, not his.',
                         ),
                     ),
                     picture=Figure(

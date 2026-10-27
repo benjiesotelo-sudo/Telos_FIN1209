@@ -25,6 +25,7 @@ from matplotlib.transforms import Bbox
 WIDTH, HEIGHT = ck.FIG_W, ck.FIG_H
 FONT = 16.5
 CAPTION = 'Prices and volume are invented for teaching.'
+PRICE_CAPTION = 'Prices are invented for teaching.'
 
 
 @dataclass
@@ -33,6 +34,9 @@ class CourseChart(dk.Chart):
     page: int = 0
     display_letter: str = ''
     teaching: tuple[str, ...] = ()
+    # A crop of the book's own drawing of the same form, shown beside a
+    # narrower chart; the sentences read the chart, whose marks they name.
+    figure: dk.Figure | None = None
 
     @property
     def filename(self):
@@ -50,6 +54,66 @@ class CourseChart(dk.Chart):
 def course_chart(asset, **kwargs):
     """Keep displayed owner letters while namespacing conflicting assets."""
     return CourseChart(asset=asset, display_letter=kwargs['letter'], **kwargs)
+
+
+def book_crop(number, window, shows, marks=(), masks=()):
+    """One drawing cut from a book figure: ``window`` is the part kept,
+    (left, top, right, bottom) as fractions of the whole figure, measured
+    on a gridded render of the artwork."""
+    import json
+    from pathlib import Path
+    sizes = json.loads((Path(__file__).resolve().parents[1] / 'chapter-07' /
+                        'figure-sizes.json').read_text())['figures']
+    major, minor = number.split('.')
+    w, h = sizes[f'figure-{major}-{int(minor):02d}.png']
+    x0, y0, x1, y1 = window
+    # Marks are written in fractions of the whole figure, as read off the
+    # grid, and moved here into fractions of the part shown.
+    def fx(x): return (x - x0) / (x1 - x0)
+    def fy(y): return (y - y0) / (y1 - y0)
+    shown = tuple(replace(m, x0=fx(m.x0), y0=fy(m.y0), x1=fx(m.x1), y1=fy(m.y1),
+                          at=None if m.at is None else (fx(m.at[0]), fy(m.at[1])))
+                  for m in marks)
+    figure = dk.Figure(number=number, shows=shows, aspect=w / h, marks=shown,
+                       crop=(x0, y0, 1 - x1, 1 - y1))
+    # A neighbouring drawing that no straight cut can exclude is painted
+    # over on the slide; (left, top, right, bottom) in whole-figure fractions.
+    figure.masks = tuple(masks)
+    return figure
+
+
+def _paint_masks(slide, figure):
+    """Cover each mask of a placed book crop with paper-white."""
+    masks = getattr(figure, 'masks', ())
+    if not masks:
+        return
+    pictures = [p for p in slide.shapes if p.shape_type == 13]
+    if not pictures:
+        return
+    pic = pictures[-1]
+    cl, ct, cr, cb = figure.crop
+    for x0, y0, x1, y1 in masks:
+        fx = lambda x: (x - cl) / (1 - cl - cr)
+        fy = lambda y: (y - ct) / (1 - ct - cb)
+        left = pic.left + int(pic.width * max(0, fx(x0)))
+        top = pic.top + int(pic.height * max(0, fy(y0)))
+        right = pic.left + int(pic.width * min(1, fx(x1)))
+        bottom = pic.top + int(pic.height * min(1, fy(y1)))
+        dk._rect(slide, left, top, right - left, bottom - top, dk.WHITE)
+    # The marks go back on top of the paint.
+    dk._draw_marks(slide, figure.marks, pic.left / 914400, pic.top / 914400,
+                   pic.width / 914400, pic.height / 914400)
+
+
+def chart_slides(asset, title, lines, *, figure=None, notes=(), origin=''):
+    """A chart's teaching text and the chart, written as the text slide and
+    the chart slide that expand_chart_pages folds into one."""
+    from charts_chapter07 import DATA
+    text = dk.Content(title=title, lines=tuple(lines), notes=tuple(notes), origin=origin)
+    chart = course_chart(asset, title=title, letter=DATA[asset]['letter'],
+                         shows=DATA[asset]['items'][0].name, tier='core',
+                         notes=tuple(notes), origin=origin, figure=figure)
+    return text, chart
 
 
 def page_specs(spec):
@@ -165,6 +229,17 @@ def _renumber(sentences, marks):
     return sentences, tuple(replace(mark, number=new[mark.number]) for mark in marks)
 
 
+def _title_width(title):
+    """Inches the chart slide's 28 point Palatino title needs, or 0 when
+    the font file is not on this machine."""
+    from pathlib import Path
+    from PIL import ImageFont
+    path = Path('/System/Library/Fonts/Palatino.ttc')
+    if not path.is_file():
+        return 0.0
+    return ImageFont.truetype(str(path), 280).getlength(title) / 10 / 72
+
+
 def expand_chart_pages(chapter):
     """Put each chart beside the sentences that read it, one page per slide.
 
@@ -189,6 +264,9 @@ def expand_chart_pages(chapter):
             for page, selected in enumerate(_place(slide.asset, paragraphs)):
                 assert selected, (slide.asset, page + 1, 'chart page with no sentence')
                 title = slide.title
+                # The title box has room for one line; a second runs into
+                # the teaching text, so the build refuses it.
+                assert _title_width(title) <= .98 * dk.CONTENT_W.inches, (slide.asset, 'title wraps', title)
                 if slide.asset in PAGE_TITLES:
                     title = PAGE_TITLES[slide.asset][page]
                 elif slide.asset in CASE_TITLES:
@@ -206,6 +284,113 @@ def expand_chart_pages(chapter):
     openers = expand(chapter.openers or ())
     sections = tuple(replace(section, slides=expand(section.slides)) for section in chapter.sections)
     return replace(chapter, openers=openers, sections=sections, closing=expand(chapter.closing))
+
+
+def _book_drawing(slide, figure, x, y, w, h):
+    """The book's drawing fitted into its column, level with the chart, with
+    a one-line credit under the column where the chart's credit sits."""
+    from pathlib import Path
+    from pptx.util import Inches
+    path = None if dk.FIGURES_DIR is None else Path(dk.FIGURES_DIR) / figure.filename
+    px_w, px_h = dk._picture_size(figure, path)
+    scale = min(w / px_w, h / px_h)
+    pic_w, pic_h = px_w * scale, px_h * scale
+    pic_x, pic_y = x + (w - pic_w) / 2, y + (h - pic_h) / 2
+    dk._rect(slide, Inches(x - .04), Inches(y - .04), Inches(w + .08), Inches(h + .08),
+             dk.WHITE, line=dk.BORDER)
+    if path is not None and path.is_file():
+        dk._add_picture(slide, figure, path, pic_x, pic_y, pic_w, pic_h)
+    else:
+        dk._placeholder_plate(slide, figure, pic_x, pic_y, pic_w, pic_h)
+    dk._draw_marks(slide, figure.marks, pic_x, pic_y, pic_w, pic_h)
+    frame = dk._textbox(slide, Inches(x), Inches(6.52), Inches(w), Inches(.22))
+    dk._para(frame, f'Figure {figure.number}, Lim (2016)', size=11,
+             color=dk.MUTED, first=True)
+
+
+PADDED_CHECKS = {'The 16 characteristics on Figure 7.13'}
+BODY_PT = 17.0   # checklist A10: no body text below 17 point
+
+
+def _check_fits(s):
+    """Whether a plain two-question check fits at 17 point, cards and all."""
+    col_in = (dk.CONTENT_W.inches - 0.7) / 2 - 0.6
+    question = max(dk._text_height(q.stem, col_in, BODY_PT, "bold")
+                   + sum(dk._text_height(f"D.  {o}", col_in, BODY_PT) + 0.15
+                         for o in q.options) for q in s.questions)
+    inner = dk.CONTENT_W.inches - 0.8
+    answer = sum(0.95 + dk._text_height(f"Q1   {q.stem}", inner, BODY_PT)
+                 + dk._text_height(f"{q.answer}.  {q.options['ABCD'.index(q.answer)]}",
+                                   inner, 18.0, "mono")
+                 + dk._text_height(q.reason, inner, BODY_PT) for q in s.questions)
+    return question <= 5.02 - 0.95 and answer + 0.27 <= 5.1
+
+
+def _render_check_17(prs, s, marker, index, total):
+    """deckkit's plain check slide, with every run at 17 point or more."""
+    from pptx.util import Inches, Emu
+    slide = dk._blank(prs)
+    dk._ground(slide, dk.GREEN_DEEP)
+    dk._rect(slide, 0, 0, dk.SLIDE_W, Inches(0.16), dk.GOLD)
+    dk._chip(slide, dk.MARGIN, Inches(0.55), f"CHECK {index} OF {total}", fill=dk.GOLD,
+             text_color=dk.INK, width=Inches(1.85))
+    frame = dk._textbox(slide, dk.MARGIN + Inches(2.1), Inches(0.57), Inches(8.0), Inches(0.4))
+    dk._para(frame, s.label, size=15, color=dk.WHITE, bold=True, first=True)
+    col_w = Emu(int((dk.CONTENT_W - Inches(0.7)) / 2))
+    inner_in = col_w.inches - 0.6
+    card_top, card_h = 1.32, 5.02
+    tallest = max(dk._text_height(q.stem, inner_in, BODY_PT, "bold") for q in s.questions)
+    for i, q in enumerate(s.questions):
+        x = dk.MARGIN + (col_w + Inches(0.7)) * i
+        dk._rect(slide, x, Inches(card_top), col_w, Inches(card_h), dk.GREEN)
+        frame = dk._textbox(slide, x + Inches(0.3), Inches(card_top + 0.27),
+                            col_w - Inches(0.6), Inches(0.25))
+        dk._para(frame, f"Q{i + 1}", size=12, color=dk.GOLD, bold=True, first=True)
+        stem_h = dk._text_height(q.stem, inner_in, BODY_PT, "bold")
+        frame = dk._textbox(slide, x + Inches(0.3), Inches(card_top + 0.58),
+                            col_w - Inches(0.6), Inches(stem_h + 0.1))
+        dk._para(frame, q.stem, size=BODY_PT, color=dk.WHITE, bold=True, first=True,
+                 line_spacing=1.15)
+        frame = dk._textbox(slide, x + Inches(0.3), Inches(card_top + 0.58 + tallest + 0.32),
+                            col_w - Inches(0.6), Inches(3.2))
+        for j, opt in enumerate(q.options):
+            dk._para(frame, f"{'ABCD'[j]}.  {opt}", size=BODY_PT, color=dk.WHITE,
+                     first=(j == 0), space_after=9, line_spacing=1.12)
+    dk._progress(slide, marker, on_dark=True)
+    dk._notes(slide, s.notes)
+
+
+def _render_reveal_17(prs, s, marker, index, total):
+    """deckkit's plain answer slide, with stems and reasons at 17 point."""
+    from pptx.util import Inches
+    slide = dk._blank(prs)
+    dk._ground(slide, dk.PAPER)
+    dk._rect(slide, 0, 0, dk.SLIDE_W, Inches(0.16), dk.GOLD)
+    dk._chip(slide, dk.MARGIN, Inches(0.55), "ANSWERS", fill=dk.GREEN,
+             text_color=dk.WHITE, width=Inches(1.35))
+    frame = dk._textbox(slide, dk.MARGIN + Inches(1.6), Inches(0.57), Inches(8.5), Inches(0.4))
+    dk._para(frame, s.label, size=15, color=dk.GREEN, bold=True, first=True)
+    inner_in = dk.CONTENT_W.inches - 0.8
+    y = 1.32
+    for i, q in enumerate(s.questions):
+        stem = f"Q{i + 1}   {q.stem}"
+        answer = f"{q.answer}.  {q.options['ABCD'.index(q.answer)]}"
+        stem_h = dk._text_height(stem, inner_in, BODY_PT)
+        ans_h = dk._text_height(answer, inner_in, 18.0, "mono")
+        card_h = 0.95 + stem_h + ans_h + dk._text_height(q.reason, inner_in, BODY_PT)
+        dk._rect(slide, dk.MARGIN, Inches(y), dk.CONTENT_W, Inches(card_h), dk.WHITE, line=dk.BORDER)
+        dk._rect(slide, dk.MARGIN, Inches(y), Inches(0.1), Inches(card_h), dk.GOLD)
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.4), Inches(y + 0.26),
+                            dk.CONTENT_W - Inches(0.8), Inches(stem_h + 0.1))
+        dk._para(frame, stem, size=BODY_PT, color=dk.MUTED, first=True, line_spacing=1.15)
+        frame = dk._textbox(slide, dk.MARGIN + Inches(0.4), Inches(y + 0.26 + stem_h + 0.28),
+                            dk.CONTENT_W - Inches(0.8), Inches(ans_h + 1.0))
+        dk._para(frame, answer, size=18.0, color=dk.GREEN, font=dk.MONO_FONT,
+                 bold=True, first=True, line_spacing=1.15)
+        dk._para(frame, q.reason, size=BODY_PT, color=dk.INK, space_before=7, line_spacing=1.15)
+        y += card_h + 0.27
+    dk._progress(slide, marker)
+    dk._notes(slide, s.notes)
 
 
 @dataclass
@@ -360,14 +545,30 @@ def course_slide_renderer():
     def pair(prs,s,marker):
         if isinstance(s,WidePair):
             return _wide_pair(prs,s,marker)
-        return original_pair(prs,s,marker)
+        result=original_pair(prs,s,marker)
+        _paint_masks(prs.slides[-1],s.picture)
+        return result
     def check(prs,s,marker,index,total):
         if isinstance(s,CourseCheck) and s.picture is None:
             return _course_check(prs,s,marker,index,total)
+        if s.picture is None and _check_fits(s):
+            return _render_check_17(prs,s,marker,index,total)
+        if s.label in PADDED_CHECKS:
+            # deckkit sizes the beside cards from an estimate that runs short
+            # for these options; measure them a line taller so the last
+            # choice keeps its padding (rp2x2 finding 8).
+            measure = dk._text_height
+            dk._text_height = lambda text, *a, **k: measure(text, *a, **k) * 1.12 + .02
+            try:
+                return original_check(prs,s,marker,index,total)
+            finally:
+                dk._text_height = measure
         return original_check(prs,s,marker,index,total)
     def reveal(prs,s,marker,index,total):
         if isinstance(s,CourseCheck) and s.picture is None:
             return _course_reveal(prs,s,marker,index,total)
+        if s.picture is None and _check_fits(s):
+            return _render_reveal_17(prs,s,marker,index,total)
         return original_reveal(prs,s,marker,index,total)
     def render(prs,s,marker):
         if not isinstance(s,CourseChart):
@@ -383,12 +584,19 @@ def course_slide_renderer():
         frame=dk._textbox(slide,dk.MARGIN,Inches(1.33),dk.CONTENT_W,Inches(TEXT_H))
         refs={mark.number: mark.rgb for mark in s.marks}
         dk._para(frame,' '.join(s.teaching),size=17,color=dk.INK,first=True,line_spacing=1.0,refs=refs)
-        x=(dk.SLIDE_W.inches-WIDTH)/2
+        from charts_chapter07 import DATA
+        width=chart_width(DATA[s.asset])
         y=2.62
-        dk._rect(slide,Inches(x-.04),Inches(y-.04),Inches(WIDTH+.08),Inches(HEIGHT+.08),dk.WHITE,line=dk.BORDER)
-        dk._add_picture(slide,s,Path(dk.CHARTS_DIR)/s.filename,x,y,WIDTH,HEIGHT)
-        dk._draw_marks(slide,s.marks,x,y,WIDTH,HEIGHT)
-        frame=dk._textbox(slide,dk.MARGIN,Inches(6.52),dk.CONTENT_W,Inches(.22))
+        if s.figure is None:
+            x=(dk.SLIDE_W.inches-width)/2
+        else:
+            x=dk.MARGIN.inches+dk.CONTENT_W.inches-width
+            gap=.22
+            _book_drawing(slide,s.figure,dk.MARGIN.inches,y,x-gap-dk.MARGIN.inches,HEIGHT)
+        dk._rect(slide,Inches(x-.04),Inches(y-.04),Inches(width+.08),Inches(HEIGHT+.08),dk.WHITE,line=dk.BORDER)
+        dk._add_picture(slide,s,Path(dk.CHARTS_DIR)/s.filename,x,y,width,HEIGHT)
+        dk._draw_marks(slide,s.marks,x,y,width,HEIGHT)
+        frame=dk._textbox(slide,Inches(x),Inches(6.52),Inches(width),Inches(.22))
         dk._para(frame,s.credit,size=11,color=dk.MUTED,first=True)
         dk._progress(slide,marker)
         dk._notes(slide,s.notes)
@@ -458,7 +666,7 @@ def _assert_layout(fig, labels, bars):
     return boxes
 
 
-def _marks(fig, targets, specs, boxes, segments, groups):
+def _marks(fig, targets, specs, boxes, segments, groups, brackets=None, authored=False):
     """Compute exact data-anchored rings and touching, collision-free badges."""
     ring_radius, badge_r = .048 * ck.DPI, .14 * ck.DPI
     circles = []
@@ -475,8 +683,25 @@ def _marks(fig, targets, specs, boxes, segments, groups):
             continue
         cx, cy = targets[target]
         radius=group_gap if target in groups else ring_radius
+        bracket = (brackets or {}).get(target)
+        if bracket:
+            # The badge sits beside the bracket's middle, never on it.
+            # 3.5 point line: half its width is about 5 px at 200 dpi.
+            cx, cy, radius = bracket[0], (bracket[1]+bracket[2])/2, 5
+        own = [b for b in segments if bracket and abs((b.x0+b.x1)/2-cx) < 1 and b.width < 10]
+        obstacles = boxes + [b for b in segments if not any(b is o for o in own)]
+        if target in groups and authored:
+            # A boxed feature keeps its badge outside the box (rp2x2 finding 2).
+            from matplotlib.transforms import Bbox
+            x0, y0, x1, y1 = groups[target]
+            own_box = Bbox([[x0, y0], [x1, y1]])
+        else:
+            own_box = None
         assert not any(_circle_box(cx, cy, radius, b) for b in boxes), (spec, 'ring crosses text')
         found = None
+        # Authored charts keep each badge clearly off every tick and label
+        # (rp2x2 finding 2); the owners' charts keep their validated layout.
+        clear = 8 if authored else 1
         # Try direct contact first. Firstmate's 012 instruction permits the
         # nearest clear badge joined to its ring by a same-colour hairline.
         for extra in range(0, int(2*ck.DPI), 4):
@@ -487,7 +712,9 @@ def _marks(fig, targets, specs, boxes, segments, groups):
                 bx, by = cx + distance * ux, cy + distance * uy
                 if not (badge_r + 2 <= bx <= fig.bbox.width - badge_r - 2 and badge_r + 2 <= by <= fig.bbox.height - badge_r - 2):
                     continue
-                if any(_circle_box(bx, by, badge_r + 1, b) for b in boxes + segments):
+                if any(_circle_box(bx, by, badge_r + clear, b) for b in obstacles):
+                    continue
+                if own_box is not None and _circle_box(bx, by, badge_r - 1, own_box):
                     continue
                 if any(math.hypot(bx - x, by - y) < badge_r + r + 1 for ((x,y),r) in circles):
                     continue
@@ -495,7 +722,7 @@ def _marks(fig, targets, specs, boxes, segments, groups):
                     continue
                 start=(cx+radius*ux,cy+radius*uy)
                 end=(bx-badge_r*ux,by-badge_r*uy)
-                if extra and any(_segment_box(start,end,b.padded(1)) for b in boxes+segments):
+                if extra and any(_segment_box(start,end,b.padded(1)) for b in obstacles):
                     continue
                 if extra and any(_segment_distance(start,end,point)<r+1 for point,r in circles):
                     continue
@@ -516,12 +743,23 @@ def _marks(fig, targets, specs, boxes, segments, groups):
             leaders.append((spec['number'],extra/ck.DPI))
         circles.extend((((cx, cy), radius), ((bx, by), badge_r)))
         bounds=groups.get(target,(cx-radius,cy-radius,cx+radius,cy+radius))
+        if bracket:
+            result.append(dk.Mark(spec['number'], 'line',
+                                  bracket[0]/fig.bbox.width, 1-bracket[1]/fig.bbox.height,
+                                  bracket[0]/fig.bbox.width, 1-bracket[2]/fig.bbox.height,
+                                  color=spec['color'], at=(bx/fig.bbox.width, 1-by/fig.bbox.height), size=.28))
+            continue
         result.append(dk.Mark(spec['number'], 'box' if target in groups else 'circle',
                               bounds[0]/fig.bbox.width, 1-bounds[3]/fig.bbox.height,
                               bounds[2]/fig.bbox.width, 1-bounds[1]/fig.bbox.height,
                               color=spec['color'], at=(bx/fig.bbox.width, 1-by/fig.bbox.height), size=.28))
     fig.chart_leaders=tuple(leaders)
     return tuple(result)
+
+
+def chart_width(spec):
+    """Full content width, or narrower beside a book drawing."""
+    return spec.get('width', WIDTH)
 
 
 def _target_specs(key, spec):
@@ -534,13 +772,18 @@ def _target_specs(key, spec):
 def layout(key, page=0):
     from charts_chapter07 import DATA
     spec = DATA[key]
-    fig = plt.figure(figsize=(WIDTH, HEIGHT), dpi=ck.DPI)
+    W = chart_width(spec)
+    fig = plt.figure(figsize=(W, HEIGHT), dpi=ck.DPI)
     labels, segments, targets, levels, tips, groups = [], [], {}, [], [], {}
     columns = []   # labels keep off them; a volume badge sits on its own
     ink = []       # plotted ink that only badges must avoid
+    # Part 2 marks a range as a box along the bar and a volume as a box
+    # round its column, with every badge clear of both (rp2x1 findings 3, 4).
+    authored = spec.get('owner') == 'p2'
+    brackets = {}
     def text(x, y, value, *, ha='center', va='center', color=ck.INK):
         # A white backing breaks a dashed level line where it meets a label.
-        artist = fig.text(x/WIDTH, y/HEIGHT, value, ha=ha, va=va,
+        artist = fig.text(x/W, y/HEIGHT, value, ha=ha, va=va,
                           fontsize=FONT, color=color, fontweight='bold',
                           fontfamily=dk.BODY_FONT,
                           bbox=dict(facecolor=ck.WHITE, edgecolor='none', pad=1))
@@ -604,22 +847,27 @@ def layout(key, page=0):
         cell = spec['items'][cell_index]
         title = cell.name.replace('\n',' ')
         if title:
-            text(WIDTH/2,3.64,title,color=ck.GREEN_DEEP)
+            text(W/2,3.64,title,color=ck.GREEN_DEEP)
         note = cell.note.replace('\n',' ')
         if note:
-            text(WIDTH/2,3.32,note,color=ck.MUTED)
+            text(W/2,3.32,note,color=ck.MUTED)
         has_volume = any(p.columns for p in cell.panes) and any(p.bars or p.line for p in cell.panes)
         price_bottom = 1.55 if has_volume else 1.0
         price_top = 2.72
         count = end-start
         left = 3.6 if any(p.strokes for p in cell.panes) else 2.1
-        right = WIDTH - 1.5
+        right = W - 1.5
         side = .50   # tick end to its O or C label
+        if W < WIDTH:
+            # Beside a book drawing the bars take the width, keeping a left
+            # lane only when a level line needs its caption there.
+            left = 2.3 if any(p.strokes for p in cell.panes) else 1.36
+            right, side = W - 1.36, .40
         if count == 4:
             # Four bars need the full width; a level caption climbs instead,
             # and each side label sits nearer its own tick than its neighbour's.
-            left, right, side = 1.36, WIDTH - spec.get('right_margin', 1.32), .36
-        xs = [left + (right-left) * i/max(1,count-1) for i in range(count)] if count>1 else [WIDTH/2]
+            left, right, side = 1.36, W - spec.get('right_margin', 1.32), .36
+        xs = [left + (right-left) * i/max(1,count-1) for i in range(count)] if count>1 else [W/2]
         for pane_index, pane in enumerate(cell.panes):
             if pane.bars or pane.line:
                 values = [v for b in pane.bars for v in (b.open,b.high,b.low,b.close)] + list(pane.line)
@@ -628,7 +876,7 @@ def layout(key, page=0):
                 span = hi-lo or 1
                 axis = fig.add_axes([0,price_bottom/HEIGHT,1,(price_top-price_bottom)/HEIGHT])
                 axis.set_axis_off()
-                axis.set_xlim(0,WIDTH)
+                axis.set_xlim(0,W)
                 axis.set_ylim(lo,hi)
                 def y_inches(y):
                     return price_bottom + (y-lo)/span*(price_top-price_bottom)
@@ -645,10 +893,50 @@ def layout(key, page=0):
                             segments.append(artist.get_window_extent().padded(2))
                         text(x-side,y_inches(b.open),f'O {b.open:.2f}',ha='right')
                         text(x+side,y_inches(b.close),f'C {b.close:.2f}',ha='left')
-                        tips.append((text(x,y_inches(b.high)+.19,f'H {b.high:.2f}',va='bottom'),1))
-                        tips.append((text(x,y_inches(b.low)-.17,f'L {b.low:.2f}',va='top'),-1))
+                        prev = pane.bars[index-1] if index > start else None
+                        # A label that would sit inside the gap before its bar
+                        # moves to the side, level with its own tick.
+                        beside = {}
+                        if authored and prev is not None:
+                            gap_down, gap_up = b.high < prev.low, b.low > prev.high
+                            for name, value, wanted in (('H', b.high, gap_down), ('L', b.low, gap_up)):
+                                if not wanted:
+                                    continue
+                                if abs(y_inches(value)-y_inches(b.close)) >= .26:
+                                    beside[name] = (x+side, value, 'left')
+                                elif abs(y_inches(value)-y_inches(b.open)) >= .26:
+                                    beside[name] = (x-side, value, 'right')
+                        for name, value, direction, offset, va in (('H', b.high, 1, .19, 'bottom'), ('L', b.low, -1, -.17, 'top')):
+                            if name in beside:
+                                bx_, val, ha = beside[name]
+                                text(bx_, y_inches(val), f'{name} {value:.2f}', ha=ha)
+                            else:
+                                tips.append((text(x,y_inches(value)+offset,f'{name} {value:.2f}',va=va),direction))
+                        if authored:
+                            # A range is marked by a slim box from the bar's
+                            # high to its low, inside the open and close ticks.
+                            bounds = ((x-.06)*ck.DPI, (y_inches(b.low)-.03)*ck.DPI,
+                                      (x+.06)*ck.DPI, (y_inches(b.high)+.03)*ck.DPI)
+                            groups[cell_index,index,'range'] = bounds
+                            targets[cell_index,index,'range'] = (bounds[2], (bounds[1]+bounds[3])/2)
                         for name,xx,yy in (('open',x-.17,b.open),('high',x,b.high),('low',x,b.low),('close',x+.17,b.close),('range',x,(b.low+b.high)/2)):
-                            targets[cell_index,index,name] = (xx*ck.DPI,y_inches(yy)*ck.DPI)
+                            if (cell_index,index,name) not in groups:
+                                targets[cell_index,index,name] = (xx*ck.DPI,y_inches(yy)*ck.DPI)
+                        if index > start:
+                            # A gap is the empty price space between two
+                            # ranges: its mark sits midway between the bars.
+                            prev = pane.bars[index-1]
+                            if b.low > prev.high or b.high < prev.low:
+                                edge = (prev.high+b.low)/2 if b.low > prev.high else (prev.low+b.high)/2
+                                gx = (x+xs[index-start-1])/2
+                                targets[cell_index,index,'gap'] = (gx*ck.DPI, y_inches(edge)*ck.DPI)
+                                if authored:
+                                    # A gap is a price range: box it from one
+                                    # bar's extreme to the other's (rp2x2 finding 3).
+                                    lo_, hi_ = sorted((prev.high, b.low) if b.low > prev.high else (b.high, prev.low))
+                                    bounds = ((gx-.09)*ck.DPI, y_inches(lo_)*ck.DPI, (gx+.09)*ck.DPI, y_inches(hi_)*ck.DPI)
+                                    groups[cell_index,index,'gap'] = bounds
+                                    targets[cell_index,index,'gap'] = (bounds[2], (bounds[1]+bounds[3])/2)
                     else:
                         y=pane.line[index]
                         targets[cell_index,index,'line']=(x*ck.DPI,y_inches(y)*ck.DPI)
@@ -668,7 +956,7 @@ def layout(key, page=0):
                         top=max(b.high for b in members)
                         # A pair at the chart's edge keeps its box inside the picture.
                         bounds=(max(.05,x_inches(first)-1.45)*ck.DPI,(y_inches(bottom)-.45)*ck.DPI,
-                                min(WIDTH-.05,x_inches(last)+1.45)*ck.DPI,(y_inches(top)+.45)*ck.DPI)
+                                min(W-.05,x_inches(last)+1.45)*ck.DPI,(y_inches(top)+.45)*ck.DPI)
                         groups[target]=bounds
                         targets[target]=(bounds[2],(bounds[1]+bounds[3])/2)
                 if pane.line:
@@ -692,7 +980,7 @@ def layout(key, page=0):
                             level=line(axis,(points[0][0],points[-1][0]+.02),(value,value),color=ck.INK,lw=1.6,ls=(0,(4,3)),zorder=0)
                             ink.append(level.get_window_extent().padded(3))
                         else:
-                            line(axis,(.12,WIDTH-.2),(value,value),color=ck.MUTED,lw=.8,ls=(0,(4,4)),zorder=0)
+                            line(axis,(.12,W-.2),(value,value),color=ck.MUTED,lw=.8,ls=(0,(4,4)),zorder=0)
                         for index,x in zip(range(start,end),xs):
                             targets[cell_index,index,'level:'+str(value)] = (x*ck.DPI,y_inches(value)*ck.DPI)
                         if stroke.label:
@@ -723,14 +1011,14 @@ def layout(key, page=0):
                         if volume.columns:
                             semantic.extend(f'Bar {i+1}: {label}' for i,label in volume.tags if not re.match(r'^[0-9.]+m$',label))
                     if semantic:
-                        text(WIDTH/2,.39,'; '.join(semantic),color=ck.MUTED)
+                        text(W/2,.39,'; '.join(semantic),color=ck.MUTED)
             elif pane.columns:
                 bottom,top = (.60,.80) if has_volume else (.72,2.7)
                 cols=pane.columns[start:end]
                 lo,hi=min(0,min(cols)),max(cols)
                 span=hi-lo or 1
                 ax=fig.add_axes([0,bottom/HEIGHT,1,(top-bottom)/HEIGHT])
-                ax.set_axis_off();ax.set_xlim(0,WIDTH);ax.set_ylim(lo,hi)
+                ax.set_axis_off();ax.set_xlim(0,W);ax.set_ylim(lo,hi)
                 if lo < 0:
                     ax.axhline(0,color=ck.MUTED,lw=.8,zorder=0)
                 for patch in ax.bar(xs,cols,width=.23,color=ck.GREEN):
@@ -745,7 +1033,25 @@ def layout(key, page=0):
                     else:
                         text(x,y+.07,label,va='bottom',color=ck.GREEN_DEEP)
                     targets[cell_index,index,'volume']=(x*ck.DPI,(bottom+(value/2-lo)/span*(top-bottom))*ck.DPI)
-    text(WIDTH/2,.02,spec.get('caption',CAPTION),color=ck.MUTED,va='bottom')
+                    if authored and value > 0:
+                        bounds=((x-.17)*ck.DPI,(bottom-.03)*ck.DPI,(x+.17)*ck.DPI,(y+.03)*ck.DPI)
+                        groups[cell_index,index,'volume']=bounds
+                        targets[cell_index,index,'volume']=(bounds[2],(bounds[1]+bounds[3])/2)
+                for t in spec.get('targets', ()):
+                    c_, first, name = t['target']
+                    if authored and c_ == cell_index and name.startswith('volumes:'):
+                        last = int(name.split(':')[1])
+                        if start <= first <= last < end:
+                            peak = bottom+(max(cols[first-start:last-start+1])-lo)/span*(top-bottom)
+                            bounds=((xs[first-start]-.17)*ck.DPI,(bottom-.03)*ck.DPI,
+                                    (xs[last-start]+.17)*ck.DPI,(peak+.03)*ck.DPI)
+                            groups[c_,first,name]=bounds
+                            targets[c_,first,name]=(bounds[2],(bounds[1]+bounds[3])/2)
+    caption = spec.get('caption', CAPTION)
+    if authored and not any(p.columns for c in spec['items'] for p in c.panes):
+        # Say volume only where the chart draws it (rp2x3 finding 4).
+        caption = PRICE_CAPTION
+    text(W/2,.02,caption,color=ck.MUTED,va='bottom')
     fig.canvas.draw()
     renderer=fig.canvas.get_renderer()
     for artist,direction in tips:
@@ -756,15 +1062,25 @@ def layout(key, page=0):
             others=[t.get_window_extent(renderer).padded(2) for t in labels if t is not artist and t not in levels]
             if not any(_overlaps(box,b) for b in others+segments+columns):
                 break
-    # Far-left level labels may advance upward, never horizontally away
-    # from their level's left end. Actual renderer boxes determine the lane.
+    # Far-left level labels may move up from their line, or else down below
+    # it, never horizontally away from the level's left end. Actual renderer
+    # boxes determine the lane.
     for artist in levels:
         x,y=artist.get_position()
-        for pixels in range(int(HEIGHT*ck.DPI)):
-            artist.set_position((x,y+pixels/fig.bbox.height))
+        height=artist.get_window_extent(renderer).height/fig.bbox.height
+        moves=[pixels/fig.bbox.height for pixels in range(int(HEIGHT*ck.DPI))]
+        moves+=[-height-.12/HEIGHT-pixels/fig.bbox.height for pixels in range(int(HEIGHT*ck.DPI))]
+        if authored:
+            # Near the line first, above or below, before climbing away
+            # past other prices' labels (rp2x2 finding 7).
+            near = int(.12*ck.DPI)
+            moves = moves[:near] + [-height-.04/HEIGHT-p/fig.bbox.height for p in range(near)] + moves[near:]
+        for move in moves:
+            artist.set_position((x,y+move))
             box=artist.get_window_extent(renderer).padded(2)
             others=[t.get_window_extent(renderer).padded(2) for t in labels if t is not artist]
-            if box.y1 < 3.15*ck.DPI and not any(_overlaps(box,b) for b in others+segments):
+            if (.5*ck.DPI < box.y0 and box.y1 < 3.15*ck.DPI
+                    and not any(_overlaps(box,b) for b in others+segments+columns)):
                 break
         else:
             raise AssertionError(f'{key}: no level caption lane: {artist.get_text()}')
@@ -775,7 +1091,8 @@ def layout(key, page=0):
             edges=(((x0,y0),(x1,y0)),((x1,y0),(x1,y1)),((x1,y1),(x0,y1)),((x0,y1),(x0,y0)))
             assert not any(_segment_box(a,b,box) for a,b in edges for box in boxes), 'group box crosses text'
         fig.group_gap=spec.get('group_gap',0)
-        marks=_marks(fig,targets,_target_specs(key,spec),boxes,segments+ink,groups)
+        marks=_marks(fig,targets,_target_specs(key,spec),boxes,
+                     segments+ink+(columns if authored else []),groups,brackets,authored)
     except AssertionError as error:
         plt.close(fig)
         raise AssertionError(f'{key} page {page+1}: {error}') from error
@@ -796,8 +1113,10 @@ def audit_pptx(path, charts_dir):
     from pathlib import Path
     from pptx import Presentation
     from charts_chapter07 import DATA
+    from content_chapter07 import CHAPTER
+    placed={s.asset for section in CHAPTER.sections for s in section.slides if isinstance(s,CourseChart)}
     assets={hashlib.sha256((Path(charts_dir)/f'chart-{key}-{page}.png').read_bytes()).hexdigest(): (key,page)
-            for key,spec in DATA.items() for page in range(len(page_specs(spec)))}
+            for key,spec in DATA.items() if key in placed for page in range(len(page_specs(spec)))}
     presentation=Presentation(path)
     found=set()
     for page,slide in enumerate(presentation.slides,1):
@@ -808,7 +1127,7 @@ def audit_pptx(path, charts_dir):
             if key is None:
                 continue
             found.add(key)
-            scale=shape.width/914400/WIDTH
+            scale=shape.width/914400/chart_width(DATA[key[0]])
             assert shape.width >= .55*presentation.slide_width, f'Slide {page}: chart is too narrow'
             assert scale >= .999, f'Slide {page}: chart text scaled below validated size'
     assert found==set(assets.values()), 'Missing chart pages in rendered deck'

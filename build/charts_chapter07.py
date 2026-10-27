@@ -48,180 +48,6 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_size': (18.0, 3.5),
 'owner': 'r1',
 'letter': 'G'},
-'b2-t': {'items': (ck.Cell(name='1  continuation', note='uptrend +4.0%; bullish +2.0%', panes=(ck.Pane(columns=(4.0, 2.0)),), tone='notice'), ck.Cell(name='2  continuation', note='downtrend -4.0%; bearish -2.0%', panes=(ck.Pane(columns=(4.0, 2.0)),), tone='notice'), ck.Cell(name='3  potential reversal', note='uptrend +4.0%; bearish -2.0%', panes=(ck.Pane(columns=(4.0, -2.0)),)), ck.Cell(name='4  potential reversal', note='downtrend -4.0%; bullish +2.0%', panes=(ck.Pane(columns=(-4.0, 2.0)),))),
-'special': '',
-'old_marks': (),
-'old_size': (11.5, 2.8),
-'owner': 'b2',
-'letter': 'T'},
-'b2-qa': {'items': (ck.Cell(name='Bearish close and volume', note='invented bars: the final close is below the prior close', panes=(ck.Pane(bars=(ck.Bar(open=50.8, high=52.0, low=50.6, close=51.1), ck.Bar(open=51.2, high=52.0, low=48.8, close=50.8)), notes=(ck.Note(x=1, label='C 50.80', dx=16, dy=-8, y=50.8, notice=True), ck.Note(x=1, label='wide H 52.00', dx=16, dy=8, y=52.0, notice=True)), height=1.8), ck.Pane(columns=(1.6, 4.0), tags=((1, '4.0m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.63, y0=0.36, x1=0.69, y1=0.43, color='gold', at=(0.56, 0.5)), dk.Mark(number=2, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.72, color='red', at=(0.78, 0.48)), dk.Mark(number=3, kind='circle', x0=0.64, y0=0.78, x1=0.7, y1=0.84, color='blue', at=(0.8, 0.88))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QA'},
-'b2-ql': {'items': (ck.Cell(name='Bearish single-bar form', note='invented values following Lim Figure 7.4', panes=(ck.Pane(bars=(ck.Bar(open=52.0, high=52.4, low=51.6, close=52.2), ck.Bar(open=52.8, high=54.0, low=49.8, close=50.2)), notes=(ck.Note(x=1, label='O 52.80', dx=16, dy=10, y=52.8, notice=True), ck.Note(x=1, label='H 54.00', dx=16, dy=8, y=54.0, notice=True), ck.Note(x=1, label='C 50.20', dx=16, dy=-8, y=50.2, notice=True), ck.Note(x=1, label='L 49.80', dx=16, dy=-8, y=49.8)), height=1.8), ck.Pane(columns=(1.2, 4.0), tags=((1, '4.0m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.655, y0=0.39, x1=0.675, y1=0.43, color='gold', at=(0.56, 0.48), size=0.28), dk.Mark(number=2, kind='line', x0=0.57, y0=0.43, x1=0.7, y1=0.43, color='red', at=(0.8, 0.36)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QL'},
-'b2-qw': {'items': (ck.Cell(name='Bearish close and volume', note='invented bars: the final close is below the prior close', panes=(ck.Pane(bars=(ck.Bar(open=50.8, high=52.0, low=50.6, close=51.1), ck.Bar(open=51.2, high=52.0, low=48.8, close=50.8)), notes=(ck.Note(x=1, label='C 50.80', dx=16, dy=-8, y=50.8, notice=True), ck.Note(x=1, label='wide H 52.00', dx=16, dy=8, y=52.0, notice=True)), height=1.8), ck.Pane(columns=(1.6, 4.0), tags=((1, '4.0m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.655, y0=0.39, x1=0.675, y1=0.43, color='gold', at=(0.56, 0.48), size=0.28), dk.Mark(number=2, kind='line', x0=0.57, y0=0.43, x1=0.7, y1=0.43, color='red', at=(0.8, 0.36)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QW'},
-'b2-qx': {'items': (ck.Cell(name='Bearish close and volume', note='invented bars: the final close is below the prior close', panes=(ck.Pane(bars=(ck.Bar(open=50.8, high=52.0, low=50.6, close=51.1), ck.Bar(open=51.2, high=52.0, low=48.8, close=50.8)), notes=(ck.Note(x=1, label='C 50.80', dx=16, dy=-8, y=50.8, notice=True), ck.Note(x=1, label='wide H 52.00', dx=16, dy=8, y=52.0, notice=True)), height=1.8), ck.Pane(columns=(1.6, 4.0), tags=((1, '4.0m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.655, y0=0.39, x1=0.675, y1=0.43, color='gold', at=(0.56, 0.48), size=0.28), dk.Mark(number=2, kind='line', x0=0.57, y0=0.43, x1=0.7, y1=0.43, color='red', at=(0.8, 0.36)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QX'},
-'b2-qm': {'items': (ck.Cell(name='Bullish single-bar form', note='invented values following Lim Figure 7.5', panes=(ck.Pane(bars=(ck.Bar(open=39.0, high=40.0, low=37.5, close=38.0), ck.Bar(open=37.2, high=41.5, low=36.8, close=41.2)), notes=(ck.Note(x=1, label='O 37.20', dx=16, dy=10, y=37.2, notice=True), ck.Note(x=1, label='H 41.50', dx=16, dy=8, y=41.5, notice=True), ck.Note(x=1, label='C 41.20', dx=16, dy=-8, y=41.2, notice=True), ck.Note(x=1, label='L 36.80', dx=16, dy=-8, y=36.8)), height=1.8), ck.Pane(columns=(1.1, 4.2), tags=((1, '4.2m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.645, y0=0.29, x1=0.685, y1=0.35, color='gold', at=(0.55, 0.2)), dk.Mark(number=2, kind='line', x0=0.57, y0=0.62, x1=0.7, y1=0.62, color='red', at=(0.8, 0.55)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QM'},
-'b2-qy': {'items': (ck.Cell(name='Bullish close and volume', note='invented bars: prior high 46.00; final close 47.20; range 3.00; volume 4.5m', panes=(ck.Pane(bars=(ck.Bar(open=44.0, high=46.0, low=43.0, close=45.0), ck.Bar(open=46.2, high=47.2, low=44.2, close=47.2)), strokes=(ck.Stroke(points=((0, 46.0), (1, 46.0)), tone='quiet', dashed=True, label='prior high 46.00', dx=8, dy=-10),), notes=(ck.Note(x=1, label='C 47.20', dx=16, dy=-8, y=47.2, notice=True), ck.Note(x=1, label='L 44.20', dx=16, dy=-8, y=44.2), ck.Note(x=1, label='range 3.00', dx=16, dy=10, y=45.7, notice=True)), height=1.8), ck.Pane(columns=(1.5, 4.5), tags=((1, '4.5m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.645, y0=0.29, x1=0.685, y1=0.35, color='gold', at=(0.55, 0.2)), dk.Mark(number=2, kind='line', x0=0.57, y0=0.62, x1=0.7, y1=0.62, color='red', at=(0.8, 0.55)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QY'},
-'b2-qz': {'items': (ck.Cell(name='Bullish close and volume', note='invented bars: prior high 46.00; final close 47.20; range 3.00; volume 4.5m', panes=(ck.Pane(bars=(ck.Bar(open=44.0, high=46.0, low=43.0, close=45.0), ck.Bar(open=46.2, high=47.2, low=44.2, close=47.2)), strokes=(ck.Stroke(points=((0, 46.0), (1, 46.0)), tone='quiet', dashed=True, label='prior high 46.00', dx=8, dy=-10),), notes=(ck.Note(x=1, label='C 47.20', dx=16, dy=-8, y=47.2, notice=True), ck.Note(x=1, label='L 44.20', dx=16, dy=-8, y=44.2), ck.Note(x=1, label='range 3.00', dx=16, dy=10, y=45.7, notice=True)), height=1.8), ck.Pane(columns=(1.5, 4.5), tags=((1, '4.5m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.645, y0=0.29, x1=0.685, y1=0.35, color='gold', at=(0.55, 0.2)), dk.Mark(number=2, kind='line', x0=0.57, y0=0.62, x1=0.7, y1=0.62, color='red', at=(0.8, 0.55)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QZ'},
-'b2-qc': {'items': (ck.Cell(name='Triple bearish gaps', note='invented gaps: the larger gap strengthens the bearish clue', panes=(ck.Pane(bars=(ck.Bar(open=52.0, high=53.0, low=50.0, close=52.5), ck.Bar(open=52.8, high=53.2, low=51.8, close=52.0), ck.Bar(open=51.4, high=51.8, low=48.0, close=48.4)), notes=(ck.Note(x=1, label='gap 0.30', dy=14, y=52.8, notice=True), ck.Note(x=2, label='gap 0.60', dx=16, dy=-8, y=51.4, notice=True), ck.Note(x=2, label='gap 1.10', dx=22, dy=14, y=51.8, notice=True), ck.Note(x=2, label='final C', dx=16, dy=-8, y=48.4, notice=True)), height=1.8),)),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.24, y0=0.22, x1=0.3, y1=0.3, color='gold', at=(0.14, 0.16)), dk.Mark(number=2, kind='circle', x0=0.48, y0=0.34, x1=0.54, y1=0.49, color='red', at=(0.42, 0.6)), dk.Mark(number=3, kind='line', x0=0.72, y0=0.62, x1=0.78, y1=0.62, color='blue', at=(0.86, 0.54))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QC'},
-'b2-qn': {'items': (ck.Cell(name='Triple bearish form one', note='invented values following Lim Figure 7.6', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=53.0, low=49.0, close=52.5), ck.Bar(open=52.5, high=53.0, low=50.0, close=50.4), ck.Bar(open=50.4, high=51.0, low=47.0, close=47.5)), notes=(ck.Note(label='first C', dx=-28, dy=-8, y=52.5, notice=True), ck.Note(x=1, label='middle C', dx=16, dy=-8, y=50.4, notice=True), ck.Note(x=2, label='final C', dx=16, dy=-8, y=47.5, notice=True)), height=1.8), ck.Pane(columns=(3.0, 0.7, 4.2), tags=((1, '0.7m'), (2, '4.2m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.24, y0=0.38, x1=0.3, y1=0.48, color='gold', at=(0.16, 0.32)), dk.Mark(number=2, kind='circle', x0=0.48, y0=0.52, x1=0.54, y1=0.62, color='red', at=(0.42, 0.66)), dk.Mark(number=3, kind='line', x0=0.72, y0=0.69, x1=0.78, y1=0.69, color='blue', at=(0.86, 0.62))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QN'},
-'b2-qd': {'items': (ck.Cell(name='Triple ranges and volume', note='invented ranges 3.0, 0.8, 3.4; final volume 4.2m', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=53.0, low=50.0, close=52.5), ck.Bar(open=52.5, high=53.0, low=52.2, close=52.7), ck.Bar(open=52.7, high=54.0, low=50.6, close=50.8)), notes=(ck.Note(label='range 3.0', dx=-28, dy=8, y=53.0, notice=True), ck.Note(x=1, label='range 0.8', dx=16, dy=8, y=53.0, notice=True), ck.Note(x=2, label='range 3.4', dx=34, dy=-18, y=50.8, notice=True)), height=1.8), ck.Pane(columns=(3.0, 0.7, 4.2), tags=((1, '0.7m'), (2, '4.2m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.24, y0=0.34, x1=0.32, y1=0.48, color='gold', at=(0.14, 0.3)), dk.Mark(number=2, kind='circle', x0=0.48, y0=0.36, x1=0.56, y1=0.46, color='red', at=(0.42, 0.58)), dk.Mark(number=3, kind='line', x0=0.76, y0=0.34, x1=0.76, y1=0.88, color='blue', at=(0.88, 0.52))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QD'},
-'b2-qo': {'items': (ck.Cell(name='Island reversal form', note='invented values following Lim Figure 7.7', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=51.5, low=49.5, close=51.0), ck.Bar(open=52.5, high=54.0, low=52.2, close=53.6), ck.Bar(open=51.0, high=51.8, low=47.0, close=47.5)), notes=(ck.Note(x=1, label='island C', dx=16, dy=-8, y=53.6, notice=True), ck.Note(x=2, label='final C', dx=16, dy=-8, y=47.5, notice=True)), height=1.8), ck.Pane(columns=(1.0, 1.2, 4.2), tags=((1, '1.2m'), (2, '4.2m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.48, y0=0.34, x1=0.54, y1=0.44, color='gold', at=(0.42, 0.28)), dk.Mark(number=2, kind='circle', x0=0.48, y0=0.2, x1=0.54, y1=0.32, color='red', at=(0.42, 0.16)), dk.Mark(number=3, kind='line', x0=0.72, y0=0.69, x1=0.78, y1=0.69, color='blue', at=(0.86, 0.62))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QO'},
-'b2-qe': {'items': (ck.Cell(name='Triple bullish outer bars', note='invented outer bars carry the bullish close direction', panes=(ck.Pane(bars=(ck.Bar(open=40.0, high=41.0, low=37.8, close=38.2), ck.Bar(open=38.2, high=39.0, low=37.9, close=38.5), ck.Bar(open=38.5, high=42.0, low=38.2, close=41.6)), notes=(ck.Note(label='range 3.0', dx=-30, dy=-8, y=38.2, notice=True), ck.Note(x=1, label='range 0.8', dx=16, dy=-8, y=38.5, notice=True), ck.Note(x=2, label='range 3.4', dx=16, dy=8, y=41.6, notice=True)), height=1.8),)),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.18, y0=0.55, x1=0.24, y1=0.61, color='gold', at=(0.12, 0.58)), dk.Mark(number=2, kind='circle', x0=0.46, y0=0.55, x1=0.52, y1=0.61, color='red', at=(0.42, 0.64)), dk.Mark(number=3, kind='circle', x0=0.74, y0=0.24, x1=0.8, y1=0.3, color='blue', at=(0.86, 0.22))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QE'},
-'b2-qp': {'items': (ck.Cell(name='Triple bullish form one', note='invented values following Lim Figure 7.8', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=53.0, low=47.0, close=48.0), ck.Bar(open=48.2, high=49.0, low=46.0, close=48.8), ck.Bar(open=49.0, high=53.0, low=48.0, close=52.8)), notes=(ck.Note(label='first C', dx=-28, dy=-8, y=48.0, notice=True), ck.Note(x=1, label='middle C', dx=16, dy=-8, y=48.8, notice=True), ck.Note(x=2, label='final C', dx=16, dy=8, y=52.8, notice=True)), height=1.8), ck.Pane(columns=(3.0, 0.7, 4.2), tags=((1, '0.7m'), (2, '4.2m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.24, y0=0.55, x1=0.3, y1=0.65, color='gold', at=(0.16, 0.7)), dk.Mark(number=2, kind='line', x0=0.48, y0=0.54, x1=0.54, y1=0.54, color='red', at=(0.62, 0.46)), dk.Mark(number=3, kind='circle', x0=0.72, y0=0.26, x1=0.78, y1=0.36, color='blue', at=(0.86, 0.22))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QP'},
-'b2-qj': {'items': (ck.Cell(name='Triple bullish final group', note='invented quiet middle and strong final close', panes=(ck.Pane(bars=(ck.Bar(open=40.0, high=41.0, low=37.8, close=38.2), ck.Bar(open=38.2, high=39.0, low=37.9, close=38.5), ck.Bar(open=38.5, high=42.0, low=38.2, close=41.6)), notes=(ck.Note(x=1, label='quiet middle', dx=16, dy=-8, y=38.5, notice=True), ck.Note(x=2, label='final high', dx=16, dy=8, y=41.6, notice=True)), height=1.8), ck.Pane(columns=(4.0, 0.7, 4.2), tags=((1, '0.7m'), (2, '4.2m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.46, y0=0.55, x1=0.52, y1=0.61, color='gold', at=(0.42, 0.64)), dk.Mark(number=2, kind='line', x0=0.74, y0=0.27, x1=0.8, y1=0.27, color='red', at=(0.86, 0.22)), dk.Mark(number=3, kind='line', x0=0.74, y0=0.81, x1=0.8, y1=0.81, color='blue', at=(0.86, 0.88))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QJ'},
-'b2-qq': {'items': (ck.Cell(name='Triple bullish gap form', note='invented values following Lim Figure 7.9', panes=(ck.Pane(bars=(ck.Bar(open=40.0, high=42.0, low=38.0, close=41.5), ck.Bar(open=38.0, high=39.0, low=36.5, close=38.8), ck.Bar(open=40.0, high=43.0, low=39.5, close=42.8)), notes=(ck.Note(x=1, label='middle C', dx=16, dy=-8, y=38.8, notice=True), ck.Note(x=2, label='final C', dx=16, dy=8, y=42.8, notice=True)), height=1.8), ck.Pane(columns=(2.0, 0.8, 4.3), tags=((1, '0.8m'), (2, '4.3m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.48, y0=0.48, x1=0.54, y1=0.58, color='gold', at=(0.42, 0.42)), dk.Mark(number=2, kind='line', x0=0.72, y0=0.25, x1=0.78, y1=0.25, color='red', at=(0.86, 0.16)), dk.Mark(number=3, kind='circle', x0=0.72, y0=0.8, x1=0.78, y1=0.88, color='blue', at=(0.86, 0.92))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QQ'},
-'b2-qf': {'items': (ck.Cell(name='Multiple bearish sequence', note='invented intermediate volumes show the stated exceptions', panes=(ck.Pane(bars=(ck.Bar(open=55.0, high=56.0, low=53.0, close=55.5), ck.Bar(open=55.5, high=56.0, low=54.8, close=55.0), ck.Bar(open=55.0, high=55.3, low=53.8, close=54.2), ck.Bar(open=54.2, high=54.5, low=51.0, close=51.4)), notes=(ck.Note(x=1, label='middle', dx=16, dy=8, y=55.0, notice=True), ck.Note(x=2, label='middle', dx=16, dy=-8, y=54.2, notice=True), ck.Note(x=3, label='final', dx=16, dy=-8, y=51.4, notice=True)), height=1.8), ck.Pane(columns=(0.6, 0.8, 3.8, 0.7), tags=((0, '0.6m'), (1, '0.8m'), (2, '3.8m'), (3, '0.7m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.34, y0=0.32, x1=0.42, y1=0.44, color='gold', at=(0.28, 0.24)), dk.Mark(number=2, kind='box', x0=0.44, y0=0.3, x1=0.68, y1=0.58, color='red', at=(0.56, 0.24)), dk.Mark(number=3, kind='line', x0=0.74, y0=0.61, x1=0.8, y1=0.61, color='blue', at=(0.86, 0.6))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QF'},
-'b2-qg': {'items': (ck.Cell(name='Multiple bullish sequence', note='invented quiet middle bars and a high-volume final close', panes=(ck.Pane(bars=(ck.Bar(open=38.0, high=39.0, low=35.5, close=36.0), ck.Bar(open=36.0, high=36.6, low=35.8, close=36.2), ck.Bar(open=36.2, high=38.2, low=34.8, close=37.5), ck.Bar(open=37.5, high=40.0, low=37.2, close=39.6)), notes=(ck.Note(x=1, label='narrow middle', dx=16, dy=8, y=36.2, notice=True), ck.Note(x=2, label='wide exception', dx=16, dy=-8, y=37.5, notice=True), ck.Note(x=3, label='final close', dx=16, dy=8, y=39.6, notice=True)), height=1.8), ck.Pane(columns=(0.6, 0.6, 3.8, 4.0), tags=((0, '0.6m'), (1, '0.8m'), (2, '3.8m'), (3, '4.0m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.38, y0=0.55, x1=0.45, y1=0.68, color='gold', at=(0.3, 0.48)), dk.Mark(number=2, kind='box', x0=0.54, y0=0.76, x1=0.66, y1=0.96, color='red', at=(0.72, 0.7)), dk.Mark(number=3, kind='line', x0=0.76, y0=0.26, x1=0.82, y1=0.26, color='blue', at=(0.9, 0.16))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QG'},
-'b2-qh': {'items': (ck.Cell(name='Bullish continuation', note='invented prior high 52.00; breach 53.20 on 4.0m', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=52.0, low=49.0, close=51.0), ck.Bar(open=51.0, high=53.2, low=50.8, close=52.8)), strokes=(ck.Stroke(points=((0, 52.0), (1, 52.0)), tone='quiet', dashed=True, label='prior high 52.00', dx=-18, dy=-10),), notes=(ck.Note(x=1, label='breach', dx=16, dy=8, y=53.2, notice=True),), height=1.8), ck.Pane(columns=(2.0, 4.0), tags=((1, '4.0m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='line', x0=0.18, y0=0.35, x1=0.8, y1=0.35, color='gold', at=(0.14, 0.3)), dk.Mark(number=2, kind='line', x0=0.7, y0=0.2, x1=0.75, y1=0.2, color='red', at=(0.75, 0.3)), dk.Mark(number=3, kind='circle', x0=0.68, y0=0.78, x1=0.78, y1=0.93, color='blue', at=(0.84, 0.88))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QH'},
-'b2-qt': {'items': (ck.Cell(name='Continuation pattern one', note='invented values following Lim Figure 7.12', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=52.0, low=49.0, close=51.0), ck.Bar(open=51.0, high=53.2, low=50.8, close=52.8)), strokes=(ck.Stroke(points=((0, 52.0), (1, 52.0)), tone='quiet', dashed=True, label='prior high 52.00', dx=-18, dy=-10),), notes=(ck.Note(x=1, label='breach', dx=16, dy=8, y=53.2, notice=True),), height=1.8), ck.Pane(columns=(2.0, 4.0), tags=((0, '2.0m'), (1, '4.0m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='line', x0=0.18, y0=0.35, x1=0.8, y1=0.35, color='gold', at=(0.14, 0.3)), dk.Mark(number=2, kind='line', x0=0.7, y0=0.23, x1=0.78, y1=0.23, color='red', at=(0.88, 0.14)), dk.Mark(number=3, kind='circle', x0=0.72, y0=0.15, x1=0.8, y1=0.25, color='blue', at=(0.84, 0.31))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QT'},
-'b2-qi': {'items': (ck.Cell(name='Fifty percent retrace', note='invented range 48 to 52; midpoint 50; rebound 52.40', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=52.0, low=48.0, close=51.5), ck.Bar(open=51.5, high=50.0, low=50.0, close=50.0), ck.Bar(open=50.0, high=52.4, low=49.8, close=52.2)), strokes=(ck.Stroke(points=((0, 50.0), (2, 50.0)), tone='quiet', dashed=True),), notes=(ck.Note(x=1, label='midpoint', dx=-28, dy=-8, y=50.0, notice=True), ck.Note(x=2, label='breach', dx=16, dy=8, y=52.4, notice=True)), height=1.8),)),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.42, y0=0.56, x1=0.48, y1=0.62, color='gold', at=(0.36, 0.64)), dk.Mark(number=2, kind='circle', x0=0.75, y0=0.28, x1=0.81, y1=0.36, color='red', at=(0.66, 0.4)), dk.Mark(number=3, kind='line', x0=0.78, y0=0.23, x1=0.84, y1=0.23, color='blue', at=(0.9, 0.2))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QI'},
-'b2-qu': {'items': (ck.Cell(name='Continuation pattern two', note='invented values following Lim Figure 7.12', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=52.0, low=48.0, close=51.5), ck.Bar(open=51.5, high=50.0, low=50.0, close=50.0), ck.Bar(open=50.0, high=52.4, low=49.8, close=52.2)), strokes=(ck.Stroke(points=((0, 50.0), (2, 50.0)), tone='quiet', dashed=True),), notes=(ck.Note(x=1, label='midpoint', dx=-28, dy=-8, y=50.0, notice=True), ck.Note(x=2, label='breach', dx=16, dy=8, y=52.4, notice=True)), height=1.8), ck.Pane(columns=(2.0, 1.0, 4.0), tags=((0, '2.0m'), (1, '1.0m'), (2, '4.0m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.2, y0=0.42, x1=0.3, y1=0.58, color='gold', at=(0.14, 0.68)), dk.Mark(number=2, kind='circle', x0=0.46, y0=0.43, x1=0.54, y1=0.51, color='red', at=(0.62, 0.36)), dk.Mark(number=3, kind='line', x0=0.76, y0=0.25, x1=0.84, y1=0.25, color='blue', at=(0.92, 0.16))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QU'},
-'b2-qv': {'items': (),
-'special': 'characteristics',
-'old_marks': (),
-'old_size': (5.52299978127734, 3.84),
-'owner': 'b2',
-'letter': 'QV'},
-'b2-qk': {'items': (ck.Cell(name='Sixteen-characteristic context', note='invented context: rise 40 to 80 in 12 bars, two pullbacks, upper band', panes=(ck.Pane(line=(40, 44, 50, 49, 58, 66, 65, 72, 76, 78, 79, 80), strokes=(ck.Stroke(points=((0, 78), (11, 78)), tone='quiet', dashed=True, label='upper band', dx=8, dy=-10),), notes=(ck.Note(x=11, label='overextension', dx=-44, dy=8, y=80, notice=True),), height=1.8), ck.Pane(columns=(1.0, 1.2, 1.0, 0.8, 1.1, 1.4, 1.1, 1.0, 1.3, 1.5, 1.2, 1.8), tags=((8, 'high volume'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='arrow', x0=0.24, y0=0.72, x1=0.58, y1=0.28, color='gold', at=(0.18, 0.74)), dk.Mark(number=2, kind='circle', x0=0.62, y0=0.22, x1=0.7, y1=0.32, color='red', at=(0.78, 0.37)), dk.Mark(number=3, kind='circle', x0=0.87, y0=0.17, x1=0.93, y1=0.25, color='blue', at=(0.78, 0.1))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QK'},
-'b2-rf': {'items': (ck.Cell(name='Sixteen-characteristic context', note='invented context: rise 40 to 80 in 12 bars, two pullbacks, upper band', panes=(ck.Pane(line=(40, 44, 50, 49, 58, 66, 65, 72, 76, 78, 79, 80), strokes=(ck.Stroke(points=((0, 78), (11, 78)), tone='quiet', dashed=True, label='upper band', dx=8, dy=-10),), notes=(ck.Note(x=11, label='overextension', dx=-44, dy=8, y=80, notice=True),), height=1.8), ck.Pane(columns=(1.0, 1.2, 1.0, 0.8, 1.1, 1.4, 1.1, 1.0, 1.3, 1.5, 1.2, 1.8), tags=((8, 'high volume'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='arrow', x0=0.24, y0=0.72, x1=0.58, y1=0.28, color='gold', at=(0.18, 0.74)), dk.Mark(number=2, kind='circle', x0=0.62, y0=0.22, x1=0.7, y1=0.32, color='red', at=(0.78, 0.37)), dk.Mark(number=3, kind='circle', x0=0.87, y0=0.17, x1=0.93, y1=0.25, color='blue', at=(0.78, 0.1))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'RF'},
-'b2-rg': {'items': (ck.Cell(name='Bearish close and volume', note='invented bars: the final close is below the prior close', panes=(ck.Pane(bars=(ck.Bar(open=50.8, high=52.0, low=50.6, close=51.1), ck.Bar(open=51.2, high=52.0, low=48.8, close=50.8)), notes=(ck.Note(x=1, label='C 50.80', dx=16, dy=-8, y=50.8, notice=True), ck.Note(x=1, label='wide H 52.00', dx=16, dy=8, y=52.0, notice=True)), height=1.8), ck.Pane(columns=(1.6, 4.0), tags=((1, '4.0m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.655, y0=0.39, x1=0.675, y1=0.43, color='gold', at=(0.56, 0.48), size=0.28), dk.Mark(number=2, kind='line', x0=0.57, y0=0.43, x1=0.7, y1=0.43, color='red', at=(0.8, 0.36)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'RG'},
-'b2-rh': {'items': (ck.Cell(name='Bullish close and volume', note='invented bars: prior high 46.00; final close 47.20; range 3.00; volume 4.5m', panes=(ck.Pane(bars=(ck.Bar(open=44.0, high=46.0, low=43.0, close=45.0), ck.Bar(open=46.2, high=47.2, low=44.2, close=47.2)), strokes=(ck.Stroke(points=((0, 46.0), (1, 46.0)), tone='quiet', dashed=True, label='prior high 46.00', dx=8, dy=-10),), notes=(ck.Note(x=1, label='C 47.20', dx=16, dy=-8, y=47.2, notice=True), ck.Note(x=1, label='L 44.20', dx=16, dy=-8, y=44.2), ck.Note(x=1, label='range 3.00', dx=16, dy=10, y=45.7, notice=True)), height=1.8), ck.Pane(columns=(1.5, 4.5), tags=((1, '4.5m'),), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.645, y0=0.29, x1=0.685, y1=0.35, color='gold', at=(0.55, 0.2)), dk.Mark(number=2, kind='line', x0=0.57, y0=0.62, x1=0.7, y1=0.62, color='red', at=(0.8, 0.55)), dk.Mark(number=3, kind='line', x0=0.66, y0=0.22, x1=0.66, y1=0.9, color='blue', at=(0.84, 0.94))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'RH'},
-'b2-qr': {'items': (ck.Cell(name='Multiple bearish form', note='invented values following Lim Figure 7.10', panes=(ck.Pane(bars=(ck.Bar(open=55.0, high=56.0, low=53.0, close=55.5), ck.Bar(open=55.5, high=56.0, low=54.8, close=55.0), ck.Bar(open=55.0, high=55.3, low=53.8, close=54.2), ck.Bar(open=54.2, high=54.5, low=51.0, close=51.4)), notes=(ck.Note(label='first C', dx=-28, dy=8, y=55.5, notice=True), ck.Note(x=3, label='final C', dx=16, dy=-8, y=51.4, notice=True)), height=1.8), ck.Pane(columns=(0.6, 0.8, 3.8, 0.7), tags=((0, '0.6m'), (1, '0.8m'), (2, '3.8m'), (3, '0.7m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.24, y0=0.27, x1=0.3, y1=0.35, color='gold', at=(0.16, 0.22)), dk.Mark(number=2, kind='box', x0=0.4, y0=0.2, x1=0.68, y1=0.56, color='red', at=(0.38, 0.12)), dk.Mark(number=3, kind='line', x0=0.78, y0=0.69, x1=0.84, y1=0.69, color='blue', at=(0.9, 0.6))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QR'},
-'b2-qs': {'items': (ck.Cell(name='Multiple bullish form', note='invented values following Lim Figure 7.11', panes=(ck.Pane(bars=(ck.Bar(open=38.0, high=39.0, low=35.5, close=36.0), ck.Bar(open=36.0, high=36.6, low=35.8, close=36.2), ck.Bar(open=36.2, high=38.2, low=34.8, close=37.5), ck.Bar(open=37.5, high=40.0, low=37.2, close=39.6)), notes=(ck.Note(label='first C', dx=-28, dy=-8, y=36.0, notice=True), ck.Note(x=3, label='final C', dx=16, dy=8, y=39.6, notice=True)), height=1.8), ck.Pane(columns=(0.6, 0.6, 3.8, 4.0), tags=((0, '0.6m'), (1, '0.6m'), (2, '3.8m'), (3, '4.0m')), height=0.55))),),
-'special': '',
-'old_marks': (dk.Mark(number=1, kind='circle', x0=0.24, y0=0.55, x1=0.3, y1=0.65, color='gold', at=(0.16, 0.7)), dk.Mark(number=2, kind='box', x0=0.4, y0=0.28, x1=0.68, y1=0.56, color='red', at=(0.38, 0.22)), dk.Mark(number=3, kind='line', x0=0.78, y0=0.25, x1=0.84, y1=0.25, color='blue', at=(0.9, 0.16))),
-'old_size': (7.4, 3.4),
-'owner': 'b2',
-'letter': 'QS'},
 'r3a-k': {'items': (ck.Cell(name='Key reversal: yesterday and today', panes=(ck.Pane(bars=(ck.Bar(open=50.8, high=52.0, low=50.6, close=51.1), ck.Bar(open=52.3, high=53.2, low=49.9, close=50.8)), strokes=(ck.Stroke(points=((0, 52), (1, 52)), dashed=True, label='Prior high 52.00'), ck.Stroke(points=((0, 51.1), (1, 51.1)), dashed=True, label='Prior close 51.10'))), ck.Pane(columns=(2.0, 4.2)))),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='circle', x0=np.float64(0.7018510869565218), y0=np.float64(0.2853929924242434), x1=np.float64(0.7249489130434783), y1=np.float64(0.32966382575757675), color='gold', at=(np.float64(0.7134), np.float64(0.24841382575757676)), size=0.26), dk.Mark(number=2, kind='circle', x0=np.float64(0.7309510869565218), y0=np.float64(0.15755208333333334), x1=np.float64(0.7540489130434783), y1=np.float64(0.20182291666666666), color='red', at=(np.float64(0.7733423913043479), np.float64(0.1796875)), size=0.26), dk.Mark(number=3, kind='circle', x0=np.float64(0.7600510869565217), y0=np.float64(0.4984611742424257), x1=np.float64(0.7831489130434782), y1=np.float64(0.542732007575759), color='blue', at=(np.float64(0.7716), np.float64(0.46148200757575897)), size=0.26), dk.Mark(number=4, kind='circle', x0=np.float64(0.7309510869565218), y0=np.float64(0.8320312500000001), x1=np.float64(0.7540489130434783), y1=np.float64(0.8763020833333334), color='purple', at=(np.float64(0.7733423913043479), np.float64(0.8541666666666667)), size=0.26)),
@@ -342,33 +168,6 @@ DATA['r1-m']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'clos
 DATA['r1-g']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'group')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'group')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'group')}, {'number': 4, 'color': 'purple', 'target': (0, 3, 'group')}]
 DATA['r1-p']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'line')}, {'number': 2, 'color': 'red', 'target': (0, 3, 'line')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'line')}, {'number': 4, 'color': 'purple', 'target': (0, 4, 'line')}]
 DATA['r1-r']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'low')}, {'number': 4, 'color': 'purple', 'target': (0, 2, 'close')}]
-DATA['b2-qa']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'volume')}]
-DATA['b2-ql']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-qw']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-qx']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-qm']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-qy']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-qz']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-qc']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'range')}]
-DATA['b2-qn']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
-DATA['b2-qd']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'low')}]
-DATA['b2-qo']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'low')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'low')}]
-DATA['b2-qe']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'high')}]
-DATA['b2-qp']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
-DATA['b2-qj']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'close')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'volume')}]
-DATA['b2-qq']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'volume')}]
-DATA['b2-qf']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'low')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'low')}]
-DATA['b2-qg']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'low')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'volume')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'high')}]
-DATA['b2-qh']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'volume')}]
-DATA['b2-qt']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'close')}]
-DATA['b2-qi']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'close')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
-DATA['b2-qu']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
-DATA['b2-qk']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'line')}, {'number': 2, 'color': 'red', 'target': (0, 6, 'line')}, {'number': 3, 'color': 'blue', 'target': (0, 11, 'line')}]
-DATA['b2-rf']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'line')}, {'number': 2, 'color': 'red', 'target': (0, 6, 'line')}, {'number': 3, 'color': 'blue', 'target': (0, 11, 'line')}]
-DATA['b2-rg']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-rh']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'open')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'range')}]
-DATA['b2-qr']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'close')}]
-DATA['b2-qs']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'close')}]
 DATA['r3a-k']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'close')}, {'number': 4, 'color': 'purple', 'target': (0, 1, 'volume')}]
 DATA['r3a-a']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'open')}, {'number': 4, 'color': 'purple', 'target': (1, 1, 'level:40')}, {'number': 5, 'color': 'gold', 'target': (1, 1, 'volume')}, {'number': 6, 'color': 'red', 'target': (1, 1, 'close')}]
 DATA['r3a-l']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'close')}]
@@ -389,11 +188,161 @@ DATA['r4-v']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open
 DATA['r4-o']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 5, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'range')}]
 DATA['r4-w']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 4, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'close')}]
 
-DATA['b2-qi']['targets'][0]['target'] = (0,0,'range')
-DATA['b2-qi']['targets'][1]['target'] = (0,1,'low')
 DATA['r1-m']['groups'] = {(0,2,'group'): (0,2,3)}
 DATA['r3b-lg']['targets'][2]['target'] = (0,11,'group')
 DATA['r3b-lg']['groups'] = {(0,11,'group'): (0,11,12)}
+
+# Part 2, section 7.2. One chart per generic form in Figures 7.4 to 7.12,
+# drawn from Lim's own label for that form with invented prices, plus the
+# reliability and barrier examples. A bullish form mirrors its bearish twin
+# about PHP 45 (each price p becomes 90 - p), so it keeps the label's shape.
+SPLIT = 8.7   # inches: a chart that shares its slide with the book's drawing
+
+
+def _mirror(rows):
+    return tuple((round(90-o, 2), round(90-l, 2), round(90-h, 2), round(90-c, 2))
+                 for o, h, l, c in rows)
+
+
+def _form(letter, name, rows, targets, *, note='', volume=(), levels=(),
+          groups=None, width=SPLIT):
+    bars = tuple(ck.Bar(open=o, high=h, low=l, close=c) for o, h, l, c in rows)
+    strokes = tuple(ck.Stroke(points=((0, value), (len(rows) - 1, value)),
+                              dashed=True, label=label) for label, value in levels)
+    panes = (ck.Pane(bars=bars, strokes=strokes),)
+    if volume:
+        panes += (ck.Pane(columns=tuple(volume)),)
+    spec = {'items': (ck.Cell(name=name, note=note, panes=panes),), 'special': '',
+            'owner': 'p2', 'letter': letter, 'old_marks': (),
+            'targets': [{'number': n, 'color': ('gold', 'red', 'blue', 'purple')[n - 1],
+                         'target': t} for n, t in enumerate(targets, 1)]}
+    if groups:
+        spec['groups'] = groups
+    if width:
+        spec['width'] = width
+    return spec
+
+
+def _pair(bear, bull, *, levels=(), bull_levels=(), **kwargs):
+    """A bearish form and its bullish mirror, keyed by their two letters."""
+    (b_letter, b_name, rows), (u_letter, u_name) = bear, bull
+    # Turned upside down, a high becomes a low, so the marks swap with it.
+    swap = {'high': 'low', 'low': 'high'}
+    targets = kwargs.pop('targets')
+    flipped = tuple((c, i, swap.get(name, name)) for c, i, name in targets)
+    return {
+        'p2-' + b_letter.lower(): _form(b_letter, b_name, rows, targets, levels=levels, **kwargs),
+        'p2-' + u_letter.lower(): _form(u_letter, u_name, _mirror(rows), flipped, levels=bull_levels, **kwargs),
+    }
+
+
+MIDDLE = {(0, 1, 'group'): (0, 1, 2)}
+P2 = {}
+# Figures 7.4 and 7.5: the seven single and double bar forms, p. 212.
+P2.update(_pair(('BA', 'Bearish form 1: key reversal bar', ((50.2, 51.0, 49.9, 50.8), (51.4, 52.0, 49.8, 50.3))),
+                ('UA', 'Bullish form 1: key reversal bar'),
+                levels=(('prior high 51.00', 51.0),), bull_levels=(('prior low 39.00', 39.0),),
+                targets=((0, 1, 'open'), (0, 1, 'range'), (0, 1, 'close'))))
+P2.update(_pair(('BB', 'Bearish form 2: close below a previous low', ((50.4, 51.2, 50.2, 51.0), (51.1, 51.5, 49.4, 49.6))),
+                ('UB', 'Bullish form 2: close above a previous high'),
+                levels=(('prior low 50.20', 50.2),), bull_levels=(('prior high 39.80', 39.8),),
+                targets=((0, 0, 'low'), (0, 1, 'range'), (0, 1, 'close'))))
+P2.update(_pair(('BC', 'Bearish form 3: close below a gap', ((51.2, 52.0, 51.0, 51.8), (50.6, 50.6, 49.6, 49.8))),
+                ('UC', 'Bullish form 3: close above a gap'),
+                levels=(('prior low 51.00', 51.0),), bull_levels=(('prior high 39.00', 39.0),),
+                targets=((0, 1, 'open'), (0, 1, 'gap'), (0, 1, 'close'))))
+P2.update(_pair(('BD', 'Bearish form 4: inside bar', ((49.4, 52.0, 49.0, 51.8), (51.6, 51.8, 50.8, 51.0))),
+                ('UD', 'Bullish form 4: inside bar'), volume=(3.0, 0.9),
+                targets=((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'volume'))))
+P2.update(_pair(('BE', 'Bearish form 5: overextended bar', ((50.0, 50.8, 49.8, 50.6), (51.0, 53.6, 50.8, 51.0))),
+                ('UE', 'Bullish form 5: overextended bar'),
+                targets=((0, 1, 'high'), (0, 1, 'close'))))
+P2.update(_pair(('BF', 'Bearish form 6: outside bar', ((51.0, 51.4, 50.8, 51.2), (51.3, 51.9, 49.9, 50.0))),
+                ('UF', 'Bullish form 6: outside bar'),
+                targets=((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'close'))))
+P2.update(_pair(('BG', 'Bearish form 7: two large bars', ((49.2, 51.6, 49.0, 51.6), (51.5, 51.8, 49.2, 49.4))),
+                ('UG', 'Bullish form 7: two large bars'),
+                targets=((0, 0, 'close'), (0, 1, 'close'))))
+# The reliability condition: an overextended last bar near its extreme on
+# high volume, p. 212.
+P2.update(_pair(('RL', 'A bearish last bar worth trusting more', ((50.6, 51.4, 50.4, 51.2), (51.3, 51.6, 47.6, 47.8))),
+                ('RM', 'A bullish last bar worth trusting more'), volume=(1.5, 4.5), width=None,
+                targets=((0, 1, 'range'), (0, 1, 'close'), (0, 1, 'volume'))))
+# Figures 7.6 to 7.9: the six triple bar forms, pp. 213 to 215.
+P2['p2-tr'] = _form('TR', 'A triple pattern that meets the rules',
+                    ((49.2, 51.0, 48.0, 50.8), (50.6, 50.9, 50.1, 50.3), (50.2, 50.4, 47.0, 47.2)),
+                    volume=(2.6, 0.7, 4.2), width=None,
+                    targets=((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'volume'), (0, 2, 'range')))
+_TRIPLE_1 = ((49.2, 50.6, 49.0, 50.5), (50.8, 52.8, 50.4, 50.6), (50.5, 50.7, 48.8, 49.0))
+# Lim states the larger-middle-volume exception for bearish pattern 1 only,
+# so the bullish mirror carries no volume to read.
+P2['p2-ta'] = _form('TA', 'Bearish triple 1: large middle bar', _TRIPLE_1, volume=(1.8, 3.6, 3.0),
+                    targets=((0, 0, 'close'), (0, 1, 'close'), (0, 1, 'volume'), (0, 2, 'close')))
+P2['p2-tg'] = _form('TG', 'Bullish triple 1: large middle bar', _mirror(_TRIPLE_1),
+                    targets=((0, 0, 'close'), (0, 1, 'close'), (0, 2, 'close')))
+P2.update(_pair(('TB', 'Bearish triple 2: narrow middle bar', ((49.0, 51.2, 48.8, 51.0), (50.6, 50.9, 50.3, 50.5), (50.4, 50.7, 48.4, 48.6))),
+                ('TH', 'Bullish triple 2: narrow middle bar'), volume=(2.8, 0.8, 3.2),
+                targets=((0, 0, 'close'), (0, 1, 'range'), (0, 1, 'volume'), (0, 2, 'close'))))
+P2.update(_pair(('TC', 'Bearish triple 3: a gap and a close back below it', ((49.0, 50.0, 48.8, 49.8), (50.6, 51.4, 50.4, 51.2), (51.0, 51.2, 49.4, 49.6))),
+                ('TI', 'Bullish triple 3: a gap and a close back above it'),
+                targets=((0, 1, 'gap'), (0, 1, 'close'), (0, 2, 'close'))))
+P2.update(_pair(('TD', 'Bearish triple 4: single island reversal bar', ((49.2, 50.0, 49.0, 49.8), (50.6, 51.0, 50.4, 50.7), (49.8, 50.0, 48.4, 48.6))),
+                ('TJ', 'Bullish triple 4: single island reversal bar'), volume=(2.0, 0.7, 2.6),
+                targets=((0, 1, 'gap'), (0, 1, 'volume'), (0, 2, 'gap'), (0, 2, 'close'))))
+P2.update(_pair(('TE', 'Bearish triple 5: third bar engulfs the second', ((49.2, 50.0, 49.0, 49.8), (50.5, 50.9, 50.4, 50.8), (50.9, 51.2, 49.2, 49.4))),
+                ('TK', 'Bullish triple 5: third bar engulfs the second'), volume=(2.0, 0.6, 3.0),
+                targets=((0, 1, 'gap'), (0, 1, 'volume'), (0, 2, 'range'), (0, 2, 'close'))))
+P2.update(_pair(('TF', 'Bearish triple 6: close below the second low', ((49.0, 50.4, 48.8, 50.2), (50.3, 51.4, 50.1, 51.3), (51.2, 51.3, 49.6, 49.8))),
+                ('TL', 'Bullish triple 6: close above the second high'), volume=(2.2, 0.8, 2.8),
+                targets=((0, 1, 'close'), (0, 1, 'volume'), (0, 2, 'close'))))
+# Figures 7.10 and 7.11: the four multiple bar forms, pp. 214 to 216. Two
+# intermediate bars stand for Lim's several, so all four prices still fit.
+P2.update(_pair(('XA', 'Bearish multiple 1: narrow bars near the first high', ((48.4, 50.2, 48.2, 50.0), (50.0, 50.4, 49.8, 50.1), (50.1, 50.5, 49.9, 50.2), (50.1, 50.3, 48.0, 48.2))),
+                ('XE', 'Bullish multiple 1: narrow bars near the first low'), width=None, groups=MIDDLE,
+                targets=((0, 0, 'close'), (0, 1, 'group'), (0, 3, 'close'))))
+P2.update(_pair(('XB', 'Bearish multiple 2: wide bars closing near their lows', ((48.4, 50.2, 48.2, 50.0), (51.8, 52.0, 50.0, 50.2), (51.9, 52.2, 50.1, 50.3), (50.2, 50.4, 48.0, 48.2))),
+                ('XF', 'Bullish multiple 2: wide bars closing near their highs'), width=None, groups=MIDDLE,
+                volume=(2.0, 3.8, 3.6, 3.0),
+                targets=((0, 0, 'close'), (0, 1, 'group'), (0, 1, 'volumes:2'), (0, 3, 'close'))))
+P2.update(_pair(('XC', 'Bearish multiple 3: narrow bars inside the first', ((48.2, 50.4, 48.0, 50.2), (49.4, 49.7, 49.2, 49.5), (49.5, 49.8, 49.3, 49.4), (50.2, 50.4, 47.8, 48.0))),
+                ('XG', 'Bullish multiple 3: narrow bars inside the first'), width=None, groups=MIDDLE,
+                targets=((0, 0, 'close'), (0, 1, 'group'), (0, 3, 'close'))))
+P2.update(_pair(('XD', 'Bearish multiple 4: island reversal formation', ((48.2, 50.0, 48.0, 49.8), (50.6, 50.9, 50.4, 50.7), (50.7, 51.0, 50.5, 50.8), (49.8, 50.0, 48.2, 48.4))),
+                ('XH', 'Bullish multiple 4: island reversal formation'), width=None, groups=MIDDLE,
+                targets=((0, 0, 'high'), (0, 1, 'group'), (0, 3, 'high'), (0, 3, 'close'))))
+# Figure 7.12: the two bullish continuation bars, pp. 216 to 217.
+P2['p2-ca'] = _form('CA', 'Continuation 1: a high-volume breach of the prior high',
+                    ((48.4, 51.0, 48.2, 50.8), (50.9, 53.4, 50.6, 53.2)), volume=(2.0, 4.0),
+                    levels=(('prior high 51.00', 51.0),),
+                    targets=((0, 0, 'high'), (0, 1, 'close'), (0, 1, 'volume')))
+P2['p2-cb'] = _form('CB', 'Continuation 2: a halfway retrace, then a breach',
+                    ((48.2, 52.0, 48.0, 51.6), (51.4, 52.8, 50.0, 52.6)), volume=(2.2, 4.2),
+                    levels=(('midpoint 50.00', 50.0),),
+                    targets=((0, 1, 'low'), (0, 1, 'high'), (0, 1, 'volume')))
+# Barrier proximity, p. 217: the same key reversal bar at and away from a
+# barrier, then the bullish converse at support.
+_KEY_AT_60 = ((58.6, 59.8, 58.4, 59.6), (60.2, 60.6, 58.6, 59.0))
+P2['p2-ra'] = _form('RA', 'Key reversal bar at resistance', _KEY_AT_60, width=None,
+                    levels=(('resistance 60.00', 60.0),),
+                    targets=((0, 1, 'level:60.0'), (0, 1, 'high'), (0, 1, 'close')))
+P2['p2-rb'] = _form('RB', 'The same bar with no barrier nearby', _KEY_AT_60, width=None,
+                    targets=((0, 1, 'high'), (0, 1, 'close')))
+P2['p2-rc'] = _form('RC', 'Bullish key reversal bar at support',
+                    ((41.4, 41.6, 40.2, 40.4), (39.8, 41.4, 39.4, 41.0)), width=None,
+                    levels=(('support 40.00', 40.0),),
+                    targets=((0, 1, 'level:40.0'), (0, 1, 'low'), (0, 1, 'close')))
+# Figure 7.13's warnings, pp. 217 to 218, with an invented path: 40 to 80
+# in twelve bars, two one-point dips, the last bar 3 points over the band.
+P2['p2-wa'] = {'items': (ck.Cell(name='An exponential rise into an upper band', panes=(
+                   ck.Pane(line=(40, 41, 42, 44, 43, 46, 49, 53, 52, 58, 66, 80),
+                           strokes=(ck.Stroke(points=((0, 77), (11, 77)), dashed=True,
+                                              label='upper band 77'),)),)),),
+               'special': '', 'owner': 'p2', 'letter': 'WA', 'old_marks': (),
+               'targets': [{'number': 1, 'color': 'gold', 'target': (0, 10, 'line')},
+                           {'number': 2, 'color': 'red', 'target': (0, 8, 'line')},
+                           {'number': 3, 'color': 'blue', 'target': (0, 11, 'line')}]}
+DATA.update(P2)
+
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

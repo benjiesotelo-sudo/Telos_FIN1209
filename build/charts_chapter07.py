@@ -138,25 +138,25 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r3b',
 'letter': 'LI'},
-'r4-n': {'items': (ck.Cell(name="Williams' Oops after a gap up", note='invented PHP values; sell-stop at the prior high', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=52.0, low=49.5, close=51.0), ck.Bar(open=53.0, high=54.0, low=50.5, close=51.5)), strokes=(ck.Stroke(points=((0, 52.0), (1, 52.0)), dashed=True, label='prior high 52.00', dx=-24, dy=-10), ck.Stroke(points=((0, 54.0), (1, 54.0)), tone='notice', dashed=True, label='stoploss 54.00', at=1, dx=20, dy=-10)), notes=(ck.Note(x=1, label='open 53.00', dx=-24, dy=14, y=53.0, notice=True), ck.Note(x=1, label='high 54.00', dx=20, dy=8, y=54.0, notice=True), ck.Note(label='sell-stop 52.00', dx=-24, dy=8, y=52.0, notice=True)), height=1.8),)),),
+'r4-n': {'items': (ck.Cell(name="Bearish Oops: bar 2 opens above bar 1's high", note='', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=52.0, low=49.5, close=51.0), ck.Bar(open=53.0, high=54.0, low=50.5, close=51.5)), strokes=(ck.Stroke(points=((0, 52.0), (1, 52.0)), dashed=True, label='bar 1 high, sell-stop 52.00'), ck.Stroke(points=((0, 54.0), (1, 54.0)), dashed=True, label='bar 2 high, stoploss 54.00')), notes=(ck.Note(label='the previous bar'), ck.Note(x=1, label='gaps up, then falls')), height=1.8),)),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0.64, y0=0.27, x1=0.69, y1=0.33, color='gold', at=(0.51, 0.37)), dk.Mark(number=2, kind='circle', x0=0.64, y0=0.49, x1=0.69, y1=0.55, color='red', at=(0.78, 0.62)), dk.Mark(number=3, kind='circle', x0=0.64, y0=0.21, x1=0.69, y1=0.27, color='blue', at=(0.78, 0.13))),
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r4',
 'letter': 'N'},
-'r4-v': {'items': (ck.Cell(name='Bullish Oops: two-bar worked example', note='invented PHP values; buy-stop then stoploss', panes=(ck.Pane(bars=(ck.Bar(open=49.0, high=50.0, low=48.0, close=49.5), ck.Bar(open=47.0, high=49.0, low=46.0, close=48.5)), strokes=(ck.Stroke(points=((0, 48.0), (1, 48.0)), dashed=True, label='buy-stop 48.00', dx=-24, dy=8), ck.Stroke(points=((0, 46.0), (1, 46.0)), tone='notice', dashed=True, label='low / stoploss 46.00', at=1, dx=20, dy=10)), notes=(ck.Note(x=1, label='open 47.00', dx=-24, dy=14, y=47.0, notice=True), ck.Note(x=1, dx=20, dy=8, y=46.0, notice=True), ck.Note(label='prior low 48.00', dx=-24, dy=8, y=48.0, notice=True)), height=1.75),)),),
+'r4-v': {'items': (ck.Cell(name="Bullish Oops: bar 2 opens below bar 1's low", note='', panes=(ck.Pane(bars=(ck.Bar(open=49.0, high=50.0, low=48.0, close=49.5), ck.Bar(open=47.0, high=49.0, low=46.0, close=48.5)), strokes=(ck.Stroke(points=((0, 48.0), (1, 48.0)), dashed=True, label='bar 1 low, buy-stop 48.00'), ck.Stroke(points=((0, 46.0), (1, 46.0)), dashed=True, label='bar 2 low, stoploss 46.00')), notes=(ck.Note(label='the previous bar'), ck.Note(x=1, label='gaps down, then rises')), height=1.75),)),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='arrow', x0=0.67, y0=0.55, x1=0.67, y1=0.7, color='gold', at=(0.76, 0.58), size=0.3), dk.Mark(number=2, kind='line', x0=0.39, y0=0.54, x1=0.63, y1=0.54, color='red', at=(0.78, 0.47), size=0.3), dk.Mark(number=3, kind='line', x0=0.39, y0=0.84, x1=0.63, y1=0.84, color='blue', at=(0.8, 0.87), size=0.3)),
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r4',
 'letter': 'V'},
-'r4-o': {'items': (ck.Cell(name='ID/NR6 compresses the recent range', note='invented daily bars; the last bar is inside and narrowest', panes=(ck.Pane(bars=(ck.Bar(open=50.0, high=54.0, low=49.0, close=52.0), ck.Bar(open=52.0, high=55.2, low=50.0, close=53.5), ck.Bar(open=53.5, high=56.3, low=51.2, close=54.0), ck.Bar(open=54.0, high=56.1, low=52.2, close=55.0), ck.Bar(open=55.2, high=56.6, low=55.0, close=56.0), ck.Bar(open=55.7, high=56.5, low=55.3, close=56.1)), strokes=(ck.Stroke(points=((4.5, 56.6), (5.8, 56.6)), tone='notice', dashed=True, label='long trigger 56.60', at=1, dy=-10), ck.Stroke(points=((4.5, 54.4), (5.8, 54.4)), tone='notice', dashed=True, label='short trigger 54.40', at=1, dy=10)), notes=(ck.Note(label='range 4.0', dx=-20, dy=10, y=54.0), ck.Note(x=1, label='range 3.2', dx=-12, dy=12, y=55.2), ck.Note(x=2, label='range 2.8', dx=-12, dy=10, y=56.3), ck.Note(x=3, label='range 2.1', dx=-12, dy=10, y=56.1), ck.Note(x=4, label='range 1.6', dx=14, dy=8, y=56.6), ck.Note(x=5, label='range 1.2', dx=14, dy=8, y=56.5, notice=True)), height=1.8),)),),
+'r4-o': {'items': (ck.Cell(name='ID/NR6: six daily bars of ours', note='', panes=(ck.Pane(bars=(ck.Bar(open=51.0, high=54.0, low=50.0, close=53.5), ck.Bar(open=53.4, high=54.6, low=51.4, close=52.0), ck.Bar(open=52.2, high=54.8, low=52.0, close=54.4), ck.Bar(open=54.4, high=55.0, low=52.9, close=53.2), ck.Bar(open=53.4, high=54.8, low=53.2, close=54.5), ck.Bar(open=54.4, high=54.6, low=53.4, close=53.8)), notes=(ck.Note(label='range 4.0'), ck.Note(x=1, label='range 3.2'), ck.Note(x=2, label='range 2.8'), ck.Note(x=3, label='range 2.1'), ck.Note(x=4, label='range 1.6'), ck.Note(x=5, label='range 1.2')), height=1.8),)),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='box', x0=0.68, y0=0.25, x1=0.84, y1=0.43, color='gold', at=(0.63, 0.48)), dk.Mark(number=2, kind='line', x0=0.8, y0=0.22, x1=0.8, y1=0.43, color='red', at=(0.88, 0.47)), dk.Mark(number=3, kind='line', x0=0.88, y0=0.18, x1=0.88, y1=0.49, color='blue', at=(0.92, 0.6))),
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r4',
 'letter': 'O'},
-'r4-w': {'items': (ck.Cell(name='Inside Month/NR5: worked example', note='invented monthly ranges; upward breakout after the count', panes=(ck.Pane(bars=(ck.Bar(open=28.0, high=30.0, low=18.0, close=26.0), ck.Bar(open=26.0, high=29.0, low=19.0, close=27.0), ck.Bar(open=27.0, high=30.0, low=21.0, close=28.0), ck.Bar(open=28.0, high=31.0, low=24.0, close=29.0), ck.Bar(open=29.0, high=30.0, low=25.0, close=28.0), ck.Bar(open=28.0, high=36.0, low=27.0, close=36.0)), strokes=(ck.Stroke(points=((3, 36.0), (5.8, 36.0)), dashed=True, label='breakout +8.00', at=1, dy=-10),), notes=(ck.Note(label='range 12', dx=-20, dy=8, y=30.0), ck.Note(x=1, label='range 10', dx=-12, dy=10, y=29.0), ck.Note(x=2, label='range 9', dx=-12, dy=8, y=30.0), ck.Note(x=3, label='range 7', dx=12, dy=8, y=31.0), ck.Note(x=4, label='range 5', dx=14, dy=8, y=30.0), ck.Note(x=5, label='break +8.00', dx=16, dy=8, y=36.0, notice=True)), height=1.75),)),),
+'r4-w': {'items': (ck.Cell(name='Inside Month/NR5: six monthly bars of ours', note='', panes=(ck.Pane(bars=(ck.Bar(open=28.0, high=30.0, low=18.0, close=26.0), ck.Bar(open=26.0, high=29.0, low=19.0, close=27.0), ck.Bar(open=27.0, high=30.0, low=21.0, close=28.0), ck.Bar(open=28.0, high=31.0, low=24.0, close=29.0), ck.Bar(open=29.0, high=30.0, low=25.0, close=28.0), ck.Bar(open=28.0, high=36.0, low=27.0, close=36.0)), notes=(ck.Note(label='range 12'), ck.Note(x=1, label='range 10'), ck.Note(x=2, label='range 9'), ck.Note(x=3, label='range 7'), ck.Note(x=4, label='range 5'), ck.Note(x=5, label='breakout')), height=1.75),)),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='box', x0=0.53, y0=0.38, x1=0.7, y1=0.59, color='gold', at=(0.49, 0.63), size=0.3), dk.Mark(number=2, kind='line', x0=0.67, y0=0.39, x1=0.67, y1=0.55, color='red', at=(0.74, 0.63), size=0.3), dk.Mark(number=3, kind='circle', x0=0.78, y0=0.18, x1=0.84, y1=0.49, color='blue', at=(0.91, 0.55), size=0.3)),
 'old_size': (8.222999781277341, 3.84),
@@ -183,10 +183,24 @@ DATA['r3b-lf']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'le
 DATA['r3b-lg']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 9, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 10, 'close')}, {'number': 3, 'color': 'blue', 'target': (0, 11, 'close')}]
 DATA['r3b-lh']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
 DATA['r3b-li']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}, {'number': 4, 'color': 'gold', 'target': (1, 0, 'range')}, {'number': 5, 'color': 'red', 'target': (1, 1, 'high')}, {'number': 6, 'color': 'blue', 'target': (1, 2, 'close')}]
+DATA['r4-t'] = {'items': (), 'special': 'nr_table', 'owner': 'r4', 'letter': 'T',
+    'old_marks': (dk.Mark(number=1, kind='circle', x0=0, y0=0, x1=0, y1=0), dk.Mark(number=2, kind='circle', x0=0, y0=0, x1=0, y1=0)),
+    'caption': 'The ranges are invented for teaching.',
+    'nr_ranges': (1.0, 4.0, 3.2, 2.8, 2.1, 1.6, 1.2),
+    'targets': [{'number': 1, 'color': 'gold', 'target': (0, 0, 'yes')}, {'number': 2, 'color': 'red', 'target': (0, 7, 'answer')}]}
+DATA['r4-n']['caption'] = 'Prices are invented for teaching.'
 DATA['r4-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'level:52.0')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'high')}]
+DATA['r4-v']['caption'] = 'Prices are invented for teaching.'
 DATA['r4-v']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'level:48.0')}, {'number': 3, 'color': 'blue', 'target': (0, 1, 'low')}]
-DATA['r4-o']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 5, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'range')}]
-DATA['r4-w']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 4, 'high')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'low')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'close')}]
+DATA['r4-o']['caption'] = 'Prices are invented for teaching.'
+DATA['r4-o']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 5, 'span')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 4, 'low')}]
+# All six bars on one page; prices only where the sentences read them.
+DATA['r4-o'].update(one_page=True, stack_captions=True, spans={(0, 5, 'span')},
+                    bar_labels={0: '', 1: '', 2: '', 3: '', 4: 'HL', 5: 'HL'})
+DATA['r4-w']['caption'] = 'Prices are invented for teaching.'
+DATA['r4-w']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 4, 'span')}, {'number': 2, 'color': 'red', 'target': (0, 4, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 5, 'close')}]
+DATA['r4-w'].update(one_page=True, stack_captions=True, spans={(0, 4, 'span')},
+                    bar_labels={0: '', 1: '', 2: '', 3: 'HL', 4: 'HLC', 5: 'HC'})
 
 DATA['r1-m']['groups'] = {(0,2,'group'): (0,2,3)}
 DATA['r3b-lg']['targets'][2]['target'] = (0,11,'group')
@@ -343,6 +357,9 @@ P2['p2-wa'] = {'items': (ck.Cell(name='An exponential rise into an upper band', 
                            {'number': 3, 'color': 'blue', 'target': (0, 11, 'line')}]}
 DATA.update(P2)
 
+
+for _key in ('r4-n', 'r4-v', 'r4-o', 'r4-w', 'r4-t'):
+    DATA[_key]['marks_by_sentence'] = True
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

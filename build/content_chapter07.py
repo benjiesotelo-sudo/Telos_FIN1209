@@ -780,12 +780,10 @@ CHAPTER = Chapter(
                     ),
                 ),
                 # Figures 7.8 and 7.9: the six bullish mirrors, pp. 214 to 215.
-                Content(
-                    notes=('Same six shapes, turned over, at the bottom of a downtrend.',),
-                    origin='Lim (2016), p. 214. The prices are invented for teaching.',
-                    title='The six bullish triple forms mirror them in a downtrend',
-                    lines=('Lim draws six basic triple bar bullish reversal patterns in a downtrend (p. 214).', 'Lim\'s reliability rule turns around: a bullish three-bar pattern is potentially more reliable if the last bar is overextended (unusually long compared with the bars before it) and closes at or near its high on high volume (p. 214).', 'Our six charts are the bearish ones turned upside down about PHP 45, so a close at PHP 50.50 becomes PHP 39.50. Our charts show an ordinary last bar; an overextended one would be far longer, say PHP 4.00 against PHP 1.00.'),
-                ),
+                *chart_slides('p2-oa', 'The six bullish triple forms mirror them in a downtrend', (
+                    "Lim draws six bullish triple patterns in a downtrend (p. 214); ours flip the bearish ones about PHP 45, so 50.50 becomes 39.50. More reliable if the last bar is overextended, unusually long against the bars before it, and closes near its high on high volume (p. 214). Beside an ordinary PHP 1.00 bar [1], that bar ranges PHP 4.00 [2], closing near its high [3].",
+                ), notes=('Same six shapes, turned over, at the bottom of a downtrend.',),
+                   origin='Lim (2016), p. 214. The prices are invented for teaching.'),
                 *chart_slides('p2-tg', 'Bullish triple form 1: a large middle bar that closes near its high', (
                     "In a downtrend, Lim's label: \"1st bar closes near its low followed by a large middle bar closing near its high. The 3rd bar closes at or near its high\" (Figure 7.8, p. 214).",
                     'Bar 1 closes at PHP 39.50, near its low [1]; the large middle bar closes at PHP 39.40, near its high [2]; bar 3 closes at PHP 41.00 [3].',
@@ -848,12 +846,10 @@ CHAPTER = Chapter(
                     ),
                 ),
                 # Figures 7.10 and 7.11: four multiple bar forms each way, pp. 214 to 216.
-                Content(
-                    notes=('Multiple means several bars between the first and the last.', 'Our charts draw two middle bars so every price stays readable.'),
-                    origin='Lim (2016), pp. 214 to 215.',
-                    title='Multiple bar patterns stretch the middle across several bars',
-                    lines=('Lim draws four basic multiple bar bearish reversal patterns in an uptrend (p. 214). Between the first and the last bar sit several bars, where a triple pattern had one. Our charts draw an ordinary last bar.', 'The gap rule carries over: the larger the gaps, the more bearish the pattern. And the bars between the first and last should generally trade on low volume (p. 214).', 'The last bar matters most again: an overextended last bar (say PHP 4.00 against PHP 1.00 before it) closing near or at its low on high volume makes the pattern potentially more reliable (p. 215).'),
-                ),
+                *chart_slides('p2-ob', 'Multiple bar patterns stretch the middle across several bars', (
+                    "Lim draws four bearish multiple bar patterns in an uptrend (p. 214). Larger gaps are more bearish; the bars between should trade on low volume (p. 214). More reliable if the last bar is overextended, unusually long against the bars before it, and closes near its low on high volume (p. 215). Beside an ordinary PHP 1.00 bar [1], it ranges PHP 4.00 [2], closing near its low [3].",
+                ), notes=('Multiple means several bars between the first and the last.',),
+                   origin='Lim (2016), pp. 214 to 215. The prices are invented for teaching.'),
                 Content(
                     notes=("Read Lim's summary sentence slowly: extremely high OR low volume, on the wide bars.", 'This is the one place where both high and low volume point the same way.'),
                     origin='Lim (2016), pp. 214 to 215. The volumes are invented for teaching.',
@@ -934,12 +930,10 @@ CHAPTER = Chapter(
                     "Bar 1 tops out at PHP 50.00 [1], and the isolated bars [2] trade above a gap, between PHP 50.40 and PHP 51.00. The last bar tops out at PHP 50.00 [3], so it gaps down below them, and closes at PHP 48.40, near its PHP 48.20 low [4].",
                 ), notes=('Two gaps, as in triple form 4; only the middle is longer.',),
                    origin='Lim (2016), p. 215, Figure 7.10. The prices are invented for teaching.'),
-                Content(
-                    notes=('The bullish side keeps both volume readings, now pointing up.',),
-                    origin='Lim (2016), pp. 215 to 216.',
-                    title='The four bullish multiple forms mirror the bearish ones',
-                    lines=('Lim draws four basic multiple bar bullish reversal patterns in a downtrend (p. 215).', 'In pattern 2 the wide middle bars can occur on high or above average volume, indicating bullishness. Narrow middle bars on low volume are also a sign of potential bullishness (p. 216).', 'And a bullish pattern is potentially more reliable if the last bar is overextended (unusually long compared with the bars before it) and closes near or at its high on high volume (p. 216). Our charts show an ordinary last bar; an overextended one would be far longer, say PHP 4.00 against PHP 1.00.'),
-                ),
+                *chart_slides('p2-oc', 'The four bullish multiple forms mirror the bearish ones', (
+                    "Lim draws four bullish multiple patterns in a downtrend (p. 215). In pattern 2, wide middle bars on high volume, or narrow ones on low, are bullish (p. 216). More reliable if the last bar is overextended, unusually long, and closes near its high on high volume (p. 216). Beside an ordinary PHP 1.00 bar [1], the last bar ranges PHP 4.00 [2], closing near its high [3].",
+                ), notes=('The bullish side keeps both volume readings, now pointing up.',),
+                   origin='Lim (2016), pp. 215 to 216. The prices are invented for teaching.'),
                 Pair(
                     notes=('Mirror of bearish multiple form 1.',),
                     origin='Lim (2016), p. 216, Figure 7.11.',

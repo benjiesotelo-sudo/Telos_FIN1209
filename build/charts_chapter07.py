@@ -276,9 +276,9 @@ P2.update(_pair(('BC', 'Bearish form 3: close below a gap', ((51.2, 52.0, 51.0, 
 P2.update(_pair(('BD', 'Bearish form 4: inside bar', ((49.4, 52.0, 49.0, 51.8), (51.6, 51.8, 50.8, 51.0))),
                 ('UD', 'Bullish form 4: inside bar'), volume=(3.0, 0.9),
                 targets=((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'volume'))))
-P2.update(_pair(('BE', 'Bearish form 5: overextended bar', ((50.0, 50.8, 49.8, 50.6), (51.0, 53.6, 50.8, 51.0))),
+P2.update(_pair(('BE', 'Bearish form 5: overextended bar', ((50.0, 50.8, 49.8, 50.6), (51.0, 54.8, 50.8, 51.0))),
                 ('UE', 'Bullish form 5: overextended bar'),
-                targets=((0, 1, 'high'), (0, 1, 'close'))))
+                targets=((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'close'))))
 P2.update(_pair(('BF', 'Bearish form 6: outside bar', ((51.0, 51.4, 50.8, 51.2), (51.3, 51.9, 49.9, 50.0))),
                 ('UF', 'Bullish form 6: outside bar'),
                 targets=((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'close'))))
@@ -290,9 +290,16 @@ P2.update(_pair(('BG', 'Bearish form 7: two large bars', ((49.2, 51.6, 49.0, 51.
 P2.update(_pair(('RL', 'A bearish last bar worth trusting more', ((50.6, 51.4, 50.4, 51.2), (51.3, 51.6, 47.6, 47.8))),
                 ('RM', 'A bullish last bar worth trusting more'), volume=(1.5, 4.5), width=None,
                 targets=((0, 1, 'range'), (0, 1, 'close'), (0, 1, 'volume'))))
+# The last-bar size contrast shown on the multiple bar and bullish triple
+# rule slides: an ordinary PHP 1.00 bar beside an overextended PHP 4.00 bar.
+_OVER = ((50.0, 50.8, 49.8, 50.6), (51.0, 54.8, 50.8, 51.0))
+_OVER_T = ((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'close'))
+P2['p2-ob'] = _form('OB', 'Bearish last bar: ordinary beside overextended', _OVER, _OVER_T)
+P2['p2-oa'] = _form('OA', 'Bullish last bar: ordinary beside overextended', _mirror(_OVER), _OVER_T)
+P2['p2-oc'] = _form('OC', 'Bullish last bar: ordinary beside overextended', _mirror(_OVER), _OVER_T)
 # Figures 7.6 to 7.9: the six triple bar forms, pp. 213 to 215.
 P2['p2-tr'] = _form('TR', 'A triple pattern that meets the rules',
-                    ((49.2, 51.0, 48.0, 50.8), (50.6, 50.9, 50.1, 50.3), (50.2, 50.4, 47.0, 47.2)),
+                    ((49.2, 51.0, 48.0, 50.8), (50.6, 50.9, 50.1, 50.3), (50.2, 50.4, 44.4, 44.6)),
                     volume=(2.6, 0.7, 4.2), width=None,
                     targets=((0, 0, 'range'), (0, 1, 'range'), (0, 1, 'volume'), (0, 2, 'range')))
 _TRIPLE_1 = ((49.2, 50.6, 49.0, 50.5), (50.8, 52.8, 50.4, 50.6), (50.5, 50.7, 48.8, 49.0))

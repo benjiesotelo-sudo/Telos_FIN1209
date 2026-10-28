@@ -540,10 +540,10 @@ CHAPTER = Chapter(
                    notes=('The bearish clue is the sudden hesitation after a strong up bar.', 'Part 3 returns to inside bars and compares them with the Harami.'),
                    origin='Lim (2016), p. 212, Figure 7.4. Prices and volume are invented for teaching.'),
                 *chart_slides('p2-be', 'Form 5 is one overextended bar that closes near its low', (
-                    "Lim's label for form 5: \"An overextended bar closes at or near its low\" (Figure 7.4, p. 212). It is the one form drawn as a single bar: it stretches far up, then gives almost all of it back.",
-                    'Beside an ordinary PHP 1.00 bar, form 5 stretches up to PHP 53.60 [1] and closes at PHP 51.00, only PHP 0.20 above its low of PHP 50.80 [2].',
+                    "Lim's label: \"An overextended bar closes at or near its low\" (Figure 7.4, p. 212). He gives no size; we read \"overextended\" as unusually long compared with the bars before it, and closing near its low is a separate part. His only other use is beyond a Bollinger band (pp. 217 to 218).",
+                    'Beside an ordinary PHP 1.00 bar [1], form 5 ranges PHP 4.00 [2] and closes near its low [3].',
                 ), figure=book_crop('7.4', (0.62, 0.05, 0.74, 0.40), 'Figure 7.4, form 5: one overextended bar closing near its low.'),
-                   notes=('Overextended means the bar stretches far beyond what the bars before it did.',),
+                   notes=('Overextended: much longer than the bars before it. Closing near the low is a second, separate condition.',),
                    origin='Lim (2016), p. 212, Figure 7.4. The prices are invented for teaching.'),
                 *chart_slides('p2-bf', 'Form 6 is the outside bar: it engulfs the bar before it', (
                     "Lim's label for form 6: \"Bar engulfing a previous narrow range bar and closing near or at its low,\" which he calls an outside bar (Figure 7.4, p. 212).",
@@ -644,8 +644,8 @@ CHAPTER = Chapter(
                    notes=('Same shape as bearish form 4; the trend before it is what changes.',),
                    origin='Lim (2016), pp. 212 to 213, Figure 7.5. Prices and volume are invented for teaching.'),
                 *chart_slides('p2-ue', 'Bullish form 5 is one overextended bar that closes near its high', (
-                    "Lim's label: \"An overextended bar closes at or near its high\" (Figure 7.5, p. 213).",
-                    'Let us put invented prices on it, beside an ordinary PHP 1.00 bar for comparison. Form 5 stretches down to PHP 36.40 [1] and closes at PHP 39.00, only PHP 0.20 below its high of PHP 39.20 [2].',
+                    "Lim's label: \"An overextended bar closes at or near its high\" (Figure 7.5, p. 213). As on the bearish side, we read \"overextended\" as unusually long compared with the bars before it, and closing near its high is a separate part.",
+                    'Beside an ordinary PHP 1.00 bar [1], form 5 ranges PHP 4.00 [2] and closes near its high [3].',
                 ), figure=book_crop('7.5', (0.62, 0.66, 0.74, 1.0), 'Figure 7.5, form 5: one overextended bar closing near its high.'),
                    notes=('Mirror of bearish form 5.',),
                    origin='Lim (2016), p. 213, Figure 7.5. The prices are invented for teaching.'),
@@ -711,11 +711,11 @@ CHAPTER = Chapter(
                     notes=('Pattern 1 is the one exception to the quiet middle.', "Lim gives the reason: the buyers could not hold the close near the bar's midpoint."),
                     origin='Lim (2016), pp. 213 to 214.',
                     title='The outer bars should be wide and the middle bar quiet',
-                    lines=('The larger the range of the first and third bars, the more reliable the reversal pattern, Lim says (p. 213).', 'For most triple patterns the middle bar usually trades on low volume. Pattern 1 is possibly the exception: there larger middle volume is also considered more bearish, because the buyers failed to keep the close near or above the middle of the bar (p. 213).', 'As before, the pattern is generally more reliable if the last bar is overextended and closes at or near its low on high volume (pp. 213 to 214).'),
+                    lines=('The larger the range of the first and third bars, the more reliable the reversal pattern, Lim says (p. 213).', 'For most triple patterns the middle bar usually trades on low volume. Pattern 1 is possibly the exception: there larger middle volume is also considered more bearish, because the buyers failed to keep the close near or above the middle of the bar (p. 213).', 'As before, the pattern is generally more reliable if the last bar is overextended (unusually long compared with the bars before it) and closes at or near its low on high volume (pp. 213 to 214).'),
                 ),
                 *chart_slides('p2-tr', 'Here is a triple pattern that meets those rules', (
-                    'Let us put invented prices on it. Bar 1 spans PHP 3.00 [1]; the middle bar spans only PHP 0.80 [2] on 0.7 million shares [3]; and bar 3 spans PHP 3.40 [4].',
-                    'Bar 3 also closes at PHP 47.20, near its PHP 47.00 low, on 4.2 million shares: the overextended, near-low, high-volume last bar Lim prefers.',
+                    'Let us put invented prices on it. Bar 1 spans PHP 3.00 [1]; the middle bar spans only PHP 0.80 [2] on 0.7 million shares [3]; and bar 3 spans PHP 6.00 [4], twice as much as bar 1 and far more than the middle bar.',
+                    'Bar 3 also closes at PHP 44.60, near its PHP 44.40 low, on 4.2 million shares: the overextended, near-low, high-volume last bar Lim prefers.',
                 ), notes=('Wide outer bars, a quiet middle, a heavy last bar: every rule on the slide before.',),
                    origin='Lim (2016), pp. 213 to 214. Prices and volume are invented for teaching.'),
                 *chart_slides('p2-ta', 'Triple form 1: a large middle bar that closes near its low', (
@@ -784,7 +784,7 @@ CHAPTER = Chapter(
                     notes=('Same six shapes, turned over, at the bottom of a downtrend.',),
                     origin='Lim (2016), p. 214. The prices are invented for teaching.',
                     title='The six bullish triple forms mirror them in a downtrend',
-                    lines=('Lim draws six basic triple bar bullish reversal patterns in a downtrend (p. 214).', 'Lim\'s reliability rule turns around: a bullish three-bar pattern is potentially more reliable if the last bar is overextended and closes at or near its high on high volume (p. 214).', 'Our six charts are the bearish ones turned upside down about PHP 45, so a close at PHP 50.50 becomes PHP 39.50.'),
+                    lines=('Lim draws six basic triple bar bullish reversal patterns in a downtrend (p. 214).', 'Lim\'s reliability rule turns around: a bullish three-bar pattern is potentially more reliable if the last bar is overextended (unusually long compared with the bars before it) and closes at or near its high on high volume (p. 214).', 'Our six charts are the bearish ones turned upside down about PHP 45, so a close at PHP 50.50 becomes PHP 39.50.'),
                 ),
                 *chart_slides('p2-tg', 'Bullish triple form 1: a large middle bar that closes near its high', (
                     "In a downtrend, Lim's label: \"1st bar closes near its low followed by a large middle bar closing near its high. The 3rd bar closes at or near its high\" (Figure 7.8, p. 214).",
@@ -852,7 +852,7 @@ CHAPTER = Chapter(
                     notes=('Multiple means several bars between the first and the last.', 'Our charts draw two middle bars so every price stays readable.'),
                     origin='Lim (2016), pp. 214 to 215.',
                     title='Multiple bar patterns stretch the middle across several bars',
-                    lines=('Lim draws four basic multiple bar bearish reversal patterns in an uptrend (p. 214). Between the first and the last bar sit several bars, where a triple pattern had one.', 'The gap rule carries over: the larger the gaps, the more bearish the pattern. And the bars between the first and last should generally trade on low volume (p. 214).', 'The last bar matters most again: an overextended last bar closing near or at its low on high volume makes the pattern potentially more reliable (p. 215).'),
+                    lines=('Lim draws four basic multiple bar bearish reversal patterns in an uptrend (p. 214). Between the first and the last bar sit several bars, where a triple pattern had one.', 'The gap rule carries over: the larger the gaps, the more bearish the pattern. And the bars between the first and last should generally trade on low volume (p. 214).', 'The last bar matters most again: an overextended last bar (unusually long compared with the bars before it) closing near or at its low on high volume makes the pattern potentially more reliable (p. 215).'),
                 ),
                 Content(
                     notes=("Read Lim's summary sentence slowly: extremely high OR low volume, on the wide bars.", 'This is the one place where both high and low volume point the same way.'),
@@ -938,7 +938,7 @@ CHAPTER = Chapter(
                     notes=('The bullish side keeps both volume readings, now pointing up.',),
                     origin='Lim (2016), pp. 215 to 216.',
                     title='The four bullish multiple forms mirror the bearish ones',
-                    lines=('Lim draws four basic multiple bar bullish reversal patterns in a downtrend (p. 215).', 'In pattern 2 the wide middle bars can occur on high or above average volume, indicating bullishness. Narrow middle bars on low volume are also a sign of potential bullishness (p. 216).', 'And a bullish pattern is potentially more reliable if the last bar is overextended and closes near or at its high on high volume (p. 216).'),
+                    lines=('Lim draws four basic multiple bar bullish reversal patterns in a downtrend (p. 215).', 'In pattern 2 the wide middle bars can occur on high or above average volume, indicating bullishness. Narrow middle bars on low volume are also a sign of potential bullishness (p. 216).', 'And a bullish pattern is potentially more reliable if the last bar is overextended (unusually long compared with the bars before it) and closes near or at its high on high volume (p. 216).'),
                 ),
                 Pair(
                     notes=('Mirror of bearish multiple form 1.',),

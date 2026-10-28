@@ -72,7 +72,7 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r3a',
 'letter': 'M'},
-'r3a-n': {'items': (ck.Cell(name='Bearish island reversal', note='gap up, isolated bars, gap down', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=50.0, low=47.5, close=49.5), ck.Bar(open=50.8, high=52.0, low=50.6, close=51.5), ck.Bar(open=51.4, high=52.2, low=50.9, close=51.1), ck.Bar(open=49.4, high=50.0, low=48.2, close=48.8)), strokes=(ck.Stroke(points=((0, 50.0), (3, 50.0)), tone='quiet', dashed=True, label='prior high 50.00', dx=-24, dy=-10),), notes=(ck.Note(x=1, label='gap up (window)', dx=-85, dy=15, y=50.3, notice=True), ck.Note(x=2, label='island', dx=18, dy=-8, y=51.5, notice=True), ck.Note(x=3, label='gap down (window)', dx=-82, dy=15, y=50.45, notice=True)), height=1.7), ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), tags=((0, '2.3m'), (1, '0.7m'), (2, '0.6m'), (3, '2.1m')), height=0.55))),),
+'r3a-n': {'items': (ck.Cell(name='Bearish island reversal', note='gap up, isolated bars, gap down', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=50.0, low=47.5, close=49.5), ck.Bar(open=50.8, high=52.0, low=50.6, close=51.5), ck.Bar(open=51.4, high=52.2, low=50.9, close=51.1), ck.Bar(open=49.4, high=50.0, low=48.2, close=48.8)), strokes=(ck.Stroke(points=((0, 50.0), (3, 50.0)), tone='quiet', dashed=True, label='prior high 50.00', dx=-24, dy=-10),), notes=(ck.Note(x=1, label='gap up', dx=-85, dy=15, y=50.3, notice=True), ck.Note(x=2, label='island', dx=18, dy=-8, y=51.5, notice=True), ck.Note(x=3, label='gap down', dx=-82, dy=15, y=50.45, notice=True)), height=1.7), ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), tags=((0, '2.3m'), (1, '0.7m'), (2, '0.6m'), (3, '2.1m')), height=0.55))),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0.3, y0=0.2, x1=0.39, y1=0.3, color='gold', at=(0.25, 0.15)), dk.Mark(number=2, kind='box', x0=0.38, y0=0.22, x1=0.76, y1=0.52, color='red', at=(0.78, 0.54)), dk.Mark(number=3, kind='circle', x0=0.7, y0=0.2, x1=0.8, y1=0.3, color='blue', at=(0.86, 0.15))),
 'old_size': (8.222999781277341, 3.84),
@@ -546,6 +546,15 @@ _after_trend('p2-tr', (ck.Bar(open=45.2, high=46.2, low=45.0, close=46.0),
                        ck.Bar(open=46.0, high=47.4, low=45.8, close=47.2),
                        ck.Bar(open=47.3, high=48.8, low=47.1, close=48.6)),
              volumes=(1.8, 2.0, 2.2))
+_after_trend('sh-b', (ck.Bar(open=46.2, high=46.9, low=46.0, close=46.6),
+                      ck.Bar(open=46.6, high=47.4, low=46.4, close=47.1),
+                      ck.Bar(open=47.1, high=47.9, low=46.9, close=47.6)))
+_after_trend('r3a-n', (ck.Bar(open=45.8, high=46.6, low=45.6, close=46.4),
+                       ck.Bar(open=46.4, high=47.1, low=46.2, close=46.9),
+                       ck.Bar(open=46.9, high=47.6, low=46.7, close=47.3)),
+             volumes=(1.5, 1.7, 1.8))
+# Seven bars leave no room for open and close labels; the text reads highs and lows only.
+DATA['r3a-n']['bar_labels'].update({i: 'HL' for i in range(3, 7)})
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

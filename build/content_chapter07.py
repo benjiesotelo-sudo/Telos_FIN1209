@@ -728,7 +728,7 @@ CHAPTER = Chapter(
                 *chart_slides('p2-tb', 'Triple form 2: a narrow, quiet middle bar', (
                     "After an uptrend, Lim's label: \"1st bar closes near its high followed by a narrow range middle bar closing within its range on low volume. The 3rd bar closes at or near its low\" (Figure 7.6, p. 213).",
                     'Bar 1 closes at PHP 51.00 [1]; the middle bar spans PHP 0.60 inside it [2], on 0.8 million shares [3]; bar 3 at PHP 48.60 [4].',
-                    "Our reading, not Lim's: built from two-bar form 4, and 'its range' in the label means the first bar's range, so the middle bar closes inside bar 1.",
+                    "Our reading, not Lim's: 'its range' in the label means the first bar's range, because every bar closes within its own range, so the other reading would add nothing (p. 213). So the middle bar closes inside bar 1, much as two-bar form 4 does.",
                 ), figure=book_crop('7.6', (0.38, 0.05, 0.58, 0.60), 'Figure 7.6, form 2: a narrow middle bar inside the first.'),
                    notes=('This is the usual quiet middle bar.',),
                    origin='Lim (2016), p. 213, Figure 7.6. Prices and volume are invented for teaching.'),
@@ -1150,7 +1150,7 @@ CHAPTER = Chapter(
                     notes=('Point to each Chapter 5 slide by name; the numbers only make the change visible.',),
                     origin='Lim (2016), p. 217; the Chapter 5 slides named above. The numbers are invented for teaching.',
                     title='Characteristics 11 and 12: longer pauses and a third gap',
-                    lines=('Characteristic 11, appearance of relatively larger and longer lasting consolidations: pauses of 3 bars [1] give way to one of 12 bars [2] (Chapter 5, "11 Size and duration of a consolidation").', 'Characteristic 12, appearance of an exhaustion gap: a third gap in the trend, say of PHP 0.80 [3], after two earlier ones [4] (Chapter 5, "12 Third gap exhaustion"). It is not Part 3\'s exhaustion bar, which has no gap after it.'),
+                    lines=('Characteristic 11, appearance of relatively larger and longer lasting consolidations: pauses of 3 bars [1] give way to one of 12 bars [2] (Chapter 5, "11 Size and duration of a consolidation").', 'Characteristic 12, appearance of an exhaustion gap: a third gap in the trend, say of PHP 0.80 [3], after two earlier ones [4] (Chapter 5, "12 Third gap exhaustion"). Characteristic 12\'s exhaustion gap is not Part 3\'s exhaustion bar, which has no gap after it.'),
                 ),
         course_chart('sh-k11',
             notes=("Gold 1 and red 2 mark the first sketch's before and after; blue 3 and purple 4 mark the second's.", 'Each sketch is drawn from the numbers in the sentence beside it; they are invented for teaching.'),
@@ -1303,7 +1303,7 @@ CHAPTER = Chapter(
                     notes=('Frame Part 3 before the first pattern: the names are mostly the ones Part 2 drew, now on real daily charts.',),
                     origin='Lim (2016), pp. 211 and 218. Section 7.3 is "Popular Bar Reversal Patterns".',
                     title='Part 3 puts names on real charts',
-                    lines=("Part 2 drew Lim's generic forms. Part 3 reads the popular named reversals on real daily charts: key reversal, two-day and three-bar reversals, the island, outside and inside bars, exhaustion bars, spikes, pin bars, false breakouts, the Double Repo and the Hikkake.", "Several reuse Part 2's names: the key reversal is Part 2's form 1, the outside bar is form 6, the island is triple form 4.", 'Each is still a bearish pattern after an uptrend or a bullish one after a downtrend, as Part 2 set out (p. 211).'),
+                    lines=("Part 2 drew Lim's generic forms. Part 3 reads the popular named reversals on real daily charts: key reversal, two-day and three-bar reversals, the island, outside and inside bars, exhaustion bars, spikes, pin bars, false breakouts, the Double Repo and the Hikkake.", "Several reuse Part 2's names: the key reversal is Part 2's form 1, the outside bar is form 6, and the island is triple form 4's single bar or multiple form 4's group.", 'Each is still a bearish pattern after an uptrend or a bullish one after a downtrend, as Part 2 set out (p. 211).'),
                 ),
                 Pair(
                     notes=('Use this unmarked chart while introducing the key reversal. The next worked reading identifies the same features with teaching marks.',),
@@ -1706,7 +1706,7 @@ CHAPTER = Chapter(
                     notes=('Name the two-day reversal before reading the values. Then read the first close near the high and the second near the low.', 'The values and volume are ours, invented. The wider-range preference comes from Lim, p. 219.'),
                     origin='Lim (2016), p. 219. Chart L is ours, with invented PHP bars and volume.',
                     title='A two-day reversal compares the two closing positions',
-                    lines=("After an uptrend, Lim's typical two-bar bearish reversal reads only the two closes: the first near its high, the second near its low. Lim does not match it to one of Part 2's seven forms.", 'With simple invented prices, the first closes at PHP 51.80 near its high [1], and the second at PHP 49.60 near its low [2].', 'Lim prefers wider ranges for both bars. The pair is a potential warning, not a guarantee (p. 219).'),
+                    lines=("After an uptrend, Lim's typical two-bar bearish reversal reads only the two closes: the first near its high, the second near its low. It looks like Part 2's form 7, but Lim does not link the two: form 7's label asks for two large bars, while here he only says wider ranges would be preferable (pp. 212, 219).", 'With simple invented prices, the first closes at PHP 51.80 near its high [1], and the second at PHP 49.60 near its low [2].', 'The pair is a potential warning, not a guarantee (p. 219).'),
                 ),
                 course_chart('r3a-l',
                     title='A two-day reversal compares the two closing positions',
@@ -1995,7 +1995,7 @@ CHAPTER = Chapter(
                     notes=('Name the island reversal first. Then read the gap up, the isolated bars, and the gap down.', 'A window means the two bars do not overlap. The prices and volume are ours, invented.'),
                     origin='Lim (2016), pp. 223 to 224. Chart N is ours, with invented PHP bars and volume.',
                     title='An island reversal is isolated by two gaps',
-                    lines=("A bearish island reversal is one bar or a group of bars cut off from the price action around it by a gap up before and a gap down after. The bullish island is the converse: a gap down, then a gap up. Part 2 met both sizes: triple form 4's single island bar and multiple form 4's island formation.", "Here a gap means a window: the two bars' ranges do not overlap at all. Bar 2's low, PHP 50.60, is above bar 1's high, PHP 50.00 [1]. Bars 2 and 3 are the island [2]. Bar 4's high, PHP 50.00, is below bar 3's low, PHP 50.90 [3].", 'The two windows create a potential warning.'),
+                    lines=("A bearish island reversal is one bar or a group of bars cut off from the price action around it by a gap up before and a gap down after. The bullish island is the converse: a gap down, then a gap up. Part 2 met both sizes: triple form 4's single island bar and multiple form 4's island formation.", "Here a gap means a window: the two bars' ranges do not overlap at all. After an uptrend, bar 2's low, PHP 50.60, is above bar 1's high, PHP 50.00 [1]. Bars 2 and 3 are the island [2]. Bar 4's high, PHP 50.00, is below bar 3's low, PHP 50.90 [3].", 'The two windows create a potential warning.'),
                 ),
                 course_chart('r3a-n',
                     title='An island reversal is isolated by two gaps',
@@ -3933,7 +3933,7 @@ CHAPTER = Chapter(
             origin='Lim (2016), pp. 213 to 214 and 233, Figure 7.6. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='Review question 6: two triple-bar bearish patterns',
-                lines=('Review question 6 asks for two triple-bar bearish patterns and how to trade them (p. 233). Figure 7.6 draws them (p. 213).', 'In triple form 1 [1], the first bar closes near its high, a large middle bar closes near its low, and the third closes at or near its low. In triple form 2 [2], a narrow middle bar closes within its range on low volume, and the third closes at or near its low.', 'Lim gives no entry or exit rule for them, only what makes a pattern more reliable: larger gaps, wider first and third bars, and a last bar closing near its low on high volume (pp. 213 to 214). That is a full answer to "how to trade".'),
+                lines=('Review question 6 asks for two triple-bar bearish patterns and how to trade them (p. 233). Figure 7.6 draws them.', 'In triple form 1 [1], a large middle bar closes near its low. In triple form 2 [2], a narrow middle bar closes within the first bar\'s range (our reading of "its range") on low volume. In both, the first bar closes near its high and the third at or near its low.', 'Lim gives no entry or exit rule, only what makes a pattern more reliable: larger gaps, wider first and third bars, a last bar closing near its low on high volume (pp. 213 to 214). That answers "how to trade".'),
             ),
             picture=Figure(
                 origin='Lim (2016), p. 213, Figure 7.6. The crop and marks are ours, added for teaching.',

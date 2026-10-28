@@ -420,7 +420,8 @@ SH = {
                      ('blue', (0, 2, 'today')), ('purple', (0, 3, 'ref'), (315, 300, 285))),
                     'Prices are invented for teaching.'),
     'sh-g': _paint('GP', sc.paint_gap,
-                   (('gold', (0, 0, 'group')), ('red', (0, 1, 'group'))),
+                   (('gold', (0, 0, 'group')), ('red', (0, 1, 'close')),
+                    ('blue', (0, 2, 'group')), ('purple', (0, 3, 'close'))),
                    'Prices are invented for teaching.'),
 }
 SH['sh-t']['group_gap'] = .22   # the rise's box sits close to the formation's bars

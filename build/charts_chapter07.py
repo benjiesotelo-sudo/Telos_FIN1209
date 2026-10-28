@@ -72,7 +72,7 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r3a',
 'letter': 'M'},
-'r3a-n': {'items': (ck.Cell(name='Bearish island reversal', note='gap up, isolated bars, gap down', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=50.0, low=47.5, close=49.5), ck.Bar(open=50.8, high=52.0, low=50.6, close=51.5), ck.Bar(open=51.4, high=52.2, low=50.9, close=51.1), ck.Bar(open=49.4, high=50.0, low=48.2, close=48.8)), strokes=(ck.Stroke(points=((0, 50.0), (3, 50.0)), tone='quiet', dashed=True, label='prior high 50.00', dx=-24, dy=-10),), notes=(ck.Note(x=1, label='gap-up O 50.80', dx=-85, dy=15, y=50.8, notice=True), ck.Note(x=2, label='island', dx=18, dy=-8, y=51.5, notice=True), ck.Note(x=3, label='gap-down O 49.40', dx=-82, dy=15, y=49.4, notice=True)), height=1.7), ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), tags=((0, '2.3m'), (1, '0.7m'), (2, '0.6m'), (3, '2.1m')), height=0.55))),),
+'r3a-n': {'items': (ck.Cell(name='Bearish island reversal', note='gap up, isolated bars, gap down', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=50.0, low=47.5, close=49.5), ck.Bar(open=50.8, high=52.0, low=50.6, close=51.5), ck.Bar(open=51.4, high=52.2, low=50.9, close=51.1), ck.Bar(open=49.4, high=50.0, low=48.2, close=48.8)), strokes=(ck.Stroke(points=((0, 50.0), (3, 50.0)), tone='quiet', dashed=True, label='prior high 50.00', dx=-24, dy=-10),), notes=(ck.Note(x=1, label='gap up', dx=-85, dy=15, y=50.3, notice=True), ck.Note(x=2, label='island', dx=18, dy=-8, y=51.5, notice=True), ck.Note(x=3, label='gap down', dx=-82, dy=15, y=50.45, notice=True)), height=1.7), ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), tags=((0, '2.3m'), (1, '0.7m'), (2, '0.6m'), (3, '2.1m')), height=0.55))),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0.3, y0=0.2, x1=0.39, y1=0.3, color='gold', at=(0.25, 0.15)), dk.Mark(number=2, kind='box', x0=0.38, y0=0.22, x1=0.76, y1=0.52, color='red', at=(0.78, 0.54)), dk.Mark(number=3, kind='circle', x0=0.7, y0=0.2, x1=0.8, y1=0.3, color='blue', at=(0.86, 0.15))),
 'old_size': (8.222999781277341, 3.84),
@@ -149,7 +149,7 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0.64, y0=0.27, x1=0.69, y1=0.33, color='gold', at=(0.51, 0.37)), dk.Mark(number=2, kind='circle', x0=0.64, y0=0.49, x1=0.69, y1=0.55, color='red', at=(0.78, 0.62)), dk.Mark(number=3, kind='circle', x0=0.64, y0=0.21, x1=0.69, y1=0.27, color='blue', at=(0.78, 0.13))),
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r4',
-'letter': 'N'},
+'letter': 'ON'},
 'r4-v': {'items': (ck.Cell(name="Bullish Oops: bar 2 opens below bar 1's low", note='', panes=(ck.Pane(bars=(ck.Bar(open=49.0, high=50.0, low=48.0, close=49.5), ck.Bar(open=47.0, high=49.0, low=46.0, close=48.5)), strokes=(ck.Stroke(points=((0, 48.0), (1, 48.0)), dashed=True, label='bar 1 low, buy-stop 48.00'), ck.Stroke(points=((0, 46.0), (1, 46.0)), dashed=True, label='bar 2 low, stoploss 46.00')), notes=(ck.Note(label='the previous bar'), ck.Note(x=1, label='gaps down, then rises')), height=1.75),)),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='arrow', x0=0.67, y0=0.55, x1=0.67, y1=0.7, color='gold', at=(0.76, 0.58), size=0.3), dk.Mark(number=2, kind='line', x0=0.39, y0=0.54, x1=0.63, y1=0.54, color='red', at=(0.78, 0.47), size=0.3), dk.Mark(number=3, kind='line', x0=0.39, y0=0.84, x1=0.63, y1=0.84, color='blue', at=(0.8, 0.87), size=0.3)),
@@ -178,7 +178,7 @@ DATA['r3a-k']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'ope
 DATA['r3a-a']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'open')}, {'number': 4, 'color': 'purple', 'target': (1, 1, 'level:40')}, {'number': 5, 'color': 'gold', 'target': (1, 1, 'volume')}, {'number': 6, 'color': 'red', 'target': (1, 1, 'close')}]
 DATA['r3a-l']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'close')}]
 DATA['r3a-m']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'volume')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'volume')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'volume')}]
-DATA['r3a-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'open')}]
+DATA['r3a-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'gap')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'gap')}]
 DATA['r3b-la'].update(spans={(0, 2, 'span')})
 DATA['r3b-la']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 2, 'span')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
 DATA['r3b-lb']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 0, 'high')}]
@@ -377,7 +377,7 @@ for _key in ('r4-n', 'r4-v', 'r4-o', 'r4-w', 'r4-t'):
     DATA[_key]['marks_by_sentence'] = True
 
 # Chart M: volume is the point, so its columns get the Part 2 boxes and room.
-DATA['r3a-m'].update(volume_boxes=True, volume_top=0.9)
+DATA['r3a-m'].update(volume_boxes=True, volume_top=0.84)
 
 # Slides that named a shape or a price relationship without showing it
 # (28 October 2026 audit). A close against the previous low is an ordinary
@@ -453,6 +453,108 @@ def _characteristic_chart(n):
 SH.update({'sh-k%d' % n: _characteristic_chart(n) for n in range(1, 16, 2)})
 DATA.update({'sh-k%d' % n: SH['sh-k%d' % n] for n in range(1, 16, 2)})
 
+
+# Part 3 and 4 reading (29 October 2026): a reversal chart draws the trend it
+# reverses. ``_after_trend`` puts the run in front of a chart's first bar and
+# moves every bar index, level line, note and mark target along with it.
+def _after_trend(key, bars, volumes=(), label='after a rise', level_from=None):
+    from dataclasses import replace
+    n = len(bars)
+    spec = DATA[key]
+    cell = spec['items'][0]
+    panes = list(cell.panes)
+    price = panes[0]
+    notes = tuple(replace(m, x=m.x + n) for m in price.notes)
+    strokes = tuple(replace(t, points=tuple((x + n, y) for x, y in t.points)) for t in price.strokes)
+    if level_from is not None:
+        strokes = tuple(replace(t, points=((level_from, t.points[0][1]),) + t.points[1:])
+                        for t in strokes)
+    panes[0] = replace(price, bars=tuple(bars) + price.bars, strokes=strokes, notes=notes)
+    if len(panes) > 1 and panes[1].columns:
+        vol = panes[1]
+        assert len(volumes) == n
+        panes[1] = replace(vol, columns=tuple(volumes) + vol.columns,
+                           tags=tuple((i + n, t) for i, t in vol.tags))
+    note = label + ('; ' + cell.note if cell.note else '')
+    spec['items'] = (replace(cell, panes=tuple(panes), note=note),) + tuple(spec['items'][1:])
+    spec['targets'] = [{**t, 'target': (t['target'][0], t['target'][1] + n, t['target'][2])}
+                       if t['target'][0] == 0 else t for t in spec['targets']]
+    spec['spans'] = {(c, i + n, k) if c == 0 else (c, i, k) for c, i, k in spec.get('spans', ())}
+    # The run stays on the pattern's own page and carries no price labels.
+    spec['one_page'] = True
+    spec['bar_labels'] = {i: '' for i in range(n)}
+    spec['run'] = n
+
+# Chart K, and its bullish converse drawn beside it for slide 148.
+DATA['r3a-kb'] = {**DATA['r3a-k'], 'letter': 'KB', 'items': (ck.Cell(
+    name='Bullish key reversal: yesterday and today',
+    panes=(ck.Pane(bars=(ck.Bar(open=42.0, high=42.2, low=41.0, close=41.5),
+                         ck.Bar(open=41.3, high=43.4, low=40.5, close=43.2)),
+                   strokes=(ck.Stroke(points=((0, 41.0), (1, 41.0)), dashed=True, label='Prior low 41.00'),
+                            ck.Stroke(points=((0, 41.5), (1, 41.5)), dashed=True, label='Prior close 41.50'))),
+           ck.Pane(columns=(2.0, 4.0)))),),
+    'targets': [{'number': 1, 'color': 'gold', 'target': (0, 1, 'low')},
+                {'number': 2, 'color': 'red', 'target': (0, 1, 'close')},
+                {'number': 3, 'color': 'blue', 'target': (0, 1, 'volume')}]}
+_after_trend('r3a-kb', (ck.Bar(open=44.6, high=44.8, low=43.8, close=44.0),
+                        ck.Bar(open=43.9, high=44.0, low=42.8, close=43.0),
+                        ck.Bar(open=42.9, high=43.0, low=41.9, close=42.1)),
+             volumes=(1.5, 1.7, 1.9), label='after a fall')
+_after_trend('r3a-k', (ck.Bar(open=48.4, high=49.0, low=48.2, close=48.6),
+                       ck.Bar(open=48.7, high=49.7, low=48.5, close=49.4),
+                       ck.Bar(open=49.5, high=50.6, low=49.3, close=50.3)),
+             volumes=(1.4, 1.6, 1.8))
+_after_trend('r3a-l', (ck.Bar(open=47.2, high=48.4, low=47.0, close=48.2),
+                       ck.Bar(open=48.3, high=49.4, low=48.1, close=49.2),
+                       ck.Bar(open=49.3, high=50.3, low=49.1, close=50.0)),
+             volumes=(1.6, 1.8, 2.0))
+_after_trend('r3b-lk', (ck.Bar(open=46.4, high=47.2, low=46.2, close=47.0),
+                        ck.Bar(open=47.0, high=48.2, low=46.9, close=48.0),
+                        ck.Bar(open=48.1, high=49.3, low=47.8, close=49.1)))
+_after_trend('r3a-m', (ck.Bar(open=48.4, high=48.6, low=47.8, close=48.0),
+                       ck.Bar(open=48.0, high=48.1, low=47.0, close=47.2),
+                       ck.Bar(open=47.1, high=47.2, low=46.2, close=46.3)),
+             volumes=(1.8, 2.0, 2.2), label='after a fall')
+_after_trend('r3b-la', (ck.Bar(open=45.6, high=46.8, low=45.4, close=46.6),
+                        ck.Bar(open=46.7, high=48.0, low=46.5, close=47.8),
+                        ck.Bar(open=47.9, high=49.0, low=47.6, close=48.8)),
+             volumes=(1.2, 1.3, 1.4))
+_after_trend('r3b-lb', (ck.Bar(open=45.0, high=46.4, low=44.8, close=46.2),
+                        ck.Bar(open=46.3, high=48.2, low=46.0, close=48.0),
+                        ck.Bar(open=48.1, high=50.0, low=47.9, close=49.8)),
+             volumes=(1.5, 1.8, 2.2))
+_after_trend('r3b-lc', (ck.Bar(open=57.6, high=58.8, low=57.4, close=58.6),
+                        ck.Bar(open=58.7, high=60.4, low=58.5, close=60.2),
+                        ck.Bar(open=60.3, high=62.2, low=60.0, close=62.0)),
+             volumes=(1.2, 1.4, 1.6))
+_after_trend('r3b-lj', (ck.Bar(open=40.4, high=41.4, low=40.2, close=41.2),
+                        ck.Bar(open=41.2, high=42.4, low=41.0, close=42.2),
+                        ck.Bar(open=42.2, high=43.4, low=42.0, close=43.2),
+                        ck.Bar(open=43.2, high=43.5, low=41.7, close=41.9)),
+             volumes=(2.0, 2.2, 2.4, 1.9), level_from=0)
+_after_trend('r3a-a', (ck.Bar(open=57.6, high=58.8, low=57.4, close=58.6),
+                       ck.Bar(open=58.7, high=60.4, low=58.5, close=60.2),
+                       ck.Bar(open=60.3, high=62.2, low=60.0, close=62.0)),
+             volumes=(1.2, 1.4, 1.6))
+_after_trend('r4-n', (ck.Bar(open=56.0, high=56.4, low=54.6, close=54.8),
+                      ck.Bar(open=54.7, high=55.0, low=53.0, close=53.2),
+                      ck.Bar(open=53.1, high=53.4, low=51.2, close=51.6)), label='after a fall')
+_after_trend('r4-v', (ck.Bar(open=43.8, high=45.0, low=43.6, close=44.8),
+                      ck.Bar(open=44.9, high=46.8, low=44.7, close=46.6),
+                      ck.Bar(open=46.7, high=48.6, low=46.5, close=48.4)))
+_after_trend('p2-tr', (ck.Bar(open=45.2, high=46.2, low=45.0, close=46.0),
+                       ck.Bar(open=46.0, high=47.4, low=45.8, close=47.2),
+                       ck.Bar(open=47.3, high=48.8, low=47.1, close=48.6)),
+             volumes=(1.8, 2.0, 2.2))
+_after_trend('sh-b', (ck.Bar(open=46.2, high=46.9, low=46.0, close=46.6),
+                      ck.Bar(open=46.6, high=47.4, low=46.4, close=47.1),
+                      ck.Bar(open=47.1, high=47.9, low=46.9, close=47.6)))
+_after_trend('r3a-n', (ck.Bar(open=45.8, high=46.6, low=45.6, close=46.4),
+                       ck.Bar(open=46.4, high=47.1, low=46.2, close=46.9),
+                       ck.Bar(open=46.9, high=47.6, low=46.7, close=47.3)),
+             volumes=(1.5, 1.7, 1.8))
+# Seven bars leave no room for open and close labels; the text reads highs and lows only.
+DATA['r3a-n']['bar_labels'].update({i: 'HL' for i in range(3, 7)})
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

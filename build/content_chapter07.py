@@ -263,7 +263,7 @@ PART_1 = Section(
             notes=("Lim gives this rule on p. 212, when he starts the generic reversal patterns; we need it now to read a lean from plain bars.", 'Work the example: the close of 47.50 is below the previous low of 47.90, so the pair leans bearish.', 'Keep his wording: it is a general rule, a clue rather than a certainty.'),
             origin='Lim (2016), p. 212. The PHP values are invented for teaching.',
             title='A close below the previous low leans bearish',
-            lines=("How do we see that lean in plain bars? Lim gives a general rule: a close below the previous bar's close or low is considered bearish, and a close above the previous bar's close or high is considered bullish (p. 212).", 'For example, with prices of ours: one bar has a low of PHP 47.90 [1] and the next bar closes at PHP 47.50 [2]. The close is below the previous low, so this two-bar formation leans bearish.'),
+            lines=("How do we see that lean in plain bars? Lim gives a general rule in two halves, each beside the trend in which he draws it (p. 212): with his uptrend drawings, a close below the previous bar's close or low is considered bearish; with his downtrend drawings, a close above the previous bar's close or high is considered bullish.", 'For example, in an uptrend, with prices of ours: one bar has a low of PHP 47.90 [1] and the next bar closes at PHP 47.50 [2]. The close is below the previous low, so this two-bar formation leans bearish.'),
             accent='Lim calls it a general rule, so treat it as a clue, not a certainty.',
         ),
         course_chart('sh-b',
@@ -287,7 +287,7 @@ PART_1 = Section(
                     reason="Intrinsic sentiment is the bullish or bearish lean of the formation itself (Lim, p. 211).",
                 ),
                 Question(
-                    stem="One bar has a low of PHP 61.20 and the next bar closes at PHP 60.80. By Lim's general rule, how does this two-bar formation lean?",
+                    stem="In an uptrend, one bar has a low of PHP 61.20 and the next bar closes at PHP 60.80. By Lim's general rule, how does this two-bar formation lean?",
                     options=('Bullish', 'Neither; only volume decides', 'Bearish', 'It depends on the number of bars'),
                     answer='C',
                     reason='The close of PHP 60.80 is below the previous low of PHP 61.20, and Lim considers a close below the previous low bearish (p. 212).',
@@ -490,7 +490,7 @@ CHAPTER = Chapter(
                     notes=("Say Lim's word: generally. The rule is a clue, not a law.", 'Do the two closes slowly: one below the close, one below the low.'),
                     origin='Lim (2016), p. 212. The prices are invented for teaching.',
                     title="A close below the previous bar is Lim's basic bearish clue",
-                    lines=("For one-bar and two-bar patterns in an uptrend, Lim's general rule is that a close below the previous bar's close or low is bearish, especially when that previous bar is large or wide-ranging (p. 212).", "Here it is with invented prices. Yesterday's bar ran from PHP 49.00 to PHP 52.00 and closed at PHP 51.80 [1]. A close today at PHP 51.20 [2] is below yesterday's close; a close at PHP 48.80 [3] is below yesterday's low [4] as well.", "Yesterday's PHP 3.00 range is wide, the case Lim says counts for more."),
+                    lines=("With his uptrend drawings, Lim gives the bearish half of the general rule for one-bar and two-bar patterns: a close below the previous bar's close or low is bearish, especially when that previous bar is large or wide-ranging (p. 212).", "Here it is with invented prices. Yesterday's bar ran from PHP 49.00 to PHP 52.00 and closed at PHP 51.80 [1]. A close today at PHP 51.20 [2] is below yesterday's close; a close at PHP 48.80 [3] is below yesterday's low [4] as well.", "Yesterday's PHP 3.00 range is wide, the case Lim says counts for more."),
                 ),
         course_chart('sh-pu',
             notes=("Gold 1 is yesterday's close at 51.80; red 2 is today's close at 51.20, below it.", "Blue 3 is a close at 48.80, below yesterday's low at 49.00 marked purple 4."),
@@ -515,7 +515,7 @@ CHAPTER = Chapter(
                     text_w=4.6,
                 ),
                 *chart_slides('p2-ba', 'Form 1, the key reversal bar: it opens high and closes low', (
-                    "Lim's label for form 1: \"A large bar opening above a previous high and closing near or below a previous close,\" a key reversal bar (Figure 7.4, p. 212).",
+                    "Lim's label for form 1: \"A large bar opening above a previous high and closing near or below a previous close,\" a key reversal bar (Figure 7.4, p. 212). Part 3 reads Lim's text, which asks only for a higher high and a close near or below the previous close and says the bar may open with a gap up (p. 218); the open above the previous high is the stronger version.",
                     'Let us put invented prices on it. The previous bar reached PHP 51.00 and closed at PHP 50.80. Form 1 opens at PHP 51.40, above that high [1], swings through PHP 2.20 [2], and closes at PHP 50.30, below the previous close [3].',
                 ), figure=book_crop('7.4', (0.105, 0.05, 0.235, 0.40), 'Figure 7.4, form 1: a key reversal bar after an uptrend.'),
                    notes=('Read the label, then walk the three marks in order.', 'Part 3 comes back to the key reversal bar with the book\'s real charts.'),
@@ -527,20 +527,20 @@ CHAPTER = Chapter(
                    notes=('Compare with form 1: here the close goes below the previous low, not just the previous close.',),
                    origin='Lim (2016), p. 212, Figure 7.4. The prices are invented for teaching.'),
                 *chart_slides('p2-bc', 'Form 3 closes below a gap', (
-                    "Lim's label for form 3: \"A bar closing below a gap formed between the current bar's open and a previous bar's low\" (Figure 7.4, p. 212). Chapter 3's \"Gap\" is a range of prices where no trading took place.",
+                    "Lim's label for form 3: \"A bar closing below a gap formed between the current bar's open and a previous bar's low\" (Figure 7.4, p. 212). A gap is a range of prices where no trading took place. Lim measures it here from the current bar's open to the previous low. The bar never trades back up into it, so it is also a window: the two bars' ranges do not overlap at all.",
                     "Say the previous low is PHP 51.00. Form 3 opens at PHP 50.60 [1], leaving a PHP 0.40 gap above its open [2], and closes at PHP 49.80, below the gap [3].",
                 ), figure=book_crop('7.4', (0.37, 0.05, 0.49, 0.40), 'Figure 7.4, form 3: a bar closing below a gap.'),
-                   notes=("Chapter 3 would call a gap measured from the previous low to the open a Type 2 gap.", 'The gap is open price space: nothing traded between 50.60 and 51.00.'),
-                   origin='Lim (2016), p. 212, Figure 7.4; Chapter 3, "Gap". The prices are invented for teaching.'),
+                   notes=("Lim measures the gap from the previous low to the open; because the bar never trades back up into it, it is also a window.", 'The gap is open price space: nothing traded between 50.60 and 51.00.'),
+                   origin='Lim (2016), p. 212, Figure 7.4. The prices are invented for teaching.'),
                 *chart_slides('p2-bd', 'Form 4 is the inside bar: a narrow bar inside a larger one', (
-                    "Lim's label for form 4: \"Narrow range bar closing within a larger previous bar's range,\" an inside bar (Figure 7.4, p. 212).",
+                    "Lim's label for form 4: \"Narrow range bar closing within a larger previous bar's range,\" an inside bar (Figure 7.4, p. 212). The label asks only that it close within the previous range; the usual meaning, which this deck uses, is that its whole range sits inside, as here.",
                     'Say the previous bar ranges PHP 3.00 [1]; the inside bar ranges only PHP 1.00 [2], on 0.9 million shares against 3.0 million [3].',
                     'Lim says such narrow bars should generally form on low volume, showing uncertainty in an uptrend (p. 212).',
                 ), figure=book_crop('7.4', (0.49, 0.05, 0.615, 0.40), 'Figure 7.4, form 4: a narrow inside bar after a large bar.'),
                    notes=('The bearish clue is the sudden hesitation after a strong up bar.', 'Part 3 returns to inside bars and compares them with the Harami.'),
                    origin='Lim (2016), p. 212, Figure 7.4. Prices and volume are invented for teaching.'),
                 *chart_slides('p2-be', 'Form 5 is one overextended bar that closes near its low', (
-                    "Figure 7.4 (p. 212): \"An overextended bar closes at or near its low\". Lim gives no size; we read it as a bar unusually long against those before it. Closing near its low is separate. Elsewhere he uses it only beyond a Bollinger band, not yet defined here (pp. 217 to 219).",
+                    "Figure 7.4 (p. 212): \"An overextended bar closes at or near its low\". Lim gives no size; we read it as a bar unusually long against those before it. Closing near its low is separate. Elsewhere he uses it for price stretched past a barrier, such as a Bollinger band; that is characteristic 14, later in this part (pp. 217 to 219).",
                     'Beside an ordinary PHP 1.00 bar [1], form 5 ranges PHP 4.00 [2] and closes near its low [3].',
                 ), figure=book_crop('7.4', (0.62, 0.05, 0.74, 0.40), 'Figure 7.4, form 5: one overextended bar closing near its low.'),
                    notes=('Overextended: much longer than the bars before it. Closing near the low is a second, separate condition.',),
@@ -592,14 +592,14 @@ CHAPTER = Chapter(
                 Content(
                     notes=('Same seven shapes, upside down, at the bottom of a downtrend.',),
                     origin='Lim (2016), p. 212. The prices are invented for teaching.',
-                    title="In a downtrend Lim's close rule turns around",
-                    lines=("In a downtrend Lim's general rule is the mirror image: a close above the previous bar's close or high is bullish, especially if the previous bar is large or wide-ranging (p. 212).", "Here it is with invented prices. Yesterday's bar ran from PHP 38.00 to PHP 41.00 and closed at PHP 38.20 [1]. A close today at PHP 38.80 [2] is above yesterday's close; a close at PHP 41.20 [3] is above yesterday's high [4] as well."),
+                    title="The bullish half of Lim's close rule",
+                    lines=("With his downtrend drawings, Lim gives the bullish half, the mirror image: a close above the previous bar's close or high is bullish, especially if the previous bar is large or wide-ranging (p. 212).", "Here it is with invented prices. Yesterday's bar ran from PHP 38.00 to PHP 41.00 and closed at PHP 38.20 [1]. A close today at PHP 38.80 [2] is above yesterday's close; a close at PHP 41.20 [3] is above yesterday's high [4] as well."),
                     accent="Now the close has to climb past yesterday's bar.",
                 ),
         course_chart('sh-pd',
             notes=("Gold 1 is yesterday's close at 38.20; red 2 is today's close at 38.80, above it.", "Blue 3 is a close at 41.20, above yesterday's high at 41.00 marked purple 4."),
             origin='FIN1209 teaching chart. The prices are invented for teaching.',
-            title="In a downtrend Lim's close rule turns around",
+            title="The bullish half of Lim's close rule",
             letter='PD',
             shows="Yesterday's invented bar from PHP 38.00 to PHP 41.00 closing at PHP 38.20, against two possible closes today, PHP 38.80 and PHP 41.20.",
             tier='core',
@@ -635,7 +635,7 @@ CHAPTER = Chapter(
                     'Here it is with invented prices. The previous high is PHP 39.00. Form 3 opens at PHP 39.40 [1], leaving a PHP 0.40 gap below its open [2], and closes at PHP 40.20, above the gap [3].',
                 ), figure=book_crop('7.5', (0.37, 0.66, 0.49, 1.0), 'Figure 7.5, form 3: a bar closing above a gap.'),
                    notes=('Mirror of bearish form 3: nothing traded between 39.00 and 39.40.',),
-                   origin='Lim (2016), p. 213, Figure 7.5; Chapter 3, "Gap". The prices are invented for teaching.'),
+                   origin='Lim (2016), p. 213, Figure 7.5. The prices are invented for teaching.'),
                 *chart_slides('p2-ud', 'Bullish form 4 is the inside bar after a large down bar', (
                     "Lim's label: \"Narrow range bar closing within a larger previous bar's range,\" again an inside bar (Figure 7.5, p. 213).",
                     'Say the previous bar ranges PHP 3.00 [1]; the inside bar ranges only PHP 1.00 [2], on 0.9 million shares against 3.0 million [3].',
@@ -693,8 +693,8 @@ CHAPTER = Chapter(
                     lines=('Now we go from two bars to three. Lim draws six basic triple bar bearish reversal patterns in Figures 7.6 and 7.7, and each one forms at the top of an uptrend (p. 213).', 'What is new compared with the double bars is a middle bar: every triple pattern has a first bar, a middle bar and a last bar.', "Much of the logic will look familiar from the double bar forms, and we will point out where. That link is our reading, not Lim's."),
                 ),
                 Content(
-                    notes=('Three bars now: a first bar, a middle bar, a last bar.', 'Gap keeps its Chapter 3 meaning: prices where nothing traded.', 'The last bar closes below the gap, so the pattern is complete.'),
-                    origin='Lim (2016), p. 213 and Figure 7.6, pattern 3; Chapter 3, "Gap". The prices are invented for teaching.',
+                    notes=('Three bars now: a first bar, a middle bar, a last bar.', 'A gap is a range of prices where nothing traded.', 'The last bar closes below the gap, so the pattern is complete.'),
+                    origin='Lim (2016), p. 213 and Figure 7.6, pattern 3. The prices are invented for teaching.',
                     title='Larger gaps make a completed triple pattern more bearish',
                     lines=("Lim's first rule for these patterns is about gaps: the larger the gaps, the more bearish the pattern once it is complete (p. 213).", "Let us put invented prices on it. If the first bar's high is PHP 50.00 and the middle bar's low is PHP 50.40, the gap is PHP 0.40 [1].", 'The last bar then closes at PHP 49.60, back below the gap [2], and the pattern is complete.', 'Now take a bigger gap: a middle bar whose low is PHP 51.00 leaves a PHP 1.00 gap [3].', 'The last bar again closes at PHP 49.60, below the gap [4]. Both patterns are complete, and Lim would read this one as more bearish because its gap is larger.'),
                 ),
@@ -708,13 +708,13 @@ CHAPTER = Chapter(
             marks=(),
         ),
                 Content(
-                    notes=('Pattern 1 is the one exception to the quiet middle.', "Lim gives the reason: the buyers could not hold the close near the bar's midpoint."),
+                    notes=('Triple form 1 is the one exception to the quiet middle.', "Lim gives the reason: the buyers could not hold the close near the bar's midpoint."),
                     origin='Lim (2016), pp. 213 to 214.',
                     title='The outer bars should be wide and the middle bar quiet',
-                    lines=('The larger the range of the first and third bars, the more reliable the reversal pattern, Lim says (p. 213).', 'For most triple patterns the middle bar usually trades on low volume. Pattern 1 is possibly the exception: there larger middle volume is also considered more bearish, because the buyers failed to keep the close near or above the middle of the bar (p. 213).', 'As before, the pattern is generally more reliable if the last bar is overextended (unusually long compared with the bars before it) and closes at or near its low on high volume (pp. 213 to 214).'),
+                    lines=('The larger the range of the first and third bars, the more reliable the reversal pattern, Lim says (p. 213).', 'For most triple patterns the middle bar usually trades on low volume. Triple form 1 is possibly the exception: there larger middle volume is also considered more bearish, because the buyers failed to keep the close near or above the middle of the bar (p. 213).', 'As before, the pattern is generally more reliable if the last bar is overextended (unusually long compared with the bars before it) and closes at or near its low on high volume (pp. 213 to 214).'),
                 ),
                 *chart_slides('p2-tr', 'Here is a triple pattern that meets those rules', (
-                    'Let us put invented prices on it. Bar 1 spans PHP 3.00 [1]; the middle bar spans only PHP 0.80 [2] on 0.7 million shares [3]; and bar 3 spans PHP 6.00 [4], twice as much as bar 1 and far more than the middle bar.',
+                    'After an uptrend, let us put invented prices on it. Bar 1 spans PHP 3.00 [1]; the middle bar spans only PHP 0.80 [2] on 0.7 million shares [3]; and bar 3 spans PHP 6.00 [4], twice as much as bar 1 and far more than the middle bar.',
                     'Bar 3 also closes at PHP 44.60, near its PHP 44.40 low, on 4.2 million shares: the overextended, near-low, high-volume last bar Lim prefers.',
                 ), notes=('Wide outer bars, a quiet middle, a heavy last bar: every rule on the slide before.',),
                    origin='Lim (2016), pp. 213 to 214. Prices and volume are invented for teaching.'),
@@ -728,7 +728,7 @@ CHAPTER = Chapter(
                 *chart_slides('p2-tb', 'Triple form 2: a narrow, quiet middle bar', (
                     "After an uptrend, Lim's label: \"1st bar closes near its high followed by a narrow range middle bar closing within its range on low volume. The 3rd bar closes at or near its low\" (Figure 7.6, p. 213).",
                     'Bar 1 closes at PHP 51.00 [1]; the middle bar spans PHP 0.60 inside it [2], on 0.8 million shares [3]; bar 3 at PHP 48.60 [4].',
-                    "Our reading, not Lim's: built from two-bar form 4.",
+                    "Our reading, not Lim's: 'its range' in the label means the first bar's range, because every bar closes within its own range, so the other reading would add nothing (p. 213). So the middle bar closes inside bar 1, much as two-bar form 4 does.",
                 ), figure=book_crop('7.6', (0.38, 0.05, 0.58, 0.60), 'Figure 7.6, form 2: a narrow middle bar inside the first.'),
                    notes=('This is the usual quiet middle bar.',),
                    origin='Lim (2016), p. 213, Figure 7.6. Prices and volume are invented for teaching.'),
@@ -772,10 +772,10 @@ CHAPTER = Chapter(
                             reason='The larger the gaps, the more bearish the pattern upon completion (p. 213).',
                         ),
                         Question(
-                            stem='In which triple pattern can larger middle-bar volume count as more bearish?',
-                            options=('Pattern 1', 'Pattern 2', 'Pattern 4', 'None of them'),
+                            stem='In which triple form can larger middle-bar volume count as more bearish?',
+                            options=('Triple form 1', 'Triple form 2', 'Triple form 4', 'None of them'),
                             answer='A',
-                            reason='The middle bar usually trades on low volume, except possibly in pattern 1, where larger volume is also considered more bearish (p. 213).',
+                            reason='The middle bar usually trades on low volume, except possibly in triple form 1, where larger volume is also considered more bearish (p. 213).',
                         ),
                     ),
                 ),
@@ -838,7 +838,7 @@ CHAPTER = Chapter(
                             reason='Lim says a bullish three-bar pattern is potentially more reliable if the last bar is overextended and closes at or near its high on high volume (p. 214).',
                         ),
                         Question(
-                            stem='What does Lim call bullish triple pattern 4?',
+                            stem='What does Lim call bullish triple form 4?',
                             options=('An inside bar', 'A single island reversal bar', 'A key reversal bar', 'An outside bar'),
                             answer='B',
                             reason='Its label ends "Also referred to as a single island reversal bar" (p. 215).',
@@ -853,8 +853,8 @@ CHAPTER = Chapter(
                 Content(
                     notes=("Read Lim's summary sentence slowly: extremely high OR low volume, on the wide bars.", 'This is the one place where both high and low volume point the same way.'),
                     origin='Lim (2016), pp. 214 to 215. The volumes are invented for teaching.',
-                    title='Pattern 2 is possibly the exception; either extreme warns',
-                    lines=('In pattern 2 the middle bars are wide, each closing near its low. There, Lim says, high volume is possibly also bearish: the sellers are working to keep each close near the low (pp. 214 to 215).', 'Low volume on those wide bars is bearish too: it shows they are not supported by enough demand (p. 215).', 'Lim sums it up: extremely high or low volume on the wide middle bars indicates bearishness in an uptrend (p. 215). So 3.8 million or 0.4 million shares, against an ordinary 2.0 million, would both warn.'),
+                    title='Multiple form 2 is possibly the exception; either extreme warns',
+                    lines=('In multiple form 2 the middle bars are wide, each closing near its low. There, Lim says, high volume is possibly also bearish: the sellers are working to keep each close near the low (pp. 214 to 215).', 'Low volume on those wide bars is bearish too: it shows they are not supported by enough demand (p. 215).', 'Lim sums it up: extremely high or low volume on the wide middle bars indicates bearishness in an uptrend (p. 215). So 3.8 million or 0.4 million shares, against an ordinary 2.0 million, would both warn.'),
                 ),
                 Pair(
                     notes=('Read the drawing left to right: first, middle, last.',),
@@ -891,7 +891,7 @@ CHAPTER = Chapter(
                 ),
                 *chart_slides('p2-xb', 'Here is multiple form 2 with simple prices', (
                     'Bar 1 closes at PHP 50.00, near its high [1]. The two wide bars [2] each span about PHP 2.00 and close near their lows, at PHP 50.20 and PHP 50.30, on 3.8 and 3.6 million shares [3].',
-                    'The last bar closes at PHP 48.20, near its low [4]. That heavy middle volume is possibly the pattern 2 exception: sellers pressing every close down (pp. 214 to 215).',
+                    'The last bar closes at PHP 48.20, near its low [4]. That heavy middle volume is possibly the multiple form 2 exception: sellers pressing every close down (pp. 214 to 215).',
                 ), notes=('Ask: what would 0.4 million on the wide bars mean? Also bearish (p. 215).',),
                    origin='Lim (2016), pp. 214 to 215, Figure 7.10. Prices and volume are invented for teaching.'),
                 Pair(
@@ -914,7 +914,7 @@ CHAPTER = Chapter(
                    origin='Lim (2016), p. 215, Figure 7.10. The prices are invented for teaching.'),
                 Pair(
                     notes=('Two gaps isolate the middle group, the same island idea as triple form 4.',),
-                    origin='Lim (2016), p. 215, Figure 7.10; Chapter 3, "Gap".',
+                    origin='Lim (2016), p. 215, Figure 7.10.',
                     left=Content(
                         title='Multiple form 4: an island reversal formation',
                         lines=('Lim\'s label: "1st bar closes near its high followed by multiple bars forming above a gap. The last bar gaps down and closes at or near its low. Referred to as an island reversal formation" (Figure 7.10, p. 215).', 'In the drawing, [1] is the first bar, [2] the bars above the gap and [3] the last bar.'),
@@ -931,7 +931,7 @@ CHAPTER = Chapter(
                 ), notes=('Two gaps, as in triple form 4; only the middle is longer.',),
                    origin='Lim (2016), p. 215, Figure 7.10. The prices are invented for teaching.'),
                 *chart_slides('p2-oc', 'The four bullish multiple forms mirror the bearish ones', (
-                    "Lim draws four bullish multiple patterns in a downtrend (p. 215). In pattern 2, wide middle bars on high volume, or narrow ones on low, are bullish (p. 216). More reliable if the last bar is overextended, unusually long, and closes near its high on high volume (p. 216). Beside an ordinary PHP 1.00 bar [1], the last bar ranges PHP 4.00 [2], closing near its high [3].",
+                    "Lim draws four bullish multiple patterns in a downtrend (p. 215). In multiple form 2, wide middle bars on high volume are bullish; in any of these forms, narrow middle bars on low volume are potentially bullish too (p. 216). More reliable if the last bar is overextended, unusually long, and closes near its high on high volume (p. 216). Beside an ordinary PHP 1.00 bar [1], the last bar ranges PHP 4.00 [2], closing near its high [3].",
                 ), notes=('The bullish side keeps both volume readings, now pointing up.',),
                    origin='Lim (2016), pp. 215 to 216. The prices are invented for teaching.'),
                 Pair(
@@ -1016,13 +1016,13 @@ CHAPTER = Chapter(
                             stem='In a bearish multiple pattern, what volume does Lim generally expect on the bars between the first and the last?',
                             options=('Low volume', 'Steadily rising volume', 'The same volume as the first bar', 'Volume does not matter'),
                             answer='A',
-                            reason='The numerous bars between the first and last bars should generally occur on low volume, with pattern 2 possibly the exception (p. 214).',
+                            reason='The numerous bars between the first and last bars should generally occur on low volume, with multiple form 2 possibly the exception (p. 214).',
                         ),
                         Question(
-                            stem='In bullish multiple pattern 2, what can high volume on the wide middle bars indicate?',
+                            stem='In bullish multiple form 2, what can high volume on the wide middle bars indicate?',
                             options=('Bearishness', 'Bullishness', 'A continuation pattern', 'Nothing at all'),
                             answer='B',
-                            reason='Wide-ranging bars between the first and last bar in pattern 2 can occur on high or above average volume, indicating bullishness (p. 216).',
+                            reason='Wide-ranging bars between the first and last bar in multiple form 2 can occur on high or above average volume, indicating bullishness (p. 216).',
                         ),
                     ),
                 ),
@@ -1150,7 +1150,7 @@ CHAPTER = Chapter(
                     notes=('Point to each Chapter 5 slide by name; the numbers only make the change visible.',),
                     origin='Lim (2016), p. 217; the Chapter 5 slides named above. The numbers are invented for teaching.',
                     title='Characteristics 11 and 12: longer pauses and a third gap',
-                    lines=('Characteristic 11, appearance of relatively larger and longer lasting consolidations: pauses of 3 bars [1] give way to one of 12 bars [2] (Chapter 5, "11 Size and duration of a consolidation").', 'Characteristic 12, appearance of an exhaustion gap: a third gap in the trend, say of PHP 0.80 [3], after two earlier ones [4] (Chapter 5, "12 Third gap exhaustion").'),
+                    lines=('Characteristic 11, appearance of relatively larger and longer lasting consolidations: pauses of 3 bars [1] give way to one of 12 bars [2] (Chapter 5, "11 Size and duration of a consolidation").', 'Characteristic 12, appearance of an exhaustion gap: a third gap in the trend, say of PHP 0.80 [3], after two earlier ones [4] (Chapter 5, "12 Third gap exhaustion"). Characteristic 12\'s exhaustion gap is not Part 3\'s exhaustion bar, which has no gap after it.'),
                 ),
         course_chart('sh-k11',
             notes=("Gold 1 and red 2 mark the first sketch's before and after; blue 3 and purple 4 mark the second's.", 'Each sketch is drawn from the numbers in the sentence beside it; they are invented for teaching.'),
@@ -1299,12 +1299,18 @@ CHAPTER = Chapter(
             short='7.3 Popular reversals',
             covers=('key reversal', 'exhaustion', 'pin bar'),
             slides=(
+                Content(
+                    notes=('Frame Part 3 before the first pattern: the names are mostly the ones Part 2 drew, now on real daily charts.',),
+                    origin='Lim (2016), pp. 211 and 218. Section 7.3 is "Popular Bar Reversal Patterns".',
+                    title='Part 3 puts names on real charts',
+                    lines=("Part 2 drew Lim's generic forms. Part 3 reads the popular named reversals on real daily charts: key reversal, two-day and three-bar reversals, the island, outside and inside bars, exhaustion bars, spikes, pin bars, false breakouts, the Double Repo and the Hikkake.", "Several reuse Part 2's names: the key reversal is Part 2's form 1, the outside bar is form 6, and the island is triple form 4's single bar or multiple form 4's group.", 'Each is still a bearish pattern after an uptrend or a bullish one after a downtrend, as Part 2 set out (p. 211).'),
+                ),
                 Pair(
                     notes=('Use this unmarked chart while introducing the key reversal. The next worked reading identifies the same features with teaching marks.',),
                     origin='Lim (2016), pp. 218 to 219, Figure 7.15. The crop is for teaching; no invented example is on this slide.',
                     left=Content(
                         title='The key reversal is when a strong move suddenly turns',
-                        lines=('In an uptrend, buyers push price higher. A bearish key reversal breaks that habit: it makes a new high, then closes near or below the previous close.', 'Lim defines it this way: "A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar" (p. 218).', 'Why it matters: it warns an uptrend may be running out of buyers. Lim says a wider bar may improve follow-through, but it is not a promise (p. 218).'),
+                        lines=('In an uptrend, buyers push price higher. A bearish key reversal breaks that habit: it makes a new high, then closes near or below the previous close, a warning that buyers may be running out.', 'Lim defines it this way: "A bearish key reversal bar forms a higher high than the previous bar and closes near or below the close of the previous bar" (p. 218).', "Part 2's form 1 label also has the bar open above the previous high. That is the stronger version Lim draws; his text asks only for the higher high and the close, and says the bar may open with a gap up (pp. 212, 218)."),
                     ),
                     picture=Figure(
                         notes=('Use this unmarked chart while introducing the key reversal. The next worked reading identifies the same features with teaching marks.',),
@@ -1322,7 +1328,7 @@ CHAPTER = Chapter(
                     notes=('Read the prior high and prior close lines before reading marks 1 to 4.', 'The second bar opens above 52.00, reaches a new high of 53.20, and closes at 50.80, below the prior close of 51.10. Mark 4 identifies the 4.2 million-share volume bar.'),
                     origin='Chart K is ours. These prices and volume values are invented for teaching.',
                     title='Walking through one key reversal, price by price',
-                    lines=('Here is the same pattern with simple prices, so you can see each step.', "Yesterday the stock reached 52.00 and closed at 51.10. Today it opens higher, at 52.30, already above yesterday's high [1]. Buyers push it to 53.20, a new high [2]. Then the selling starts, and by the close it has fallen to 50.80, below yesterday's close [3]. Volume more than doubles, from 2.0 to 4.2 million shares [4], so many traders took part in that turn."),
+                    lines=('Here is the same pattern with simple prices, so you can see each step.', "After a run of rising closes, yesterday the stock reached 52.00 and closed at 51.10. Today it opens higher, at 52.30, already above yesterday's high [1]. Buyers push it to 53.20, a new high [2]. Then the selling starts, and by the close it has fallen to 50.80, below yesterday's close [3]. Volume more than doubles, from 2.0 to 4.2 million shares [4], so many traders took part in that turn."),
                 ),
                 course_chart('r3a-k',
                     title='Walking through one key reversal, price by price',
@@ -1376,29 +1382,18 @@ CHAPTER = Chapter(
                         ),
                     ),
                 ),
-                Pair(
-                    notes=('This is the exact converse: a new low, then a close above the previous close, in a downtrend.', 'The book says the bullish key reversal occurs on high volume and price rebounds rapidly in this example.'),
-                    origin='Lim (2016), p. 218, Figure 7.14. The worked PHP values are ours, invented to show the converse.',
-                    left=Content(
-                        title='The bullish key reversal is the same rule in the opposite direction',
-                        lines=('In a downtrend, a bullish key reversal makes a new low, then closes near or above the previous close.', "With simple invented prices: yesterday's low was 41.00 and its close 41.50. Today it falls to a new low of 40.50 [1], then closes at 43.20 [2], above yesterday's close of 41.50, on 4.0 million shares [3].", "In Lim's chart price then rebounds rapidly, but that is not a promise (p. 218)."),
-                        caption="Lim (2016), p. 218, Figure 7.14. The figure shows the book's bullish converse.",
-                    ),
-                    picture=Figure(
-                        notes=('This is the exact converse: a new low, then a close above the previous close, in a downtrend.', 'The book says the bullish key reversal occurs on high volume and price rebounds rapidly in this example.'),
-                        origin='Lim (2016), p. 218, Figure 7.14. The worked PHP values are ours, invented to show the converse.',
-                        title='Bullish key reversal: the converse',
-                        number='7.14',
-                        shows='Apple daily chart. The marked bar makes a new low, closes above the previous close, and is followed by a rapid rebound on high volume.',
-                        marks=(
-                                        Mark(number=1, kind='circle', x0=0.4350, y0=0.6650, x1=0.4700, y1=0.7150, color='gold', at=(0.4100, 0.7000), size=0.24),
-                                        Mark(number=2, kind='circle', x0=0.4450, y0=0.6050, x1=0.4780, y1=0.6550, color='red', at=(0.5000, 0.5950), size=0.24),
-                                        Mark(number=3, kind='circle', x0=0.4380, y0=0.7450, x1=0.4680, y1=0.9850, color='blue', at=(0.5000, 0.8000), size=0.24),
-                                    ),
-                        aspect=1.6850961538461537,
-                    ),
-                    text_w=5.6,
-                    picture_extra=0.5,
+                Content(
+                    notes=('This is the exact converse: a new low, then a close above the previous close, in a downtrend.', 'Read the marks in order: the new low, the close, the volume. Figure 7.14 follows with the book\'s own bullish converse.'),
+                    origin='Lim (2016), p. 218. Chart KB is ours; these prices and volume values are invented for teaching.',
+                    title='The bullish key reversal is the same rule in the opposite direction',
+                    lines=('In a downtrend, a bullish key reversal makes a new low, then closes near or above the previous close.', "After a run of falling closes, yesterday's low was 41.00 and its close 41.50. Today it falls to a new low of 40.50 [1], then closes at 43.20 [2], above yesterday's close of 41.50, on 4.0 million shares [3].", "In Lim's chart price then rebounds rapidly, but that is not a promise (p. 218)."),
+                ),
+                course_chart('r3a-kb',
+                    title='The bullish key reversal is the same rule in the opposite direction',
+                    letter='KB',
+                    shows='Five invented PHP bars: three falling bars, yesterday, and a bullish key reversal today. Marks 1 to 3 show the new low, the close above the previous close, and the 4.0 million-share volume.',
+                    tier='core',
+                    marks=(),
                 ),
                 Pair(
                     notes=("Read the book's definition first, then explain marks 1 to 4 in the same order: previous high, new high and opening area, close, and above-average volume.", 'The figure shows consolidation before the later decline. Keep the word potentially: this is a warning, not a promise.'),
@@ -1648,7 +1643,7 @@ CHAPTER = Chapter(
                     ),
                     picture=Figure(
                         notes=('This is the exact converse: a new low, then a close above the previous close, in a downtrend.', 'The book says the bullish key reversal occurs on high volume and price rebounds rapidly in this example.'),
-                        origin='Lim (2016), p. 218, Figure 7.14. The worked PHP values are ours, invented to show the converse.',
+                        origin='Lim (2016), p. 218, Figure 7.14. The crop and marks are for teaching; no invented values are on this slide.',
                         title='Bullish key reversal: the converse',
                         number='7.14',
                         shows='Apple daily chart. The marked bar makes a new low, closes above the previous close, and is followed by a rapid rebound on high volume.',
@@ -1666,7 +1661,7 @@ CHAPTER = Chapter(
                     origin='Lim (2016), pp. 219 to 220, Figure 7.16. Bollinger Bands and StochRSI are shown by the book but not defined here.',
                     left=Content(
                         title='Figure 7.16: context can strengthen the warning',
-                        lines=('Figure 7.16 shows a bullish key reversal with some of the 16 reversal characteristics around it (p. 219).', 'The bar forms below the lower Bollinger band [1], which Lim reads as an overextended or oversold condition. It closes near its high [2].', 'The book draws Bollinger Bands but does not teach them in this chapter, so we read the band as a label, not a formula.'),
+                        lines=('Figure 7.16 shows a bullish key reversal with some of the 16 reversal characteristics around it (p. 219).', 'The bar forms below the lower Bollinger band [1]. Lim calls that an overextended or oversold condition with respect to volatility: this is characteristic 14 from Part 2, price stretched past a barrier, not Part 2\'s unusually long overextended bar. It closes near its high [2].', 'The book draws Bollinger Bands but does not teach them in this chapter, so we read the band as a label, not a formula.'),
                     ),
                     picture=Figure(
                         notes=("Mark 1 is the key reversal bar's low, below the lower band. Mark 2 is its close near the high.", 'Lim calls these conditions greater potential, not certainty.'),
@@ -1711,7 +1706,7 @@ CHAPTER = Chapter(
                     notes=('Name the two-day reversal before reading the values. Then read the first close near the high and the second near the low.', 'The values and volume are ours, invented. The wider-range preference comes from Lim, p. 219.'),
                     origin='Lim (2016), p. 219. Chart L is ours, with invented PHP bars and volume.',
                     title='A two-day reversal compares the two closing positions',
-                    lines=('A bearish two-day reversal uses two closing positions: first near the high, second near the low.', 'With simple invented prices, the first closes at PHP 51.80 near its high [1], and the second at PHP 49.60 near its low [2].', 'Lim prefers wider ranges for both bars. The pair is a potential warning, not a guarantee (p. 219).'),
+                    lines=("After an uptrend, Lim's typical two-bar bearish reversal reads only the two closes: the first near its high, the second near its low. It looks like Part 2's form 7, but Lim does not link the two: form 7's label asks for two large bars, while here he only says wider ranges would be preferable (pp. 212, 219).", 'With simple invented prices, the first closes at PHP 51.80 near its high [1], and the second at PHP 49.60 near its low [2].', 'The pair is a potential warning, not a guarantee (p. 219).'),
                 ),
                 course_chart('r3a-l',
                     title='A two-day reversal compares the two closing positions',
@@ -1771,7 +1766,7 @@ CHAPTER = Chapter(
                     notes=('Bar 1 closes at 52.00, near its 52.20 high. Bar 3 closes at 48.80, near its 48.70 low.', 'The prices are ours, invented to show the close positions Lim describes.'),
                     origin='Lim (2016), p. 221. Chart LK is ours, with invented PHP bars.',
                     title='Here is a bearish three-bar reversal with simple prices',
-                    lines=('Here is a bearish three-bar reversal with simple prices. Bar 1 runs from PHP 49.00 to PHP 52.20 and closes near its high, at PHP 52.00 [1].', 'Bar 2 is small: it stays between PHP 51.40 and PHP 52.40 and closes at PHP 51.70 [2].', 'Bar 3 falls from PHP 52.10 to PHP 48.70 and closes near its low, at PHP 48.80 [3]. A first close near the high and a third close near the low is the pattern Lim describes (p. 221).'),
+                    lines=("In a clear uptrend, Lim's bearish three-bar reversal reads the outer closes: the first bar near its high, the third near its low. It is a looser rule than Part 2's six triple forms, which each fix the middle bar too. Bar 1 runs from PHP 49.00 to PHP 52.20 and closes near its high, at PHP 52.00 [1].", 'Bar 2 is small: it stays between PHP 51.40 and PHP 52.40 and closes at PHP 51.70 [2].', 'Bar 3 falls from PHP 52.10 to PHP 48.70 and closes near its low, at PHP 48.80 [3]. A first close near the high and a third close near the low is the pattern Lim describes (p. 221).'),
                 ),
                 course_chart('r3b-lk',
                     title='Here is a bearish three-bar reversal with simple prices',
@@ -1807,7 +1802,7 @@ CHAPTER = Chapter(
                     notes=('Name the three-bar reversal first. Then read volume left to right: strong, quiet, strong.', 'The arithmetic and volume are ours, invented; the interpretation follows Lim, pp. 221 to 223.'),
                     origin='Lim (2016), pp. 221 to 223. Chart M is ours, with invented PHP bars and volume.',
                     title='A bullish three-bar reversal can show uncertainty in the middle',
-                    lines=("The bullish three-bar reversal is the converse of the bearish one, at the end of a downtrend, and Lim adds a point about volume (p. 221).", 'With invented values, volume is 4.0m on the first bar [1], 0.6m on the middle [2], and 4.2m on the third [3].', 'A quiet middle supports the reversal reading, but guarantees nothing (pp. 221 to 223).'),
+                    lines=("The bullish three-bar reversal is the converse of the bearish one, at the end of a downtrend. So the first bar closes near its low, at 43.00, and the third near its high, at 46.30 (p. 221).", 'Lim adds a point about volume: with invented values, volume is 4.0m on the first bar [1], 0.6m on the middle [2], and 4.2m on the third [3].', 'A quiet middle supports the reversal reading, but guarantees nothing (pp. 221 to 223).'),
                 ),
                 course_chart('r3a-m',
                     title='A bullish three-bar reversal can show uncertainty in the middle',
@@ -1921,7 +1916,7 @@ CHAPTER = Chapter(
                     origin="Lim (2016), p. 222, Figure 7.21. The outside day and volume are the book's observations.",
                     left=Content(
                         title='A later outside day is a separate event',
-                        lines=('Figure 7.21 first shows a bullish three-bar reversal [1], whose large third bar closes near its high [2].', 'Later, a separate outside day engulfs four preceding bars [4] and closes near its low [3].', 'Keep the two apart: the outside day is a new event, not part of the three-bar count (p. 222).'),
+                        lines=('Figure 7.21 first shows a bullish three-bar reversal [1], whose large third bar closes near its high [2].', 'Later, a separate outside day (an outside bar on a daily chart, Part 2\'s form 6) engulfs four preceding bars [4], not just one. It closes near its low [3].', 'Keep the two apart: the outside day is a new event, not part of the three-bar count (p. 222).'),
                                             ),
                     picture=Figure(
                         notes=('Mark 1 keeps the first three-bar reversal separate. Mark 2 identifies its large third bar near its high.', 'Mark 3 boxes the later outside day and its close near the low. Lim says the third bar adds bullishness, not certainty.'),
@@ -1997,10 +1992,10 @@ CHAPTER = Chapter(
                     text_w=5.8,
                 ),
                 Content(
-                    notes=('Name the island reversal first. Then read the gap up, the isolated bars, and the gap down.', 'Gap meaning points back to Chapter 3. The prices and volume are ours, invented.'),
-                    origin='Lim (2016), pp. 223 to 224. Chart N is ours, with invented PHP bars and volume; gap meaning points to Chapter 3.',
+                    notes=('Name the island reversal first. Then read the gap up, the isolated bars, and the gap down.', 'A window means the two bars do not overlap. The prices and volume are ours, invented.'),
+                    origin='Lim (2016), pp. 223 to 224. Chart N is ours, with invented PHP bars and volume.',
                     title='An island reversal is isolated by two gaps',
-                    lines=('An island reversal is a group of bars separated from surrounding price action by a gap up and a gap down.', 'With simple invented prices, price gaps up from PHP 50.00 to PHP 50.80 [1], forms the isolated bars [2], then gaps down to PHP 49.40 [3].', 'The two gaps create a potential warning. Gap terminology follows Chapter 3.'),
+                    lines=("A bearish island reversal is one bar or a group of bars cut off from the price action around it by a gap up before and a gap down after. The bullish island is the converse: a gap down, then a gap up. Part 2 met both sizes: triple form 4's single island bar and multiple form 4's island formation.", "Here a gap means a window: the two bars' ranges do not overlap at all. After an uptrend, bar 2's low, PHP 50.60, is above bar 1's high, PHP 50.00 [1]. Bars 2 and 3 are the island [2]. Bar 4's high, PHP 50.00, is below bar 3's low, PHP 50.90 [3].", 'The two windows create a potential warning.'),
                 ),
                 course_chart('r3a-n',
                     title='An island reversal is isolated by two gaps',
@@ -2042,14 +2037,14 @@ CHAPTER = Chapter(
                 ),
                 Pair(
                     notes=('An island is isolated by two gaps: mark 1 is the gap up and mark 3 the gap down.', 'Mark 2 is the isolated formation.'),
-                    origin='Lim (2016), pp. 223 to 224, Figure 7.23. Gap meaning points back to Chapter 3; stochastic is shown but not defined here.',
+                    origin='Lim (2016), pp. 223 to 224, Figure 7.23. Stochastic is shown but not defined here.',
                     left=Content(
                         title='Figure 7.23 shows the gap up, the island, and the gap down',
-                        lines=('An island reversal is a group of bars cut off from the rest of the chart by two gaps.', 'In Figure 7.23 the gap up [1] comes first, then the isolated island [2], then the gap down [3] (p. 223). Together the two gaps leave the island standing on its own.'),
+                        lines=('A bearish island reversal is one bar or a group of bars cut off from the rest of the chart by two gaps.', 'In Figure 7.23 the gap up [1] comes first, then the isolated island [2], then the gap down [3] (p. 223). Together the two gaps leave the island standing on its own.'),
                     ),
                     picture=Figure(
                         notes=('An island is isolated by two gaps: mark 1 is the gap up and mark 3 the gap down.', 'Mark 2 is the isolated formation.'),
-                        origin='Lim (2016), pp. 223 to 224, Figure 7.23. Gap meaning points back to Chapter 3; stochastic is shown but not defined here.',
+                        origin='Lim (2016), pp. 223 to 224, Figure 7.23. Stochastic is shown but not defined here.',
                         title='Bearish island reversal',
                         number='7.23',
                         shows='The Direxion Gold Miners daily chart, cropped to the price panel: a gap up, an isolated group of bars, and a gap down.',
@@ -2066,14 +2061,14 @@ CHAPTER = Chapter(
                 ),
                 Pair(
                     notes=('Mark 4 is the low volume under the island. Mark 5 is the overbought stochastic label.', 'No stochastic formula is taught here.'),
-                    origin='Lim (2016), pp. 223 to 224, Figure 7.23. Gap meaning points back to Chapter 3; stochastic is shown but not defined here.',
+                    origin='Lim (2016), pp. 223 to 224, Figure 7.23. Stochastic is shown but not defined here.',
                     left=Content(
                         title='Figure 7.23 adds volume and stochastic context',
                         lines=('Lim notes that the whole island forms on low volume [4], which shows a lack of conviction by market participants, and on overbought conditions on the stochastic oscillator [5] (p. 223).', 'No stochastic method is given in this chapter, so these labels are context, and the island remains a potential warning.'),
                     ),
                     picture=Figure(
                         notes=('Mark 4 is the low volume under the island. Mark 5 is the overbought stochastic label.', 'No stochastic formula is taught here.'),
-                        origin='Lim (2016), pp. 223 to 224, Figure 7.23. Gap meaning points back to Chapter 3; stochastic is shown but not defined here.',
+                        origin='Lim (2016), pp. 223 to 224, Figure 7.23. Stochastic is shown but not defined here.',
                         title='Bearish island reversal',
                         number='7.23',
                         shows='The Direxion Gold Miners daily chart, cropped to the volume and stochastic panels: low volume under the island and an overbought stochastic reading.',
@@ -2093,7 +2088,7 @@ CHAPTER = Chapter(
                     label='From the island reversal reading',
                     questions=(
                         Question(
-                            stem='What isolates an island reversal?',
+                            stem='What isolates a bearish island reversal?',
                             options=('A gap up followed by a gap down', 'A single wide bar', 'A high-volume middle bar', 'A trendline only'),
                             answer='A',
                             reason='Figure 7.23 shows a gap up before and a gap down after the island.',
@@ -2107,7 +2102,7 @@ CHAPTER = Chapter(
                     ),
                     picture=Figure(
                         notes=('An island is isolated by two gaps: mark 1 is the gap up and mark 3 the gap down.', 'Mark 2 is the isolated formation. Lim also observes low volume and an overbought stochastic label; no formula is taught here.'),
-                        origin='Lim (2016), p. 224, Figure 7.23. Gap meaning points back to Chapter 3; stochastic is shown but not defined here.',
+                        origin='Lim (2016), p. 224, Figure 7.23. Stochastic is shown but not defined here.',
                         title='Bearish island reversal',
                         number='7.23',
                         shows='The Direxion Gold Miners daily chart: a gap up, an isolated group of bars, a gap down, low volume, and an overbought stochastic label.',
@@ -2129,13 +2124,13 @@ CHAPTER = Chapter(
                     accent='First see the outside range. Then read its close and context.',
                 ),
                 Content(
-                    notes=('The first two bars run from PHP 48.00 to PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50.', "Its 5.0 million volume is invented to show the book's high-volume reliability condition."),
+                    notes=('The two bars just before it run from PHP 48.00 to PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50.', "Its 5.0 million volume is invented to show the book's high-volume reliability condition."),
                     origin='Course chart LA: invented PHP bars and million-share volume.',
                     title='Here is an outside bar with simple prices',
-                    lines=('Here is an outside bar with simple prices. The first two bars stay between PHP 48.00 and PHP 52.00.', 'The third bar opens at PHP 52.00, runs up to PHP 53.00 [2] and down to PHP 47.00, so its range [1] covers both earlier bars.', 'It closes at PHP 47.50 [3], near its low. Lim says an outside bar that closes at or near its low gives a more reliable reversal (p. 223).'),
+                    lines=('After an uptrend, here is an outside bar with simple prices. The two bars just before it stay between PHP 48.00 and PHP 52.00.', 'The last bar opens at PHP 52.00, runs up to PHP 53.00 [2] and down to PHP 47.00, so its range [1] covers both of those bars.', 'It closes at PHP 47.50 [3], near its low. Lim says an outside bar that closes at or near its low gives a more reliable reversal (p. 223).'),
                 ),
                 course_chart('r3b-la',
-                    notes=('The first two bars run from PHP 48.00 to PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50.', "Its 5.0 million volume is invented to show the book's high-volume reliability condition."),
+                    notes=('The two bars just before it run from PHP 48.00 to PHP 52.00. The outside bar runs from PHP 47.00 to PHP 53.00 and closes at PHP 47.50.', "Its 5.0 million volume is invented to show the book's high-volume reliability condition."),
                     origin='Course chart LA: invented PHP bars and million-share volume.',
                     title='Here is an outside bar with simple prices',
                     letter='LA',
@@ -2282,14 +2277,14 @@ CHAPTER = Chapter(
                     notes=('Define inside bar before giving its invented values.', 'Keep the first wide and high-volume, second narrow and very-low-volume condition.'),
                     origin='Lim (2016), p. 224.',
                     title='An inside bar pauses inside the previous range',
-                    lines=("The outside bar expanded the range. An inside bar does the opposite: its high and low stay within the preceding bar's range, so price is pausing inside it.", 'Lim treats inside bars as reversal bars. The reversal is more reliable when the first bar is wide on high volume and the second is narrow on very low volume (p. 224).'),
+                    lines=("The outside bar expanded the range. An inside bar does the opposite: its whole range, high and low, stays within the preceding bar's range, so price is pausing inside it. Lim's Part 2 label asks only that the close be inside; this deck uses the whole-range meaning.", 'Lim treats inside bars as reversal bars. The reversal is more reliable when the first bar is wide on high volume and the second is narrow on very low volume (p. 224).'),
                     accent='Inside means contained, not engulfing. We will compare the names after this example.',
                 ),
                 Content(
                     notes=('The first bar is O 50.00, H 53.00, L 48.00, C 52.40 on 4.5 million shares.', 'The second is O 51.80, H 52.50, L 49.20, C 50.10 on 0.5 million shares. It stays inside the first range.'),
                     origin='Course chart LB: invented PHP bars and million-share volume.',
                     title='Here is an inside bar with simple prices',
-                    lines=('Here is an inside bar with simple prices. The first bar [1] is wide: it runs from PHP 48.00 to PHP 53.00 on 4.5 million shares.', 'The second bar [2] is narrow, from PHP 49.20 to PHP 52.50 on only 0.5 million shares, so it stays inside the first. The first bar also tests resistance at PHP 53.00 [3].', 'A wide, busy first bar and a narrow, quiet second bar is the relationship Lim says makes the reversal more reliable (p. 224).'),
+                    lines=('After a rise into resistance at PHP 53.00, here is an inside bar with simple prices. The first bar of the pair [1] is wide: it runs from PHP 48.00 to PHP 53.00 on 4.5 million shares.', 'The second bar [2] is narrow, from PHP 49.20 to PHP 52.50 on only 0.5 million shares, so it stays inside the first. That first bar tests resistance at PHP 53.00 [3].', 'A wide, busy first bar and a narrow, quiet second bar is the relationship Lim says makes the reversal more reliable (p. 224).'),
                 ),
                 course_chart('r3b-lb',
                     notes=('The first bar is O 50.00, H 53.00, L 48.00, C 52.40 on 4.5 million shares.', 'The second is O 51.80, H 52.50, L 49.20, C 50.10 on 0.5 million shares. It stays inside the first range.'),
@@ -2495,14 +2490,14 @@ CHAPTER = Chapter(
                     notes=('Name the pattern and why the next-bar gap matters before the example.', 'The invented chart will walk through each condition.'),
                     origin='Lim (2016), p. 226. The transition wording is ours.',
                     title='An exhaustion bar shows a trend running out of force',
-                    lines=('We now move from containment to exhaustion. In an uptrend, an exhaustion bar opens above the previous high, is large in context, and closes near its low.', 'The next bar does not gap away from it. Lim uses those observations together to describe a reversal warning (p. 226).', 'The bullish converse appears at the bottom of a downtrend. It is a warning, not certainty.'),
+                    lines=('In an uptrend, an exhaustion bar opens above the previous high and closes at or near its low; the larger the bar, the more bearish.', 'The next bar leaves no gap: a gap here is a window, where the two bars\' ranges do not overlap at all. That is what separates it from Part 2\'s single island bar. Together they make a reversal warning (p. 226).', 'The bullish converse appears at the bottom of a downtrend. It is a warning, not certainty.'),
                     accent='Read trend, size, close, and the next-bar gap together.',
                 ),
                 Content(
                     notes=('The prior high is PHP 65.00. The exhaustion bar opens at 65.40, reaches 66.20, falls to 60.00, and closes at 60.50.', "The next bar opens at 60.20, inside the exhaustion bar's range, so there is no following gap."),
                     origin='Course chart LC: invented PHP bars and million-share volume.',
                     title='Here is the exhaustion rule, price by price',
-                    lines=('Here is an exhaustion bar with simple prices. The previous bar reached a high of PHP 65.00 [1].', 'The exhaustion bar [2] opens above it at PHP 65.40 and reaches PHP 66.20, then falls to close near its low at PHP 60.50.', 'The next bar opens at PHP 60.20 [3], inside that range, so there is no gap (p. 226).'),
+                    lines=('After a run of rising bars, the previous bar reached a high of PHP 65.00 [1].', 'The exhaustion bar [2] opens above it at PHP 65.40 and reaches PHP 66.20, then falls to close near its low at PHP 60.50.', 'The next bar opens at PHP 60.20 [3], inside that range, so the two bars overlap and there is no window (p. 226).'),
                 ),
                 course_chart('r3b-lc',
                     notes=('The prior high is PHP 65.00. The exhaustion bar opens at 65.40, reaches 66.20, falls to 60.00, and closes at 60.50.', "The next bar opens at 60.20, inside the exhaustion bar's range, so there is no following gap."),
@@ -2677,14 +2672,13 @@ CHAPTER = Chapter(
                     notes=('Define the pin bar before showing the invented prices.', "Keep the named barriers and low-volume tendency tied to Lim's wording."),
                     origin='Lim (2016), p. 227.',
                     title='A pin bar makes a barrier break look more convincing than it is',
-                    lines=('We now add a barrier test. Lim calls a pin bar a single-bar misrepresentation of strength or weakness: price penetrates a moving average, support, resistance, or trendline, then rapidly retraces (p. 227).', 'Pin bars usually form on low volume. The barrier break can fool a trader, so wait for the return before treating the move as a real breakout.'),
-                    accent='The false barrier impression separates a pin bar from an exhaustion bar.',
+                    lines=('Lim calls a pin bar a single-bar misrepresentation of strength or weakness: price penetrates a moving average, support, resistance, or trendline, then rapidly retraces (p. 227).', 'A downside pin bar fools traders into seeing weakness in an uptrend; an upside one, strength in a downtrend (p. 227).', 'Pin bars usually form on low volume. Wait for the close: if price is back on the other side of the barrier, the break was false.'),
                 ),
                 Content(
                     notes=('Read the barrier, penetration, and close in that order.',),
                     origin='Course chart LJ: invented PHP bars and million-share volume.',
                     title='Here is a pin bar with simple prices',
-                    lines=('Here is a pin bar with simple prices. Support sits at PHP 40.00 [1]. The pin bar trades down through it to PHP 38.80 [2], then closes back above it at PHP 40.60 [3], on only 0.8 million shares.', "The return above support is the clue that the break was false (p. 227)."),
+                    lines=('In an uptrend, price pulls back toward support at PHP 40.00 [1]. The pin bar trades down through it to PHP 38.80 [2], then closes back above it at PHP 40.60 [3], on only 0.8 million shares.', "The return above support is the clue that the break was false (p. 227)."),
                 ),
                 course_chart('r3b-lj',
                     notes=('Read the support line first, then the penetration and the close back above it.',),
@@ -2786,7 +2780,7 @@ CHAPTER = Chapter(
                     notes=('Read the upper example first. The exhaustion bar opens beyond the previous high, but its distinction is the absence of a following gap.', 'The pin bar gives a false impression of breaking support, then retraces back above it. Its volume is low in the invented example.', "The book's difference is the false barrier penetration, not the size of the bar alone."),
                     origin='Lim (2016), pp. 226 to 227. Chart A is ours, with invented PHP bars and volume to answer review question 1.',
                     title='Two bars can look alike but warn for different reasons',
-                    lines=('An exhaustion bar comes at the end of a run. It opens above the previous high [1], pushes to a new high [2], then gives most of it back, and the next bar opens without a gap [3] (p. 226).', 'A pin bar pokes through support [4] and then closes back above it [6], on low volume [5]. Lim calls pin bars "single bar misrepresentations of market strength or weakness" (p. 227).', 'So ask whether the bar ended a tiring run, or broke a level and came straight back.'),
+                    lines=('In an uptrend, an exhaustion bar opens above the previous high [1], pushes to a new high [2], then closes near its low, and the next bar opens without a gap [3] (p. 226).', 'A pin bar pokes through support [4] and then closes back above it [6], on low volume [5]. Lim calls pin bars "single bar misrepresentations of market strength or weakness" (p. 227).', 'So ask whether the bar came at the end of an uptrend, or broke a level and came straight back.'),
                 ),
                 course_chart('r3a-a',
                     notes=('Read the upper example first. The exhaustion bar opens beyond the previous high, but its distinction is the absence of a following gap.', 'The pin bar gives a false impression of breaking support, then retraces back above it. Its volume is low in the invented example.', "The book's difference is the false barrier penetration, not the size of the bar alone."),
@@ -3099,8 +3093,8 @@ CHAPTER = Chapter(
                 Content(
                     notes=("Do not import a formula beyond the book's wording.", "Lim gives only the short version and sends readers to DiNapoli for the rest."),
                     origin='Lim (2016), p. 229.',
-                    title='Double Repo names two crossings of a moving average',
-                    lines=("Joe DiNapoli's Double Repo is a topping pattern. In an uptrend, price closes above and below a three-day simple moving average (SMA) twice, and that gives a sell signal (p. 229).", 'The SMA is forward shifted by three days. DiNapoli also asks for at least eight to ten days of bullish price action first, and a top of no more than eight to ten bars.'),
+                    title='Double Repo names two closes below a moving average',
+                    lines=("Joe DiNapoli's Double Repo is a topping pattern. In an uptrend, price closes above and below a three-day simple moving average (SMA) twice, and that gives a sell signal (p. 229). In plain terms: two closes below the line, each after a close above it.", 'The SMA is forward shifted by three days. DiNapoli also asks for at least eight to ten days of bullish price action first, and a top of no more than eight to ten bars.'),
                     accent='First the bullish run, then two closes below the line inside a short top.',
                 ),
                 Content(
@@ -3149,14 +3143,14 @@ CHAPTER = Chapter(
                     ),
                 ),
                 Pair(
-                    notes=("The two crossings are the pattern's named structure; the later decline is the observed follow-through.", "Lim directs readers to DiNapoli's original text for a complete discussion."),
+                    notes=("The two closes below the line are the pattern's named structure; the later decline is the observed follow-through.", "Lim directs readers to DiNapoli's original text for a complete discussion."),
                     origin='Lim (2016), p. 229, Figure 7.33. The crop and marks are for teaching.',
                     left=Content(
                         title="Figure 7.33 shows the Double Repo reversal in the book's chart",
-                        lines=('Gold [1] marks a close above the forward-shifted three-day SMA and red [2] the first close below it, inside the topping block. Blue [3] marks the later decline.', 'Lim presents a bearish reversal in an uptrend. The converse applies in a downtrend, but the book sends readers to DiNapoli for the complete method.', 'Read the two crossings as the named structure, not as a complete trading system.'),
+                        lines=('Gold [1] marks a close above the forward-shifted three-day SMA and red [2] the first close below it, inside the topping block. Blue [3] marks the later decline.', 'Lim presents a bearish reversal in an uptrend. The converse applies in a downtrend, but the book sends readers to DiNapoli for the complete method.', 'Read the two closes below the line as the named structure, not as a complete trading system.'),
                     ),
                     picture=Figure(
-                        notes=("The two crossings are the pattern's named structure; the later decline is the observed follow-through.", "Lim directs readers to DiNapoli's original text for a complete discussion."),
+                        notes=("The two closes below the line are the pattern's named structure; the later decline is the observed follow-through.", "Lim directs readers to DiNapoli's original text for a complete discussion."),
                         origin='Lim (2016), p. 229, Figure 7.33. The crop and marks are for teaching.',
                         title="Figure 7.33: DiNapoli's Double Repo",
                         number='7.33',
@@ -3175,7 +3169,7 @@ CHAPTER = Chapter(
                     origin='Lim (2016), p. 229, Figure 7.33. The crop and marks are for teaching.',
                     left=Content(
                         title='The Double Repo also has timing limits',
-                        lines=('Gold [1] marks the forward-shifted three-day SMA. Red [2] marks the required 8 to 10 bullish days before the pattern.', 'Blue [3] marks the topping formation. Lim says it should not exceed 8 to 10 bars (p. 229).', 'Count both limits before treating the two crossings as the named sell signal.'),
+                        lines=('Gold [1] marks the forward-shifted three-day SMA. Red [2] marks the required 8 to 10 bullish days before the pattern.', 'Blue [3] marks the topping formation. Lim says it should not exceed 8 to 10 bars (p. 229).', 'Count both limits before treating the second close below the line as the named sell signal.'),
                     ),
                     picture=Figure(
                         notes=('Gold [1] marks the forward-shifted three-day SMA. Red [2] marks the long bullish run before the pattern.', 'Blue [3] marks the topping formation, which the book limits to eight to ten bars.'),
@@ -3198,10 +3192,10 @@ CHAPTER = Chapter(
                     label='From Double Repo limits',
                     questions=(
                         Question(
-                            stem='How many crossing pairs generate the named Double Repo sell signal?',
-                            options=('One pair', 'Three pairs', 'Two pairs', 'No pairs'),
+                            stem='How many closes below the shifted SMA, each after a close above it, give the Double Repo sell signal?',
+                            options=('One', 'Three', 'Two', 'None'),
                             answer='C',
-                            reason='The named bearish Double Repo has two closes above and below the forward-shifted SMA (p. 229).',
+                            reason='The named bearish Double Repo has two closes below the forward-shifted SMA, each after a close above it (p. 229).',
                         ),
                         Question(
                             stem='Where does Lim place the complete Double Repo method?',
@@ -3461,16 +3455,16 @@ CHAPTER = Chapter(
                     label='From false breakouts and Hikkake',
                     questions=(
                         Question(
-                            stem='After a false upside breakout, the bearish entry is:',
-                            options=('At the new high', 'Above support', 'Only after a gap down', 'At a close below resistance'),
-                            answer='D',
-                            reason='The book says a short is normally initiated when price closes below resistance after the false upside breakout (p. 228).',
+                            stem='Where does Lim put the stoploss on a short taken after a false upside breakout?',
+                            options=('Just above the breakout high', 'Just below resistance', 'At the support line', "At the day's open"),
+                            answer='A',
+                            reason='The stoploss goes just above the high of the breakout (p. 228).',
                         ),
                         Question(
-                            stem='A Hikkake opposite re-entry must occur within:',
-                            options=('One bar', 'Two bars', 'Three bars', 'Ten bars'),
-                            answer='C',
-                            reason='Lim says the breakout must occur within three bars of the initial failed breakout (p. 230).',
+                            stem='In a bearish Hikkake, what triggers the short?',
+                            options=('A close above the inside high', 'The failed breakout bar itself', 'A gap up on the next bar', "A close back below the inside bar's low"),
+                            answer='D',
+                            reason="The short is the opposite re-entry: a close back below the inside bar's low after the failed upside breakout (p. 230).",
                         ),
                     ),
                     picture=Figure(
@@ -3508,19 +3502,25 @@ CHAPTER = Chapter(
                     notes=('Define the Oops in the book\'s words, then name the gap-up case: it is the bearish Oops.', 'The point: the order fills only if price comes back against the gap.'),
                     origin='Lim (2016), p. 231.',
                     title="Williams' Oops trades against a gap that fails",
-                    lines=("Williams' Oops starts with a bar that opens beyond the range of the previous bar (p. 231). If the new bar opens above the previous bar's high, Lim places a sell-stop entry order at the previous bar's high and a stoploss at the new bar's high.", 'That gap-up case is the bearish Oops: we sell. The trade is taken only if price falls back to the previous high, against the gap, and the stoploss at the new high limits the loss if the gap keeps going.'),
+                    lines=("Williams' Oops starts with a bar that opens beyond the range of the previous bar (p. 231): an opening gap, an open above the previous high or below the previous low, which the bar may then trade back through. If the new bar opens above the previous bar's high, Lim places a sell-stop entry order at the previous bar's high and a stoploss at the new bar's high.", 'That gap-up case is the bearish Oops: we sell, but only if price falls back to the previous high, against the gap. The stoploss at the new high limits the loss if the gap keeps going.'),
                     accent='The Oops waits for the gap to fail before it acts.',
+                ),
+                Content(
+                    notes=('Say the trend rule before either worked example, so the bars drawn next make sense.', 'Lim: look for a bullish Oops in an uptrend and a bearish Oops in a downtrend.'),
+                    origin='Lim (2016), p. 231.',
+                    title='Lim says when to look for an Oops',
+                    lines=('Lim says it is best to look for a bullish Oops pattern in an uptrend and a bearish Oops pattern in a downtrend (p. 231).', 'So the bearish Oops we draw next comes after a run of falling bars, and the bullish Oops after a run of rising bars.'),
                 ),
                 Content(
                     notes=('Walk the bars in time order: the open first, then the high, then the fall.', 'Gold 1 is the open above bar 1, red 2 the sell-stop at 52.00, blue 3 the new high where the stoploss sits.', 'Then say the stop and reverse in words: once short, close the short and go long.'),
                     title='Here is a bearish Oops with simple prices',
-                    lines=("Here are two bars of ours. Bar 1 is the previous bar, with a high of PHP 52.00. Bar 2 opens at PHP 53.00 [1], above that high, so as it opens we place a sell-stop at PHP 52.00 [2] and a stoploss at bar 2's high. Bar 2 climbs to a high of PHP 54.00 [3], so that is where the stoploss sits.", 'Then price falls to PHP 50.50, through the sell-stop at PHP 52.00 [2], and the order is filled: we are now short. Once we are short, if price turned back up through the stoploss at PHP 54.00 [3], the stoploss would close the short. Lim adds that a stop and reverse order is initiated at the stoploss level (p. 231), so we would also go long there.'),
+                    lines=("After a run of falling bars, here are two bars of ours. Bar 1 is the previous bar, with a high of PHP 52.00. Bar 2 opens at PHP 53.00 [1], above that high, so as it opens we place a sell-stop at PHP 52.00 [2] and a stoploss at bar 2's high. Bar 2 climbs to a high of PHP 54.00 [3], so that is where the stoploss sits.", 'Then price falls to PHP 50.50, through the sell-stop at PHP 52.00 [2], and the order is filled: we are now short. Once we are short, if price turned back up through the stoploss at PHP 54.00 [3], the stoploss would close the short. Lim adds that a stop and reverse order is initiated at the stoploss level (p. 231), so we would also go long there.'),
                 ),
                 course_chart('r4-n',
                     notes=('Walk the bars in time order: the open first, then the high, then the fall.', 'Gold 1 is the open above bar 1, red 2 the sell-stop at 52.00, blue 3 the new high where the stoploss sits.', 'Then say the stop and reverse in words: once short, close the short and go long.'),
-                    origin='Chart N is ours, with invented PHP values to show Lim (2016), p. 231.',
+                    origin='Chart ON is ours, with invented PHP values to show Lim (2016), p. 231.',
                     title='Here is a bearish Oops with simple prices',
-                    letter='N',
+                    letter='ON',
                     shows="Two invented bars: bar 1's high is PHP 52.00; bar 2 opens at PHP 53.00, reaches PHP 54.00 and falls to PHP 50.50, with the sell-stop at 52.00 and the stoploss at 54.00 drawn as levels.",
                     tier='core',
                     marks=(),
@@ -3552,7 +3552,7 @@ CHAPTER = Chapter(
                 Content(
                     notes=('The bullish Oops is the mirror image: gap down, buy-stop at the previous low, stoploss at the new low.', 'Gold 1 the open below bar 1, red 2 the buy-stop at 48.00, blue 3 the new low where the stoploss sits.'),
                     title='The bullish Oops is the same rule after a gap down',
-                    lines=("The bullish Oops is the mirror image. If the new bar opens below the previous bar's low, Lim places a buy-stop entry order at the previous bar's low and a stoploss at the new bar's low (p. 231). Here are prices of ours, and bar 1's low is PHP 48.00.", "Bar 2 opens at PHP 47.00 [1], below bar 1's low, so as it opens we place a buy-stop at PHP 48.00 [2] and a stoploss at bar 2's low. Bar 2 dips to PHP 46.00 [3], where the stoploss now sits, then rises to PHP 49.00, through PHP 48.00, so the buy-stop is filled and we are long.", 'Once we are long, if price fell back through the stoploss at PHP 46.00 [3], the stoploss would close the long and the stop and reverse order would go short.'),
+                    lines=("The bullish Oops is the mirror image. If the new bar opens below the previous bar's low, Lim places a buy-stop entry order at the previous bar's low and a stoploss at the new bar's low (p. 231). After a run of rising bars, here are prices of ours, and bar 1's low is PHP 48.00.", "Bar 2 opens at PHP 47.00 [1], below bar 1's low, so as it opens we place a buy-stop at PHP 48.00 [2] and a stoploss at bar 2's low. Bar 2 dips to PHP 46.00 [3], where the stoploss now sits, then rises to PHP 49.00, through PHP 48.00, so the buy-stop is filled and we are long.", 'Once we are long, if price fell back through the stoploss at PHP 46.00 [3], the stoploss would close the long and the stop and reverse order would go short.'),
                 ),
                 course_chart('r4-v',
                     notes=('The bullish Oops is the mirror image: gap down, buy-stop at the previous low, stoploss at the new low.', 'Gold 1 the open below bar 1, red 2 the buy-stop at 48.00, blue 3 the new low where the stoploss sits.'),
@@ -3610,7 +3610,7 @@ CHAPTER = Chapter(
                     origin='Lim (2016), p. 231, Figure 7.37. The marks are ours, added for teaching.',
                     left=Content(
                         title='Lim looks for each Oops in the direction of the trend',
-                        lines=('Lim adds when to look: a bullish Oops in an uptrend and a bearish Oops in a downtrend (p. 231).', 'In Figure 7.37, Dynegy falls steeply [1], then drifts sideways, so the bearish Oops [2] comes after a fall.', 'Lim says the morning and evening star, piercing line and dark cloud cover candlesticks can help find setups; Chapter 7 does not define them.'),
+                        lines=('In Figure 7.37, Dynegy falls steeply [1], then drifts sideways, so the bearish Oops [2] comes after a fall.', 'Lim says the morning and evening star, piercing line and dark cloud cover candlesticks can help find setups; Chapter 7 does not define them.'),
                     ),
                     picture=Figure(
                         origin='Lim (2016), p. 231, Figure 7.37. The marks are ours, added for teaching.',
@@ -3629,13 +3629,13 @@ CHAPTER = Chapter(
                     notes=('Name the pattern and its two parts before any number: an inside day, and the narrowest range of the last n bars.', 'Both parts are already known: the inside bar from Part 3 and the range from Part 1.'),
                     origin='Lim (2016), p. 232, with the inside bar from Part 3 and the range from Part 1.',
                     title='ID/NR looks for the quietest bar, sitting inside the one before',
-                    lines=('The second pattern is the Inside Day Narrow Range pattern, or ID/NR. Lim calls it a volatility breakout pattern and says an ID/NR n pattern is an inside day breakout from the narrowest bar over the last n days (p. 232).', "It joins two ideas we already have. An inside day is a bar whose high and low stay within the previous bar's range, the inside bar of Part 3. Narrow range uses Part 1's range, the high minus the low: the bar must be the narrowest of the last n bars."),
+                    lines=('The second pattern is the Inside Day Narrow Range pattern, or ID/NR. Lim calls it a volatility breakout pattern and says an ID/NR n pattern is an inside day breakout from the narrowest bar over the last n days (p. 232).', "It joins two ideas we already have. An inside day is a bar whose whole range, high and low, stays within the previous bar's range: the inside bar of Part 3, in the whole-range meaning this deck uses. Narrow range uses Part 1's range, the high minus the low: the bar must be the narrowest of the last n bars."),
                 ),
                 Content(
                     notes=('Lim gives the name but no reason; say plainly that the plain reading is ours.', 'Neutrality is in the book: no bearish or bullish sentiment.'),
                     origin='Lim (2016), p. 232.',
                     title='Why Lim calls ID/NR a volatility breakout',
-                    lines=('Lim names ID/NR a volatility breakout pattern but gives no further reason. Our plain reading is that the narrowest bar in a while is the quietest one, so the breakout comes out of low volatility.', 'He does say the pattern has no bearish or bullish sentiment associated with it: the breakout can occur in either direction (p. 232).'),
+                    lines=('Lim names ID/NR a volatility breakout pattern but gives no further reason. Our reading, not Lim\'s and not examinable: the narrowest bar in a while is the quietest one, so the breakout comes out of low volatility.', 'He does say the pattern has no bearish or bullish sentiment associated with it: the breakout can occur in either direction (p. 232).'),
                     accent='ID/NR tells us when to watch, not which way price will go.',
                 ),
                 Content(
@@ -3748,7 +3748,7 @@ CHAPTER = Chapter(
                     origin='Lim (2016), p. 232, Figure 7.39. The crop and marks are ours, added for teaching.',
                     left=Content(
                         title='Figure 7.39 shows an Inside Month/NR5 breakout',
-                        lines=("Figure 7.39 is Lim's Inside Month/NR5 on Dynegy's monthly chart (p. 232). February [1] sits inside January and is the narrowest of the five months from October to February [2].", "Its dotted lines sit at February's own high and low, while Figure 7.38 drew them from the bar before the inside bar; Lim's text does not say which to use. Here March [3] rises above both, so the breakout is upward either way."),
+                        lines=("Figure 7.39 is Lim's Inside Month/NR5 on Dynegy's monthly chart (p. 232). February [1] sits inside January and is the narrowest of the five months from October to February [2].", "We take the triggers from the inside bar itself, as Figure 7.39 does: February's high and low. Figure 7.38 used the bar before it; Lim does not say which. March [3] rises above both, so the breakout is upward either way."),
                     ),
                     picture=Figure(
                         origin='Lim (2016), p. 232, Figure 7.39. The crop and marks are ours, added for teaching.',
@@ -3796,7 +3796,7 @@ CHAPTER = Chapter(
                             reason="Lim places the sell-stop at the previous bar's high; the new bar's high is the stoploss (p. 231).",
                         ),
                         Question(
-                            stem='Why is ID/NR7 a volatility breakout pattern, like the inside bar [1] in Figure 7.38?',
+                            stem="In Lim's definition, what makes ID/NR7 a volatility breakout pattern?",
                             options=('It always breaks upward', 'It is an inside day breaking out from the narrowest bar of the last seven', 'It counts volume', 'It needs seven up closes'),
                             answer='B',
                             reason='Lim calls ID/NR a volatility breakout pattern and defines ID/NR n as an inside day breakout from the narrowest bar over the last n days (p. 232). He gives no other reason. Reading the narrowest bar as the quietest is ours, not his.',
@@ -3831,7 +3831,7 @@ CHAPTER = Chapter(
             origin='Lim (2016), pp. 226 and 233, Figure 7.28. The crop and mark are ours, added for teaching.',
             left=Content(
                 title='Review question 1 starts with the exhaustion bar',
-                lines=("Review question 1 asks how exhaustion bars and pin bars differ (p. 233). In an uptrend an exhaustion bar opens above the previous bar's high and should close at or near its low, and no gap follows it.", "In a downtrend the reverse is true, as in Figure 7.28's bullish exhaustion bar [1] at a bottom (p. 226).", "Its Gap label is the opening gap from the previous bar; the rule is that no gap follows the exhaustion bar."),
+                lines=("Review question 1 asks how exhaustion bars and pin bars differ (p. 233). In an uptrend an exhaustion bar opens above the previous bar's high and should close at or near its low, and no gap, meaning no window, follows it.", "In a downtrend the reverse is true, as in Figure 7.28's bullish exhaustion bar [1] at a bottom (p. 226).", "Figure 7.28 shows a gap before the marked bar, but the rule is about the next bar: no window follows the exhaustion bar."),
                 accent='Lim regards it as a reversal bar (p. 226).',
             ),
             picture=Figure(
@@ -3873,7 +3873,7 @@ CHAPTER = Chapter(
             origin='Lim (2016), pp. 232 to 233, Figure 7.38. The crop and mark are ours, added for teaching.',
             left=Content(
                 title='Review question 2: why ID/NR7 is a volatility breakout',
-                lines=('Review question 2 asks why the ID/NR7 pattern is called a volatility breakout pattern (p. 233). Lim names it one and defines ID/NR n as an inside day breakout from the narrowest bar over the last n days; for ID/NR7, the narrowest of the last seven (p. 232).', 'He gives no further reason. Our plain reading: the narrowest bar is the quietest in a while, like the inside bar the book\'s arrow names in Figure 7.38 [1], so the breakout comes out of low volatility.'),
+                lines=('Review question 2 asks why the ID/NR7 pattern is called a volatility breakout pattern (p. 233). Lim names it one and defines ID/NR n as an inside day breakout from the narrowest bar over the last n days; for ID/NR7, the narrowest of the last seven (p. 232).', 'He gives no further reason. Our reading, not Lim\'s and not examinable: the narrowest bar, like the inside bar the book\'s arrow names in Figure 7.38 [1], is the quietest in a while, so the breakout comes out of low volatility.'),
             ),
             picture=Figure(
                 origin='Lim (2016), p. 232, Figure 7.38. The crop and mark are ours, added for teaching.',
@@ -3929,11 +3929,11 @@ CHAPTER = Chapter(
             accent='Volume adds weight to a reading; it does not guarantee the result.',
         ),
         WidePair(
-            notes=('Gold 1 is pattern 1, red 2 is pattern 2; read the book\'s captions for each.', 'For the trading half, say honestly that Chapter 7 gives reliability conditions, not entry and exit rules.'),
+            notes=('Gold 1 is triple form 1, red 2 is triple form 2; read the book\'s captions for each.', 'For the trading half, say honestly that Chapter 7 gives reliability conditions, not entry and exit rules.'),
             origin='Lim (2016), pp. 213 to 214 and 233, Figure 7.6. The crop and marks are ours, added for teaching.',
             left=Content(
                 title='Review question 6: two triple-bar bearish patterns',
-                lines=('Review question 6 asks for two triple-bar bearish patterns and how to trade them (p. 233). Figure 7.6 draws them (p. 213).', 'In pattern 1 [1], the first bar closes near its high, a large middle bar closes near its low, and the third bar closes at or near its low. In pattern 2 [2], a narrow range middle bar closes within its range on low volume, and the third bar closes at or near its low.', 'On trading, Lim gives only what makes the pattern more reliable: larger gaps, wider first and third bars, and a last bar closing near its low on high volume (pp. 213 to 214). He gives no entry or exit rule.'),
+                lines=('Review question 6 asks for two triple-bar bearish patterns and how to trade them (p. 233). Figure 7.6 draws them.', 'In triple form 1 [1], a large middle bar closes near its low. In triple form 2 [2], a narrow middle bar closes within the first bar\'s range (our reading of "its range") on low volume. In both, the first bar closes near its high and the third at or near its low.', 'Lim gives no entry or exit rule, only what makes a pattern more reliable: larger gaps, wider first and third bars, a last bar closing near its low on high volume (pp. 213 to 214). That answers "how to trade".'),
             ),
             picture=Figure(
                 origin='Lim (2016), p. 213, Figure 7.6. The crop and marks are ours, added for teaching.',

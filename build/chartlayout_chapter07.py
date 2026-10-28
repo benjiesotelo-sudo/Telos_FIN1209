@@ -210,7 +210,7 @@ def _chunks(sentences):
 # Look-alike patterns get their own slides (checklist 26); a two-case
 # comparison chart takes each page's title from the case it shows.
 PAGE_TITLES = {
-    'r3a-a': ('An exhaustion bar ends a long run',
+    'r3a-a': ('An exhaustion bar opens high and closes near its low',
               'A pin bar pierces support and then snaps back inside'),
 }
 CASE_TITLES = ('r3b-le', 'r3b-li')
@@ -1071,6 +1071,21 @@ def layout(key, page=0):
         if spec.get('one_page') and count > 4:
             left, right = .95, W - 1.4
         xs = [left + (right-left) * i/max(1,count-1) for i in range(count)] if count>1 else [W/2]
+        run = spec.get('run', 0) if cell_index == 0 else 0
+        if run and count > run + 1:
+            # The unlabelled run before a pattern sits close and the pattern's
+            # own bars keep the room their price labels need.
+            left, right = .95, W - 1.4
+            # A level's caption keeps its lane at the left, clear of the run.
+            captions = [len(t.label) for t in cell.panes[0].strokes if t.label]
+            if captions:
+                left = .12 + .105 * max(captions) + .3
+            trend, step = .7, 2.1
+            # A pattern of three or more bars needs 2.8 inches between bars for its own labels.
+            left = max(.95, min(left, right - (run - 1) * trend - step - (count - run - 1) * 2.8))
+            gap = (right - left - (run - 1) * trend - step) / (count - run - 1)
+            xs = [left + i * trend for i in range(run)]
+            xs += [xs[-1] + step + j * gap for j in range(count - run)]
         for pane_index, pane in enumerate(cell.panes):
             if pane.bars or pane.line:
                 values = [v for b in pane.bars for v in (b.open,b.high,b.low,b.close)] + list(pane.line)
@@ -1206,12 +1221,16 @@ def layout(key, page=0):
                         line(axis,[p[0] for p in points],[p[1] for p in points],color=ck.MUTED,lw=1,ls='--')
                 if pane.bars:
                     for index,x in zip(range(start,end),xs):
+                        # A run before the pattern carries no caption; the pattern's own bars count from 1.
+                        run_bars=spec.get('run',0) if cell_index==0 else 0
+                        if index < run_bars:
+                            continue
                         semantic=semantic_labels(pane,index)
-                        caption=f'Bar {index+1}' + (': '+'; '.join(semantic) if semantic else '')
+                        caption=f'Bar {index+1-run_bars}' + (': '+'; '.join(semantic) if semantic else '')
                         caption_y=.39
                         if spec.get('stack_captions') and semantic:
                             # Six bars to a page leave no room for a one-line caption.
-                            caption, caption_y = f'Bar {index+1}\n'+'; '.join(semantic), .5
+                            caption, caption_y = f'Bar {index+1-run_bars}\n'+'; '.join(semantic), .5
                         artist=text(x,caption_y,caption,color=ck.MUTED)
                         fig.canvas.draw()
                         box=artist.get_window_extent(fig.canvas.get_renderer())

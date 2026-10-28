@@ -256,26 +256,31 @@ def paint_prior_bar(c, *, up):
 
 
 def paint_gap(c):
-    """Slide 64: a PHP 0.40 gap and a PHP 1.00 gap, to the same scale."""
+    """A PHP 0.40 gap and a PHP 1.00 gap, to the same scale, each closed back below by the last bar."""
     first = (49.2, 50.0, 48.8, 49.8)
     smaller = (50.6, 51.2, 50.4, 51.0)
     larger = (51.4, 52.0, 51.0, 51.8)
-    left, right = _panels(c, 48.7, 52.1, 2, y0=.95, y1=3.1)
+    last = ((51.0, 51.1, 49.4, 49.6), (51.7, 51.9, 49.4, 49.6))
+    left, right = (Panel(c, .25, 5.2, .95, 3.1, 48.7, 52.1, 3), Panel(c, 5.95, 10.9, .95, 3.1, 48.7, 52.1, 3))
     for index, (panel, middle, gap_to, title) in enumerate((
             (left, smaller, 50.4, 'A gap of PHP 0.40'), (right, larger, 51.0, 'A gap of PHP 1.00'))):
         panel.bar(0, *first)
         panel.bar(1, *middle)
+        panel.bar(2, *last[index], tag=index)
         _title(c, (panel.x0 + panel.x1) / 2, 3.5, title)
         c.text(panel.x(0) - .26, panel.y(50.0), 'H 50.00', ha='right')
         c.text(panel.x(1) + .26, panel.y(gap_to), f'L {gap_to:.2f}', ha='left')
+        c.text(panel.x(2) + .26, panel.y(last[index][3]), f'C {last[index][3]:.2f}', ha='left')
         c.text(panel.x(0), .55, 'first bar', color=MUTED)
         c.text(panel.x(1), .55, 'middle bar', color=MUTED)
-        c.stroke((panel.x(0), panel.x(1)), (panel.y(50.0), panel.y(50.0)), color=MUTED, lw=1.4,
+        c.text(panel.x(2), .55, 'last bar', color=MUTED)
+        c.stroke((panel.x(0), panel.x(2)), (panel.y(50.0), panel.y(50.0)), color=MUTED, lw=1.4,
                  dashed=True, ink=False)
         c.stroke((panel.x(0), panel.x(1)), (panel.y(gap_to), panel.y(gap_to)), color=MUTED, lw=1.4,
                  dashed=True, ink=False)
-        mid = panel.x(.5)
-        c.box((0, index, 'group'), mid - .32, panel.y(50.0), mid + .32, panel.y(gap_to))
+        mid = (panel.x(0) + panel.x(1)) / 2
+        c.box((0, index * 2, 'group'), mid - .32, panel.y(50.0), mid + .32, panel.y(gap_to))
+        c.point((0, index * 2 + 1, 'close'), *c.ticks[index]['close'])
 
 
 # ------------------------------------------------- head and shoulders in a trend

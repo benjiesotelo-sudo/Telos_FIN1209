@@ -210,7 +210,7 @@ def _chunks(sentences):
 # Look-alike patterns get their own slides (checklist 26); a two-case
 # comparison chart takes each page's title from the case it shows.
 PAGE_TITLES = {
-    'r3a-a': ('An exhaustion bar opens above the prior high and closes near its low',
+    'r3a-a': ('An exhaustion bar opens high and closes near its low',
               'A pin bar pierces support and then snaps back inside'),
 }
 CASE_TITLES = ('r3b-le', 'r3b-li')
@@ -1076,7 +1076,13 @@ def layout(key, page=0):
             # The unlabelled run before a pattern sits close and the pattern's
             # own bars keep the room their price labels need.
             left, right = .95, W - 1.4
+            # A level's caption keeps its lane at the left, clear of the run.
+            captions = [len(t.label) for t in cell.panes[0].strokes if t.label]
+            if captions:
+                left = .12 + .105 * max(captions) + .3
             trend, step = .7, 2.1
+            # A pattern of three or more bars needs 2.8 inches between bars for its own labels.
+            left = max(.95, min(left, right - (run - 1) * trend - step - (count - run - 1) * 2.8))
             gap = (right - left - (run - 1) * trend - step) / (count - run - 1)
             xs = [left + i * trend for i in range(run)]
             xs += [xs[-1] + step + j * gap for j in range(count - run)]

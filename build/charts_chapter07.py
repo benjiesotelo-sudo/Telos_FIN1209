@@ -72,7 +72,7 @@ DATA = {'r1-j': {'items': (ck.Cell(panes=(ck.Pane(bars=(ck.Bar(open=50, high=52.
 'old_size': (8.222999781277341, 3.84),
 'owner': 'r3a',
 'letter': 'M'},
-'r3a-n': {'items': (ck.Cell(name='Bearish island reversal', note='gap up, isolated bars, gap down', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=50.0, low=47.5, close=49.5), ck.Bar(open=50.8, high=52.0, low=50.6, close=51.5), ck.Bar(open=51.4, high=52.2, low=50.9, close=51.1), ck.Bar(open=49.4, high=50.0, low=48.2, close=48.8)), strokes=(ck.Stroke(points=((0, 50.0), (3, 50.0)), tone='quiet', dashed=True, label='prior high 50.00', dx=-24, dy=-10),), notes=(ck.Note(x=1, label='gap-up O 50.80', dx=-85, dy=15, y=50.8, notice=True), ck.Note(x=2, label='island', dx=18, dy=-8, y=51.5, notice=True), ck.Note(x=3, label='gap-down O 49.40', dx=-82, dy=15, y=49.4, notice=True)), height=1.7), ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), tags=((0, '2.3m'), (1, '0.7m'), (2, '0.6m'), (3, '2.1m')), height=0.55))),),
+'r3a-n': {'items': (ck.Cell(name='Bearish island reversal', note='gap up, isolated bars, gap down', panes=(ck.Pane(bars=(ck.Bar(open=48.0, high=50.0, low=47.5, close=49.5), ck.Bar(open=50.8, high=52.0, low=50.6, close=51.5), ck.Bar(open=51.4, high=52.2, low=50.9, close=51.1), ck.Bar(open=49.4, high=50.0, low=48.2, close=48.8)), strokes=(ck.Stroke(points=((0, 50.0), (3, 50.0)), tone='quiet', dashed=True, label='prior high 50.00', dx=-24, dy=-10),), notes=(ck.Note(x=1, label='gap up (window)', dx=-85, dy=15, y=50.3, notice=True), ck.Note(x=2, label='island', dx=18, dy=-8, y=51.5, notice=True), ck.Note(x=3, label='gap down (window)', dx=-82, dy=15, y=50.45, notice=True)), height=1.7), ck.Pane(columns=(2.3, 0.7, 0.6, 2.1), tags=((0, '2.3m'), (1, '0.7m'), (2, '0.6m'), (3, '2.1m')), height=0.55))),),
 'special': '',
 'old_marks': (dk.Mark(number=1, kind='circle', x0=0.3, y0=0.2, x1=0.39, y1=0.3, color='gold', at=(0.25, 0.15)), dk.Mark(number=2, kind='box', x0=0.38, y0=0.22, x1=0.76, y1=0.52, color='red', at=(0.78, 0.54)), dk.Mark(number=3, kind='circle', x0=0.7, y0=0.2, x1=0.8, y1=0.3, color='blue', at=(0.86, 0.15))),
 'old_size': (8.222999781277341, 3.84),
@@ -178,7 +178,7 @@ DATA['r3a-k']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'ope
 DATA['r3a-a']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'open')}, {'number': 4, 'color': 'purple', 'target': (1, 1, 'level:40')}, {'number': 5, 'color': 'gold', 'target': (1, 1, 'volume')}, {'number': 6, 'color': 'red', 'target': (1, 1, 'close')}]
 DATA['r3a-l']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'close')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'close')}]
 DATA['r3a-m']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'volume')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'volume')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'volume')}]
-DATA['r3a-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'open')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'open')}]
+DATA['r3a-n']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 1, 'gap')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 3, 'gap')}]
 DATA['r3b-la'].update(spans={(0, 2, 'span')})
 DATA['r3b-la']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 2, 'span')}, {'number': 2, 'color': 'red', 'target': (0, 2, 'high')}, {'number': 3, 'color': 'blue', 'target': (0, 2, 'close')}]
 DATA['r3b-lb']["targets"] = [{'number': 1, 'color': 'gold', 'target': (0, 0, 'range')}, {'number': 2, 'color': 'red', 'target': (0, 1, 'range')}, {'number': 3, 'color': 'blue', 'target': (0, 0, 'high')}]
@@ -542,6 +542,10 @@ _after_trend('r4-n', (ck.Bar(open=56.0, high=56.4, low=54.6, close=54.8),
 _after_trend('r4-v', (ck.Bar(open=43.8, high=45.0, low=43.6, close=44.8),
                       ck.Bar(open=44.9, high=46.8, low=44.7, close=46.6),
                       ck.Bar(open=46.7, high=48.6, low=46.5, close=48.4)))
+_after_trend('p2-tr', (ck.Bar(open=45.2, high=46.2, low=45.0, close=46.0),
+                       ck.Bar(open=46.0, high=47.4, low=45.8, close=47.2),
+                       ck.Bar(open=47.3, high=48.8, low=47.1, close=48.6)),
+             volumes=(1.8, 2.0, 2.2))
 
 from chartlayout_chapter07 import artwork
 CHARTS = artwork(DATA)

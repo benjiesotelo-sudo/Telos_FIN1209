@@ -735,14 +735,14 @@ CHAPTER = Chapter(
                 *chart_slides('p2-tc', 'Triple form 3: a gap up, then a close back below it', (
                     "After an uptrend, Lim's label: \"2nd bar gaps up and closes above the gap. The 3rd bar closes below the gap\" (Figure 7.6, p. 213).",
                     "Bar 1 tops out at PHP 50.00 and bar 2's low is PHP 50.40, leaving a PHP 0.40 gap [1]; bar 2 closes above it at PHP 51.20 [2]; bar 3 closes at PHP 49.60, below the gap [3].",
-                    "Our reading, not Lim's: built from two-bar form 3.",
+                    "Our reading, not Lim's: built from two-bar form 2.",
                 ), figure=book_crop('7.6', (0.62, 0.05, 0.84, 0.60), 'Figure 7.6, form 3: a gap up, then a close below it.'),
                    notes=('The gap that held the buyers up is given back by bar 3.',),
                    origin='Lim (2016), p. 213, Figure 7.6. The prices are invented for teaching.'),
                 *chart_slides('p2-td', 'Triple form 4: a single island reversal bar', (
                     "After an uptrend, Lim's label: \"2nd bar gaps up on low volume. The 3rd bar gaps down and closes at or near its low. Also referred to as a single island reversal bar\" (Figure 7.7, p. 214).",
                     'Bar 2 gaps up PHP 0.40 [1] on 0.7 million shares [2]; bar 3 gaps down PHP 0.40 below it [3] and closes at PHP 48.60 [4].',
-                    "Our reading, not Lim's: new, not built from a two-bar form.",
+                    "Our reading, not Lim's: built from two-bar form 3.",
                 ), figure=book_crop('7.7', (0.10, 0.04, 0.32, 0.62), 'Figure 7.7, form 4: a single island reversal bar.'),
                    notes=('Two gaps leave bar 2 alone on an island. Part 3 reads island reversals on real charts.',),
                    origin='Lim (2016), p. 214, Figure 7.7. Prices and volume are invented for teaching.'),
@@ -803,14 +803,14 @@ CHAPTER = Chapter(
                 *chart_slides('p2-ti', 'Bullish triple form 3: a gap down, then a close back above it', (
                     "In a downtrend, Lim's label: \"2nd bar gaps down and closes below the gap. The 3rd bar closes above the gap\" (Figure 7.8, p. 214).",
                     "Bar 1's low is PHP 40.00 and bar 2's high only PHP 39.60, leaving a PHP 0.40 gap [1]; bar 2 closes below it at PHP 38.80 [2]; bar 3 closes at PHP 40.40, above the gap [3].",
-                    "Our reading, not Lim's: built from bullish two-bar form 3.",
+                    "Our reading, not Lim's: built from bullish two-bar form 2.",
                 ), figure=book_crop('7.8', (0.70, 0.36, 0.92, 0.94), 'Figure 7.8, form 3: a gap down, then a close above it.'),
                    notes=('Mirror of bearish triple form 3.',),
                    origin='Lim (2016), p. 214, Figure 7.8. The prices are invented for teaching.'),
                 *chart_slides('p2-tj', 'Bullish triple form 4: a single island reversal bar', (
                     "In a downtrend, Lim's label: \"2nd bar gaps down on low volume. The 3rd bar gaps up and closes at or near its high. Also referred to as a single island reversal bar\" (Figure 7.9, p. 215).",
                     'Bar 2 gaps down PHP 0.40 [1] on 0.7 million shares [2]; bar 3 gaps up PHP 0.40 above it [3] and closes at PHP 41.40 [4].',
-                    "Our reading, not Lim's: new, not built from a two-bar form.",
+                    "Our reading, not Lim's: built from bullish two-bar form 3.",
                 ), figure=book_crop('7.9', (0.27, 0.38, 0.43, 0.90), 'Figure 7.9, form 4: a single island reversal bar.'),
                    notes=('Mirror of bearish triple form 4.',),
                    origin='Lim (2016), p. 215, Figure 7.9. Prices and volume are invented for teaching.'),

@@ -163,7 +163,7 @@ def paint_closes(c, *, variant):
     'idea': one close near the top and one near the bottom. 'ends': a close
     at the lowest low, one in the middle and one at the highest high."""
     import deckkit as dk
-    gold, red = '#' + str(dk.MARK_COLORS['gold']), '#' + str(dk.MARK_COLORS['red'])
+    gold = red = '#' + ck.GREEN_DEEP.lstrip('#')   # a colour no mark uses, so no mark colour points at a level
     hi, lo = 56.0, 50.0
     if variant == 'idea':
         bars = ((53.0, 55.6, 52.8, 55.4), (52.4, 52.6, 50.0, 50.6))
@@ -192,7 +192,7 @@ def paint_closes(c, *, variant):
 def paint_range_percent(c):
     """The fourteen bars of the worked example, and every close as one dot on a 0 to 100 scale."""
     import deckkit as dk
-    gold, red = '#' + str(dk.MARK_COLORS['gold']), '#' + str(dk.MARK_COLORS['red'])
+    gold = red = '#' + ck.GREEN_DEEP.lstrip('#')
     hi, lo = 56.0, 50.0
     bars = Panel(c, 1.0, 5.2, .85, 3.25, 49.0, 57.0, len(LOOKBACK))
     dots = Panel(c, 6.4, 9.3, .85, 3.25, 49.0, 57.0, len(LOOKBACK))
@@ -202,7 +202,7 @@ def paint_range_percent(c):
     c.text(1.0, bars.y(hi) + .17, 'Hn 56.00', ha='left', va='bottom', color=GREEN_DEEP)
     c.text(1.0, bars.y(lo) - .17, 'Ln 50.00', ha='left', va='top', color=GREEN_DEEP)
     for pct, price in ((100, hi), (50, 53.0), (0, lo)):
-        c.text(10.2, bars.y(price), f'{pct}%', ha='left', color=ck.GOLD if pct == 100 else INK)
+        c.text(10.2, bars.y(price), f'{pct}%', ha='left', color=INK)
     ys = []
     for i, row in enumerate(LOOKBACK):
         y = dots.y(row[3])
@@ -220,6 +220,11 @@ def paint_zones(c):
     """One bounded oscillator of ours with its overbought and oversold zones and its equilibrium."""
     readings = (46, 52, 58, 66, 74, 78, 72, 62, 52, 44, 34, 26, 29, 38)
     panel = Panel(c, 1.0, 8.6, .75, 3.3, 0, 100, len(readings))
+    from matplotlib.patches import Rectangle
+    left, right = panel.x(0) - .2, panel.x(len(readings) - 1) + .2
+    for lo_, hi_, tint in ((70, 100, '#FDF0D2'), (0, 30, '#E3EEE6')):
+        c.fig.add_artist(Rectangle((left, panel.y(lo_)), right - left, panel.y(hi_) - panel.y(lo_),
+                                   transform=c.fig.dpi_scale_trans, facecolor=tint, edgecolor='none', zorder=0))
     for level, words, color in ((70, 'overbought: 70 and above', GREEN_DEEP), (50, 'equilibrium: 50', MUTED),
                                 (30, 'oversold: 30 and below', GREEN_DEEP)):
         y = panel.y(level)

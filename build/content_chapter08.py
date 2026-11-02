@@ -34,17 +34,17 @@ FIGURE_8_1.origin = 'Lim (2016), p. 238, Figure 8.1, courtesy of Stockcharts.com
 
 # Reference slides: each oscillator named on the list is shown on one of Lim's own charts.
 # Figure 8.17 shows the StochRSI, the slow stochastic and the RSI together, top to bottom.
-FIGURE_8_17 = book_crop('8.17', (0.0, 0.49, 1.0, 1.0),
+FIGURE_8_17 = book_crop('8.17', (0.0, 0.30, 1.0, 1.0),
     "Figure 8.17, cropped to its three oscillator windows. From the top: the StochRSI, the slow stochastic and the RSI, each under the Dow Jones price chart.",
     marks=(
-        Mark(number=1, kind='box', x0=0.005, y0=0.834, x1=0.91, y1=0.995, color='gold', at=(0.955, 0.915), size=0.3),
-        Mark(number=2, kind='box', x0=0.005, y0=0.686, x1=0.91, y1=0.832, color='red', at=(0.955, 0.76), size=0.3),
-        Mark(number=3, kind='box', x0=0.005, y0=0.51, x1=0.91, y1=0.683, color='blue', at=(0.955, 0.6), size=0.3),
+        Mark(number=1, kind='box', x0=0.005, y0=0.834, x1=0.91, y1=0.995, color='gold', at=(0.957, 0.955), size=0.26),
+        Mark(number=2, kind='box', x0=0.005, y0=0.672, x1=0.91, y1=0.83, color='red', at=(0.957, 0.715), size=0.26),
+        Mark(number=3, kind='box', x0=0.005, y0=0.508, x1=0.91, y1=0.668, color='blue', at=(0.957, 0.62), size=0.26),
     ))
 FIGURE_8_17.origin = 'Lim (2016), p. 254, Figure 8.17, courtesy of Stockcharts.com. The marks are ours, added for teaching.'
 
 # Figure 8.8 shows the MACD and the ROC under the Apple price chart.
-FIGURE_8_8 = book_crop('8.8', (0.0, 0.49, 1.0, 1.0),
+FIGURE_8_8 = book_crop('8.8', (0.0, 0.30, 1.0, 1.0),
     "Figure 8.8, cropped to its three oscillator windows. From the top: the RSI, the MACD and the ROC, each under the Apple price chart.",
     marks=(
         Mark(number=1, kind='box', x0=0.005, y0=0.662, x1=0.935, y1=0.812, color='gold', at=(0.965, 0.74), size=0.3),
@@ -54,9 +54,11 @@ FIGURE_8_8.origin = 'Lim (2016), p. 245, Figure 8.8, courtesy of Stockcharts.com
 
 # Figure 8.7 again, its lower half: the RSI window and the CCI window under it.
 FIGURE_8_7_CCI = book_crop('8.7', (0.0, 0.5, 1.0, 1.0),
-    "Figure 8.7, cropped to its lower half: the RSI window and, under it, the CCI window with its zero line.",
+    "Figure 8.7, cropped to its lower half: the RSI window and, under it, the CCI window with its plus 100 and minus 100 lines and its zero line.",
     marks=(
-        Mark(number=1, kind='box', x0=0.005, y0=0.822, x1=0.93, y1=0.992, color='gold', at=(0.965, 0.89), size=0.3),
+        Mark(number=1, kind='box', x0=0.005, y0=0.814, x1=0.93, y1=0.992, color='gold', at=(0.035, 0.795), size=0.28),
+        Mark(number=2, kind='line', x0=0.60, y0=0.892, x1=0.80, y1=0.892, color='red', at=(0.835, 0.862), size=0.28),
+        Mark(number=3, kind='line', x0=0.60, y0=0.9375, x1=0.80, y1=0.9375, color='blue', at=(0.835, 0.968), size=0.28),
     ))
 FIGURE_8_7_CCI.origin = 'Lim (2016), p. 244, Figure 8.7, courtesy of Stockcharts.com. The mark is ours, added for teaching.'
 
@@ -92,7 +94,7 @@ PART_A = Section(
         # (a) The opener: what we are talking about, and why, before any number, with our chart of the idea.
         Content(
             notes=('Open by saying what the chapter is: the place where the oscillators used since Chapter 4 finally get taught.', 'Then show one picture of the claim: price alone looks strong, the indicator under it does not.'),
-            origin='Lim (2016), p. 235; Chapter 6, "What the book uses here and teaches later, or never". The chart is ours.',
+            origin='Lim (2016), p. 235; Chapter 6. The chart on the next slide is ours.',
             title='Indicators show strength and weakness that price alone hides',
             lines=("Up to now we have mostly read price itself: bars, patterns and trends. The book has also kept using indicators such as the MACD, the RSI and the stochastic without explaining them, and Chapter 6 told you Chapter 8 is where oscillators get taught. This is that chapter.",
                    "Why bother? Lim says oscillators and indicators can reveal underlying strengths and weaknesses of price action that would not have been obvious otherwise, which helps us forecast potential reversals and breakouts (p. 235).",
@@ -142,14 +144,14 @@ PART_A = Section(
             origin='Lim (2016), pp. 251, 254, 259 and 262, Figure 8.17. The marks are ours, added for teaching.',
             left=Content(
                 title='The oscillators you will meet before we build them (1 of 3)',
-                lines=("Bounded, 0 to 100 percent: the relative strength index or RSI [1] tracks a stock's strength through its average gain and loss over the last n periods, n being the lookback (p. 262). The stochastic [2] is the position of the latest close in the recent price range (p. 259). The StochRSI [3] is the stochastic calculation applied to RSI values (p. 251).",),
+                lines=("Bounded, 0 to 100 percent: the relative strength index or RSI [1] tracks a stock's strength through its average gain and loss over the last n periods, n being the lookback (p. 262). The stochastic [2] is the position of the latest close in the recent price range (p. 259). The StochRSI [3] is the stochastic calculation applied to RSI values (p. 251). Lim's chart prints the StochRSI [3] from 0 to 1 instead of 0 to 100: 0.8 there is 80 percent. That reading is ours.",),
             ),
             picture=FIGURE_8_17,
             text_w=4.9,
         ),
         Content(
             notes=('Overbought, oversold and equilibrium, drawn on one oscillator of ours.',),
-            origin='Lim (2016), pp. 236, 241 and 244. The chart is ours.',
+            origin='Lim (2016), pp. 236, 241 and 244. The chart on the next slide is ours.',
             title='Overbought, oversold and equilibrium on one oscillator',
             lines=("Overbought and oversold are the high and low ends of an oscillator's readings (pp. 236, 241). Lim calls them overextensions. That is not Chapter 7's overextended bar: here the word describes an oscillator's reading. Equilibrium is the central value it swings around (p. 244).",
                    ),
@@ -175,7 +177,7 @@ PART_A = Section(
             left=Content(
                 title='The oscillators you will meet before we build them (2 of 3)',
                 lines=("Unbounded, no top or bottom: the moving average convergence divergence or MACD [1] is the 12-period exponential moving average (EMA) minus the 26-period EMA (p. 257). The rate of change or ROC [2] is the percent change in price over n periods, and momentum or MOM is the price difference over n periods (p. 256).",
-                       "Lim's chart draws the MACD and the ROC; the MOM is drawn later."),
+                       "Lim's chart draws the MACD and the ROC; the MOM is drawn later. The top window is the RSI; the lines and arrows Lim draws on it belong to a later topic."),
             ),
             picture=FIGURE_8_8,
             text_w=4.9,
@@ -185,7 +187,7 @@ PART_A = Section(
             origin='Lim (2016), pp. 242 and 244, Figure 8.7. The mark is ours, added for teaching.',
             left=Content(
                 title='The oscillators you will meet before we build them (3 of 3)',
-                lines=("The CCI, the commodity channel index [1], gets an overbought level of plus 100 and an oversold level of minus 100 (pp. 242, 244). This chapter gives no calculation for it.",
+                lines=("The CCI, the commodity channel index [1], gets an overbought level of plus 100 and an oversold level of minus 100 (pp. 242, 244). This chapter gives no calculation for it. On Lim's chart the plus 100 level is the solid line [2] and the minus 100 level the solid line [3]. The zero line crossovers marked there come later.",
                        "Part A only reads these oscillators on Lim's charts; Part B builds them. Where you meet one before Part B builds it, the slide says what you need and no more."),
             ),
             picture=FIGURE_8_7_CCI,
@@ -194,7 +196,7 @@ PART_A = Section(
         # The idea named before the numbers: raw %K, and our chart of two closes in one range.
         Content(
             notes=('Name the idea first: where does the latest close sit in the recent range? Then the chart.',),
-            origin='Lim (2016), p. 259. The chart is ours.',
+            origin='Lim (2016), p. 259. The chart on the next slide is ours.',
             title='The stochastic asks where the close sits in the recent range',
             lines=("The stochastic is one of the oscillators from our list. Now we build it. It answers one question: is the latest close near the top or near the bottom of the recent range?",
                    "Lim describes it as the position of the latest close as a percentage of the price range over a chosen number of periods, measured from the lowest low. The result is called the raw %K (p. 259).",
@@ -205,7 +207,7 @@ PART_A = Section(
             notes=('The same range, two different closes.',),
             origin='Lim (2016), p. 259. The chart is ours.',
             title='Here is the idea drawn: two closes in one range',
-            lines=("On our chart the first close [1] sits near the top of the range and the second [2] near the bottom.",),
+            lines=("On our chart the first close [1] sits near the top of the range and the second [2] near the bottom. C is the close; Hn and Ln are the highest high and lowest low of the lookback, and the next slide turns them into a formula.",),
         ),
         course_chart('ci',
             notes=('Gold 1 a close near the top of the range, 90 percent. Red 2 a close near the bottom, 10 percent. The range is the same.',),
@@ -218,7 +220,7 @@ PART_A = Section(
         ),
         Content(
             notes=('Chapter 5 taught the bar stochastic inside one bar; the raw %K does the same over n periods.', 'The chart shows the two ends and the middle of the same range.'),
-            origin='Lim (2016), pp. 259 to 260; Chapter 5, "Bar stochastic". The chart is ours.',
+            origin='Lim (2016), pp. 259 to 260; Chapter 5, "Bar stochastic". The chart on the next slide is ours.',
             title='Raw %K compares the close with the n-period high and low',
             lines=("Chapter 5's bar stochastic asked this inside one bar, (C - L) / (H - L). The raw %K asks it over n periods. C is the closing price, Ln the lowest low of the last n periods and Hn the highest high.",
                    "Raw %K = (C - Ln) / (Hn - Ln) x 100 percent (p. 260). The usual lookback is 14 periods (p. 259).",
@@ -242,7 +244,7 @@ PART_A = Section(
         ),
         Content(
             notes=('Why bounded: the top of the fraction can never exceed the bottom. Lim says this of the RSI on p. 262.',),
-            origin='Lim (2016), pp. 236, 260 and 262. The chart is ours.',
+            origin='Lim (2016), pp. 236, 260 and 262. The chart on the next slide is ours.',
             title='Raw %K always stays between 0 and 100 percent',
             lines=("The close can never be below the lowest low or above the highest high of the same lookback. So the top of the fraction is never larger than the bottom, and raw %K stays between 0 and 100 percent (pp. 260, 262).",
                    "That makes it a bounded oscillator, the kind from Part A.",

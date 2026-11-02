@@ -120,7 +120,7 @@ def _mark_problems(number, slide, body) -> list[str]:
             if a[0] < b[2] - .02 and b[0] < a[2] - .02 and a[1] < b[3] - .02 and b[1] < a[3] - .02:
                 problems.append(f"slide {number}: badges {n} and {m} overlap")
         cx, cy = (a[0] + a[2]) / 2, (a[1] + a[3]) / 2
-        for b in marks:
+        for b in (marks if pics else ()):   # a placeholder plate has no picture to tell a frame from a mark
             if b[0] + .03 < cx < b[2] - .03 and b[1] + .03 < cy < b[3] - .03:
                 problems.append(f"slide {number}: badge {n} sits inside another mark")
                 break

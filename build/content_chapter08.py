@@ -52,9 +52,9 @@ FIGURE_8_7.origin = 'Lim (2016), p. 244, Figure 8.7, courtesy of Stockcharts.com
 
 PART_A = Section(
     number=1,
-    title='Indicators and Oscillators',
-    short='8.1 and 8.2 samples',
-    minutes='sample',
+    title='Sample slides for approval',
+    short='Chapter 8 samples',
+    minutes='',
     covers=('indicator', 'overlay indicator', 'window oscillator', 'stochastic', 'crossover'),
     slides=(
         # (a) The opener: what we are talking about, and why, before any number.
@@ -63,8 +63,8 @@ PART_A = Section(
             origin='Lim (2016), p. 235.',
             title='Indicators show strength and weakness that price alone hides',
             lines=("So far we have read price directly: bars, patterns and trends. This chapter adds a second kind of tool, the indicator. Lim says oscillators and indicators can reveal underlying strengths and weaknesses of price action that would not have been obvious otherwise (p. 235).",
-                   "We use them to forecast reversals and breakouts, the same two things the earlier chapters were after (p. 235)."),
-            accent='An indicator is a second view of the same market, calculated from price.',
+                   "We use them to forecast potential reversals and breakouts in the market (p. 235)."),
+            accent='An indicator is a second view that shows what price alone does not.',
         ),
         Content(
             notes=('Two names to learn: overlay indicator and window oscillator. The next slide shows both on one chart.',),
@@ -228,7 +228,7 @@ CHAPTER = Chapter(
     code='FIN1209',
     chapter='Chapter 8',
     title='Window Oscillators and Overlay Indicators',
-    subtitle='Indicators are calculated from price and drawn on the chart. Learn what kinds there are, how to read an oscillator, and why a signal still waits for price to confirm it.',
+    subtitle='Indicators show what price alone does not. Learn what kinds there are, how to read an oscillator, and why a signal still waits for price to confirm it.',
     presenter='Faculty of Economics University',
     objectives=('Understand the significance of oscillators and indicators and how to use them to forecast reversals and breakouts.',
                 'Describe the difference between overlay indicators and window oscillators.',

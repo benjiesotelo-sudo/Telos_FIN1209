@@ -42,7 +42,7 @@ F85 = fig('8.5', (0, 0, 1, 1), 'Figure 8.5: Amazon.com with its MACD under it, a
 F86 = fig('8.6', (0, 0, 1, 1), 'Figure 8.6: silver with a cycle-tuned stochastic under it, its oversold levels, and six up arrows at the bottoms.',
           [M(1, G, 0.195, 0.83, 0.315, 0.935, at=(0.17, 0.87)),
            M(2, R, 0.141, 0.451, 0.181, 0.521, kind='circle', at=(0.115, 0.486)), M(3, B, 0.351, 0.394, 0.391, 0.464, kind='circle', at=(0.325, 0.43)),
-           M(4, P, 0.474, 0.295, 0.514, 0.365, kind='circle', at=(0.448, 0.33)), M(5, G, 0.527, 0.295, 0.567, 0.365, kind='circle', at=(0.595, 0.30)),
+           M(4, P, 0.474, 0.295, 0.514, 0.365, kind='circle', at=(0.448, 0.33)), M(5, G, 0.527, 0.295, 0.567, 0.365, kind='circle', at=(0.547, 0.255)),
            M(6, R, 0.623, 0.40, 0.663, 0.47, kind='circle', at=(0.69, 0.435)), M(7, B, 0.73, 0.394, 0.77, 0.464, kind='circle', at=(0.80, 0.43))], 243)
 F88 = fig('8.8', (0, 0, 1, 1), 'Figure 8.8: Apple with the RSI, MACD and ROC under it and Lim\'s labels for similar crossover points and similar divergences.',
           [M(1, G, 0.11, 0.07, 0.31, 0.23, at=(0.32, 0.06)), M(2, R, 0.60, 0.30, 0.86, 0.355, at=(0.89, 0.33))], 245, 'sc')

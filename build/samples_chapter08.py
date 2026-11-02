@@ -153,7 +153,7 @@ PART_A = Section(
             notes=('Overbought, oversold and equilibrium, drawn on one oscillator of ours.',),
             origin='Lim (2016), pp. 236, 241 and 244. The chart on the next slide is ours.',
             title='Overbought, oversold and equilibrium on one oscillator',
-            lines=("Overbought and oversold are the high and low ends of an oscillator's readings (pp. 236, 241). Lim calls them overextensions. That is not Chapter 7's overextended bar: here the word describes an oscillator's reading. Equilibrium is the central value it swings around (p. 244).",
+            lines=("Overbought and oversold are the high and low ends of an oscillator's readings (pp. 236, 241). Lim says these levels show overextensions in price (p. 241): the stretch is in price, and the oscillator's reading is how we see it. That is not Chapter 7's overextended bar. Equilibrium is the central value it swings around (p. 244).",
                    ),
         ),
         Content(
@@ -347,7 +347,7 @@ PART_A = Section(
             origin='Lim (2016), p. 246.',
             title='Crossing its own average is a signal line crossover',
             lines=("A signal line is a moving average of the oscillator itself, so it lags it. Crossing above it is a buy signal and crossing below it a sell signal (p. 246).",
-                   "Ours averages the last three readings. The oscillator from our equilibrium chart crosses above it [1] between readings 31 and 36 and below it [2] between 66 and 63."),
+                   "Ours averages the last three readings. Our oscillator crosses above it [1] between readings 31 and 36 and below it [2] between 66 and 63."),
         ),
         course_chart('sg',
             notes=('Gold 1 the upward crossing of the signal line, red 2 the downward one. The first comes before the oscillator reaches 50.',),

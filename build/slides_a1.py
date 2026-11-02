@@ -22,7 +22,7 @@ FIG_8_2_LEFT = book_crop('8.2', (0.0, 0.08, 0.56, 1.0),
         Mark(number=3, kind='box', x0=0.377, y0=0.337, x1=0.51, y1=0.485, color='blue', at=(0.535, 0.52), size=0.28),
     ))
 FIG_8_2_LEFT.origin = 'Lim (2016), p. 238, Figure 8.2. The marks are ours, added for teaching.'
-FIG_8_2_RIGHT = book_crop('8.2', (0.5, 0.05, 1.0, 1.0),
+FIG_8_2_RIGHT = book_crop('8.2', (0.53, 0.11, 1.0, 1.0),
     "Figure 8.2, right half: Lim's flow chart with the overlay indicators in four boxes, numerically, geometrically, algorithmically and horizontally based, with his lists and his scale labels. The four header boxes are marked.",
     marks=(
         Mark(number=1, kind='box', x0=0.565, y0=0.245, x1=0.77, y1=0.325, color='gold', at=(0.545, 0.285), size=0.28),
@@ -114,7 +114,7 @@ def slides(S):
             notes=('Lim gives the formula but not the numbers; the numbers are ours.', 'Gold 1 A, red 2 B, blue 3 C, purple 4 the target.'),
             origin='Lim (2016), p. 236. ' + OUR,
             title='A Fibonacci target is the one formula Lim gives',
-            lines=("Lim's example is a Fibonacci upside target from a 161.8 percent expansion of the range AB, measured from C: target = C + (1.618 x AB) (p. 236). He gives only the letters and does not say which points A, B and C are; we take A as the low, B as the high and C as the pullback low. On our chart A is 40.00 [1], B is 50.00 [2], so AB is 10.00, and C is 46.00 [3]. The target is 46.00 + 16.18 = 62.18 [4]. Lim adds that a Fibonacci level, once worked out, may also be classed as horizontally based, which is how Chapter 3 listed it; a moving average may not (p. 236). Here we keep it numerically based, because it comes from a formula.",),
+            lines=("Lim's example is a Fibonacci upside target from a 161.8 percent expansion of the range AB, measured from C: target = C + (1.618 x AB) (p. 236). He gives only the letters and does not say which points A, B and C are; we take A as the low, B as the high and C as the pullback low. On our chart A is 40.00 [1], B is 50.00 [2], so AB is 10.00, and C is 46.00 [3]. The target is 46.00 + 16.18 = 62.18 [4]. Lim adds that a Fibonacci level, once worked out, may also be classed as horizontally based, which is how Chapter 3 listed it. Other numerically based overlays, such as moving averages, may not be classed that way (p. 236). Here we keep it numerically based, because it comes from a formula.",),
         ),
         chart('fib', 'L', 'A Fibonacci target is the one formula Lim gives',
               'Our price from A at 40.00 up to B at 50.00, back to C at 46.00, and a target line at 62.18.',
@@ -273,7 +273,7 @@ def slides(S):
             notes=('Semi bounded: a floor at zero.',),
             origin='Lim (2016), p. 237. ' + OUR,
             title='Some unbounded oscillators stop at zero',
-            lines=("Some unbounded oscillators do have a lower limit of zero: Lim names volume, the average directional index (ADX), Bollinger Bandwidth and the average true range (ATR) from Chapter 3, and calls them semi bounded (p. 237). Lim spells out the ADX only later in this chapter (p. 255); neither the ADX nor Bollinger Bandwidth is built here, we only name them. Our volume-like line dips to 0.3 [1] but cannot go below the zero floor [2].",),
+            lines=("Some unbounded oscillators have a lower limit of zero: Lim names volume, the average directional index (ADX), Bollinger Bandwidth and the average true range (ATR) from Chapter 3, and calls them semi bounded (p. 237). He spells out the ADX later (p. 255); we only name the ADX and Bollinger Bandwidth. Our volume-like line dips to 0.3 [1] but cannot go below the zero floor [2].",),
         ),
         chart('semi', 'U', 'Some unbounded oscillators stop at zero',
               'Our volume-like oscillator with a floor at zero and a low of 0.3.',

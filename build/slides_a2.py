@@ -98,7 +98,7 @@ def slides(S, equilibrium, signal, check6):
     return (
         # ---- row 57
         pair('Eight ways to read an oscillator',
-             ("We now know the kinds of indicator; next is how to read an oscillator. Lim lists eight ways to read a window oscillator for potential buy and sell signals (p. 240): overbought and oversold; equilibrium crossovers; signal line crossovers; divergence; geometric, numerical and horizontal pattern analysis; and oscillator on oscillator. Chapter 6 listed all eight and used three of them; now each one is taught.",
+             ("We now know the kinds of indicator; next is how to read an oscillator. Lim lists eight ways to read a window oscillator for potential buy and sell signals (p. 240): way 1, overbought and oversold; way 2, equilibrium crossovers; way 3, signal line crossovers; way 4, divergence; ways 5, 6 and 7, geometric, numerical and horizontal pattern analysis; and way 8, oscillator on oscillator. Chapter 6 listed all eight and used three of them; now each one is taught.",
               "Lim's Figure 8.4 shows several of the eight on one chart; we mark it as each is taught."),
              F84_PLAIN, ('Chapter 6 listed eight and used three.',), 'Lim (2016), pp. 240 and 242, Figure 8.4. Chapter 6, "Eight ways to read an oscillator; three used here".', w=5.6),
         # ---- rows 58 to 60
@@ -188,13 +188,13 @@ def slides(S, equilibrium, signal, check6):
             notes=('CCI and standard deviation levels.',),
             origin='Lim (2016), p. 242; Chapter 5, standard deviation. The chart on the next slide is ours.',
             title='CCI and standard deviation oscillator levels',
-            lines=("For the CCI Lim gives overbought at plus 100 and oversold at minus 100, and says these are measures of volatility; they coincide well with the Bollinger band's 1 standard deviation values, and plus and minus 200 match its 2 standard deviation bands (p. 242). The standard deviation oscillator uses plus or minus 1 or 2 sigma, the book's other word for standard deviation (p. 242), which Chapter 5 met. Most unbounded oscillators have no widely accepted levels.",),
+            lines=("For the CCI Lim gives overbought at plus 100 and oversold at minus 100, and says these are measures of volatility; they coincide well with the Bollinger band's 1 standard deviation values, and plus and minus 200 match its 2 standard deviation bands (p. 242). The standard deviation oscillator uses plus or minus 1 or 2 sigma, the book's other word for standard deviation (p. 242), which Chapter 5 met. This chapter does not build the Bollinger band; all we take from Lim is that its bands sit 1 and 2 standard deviations out, and that the CCI's plus and minus 100 and 200 line up with them. Most unbounded oscillators have no widely accepted levels.",),
         ),
         Content(
             notes=('Readings beyond the lines.',),
             origin='Lim (2016), p. 242. ' + OUR,
             title='Here are the CCI levels on one oscillator of ours',
-            lines=("The CCI's own calculation is not in this chapter. On our unbounded oscillator a reading of 210 [1] is beyond plus 200 and a reading of -240 [2] is beyond minus 200.",),
+            lines=("The CCI's own calculation is not in this chapter. On our unbounded oscillator a reading of 210 [1] is above plus 100, so overbought, and beyond plus 200, the CCI's match for the 2 standard deviation band; a reading of -240 [2] is oversold and beyond minus 200.",),
         ),
         chart('sd', 'AF', 'Here are the CCI levels on one oscillator of ours',
               'Our unbounded oscillator with lines at plus and minus 100 and plus and minus 200 and readings beyond each.',
@@ -244,7 +244,7 @@ def slides(S, equilibrium, signal, check6):
             notes=('Multicollinearity: two oscillators from the same prices.',),
             origin='Lim (2016), p. 245. The chart on the next slide is ours.',
             title='Two oscillators that agree may be one oscillator',
-            lines=("Many oscillators give the same buy and sell signals because they are highly correlated, being built from the same price data. Lim calls this similarity multicollinearity, and says it creates a false consensus and a false sense of confidence (p. 245). Collinearity provides redundant information.",),
+            lines=("Many oscillators give the same buy and sell signals because they are highly correlated, being built from the same price data. Lim calls this similarity multicollinearity, and says it creates a false consensus and a false sense of confidence (p. 245). Lim uses collinearity and multicollinearity for the same thing, and in his words collinearity provides redundant information (p. 245).",),
         ),
         Content(
             notes=('Two oscillators, one set of closes.',),
@@ -262,7 +262,7 @@ def slides(S, equilibrium, signal, check6):
             notes=('How to avoid collinearity; both readings of the stochastic.',),
             origin='Lim (2016), pp. 245 and 262; Chapter 6, Chaikin Money Flow.',
             title='How to avoid collinearity',
-            lines=("The cure is to use oscillators built from data other than price alone. Lim names a combination of stochastics, Chaikin's money flow index, which uses volume, and sentiment or breadth oscillators such as the McClellan Oscillator and the Put/Call ratio (p. 245). Chapter 6 taught the Chaikin Money Flow; Lim's money flow index may or may not be the same, and he does not say.",
+            lines=("The cure is to use oscillators built from data other than price alone. Lim names a combination of stochastics, Chaikin's money flow index, which uses volume, and sentiment or market-breadth oscillators (breadth: how many stocks are taking part) such as the McClellan Oscillator and the Put/Call ratio (p. 245). Chapter 6 taught the Chaikin Money Flow; Lim's money flow index may or may not be the same, and he does not say.",
                    "Two things Lim does not reconcile. He lists stochastics here and, in the next sentence, among the price-based oscillators novices wrongly stack together (p. 245). And on p. 262 he says many practitioners find a stochastic and RSI agreement more reliable. We give both and no ruling."),
         ),
         Content(
@@ -321,7 +321,7 @@ def slides(S, equilibrium, signal, check6):
             notes=('Divergence: price and the oscillator disagree.',),
             origin='Lim (2016), pp. 244 and 246 to 247; Chapter 4, 4.5; Chapter 5, characteristic 16. The charts are on the next slides and are ours.',
             title='Divergence: when price and the oscillator disagree',
-            lines=("A crossover reads the oscillator against a level or against its own signal line. Divergence compares price with the oscillator (p. 246). Chapter 4 and Chapter 5 met it; Chapter 6's volume divergence is a different measure. Lim said earlier that an equilibrium signal can be misrepresented by divergence, where higher highs in price are accompanied by lower highs in the oscillator (p. 244).",
+            lines=("A crossover reads the oscillator against a level or against its own signal line. Divergence compares price with the oscillator (p. 246). Chapter 4 and Chapter 5 met it; Chapter 6's volume divergence is a different measure. In the equilibrium section Lim also warns (p. 244) that an equilibrium signal can be misrepresented by divergence, where higher highs in price are accompanied by lower highs in the oscillator (p. 244).",
                    "Lim's list opens with divergence indicating potential reversals, yet two of its four kinds expect a continuation. Each kind gets its own slide next."),
         ),
         Content(
@@ -407,10 +407,10 @@ def slides(S, equilibrium, signal, check6):
         ),
         # ---- rows 102 to 108: patterns on an oscillator, geometric
         Content(
-            notes=('The last four ways draw on the oscillator what we draw on price.',),
+            notes=('Ways five to seven draw on the oscillator what we draw on price; the eighth, oscillator on oscillator, comes after them.',),
             origin='Lim (2016), pp. 247 to 248. The charts on the next slides are ours.',
             title='Patterns and overlays drawn on an oscillator',
-            lines=("The last four ways draw on the oscillator what we draw on price. Geometrically based overlays usually used are trendlines, channels, chart patterns and apex reactions; apex reaction is only named here (p. 248). The signals are four: breaching upward is a buy, testing from below a sell, breaching downward a sell and testing from above a buy (p. 248).",),
+            lines=("Ways five to seven draw on the oscillator what we draw on price; the eighth, oscillator on oscillator, comes after them. Geometrically based overlays usually used are trendlines, channels, chart patterns and apex reactions; apex reaction is only named here (p. 248). The signals are four: breaching upward is a buy, testing from below a sell, breaching downward a sell and testing from above a buy (p. 248).",),
         ),
         Content(notes=('Breach upward.',), origin='Lim (2016), p. 248. ' + OUR, title='Breach upward is a buy signal',
                 lines=("An oscillator breaching a geometrically based overlay to the upside is a buy (bullish) signal (p. 248). On our chart a falling trendline runs through the oscillator's two earlier peaks [1] [2], and the oscillator breaks up through it [3].",)),

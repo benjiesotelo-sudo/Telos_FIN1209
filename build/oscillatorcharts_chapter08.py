@@ -318,6 +318,10 @@ def paint_spec(c, spec):
             slot, text, dx, dy = item
             row = bar['rows'][slot - bar.get('slot0', 0)]
             c.text(pan.x(slot) + dx, pan.y(row[1]) + dy, text, color=INK)
+    for seg in spec.get('segs', ()):
+        pan = panes[seg['pane']]
+        (s0, v0), (s1, v1) = seg['a'], seg['b']
+        c.stroke((pan.x(s0), pan.x(s1)), (pan.y(v0), pan.y(v1)), color=seg.get('color', GREEN_DEEP), lw=2.4, dashed=seg.get('dashed', True))
     for t in spec.get('texts', ()):
         x, y, text = t[0], t[1], t[2]
         c.text(x, y, text, ha=t[3] if len(t) > 3 else 'center', color=t[4] if len(t) > 4 else GREEN_DEEP)
@@ -330,3 +334,58 @@ def paint_spec(c, spec):
         else:
             pan = panes[m[1]]
             c.box((0, n, 'group'), pan.x(m[2]) - .15, pan.y(m[4]), pan.x(m[3]) + .15, pan.y(m[5]), frac=m[6] if len(m) > 6 else .5)
+
+
+def paint_static_dynamic(c):
+    """A two column table: which of the four kinds of overlay are static and which dynamic."""
+    x0, x1, x2 = .8, 4.6, 10.8
+    ys = (3.35, 2.75, 1.95, 1.3, .65, .0)
+    for y in (ys[0], ys[1], ys[4]):
+        c.stroke((x0, x2), (y, y), color=MUTED, lw=1.4)
+    c.stroke((x0, x2), (ys[0] + .0, ys[0]), color=MUTED, lw=1.4)
+    c.stroke((x1, x1), (ys[4], ys[0]), color=MUTED, lw=1.4)
+    c.text((x1 + x2) / 2 - 1.0 + .5, 3.05, 'Dynamic: the level moves with time', color=GREEN_DEEP)
+    c.text((x0 + x1) / 2, 3.05, 'Static: the level stays', color=GREEN_DEEP)
+    rows = ((2.35, 'horizontally based', 'geometrically based'),
+            (1.9, 'algorithmically based', ''),
+            (1.45, 'numerically based:\nFibonacci level', 'numerically based:\nmoving average'))
+    c.text((x0 + x1) / 2, 2.35, 'horizontally based', color=INK)
+    c.text((x0 + x1) / 2, 1.85, 'algorithmically based', color=INK)
+    c.text((x0 + x1) / 2, 1.2, 'numerically based:\nFibonacci level', color=INK)
+    c.text((x1 + x2) / 2, 2.35, 'geometrically based', color=INK)
+    c.text((x1 + x2) / 2, 1.2, 'numerically based:\nmoving average', color=INK)
+
+
+def _table(c, xs, header, rows, *, top=3.5, step=.4):
+    """A plain ruled table drawn as text and lines. ``xs`` are the column centres, ``header`` and
+    ``rows`` are tuples of strings."""
+    left, right = .5, 11.2
+    y = top
+    for k, cell in enumerate(header):
+        c.text(xs[k], y, cell, color=GREEN_DEEP)
+    c.stroke((left, right), (y - .22, y - .22), color=MUTED, lw=1.4)
+    for row in rows:
+        y -= step
+        for k, cell in enumerate(row):
+            c.text(xs[k], y, cell, color=INK)
+    c.stroke((left, right), (y - .22, y - .22), color=MUTED, lw=1.4)
+
+
+def paint_divergence_table(c):
+    _table(c, (1.9, 4.6, 7.0, 9.6), ('kind', 'price makes', 'oscillator makes', 'expected'),
+           (('standard bullish', 'a lower trough', 'a higher trough', 'upside reversal'),
+            ('standard bearish', 'a higher peak', 'a lower peak', 'downside reversal'),
+            ('reverse bullish', 'a higher trough', 'a lower trough', 'upside continuation'),
+            ('reverse bearish', 'a lower peak', 'a higher peak', 'downside continuation')), top=3.4, step=.6)
+
+
+def paint_eight_ways(c):
+    _table(c, (3.0, 8.0), ('the way', 'one example from this deck'),
+           (('1  overbought and oversold', 'the RSI above its 70'),
+            ('2  equilibrium crossover', 'the RSI crossing 50'),
+            ('3  signal line crossover', 'the MACD crossing its signal line'),
+            ('4  divergence', 'price a higher peak, oscillator a lower peak'),
+            ('5  geometric pattern', 'an oscillator breaking a trendline'),
+            ('6  numerical pattern', 'an oscillator testing its moving average'),
+            ('7  horizontal pattern', 'an oscillator holding at prior support'),
+            ('8  oscillator on oscillator', 'the StochRSI on Apple')), top=3.6, step=.38)

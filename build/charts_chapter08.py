@@ -59,6 +59,9 @@ def _spec(letter, spec, caption=NOTE, angles=None):
     return _paint(letter, lambda c: oc.paint_spec(c, spec), targets, caption)
 
 
+DATA['dtb'] = _paint('AW', oc.paint_divergence_table, (), 'The table is ours, from Lim\'s four definitions (pp. 246 to 247).')
+DATA['ew'] = _paint('AX', oc.paint_eight_ways, (), 'The examples are ours, taken from the slides of this class.')
+DATA['tbl'] = _paint('AS', oc.paint_static_dynamic, (), 'The table is ours, from Lim\'s lists (pp. 239 to 240).')
 _COLORS = ('gold', 'red', 'blue', 'purple')
 from specs_chapter08 import SPECS  # noqa: E402
 for _key, _entry in SPECS.items():

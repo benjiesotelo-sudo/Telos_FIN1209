@@ -2,7 +2,7 @@
 
 Only the sample slides exist so far. The full deck is written by hand, part
 by part, after the instructor approves the outline and these samples (rule 37:
-no code generates or drops teaching text). Part A will be 8.1 and 8.2; Part B
+no code generates or drops teaching text). The first class will be 8.1 and 8.2; the second class
 8.3 to 8.8. Each sample below is a kind of slide the chapter needs:
 
   (a) an opener that names the idea before any number
@@ -140,7 +140,7 @@ PART_A = Section(
         ),
         # Reference slides: each oscillator on the list is shown on one of Lim's own charts.
         WidePair(
-            notes=('The bounded oscillators, read on Lim\'s own chart. Part B builds each one.',),
+            notes=('The bounded oscillators, read on Lim\'s own chart. The second class builds each one.',),
             origin='Lim (2016), pp. 251, 254, 259 and 262, Figure 8.17. The marks are ours, added for teaching.',
             left=Content(
                 title='The oscillators you will meet before we build them (1 of 3)',
@@ -172,7 +172,7 @@ PART_A = Section(
             marks=(),
         ),
         WidePair(
-            notes=('The unbounded ones. Part B builds the MACD, ROC and MOM; the CCI is on the next slide.',),
+            notes=('The unbounded ones. The second class builds the MACD, ROC and MOM; the CCI is on the next slide.',),
             origin='Lim (2016), pp. 245, 256 and 257, Figure 8.8. The marks are ours, added for teaching.',
             left=Content(
                 title='The oscillators you will meet before we build them (2 of 3)',
@@ -188,7 +188,7 @@ PART_A = Section(
             left=Content(
                 title='The oscillators you will meet before we build them (3 of 3)',
                 lines=("The CCI, the commodity channel index [1], gets an overbought level of plus 100 and an oversold level of minus 100 (pp. 242, 244). This chapter gives no calculation for it. On Lim's chart the plus 100 level is the solid line [2] and the minus 100 level the solid line [3]. The zero line crossovers marked there come later.",
-                       "Part A only reads these oscillators on Lim's charts; Part B builds them. Where you meet one before Part B builds it, the slide says what you need and no more."),
+                       "The first class only reads these oscillators on Lim's charts; the second class builds them. Where you meet one before the second class builds it, the slide says what you need and no more."),
             ),
             picture=FIGURE_8_7_CCI,
             text_w=4.9,
@@ -247,7 +247,7 @@ PART_A = Section(
             origin='Lim (2016), pp. 236, 260 and 262. The chart on the next slide is ours.',
             title='Raw %K always stays between 0 and 100 percent',
             lines=("The close can never be below the lowest low or above the highest high of the same lookback. So the top of the fraction is never larger than the bottom, and raw %K stays between 0 and 100 percent (pp. 260, 262).",
-                   "That makes it a bounded oscillator, the kind from Part A.",
+                   "That makes it a bounded oscillator, the kind from the first class.",
                    ),
             accent="Every stock's raw %K runs on the same 0 to 100 scale, which is why Lim says bounded oscillators can be compared between stocks or markets over the same number of periods (p. 236).",
         ),
@@ -374,7 +374,7 @@ PART_A = Section(
                     stem='In the figure, the RSI drops below 50 at mark 1. What does Lim call that?',
                     options=('A buy signal', 'A sell signal', 'A trigger for entry', 'A signal line crossover'),
                     answer='B',
-                    reason='Crossing below the equilibrium is a sell signal. Lim calls such signals, not triggers for entry (p. 244).',
+                    reason='Crossing below the equilibrium is a sell signal. Lim calls these signals, not triggers for entry (p. 244).',
                 ),
             ),
             picture=FIGURE_8_7,
@@ -391,13 +391,13 @@ CHAPTER = Chapter(
     subtitle='Institute of Accounts, Business and Finance  |  Far Eastern University Manila',
     presenter='Benjamin C. Sotelo',
     title_notes=('Chapter 8 is where the oscillators used since Chapter 4 are finally taught.',
-                 'Part A reads them and classifies indicators; Part B builds them one by one.'),
+                 'The first class reads them and classifies indicators; the second class builds them one by one.'),
     objectives=('Understand the significance of oscillators and indicators and how to use them to forecast reversals and breakouts.',
                 'Describe the difference between overlay indicators and window oscillators.',
                 'Identify the types of overlay indicator and understand how chart scaling affects each.',
                 'Set up multiple timeframe charts to better observe price and indicator action.'),
-    roadmap=('Part A  8.1 and 8.2: classifying indicators and eight ways to read an oscillator',
-             'Part B  8.3 to 8.8: cycles, timeframes, input data, trend trading, the oscillators and pivot points'),
+    roadmap=('The first class  8.1 and 8.2: classifying indicators and eight ways to read an oscillator',
+             'The second class  8.3 to 8.8: cycles, timeframes, input data, trend trading, the oscillators and pivot points'),
     sections=(PART_A,),
     closing=(),
 )

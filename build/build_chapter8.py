@@ -140,6 +140,29 @@ def _fix_divider_notes(path: Path) -> None:
         prs.save(path)
 
 
+SECTIONS_IN_CHAPTER = 8   # Lim's 8.1 to 8.8; Chapter 7's footer form is "Part n of N - 7.n name"
+
+
+def _section_footers(path: Path) -> None:
+    """Chapter 7's form numbers the chapter's sections as parts: "Part 2 of 4 - 7.2 name".
+    Chapter 8 has eight sections, so the total is Lim's eight, not the count built so far."""
+    from pptx import Presentation
+    n_built = len(CHAPTER.sections)
+    prs = Presentation(path)
+    pat = re.compile(rf"Part (\d+) of {n_built}\b")
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                for para in shape.text_frame.paragraphs:
+                    for run in para.runs:
+                        run.text = pat.sub(lambda m: f"Part {m.group(1)} of {SECTIONS_IN_CHAPTER}", run.text)
+        if slide.has_notes_slide:
+            for para in slide.notes_slide.notes_text_frame.paragraphs:
+                for run in para.runs:
+                    run.text = pat.sub(lambda m: f"Part {m.group(1)} of {SECTIONS_IN_CHAPTER}", run.text)
+    prs.save(path)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--edition", choices=deckkit.EDITIONS, default=deckkit.TEACHING)
@@ -169,6 +192,7 @@ def main() -> int:
             charts_dir=CHARTS_DIR, edition=args.edition)
     audit_pptx(args.out, CHARTS_DIR)
     _fix_divider_notes(args.out)
+    _section_footers(args.out)
     deck_problems = _deck_problems(args.out, args.with_figures)
     if deck_problems:
         print("Deck checks failed:", file=sys.stderr)

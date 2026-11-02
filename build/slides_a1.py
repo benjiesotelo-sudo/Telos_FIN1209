@@ -1,4 +1,4 @@
-"""Part A slides, section 8.1 (outline rows 10 to 56), written by hand in teaching order.
+"""first class slides, section 8.1 (outline rows 10 to 56), written by hand in teaching order.
 
 Rows 1 to 9 are the approved samples and are taken as built from samples_chapter08.
 Every number on a chart is ours, invented for teaching; every Lim figure is read
@@ -18,17 +18,17 @@ FIG_8_2_LEFT = book_crop('8.2', (0.0, 0.0, 1.0, 1.0),
     "Figure 8.2: Lim's flow chart of indicators. The window oscillator side is marked: bounded, semi bounded and fully unbounded, each with his list of examples.",
     marks=(
         Mark(number=1, kind='box', x0=0.0, y0=0.335, x1=0.172, y1=0.725, color='gold', at=(0.085, 0.76), size=0.28),
-        Mark(number=2, kind='box', x0=0.176, y0=0.335, x1=0.352, y1=0.875, color='red', at=(0.265, 0.91), size=0.28),
-        Mark(number=3, kind='box', x0=0.356, y0=0.335, x1=0.53, y1=0.995, color='blue', at=(0.443, 0.30), size=0.28),
+        Mark(number=2, kind='box', x0=0.165, y0=0.335, x1=0.352, y1=0.875, color='red', at=(0.265, 0.91), size=0.28),
+        Mark(number=3, kind='box', x0=0.345, y0=0.335, x1=0.53, y1=0.995, color='blue', at=(0.443, 0.30), size=0.28),
     ))
 FIG_8_2_LEFT.origin = 'Lim (2016), p. 238, Figure 8.2. The marks are ours, added for teaching.'
 FIG_8_2_RIGHT = book_crop('8.2', (0.0, 0.0, 1.0, 1.0),
     "Figure 8.2: Lim's flow chart of indicators. The overlay side is marked: numerically, geometrically, algorithmically and horizontally based, with his lists and his scale labels.",
     marks=(
-        Mark(number=1, kind='box', x0=0.555, y0=0.262, x1=0.78, y1=0.855, color='gold', at=(0.82, 0.235), size=0.28),
-        Mark(number=2, kind='box', x0=0.818, y0=0.245, x1=0.998, y1=0.60, color='red', at=(0.80, 0.215), size=0.28),
+        Mark(number=1, kind='box', x0=0.555, y0=0.285, x1=0.78, y1=0.855, color='gold', at=(0.535, 0.30), size=0.28),
+        Mark(number=2, kind='box', x0=0.818, y0=0.245, x1=0.998, y1=0.60, color='red', at=(0.975, 0.215), size=0.28),
         Mark(number=3, kind='box', x0=0.818, y0=0.605, x1=0.998, y1=0.83, color='blue', at=(0.80, 0.70), size=0.28),
-        Mark(number=4, kind='box', x0=0.555, y0=0.858, x1=0.785, y1=0.995, color='purple', at=(0.52, 0.93), size=0.28),
+        Mark(number=4, kind='box', x0=0.555, y0=0.858, x1=0.785, y1=0.995, color='purple', at=(0.815, 0.93), size=0.28),
     ))
 FIG_8_2_RIGHT.origin = 'Lim (2016), p. 238, Figure 8.2. The marks are ours, added for teaching.'
 
@@ -97,7 +97,7 @@ def slides(S):
             notes=('One tiny sketch of each kind.',),
             origin='Lim (2016), p. 236. The chart is ours.',
             title='Here are the four kinds in one small sketch each',
-            lines=("In our sketch the numerically based overlay is a target from a formula [1], the horizontally based one a level from the past [2], the geometrically based one a sloping line [3] and the algorithmically based one a high over a few bars [4].",),
+            lines=("In our sketch the numerically based overlay is a target from a formula, with the points A, B and C [1], the horizontally based one a level from the past, a prior peak [2], the geometrically based one a sloping line [3] and the algorithmically based one a high over a few bars [4].",),
         ),
         chart('four', 'AB', 'Here are the four kinds in one small sketch each',
               'Four small sketches of ours side by side: a target line from a formula, a flat level, a sloping line and the high of a few bars.',
@@ -114,7 +114,7 @@ def slides(S):
             notes=('Lim gives the formula but not the numbers; the numbers are ours.', 'Gold 1 A, red 2 B, blue 3 C, purple 4 the target.'),
             origin='Lim (2016), p. 236. ' + OUR,
             title='A Fibonacci target is the one formula Lim gives',
-            lines=("Lim's example is a Fibonacci upside target from a 161.8 percent expansion of the range AB, measured from C: target = C + (1.618 x AB) (p. 236). He gives only the letters. On our chart A is 40.00 [1], B is 50.00 [2], so AB is 10.00, and C is 46.00 [3]. The target is 46.00 + 16.18 = 62.18 [4].",),
+            lines=("Lim's example is a Fibonacci upside target from a 161.8 percent expansion of the range AB, measured from C: target = C + (1.618 x AB) (p. 236). He gives only the letters and does not say which points A, B and C are; we take A as the low, B as the high and C as the pullback low. On our chart A is 40.00 [1], B is 50.00 [2], so AB is 10.00, and C is 46.00 [3]. The target is 46.00 + 16.18 = 62.18 [4]. Lim adds that a Fibonacci level, once worked out, may also be classed as horizontally based, which is how Chapter 3 listed it; a moving average may not (p. 236). Here we keep it numerically based, because it comes from a formula.",),
         ),
         chart('fib', 'L', 'A Fibonacci target is the one formula Lim gives',
               'Our price from A at 40.00 up to B at 50.00, back to C at 46.00, and a target line at 62.18.',
@@ -141,7 +141,7 @@ def slides(S):
             notes=('Lim calls a gap a window; we say gap.', 'Gold 1 the gap, red 2 the later hold.'),
             origin='Lim (2016), p. 236; Chapter 3, "Gap". ' + OUR,
             title='A gap is also a horizontal overlay',
-            lines=("Lim also lists price gaps, which he calls rising and falling windows, as horizontal overlays (p. 236). Chapter 3 taught the gap. Here window means gap, not the window an oscillator sits in, so we say gap. On our chart there is a gap between 48.40 and 49.40 [1], and later price comes back to its top edge and holds [2].",),
+            lines=("Lim also lists price gaps, which he calls rising and falling windows, as horizontal overlays (p. 236). Here window means gap, not the window an oscillator sits in, so we say gap. Chapter 3 taught that this kind of gap is called a window. On our chart there is a gap between a high of 48.40 and a low of 49.40 [1], and later price comes back to its top edge and holds [2].",),
         ),
         chart('gap', 'N', 'A gap is also a horizontal overlay',
               'Our bars with a gap between a high of 48.40 and a low of 49.40, and a later bar holding at the top of the gap.',
@@ -198,7 +198,7 @@ def slides(S):
             origin='Lim (2016), p. 238, Figure 8.2. The marks are ours, added for teaching.',
             left=Content(
                 title='Figure 8.2 sorts the window oscillators',
-                lines=("Lim's flow chart puts the window oscillators in three boxes: bounded [1], semi bounded [2] and fully unbounded [3], each with his list of examples (p. 238). The text names only two kinds, bounded and unbounded; the semi bounded box holds the unbounded ones that stop at zero (p. 237).",),
+                lines=("Lim's flow chart puts the window oscillators in three boxes: bounded [1], semi bounded [2] and fully unbounded [3], each with his list of examples (p. 238). The text names only two kinds, bounded and unbounded; the semi bounded box holds the unbounded ones that stop at zero (pp. 236 to 237).",),
                 accent='We only read the lists for now. The names are Lim\'s.',
             ),
             picture=FIG_8_2_LEFT,
@@ -219,7 +219,7 @@ def slides(S):
             notes=('Bounded: 0 to 100 percent.',),
             origin='Lim (2016), p. 236. The chart on the next slide is ours.',
             title='A bounded oscillator stays between 0 and 100 percent',
-            lines=("A bounded oscillator's readings run from 0 to 100 percent; Lim says the oscillator has been normalized (p. 236). The RSI and the stochastic from our list are bounded; Part B builds them.",
+            lines=("A bounded oscillator's readings run from 0 to 100 percent; Lim says the oscillator has been normalized (p. 236). The RSI and the stochastic from our list are bounded; the second class builds them.",
                    "The advantage is that the same scale lets us compare relative overextension, that is, overbought and oversold, between different stocks or markets over the same number of periods (p. 236)."),
             accent='Same scale, so two stocks can be compared.',
         ),
@@ -237,7 +237,7 @@ def slides(S):
             notes=('The disadvantage of a bounded oscillator.', 'Box 1 the ten readings above 80; red 2 the steady rise in price.'),
             origin='Lim (2016), p. 237. ' + OUR,
             title='In a strong trend a bounded oscillator stays at the top',
-            lines=("The disadvantage is that in a strong trend the readings tend to stay overbought or oversold for long, which tells us little more than that a strong trend is in effect (p. 237). On our chart the oscillator sits above 80 for ten readings in a row [1] while price rises steadily [2].",),
+            lines=("The disadvantage is that in a strong trend the readings tend to stay overbought or oversold for long, which tells us little more than that a strong trend is in effect (pp. 236 to 237). On our chart the oscillator sits above 80 for ten readings in a row [1] while price rises steadily [2].",),
         ),
         chart('stuck', 'R', 'In a strong trend a bounded oscillator stays at the top',
               'Our steadily rising price with a bounded oscillator under it staying above 80 for ten readings in a row.',
@@ -253,17 +253,17 @@ def slides(S):
         Content(
             notes=('Three peaks at about the same height.',),
             origin='Lim (2016), p. 237. ' + OUR,
-            title='Its overbought and oversold levels come from its own history',
+            title='Its overbought level comes from its own history',
             lines=("On our chart the oscillator turned down at 3.9 [1], at 3.8 [2] and at 4.0 [3]. Past peaks at about the same height give a historical overbought level, near 3.9. Lim says such levels are specific to a particular stock or market at a selected timeframe (p. 237).",),
         ),
-        chart('unb', 'S', 'Its overbought and oversold levels come from its own history',
+        chart('unb', 'S', 'Its overbought level comes from its own history',
               'Our unbounded oscillator with three peaks at 3.9, 3.8 and 4.0 and a historical level drawn at 3.9.',
               ('Gold 1, red 2 and blue 3 the three peaks near 3.9.',), 'FIN1209 teaching chart S. ' + OUR),
         Content(
             notes=('Be careful comparing unbounded oscillators between stocks.',),
             origin='Lim (2016), p. 237. ' + OUR,
             title='Be careful comparing unbounded oscillators between stocks',
-            lines=("Lim adds a care: because the levels are specific to one stock or market, take care when comparing the degree of overextension between different stocks or markets (p. 237). Our stock A peaks at 4.0 [1] and our stock B at 0.8 [2], yet the two lines have the same shape.",),
+            lines=("Lim adds a care: because the levels are specific to one stock or market, take care when comparing the degree of overextension between different stocks or markets (p. 237). Our stock A peaks at 4.0 [1] and our stock B at 0.8 [2], yet the two lines have the same shape. So stock A at 4.0 is no more overextended than stock B at 0.8. Read each stock against its own history, never against another stock's numbers. Compare the bounded case two slides back, where the same scale made comparison fair.",),
         ),
         chart('unb2', 'T', 'Be careful comparing unbounded oscillators between stocks',
               'Two of our unbounded oscillators with the same shape, one peaking at 4.0 and one at 0.8.',
@@ -283,13 +283,13 @@ def slides(S):
             notes=('Quote both of Lim\'s sentences and say the book does not reconcile them.',),
             origin='Lim (2016), p. 237. The chart on the next slide is ours.',
             title='Normalization can turn one kind into the other',
-            lines=("Lim says an unbounded oscillator \"may sometimes\" be converted into a bounded one by normalization, which confines its readings between 0 and 100 percent. In the next sentence he says normalization \"will always\" convert a point-based oscillator such as the MACD, the MOM, the CCI, the ATR or the ADX into a percentage scaled one (p. 237). The book does not say when it fails.",),
+            lines=("Lim says an unbounded oscillator \"may sometimes\" be converted into a bounded one by normalization, which confines its readings between 0 and 100 percent. In the next sentence he says normalization \"will always\" convert a point-based oscillator such as the MACD, the MOM, the CCI, the ATR or the ADX into a percentage scaled one (p. 237). The book does not say when it fails. Point-based means the readings are in price points, not percent; Lim does not define it, so that reading is ours. We read the two sentences together: the oscillators he names can always be rescaled, and he does not name any that cannot.",),
         ),
         Content(
             notes=('Our own simple rescaling, once.',),
             origin='Lim (2016), p. 237. ' + OUR,
             title='Here is one set of readings rescaled to 0 to 100',
-            lines=("Lim gives no method here, so this is our own simple rescaling. The readings run from -5 to 7 points. Rescaled, the reading of 6 [1] becomes 91.7 [2], the lowest, -5, becomes 0 and the highest, 7, becomes 100.",),
+            lines=("Lim gives no method here, so this is our own simple rescaling. The readings run from -5 to 7 points. Our rescaling takes each reading's distance above the lowest and divides by the whole range: (6 - (-5)) / (7 - (-5)) x 100 = 11 / 12 x 100 = 91.7. So the reading of 6 [1] becomes 91.7 [2], the lowest, -5, becomes 0 and the highest, 7, becomes 100.",),
         ),
         chart('norm', 'V', 'Here is one set of readings rescaled to 0 to 100',
               'Our readings in points, from minus 5 to 7, and the same readings rescaled to a 0 to 100 scale, the 6 becoming 91.7.',
@@ -299,13 +299,13 @@ def slides(S):
             notes=('Some practitioners say window indicator.',),
             origin='Lim (2016), p. 237; Chapter 6, OBV. The chart on the next slide is ours.',
             title='Some call unbounded oscillators indicators, not oscillators',
-            lines=("Some practitioners call unbounded oscillators window indicators rather than oscillators, because an unbounded one need not revert to its central or equilibrium value; its values can rise or fall indefinitely (p. 237). Lim's examples are the cumulative ones, such as the Net Advance Decline Line and the OBV from Chapter 6, which tend to trend.",),
+            lines=("Some practitioners call unbounded oscillators window indicators rather than oscillators, because an unbounded one need not revert to its central or equilibrium value; its values can rise or fall indefinitely (p. 237). Lim's examples are the cumulative ones, such as the Net Advance Decline Line and the OBV from Chapter 6, which tend to trend. This is a second use of the word. Earlier, indicator meant the whole family, overlays and oscillators together (p. 235). Here some practitioners use it only for unbounded oscillators that trend (p. 237). In this deck indicator keeps the first meaning.",),
         ),
         Content(
             notes=('One line swings around its centre, the other runs on.',),
             origin='Lim (2016), p. 237. ' + OUR,
             title='Here are one that oscillates and one that trends',
-            lines=("On our chart the line on the left swings around its central value [1], which is what an oscillator does. The running total on the right keeps climbing [2], so many practitioners would call it an indicator instead.",),
+            lines=("On our chart the line on the left swings around its central value, zero [1], which is what an oscillator does. The running total on the right keeps climbing [2], so many practitioners would call it an indicator instead.",),
         ),
         chart('osc2', 'W', 'Here are one that oscillates and one that trends',
               'A line of ours swinging around zero beside a running total that keeps climbing.',
@@ -329,7 +329,7 @@ def slides(S):
             notes=('Scale invariant: unchanged by the scale.',),
             origin='Lim (2016), pp. 237 to 238; Chapter 2, scaling; Chapter 3, "What scaling changes, and what it does not". The chart on the next slide is ours.',
             title='Scaling changes some indicators and not others',
-            lines=("Chapter 2 showed an arithmetic (linear) scale and a logarithmic (ratio) scale. Lim says scaling affects only the geometrically based indicators. An indicator that scaling does not change is scale invariant (p. 237), and he counts the numerical, horizontal and algorithmic overlays among them. Chapter 3 named only three of the four kinds.",),
+            lines=("Chapter 2 showed an arithmetic (linear) scale and a logarithmic (ratio) scale. Lim says scaling affects only the geometrically based indicators. An indicator that scaling does not change is scale invariant (p. 237), and he counts the numerical, horizontal and algorithmic overlays among them. Scaling does not change window oscillators either, because their values are calculated (p. 237). Chapter 3 named the geometric, numerical and horizontal kinds; the algorithmic kind is new here, and it is scale invariant too. Lim's flow chart of indicators calls the geometric kind scale sensitive.",),
         ),
         Content(
             notes=('The average of 10, 12 and 14 is 12 on either scale.',),
@@ -343,10 +343,10 @@ def slides(S):
         Content(
             notes=('The five-day high and a support level do not move either.',),
             origin='Lim (2016), p. 237. ' + OUR,
-            title='A five-day high and a support level do not move either',
-            lines=("The algorithmic example is also scale invariant: the high prices keep the same values whatever the scale, so the five-day high is still 53.00 (p. 237). A horizontal overlay depends only on the price axis; time is not an element (p. 238). Our five bars give 53.00 on the arithmetic scale [1] and on the ratio scale [2].",),
+            title='A five-day high does not move either',
+            lines=("The algorithmic example is also scale invariant: the high prices keep the same values whatever the scale, so the five-day high is still 53.00 (p. 237). A horizontal overlay depends only on the price axis; time is not an element (pp. 237 to 238). Our five bars and the sixth that breaks them give 53.00 on the arithmetic scale [1] and on the ratio scale [2].",),
         ),
-        chart('fds', 'Y', 'A five-day high and a support level do not move either',
+        chart('fds', 'Y', 'A five-day high does not move either',
               'Our five bars on an arithmetic scale and on a ratio scale, with the five-day high of 53.00 on both.',
               ('Gold 1 the five-day high on the arithmetic scale, red 2 the same high on the ratio scale.',), 'FIN1209 teaching chart Y. ' + OUR),
         WidePair(
@@ -374,7 +374,7 @@ def slides(S):
             notes=('The same trendline chart, with the day 10 and day 20 levels.',),
             origin='Lim (2016), p. 238. ' + OUR,
             title='Why a trendline depends on time',
-            lines=("Lim says the potential support from an uptrend line depends on when price tests it: the more time has elapsed, the higher the support (p. 238). On our chart the line is 50.00 when price tests it on day 10 [1] and 60.00 on day 20 [2].",),
+            lines=("Lim says the potential support from an uptrend line depends on when price tests it: the more time has elapsed, the higher the support (pp. 238 to 239). On our chart the line is 50.00 when price tests it on day 10 [1] and 60.00 on day 20 [2].",),
         ),
         chart('trl', 'O', 'Why a trendline depends on time',
               'Our rising trendline, 50.00 on day 10 and 60.00 on day 20, with price testing it on both days.',
@@ -416,7 +416,7 @@ def slides(S):
             origin='Lim (2016), pp. 239 to 240.',
             title="Lim's list of static overlays",
             lines=("Lim's static overlays are prior support and resistance levels; Fibonacci projection, retracement, extension and expansion levels; Gann Square of Nine and squaring of the high and low projections; Gann's one-third and one-eighth retracements; Floor Trader's Pivot Points; reward-to-risk price targets; Gartley Butterfly projections; Parabolic SAR; Chandelier Exit levels; and horizontal channels (pp. 239 to 240).",),
-            accent='We only name these. Pivot points get their own part later.',
+            accent='We only name these. Pivot points get their own section, 8.7, in the second class.',
         ),
         Content(
             notes=('Dynamic overlays move as time goes by.',),
@@ -428,10 +428,10 @@ def slides(S):
             notes=('The moving average reads 47.0, 49.0, 51.0.',),
             origin='Lim (2016), p. 240. ' + OUR,
             title='Here are two dynamic levels moving with the days',
-            lines=("On our chart the moving average reads 47.0 on day 3 [1], 49.0 on day 6 [2] and 51.0 on day 9 [3]. The trendline moves too, so each is a different price on a different day.",),
+            lines=("On our chart a 3-day simple moving average reads 45.17 on day 3 [1], 48.17 on day 6 [2] and 51.17 on day 9 [3]. The trendline, drawn through two troughs of the price line, moves too, reading 45.50, 48.00 and 50.50, so each is a different price on a different day.",),
         ),
         chart('dyn', 'AA', 'Here are two dynamic levels moving with the days',
-              'Our price with a moving average reading 47.0, 49.0 and 51.0 on days 3, 6 and 9 and a trendline reading 44.0, 46.0 and 48.0.',
+              'Our price with a 3-day simple moving average reading 45.17, 48.17 and 51.17 on days 3, 6 and 9 and a trendline through two troughs reading 45.50, 48.00 and 50.50.',
               ('Gold 1, red 2 and blue 3 the moving average on days 3, 6 and 9.',), 'FIN1209 teaching chart AA. ' + OUR),
         Content(
             notes=('Lim\'s list of dynamic overlays; names only.',),
@@ -441,12 +441,14 @@ def slides(S):
             accent='Again we only name them.',
         ),
         Content(
-            notes=('Review question 5.',),
-            origin='Lim (2016), pp. 239 to 240.',
+            notes=('Review question 5. The table is on the next slide.',),
+            origin='Lim (2016), pp. 236 and 239 to 240. The table on the next slide is ours.',
             title='Which kind goes where',
-            lines=("Putting the four kinds next to static and dynamic: horizontally based and algorithmically based overlays are static; geometrically based overlays are dynamic; numerically based overlays can be either, as a Fibonacci level is static and a moving average dynamic (pp. 239 to 240).",),
-            accent='Static: the level stays. Dynamic: the level moves with time.',
+            lines=("Horizontally based and algorithmically based overlays are static; geometrically based overlays are dynamic; numerically based overlays can be either (pp. 239 to 240). Lim notes that a Fibonacci level may also be classed as horizontally based (p. 236), which is why it is static.",),
         ),
+        chart('tbl', 'AS', 'Here are the four kinds sorted into static and dynamic',
+              'A table of ours with two columns, static and dynamic, and the four kinds of overlay placed in them, numerically based appearing in both.',
+              ('Static: horizontal, algorithmic, and the Fibonacci level. Dynamic: geometric, and the moving average.',), 'FIN1209 teaching chart AS. The table is ours, from Lim\'s lists (pp. 239 to 240).'),
         # ---- rows 55 and 56: Check 4
         CourseCheck(
             notes=('Both answers come from the static and dynamic slides.',),

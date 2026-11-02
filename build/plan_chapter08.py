@@ -95,7 +95,7 @@ def make(stats):
                 '**The kinds of overlay**, slides `{s:part:1}` to `{s:check:1}`. Review questions 1 and 2.',
                 '**Bounded, unbounded and scale**, slides `{s:slide:A bounded oscillator stays between 0 and 100 percent}` to `{s:check:3}`. Review questions 3 and 4.',
                 '**Static and dynamic**, slides `{s:slide:Static overlays do not move with time}` to `{s:check:4}`. Review question 5.',
-                '**The eight ways**, slides `{s:part:2}` to `{s:slide:What you can now do after the first class}`. Review question 6.')),
+                '**The eight ways**, slides `{s:part:2}` to `{s:chart:AX}`. Review question 6.')),
             Prose(cue='The answers', text=(
                 "**This card prints no check answers, on purpose.** The repository this card lives in is public. "
                 "The answers to all 11 checks, with the reason for each, are on the answer slide that follows each check in your copy of the deck, "

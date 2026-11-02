@@ -148,3 +148,106 @@ def paint_raw_k(c):
     c.point((0, 1, 'hi'), *top['high'])
     c.point((0, 2, 'lo'), *bottom['low'])
     c.point((0, 3, 'close'), close_x, close_y)
+
+
+# ---------------------------------------------------------------------------
+# Charts that pair with the idea slides: one explanation, one chart.
+
+def _bar_row(panel, rows, slots, *, tags=None):
+    return [panel.bar(slot, *row, tag=None, half=.14) for slot, row in zip(slots, rows)]
+
+
+def paint_closes(c, *, variant):
+    """The same range of ours with closes at different places in it.
+
+    'idea': one close near the top and one near the bottom. 'ends': a close
+    at the lowest low, one in the middle and one at the highest high."""
+    import deckkit as dk
+    gold, red = '#' + str(dk.MARK_COLORS['gold']), '#' + str(dk.MARK_COLORS['red'])
+    hi, lo = 56.0, 50.0
+    if variant == 'idea':
+        bars = ((53.0, 55.6, 52.8, 55.4), (52.4, 52.6, 50.0, 50.6))
+        notes = ('close near the top of the range', 'close near the bottom of the range')
+    else:
+        bars = ((51.0, 51.6, 50.0, 50.0), (52.6, 53.4, 52.2, 53.0), (54.8, 56.0, 54.6, 56.0))
+        notes = ('close at the lowest low', 'close in the middle', 'close at the highest high')
+    panel = Panel(c, 1.4, 9.0, .85, 3.25, 49.0, 57.0, 6)
+    slots = (1.0, 4.0) if variant == 'idea' else (0.6, 2.9, 5.2)
+    c.stroke((1.2, 10.9), (panel.y(hi), panel.y(hi)), color=gold, lw=2.2, dashed=True)
+    c.stroke((1.2, 10.9), (panel.y(lo), panel.y(lo)), color=red, lw=2.2, dashed=True)
+    c.text(1.25, panel.y(hi) + .17, 'highest high of the lookback, Hn 56.00 = 100%', ha='left', va='bottom', color=GREEN_DEEP)
+    c.text(1.25, panel.y(lo) - .17, 'lowest low, Ln 50.00 = 0%', ha='left', va='top', color=GREEN_DEEP)
+    ticks = []
+    for index, (slot, row, note) in enumerate(zip(slots, bars, notes), 1):
+        t = panel.bar(slot, *row, half=.17)
+        ticks.append(t)
+        pct = (row[3] - lo) / (hi - lo) * 100
+        cx, cy = t['close']
+        dy = .3 if pct <= 0 else -.3 if pct >= 100 else 0
+        c.text(cx + .3, cy + dy, f'C {row[3]:.2f} = {pct:.0f}%' if variant == 'ends' else f'C {row[3]:.2f} = {pct:.1f}%', ha='left')
+        c.text(panel.x(slot) + .1, .45, note, ha='center', color=MUTED)
+        c.point((0, index, 'close'), cx, cy)
+
+
+def paint_range_percent(c):
+    """Every close of the lookback mapped onto the 0 to 100 percent scale."""
+    import deckkit as dk
+    gold, red = '#' + str(dk.MARK_COLORS['gold']), '#' + str(dk.MARK_COLORS['red'])
+    hi, lo = 56.0, 50.0
+    panel = Panel(c, 1.0, 6.4, .85, 3.25, 49.0, 57.0, len(LOOKBACK))
+    for i, row in enumerate(LOOKBACK):
+        panel.bar(i, *row, half=.09)
+    c.stroke((1.0, 7.5), (panel.y(hi), panel.y(hi)), color=gold, lw=2.2, dashed=True)
+    c.stroke((1.0, 7.5), (panel.y(lo), panel.y(lo)), color=red, lw=2.2, dashed=True)
+    ax = 8.0
+    c.stroke((ax, ax), (panel.y(lo), panel.y(hi)), color=MUTED, lw=2.0)
+    for pct, price in ((100, hi), (50, 53.0), (0, lo)):
+        c.text(ax + .55, panel.y(price), f'{pct}%', ha='left', color=ck.GOLD if pct == 100 else INK)
+    xs = []
+    for i, row in enumerate(LOOKBACK):
+        y = panel.y(row[3])
+        dx = (i % 3 - 1) * .13
+        xs.append((ax + dx, y))
+        c.stroke((ax + dx - .035, ax + dx + .035), (y, y), color=INK, lw=3.2, ink=True)
+    c.text(4.6, 3.55, 'each close, carried across to the percent scale', ha='center', color=GREEN_DEEP)
+    c.point((0, 1, 'hi'), ax, panel.y(hi))
+    c.point((0, 2, 'lo'), ax, panel.y(lo))
+    ys = [y for _x, y in xs]
+    c.box((0, 3, 'group'), ax - .24, min(ys) - .08, ax + .24, max(ys) + .08, frac=.5)
+
+
+def paint_zones(c):
+    """One bounded oscillator of ours with its overbought and oversold zones and its equilibrium."""
+    readings = (46, 52, 58, 66, 74, 78, 72, 62, 52, 44, 34, 26, 29, 38)
+    panel = Panel(c, 1.0, 8.6, .75, 3.3, 0, 100, len(readings))
+    for level, words, color in ((70, 'overbought: 70 and above', GREEN_DEEP), (50, 'equilibrium: 50', MUTED),
+                                (30, 'oversold: 30 and below', GREEN_DEEP)):
+        y = panel.y(level)
+        c.stroke((panel.x(0) - .2, panel.x(len(readings) - 1) + .2), (y, y), color=color, lw=1.6, dashed=True)
+    c.text(9.2, panel.y(70) + .02, 'overbought:\n70 and above', ha='left', color=GREEN_DEEP)
+    c.text(9.2, panel.y(50), 'equilibrium:\n50', ha='left', color=MUTED)
+    c.text(9.2, panel.y(30), 'oversold:\n30 and below', ha='left', color=GREEN_DEEP)
+    panel.path(list(enumerate(readings)), color=INK, lw=2.8)
+    c.text(panel.x(5), panel.y(78) + .3, '78', color=INK)
+    c.text(panel.x(11), panel.y(26) - .3, '26', color=INK)
+    c.point((0, 1, 'high'), panel.x(5), panel.y(78))
+    c.point((0, 2, 'low'), panel.x(11), panel.y(26))
+    c.point((0, 3, 'mid'), panel.x(0) - .2, panel.y(50))
+
+
+def paint_hidden(c):
+    """Price over an indicator: the price makes a higher peak, the indicator a lower one."""
+    price = (52, 55, 58, 60, 57, 56, 59, 63, 61)
+    osc = (40, 55, 70, 78, 62, 56, 64, 66, 58)
+    top = Panel(c, 1.6, 9.2, 2.2, 3.45, 50, 66, len(price))
+    low = Panel(c, 1.6, 9.2, .6, 1.8, 0, 100, len(osc))
+    top.path(list(enumerate(price)), color=INK, lw=2.8)
+    low.path(list(enumerate(osc)), color=INK, lw=2.8)
+    c.text(.5, 2.95, 'price', ha='left', color=GREEN_DEEP)
+    c.text(.5, 1.2, 'indicator\nbelow', ha='left', color=GREEN_DEEP)
+    c.text(top.x(3), top.y(60) + .3, '60', color=INK)
+    c.text(top.x(7), top.y(63) + .3, '63', color=INK)
+    c.text(low.x(3), low.y(78) + .3, '78', color=INK)
+    c.text(low.x(7), low.y(66) + .3, '66', color=INK)
+    c.point((0, 1, 'price'), top.x(7), top.y(63))
+    c.point((0, 2, 'osc'), low.x(7), low.y(66))

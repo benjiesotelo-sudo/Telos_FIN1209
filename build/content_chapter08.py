@@ -32,6 +32,34 @@ FIGURE_8_1 = book_crop('8.1', (0.0, 0.0, 1.0, 1.0),
     ))
 FIGURE_8_1.origin = 'Lim (2016), p. 238, Figure 8.1, courtesy of Stockcharts.com. The marks are ours, added for teaching.'
 
+# Reference slides: each oscillator named on the list is shown on one of Lim's own charts.
+# Figure 8.17 shows the StochRSI, the slow stochastic and the RSI together, top to bottom.
+FIGURE_8_17 = book_crop('8.17', (0.0, 0.49, 1.0, 1.0),
+    "Figure 8.17, cropped to its three oscillator windows. From the top: the StochRSI, the slow stochastic and the RSI, each under the Dow Jones price chart.",
+    marks=(
+        Mark(number=1, kind='box', x0=0.005, y0=0.834, x1=0.91, y1=0.995, color='gold', at=(0.955, 0.915), size=0.3),
+        Mark(number=2, kind='box', x0=0.005, y0=0.686, x1=0.91, y1=0.832, color='red', at=(0.955, 0.76), size=0.3),
+        Mark(number=3, kind='box', x0=0.005, y0=0.51, x1=0.91, y1=0.683, color='blue', at=(0.955, 0.6), size=0.3),
+    ))
+FIGURE_8_17.origin = 'Lim (2016), p. 254, Figure 8.17, courtesy of Stockcharts.com. The marks are ours, added for teaching.'
+
+# Figure 8.8 shows the MACD and the ROC under the Apple price chart.
+FIGURE_8_8 = book_crop('8.8', (0.0, 0.49, 1.0, 1.0),
+    "Figure 8.8, cropped to its three oscillator windows. From the top: the RSI, the MACD and the ROC, each under the Apple price chart.",
+    marks=(
+        Mark(number=1, kind='box', x0=0.005, y0=0.662, x1=0.935, y1=0.812, color='gold', at=(0.965, 0.74), size=0.3),
+        Mark(number=2, kind='box', x0=0.005, y0=0.816, x1=0.935, y1=0.985, color='red', at=(0.965, 0.9), size=0.3),
+    ))
+FIGURE_8_8.origin = 'Lim (2016), p. 245, Figure 8.8, courtesy of Stockcharts.com. The marks are ours, added for teaching.'
+
+# Figure 8.7 again, its lower half: the RSI window and the CCI window under it.
+FIGURE_8_7_CCI = book_crop('8.7', (0.0, 0.5, 1.0, 1.0),
+    "Figure 8.7, cropped to its lower half: the RSI window and, under it, the CCI window with its zero line.",
+    marks=(
+        Mark(number=1, kind='box', x0=0.005, y0=0.822, x1=0.93, y1=0.992, color='gold', at=(0.965, 0.89), size=0.3),
+    ))
+FIGURE_8_7_CCI.origin = 'Lim (2016), p. 244, Figure 8.7, courtesy of Stockcharts.com. The mark is ours, added for teaching.'
+
 # The book's own %K example, Figure 8.22. Its own numbers may sit on its own picture.
 # Rings sit on the bar itself: the top of the wick, the bottom of the wick, the top of the body where the close dash starts.
 FIGURE_8_22 = book_crop('8.22', (0.0, 0.0, 1.0, 1.0),
@@ -61,14 +89,30 @@ PART_A = Section(
     minutes='',
     covers=('indicator', 'overlay indicator', 'window oscillator', 'stochastic', 'crossover'),
     slides=(
-        # (a) The opener: what we are talking about, and why, before any number.
+        # (a) The opener: what we are talking about, and why, before any number, with our chart of the idea.
         Content(
-            notes=('Open by saying what the chapter is: the place where the oscillators used since Chapter 4 finally get taught.',),
-            origin='Lim (2016), p. 235; Chapter 6, "What the book uses here and teaches later, or never".',
+            notes=('Open by saying what the chapter is: the place where the oscillators used since Chapter 4 finally get taught.', 'Then show one picture of the claim: price alone looks strong, the indicator under it does not.'),
+            origin='Lim (2016), p. 235; Chapter 6, "What the book uses here and teaches later, or never". The chart is ours.',
             title='Indicators show strength and weakness that price alone hides',
             lines=("Up to now we have mostly read price itself: bars, patterns and trends. The book has also kept using indicators such as the MACD, the RSI and the stochastic without explaining them, and Chapter 6 told you Chapter 8 is where oscillators get taught. This is that chapter.",
-                   "Why bother? Lim says oscillators and indicators can reveal underlying strengths and weaknesses of price action that would not have been obvious otherwise, which helps us forecast potential reversals and breakouts (p. 235)."),
+                   "Why bother? Lim says oscillators and indicators can reveal underlying strengths and weaknesses of price action that would not have been obvious otherwise, which helps us forecast potential reversals and breakouts (p. 235).",
+                   ),
             accent='Indicators can show you strength or weakness you would not have spotted from price alone.',
+        ),
+        Content(
+            notes=('One picture of the claim, made up by us.',),
+            origin='Our own example of what Lim means (p. 235). The numbers are ours.',
+            title='Here is what an indicator can show that price alone does not',
+            lines=("Here is one example of ours of what that can look like: price makes a higher peak [1] while the indicator under it makes a lower one [2]. Price alone shows only strength.",),
+        ),
+        course_chart('hd',
+            notes=('Gold 1 the second price peak, higher than the first, 63 against 60. Red 2 the second indicator peak, lower, 66 against 78.', 'This is our example of what Lim means; the next slides say what the indicator is.'),
+            origin='FIN1209 teaching chart H. The numbers are invented for teaching.',
+            title='Here is what an indicator can show that price alone does not',
+            letter='H',
+            shows='Our price line making a higher second peak, 63 after 60, with an indicator window under it making a lower second peak, 66 after 78.',
+            tier='core',
+            marks=(),
         ),
         Content(
             notes=('Two names to learn: overlay indicator and window oscillator. The next slide shows both on one chart.',),
@@ -92,46 +136,133 @@ PART_A = Section(
             picture=FIGURE_8_1,
             text_w=4.4,
         ),
-        # A reference slide: what Part A only reads and Part B builds.
-        Content(
-            notes=('Part A reads these oscillators on charts. Part B builds each one. Do not teach the calculations here.',),
-            origin='Lim (2016), pp. 236, 241, 244, 251, 256, 257, 259 and 262.',
-            title='The oscillators you will meet before we build them (1 of 2)',
-            lines=("Bounded, 0 to 100 percent: the relative strength index or RSI tracks a stock's strength through its average gain and loss over the last n periods, n being the lookback (p. 262). The stochastic is the position of the latest close in the recent price range (p. 259). The StochRSI is the stochastic calculation applied to RSI values (p. 251).",
-                   "Overbought and oversold are the high and low ends of an oscillator's readings (pp. 236, 241). Lim calls them overextensions. That is not Chapter 7's overextended bar: here the word describes an oscillator's reading. Equilibrium is the central value it swings around (p. 244)."),
+        # Reference slides: each oscillator on the list is shown on one of Lim's own charts.
+        WidePair(
+            notes=('The bounded oscillators, read on Lim\'s own chart. Part B builds each one.',),
+            origin='Lim (2016), pp. 251, 254, 259 and 262, Figure 8.17. The marks are ours, added for teaching.',
+            left=Content(
+                title='The oscillators you will meet before we build them (1 of 3)',
+                lines=("Bounded, 0 to 100 percent: the relative strength index or RSI [1] tracks a stock's strength through its average gain and loss over the last n periods, n being the lookback (p. 262). The stochastic [2] is the position of the latest close in the recent price range (p. 259). The StochRSI [3] is the stochastic calculation applied to RSI values (p. 251).",),
+            ),
+            picture=FIGURE_8_17,
+            text_w=4.9,
         ),
         Content(
-            notes=('The unbounded ones. Part B builds the MACD, ROC and MOM; the CCI has no calculation in this chapter.',),
-            origin='Lim (2016), pp. 242, 244, 256 and 257.',
-            title='The oscillators you will meet before we build them (2 of 2)',
-            lines=("Unbounded, no top or bottom: the moving average convergence divergence or MACD is the 12-period exponential moving average (EMA) minus the 26-period EMA (p. 257). The rate of change or ROC is the percent change in price over n periods, and momentum or MOM is the price difference over n periods (p. 256).",
-                   "The CCI, the commodity channel index, gets an overbought level of plus 100 and an oversold level of minus 100 (pp. 242, 244). This chapter gives no calculation for it.",
-                   "Part A only reads these oscillators on Lim's charts; Part B builds them. Where you meet one before Part B builds it, the slide says what you need and no more."),
+            notes=('Overbought, oversold and equilibrium, drawn on one oscillator of ours.',),
+            origin='Lim (2016), pp. 236, 241 and 244. The chart is ours.',
+            title='Overbought, oversold and equilibrium on one oscillator',
+            lines=("Overbought and oversold are the high and low ends of an oscillator's readings (pp. 236, 241). Lim calls them overextensions. That is not Chapter 7's overextended bar: here the word describes an oscillator's reading. Equilibrium is the central value it swings around (p. 244).",
+                   ),
         ),
-        # The idea named before the numbers: raw %K.
         Content(
-            notes=('Name the idea first: where does the latest close sit in the recent range? The formula comes on the next slide.',),
-            origin='Lim (2016), p. 259.',
+            notes=('Drawn on one oscillator of ours.',),
+            origin='Lim (2016), pp. 236, 241 and 244. The chart is ours.',
+            title='Here they are on one oscillator of ours',
+            lines=("On our oscillator the reading of 78 is overbought [1], the 26 is oversold [2], and 50 is the equilibrium [3].",),
+        ),
+        course_chart('zn',
+            notes=('Gold 1 the overbought reading of 78, red 2 the oversold reading of 26, blue 3 the equilibrium line at 50.', 'The 70 and 30 lines are the RSI defaults Lim gives on p. 241; the readings are ours.'),
+            origin='FIN1209 teaching chart G. The numbers are invented for teaching.',
+            title='Here they are on one oscillator of ours',
+            letter='G',
+            shows='Our bounded oscillator with its overbought zone from 70, its oversold zone to 30 and its equilibrium at 50, and the readings 78 and 26 written on it.',
+            tier='core',
+            marks=(),
+        ),
+        WidePair(
+            notes=('The unbounded ones. Part B builds the MACD, ROC and MOM; the CCI is on the next slide.',),
+            origin='Lim (2016), pp. 245, 256 and 257, Figure 8.8. The marks are ours, added for teaching.',
+            left=Content(
+                title='The oscillators you will meet before we build them (2 of 3)',
+                lines=("Unbounded, no top or bottom: the moving average convergence divergence or MACD [1] is the 12-period exponential moving average (EMA) minus the 26-period EMA (p. 257). The rate of change or ROC [2] is the percent change in price over n periods, and momentum or MOM is the price difference over n periods (p. 256).",
+                       "Lim's chart draws the MACD and the ROC; the MOM is drawn later."),
+            ),
+            picture=FIGURE_8_8,
+            text_w=4.9,
+        ),
+        WidePair(
+            notes=('The CCI has no calculation in this chapter. Its zero line is drawn on Lim\'s chart.',),
+            origin='Lim (2016), pp. 242 and 244, Figure 8.7. The mark is ours, added for teaching.',
+            left=Content(
+                title='The oscillators you will meet before we build them (3 of 3)',
+                lines=("The CCI, the commodity channel index [1], gets an overbought level of plus 100 and an oversold level of minus 100 (pp. 242, 244). This chapter gives no calculation for it.",
+                       "Part A only reads these oscillators on Lim's charts; Part B builds them. Where you meet one before Part B builds it, the slide says what you need and no more."),
+            ),
+            picture=FIGURE_8_7_CCI,
+            text_w=4.9,
+        ),
+        # The idea named before the numbers: raw %K, and our chart of two closes in one range.
+        Content(
+            notes=('Name the idea first: where does the latest close sit in the recent range? Then the chart.',),
+            origin='Lim (2016), p. 259. The chart is ours.',
             title='The stochastic asks where the close sits in the recent range',
             lines=("The stochastic is one of the oscillators from our list. Now we build it. It answers one question: is the latest close near the top or near the bottom of the recent range?",
-                   "Lim describes it as the position of the latest close as a percentage of the price range over a chosen number of periods, measured from the lowest low. The result is called the raw %K (p. 259)."),
+                   "Lim describes it as the position of the latest close as a percentage of the price range over a chosen number of periods, measured from the lowest low. The result is called the raw %K (p. 259).",
+                   ),
             accent='Raw %K: where the latest close sits in the recent range, as a percentage.',
         ),
         Content(
-            notes=('Chapter 5 taught the bar stochastic inside one bar; the raw %K does the same over n periods.', 'The slide on the next page says why raw %K cannot leave 0 to 100.'),
-            origin='Lim (2016), pp. 259 to 260; Chapter 5, "Bar stochastic".',
+            notes=('The same range, two different closes.',),
+            origin='Lim (2016), p. 259. The chart is ours.',
+            title='Here is the idea drawn: two closes in one range',
+            lines=("On our chart the first close [1] sits near the top of the range and the second [2] near the bottom.",),
+        ),
+        course_chart('ci',
+            notes=('Gold 1 a close near the top of the range, 90 percent. Red 2 a close near the bottom, 10 percent. The range is the same.',),
+            origin='FIN1209 teaching chart D. The numbers are invented for teaching.',
+            title='Here is the idea drawn: two closes in one range',
+            letter='D',
+            shows='Our range from a lowest low of 50.00 to a highest high of 56.00, with one close near the top at 55.40, 90 percent, and one near the bottom at 50.60, 10 percent.',
+            tier='core',
+            marks=(),
+        ),
+        Content(
+            notes=('Chapter 5 taught the bar stochastic inside one bar; the raw %K does the same over n periods.', 'The chart shows the two ends and the middle of the same range.'),
+            origin='Lim (2016), pp. 259 to 260; Chapter 5, "Bar stochastic". The chart is ours.',
             title='Raw %K compares the close with the n-period high and low',
             lines=("Chapter 5's bar stochastic asked this inside one bar, (C - L) / (H - L). The raw %K asks it over n periods. C is the closing price, Ln the lowest low of the last n periods and Hn the highest high.",
-                   "Raw %K = (C - Ln) / (Hn - Ln) x 100 percent (p. 260). The usual lookback is 14 periods (p. 259)."),
+                   "Raw %K = (C - Ln) / (Hn - Ln) x 100 percent (p. 260). The usual lookback is 14 periods (p. 259).",
+                   ),
             accent='Close at the lowest low gives 0 percent. Close at the highest high gives 100 percent.',
         ),
         Content(
+            notes=('The two ends and the middle of one range.',),
+            origin='Lim (2016), p. 260. The chart is ours.',
+            title='Here are the two ends and the middle of one range',
+            lines=("On our chart a close at the lowest low [1] gives 0 percent, one in the middle [2] gives 50 and one at the highest high [3] gives 100.",),
+        ),
+        course_chart('ce',
+            notes=('Gold 1 a close at the lowest low, 0 percent. Red 2 a close in the middle, 50. Blue 3 a close at the highest high, 100.',),
+            origin='FIN1209 teaching chart E. The numbers are invented for teaching.',
+            title='Here are the two ends and the middle of one range',
+            letter='E',
+            shows='Our range from 50.00 to 56.00 with a close at the lowest low, 0 percent, one in the middle at 53.00, 50 percent, and one at the highest high, 100 percent.',
+            tier='core',
+            marks=(),
+        ),
+        Content(
             notes=('Why bounded: the top of the fraction can never exceed the bottom. Lim says this of the RSI on p. 262.',),
-            origin='Lim (2016), pp. 236, 260 and 262.',
+            origin='Lim (2016), pp. 236, 260 and 262. The chart is ours.',
             title='Raw %K always stays between 0 and 100 percent',
             lines=("The close can never be below the lowest low or above the highest high of the same lookback. So the top of the fraction is never larger than the bottom, and raw %K stays between 0 and 100 percent (pp. 260, 262).",
-                   "That makes it a bounded oscillator, the kind from Part A."),
+                   "That makes it a bounded oscillator, the kind from Part A.",
+                   ),
             accent="Every stock's raw %K runs on the same 0 to 100 scale, which is why Lim says bounded oscillators can be compared between stocks or markets over the same number of periods (p. 236).",
+        ),
+        Content(
+            notes=('Every close lands between 0 and 100.',),
+            origin='Lim (2016), pp. 260 and 262. The chart is ours.',
+            title='Here is every close of one lookback on the 0 to 100 scale',
+            lines=("On our chart the highest high [1] is 100 percent, the lowest low [2] is 0, and every close [3] lands between them.",),
+        ),
+        course_chart('rp',
+            notes=('Gold 1 the highest high, 100 percent. Red 2 the lowest low, 0. Blue 3 the fourteen closes, all between them.',),
+            origin='FIN1209 teaching chart F. The numbers are invented for teaching.',
+            title='Here is every close of one lookback on the 0 to 100 scale',
+            letter='F',
+            shows='Our fourteen bars between a lowest low of 50.00 and a highest high of 56.00, and each close carried across to a 0 to 100 percent scale, all between the two ends.',
+            tier='core',
+            marks=(),
         ),
         WidePair(
             notes=("This is the book's own example, so its numbers belong on its own picture.",

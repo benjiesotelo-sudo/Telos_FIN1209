@@ -190,30 +190,30 @@ def paint_closes(c, *, variant):
 
 
 def paint_range_percent(c):
-    """Every close of the lookback mapped onto the 0 to 100 percent scale."""
+    """The fourteen bars of the worked example, and every close as one dot on a 0 to 100 scale."""
     import deckkit as dk
     gold, red = '#' + str(dk.MARK_COLORS['gold']), '#' + str(dk.MARK_COLORS['red'])
     hi, lo = 56.0, 50.0
-    panel = Panel(c, 1.0, 6.4, .85, 3.25, 49.0, 57.0, len(LOOKBACK))
-    for i, row in enumerate(LOOKBACK):
-        panel.bar(i, *row, half=.09)
-    c.stroke((1.0, 7.5), (panel.y(hi), panel.y(hi)), color=gold, lw=2.2, dashed=True)
-    c.stroke((1.0, 7.5), (panel.y(lo), panel.y(lo)), color=red, lw=2.2, dashed=True)
-    ax = 8.0
-    c.stroke((ax, ax), (panel.y(lo), panel.y(hi)), color=MUTED, lw=2.0)
+    bars = Panel(c, 1.0, 5.2, .85, 3.25, 49.0, 57.0, len(LOOKBACK))
+    dots = Panel(c, 6.4, 9.3, .85, 3.25, 49.0, 57.0, len(LOOKBACK))
+    ticks = [bars.bar(i, *row, half=.07) for i, row in enumerate(LOOKBACK)]
+    c.stroke((1.0, 9.6), (bars.y(hi), bars.y(hi)), color=gold, lw=2.2, dashed=True)
+    c.stroke((1.0, 9.6), (bars.y(lo), bars.y(lo)), color=red, lw=2.2, dashed=True)
+    c.text(1.0, bars.y(hi) + .17, 'Hn 56.00', ha='left', va='bottom', color=GREEN_DEEP)
+    c.text(1.0, bars.y(lo) - .17, 'Ln 50.00', ha='left', va='top', color=GREEN_DEEP)
     for pct, price in ((100, hi), (50, 53.0), (0, lo)):
-        c.text(ax + .55, panel.y(price), f'{pct}%', ha='left', color=ck.GOLD if pct == 100 else INK)
-    xs = []
+        c.text(10.2, bars.y(price), f'{pct}%', ha='left', color=ck.GOLD if pct == 100 else INK)
+    ys = []
     for i, row in enumerate(LOOKBACK):
-        y = panel.y(row[3])
-        dx = (i % 3 - 1) * .13
-        xs.append((ax + dx, y))
-        c.stroke((ax + dx - .035, ax + dx + .035), (y, y), color=INK, lw=3.2, ink=True)
-    c.text(4.6, 3.55, 'each close, carried across to the percent scale', ha='center', color=GREEN_DEEP)
-    c.point((0, 1, 'hi'), ax, panel.y(hi))
-    c.point((0, 2, 'lo'), ax, panel.y(lo))
-    ys = [y for _x, y in xs]
-    c.box((0, 3, 'group'), ax - .24, min(ys) - .08, ax + .24, max(ys) + .08, frac=.5)
+        y = dots.y(row[3])
+        x = dots.x(i)
+        c.stroke((x - .012, x + .012), (y, y), color=INK, lw=8)
+        ys.append(y)
+    c.text(3.1, .55, 'the 14 bars of our worked example', color=MUTED)
+    c.text(7.9, .55, "each bar's close on the 0 to 100 scale", color=MUTED)
+    c.point((0, 1, 'hi'), *ticks[3]['high'])
+    c.point((0, 2, 'lo'), *ticks[7]['low'])
+    c.box((0, 3, 'group'), dots.x(0) - .15, min(ys) - .1, dots.x(len(LOOKBACK) - 1) + .15, max(ys) + .1, frac=.5)
 
 
 def paint_zones(c):

@@ -31,7 +31,7 @@ DATA = {
                  'The numbers are ours, made up to show the idea.'),
     'zn': _paint('G', oc.paint_zones,
                  (('gold', (0, 1, 'high')), ('red', (0, 2, 'low')), ('blue', (0, 3, 'mid'))),
-                 'One bounded oscillator, 0 to 100. The numbers are ours, made up to show the idea.'),
+                 'RSI lines 70 and 30. The readings are ours, made up to show the idea.'),
     'hd': _paint('H', oc.paint_hidden,
                  (('gold', (0, 1, 'price')), ('red', (0, 2, 'osc'))),
                  'The numbers are ours, made up to show the idea.'),

@@ -60,7 +60,7 @@ FIGURE_8_7_CCI = book_crop('8.7', (0.0, 0.5, 1.0, 1.0),
         Mark(number=2, kind='line', x0=0.60, y0=0.892, x1=0.80, y1=0.892, color='red', at=(0.835, 0.862), size=0.28),
         Mark(number=3, kind='line', x0=0.60, y0=0.9375, x1=0.80, y1=0.9375, color='blue', at=(0.835, 0.968), size=0.28),
     ))
-FIGURE_8_7_CCI.origin = 'Lim (2016), p. 244, Figure 8.7, courtesy of Stockcharts.com. The mark is ours, added for teaching.'
+FIGURE_8_7_CCI.origin = 'Lim (2016), p. 244, Figure 8.7, courtesy of Stockcharts.com. The marks are ours, added for teaching.'
 
 # The book's own %K example, Figure 8.22. Its own numbers may sit on its own picture.
 # Rings sit on the bar itself: the top of the wick, the bottom of the wick, the top of the body where the close dash starts.
@@ -184,7 +184,7 @@ PART_A = Section(
         ),
         WidePair(
             notes=('The CCI has no calculation in this chapter. Its zero line is drawn on Lim\'s chart.',),
-            origin='Lim (2016), pp. 242 and 244, Figure 8.7. The mark is ours, added for teaching.',
+            origin='Lim (2016), pp. 242 and 244, Figure 8.7. The marks are ours, added for teaching.',
             left=Content(
                 title='The oscillators you will meet before we build them (3 of 3)',
                 lines=("The CCI, the commodity channel index [1], gets an overbought level of plus 100 and an oversold level of minus 100 (pp. 242, 244). This chapter gives no calculation for it. On Lim's chart the plus 100 level is the solid line [2] and the minus 100 level the solid line [3]. The zero line crossovers marked there come later.",

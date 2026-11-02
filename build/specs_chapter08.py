@@ -54,7 +54,7 @@ _GAP = [(46, 47, 45.6, 46.8), (46.8, 47.8, 46.5, 47.6), (47.6, 48.4, 47.2, 48.0)
         (50.0, 50.3, 49.5, 49.9), (49.9, 50.9, 49.7, 50.8)]
 SPECS['gap'] = dict(letter='N', spec=dict(
     panes=[pane(lo=45, hi=52.2, n=10)],
-    bars=[dict(pane='p', rows=_GAP, labels=[(3, 'H 48.40', -.3, -.6)])],
+    bars=[dict(pane='p', rows=_GAP, labels=[(3, 'H 48.40', .6, -.25)])],
     levels=[dict(pane='p', value=49.4, label='top of the gap 49.40', dy=-.4, slots=(4, 9), lslot=5, color=DEEP)],
     marks=[('box', 'p', 3, 4, 48.4, 49.4), ('pt', 'p', 8, 49.5)]))
 
@@ -87,7 +87,7 @@ SPECS['stuck'] = dict(letter='R', spec=dict(
     series=[dict(pane='t', values=[50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76]),
             dict(pane='b', values=[55, 68, 78, 84, 88, 90, 87, 89, 91, 86, 88, 90, 85, 78], labels=[(5, '90', 0, .3)])],
     texts=[(1.2, .5, 'oscillator, above 80 for ten readings in a row', 'left', DEEP)],
-    marks=[('box', 'b', 3, 12, 82, 93), ('pt', 't', 12, 72)]))
+    marks=[('box', 'b', 3, 12, 82, 93), ('pt', 't', 12, 74)]))
 
 _PK = [0.4, 1.2, 2.6, 3.9, 2.0, 0.6, -0.5, 0.8, 2.4, 3.8, 1.9, 0.2, -0.8, 1.1, 2.8, 4.0, 2.2, 0.9]
 SPECS['unb'] = dict(letter='S', spec=dict(
@@ -133,8 +133,8 @@ _LOG = [tuple(round(math.log(v), 4) for v in row) for row in _ARITH]
 SPECS['mas'] = dict(letter='X', spec=dict(
     panes=[pane('l', x=(1.5, 4.8), y=(.8, 3.0), lo=9, hi=15, n=3, title='arithmetic scale'),
            pane('r', x=(6.9, 10.2), y=(.8, 3.0), lo=round(math.log(9), 4), hi=round(math.log(15), 4), n=3, title='ratio (log) scale')],
-    bars=[dict(pane='l', rows=_ARITH, labels=[(0, 'close 10', .85, 0), (1, 'close 12', .85, -.6), (2, 'close 14', .85, -.6)], half=.2),
-          dict(pane='r', rows=_LOG, labels=[(0, 'close 10', .85, 0), (1, 'close 12', .85, -.6), (2, 'close 14', .85, -.6)], half=.2)],
+    bars=[dict(pane='l', rows=_ARITH, labels=[(0, 'close 10', .8, -.18), (1, 'close 12', .8, -.5), (2, 'close 14', .8, -.18)], half=.2),
+          dict(pane='r', rows=_LOG, labels=[(0, 'close 10', .8, -.18), (1, 'close 12', .8, -.5), (2, 'close 14', .8, -.18)], half=.2)],
     levels=[dict(pane='l', value=12.0, label='average 12.00', dy=.2, color=DEEP),
             dict(pane='r', value=round(math.log(12.0), 4), label='average 12.00', dy=.2, color=DEEP)],
     marks=[('xy', 3.65, 1.9), ('xy', 9.1, 2.04)]))
@@ -162,8 +162,8 @@ _DTL = [round(45.5 + (5 / 6) * (i - 2), 2) for i in range(10)]
 SPECS['dyn'] = dict(letter='AA', spec=dict(
     panes=[pane(lo=42, hi=56, n=10)],
     series=[dict(pane='p', values=_DC, color=INK),
-            dict(pane='p', values=_DMA, color=DEEP, lw=2.4),
-            dict(pane='p', values=_DTL, color=MUTED, lw=2.0)],
+            dict(pane='p', values=_DMA, color=DEEP, lw=2.4, role='average', of=0, n=3),
+            dict(pane='p', values=_DTL, color=MUTED, lw=2.0, role='trendline', of=0, through=(2, 5), extremum=True)],
     texts=[(1.4, 3.3, 'black: price   green: 3-day moving average   grey: trendline through two troughs', 'left', DEEP),
            (1.4, 3.0, 'moving average, days 3, 6, 9: 45.17, 48.17, 51.17', 'left', DEEP),
            (1.4, 2.7, 'trendline, days 3, 6, 9: 45.50, 48.00, 50.50', 'left', MUTED)],
@@ -228,13 +228,13 @@ SPECS['lev'] = dict(letter='AD', spec=dict(
 
 _SV = [50, 62, 74, 86, 92, 84, 62, 40, 24, 12, 22, 40]
 SPECS['def'] = dict(letter='AE', spec=dict(
-    panes=[pane('s', y=(1.95, 3.4), lo=0, hi=100, n=12, title='a stochastic of ours', x=(1.3, 8.2)),
-           pane('r', y=(.6, 1.7), lo=0, hi=100, n=12, title='an RSI of ours', x=(1.3, 8.2))],
+    panes=[pane('s', y=(1.95, 3.4), lo=0, hi=100, n=12, title='a stochastic of ours', x=(1.3, 6.2)),
+           pane('r', y=(.6, 1.7), lo=0, hi=100, n=12, title='an RSI of ours', x=(1.3, 6.2))],
     series=[dict(pane='s', values=_SV), dict(pane='r', values=[48, 55, 64, 72, 68, 60, 50, 38, 28, 34, 44, 52])],
     levels=[dict(pane='s', value=90, label='shifted: 90', side='right', dy=-.1, color=DEEP),
-            dict(pane='s', value=80, label='default: 80', side='right', dy=-.4, color=MUTED, tcolor=MUTED),
+            dict(pane='s', value=80, label='default: 80', side='right', dy=-.1, tdx=1.75, color=MUTED, tcolor=MUTED),
             dict(pane='s', value=30, label='shifted: 30', side='right', dy=-.1, color=DEEP),
-            dict(pane='s', value=20, label='default: 20', side='right', dy=-.4, color=MUTED, tcolor=MUTED),
+            dict(pane='s', value=20, label='default: 20', side='right', dy=-.1, tdx=1.75, color=MUTED, tcolor=MUTED),
             dict(pane='r', value=70, label='RSI: 70', side='right', dy=-.1, color=DEEP),
             dict(pane='r', value=30, label='RSI: 30', side='right', dy=-.1, color=DEEP)],
     marks=[('pt', 's', 4, 92), ('pt', 's', 9, 12), ('pt', 'r', 3, 72)]))
@@ -242,7 +242,7 @@ SPECS['def'] = dict(letter='AE', spec=dict(
 SPECS['sd'] = dict(letter='AF', spec=dict(
     panes=[pane(lo=-290, hi=290, n=12, x=(1.4, 8.4), ref=[(0, '0')])],
     series=[dict(pane='p', values=[20, 90, 150, 210, 120, 30, -60, -140, -240, -150, -40, 40], labels=[(3, '210', 0, .28), (8, '-240', 0, -.45)])],
-    levels=[dict(pane='p', value=v, label=t, side='right', dy=-.1, slots=(0, 11), color=DEEP) for v, t in ((200, '+200: two sigma'), (100, '+100: one sigma'), (-100, '-100: one sigma'), (-200, '-200: two sigma'))],
+    levels=[dict(pane='p', value=v, label=t, side='right', dy=-.1, slots=(0, 11), color=DEEP) for v, t in ((200, '+200'), (100, '+100'), (-100, '-100'), (-200, '-200'))],
     marks=[('pt', 'p', 3, 210), ('pt', 'p', 8, -240)]))
 
 _MA = [40, 44, 48, 56, 62, 58, 52, 46]
@@ -283,26 +283,39 @@ SPECS['d3'] = _div('AK', [50, 47, 44, 48, 51, 48, 46, 50, 53], [58, 40, 30, 46, 
 SPECS['d4'] = _div('AL', [52, 56, 63, 57, 52, 56, 60, 55, 52], [40, 56, 66, 52, 44, 60, 78, 52, 42], (2, 6), (2, 6), 'peak', 'peak', 50, 66)
 
 
-def _geo(letter, line, osc, mark):
+def _geo(letter, line, osc, through, marks):
+    """An oscillator with a trendline drawn through two of its own turning points.
+    ``through`` are the two slots; ``marks`` are the (slot, value) of marks 1 to 3."""
     return dict(letter=letter, spec=dict(
         panes=[pane(lo=15, hi=92, n=10, x=(1.4, 9.4))],
-        series=[dict(pane='p', values=line, color=MUTED, lw=2.4), dict(pane='p', values=osc)],
-        texts=[(1.5, 3.4, 'black: oscillator   grey: trendline drawn on it', 'left', DEEP)],
-        marks=[('pt', 'p', mark[0], mark[1])]))
+        series=[dict(pane='p', values=osc),
+                dict(pane='p', values=line, color=MUTED, lw=2.4, role='trendline', of=0, through=through, extremum=True)],
+        texts=[(1.5, 3.4, 'black: oscillator   grey: trendline through two of its turns', 'left', DEEP)],
+        marks=[('pt', 'p', m[0], m[1]) for m in marks]))
 
 
-SPECS['g1'] = _geo('AM', [88 - 4 * i for i in range(10)], [60, 58, 62, 64, 66, 68, 66, 70, 72, 74], (5, 68))
-SPECS['g2'] = _geo('AN', [82 - 3 * i for i in range(10)], [40, 44, 48, 52, 56, 60, 62, 60, 54, 48], (6, 62))
-SPECS['g3'] = _geo('AO', [22 + 4 * i for i in range(10)], [62, 56, 50, 44, 40, 34, 30, 26, 24, 22], (4.2, 38.8))
-SPECS['g4'] = _geo('AP', [18 + 4 * i for i in range(10)], [70, 64, 58, 52, 48, 46, 44, 48, 54, 60], (6, 44))
+def _line(osc, i0, i1, n=10):
+    slope = (osc[i1] - osc[i0]) / (i1 - i0)
+    return [None if k < i0 else round(osc[i0] + slope * (k - i0), 2) for k in range(n)]
 
-_NO = [44, 48, 52, 58, 62, 56, 54, 53, 57, 60]
-_NM = [48, 48, 49, 51, 53, 54, 53, 53, 54, 55]
+
+_G1 = [60, 76, 64, 58, 70, 62, 54, 60, 68, 84]
+_G2 = [60, 76, 64, 58, 70, 62, 56, 58, 61, 54]
+_G3 = [70, 40, 58, 64, 46, 60, 66, 56, 50, 44]
+_G4 = [70, 40, 58, 64, 46, 60, 66, 58, 55, 64]
+SPECS['g1'] = _geo('AM', _line(_G1, 1, 4), _G1, (1, 4), [(1, 76), (4, 70), (7.4, 63.2)])
+SPECS['g2'] = _geo('AN', _line(_G2, 1, 4), _G2, (1, 4), [(1, 76), (4, 70), (8, 61)])
+SPECS['g3'] = _geo('AO', _line(_G3, 1, 4), _G3, (1, 4), [(1, 40), (4, 46), (7.5, 53)])
+SPECS['g4'] = _geo('AP', _line(_G4, 1, 4), _G4, (1, 4), [(1, 40), (4, 46), (8, 54)])
+
+_NO = [56, 52, 46, 44, 50, 58, 62, 62, 61.5, 64]
+_NM = [None, None] + [round(sum(_NO[i - 2:i + 1]) / 3, 2) for i in range(2, 10)]
 SPECS['num'] = dict(letter='AQ', spec=dict(
-    panes=[pane(lo=20, hi=80, n=10, x=(1.4, 9.4))],
-    series=[dict(pane='p', values=_NO, labels=[(2, '52', 0, .3), (7, '53', 0, -.45)]), dict(pane='p', values=_NM, color=DEEP, lw=2.4, labels=[(1, '48', 0, -.45)])],
-    texts=[(1.5, 3.4, 'black: oscillator   green: its own moving average', 'left', DEEP)],
-    marks=[('pt', 'p', 1.2, 48), ('pt', 'p', 7, 53)]))
+    panes=[pane(lo=30, hi=75, n=10, x=(1.4, 9.4))],
+    series=[dict(pane='p', values=_NO, labels=[(3, '44', 0, -.45), (7, '62', 0, .3)]),
+            dict(pane='p', values=_NM, color=DEEP, lw=2.4, role='average', of=0, n=3)],
+    texts=[(1.5, 3.4, 'black: oscillator   green: its own 3-reading moving average', 'left', DEEP)],
+    marks=[('pt', 'p', 3.5, 47.0), ('pt', 'p', 8, 61.5)]))
 
 SPECS['hosc'] = dict(letter='AR', spec=dict(
     panes=[pane(lo=20, hi=84, n=13, x=(1.4, 8.4))],
@@ -321,17 +334,19 @@ SPECS['od'] = dict(letter='AT', spec=dict(
     marks=[('pt', 'a', 6, 76), ('pt', 'b', 6, 66)]))
 
 _PA = [48, 50, 54, 52, 49, 51, 55, 58, 61]
+_PB = [56, 46, 52, 54, 48, 54, 58, 52, 46, 44]
+_PC = [47, 45, 44, 46, 49, 51, 53]
 SPECS['pc'] = dict(letter='AU', spec=dict(
     panes=[pane('a', x=(0.9, 3.1), y=(.9, 3.0), lo=44, hi=54, n=7, title='prior resistance'),
-           pane('b', x=(3.7, 5.9), y=(.9, 3.0), lo=44, hi=56, n=7, title='trendline'),
-           pane('c', x=(6.5, 8.7), y=(.9, 3.0), lo=44, hi=56, n=7, title='moving average')],
+           pane('b', x=(3.7, 6.5), y=(.9, 3.0), lo=40, hi=60, n=10, title='trendline'),
+           pane('c', x=(7.2, 9.4), y=(.9, 3.0), lo=42, hi=55, n=7, title='moving average')],
     series=[dict(pane='a', values=[45, 47, 49.6, 48, 49, 50.4, 52]),
-            dict(pane='b', values=[47.5, 49.5, 49, 50.5, 50.5, 48.5, 47]),
-            dict(pane='b', values=[46, 47, 48, 49, 50, 51, 52], color=MUTED, lw=2.2),
-            dict(pane='c', values=[46, 48, 47, 49, 51, 50, 53]),
-            dict(pane='c', values=[47, 47.3, 47.6, 48.0, 48.8, 49.6, 50.6], color=DEEP, lw=2.2)],
+            dict(pane='b', values=_PB),
+            dict(pane='b', values=_line(_PB, 1, 4), color=MUTED, lw=2.2, role='trendline', of=1, through=(1, 4), extremum=True),
+            dict(pane='c', values=_PC),
+            dict(pane='c', values=[None, None] + [round(sum(_PC[i - 2:i + 1]) / 3, 2) for i in range(2, 7)], color=DEEP, lw=2.2, role='average', of=3, n=3)],
     levels=[dict(pane='a', value=50.0, color=DEEP, slots=(0, 6))],
-    marks=[('pt', 'a', 5.0, 50.4), ('pt', 'b', 4.17, 50.2), ('pt', 'c', 3.4, 49.4)]))
+    marks=[('pt', 'a', 5.0, 50.4), ('pt', 'b', 7.3, 50.2), ('pt', 'c', 2.57, 45.14)]))
 
 SPECS['pv'] = dict(letter='AV', spec=dict(
     panes=[pane('a', y=(2.05, 3.4), lo=0, hi=100, n=10, title='a price-based oscillator', ref=[(50, '50')]),

@@ -104,3 +104,17 @@ def course_slide_renderer():  # noqa: F811
             yield
         finally:
             _dk.render_check = original_check
+
+
+# Tables are not charts of invented data: their credit says what they are made from.
+_TABLES = {'AS': 'FIN1209 table, from Lim\'s lists (pp. 239 to 240).',
+           'AW': 'FIN1209 table, from Lim\'s four definitions (pp. 246 to 247).',
+           'AX': 'FIN1209 table: examples from the slides of this class, our charts and Lim\'s figures.'}
+_orig_credit = CourseChart_credit = _layout.CourseChart.credit
+
+
+def _credit(self):
+    return _TABLES.get(self.display_letter) or _orig_credit.fget(self)
+
+
+_layout.CourseChart.credit = property(_credit)

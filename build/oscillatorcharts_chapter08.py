@@ -297,6 +297,7 @@ def paint_spec(c, spec):
                  dashed=ln.get('dashed', True))
         if ln.get('label'):
             lx = pan.x(ln.get('lslot', s0)) - .15 if ln.get('side', 'left') == 'left' else pan.x(s1) + .25
+            lx += ln.get('tdx', 0)
             c.text(lx, y + ln.get('dy', .2), ln['label'], ha='left' if ln.get('side', 'left') == 'left' else 'left',
                    va='bottom', color=ln.get('tcolor', GREEN_DEEP))
     for ser in spec.get('series', ()):

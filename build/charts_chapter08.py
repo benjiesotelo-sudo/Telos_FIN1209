@@ -10,7 +10,7 @@ NOTE = 'The numbers are ours, made up to show the idea.'
 
 def _paint(letter, painter, targets, caption=NOTE):
     return {'items': (), 'special': 'paint', 'paint': painter, 'owner': 'sh', 'letter': letter,
-            'old_marks': (), 'caption': caption, 'group_gap': .18,
+            'old_marks': (), 'caption': caption, 'group_gap': .18, 'marks_by_sentence': True,
             'targets': [{'number': n, 'color': t[0], 'target': t[1], **({'angles': t[2]} if len(t) > 2 else {})}
                         for n, t in enumerate(targets, 1)]}
 
@@ -60,7 +60,7 @@ def _spec(letter, spec, caption=NOTE, angles=None):
 
 
 DATA['dtb'] = _paint('AW', oc.paint_divergence_table, (), 'The table is ours, from Lim\'s four definitions (pp. 246 to 247).')
-DATA['ew'] = _paint('AX', oc.paint_eight_ways, (), 'The examples are ours, taken from the slides of this class.')
+DATA['ew'] = _paint('AX', oc.paint_eight_ways, (), 'The examples are from the slides of this class: our charts and Lim\'s figures.')
 DATA['tbl'] = _paint('AS', oc.paint_static_dynamic, (), 'The table is ours, from Lim\'s lists (pp. 239 to 240).')
 _COLORS = ('gold', 'red', 'blue', 'purple')
 from specs_chapter08 import SPECS  # noqa: E402

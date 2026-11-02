@@ -14,21 +14,21 @@ def chart(asset, letter, title, shows, notes, origin):
 
 # Lim's flow chart, Figure 8.2, cut into its two halves; the boxes start above their own words.
 from deckkit import Mark  # noqa: E402
-FIG_8_2_LEFT = book_crop('8.2', (0.0, 0.0, 1.0, 1.0),
-    "Figure 8.2: Lim's flow chart of indicators. The window oscillator side is marked: bounded, semi bounded and fully unbounded, each with his list of examples.",
+FIG_8_2_LEFT = book_crop('8.2', (0.0, 0.08, 0.56, 1.0),
+    "Figure 8.2, left half: Lim's flow chart with the window oscillators in three boxes, bounded, semi bounded and fully unbounded, each with his list of examples. The three header boxes are marked.",
     marks=(
-        Mark(number=1, kind='box', x0=0.0, y0=0.335, x1=0.172, y1=0.725, color='gold', at=(0.085, 0.76), size=0.28),
-        Mark(number=2, kind='box', x0=0.165, y0=0.335, x1=0.352, y1=0.875, color='red', at=(0.265, 0.91), size=0.28),
-        Mark(number=3, kind='box', x0=0.345, y0=0.335, x1=0.53, y1=0.995, color='blue', at=(0.443, 0.30), size=0.28),
+        Mark(number=1, kind='box', x0=0.002, y0=0.337, x1=0.172, y1=0.457, color='gold', at=(0.19, 0.50), size=0.28),
+        Mark(number=2, kind='box', x0=0.217, y0=0.337, x1=0.322, y1=0.485, color='red', at=(0.345, 0.52), size=0.28),
+        Mark(number=3, kind='box', x0=0.377, y0=0.337, x1=0.51, y1=0.485, color='blue', at=(0.535, 0.52), size=0.28),
     ))
 FIG_8_2_LEFT.origin = 'Lim (2016), p. 238, Figure 8.2. The marks are ours, added for teaching.'
-FIG_8_2_RIGHT = book_crop('8.2', (0.0, 0.0, 1.0, 1.0),
-    "Figure 8.2: Lim's flow chart of indicators. The overlay side is marked: numerically, geometrically, algorithmically and horizontally based, with his lists and his scale labels.",
+FIG_8_2_RIGHT = book_crop('8.2', (0.5, 0.05, 1.0, 1.0),
+    "Figure 8.2, right half: Lim's flow chart with the overlay indicators in four boxes, numerically, geometrically, algorithmically and horizontally based, with his lists and his scale labels. The four header boxes are marked.",
     marks=(
-        Mark(number=1, kind='box', x0=0.555, y0=0.285, x1=0.78, y1=0.855, color='gold', at=(0.535, 0.30), size=0.28),
-        Mark(number=2, kind='box', x0=0.818, y0=0.245, x1=0.998, y1=0.60, color='red', at=(0.975, 0.215), size=0.28),
-        Mark(number=3, kind='box', x0=0.818, y0=0.605, x1=0.998, y1=0.83, color='blue', at=(0.80, 0.70), size=0.28),
-        Mark(number=4, kind='box', x0=0.555, y0=0.858, x1=0.785, y1=0.995, color='purple', at=(0.815, 0.93), size=0.28),
+        Mark(number=1, kind='box', x0=0.565, y0=0.245, x1=0.77, y1=0.325, color='gold', at=(0.545, 0.285), size=0.28),
+        Mark(number=2, kind='box', x0=0.823, y0=0.245, x1=0.993, y1=0.355, color='red', at=(0.91, 0.205), size=0.28),
+        Mark(number=3, kind='box', x0=0.823, y0=0.605, x1=0.993, y1=0.72, color='blue', at=(0.80, 0.66), size=0.28),
+        Mark(number=4, kind='box', x0=0.575, y0=0.86, x1=0.78, y1=0.93, color='purple', at=(0.55, 0.895), size=0.28),
     ))
 FIG_8_2_RIGHT.origin = 'Lim (2016), p. 238, Figure 8.2. The marks are ours, added for teaching.'
 
@@ -273,7 +273,7 @@ def slides(S):
             notes=('Semi bounded: a floor at zero.',),
             origin='Lim (2016), p. 237. ' + OUR,
             title='Some unbounded oscillators stop at zero',
-            lines=("Some unbounded oscillators do have a lower limit of zero: Lim names volume, ADX, Bollinger Bandwidth and ATR, and calls them semi bounded (p. 237). Our volume-like line dips to 0.3 [1] but cannot go below the zero floor [2].",),
+            lines=("Some unbounded oscillators do have a lower limit of zero: Lim names volume, the ADX, Bollinger Bandwidth and the average true range (ATR) from Chapter 3, and calls them semi bounded (p. 237). This chapter only names the ADX and Bollinger Bandwidth; it does not spell out or build either. Our volume-like line dips to 0.3 [1] but cannot go below the zero floor [2].",),
         ),
         chart('semi', 'U', 'Some unbounded oscillators stop at zero',
               'Our volume-like oscillator with a floor at zero and a low of 0.3.',
@@ -283,7 +283,7 @@ def slides(S):
             notes=('Quote both of Lim\'s sentences and say the book does not reconcile them.',),
             origin='Lim (2016), p. 237. The chart on the next slide is ours.',
             title='Normalization can turn one kind into the other',
-            lines=("Lim says an unbounded oscillator \"may sometimes\" be converted into a bounded one by normalization, which confines its readings between 0 and 100 percent. In the next sentence he says normalization \"will always\" convert a point-based oscillator such as the MACD, the MOM, the CCI, the ATR or the ADX into a percentage scaled one (p. 237). The book does not say when it fails. Point-based means the readings are in price points, not percent; Lim does not define it, so that reading is ours. We read the two sentences together: the oscillators he names can always be rescaled, and he does not name any that cannot.",),
+            lines=("Lim says an unbounded oscillator \"may sometimes\" be converted into a bounded one by normalization, which confines its readings between 0 and 100 percent. In the next sentence he says normalization \"will always\" convert a point-based oscillator such as the MACD, the MOM, the CCI, the ATR or the ADX into a percentage scaled one (p. 237). The book does not say when it fails. Point-based means the readings are not on a 0 to 100 percent scale; Lim does not define it, so that reading is ours. We read the two sentences together: the oscillators he names can always be rescaled, and he does not name any that cannot.",),
         ),
         Content(
             notes=('Our own simple rescaling, once.',),
@@ -304,10 +304,10 @@ def slides(S):
         Content(
             notes=('One line swings around its centre, the other runs on.',),
             origin='Lim (2016), p. 237. ' + OUR,
-            title='Here are one that oscillates and one that trends',
+            title='Here is one that oscillates and one that trends',
             lines=("On our chart the line on the left swings around its central value, zero [1], which is what an oscillator does. The running total on the right keeps climbing [2], so many practitioners would call it an indicator instead.",),
         ),
-        chart('osc2', 'W', 'Here are one that oscillates and one that trends',
+        chart('osc2', 'W', 'Here is one that oscillates and one that trends',
               'A line of ours swinging around zero beside a running total that keeps climbing.',
               ('Gold 1 the line swinging around its centre, red 2 the running total.',), 'FIN1209 teaching chart W. ' + OUR),
         # ---- rows 38 and 39: Check 2
@@ -321,7 +321,7 @@ def slides(S):
                          reason='The same 0 to 100 scale lets us compare overextension between stocks or markets over the same number of periods (p. 236).'),
                 Question(stem='In a strong trend, what does a bounded oscillator tend to do?',
                          options=('Fall to zero', 'Stay overbought or oversold for long', 'Cross its equilibrium every day', 'Become unbounded'), answer='B',
-                         reason='It tends to remain overbought or oversold for extended periods, which says little more than that a strong trend is in effect (p. 237).'),
+                         reason='It tends to remain overbought or oversold for extended periods, which says little more than that a strong trend is in effect (pp. 236 to 237).'),
             ),
         ),
         # ---- rows 40 to 45: scale
@@ -344,7 +344,7 @@ def slides(S):
             notes=('The five-day high and a support level do not move either.',),
             origin='Lim (2016), p. 237. ' + OUR,
             title='A five-day high does not move either',
-            lines=("The algorithmic example is also scale invariant: the high prices keep the same values whatever the scale, so the five-day high is still 53.00 (p. 237). A horizontal overlay depends only on the price axis; time is not an element (pp. 237 to 238). Our five bars and the sixth that breaks them give 53.00 on the arithmetic scale [1] and on the ratio scale [2].",),
+            lines=("The algorithmic example is also scale invariant: the high prices keep the same values whatever the scale, so the five-day high is still 53.00 (pp. 237 to 238). A horizontal overlay depends only on the price axis; time is not an element (p. 238). Our five bars and the sixth that breaks them give 53.00 on the arithmetic scale [1] and on the ratio scale [2].",),
         ),
         chart('fds', 'Y', 'A five-day high does not move either',
               'Our five bars on an arithmetic scale and on a ratio scale, with the five-day high of 53.00 on both.',
@@ -365,10 +365,10 @@ def slides(S):
             origin='Lim (2016), p. 239, Figure 8.3. The marks are ours, added for teaching.',
             left=Content(
                 title='The same trendline on the linear scale breaks later',
-                lines=("Here is the same Nasdaq 100 on a linear scale. Its uptrend line [1] is penetrated late [2]. Lim says the compression that happens at higher prices on a ratio scaled chart changes the angle of every trendline, and ratio scaling produces earlier penetrations (p. 239).",),
+                lines=("Here is the same Nasdaq 100 on a linear scale, its uptrend line [1] penetrated late [2]. Lim says ratio scaling changes the angle of every trendline and produces earlier penetrations (p. 239). On his two charts the breaks fall close together, near the start of 2001; what the figure shows plainly is the angle: the line [1] is steeper on the ratio chart than here.",),
             ),
             picture=FIG_8_3_BOT,
-            text_w=3.6,
+            text_w=4.4,
         ),
         Content(
             notes=('The same trendline chart, with the day 10 and day 20 levels.',),
@@ -444,7 +444,7 @@ def slides(S):
             notes=('Review question 5. The table is on the next slide.',),
             origin='Lim (2016), pp. 236 and 239 to 240. The table on the next slide is ours.',
             title='Which kind goes where',
-            lines=("Horizontally based and algorithmically based overlays are static; geometrically based overlays are dynamic; numerically based overlays can be either (pp. 239 to 240). Lim notes that a Fibonacci level may also be classed as horizontally based (p. 236), which is why it is static.",),
+            lines=("Horizontally based and algorithmically based overlays are static; geometrically based overlays are dynamic; numerically based overlays can be either (pp. 239 to 240). Lim lists Fibonacci levels among the static overlays and moving averages among the dynamic ones (p. 240), so the numerically based kind sits in both columns.",),
         ),
         chart('tbl', 'AS', 'Here are the four kinds sorted into static and dynamic',
               'A table of ours with two columns, static and dynamic, and the four kinds of overlay placed in them, numerically based appearing in both.',

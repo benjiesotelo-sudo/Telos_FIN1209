@@ -21,7 +21,9 @@ def fig(num, window, shows, marks, page, extra=''):
 
 
 def chart(asset, letter, title, shows, notes):
-    return course_chart(asset, notes=notes, origin=f'FIN1209 teaching chart {letter}. ' + OUR, title=title, letter=letter, shows=shows, tier='core', marks=())
+    origin = {'AW': "FIN1209 table, from Lim's four definitions (pp. 246 to 247).",
+              'AX': "FIN1209 table: examples from the slides of this class, our charts and Lim's figures."}.get(letter, f'FIN1209 teaching chart {letter}. ' + OUR)
+    return course_chart(asset, notes=notes, origin=origin, title=title, letter=letter, shows=shows, tier='core', marks=())
 
 
 def pair(title, lines, picture, notes, origin, accent='', w=4.4):
@@ -39,9 +41,9 @@ F85 = fig('8.5', (0, 0, 1, 1), 'Figure 8.5: Amazon.com with its MACD under it, a
           [M(1, G, 0.03, 0.785, 0.955, 0.818, at=(0.985, 0.80)), M(2, R, 0.02, 0.105, 0.89, 0.205, at=(0.92, 0.155))], 243, 'sc')
 F86 = fig('8.6', (0, 0, 1, 1), 'Figure 8.6: silver with a cycle-tuned stochastic under it, its oversold levels, and six up arrows at the bottoms.',
           [M(1, G, 0.195, 0.83, 0.315, 0.915, at=(0.17, 0.87)),
-           M(2, R, 0.185, 0.445, 0.225, 0.52, kind='circle', at=(0.155, 0.48)), M(3, B, 0.345, 0.385, 0.395, 0.445, kind='circle', at=(0.335, 0.34)),
-           M(4, P, 0.468, 0.315, 0.515, 0.405, kind='circle', at=(0.445, 0.35)), M(5, G, 0.52, 0.315, 0.565, 0.405, kind='circle', at=(0.59, 0.35)),
-           M(6, R, 0.62, 0.385, 0.665, 0.46, kind='circle', at=(0.595, 0.34)), M(7, B, 0.725, 0.385, 0.77, 0.46, kind='circle', at=(0.80, 0.34))], 243)
+           M(2, R, 0.141, 0.451, 0.181, 0.521, kind='circle', at=(0.115, 0.486)), M(3, B, 0.351, 0.394, 0.391, 0.464, kind='circle', at=(0.325, 0.43)),
+           M(4, P, 0.474, 0.295, 0.514, 0.365, kind='circle', at=(0.448, 0.33)), M(5, G, 0.527, 0.295, 0.567, 0.365, kind='circle', at=(0.595, 0.33)),
+           M(6, R, 0.623, 0.40, 0.663, 0.47, kind='circle', at=(0.597, 0.435)), M(7, B, 0.73, 0.394, 0.77, 0.464, kind='circle', at=(0.80, 0.43))], 243)
 F88 = fig('8.8', (0, 0, 1, 1), 'Figure 8.8: Apple with the RSI, MACD and ROC under it and Lim\'s labels for similar crossover points and similar divergences.',
           [M(1, G, 0.11, 0.07, 0.31, 0.23, at=(0.32, 0.06)), M(2, R, 0.60, 0.30, 0.86, 0.355, at=(0.89, 0.33))], 245, 'sc')
 F88 = fig('8.8', (0, 0, 1, 1), 'Figure 8.8: Apple with the RSI, MACD and ROC under it. Lim labels similar crossover points on the price chart and similar divergences by arrows.',
@@ -56,7 +58,7 @@ F810_L = fig('8.10', (0, 0, 0.55, 1), 'Figure 8.10, left half: the GBPUSD chart 
               M(3, B, 0.35, 0.438, 0.446, 0.548, at=(0.335, 0.41))], 247)
 F810_R = fig('8.10', (0.45, 0, 1, 1), 'Figure 8.10, right half: Lim\'s labelled divergence lines: standard bearish, reverse bearish, standard bullish and reverse bullish.',
              [M(1, G, 0.47, 0.37, 0.556, 0.47, at=(0.49, 0.34)), M(2, R, 0.57, 0.405, 0.658, 0.505, at=(0.60, 0.375)),
-              M(3, B, 0.68, 0.46, 0.766, 0.562, at=(0.71, 0.60)), M(4, P, 0.78, 0.45, 0.868, 0.558, at=(0.82, 0.42)), M(5, G, 0.905, 0.505, 0.995, 0.585, at=(0.93, 0.47))], 247)
+              M(3, B, 0.68, 0.46, 0.766, 0.562, at=(0.71, 0.60)), M(4, P, 0.78, 0.45, 0.868, 0.558, at=(0.82, 0.42)), M(5, G, 0.882, 0.448, 0.968, 0.548, at=(0.955, 0.415))], 247)
 F811_U = fig('8.11', (0, 0, 1, 0.76), 'Figure 8.11, upper part: the S&P 500 and the whole S&P Bullish Percent Index window, with time lines 1 to 4 and Lim\'s labels for the reverse bullish, standard bearish and standard bullish divergences.',
              [M(1, G, 0.1, 0.23, 0.22, 0.325, at=(0.245, 0.21)), M(2, R, 0.328, 0.065, 0.635, 0.108, at=(0.66, 0.085)),
               M(3, B, 0.332, 0.462, 0.634, 0.502, at=(0.66, 0.482)), M(4, P, 0.692, 0.315, 0.81, 0.405, at=(0.835, 0.36))], 248, 'sc')
@@ -66,25 +68,26 @@ F812_L = fig('8.12', (0, 0.4, 0.55, 1), 'Figure 8.12, left half: the 30-minute N
              [M(1, G, 0.172, 0.66, 0.438, 0.706, at=(0.15, 0.63)), M(2, R, 0.298, 0.86, 0.392, 0.91, at=(0.27, 0.885))], 249)
 F812_R = fig('8.12', (0.5, 0.4, 1, 1), 'Figure 8.12, right half: the oscillator channel, the trendlines, a second sell signal and the buy signal.',
              [M(1, G, 0.578, 0.655, 0.743, 0.706, at=(0.56, 0.62)), M(2, R, 0.848, 0.805, 0.953, 0.857, at=(0.975, 0.83)),
-              M(3, B, 0.873, 0.868, 0.968, 0.912, at=(0.985, 0.90))], 249)
+              M(3, B, 0.873, 0.868, 0.968, 0.912, at=(0.985, 0.90)), M(4, P, 0.748, 0.855, 0.805, 0.915, at=(0.725, 0.885))], 249)
 F812_C = fig('8.12', (0.5, 0.55, 1, 1), 'Figure 8.12, cropped to its oscillator channel on the right and the buy signal at its bottom edge.',
-             [M(1, G, 0.578, 0.655, 0.743, 0.706, at=(0.56, 0.62)), M(2, R, 0.873, 0.868, 0.968, 0.912, at=(0.985, 0.85))], 249)
+             [M(1, G, 0.578, 0.925, 0.87, 0.975, at=(0.56, 0.90)), M(2, R, 0.873, 0.868, 0.968, 0.912, at=(0.985, 0.85))], 249)
 F813 = fig('8.13', (0, 0, 1, 1), 'Figure 8.13: Starbucks with its RSI and Bollinger bands drawn on the RSI, Lim\'s overbought and oversold levels, and four arrows labelled RSI at Bollinger lower band.',
-           [M(1, G, 0.02, 0.76, 0.97, 0.85, at=(0.985, 0.80)),
+           [M(1, G, 0.40, 0.755, 0.96, 0.815, at=(0.985, 0.785)),
             M(2, R, 0.50, 0.78, 0.54, 0.835, kind='circle', at=(0.475, 0.86)), M(3, B, 0.56, 0.78, 0.60, 0.835, kind='circle', at=(0.57, 0.86)),
             M(4, P, 0.675, 0.78, 0.715, 0.835, kind='circle', at=(0.66, 0.86)), M(5, G, 0.81, 0.775, 0.85, 0.83, kind='circle', at=(0.87, 0.86))], 250, 'sc')
 F813_C = fig('8.13', (0.0, 0.62, 1, 1), 'Figure 8.13, cropped to the RSI window: the lower Bollinger band, the RSI and Lim\'s oversold level label.',
-             [M(1, G, 0.02, 0.76, 0.97, 0.85, at=(0.985, 0.80)), M(2, R, 0.232, 0.868, 0.335, 0.94, at=(0.205, 0.90))], 250, 'sc')
-F814 = fig('8.14', (0, 0.45, 1, 1), 'Figure 8.14: the 30-minute Nikkei 225 with its oscillator under it, Lim\'s oscillator resistance and support lines, and his labels for sell signals at resistance and buy signals at support.',
-           [M(1, G, 0.155, 0.683, 0.555, 0.747, at=(0.135, 0.66)), M(2, R, 0.405, 0.9, 0.752, 0.982, at=(0.775, 0.94)),
-            M(3, B, 0.48, 0.593, 0.636, 0.637, at=(0.455, 0.57)), M(4, P, 0.615, 0.703, 0.757, 0.747, at=(0.78, 0.72))], 251)
+             [M(1, G, 0.40, 0.755, 0.96, 0.815, at=(0.985, 0.785)), M(2, R, 0.36, 0.845, 0.62, 0.863, at=(0.64, 0.855))], 250, 'sc')
+F814 = fig('8.14', (0, 0.45, 0.66, 1), 'Figure 8.14, left part: the 30-minute Nikkei 225 with its oscillator under it, Lim\'s oscillator resistance line and his label for sell signals at resistance.',
+           [M(1, G, 0.155, 0.683, 0.555, 0.747, at=(0.135, 0.66)), M(2, R, 0.475, 0.575, 0.642, 0.64, at=(0.45, 0.55))], 251)
 F814_R = fig('8.14', (0.45, 0.45, 1, 1), 'Figure 8.14, right part: the sell signals at the oscillator resistance and the buy signals at the oscillator support.',
-             [M(1, G, 0.48, 0.593, 0.636, 0.637, at=(0.465, 0.56)), M(2, R, 0.615, 0.703, 0.757, 0.747, at=(0.78, 0.72))], 251)
+             [M(1, G, 0.475, 0.575, 0.642, 0.64, at=(0.46, 0.55)), M(2, R, 0.608, 0.686, 0.762, 0.752, at=(0.785, 0.72)),
+              M(3, B, 0.455, 0.9, 0.752, 0.982, at=(0.775, 0.95))], 251)
 F815 = fig('8.15', (0, 0, 1, 1), 'Figure 8.15: Apple with the StochRSI under it, Lim\'s label Bullish oversold signals and five dotted arrows.',
            [M(1, G, 0.112, 0.115, 0.325, 0.215, at=(0.345, 0.09)),
             M(2, R, 0.085, 0.265, 0.125, 0.325, kind='circle', at=(0.062, 0.30)), M(3, B, 0.185, 0.27, 0.225, 0.33, kind='circle', at=(0.16, 0.305)),
             M(4, P, 0.38, 0.30, 0.42, 0.36, kind='circle', at=(0.355, 0.335)), M(5, G, 0.515, 0.24, 0.555, 0.30, kind='circle', at=(0.49, 0.275)),
-            M(6, R, 0.665, 0.10, 0.705, 0.16, kind='circle', at=(0.64, 0.135))], 251, 'sc')
+            M(6, R, 0.665, 0.10, 0.705, 0.16, kind='circle', at=(0.64, 0.135)),
+            M(7, B, 0.04, 0.885, 0.745, 0.945, at=(0.775, 0.915))], 251, 'sc')
 F87_CCI = fig('8.7', (0, 0.5, 1, 1), 'Figure 8.7, lower half: the RSI and the CCI with Lim\'s label for the 50 percent and zero line crossovers.',
               [M(1, G, 0.178, 0.885, 0.212, 0.94, kind='circle', at=(0.14, 0.93)), M(2, R, 0.51, 0.875, 0.545, 0.93, kind='circle', at=(0.575, 0.84)),
                M(3, B, 0.178, 0.635, 0.212, 0.69, kind='circle', at=(0.14, 0.62)), M(4, P, 0.51, 0.64, 0.545, 0.695, kind='circle', at=(0.575, 0.60))], 244, 'sc')
@@ -125,7 +128,7 @@ def slides(S, equilibrium, signal, check6):
             notes=('Price breaches an overlay; here are three.',),
             origin='Lim (2016), p. 241. ' + OUR,
             title='Here is price breaching three of those overlays',
-            lines=("On our charts price breaches a prior resistance [1], a trendline [2] and a moving average [3]. Each is a price confirmation, because price, not the oscillator, does the breaching (p. 241).",),
+            lines=("On our charts price breaches a prior resistance [1], a trendline through two troughs [2] and a 3-bar moving average [3]. Each is a price confirmation, because price, not the oscillator, does the breaching (p. 241).",),
         ),
         chart('pc', 'AU', 'Here is price breaching three of those overlays',
               'Three small charts of ours: price breaching a prior resistance, a rising trendline and a moving average.',
@@ -296,7 +299,7 @@ def slides(S, equilibrium, signal, check6):
         ),
         chart('sig2', 'AH', 'A crossing near oversold counts for more',
               'Our oscillator and its signal line crossing near an oversold reading of 22 and again near 50.',
-              ('Gold 1 the crossing near oversold, red 2 the crossing near 50.',)),
+              ('Gold 1 the crossing near oversold, red 2 the crossing at about 60, far from the overbought 70.',)),
         pair('Figure 8.9: MACD signal line crossovers',
              ("On Lim's Goldman Sachs chart the signal line crossovers [1] are marked at the vertical time lines, with an S for a sell and a B for a buy. The MACD crosses its signal line at [2] and again at [3]. The signal line is the smoother of the two lines, since it is an average. Lim finds these fairly effective in forecasting tops and bottoms in the stock (p. 246).",),
              F89, ('Gold 1 Lim\'s label, red 2 an early crossing, blue 3 a later one.',), 'Lim (2016), p. 246, Figure 8.9, courtesy of Stockcharts.com. The marks are ours, added for teaching.'),
@@ -363,7 +366,6 @@ def slides(S, equilibrium, signal, check6):
             origin='Lim (2016), pp. 246 to 247. The table on the next slide is ours.',
             title='The four kinds in one table',
             lines=("Lim's four definitions side by side: the standard kinds expect a reversal and the reverse kinds a continuation (pp. 246 to 247). Chapter 9 adds more on divergence; these four are in Chapter 8.",),
-            accent='Standard kinds expect a reversal. Reverse kinds expect a continuation.',
         ),
         chart('dtb', 'AW', 'Here are the four kinds in one table',
               'A table of ours with the four kinds of divergence, what price makes, what the oscillator makes and what is expected.',
@@ -412,25 +414,25 @@ def slides(S, equilibrium, signal, check6):
             lines=("The last four ways draw on the oscillator what we draw on price. Geometrically based overlays usually used are trendlines, channels, chart patterns and apex reactions; apex reaction is only named here (p. 248). The signals are four: breaching upward is a buy, testing from below a sell, breaching downward a sell and testing from above a buy (p. 248).",),
         ),
         Content(notes=('Breach upward.',), origin='Lim (2016), p. 248. ' + OUR, title='Breach upward is a buy signal',
-                lines=("An oscillator breaching a geometrically based overlay to the upside is a buy (bullish) signal (p. 248). On our chart the oscillator breaks up through a falling trendline [1].",)),
-        chart('g1', 'AM', 'Breach upward is a buy signal', 'Our oscillator breaking up through a falling trendline.', ('Gold 1 the breach upward.',)),
+                lines=("An oscillator breaching a geometrically based overlay to the upside is a buy (bullish) signal (p. 248). On our chart a falling trendline runs through the oscillator's two earlier peaks [1] [2], and the oscillator breaks up through it [3].",)),
+        chart('g1', 'AM', 'Breach upward is a buy signal', 'Our oscillator breaking up through a falling trendline.', ('Gold 1 and red 2 the two earlier peaks, blue 3 the breach upward.',)),
         Content(notes=('Test from below.',), origin='Lim (2016), p. 248. ' + OUR, title='Testing from below is a sell signal',
-                lines=("An oscillator testing a geometrically based overlay from below is a sell (bearish) signal (p. 248). Our oscillator rises to the same kind of line and turns back [1].",)),
-        chart('g2', 'AN', 'Testing from below is a sell signal', 'Our oscillator rising to a falling trendline and turning back.', ('Gold 1 the test from below.',)),
+                lines=("An oscillator testing a geometrically based overlay from below is a sell (bearish) signal (p. 248). Our falling trendline runs through the two earlier peaks [1] [2], and the oscillator rises to it and turns back [3].",)),
+        chart('g2', 'AN', 'Testing from below is a sell signal', 'Our oscillator rising to a falling trendline and turning back.', ('Gold 1 and red 2 the two earlier peaks, blue 3 the test from below.',)),
         Content(notes=('Breach downward.',), origin='Lim (2016), p. 248. ' + OUR, title='Breach downward is a sell signal',
-                lines=("An oscillator breaching a geometrically based overlay to the downside is a sell (bearish) signal (p. 248). Our oscillator falls through a rising trendline [1].",)),
-        chart('g3', 'AO', 'Breach downward is a sell signal', 'Our oscillator falling through a rising trendline.', ('Gold 1 the breach downward.',)),
+                lines=("An oscillator breaching a geometrically based overlay to the downside is a sell (bearish) signal (p. 248). Our rising trendline runs through the two earlier troughs [1] [2], and the oscillator falls through it [3].",)),
+        chart('g3', 'AO', 'Breach downward is a sell signal', 'Our oscillator falling through a rising trendline.', ('Gold 1 and red 2 the two earlier troughs, blue 3 the breach downward.',)),
         Content(notes=('Test from above.',), origin='Lim (2016), p. 248. ' + OUR, title='Testing from above is a buy signal',
-                lines=("An oscillator testing a geometrically based overlay from above is a buy (bullish) signal (p. 248). Our oscillator falls to a rising trendline and holds [1].",)),
-        chart('g4', 'AP', 'Testing from above is a buy signal', 'Our oscillator falling to a rising trendline and holding.', ('Gold 1 the test from above.',)),
+                lines=("An oscillator testing a geometrically based overlay from above is a buy (bullish) signal (p. 248). Our rising trendline runs through the two earlier troughs [1] [2], and the oscillator falls to it and holds [3].",)),
+        chart('g4', 'AP', 'Testing from above is a buy signal', 'Our oscillator falling to a rising trendline and holding.', ('Gold 1 and red 2 the two earlier troughs, blue 3 the test from above.',)),
         pair('Figure 8.12: the triangle and the first sell signal',
              ("In Lim's 30-minute Nikkei 225 chart the momentum oscillator (MOM) carries a symmetrical triangle breakout [1], and the sell signal under it [2] (pp. 248 to 249).",),
              F812_L, ('Gold 1 the triangle, red 2 the sell signal.',), 'Lim (2016), p. 249, Figure 8.12. The marks are ours, added for teaching.', w=3.5),
         pair('Figure 8.12: the channel, the trendlines and the buy signal',
-             ("On the right half the oscillator carries a channel [1], trendlines [2] and a buy signal [3]. A second sell signal at the right is read as the first of two sell signals on this half (pp. 248 to 249).",),
+             ("On the right half the oscillator carries a channel [1], trendlines [2] and a buy signal [3]. The Sell signal label in the middle of this half [4] is Lim's second sell signal, after the one on the last slide (pp. 248 to 249).",),
              F812_R, ('Gold 1 the channel, red 2 the trendlines, blue 3 the buy signal.',), 'Lim (2016), p. 249, Figure 8.12. The marks are ours, added for teaching.', w=3.5),
         pair('Figure 8.12: the projected channel bottom',
-             ("On the right, the oscillator channel [1] is projected down to its bottom edge, where Lim marks a projected channel bottom buy signal [2] (p. 249).",),
+             ("On the right, the oscillator channel is projected down to its bottom edge [1], where Lim marks a projected channel bottom buy signal [2] (p. 248).",),
              F812_C, ('Gold 1 the channel, red 2 the buy signal at its bottom edge.',), 'Lim (2016), p. 249, Figure 8.12. The marks are ours, added for teaching.'),
         # ---- rows 109 to 112: numerical
         Content(
@@ -440,8 +442,8 @@ def slides(S, equilibrium, signal, check6):
             lines=("The numerically based overlays usually employed are Bollinger Bands, moving averages, moving average bands, Fibonacci levels and linear regression bands (p. 249). The four signals are the same: breaching upward is a buy, testing from below a sell, breaching downward a sell and testing from above a buy (p. 249).",),
         ),
         Content(notes=('An oscillator against its own moving average.',), origin='Lim (2016), p. 249. ' + OUR, title='Here is an oscillator against its own moving average',
-                lines=("Our oscillator, 48, breaks up through its moving average [1], a buy, and later falls to the average from above, to 53, and holds [2], also a buy (p. 249).",)),
-        chart('num', 'AQ', 'Here is an oscillator against its own moving average', 'Our oscillator breaking up through its moving average and later testing it from above.', ('Gold 1 the breach upward, red 2 the test from above.',)),
+                lines=("Our oscillator breaks up through its 3-reading moving average at 47 [1], a buy, and later falls back to touch the average from above at about 61.5 [2], also a buy (p. 249).",)),
+        chart('num', 'AQ', 'Here is an oscillator against its own moving average', 'Our oscillator breaking up through its 3-reading moving average at 47 and later falling back to touch it from above at about 61.5.', ('Gold 1 the breach upward, red 2 the test from above.',)),
         pair('Figure 8.13: the RSI finds support at the lower Bollinger band',
              ("In Lim's Starbucks chart the Bollinger bands [1] are drawn on the RSI, and the RSI finds support at the lower band at the four arrows [2] to [5]. Prices also bottomed each time (p. 249). On p. 250 Lim says the RSI reacted at the upper and lower bands; his figure and his p. 249 text show only the lower band, so we read the lower one.",),
              F813, ('Gold 1 the band, then the four arrows labelled RSI at Bollinger lower band.',), 'Lim (2016), pp. 249 to 250, Figure 8.13, courtesy of Stockcharts.com. The marks are ours, added for teaching.'),
@@ -459,11 +461,11 @@ def slides(S, equilibrium, signal, check6):
                 lines=("On our oscillator the prior resistance is the earlier peak at 70 and the prior support the earlier trough at 30. It breaks through the resistance [1], a buy, and holds near the support at 32 [2], also a buy.",)),
         chart('hosc', 'AR', 'Here are resistance and support in an oscillator', 'Our oscillator with an earlier peak at 70 and an earlier trough at 30, later breaking the resistance and holding near the support.', ('Gold 1 the breach of resistance, red 2 the hold at support.',)),
         pair('Figure 8.14: oscillator support and resistance',
-             ("On Lim's Nikkei 225 chart the oscillator resistance [1] and support [2] are drawn, with sell signals where the oscillator shows resistance [3] and buy signals where it shows support [4] (p. 251).",),
-             F814, ('Gold 1 the resistance line, red 2 the support line, blue 3 sell signals, purple 4 buy signals.',), 'Lim (2016), p. 251, Figure 8.14. The marks are ours, added for teaching.', w=3.5),
+             ("On Lim's Nikkei 225 chart the oscillator resistance [1] is drawn, with sell signals where the oscillator shows resistance [2] (p. 251). The support and the buy signals are on the next slide.",),
+             F814, ('Gold 1 the resistance line, red 2 the sell signals label.',), 'Lim (2016), p. 251, Figure 8.14. The marks are ours, added for teaching.', w=3.5),
         pair('Figure 8.14: the signals in order',
-             ("Looking at the right part: the sell signals at the resistance [1] come first, then the buy signals at the support [2] (p. 251).",),
-             F814_R, ('Gold 1 the sell signals at resistance, red 2 the buy signals at support.',), 'Lim (2016), p. 251, Figure 8.14. The marks are ours, added for teaching.', w=3.5),
+             ("Looking at the right part: the sell signals at the resistance [1] come first, then the buy signals at the support [2], with the oscillator support line [3] under them (p. 251).",),
+             F814_R, ('Gold 1 the sell signals at resistance, red 2 the buy signals at support, blue 3 the support line.',), 'Lim (2016), p. 251, Figure 8.14. The marks are ours, added for teaching.', w=3.5),
         # ---- rows 117 and 118: oscillator on oscillator
         Content(
             notes=('Oscillator on oscillator: the StochRSI; formula in 8.4.',),
@@ -472,8 +474,8 @@ def slides(S, equilibrium, signal, check6):
             lines=("Buy and sell signals may also come from the interaction between window oscillators. Lim writes \"similarly\" (p. 250): the Bollinger band on the Starbucks RSI is indicator on oscillator, and this is oscillator on oscillator. His example is the Stochastic RSI, where the stochastic of RSI values is calculated and plotted (p. 251); the formula comes in 8.4. Any of the earlier seven ways can be applied to it.",),
         ),
         pair('Figure 8.15: buying dips in an uptrend',
-             ("On Lim's Apple chart the StochRSI points to potential buying dips, shown by his label Bullish oversold signals [1] and the five dotted lines [2] to [6]. Lim says these are buying dips in an uptrend (p. 251). The chart draws no trendline, so the uptrend is the rising price itself. Under each dotted line the StochRSI is below its 0.2 line [7]. Its axis runs 0.0 to 1.0, not 0 to 100, because Part B's formula has no x 100 (p. 254).",),
-             F815, ('Gold 1 Lim\'s label, then arrowed lines.',), 'Lim (2016), p. 251, Figure 8.15, courtesy of Stockcharts.com. The marks are ours, added for teaching.', w=4.2),
+             ("On Lim's Apple chart the StochRSI points to potential buying dips, shown by his label Bullish oversold signals [1] and the five dotted lines his label points to, [2] to [6]. Lim says these are buying dips in an uptrend (p. 251); the chart draws no trendline, so the uptrend is the rising price. Under the first five dotted lines the StochRSI is below its 0.2 line [7]. Its axis runs 0.0 to 1.0, not 0 to 100, because the formula in 8.4, in the second class, has no x 100 (p. 254).",),
+             F815, ('Gold 1 Lim\'s label, then arrowed lines.',), 'Lim (2016), p. 251, Figure 8.15, courtesy of Stockcharts.com. The marks are ours, added for teaching.', w=5.0),
         # ---- checks 10 and 11
         StackedFigureCheck(
             notes=('Both answers come from the oscillator pattern slides.',),
@@ -511,11 +513,10 @@ def slides(S, equilibrium, signal, check6):
             notes=('The first class closes; the second class tunes the lookback and builds the oscillators.',),
             origin='Lim (2016), pp. 240 to 251. The table on the next slide is ours.',
             title='What you can now do after the first class',
-            lines=("You can name the four kinds of overlay and the two kinds of window oscillator, and say what scale invariant, static and dynamic mean. You can read an oscillator eight ways, each with an example on the next slide.",
+            lines=("You can name the four kinds of overlay and the two kinds of window oscillator, and say what scale invariant, static and dynamic mean. You can read an oscillator eight ways, each with one example in the table below.",
                    "The second class tunes the lookback to the market's cycle and then goes through the main oscillators one by one: the rate of change (ROC), momentum (MOM), the MACD, the average true range (ATR), the stochastic and the RSI, and then pivot points."),
-            accent='Next: tuning the lookback, then building each oscillator.',
         ),
-        chart('ew', 'AX', 'Here are the eight ways with one example each',
+        chart('ew', 'AX', 'What you can now do after the first class',
               'A table of ours with the eight ways of reading an oscillator and one example from this class for each.',
               ('One example for each of the eight ways.',)),
     )

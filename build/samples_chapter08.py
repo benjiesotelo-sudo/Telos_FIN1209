@@ -57,8 +57,8 @@ FIGURE_8_7_CCI = book_crop('8.7', (0.0, 0.5, 1.0, 1.0),
     "Figure 8.7, cropped to its lower half: the RSI window and, under it, the CCI window with its plus 100 and minus 100 lines and its zero line.",
     marks=(
         Mark(number=1, kind='box', x0=0.005, y0=0.814, x1=0.93, y1=0.992, color='gold', at=(0.035, 0.795), size=0.28),
-        Mark(number=2, kind='line', x0=0.60, y0=0.892, x1=0.80, y1=0.892, color='red', at=(0.835, 0.862), size=0.28),
-        Mark(number=3, kind='line', x0=0.60, y0=0.9375, x1=0.80, y1=0.9375, color='blue', at=(0.835, 0.968), size=0.28),
+        Mark(number=2, kind='line', x0=0.60, y0=0.892, x1=0.80, y1=0.892, color='red', at=(0.965, 0.862), size=0.28),
+        Mark(number=3, kind='line', x0=0.60, y0=0.9375, x1=0.80, y1=0.9375, color='blue', at=(0.965, 0.968), size=0.28),
     ))
 FIGURE_8_7_CCI.origin = 'Lim (2016), p. 244, Figure 8.7, courtesy of Stockcharts.com. The marks are ours, added for teaching.'
 

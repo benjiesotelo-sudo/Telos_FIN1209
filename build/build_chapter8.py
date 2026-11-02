@@ -84,6 +84,49 @@ def _artwork_problems(figures_dir: Path) -> list[str]:
     return problems
 
 
+def _mark_problems(number, slide, body) -> list[str]:
+    """Machine checks (b) and (c): the numbers the text names are the marks drawn, and no
+    badge covers another badge or sits inside another mark."""
+    if re.match(r"\s*(CHECK|ANSWERS)", body):
+        return []
+    from pptx.util import Emu
+    badges, marks = [], []
+    pics = [(sh.left / 914400, sh.top / 914400, (sh.left + sh.width) / 914400, (sh.top + sh.height) / 914400)
+            for sh in slide.shapes if sh.shape_type == 13]
+    for sh in slide.shapes:
+        if sh.shape_type == 13 or sh.width is None:
+            continue
+        w, h = sh.width / 914400, sh.height / 914400
+        text = sh.text_frame.text.strip() if sh.has_text_frame else ""
+        box = (sh.left / 914400, sh.top / 914400, sh.left / 914400 + w, sh.top / 914400 + h)
+        if re.fullmatch(r"\d{1,2}", text) and w < 0.5:
+            badges.append((int(text), box))
+        elif not text and sh.shape_type == 1 and 0.05 < min(w, h) and max(w, h) < 9 and w * h < 20:
+            if any(box[0] <= p[0] + .12 and box[1] <= p[1] + .12 and box[2] >= p[2] - .12 and box[3] >= p[3] - .12 for p in pics):
+                continue   # the white frame round a picture
+            marks.append(box)
+    problems = []
+    named = {int(n) for n in re.findall(r"\((\d{1,2})\)", body)}
+    for lo_, hi_ in re.findall(r"\((\d{1,2})\) to \((\d{1,2})\)", body):
+        named |= set(range(int(lo_), int(hi_) + 1))
+    drawn = {n for n, _b in badges}
+    if badges or named:
+        if named - drawn:
+            problems.append(f"slide {number}: text names mark {sorted(named - drawn)} that is not drawn")
+        if drawn - named:
+            problems.append(f"slide {number}: mark {sorted(drawn - named)} is drawn but the text does not name it")
+    for i, (n, a) in enumerate(badges):
+        for m, b in badges[i + 1:]:
+            if a[0] < b[2] - .02 and b[0] < a[2] - .02 and a[1] < b[3] - .02 and b[1] < a[3] - .02:
+                problems.append(f"slide {number}: badges {n} and {m} overlap")
+        cx, cy = (a[0] + a[2]) / 2, (a[1] + a[3]) / 2
+        for b in marks:
+            if b[0] + .03 < cx < b[2] - .03 and b[1] + .03 < cy < b[3] - .03:
+                problems.append(f"slide {number}: badge {n} sits inside another mark")
+                break
+    return problems
+
+
 def _deck_problems(path: Path, with_figures: bool) -> list[str]:
     """Checks on the built file: a slide that names a figure must show one,
     no banned label, no em dash, nothing below the 17 point body floor."""
@@ -102,6 +145,14 @@ def _deck_problems(path: Path, with_figures: bool) -> list[str]:
                 problems.append(f"slide {number}: names a figure or chart but shows none")
         if "—" in body or "–" in body:
             problems.append(f"slide {number}: dash character in the text")
+        for notes_text in ([slide.notes_slide.notes_text_frame.text] if slide.has_notes_slide else []):
+            if re.search(r"Part [AB]\b", notes_text):
+                problems.append(f"slide {number}: Part A or Part B in the notes")
+        if re.search(r"Part [AB]\b", body):
+            problems.append(f"slide {number}: Part A or Part B on the slide")
+        if re.search(r"\[\d+\]", body):
+            problems.append(f"slide {number}: a [digit] mark form in the text")
+        problems += _mark_problems(number, slide, body)
         for label in BANNED_LABELS:
             if re.search(label, body, re.M):
                 problems.append(f"slide {number}: banned label /{label}/")
@@ -163,6 +214,40 @@ def _section_footers(path: Path) -> None:
     prs.save(path)
 
 
+def _chart_data_problems() -> list[str]:
+    """Machine check (d): every line a chart calls a trendline passes through two points of
+    the series it is drawn from, at turning points, and every moving average equals the
+    average of the closes it names."""
+    from specs_chapter08 import SPECS
+    problems = []
+    for key, entry in SPECS.items():
+        series = entry["spec"].get("series", ())
+        for k, ser in enumerate(series):
+            role = ser.get("role")
+            if role is None:
+                continue
+            src = series[ser["of"]]["values"]
+            vals = ser["values"]
+            if role == "trendline":
+                pts = ser["through"]
+                if len(pts) < 2:
+                    problems.append(f"chart {entry['letter']}: a trendline needs two points")
+                for slot in pts:
+                    if vals[slot] is None or abs(vals[slot] - src[slot]) > 0.06:
+                        problems.append(f"chart {entry['letter']}: trendline misses its source at slot {slot}")
+                    if ser.get("extremum"):
+                        near = [src[i] for i in (slot - 1, slot + 1) if 0 <= i < len(src) and src[i] is not None]
+                        if not (all(src[slot] > v for v in near) or all(src[slot] < v for v in near)):
+                            problems.append(f"chart {entry['letter']}: slot {slot} is not a peak or trough")
+            elif role == "average":
+                n = ser["n"]
+                for i, v in enumerate(vals):
+                    want = None if i < n - 1 else sum(src[i - n + 1:i + 1]) / n
+                    if (v is None) != (want is None) or (v is not None and abs(v - want) > 0.011):
+                        problems.append(f"chart {entry['letter']}: moving average wrong at slot {i}")
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--edition", choices=deckkit.EDITIONS, default=deckkit.TEACHING)
@@ -193,7 +278,7 @@ def main() -> int:
     audit_pptx(args.out, CHARTS_DIR)
     _fix_divider_notes(args.out)
     _section_footers(args.out)
-    deck_problems = _deck_problems(args.out, args.with_figures)
+    deck_problems = _deck_problems(args.out, args.with_figures) + _chart_data_problems()
     if deck_problems:
         print("Deck checks failed:", file=sys.stderr)
         for problem in deck_problems:

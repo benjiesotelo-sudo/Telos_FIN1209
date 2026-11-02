@@ -19,10 +19,10 @@ DATA = {
     'k': _paint('A', oc.paint_raw_k,
                 (('gold', (0, 1, 'hi')), ('red', (0, 2, 'lo')), ('blue', (0, 3, 'close')))),
     'eq': _paint('B', oc.paint_equilibrium_crossing,
-                 (('gold', (0, 1, 'cross')), ('red', (0, 2, 'cross'))),
-                 'A bounded oscillator, 0 to 100. The numbers are ours, made up to show the idea.'),
+                 (('gold', (0, 1, 'cross')), ('red', (0, 2, 'cross')), ('blue', (0, 3, 'cross')), ('purple', (0, 4, 'cross'))),
+                 'A bounded and an unbounded oscillator. The numbers are ours, made up to show the idea.'),
     'sg': _paint('C', oc.paint_signal_crossing,
-                 (('gold', (0, 1, 'cross'), (270, 250, 290)), ('red', (0, 2, 'cross'), (270, 250, 290))),
+                 (('gold', (0, 1, 'cross'), (270, 250, 290)), ('red', (0, 2, 'cross'), (110, 130, 150, 90))),
                  'Signal line: the average of the last three readings. The numbers are ours, made up to show the idea.'),
 }
 

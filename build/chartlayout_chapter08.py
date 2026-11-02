@@ -16,3 +16,11 @@ from chartlayout_chapter07 import (CourseCheck, CourseFigureCheck, WidePair,  # 
                                    artwork, audit_pptx, book_crop, chart_slides,
                                    course_chart, course_slide_renderer,
                                    expand_chart_pages)
+
+# Chapter 8's checks give their figure about half the slide (Chapter 7's column is 3.3 inches).
+_layout.FIGURE_CHECK_W = 4.6
+
+# One typeface for every answer line in this chapter: the plain check's answer
+# slide would otherwise set its answer in Courier and the figure check's in Arial.
+import deckkit as _dk  # noqa: E402
+_dk.MONO_FONT = _dk.BODY_FONT

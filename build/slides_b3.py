@@ -18,7 +18,7 @@ F823_R = fig('8.23', (0.55, 0.2, 0.99, 1.0), "Figure 8.23, right part: the price
 F824 = fig('8.24', (0, 0, 1, 1), "Figure 8.24: Starbucks with its RSI and its full stochastic under it, both circled where they rise back above oversold, and Lim's label about the buy trigger.",
            [M(1, G, 0.42, 0.638, 0.512, 0.775, kind='circle', at=(0.545, 0.61)), M(2, R, 0.427, 0.836, 0.51, 0.964, kind='circle', at=(0.545, 0.80))], 263, 'sc')
 F824_TRIG = fig('8.24', (0.3, 0.3, 0.9, 0.645), "Figure 8.24, cropped to the price bars around the buy signal, with Lim's dotted line at the high of the bar and his label.",
-                [M(1, G, 0.455, 0.445, 0.585, 0.48, at=(0.615, 0.45)), M(2, R, 0.53, 0.5, 0.77, 0.588, at=(0.795, 0.545)), M(3, B, 0.46, 0.466, 0.486, 0.553, at=(0.435, 0.52))], 262, 'sc')
+                [M(1, G, 0.455, 0.445, 0.585, 0.48, at=(0.615, 0.45)), M(2, R, 0.53, 0.5, 0.77, 0.583, at=(0.795, 0.545)), M(3, B, 0.46, 0.466, 0.476, 0.553, at=(0.435, 0.52))], 262, 'sc')
 F824_CHK = fig('8.24', (0, 0, 1, 1), "Figure 8.24: Starbucks with its RSI and its full stochastic under it, both circled where they rise back above oversold.",
                [M(1, G, 0.42, 0.638, 0.512, 0.775, kind='circle', at=(0.545, 0.61)), M(2, R, 0.427, 0.836, 0.51, 0.964, kind='circle', at=(0.545, 0.80))], 263, 'sc')
 

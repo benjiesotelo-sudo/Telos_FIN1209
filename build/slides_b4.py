@@ -13,7 +13,7 @@ F825 = fig('8.25', (0, 0, 1, 1), "Figure 8.25: the trend-following nature of piv
            [M(1, G, 0.085, 0.30, 0.15, 0.40, kind='circle', at=(0.05, 0.35)), M(2, R, 0.085, 0.80, 0.15, 0.91, kind='circle', at=(0.05, 0.86)),
             M(3, B, 0.145, 0.46, 0.215, 0.54, kind='circle', at=(0.25, 0.43)), M(4, P, 0.40, 0.535, 0.495, 0.585, at=(0.52, 0.50)),
             M(5, G, 0.60, 0.205, 0.70, 0.275, at=(0.565, 0.24)), M(6, R, 0.59, 0.76, 0.69, 0.84, at=(0.575, 0.80)),
-            M(7, B, 0.86, 0.20, 0.97, 0.82, at=(0.83, 0.52))], 263, 'sc')
+            M(7, B, 0.86, 0.20, 0.97, 0.82, at=(0.83, 0.52)), M(8, P, 0.03, 0.715, 0.095, 0.78, kind='circle', at=(0.05, 0.66))], 263, 'sc')
 F826 = fig('8.26', (0, 0, 1, 1), "Figure 8.26: the volatility characteristic of pivot points: the same bar with R2 of 160 and S2 of minus 40, each the PP of 60 plus or minus the day's range of 100.",
            [M(1, G, 0.61, 0.585, 0.69, 0.67, kind='circle', at=(0.73, 0.55)), M(2, R, 0.46, 0.215, 0.70, 0.31, at=(0.74, 0.26)),
             M(3, B, 0.46, 0.885, 0.70, 0.97, at=(0.74, 0.93)), M(4, P, 0.05, 0.45, 0.21, 0.90, at=(0.30, 0.50))], 264, 'sc')
@@ -59,8 +59,8 @@ def slides_87():
         ),
         # ---- rows 109 and 110: Figure 8.25
         pair('Figure 8.25: the pivot level, first resistance and support',
-             ("Lim says PP is the previous day's typical price (p. 263); his later chapter gives the formula, (H + L + C) / 3 (p. 397). On his figure the bar has a high [1] of 100, a low [2] of 0 and a close [3] of 80, and PP [4] is 60, which agrees. He builds S1 [6] by projecting the distance from the high down to PP downward from PP, and R1 [5] by projecting the distance from PP down to the low upward (pp. 263 to 264): 60 - 40 = 20 and 60 + 60 = 120. The \"?\" bracket [7] is the day's range, 100, our arithmetic; the O tick is the open."),
-             F825, ('Gold 1 the high, red 2 the low, blue 3 the close, purple 4 PP, then R1, S1 and the bracket.',), 'Lim (2016), pp. 263 to 264 and 397, Figure 8.25. The marks are ours, added for teaching.', w=5.3),
+             ("Lim says PP is the previous day's typical price (p. 263); his later chapter gives the formula, (H + L + C) / 3 (p. 397). On his figure the bar has a high [1] of 100, a low [2] of 0 and a close [3] of 80, and PP [4] is 60, which agrees. He builds S1 [6] by projecting the distance from the high down to PP downward from PP, and R1 [5] by projecting the distance from PP down to the low upward (pp. 263 to 264): 60 - 40 = 20 and 60 + 60 = 120. The \"?\" bracket [7] is the day's range, 100, our arithmetic; the O tick [8] is the open, not a price of 0."),
+             F825, ('Gold 1 the high, red 2 the low, blue 3 the close, purple 4 PP, then R1, S1 and the bracket, 8 the open tick.',), 'Lim (2016), pp. 263 to 264 and 397, Figure 8.25. The marks are ours, added for teaching.', w=5.3),
         # ---- row 111: first levels worked
         Content(
             notes=("PP is Lim's typical price, p. 397.", 'S1 = PP - (H - PP), R1 = PP + (PP - L).'),
@@ -74,11 +74,18 @@ def slides_87():
         # ---- row 112: why pivot points follow the trend
         Content(
             notes=('If the close is above its midprice, every level is raised.', "Midprice is Lim's (H + L) / 2, p. 435."),
-            origin='Lim (2016), pp. 264 and 435. ' + OUR,
+            origin='Lim (2016), pp. 264 and 435.',
             title='Why pivot points follow the trend',
-            lines=("Lim says that if the previous close was above its midprice, all the projected levels are raised (p. 264). This chapter does not define midprice; Lim's is Mid-Price = (H + L) / 2 (p. 435), the middle of the range. Raised means higher than if the close had been at that middle, our reading. Here both days have H 52.00 and L 48.00 [1]. A close at the middle, 50.00, gives PP 50.00 [2]; a close of 51.20 gives PP 50.40 [3], R1 52.80 and S1 48.80, each raised [4]. So a close in the upper half lifts all of tomorrow's levels, which is why Lim calls pivot points trend following (p. 264).",),
+            lines=("Lim says that if the previous close was above its midprice, all the projected levels are raised (p. 264). This chapter does not define midprice; Lim's is Mid-Price = (H + L) / 2 (p. 435), the middle of the range. Raised means higher than if the close had been at that middle, our reading.",),
+            accent='The next slide shows two days with the same range and different closes.',
         ),
-        chart('pv1b', 'CS', 'Why pivot points follow the trend',
+        Content(
+            notes=('Two days, one middle.',),
+            origin='Lim (2016), pp. 264 and 435. ' + OUR,
+            title='Two days with one range and two closes',
+            lines=("Both days have H 52.00 and L 48.00 [1]. A close at the middle, 50.00, gives PP 50.00 [2]; a close of 51.20 gives PP 50.40 [3], R1 52.80 and S1 48.80, each raised [4]. So a close in the upper half lifts all of tomorrow's levels, which is why Lim calls pivot points trend following (p. 264).",),
+        ),
+        chart('pv1b', 'CS', 'Two days with one range and two closes',
               'Two of our days with the same high and low and the middle of the range at 50.00: a close at the middle gives PP 50.00, R1 52.00 and S1 48.00, and a close of 51.20 gives PP 50.40, R1 52.80 and S1 48.80.',
               ('Gold 1 the shared high and low, red 2 the PP from the middle close, blue 3 the PP from the higher close, purple 4 the raised levels.',)),
         # ---- rows 113 to 115: second levels

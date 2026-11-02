@@ -12,8 +12,8 @@ PURPLE = P
 
 
 # ------------------------------------------------------------------ Lim's figures
-F818_A = fig('8.18', (0, 0.1, 0.45, 1), "Figure 8.18, left part: Goldman Sachs with its ROC under it. In the first box the price is flat or ranging and the ROC declines; in the second the price rises steadily and the ROC is flat or ranging.",
-             [M(1, G, 0.275, 0.17, 0.437, 0.945, at=(0.26, 0.145)), M(2, R, 0.052, 0.77, 0.225, 0.945, at=(0.03, 0.85))], 256)
+F818_A = fig('8.18', (0, 0.1, 0.66, 1), "Figure 8.18, left part: Goldman Sachs with its ROC under it. In the first box the price is flat or ranging and the ROC declines; in the second the price rises steadily and the ROC is flat or ranging.",
+             [M(1, G, 0.275, 0.17, 0.437, 0.945, at=(0.26, 0.145)), M(2, R, 0.052, 0.77, 0.225, 0.915, at=(0.03, 0.85))], 256)
 F818_B = fig('8.18', (0.455, 0, 1, 1), "Figure 8.18, right part: the ROC with Lim's historical overbought level, his zero line crossovers and his numbered Points 1, 2 and 3.",
              [M(1, G, 0.672, 0.852, 0.845, 0.945, at=(0.80, 0.825)), M(2, R, 0.665, 0.787, 0.955, 0.787, kind='line', at=(1.02, 0.72)),
               M(3, B, 0.64, 0.185, 0.96, 0.305, at=(1.02, 0.245))], 256, 'sc')
@@ -29,7 +29,7 @@ F820 = fig('8.20', (0, 0, 1, 1), "Figure 8.20: the hourly USDJPY with its MACD u
             M(3, B, 0.515, 0.655, 0.555, 0.715, kind='circle', at=(0.47, 0.60)), M(4, P, 0.81, 0.655, 0.85, 0.715, kind='circle', at=(0.765, 0.60))], 258, 'sc')
 F821 = fig('8.21', (0, 0.48, 1, 1), "Figure 8.21: daily gold with its true range under it, a historically overextended level, and the 16 times since August 2007 that the true range has reached it, numbered 1 to 16.",
            [M(1, G, 0.47, 0.812, 0.72, 0.812, kind='line', at=(0.60, 0.865)), M(2, R, 0.092, 0.795, 0.128, 0.855, kind='circle', at=(0.11, 0.905)),
-            M(3, B, 0.727, 0.83, 0.763, 0.88, kind='circle', at=(0.745, 0.925)), M(4, P, 0.877, 0.795, 0.913, 0.855, kind='circle', at=(0.895, 0.905))], 259, 'sc')
+            M(3, B, 0.727, 0.808, 0.763, 0.86, kind='circle', at=(0.745, 0.905)), M(4, P, 0.877, 0.795, 0.913, 0.855, kind='circle', at=(0.895, 0.905))], 259, 'sc')
 
 
 def slides():
@@ -86,7 +86,7 @@ def slides():
             notes=('Steady in percent keeps the ROC flat.', 'Say that this is our reading of his formula.'),
             origin='Lim (2016), p. 256. This part is our arithmetic from his formula. ' + OUR,
             title='A steady rise in percent keeps the ROC flat',
-            lines=("Lim says the ROC stays flat when price rises at a steady rate (p. 256), and says the same of the MOM (p. 257). A steady dollar rise cannot do both: it made the ROC fall just now. For the ROC only a steady percentage rise keeps it flat, our reading from his formula. Here price climbs 10 percent at a time, reaching $133.10 [1] and the ROC stays 10.0 [2] [3].",),
+            lines=("Lim says the ROC stays flat when price rises at a steady rate (p. 256). A steady dollar rise made it fall just now, so for the ROC only a steady percentage rise keeps it flat, our reading from his formula. Here price climbs 10 percent at a time, reaching $133.10 [1] and the ROC stays 10.0 [2] [3].",),
         ),
         chart('rcpc', 'BT', 'A steady rise in percent keeps the ROC flat',
               'Our price rising 10 percent every ten periods from $100 and its ROC staying at 10.0 percent.',
@@ -110,7 +110,7 @@ def slides():
             notes=('Gold 1 the price, red 2 and blue 3 the MOM.',),
             origin='Lim (2016), p. 257. This part is our arithmetic from his formula. ' + OUR,
             title='The same prices, the MOM',
-            lines=("Here the price climbs $10 at a time, reaching $130 [1], and the MOM over 10 periods is 10, 10, 10 [2] [3], so it does not fall the way the ROC did; it stays flat.",),
+            lines=("Lim says the MOM, too, stays flat when price rises at a steady rate (p. 257). For the MOM a steady dollar rise does it: the price climbs $10 at a time, reaching $130 [1], and the MOM over 10 periods is 10, 10, 10 [2] [3], so it does not fall the way the ROC did.",),
         ),
         chart('mom', 'BU', 'The same prices, the MOM',
               'Our price rising $10 every ten periods from $100 and its MOM staying at 10.',

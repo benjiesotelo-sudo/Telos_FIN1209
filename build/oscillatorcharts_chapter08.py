@@ -336,6 +336,16 @@ def paint_spec(c, spec):
         pan = panes[seg['pane']]
         (s0, v0), (s1, v1) = seg['a'], seg['b']
         c.stroke((pan.x(s0), pan.x(s1)), (pan.y(v0), pan.y(v1)), color=seg.get('color', GREEN_DEEP), lw=2.4, dashed=seg.get('dashed', True))
+        if seg.get('arrow'):
+            # an arrowhead at b: two short strokes swept back from the tip
+            import math as _m
+            xa, ya, xb, yb = pan.x(s0), pan.y(v0), pan.x(s1), pan.y(v1)
+            ang = _m.atan2(yb - ya, xb - xa)
+            for side in (-1, 1):
+                hl = min(.16, .5 * _m.hypot(xb - xa, yb - ya))
+                hx = xb - hl * _m.cos(ang + side * .5)
+                hy = yb - hl * _m.sin(ang + side * .5)
+                c.stroke((xb, hx), (yb, hy), color=seg.get('color', GREEN_DEEP), lw=2.4, ink=False)
     for t in spec.get('texts', ()):
         x, y, text = t[0], t[1], t[2]
         c.text(x, y, text, ha=t[3] if len(t) > 3 else 'center', color=t[4] if len(t) > 4 else GREEN_DEEP)

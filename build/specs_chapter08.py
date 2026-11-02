@@ -308,14 +308,14 @@ SPECS['g2'] = _geo('AN', _line(_G2, 1, 4), _G2, (1, 4), [(1, 76), (4, 70), (8, 6
 SPECS['g3'] = _geo('AO', _line(_G3, 1, 4), _G3, (1, 4), [(1, 40), (4, 46), (7.5, 53)])
 SPECS['g4'] = _geo('AP', _line(_G4, 1, 4), _G4, (1, 4), [(1, 40), (4, 46), (8, 54)])
 
-_NO = [56, 52, 46, 44, 50, 58, 62, 62, 61.5, 64]
+_NO = [56, 52, 46, 44, 50, 58, 60, 66, 63, 67]
 _NM = [None, None] + [round(sum(_NO[i - 2:i + 1]) / 3, 2) for i in range(2, 10)]
 SPECS['num'] = dict(letter='AQ', spec=dict(
     panes=[pane(lo=30, hi=75, n=10, x=(1.4, 9.4))],
-    series=[dict(pane='p', values=_NO, labels=[(3, '44', 0, -.45), (7, '62', 0, .3)]),
+    series=[dict(pane='p', values=_NO, labels=[(3, '44', 0, -.45), (7, '66', 0, .3)]),
             dict(pane='p', values=_NM, color=DEEP, lw=2.4, role='average', of=0, n=3)],
     texts=[(1.5, 3.4, 'black: oscillator   green: its own 3-reading moving average', 'left', DEEP)],
-    marks=[('pt', 'p', 3.5, 47.0), ('pt', 'p', 8, 61.5)]))
+    marks=[('pt', 'p', 3.5, 47.0), ('pt', 'p', 8, 63)]))
 
 SPECS['hosc'] = dict(letter='AR', spec=dict(
     panes=[pane(lo=20, hi=84, n=13, x=(1.4, 8.4))],

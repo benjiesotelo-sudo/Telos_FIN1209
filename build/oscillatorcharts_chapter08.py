@@ -256,3 +256,77 @@ def paint_hidden(c):
     c.text(low.x(7), low.y(66) + .3, '66', color=INK)
     c.point((0, 1, 'price'), top.x(7), top.y(63))
     c.point((0, 2, 'osc'), low.x(7), low.y(66))
+
+
+# ---------------------------------------------------------------------------
+# A data-driven painter for the Part A charts. A spec is plain data: panes,
+# lines, bars, levels, labels and the points the marks sit on. It carries no
+# teaching text; every word on a slide is written by hand in the content file.
+
+_COLORS = ('gold', 'red', 'blue', 'purple')
+
+
+def _mark_hex(name):
+    import deckkit as dk
+    return '#' + str(dk.MARK_COLORS[name])
+
+
+def paint_spec(c, spec):
+    """Draw one chart from a spec. ``marks`` is the ordered list of mark targets:
+    ('pt', pane, slot, value) or ('box', pane, slot0, slot1, lo, hi)."""
+    panes = {}
+    for p in spec['panes']:
+        panes[p['id']] = Panel(c, p['x'][0], p['x'][1], p['y'][0], p['y'][1], p['lo'], p['hi'], p['n'])
+    for p in spec['panes']:
+        pan = panes[p['id']]
+        for ref in p.get('ref', ()):
+            # (value, text, dashed) reference lines across the pane, text at the right
+            value, text = ref[0], ref[1]
+            y = pan.y(value)
+            c.stroke((pan.x(0) - .2, pan.x(p['n'] - 1) + .2), (y, y), color=ref[3] if len(ref) > 3 else MUTED,
+                     lw=1.5, dashed=ref[2] if len(ref) > 2 else True)
+            if text:
+                c.text(pan.x(p['n'] - 1) + .3, y, text, ha='left', color=GREEN_DEEP)
+        if p.get('title'):
+            c.text(pan.x(0) - .2, p['y'][1] + .12, p['title'], ha='left', va='bottom', color=GREEN_DEEP)
+    for ln in spec.get('levels', ()):
+        pan = panes[ln['pane']]
+        y = pan.y(ln['value'])
+        s0, s1 = ln.get('slots', (0, pan.slots - 1))
+        c.stroke((pan.x(s0) - .15, pan.x(s1) + .15), (y, y), color=ln.get('color', MUTED), lw=ln.get('lw', 1.8),
+                 dashed=ln.get('dashed', True))
+        if ln.get('label'):
+            lx = pan.x(ln.get('lslot', s0)) - .15 if ln.get('side', 'left') == 'left' else pan.x(s1) + .25
+            c.text(lx, y + ln.get('dy', .2), ln['label'], ha='left' if ln.get('side', 'left') == 'left' else 'left',
+                   va='bottom', color=ln.get('tcolor', GREEN_DEEP))
+    for ser in spec.get('series', ()):
+        pan = panes[ser['pane']]
+        start = ser.get('start', 0)
+        pts = [(start + i, v) for i, v in enumerate(ser['values']) if v is not None]
+        pan.path(pts, color=ser.get('color', INK), lw=ser.get('lw', 2.8))
+        for item in ser.get('labels', ()):
+            slot, text = item[0], item[1]
+            dx = item[2] if len(item) > 2 else 0
+            dy = item[3] if len(item) > 3 else .28
+            v = ser['values'][slot - start]
+            c.text(pan.x(slot) + dx, pan.y(v) + dy, text, color=ser.get('tcolor', INK))
+    for bar in spec.get('bars', ()):
+        pan = panes[bar['pane']]
+        for i, row in enumerate(bar['rows']):
+            pan.bar(bar.get('slot0', 0) + i, *row, half=bar.get('half', .12))
+        for item in bar.get('labels', ()):
+            slot, text, dx, dy = item
+            row = bar['rows'][slot - bar.get('slot0', 0)]
+            c.text(pan.x(slot) + dx, pan.y(row[1]) + dy, text, color=INK)
+    for t in spec.get('texts', ()):
+        x, y, text = t[0], t[1], t[2]
+        c.text(x, y, text, ha=t[3] if len(t) > 3 else 'center', color=t[4] if len(t) > 4 else GREEN_DEEP)
+    for n, m in enumerate(spec['marks'], 1):
+        if m[0] == 'pt':
+            pan = panes[m[1]]
+            c.point((0, n, 'pt'), pan.x(m[2]), pan.y(m[3]))
+        elif m[0] == 'xy':
+            c.point((0, n, 'pt'), m[1], m[2])
+        else:
+            pan = panes[m[1]]
+            c.box((0, n, 'group'), pan.x(m[2]) - .15, pan.y(m[4]), pan.x(m[3]) + .15, pan.y(m[5]), frac=m[6] if len(m) > 6 else .5)

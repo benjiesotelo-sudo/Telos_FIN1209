@@ -45,5 +45,24 @@ DATA = {
                  'Signal line: the average of the last three readings. The numbers are ours, made up to show the idea.'),
 }
 
+
+
+def _spec(letter, spec, caption=NOTE, angles=None):
+    """One chart from a plain-data spec; its marks are the spec's 'marks', in order."""
+    targets = []
+    for n, m in enumerate(spec['marks'], 1):
+        kind = 'group' if m[0] == 'box' else 'pt'
+        item = (_COLORS[(n - 1) % 4], (0, n, kind))
+        if angles and n in angles:
+            item = item + (angles[n],)
+        targets.append(item)
+    return _paint(letter, lambda c: oc.paint_spec(c, spec), targets, caption)
+
+
+_COLORS = ('gold', 'red', 'blue', 'purple')
+from specs_chapter08 import SPECS  # noqa: E402
+for _key, _entry in SPECS.items():
+    DATA[_key] = _spec(_entry['letter'], _entry['spec'], _entry.get('caption', NOTE), _entry.get('angles'))
+
 from chartlayout_chapter08 import artwork  # noqa: E402
 CHARTS = artwork(DATA)

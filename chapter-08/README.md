@@ -4,11 +4,12 @@ Lim (2016), Chapter 8, "Window Oscillators and Overlay Indicators", printed
 pages 235 to 266. The approved source map and outline are in the instructor's
 plan folder outside this public repository.
 
-**Only the sample slides are built.** The deck here is the 16 slide sample
-set the instructor reads before the full build: an opener, a book figure with
-marks, a worked example on our own chart, two look-alikes on their own slides
-and a check with its answer. The full deck starts only on his word, written by
-hand in `build/content_chapter08.py` (no code generates teaching text).
+**Part A (sections 8.1 and 8.2) is built.** `build/content_chapter08.py` joins the approved sample
+slides (`build/samples_chapter08.py`) to the hand written slides in `build/slides_a1.py` (8.1) and
+`build/slides_a2.py` (8.2); nothing generates teaching text. Part B (8.3 to 8.8) is built after Part A is
+delivered. Each part stops at 150 slides. Our charts are plain data in `build/specs_chapter08.py`, drawn by
+`oscillatorcharts_chapter08.paint_spec`. The run card is `build/build_plan8.py` (three pages, minutes counted
+from the deck). Both editions build: `--edition student` drops every check and speaker note.
 
 ## Figures
 

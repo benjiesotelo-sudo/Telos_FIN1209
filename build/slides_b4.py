@@ -1,7 +1,8 @@
 """second class slides, sections 8.7 and 8.8 (outline rows 106 to 135): overlay indicators, pivot points and the review questions.
 
-The pivot level PP is the previous day's typical price, which Lim never defines. Figure 8.25's own numbers
-(H 100, L 0, C 80, PP 60) fit (H + L + C) / 3, and every slide that uses it says it is our reading.
+The pivot level PP is the previous day's typical price. This chapter never gives the formula, but Lim does,
+on p. 397: Typical price = (H + L + C) / 3 = Pivot Point; the slides quote it as his, and Figure 8.25's numbers
+(H 100, L 0, C 80, PP 60) agree with it. Midprice, (H + L) / 2, is his on p. 435.
 """
 from deckkit import Content
 from chartlayout_chapter08 import CourseCheck
@@ -33,7 +34,7 @@ F828_R = fig('8.28', (0.49, 0, 1, 1), "Figure 8.28, right part: Lim's label Pric
 
 
 PCK = course_chart('pck', notes=(), origin='FIN1209 teaching chart CT. ' + OUR, title='One more day to work', letter='CT',
-                   shows='Our day with high 110, low 90 and close 106 and its pivot level PP of 102 drawn forward.', tier='core', marks=())
+                   shows='Our day with high 110, low 90 and close 106 and its pivot level PP of 102 and S1 of 94 drawn forward.', tier='core', marks=())
 
 
 def slides_87():
@@ -58,28 +59,28 @@ def slides_87():
         ),
         # ---- rows 109 and 110: Figure 8.25
         pair('Figure 8.25: the pivot level, first resistance and support',
-             ("Lim says PP is the previous day's typical price (p. 263) and never defines it. On his figure the bar has a high [1] of 100, a low [2] of 0 and a close [3] of 80, and PP [4] is 60. He builds S1 [6] by projecting the distance from the high down to PP downward from PP, and R1 [5] by projecting the distance from PP down to the low upward from PP (pp. 263 to 264): 60 - 40 = 20 and 60 + 60 = 120. The \"?\" bracket [7] spans 100 points, the day's range, our arithmetic; the O tick on the left is the open."),
-             F825, ('Gold 1 the high, red 2 the low, blue 3 the close, purple 4 PP, then R1, S1 and the bracket.',), 'Lim (2016), pp. 263 to 264, Figure 8.25. The marks are ours, added for teaching.', w=4.9),
+             ("Lim says PP is the previous day's typical price (p. 263); his later chapter gives the formula, (H + L + C) / 3 (p. 397). On his figure the bar has a high [1] of 100, a low [2] of 0 and a close [3] of 80, and PP [4] is 60, which agrees. He builds S1 [6] by projecting the distance from the high down to PP downward from PP, and R1 [5] by projecting the distance from PP down to the low upward (pp. 263 to 264): 60 - 40 = 20 and 60 + 60 = 120. The \"?\" bracket [7] is the day's range, 100, our arithmetic; the O tick is the open."),
+             F825, ('Gold 1 the high, red 2 the low, blue 3 the close, purple 4 PP, then R1, S1 and the bracket.',), 'Lim (2016), pp. 263 to 264 and 397, Figure 8.25. The marks are ours, added for teaching.', w=5.3),
         # ---- row 111: first levels worked
         Content(
-            notes=('Our reading of PP, labelled as ours.', 'S1 = PP - (H - PP), R1 = PP + (PP - L).'),
-            origin='Lim (2016), pp. 263 to 264. PP as (H + L + C) / 3 is our reading from Figure 8.25. ' + OUR,
+            notes=("PP is Lim's typical price, p. 397.", 'S1 = PP - (H - PP), R1 = PP + (PP - L).'),
+            origin='Lim (2016), pp. 263, 264 and 397. ' + OUR,
             title='The first levels, worked on a day of ours',
-            lines=("The book gives no formula for the typical price. Figure 8.25's numbers fit (H + L + C) / 3, so we use that, as our reading. Yesterday H 52.00 [1], L 48.00 [2], C 51.20 [3]: PP = 151.20 / 3 = 50.40 [4]. Lim's rule (pp. 263 to 264): S1 = PP - (H - PP) = 50.40 - 1.60 = 48.80 [6]; R1 = PP + (PP - L) = 50.40 + 2.40 = 52.80 [5].",),
+            lines=("This chapter gives no formula for the typical price; Lim's is Typical price = (H + L + C) / 3 = Pivot Point (p. 397), and Figure 8.25's numbers agree. Yesterday H 52.00 [1], L 48.00 [2], C 51.20 [3]: PP = 151.20 / 3 = 50.40 [4]. Lim's rule (pp. 263 to 264): S1 = PP - (H - PP) = 50.40 - 1.60 = 48.80 [6]; R1 = PP + (PP - L) = 50.40 + 2.40 = 52.80 [5].",),
         ),
         chart('pv1', 'CN', 'The first levels, worked on a day of ours',
               'Our yesterday bar with high 52.00, low 48.00 and close 51.20 and the levels PP 50.40, R1 52.80 and S1 48.80 drawn forward.',
               ('Gold 1 the high, red 2 the low, blue 3 the close, purple 4 PP, then R1 and S1.',)),
         # ---- row 112: why pivot points follow the trend
         Content(
-            notes=('If the close is above its midprice, every level is raised.', 'Midprice is not defined in the book.'),
-            origin='Lim (2016), p. 264. The reading of midprice is ours. ' + OUR,
+            notes=('If the close is above its midprice, every level is raised.', "Midprice is Lim's (H + L) / 2, p. 435."),
+            origin='Lim (2016), pp. 264 and 435. ' + OUR,
             title='Why pivot points follow the trend',
-            lines=("Lim says that if the previous close was above its midprice, all the projected levels are raised (p. 264). He does not define midprice or say raised compared with what. Our reading: midprice is the middle of the range, (H + L) / 2, and raised means higher than if the close had been at the midprice. Here both days have H 52.00 and L 48.00 [1]. A close at the middle, 50.00 [2], gives PP 50.00; a close of 51.20 [3] gives PP 50.40, R1 52.80 and S1 48.80, each raised [4].",),
+            lines=("Lim says that if the previous close was above its midprice, all the projected levels are raised (p. 264). This chapter does not define midprice; Lim's is Mid-Price = (H + L) / 2 (p. 435), the middle of the range. Raised means higher than if the close had been at that middle, our reading. Here both days have H 52.00 and L 48.00 [1]. A close at the middle, 50.00, gives PP 50.00 [2]; a close of 51.20 gives PP 50.40 [3], R1 52.80 and S1 48.80, each raised [4]. So a close in the upper half lifts all of tomorrow's levels, which is why Lim calls pivot points trend following (p. 264).",),
         ),
         chart('pv1b', 'CS', 'Why pivot points follow the trend',
               'Two of our days with the same high and low and the middle of the range at 50.00: a close at the middle gives PP 50.00, R1 52.00 and S1 48.00, and a close of 51.20 gives PP 50.40, R1 52.80 and S1 48.80.',
-              ('Gold 1 the shared high and low, red 2 the close at the middle, blue 3 the higher close, purple 4 the raised levels.',)),
+              ('Gold 1 the shared high and low, red 2 the PP from the middle close, blue 3 the PP from the higher close, purple 4 the raised levels.',)),
         # ---- rows 113 to 115: second levels
         Content(
             notes=('R2 and S2 add and subtract the range.', 'The next slide is Lim\'s Figure 8.26.'),
@@ -120,14 +121,29 @@ def slides_87():
               ('Gold 1 R3, red 2 R4, blue 3 S3, purple 4 S4.',)),
         # ---- rows 119 and 120: reading the day
         Content(
-            notes=('A popular way, not a rule.', 'Third levels are price readings, not an oscillator\'s.'),
-            origin='Lim (2016), p. 265. ' + OUR,
+            notes=("Lim's popular ways to read the day.", 'Third levels are price readings, not an oscillator\'s.'),
+            origin='Lim (2016), p. 265.',
             title='Reading the day from the pivot',
-            lines=("Lim's popular ways to read the day (p. 265): an open below PP suggests a lower day and above PP a higher one; breaching a second level signals a strong trend; third levels mark extreme overbought and oversold in price, not an oscillator's; a quiet day stays inside the first levels; and many use the levels for exits. Here the day opens at 51.00 [1], above PP at 50.40 [2], and breaches R2 [3] at 54.70.",),
+            lines=("Lim's popular ways to read the day (p. 265): an open below PP suggests a lower day and above PP a higher one; breaching a second level signals a strong trend; third levels mark extreme overbought and oversold in price, not an oscillator's; a quiet day stays inside the first levels; and many use the levels for exits. The next two slides draw a strong day and a quiet one on our levels.",),
         ),
-        chart('pvd', 'CQ', 'Reading the day from the pivot',
-              'Our day opening at 51.00 above PP 50.40 and rising through R1 to breach R2 at 54.70.',
-              ('Gold 1 the open, red 2 PP, blue 3 the breach of R2.',)),
+        Content(
+            notes=('A strong day.',),
+            origin='Lim (2016), p. 265. ' + OUR,
+            title='A strong day against its pivot levels',
+            lines=("Here the day opens at 51.00 [1], above PP at 50.40 [2], and breaches R2 [3] at 54.70. By Lim's rules the open above PP points to a higher day, and the breach of R2 says a strong uptrend is in effect (p. 265). R3 at 56.80, the extreme overbought level in price, is not reached [4].",),
+        ),
+        chart('pvd', 'CQ', 'A strong day against its pivot levels',
+              'Our day opening at 51.00 above PP 50.40 and rising through R1 to breach R2 at 54.70, with R3 at 56.80 not reached.',
+              ('Gold 1 the open, red 2 PP, blue 3 the breach of R2, purple 4 the R3 line.',)),
+        Content(
+            notes=('A quiet day.',),
+            origin='Lim (2016), p. 265. ' + OUR,
+            title='A quiet day against its pivot levels',
+            lines=("A second day of ours opens at 50.00 [1], below PP at 50.40, drifts lower and stays between S1 [2] and R1 [3] all day: the quiet day Lim describes (p. 265), and an open below PP that suggests a lower day.",),
+        ),
+        chart('pvq', 'CU', 'A quiet day against its pivot levels',
+              'Our day opening at 50.00 below PP 50.40, drifting to 49.20 and staying between S1 at 48.80 and R1 at 52.80.',
+              ('Gold 1 the open, red 2 S1, blue 3 R1.',)),
         # ---- rows 121 and 122: Figure 8.28
         pair('Figure 8.28: price reacting to pivot points',
              ("Lim's Figure 8.28 is Goldman Sachs on a daily chart with pivot levels, and his arrows point at places where price reacts to them (p. 265): the October low [1], the November high [2], two December reactions [3] [4] and the March high [5]. On the figure each set of levels lasts about a month, our reading, and Lim's rule is written in days; the book does not say which period this chart uses, so read the figure for how price reacts at the levels, not for the daily rule."),
@@ -137,9 +153,9 @@ def slides_87():
              F828_R, ('Gold 1 to purple 4 the four arrow tips from the label.',), 'Lim (2016), p. 265, Figure 8.28. The marks are ours, added for teaching.', w=4.4),
         Content(
             notes=('A second worked day, the one the check uses.',),
-            origin='Lim (2016), pp. 263 to 264. The PP reading is ours. ' + OUR,
+            origin='Lim (2016), pp. 263, 264 and 397. ' + OUR,
             title='One more day to work',
-            lines=("Take a day with H 110 [1], L 90 [2] and C 106. PP = (110 + 90 + 106) / 3 = 102 [3], and S1 = PP - (H - PP) = 102 - 8 = 94.",),
+            lines=("Take a day with H 110 [1], L 90 [2] and C 106. PP = (110 + 90 + 106) / 3 = 102 [3], and S1 = PP - (H - PP) = 102 - 8 = 94 [4].",),
         ),
         PCK,
         # ---- rows 123 and 124: Check 23, on a day of ours so no answer is printed on the question
@@ -148,8 +164,8 @@ def slides_87():
             origin='Questions are ours, answerable from the pivot point slides before; Lim (2016), pp. 263 to 264.',
             label='Pivot points',
             questions=(
-                Q(23, 'Yesterday H was 110, L 90 and C 106, so PP is 102. What is S1?', '94', ('98', '90', '114'),
-                  'S1 = PP - (H - PP) = 102 - (110 - 102) = 94 (pp. 263 to 264).'),
+                Q(23, 'Yesterday H was 120, L 100 and C 116, so PP is 112. What is S1?', '104', ('108', '100', '124'),
+                  'S1 = PP - (H - PP) = 112 - (120 - 112) = 104 (pp. 263 to 264).'),
                 Q(24, 'The second resistance R2 is the PP plus', "the previous day's range", ("the previous day's close", "the previous day's low", 'half the range'),
                   "R2 = PP + the previous day's range (p. 264)."),
             ),
@@ -229,6 +245,6 @@ def slides_88():
             notes=('Review question 8.',),
             origin='Lim (2016), pp. 256 to 257.',
             title='Review question 8: ROC and MOM',
-            lines=("The ROC is the percent change over N periods and the MOM the price difference. Lim says in most ways the MOM is identical to the ROC; the ROC has a non-linearity the MOM lacks (p. 257). When price rises $10 every 10 periods from $100, the 10 period ROC falls, 10.0, 9.1, 8.3 percent, while the MOM stays at 10 (p. 256).",),
+            lines=("The ROC is the percent change over N periods and the MOM the price difference. Lim says in most ways the MOM is identical to the ROC; the ROC has a non-linearity the MOM lacks (p. 257). When price rises $10 every 10 periods from $100, the 10 period ROC falls, 10.0, 9.1, 8.3 percent (our numbers, by the formula of p. 256), while the MOM stays at 10.",),
         ),
     )

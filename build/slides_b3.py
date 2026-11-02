@@ -14,11 +14,11 @@ F823 = fig('8.23', (0, 0, 1, 1), "Figure 8.23: daily silver with a cycle-tuned s
             M(5, G, 0.61, 0.925, 0.65, 0.97, kind='circle', at=(0.61, 0.885))], 261, 'sc')
 F823_R = fig('8.23', (0.55, 0.2, 0.99, 1.0), "Figure 8.23, right part: the price chart with Lim's label about a higher frequency of stochastic signals over the previous 140 days, his ellipse and Fibonacci retracements, and the cycle-tuned stochastic under it.",
              [M(1, G, 0.625, 0.235, 0.775, 0.31, at=(0.60, 0.29)), M(2, R, 0.785, 0.272, 0.985, 0.548, at=(0.995, 0.40)),
-              M(3, B, 0.63, 0.33, 0.70, 0.44, at=(0.60, 0.40)), M(4, P, 0.64, 0.745, 0.73, 0.80, at=(0.615, 0.72))], 262, 'sc')
+              M(3, B, 0.584, 0.41, 0.62, 0.465, kind='circle', at=(0.575, 0.37)), M(4, P, 0.555, 0.745, 0.94, 0.97, at=(0.987, 0.86))], 262, 'sc')
 F824 = fig('8.24', (0, 0, 1, 1), "Figure 8.24: Starbucks with its RSI and its full stochastic under it, both circled where they rise back above oversold, and Lim's label about the buy trigger.",
            [M(1, G, 0.42, 0.638, 0.512, 0.775, kind='circle', at=(0.545, 0.61)), M(2, R, 0.427, 0.836, 0.51, 0.964, kind='circle', at=(0.545, 0.80))], 263, 'sc')
-F824_TRIG = fig('8.24', (0.3, 0.3, 0.9, 0.62), "Figure 8.24, cropped to the price bars around the buy signal, with Lim's dotted line at the high of the bar and his label.",
-                [M(1, G, 0.455, 0.445, 0.585, 0.48, at=(0.615, 0.45)), M(2, R, 0.53, 0.5, 0.77, 0.572, at=(0.795, 0.545)), M(3, B, 0.452, 0.455, 0.49, 0.56, at=(0.435, 0.52))], 262, 'sc')
+F824_TRIG = fig('8.24', (0.3, 0.3, 0.9, 0.645), "Figure 8.24, cropped to the price bars around the buy signal, with Lim's dotted line at the high of the bar and his label.",
+                [M(1, G, 0.455, 0.445, 0.585, 0.48, at=(0.615, 0.45)), M(2, R, 0.53, 0.5, 0.77, 0.588, at=(0.795, 0.545)), M(3, B, 0.46, 0.466, 0.486, 0.553, at=(0.435, 0.52))], 262, 'sc')
 F824_CHK = fig('8.24', (0, 0, 1, 1), "Figure 8.24: Starbucks with its RSI and its full stochastic under it, both circled where they rise back above oversold.",
                [M(1, G, 0.42, 0.638, 0.512, 0.775, kind='circle', at=(0.545, 0.61)), M(2, R, 0.427, 0.836, 0.51, 0.964, kind='circle', at=(0.545, 0.80))], 263, 'sc')
 
@@ -79,8 +79,8 @@ def slides():
             ("Lim's cycle tuned stochastic on silver does not use 80 and 20. He sets historical levels by eye, an overbought level [1] and an oversold level [2], which he says better reflect what market participants do, and calls this behaviorally tuned (pp. 261 to 262). For example three bottoms [3] [4] [5] touch the oversold level."),
             F823, ('Gold 1 the overbought level, red 2 the oversold level, then three bottoms.',), 'Lim (2016), pp. 261 to 262, Figure 8.23. The marks are ours, added for teaching.'),
         pair('Figure 8.23: more swings, more short term traders',
-             ("Lim's label [2] says a higher frequency of stochastic signals shows short term participation increasing over the previous 140 days; the ellipse [1] points at the stretch, where the stochastic [4] keeps reaching its overbought boxes. He gives no count. Silver reversed at the Fibonacci retracement levels, 50 and 38.2 percent [3], while overbought (p. 262)."),
-             F823_R, ('Gold 1 the ellipse, red 2 the label, blue 3 the Fibonacci label.',), 'Lim (2016), p. 262, Figure 8.23. The marks are ours, added for teaching.', w=4.4),
+             ("Lim's label [2] says a higher frequency of stochastic signals shows short term participation increasing over the previous 140 days; the ellipse [1] points at the stretch, where the stochastic [4] alternates between its overbought and oversold boxes: Lim's text calls it a higher frequency of alternation between overbought and oversold (p. 262). He gives no count. Silver reversed at the Fibonacci retracement levels, 50 and 38.2 percent [3], while overbought."),
+             F823_R, ('Gold 1 the ellipse, red 2 the label, blue 3 the reversal at the retracements, purple 4 the alternating stochastic.',), 'Lim (2016), p. 262, Figure 8.23. The marks are ours, added for teaching.', w=4.4),
         # ---- rows 93 and 94: normalizing
         Content(
             notes=('To normalize is to bind data between limits.', 'A narrow range gives big swings.'),

@@ -17,7 +17,7 @@ Marks on book figures were read off a 0.05 grid of the master figure in
 
 from deckkit import Chapter, Content, Figure, Mark, Question, Section
 from deckkit import Check
-from chartlayout_chapter08 import (CourseCheck, CourseFigureCheck, WidePair, book_crop,
+from chartlayout_chapter08 import (CourseCheck, StackedFigureCheck, WidePair, book_crop,
                                    course_chart, expand_chart_pages)
 
 # (b) Figure 8.1, the whole figure: a price chart with overlays, and three window oscillators under it.
@@ -37,18 +37,20 @@ FIGURE_8_1.origin = 'Lim (2016), p. 238, Figure 8.1, courtesy of Stockcharts.com
 FIGURE_8_22 = book_crop('8.22', (0.0, 0.0, 1.0, 1.0),
     "Figure 8.22: a bar with open 1.4590, high 1.5020, low 1.4900 and close 1.5000, and the working of raw %K as 83.3 percent.",
     marks=(
-        Mark(number=1, kind='circle', x0=0.172, y0=0.332, x1=0.208, y1=0.396, color='gold', at=(0.255, 0.43), size=0.3),
-        Mark(number=2, kind='circle', x0=0.172, y0=0.90, x1=0.208, y1=0.964, color='red', at=(0.26, 0.82), size=0.3),
-        Mark(number=3, kind='circle', x0=0.187, y0=0.462, x1=0.223, y1=0.526, color='blue', at=(0.11, 0.58), size=0.3),
+        Mark(number=1, kind='circle', x0=0.176, y0=0.345, x1=0.204, y1=0.395, color='gold', at=(0.255, 0.43), size=0.3),
+        Mark(number=2, kind='circle', x0=0.172, y0=0.90, x1=0.208, y1=0.964, color='red', at=(0.229, 0.87), size=0.3),
+        Mark(number=3, kind='circle', x0=0.187, y0=0.462, x1=0.223, y1=0.526, color='blue', at=(0.243, 0.545), size=0.3),
     ))
 FIGURE_8_22.origin = 'Lim (2016), p. 260, Figure 8.22. The marks are ours, added for teaching.'
 
 # (e) Figure 8.7: the RSI crossing its dashed 50 percent level, with Lim's S and B on the price above it.
-FIGURE_8_7 = book_crop('8.7', (0.33, 0.08, 1.0, 0.75),
-    "Figure 8.7, cropped to its second pair of crossings: the price chart with Lim's S and B letters, and under it the RSI with its dashed 50 percent level and its axis, mark 1 where the RSI drops below 50 and mark 2 where it climbs back above.",
+FIGURE_8_7 = book_crop('8.7', (0.31, 0.04, 1.0, 0.75),
+    "Figure 8.7, cropped to its second pair of crossings: the price chart with Lim's S and B letters, and under it the RSI with its dashed 50 percent level and its axis. Mark 1 is where the RSI drops below 50, mark 2 the S above it, mark 3 where the RSI climbs back above 50, mark 4 the B above it.",
     marks=(
-        Mark(number=1, kind='circle', x0=0.472, y0=0.653, x1=0.508, y1=0.695, color='gold', at=(0.45, 0.725), size=0.3),
-        Mark(number=2, kind='circle', x0=0.527, y0=0.651, x1=0.563, y1=0.693, color='red', at=(0.585, 0.725), size=0.3),
+        Mark(number=1, kind='circle', x0=0.472, y0=0.653, x1=0.508, y1=0.695, color='gold', at=(0.46, 0.71), size=0.3),
+        Mark(number=2, kind='circle', x0=0.455, y0=0.105, x1=0.495, y1=0.155, color='red', at=(0.445, 0.13), size=0.3),
+        Mark(number=3, kind='circle', x0=0.527, y0=0.651, x1=0.563, y1=0.693, color='blue', at=(0.58, 0.63), size=0.3),
+        Mark(number=4, kind='circle', x0=0.51, y0=0.16, x1=0.545, y1=0.21, color='purple', at=(0.529, 0.148), size=0.3),
     ))
 FIGURE_8_7.origin = 'Lim (2016), p. 244, Figure 8.7, courtesy of Stockcharts.com. The marks are ours, added for teaching.'
 
@@ -84,7 +86,7 @@ PART_A = Section(
             left=Content(
                 title='Figure 8.1 puts both kinds of indicator on one chart',
                 lines=("The top part is price, with overlay indicators drawn on it [1]. Under it sit three window oscillators: the relative strength index or RSI [2], the stochastics [3] and the moving average convergence divergence or MACD [4].",
-                       "Notice Lim draws overlays on the MACD window as well."),
+                       "Inside the MACD window [4], see Lim's label \"Overlays on oscillators\": he draws overlays there as well."),
                 accent='Price and its overlays on top. Oscillators in their own windows below.',
             ),
             picture=FIGURE_8_1,
@@ -95,17 +97,16 @@ PART_A = Section(
             notes=('Part A reads these oscillators on charts. Part B builds each one. Do not teach the calculations here.',),
             origin='Lim (2016), pp. 236, 241, 244, 251, 256, 257, 259 and 262.',
             title='The oscillators you will meet before we build them (1 of 2)',
-            lines=("Part A only reads these oscillators on Lim's charts. Part B builds each one, in this order.",
-                   "Bounded, 0 to 100 percent: the RSI tracks a stock's strength through its average gain and loss over the last n periods (p. 262). The stochastic is the position of the latest close in the recent price range (p. 259). The StochRSI is the stochastic calculation applied to RSI values (p. 251).",
-                   "Overbought and oversold are the high and low ends of an oscillator's readings, which Lim calls overextensions (pp. 236, 241). Equilibrium is the central value it swings around (p. 244)."),
+            lines=("Bounded, 0 to 100 percent: the relative strength index or RSI tracks a stock's strength through its average gain and loss over the last n periods, n being the lookback (p. 262). The stochastic is the position of the latest close in the recent price range (p. 259). The StochRSI is the stochastic calculation applied to RSI values (p. 251).",
+                   "Overbought and oversold are the high and low ends of an oscillator's readings (pp. 236, 241). Lim calls them overextensions. That is not Chapter 7's overextended bar: here the word describes an oscillator's reading. Equilibrium is the central value it swings around (p. 244)."),
         ),
         Content(
             notes=('The unbounded ones. Part B builds the MACD, ROC and MOM; the CCI has no calculation in this chapter.',),
             origin='Lim (2016), pp. 242, 244, 256 and 257.',
             title='The oscillators you will meet before we build them (2 of 2)',
-            lines=("Unbounded, no top or bottom: the MACD is the 12-period EMA minus the 26-period EMA (p. 257). The ROC is the percent change in price over N periods and the MOM the price difference over N periods (p. 256).",
+            lines=("Unbounded, no top or bottom: the moving average convergence divergence or MACD is the 12-period exponential moving average (EMA) minus the 26-period EMA (p. 257). The rate of change or ROC is the percent change in price over n periods, and momentum or MOM is the price difference over n periods (p. 256).",
                    "The CCI, the commodity channel index, gets an overbought level of plus 100 and an oversold level of minus 100 (pp. 242, 244). This chapter gives no calculation for it.",
-                   "Where you meet one of these before Part B builds it, the slide says what you need and no more."),
+                   "Part A only reads these oscillators on Lim's charts; Part B builds them. Where you meet one before Part B builds it, the slide says what you need and no more."),
         ),
         # The idea named before the numbers: raw %K.
         Content(
@@ -119,7 +120,7 @@ PART_A = Section(
         Content(
             notes=('Chapter 5 taught the bar stochastic inside one bar; the raw %K does the same over n periods.', 'The slide on the next page says why raw %K cannot leave 0 to 100.'),
             origin='Lim (2016), pp. 259 to 260; Chapter 5, "Bar stochastic".',
-            title='Raw %K compares the close with the n-bar high and low',
+            title='Raw %K compares the close with the n-period high and low',
             lines=("Chapter 5's bar stochastic asked this inside one bar, (C - L) / (H - L). The raw %K asks it over n periods. C is the closing price, Ln the lowest low of the last n periods and Hn the highest high.",
                    "Raw %K = (C - Ln) / (Hn - Ln) x 100 percent (p. 260). The usual lookback is 14 periods (p. 259)."),
             accent='Close at the lowest low gives 0 percent. Close at the highest high gives 100 percent.',
@@ -130,7 +131,7 @@ PART_A = Section(
             title='Raw %K always stays between 0 and 100 percent',
             lines=("The close can never be below the lowest low or above the highest high of the same lookback. So the top of the fraction is never larger than the bottom, and raw %K stays between 0 and 100 percent (pp. 260, 262).",
                    "That makes it a bounded oscillator, the kind from Part A."),
-            accent="Every stock's raw %K runs on the same 0 to 100 scale, which is why Lim says bounded oscillators can be compared between stocks or markets (p. 236).",
+            accent="Every stock's raw %K runs on the same 0 to 100 scale, which is why Lim says bounded oscillators can be compared between stocks or markets over the same number of periods (p. 236).",
         ),
         WidePair(
             notes=("This is the book's own example, so its numbers belong on its own picture.",
@@ -198,15 +199,15 @@ PART_A = Section(
             marks=(),
         ),
         WidePair(
-            notes=('The book shows the same idea on a real chart. Gold 1 the RSI dropping below 50, red 2 climbing back above.',),
+            notes=('The book shows the same idea on a real chart. Gold 1 the RSI dropping below 50, red 2 the S above it, blue 3 the RSI climbing back above 50, purple 4 the B above it.',),
             origin='Lim (2016), p. 244, Figure 8.7. The marks are ours, added for teaching.',
             left=Content(
                 title='Figure 8.7 shows the RSI crossing its 50 percent level',
-                lines=("Here is the RSI on Lim's daily chart of Goldman Sachs. It drops below its dashed 50 percent level [1], and Lim marks a sell with an S on the price chart. Later it climbs back above [2], and Lim marks a buy with a B (p. 244).",),
+                lines=("Here is the RSI on Lim's daily chart of Goldman Sachs. It drops below its dashed 50 percent level [1]. Follow the vertical line up from there and Lim has marked a sell with an S [2]. Later the RSI climbs back above the level [3], and the next vertical line leads up to a buy, marked with a B [4] (p. 244).",),
                 accent='The RSI gives the signal. The trigger to enter still has to come from price (pp. 241, 244).',
             ),
             picture=FIGURE_8_7,
-            text_w=4.2,
+            text_w=3.9,
         ),
         Content(
             notes=('Now the second crossover, on the same oscillator. It crosses a different line.',),
@@ -225,7 +226,7 @@ PART_A = Section(
             marks=(),
         ),
         # (e) One check and its answer on the next slide, the figure on both.
-        CourseFigureCheck(
+        StackedFigureCheck(
             notes=('Both answers come from the equilibrium crossover slides.',),
             origin='Questions are ours, answerable from the equilibrium crossover slides before; Lim (2016), p. 244.',
             label='Equilibrium crossovers',
@@ -244,7 +245,7 @@ PART_A = Section(
                 ),
             ),
             picture=FIGURE_8_7,
-            text_w=6.3,
+            text_w=5.3,
         ),
     ),
 )

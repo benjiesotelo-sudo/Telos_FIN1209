@@ -57,8 +57,8 @@ def paint_equilibrium_crossing(c):
     for i, dx, dy in ((4, 0, -.26), (5, -.12, .28), (9, 0, .28), (10, .12, -.28)):
         c.text(panel.x(i) + dx, panel.y(OSC[i]) + dy, str(OSC[i]), color=INK)
     # Up through 50 between readings 4 and 5, down through it between 9 and 10.
-    for index, (i, word, wx, wy, ha) in enumerate(((4, 'above 50', -.2, -.8, 'right'),
-                                                   (9, 'below 50', -.2, -.8, 'right'))):
+    for index, (i, word, wx, wy, ha) in enumerate(((4, 'crosses\nabove 50', -.35, .5, 'right'),
+                                                   (9, 'crosses\nbelow 50', .7, -.45, 'left'))):
         a, b = OSC[i], OSC[i + 1]
         t = (50 - a) / (b - a)
         x = panel.x(i) + t * (panel.x(i + 1) - panel.x(i))
@@ -79,9 +79,9 @@ def paint_equilibrium_crossing(c):
         x = right.x(i) + t * (right.x(i + 1) - right.x(i))
         c.point((0, index, 'cross'), x, zero)
         if index == 3:
-            c.text(x - .3, zero + .5, 'above zero', ha='right', color=GREEN_DEEP)
+            c.text(x - .3, zero + .5, 'crosses\nabove zero', ha='right', color=GREEN_DEEP)
         else:
-            c.text(x + .3, zero + .5, 'below zero', ha='left', color=GREEN_DEEP)
+            c.text(x - .15, zero - .9, 'crosses\nbelow zero', ha='right', color=GREEN_DEEP)
 
 
 def paint_signal_crossing(c):
@@ -106,7 +106,7 @@ def paint_signal_crossing(c):
             else:
                 c.text(panel.x(j), panel.y(sig[j]) + (-.5 if OSC[j] >= sig[j] else .2), f'{sig[j]:.1f}', color=ck.GOLD)
         c.point((0, index + 1, 'cross'), x, y)
-        c.text(x + (.45 if index == 0 else .4), y + (.85 if index == 0 else .6), word, ha='left', color=GREEN_DEEP)
+        c.text(*((x + .7, y - .55) if index == 0 else (x + .4, y + .6)), word, ha='left', color=GREEN_DEEP)
 
 
 # The fourteen bars of one lookback, oldest first, today's last. One reaches
@@ -125,7 +125,7 @@ def paint_raw_k(c):
     gold, red = '#' + str(dk.MARK_COLORS['gold']), '#' + str(dk.MARK_COLORS['red'])
     hi, lo = 56.0, 50.0
     panel = Panel(c, 1.0, 6.4, .85, 3.25, 49.0, 57.0, len(LOOKBACK))
-    ticks = [panel.bar(i, *row, tag=i) for i, row in enumerate(LOOKBACK)]
+    ticks = [panel.bar(i, *row, tag=i, half=.09) for i, row in enumerate(LOOKBACK)]
     top, bottom, today = ticks[3], ticks[7], ticks[-1]
     end = panel.x(len(LOOKBACK) - 1) + .3
     # Each level runs from the bar that sets it to today's bar, in its mark's colour.

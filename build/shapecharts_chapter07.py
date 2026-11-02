@@ -30,13 +30,17 @@ class Panel:
     def y(self, price):
         return self.y0 + (price - self.lo) / (self.hi - self.lo) * (self.y1 - self.y0)
 
-    def bar(self, slot, o, h, l, cl, *, tag=None):
-        """Draw one OHLC bar and return the tick positions, in inches."""
+    def bar(self, slot, o, h, l, cl, *, tag=None, half=None):
+        """Draw one OHLC bar and return the tick positions, in inches.
+
+        ``half`` is an optional shorter tick reach for a crowded chart; left
+        out, every earlier chapter's bars keep the shared HALF."""
         x = self.x(slot)
-        for xs, ys in (((x, x), (l, h)), ((x - HALF, x), (o, o)), ((x, x + HALF), (cl, cl))):
+        reach = HALF if half is None else half
+        for xs, ys in (((x, x), (l, h)), ((x - reach, x), (o, o)), ((x, x + reach), (cl, cl))):
             self.c.stroke(xs, [self.y(v) for v in ys], color=ck.INK, lw=2.4)
-        ticks = {'open': (x - HALF, self.y(o)), 'high': (x, self.y(h)),
-                 'low': (x, self.y(l)), 'close': (x + HALF, self.y(cl))}
+        ticks = {'open': (x - reach, self.y(o)), 'high': (x, self.y(h)),
+                 'low': (x, self.y(l)), 'close': (x + reach, self.y(cl))}
         if tag is not None:
             self.c.ticks[tag] = ticks
         return ticks

@@ -121,6 +121,25 @@ def _deck_problems(path: Path, with_figures: bool) -> list[str]:
     return problems
 
 
+def _fix_divider_notes(path: Path) -> None:
+    """deckkit's divider note says "three covers lines"; this chapter's divider
+    lists five terms. Fixed here, on this chapter's file only."""
+    from pptx import Presentation
+    prs = Presentation(path)
+    changed = False
+    for slide in prs.slides:
+        if slide.has_notes_slide:
+            frame = slide.notes_slide.notes_text_frame
+            if "three covers lines" in frame.text:
+                for para in frame.paragraphs:
+                    for run in para.runs:
+                        run.text = run.text.replace("Read the three covers lines, then move.",
+                                                    "Read the five terms, then move.")
+                changed = True
+    if changed:
+        prs.save(path)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--edition", choices=deckkit.EDITIONS, default=deckkit.TEACHING)
@@ -149,6 +168,7 @@ def main() -> int:
             figures_dir=args.figures_dir if args.with_figures else None,
             charts_dir=CHARTS_DIR, edition=args.edition)
     audit_pptx(args.out, CHARTS_DIR)
+    _fix_divider_notes(args.out)
     deck_problems = _deck_problems(args.out, args.with_figures)
     if deck_problems:
         print("Deck checks failed:", file=sys.stderr)

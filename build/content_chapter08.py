@@ -58,7 +58,7 @@ SECTION_4 = Section(
     slides=slides_b1.slides_84(), recap=None)
 SECTION_6 = Section(
     number=6, title='Window Oscillators', short='8.6 Window oscillators', minutes='about 100 minutes',
-    covers=('ROC', 'MOM', 'MACD', 'ATR', 'stochastic', 'RSI'),
+    covers=('ROC and MOM', 'MACD', 'ATR', 'stochastic', 'RSI'),
     slides=slides_b2.slides() + _samples.PART_A.slides[11:24] + slides_b3.slides(), recap=None)
 SECTION_7 = Section(
     number=7, title='Overlay Indicators', short='8.7 Overlays', minutes='about 30 minutes',
@@ -77,7 +77,13 @@ PART_A_SECTIONS = (SECTION_1, SECTION_2)
 PART_B_SECTIONS = (SECTION_3, SECTION_4, SECTION_5, SECTION_6, SECTION_7, SECTION_8)
 
 
-def _chapter(sections):
+OPENERS_B = (
+    replace(OPENERS[0], notes=("Four objectives, in Lim's words.", "Say them plainly; each one is a part of the first class or of today's.")),
+    replace(OPENERS[1], notes=("The first class was 8.1 and 8.2; today, the second class, is 8.3 to 8.8.", 'Say which half each section belongs to.')),
+)
+
+
+def _chapter(sections, openers=OPENERS):
     return expand_chart_pages(Chapter(
         course='Technical Analysis in Investment',
         code='FIN1209',
@@ -89,12 +95,12 @@ def _chapter(sections):
                      'The first class reads them and classifies indicators; the second class builds them one by one.'),
         objectives=OPENERS[0].lines,
         roadmap=OPENERS[1].lines,
-        openers=OPENERS,
+        openers=openers,
         sections=sections,
         closing=(),
     ))
 
 
 CHAPTER_A = _chapter(PART_A_SECTIONS)
-CHAPTER_B = _chapter(PART_B_SECTIONS)
+CHAPTER_B = _chapter(PART_B_SECTIONS, OPENERS_B)
 CHAPTER = _chapter(PART_A_SECTIONS + PART_B_SECTIONS)

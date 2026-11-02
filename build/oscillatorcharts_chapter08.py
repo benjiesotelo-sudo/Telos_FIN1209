@@ -8,6 +8,7 @@ invented for teaching, and printed on the chart.
 from __future__ import annotations
 
 import chartkit as ck
+from matplotlib.lines import Line2D
 from shapecharts_chapter07 import Panel
 
 MUTED, GREEN_DEEP, INK = ck.MUTED, ck.GREEN_DEEP, ck.INK
@@ -328,7 +329,9 @@ def paint_spec(c, spec):
         for i, v in enumerate(h['values']):
             if v is not None:
                 x = pan.x(h.get('start', 0) + i)
-                c.stroke((x, x), (base, pan.y(v)), color=h.get('color', MUTED), lw=h.get('lw', 7), ink=False)
+                # butt ends: a default projecting cap adds half the width to each end and draws the bar too tall
+                c.fig.add_artist(Line2D([x, x], [base, pan.y(v)], transform=c.fig.dpi_scale_trans, color=h.get('color', MUTED),
+                                        lw=h.get('lw', 7), solid_capstyle='butt'))
     for seg in spec.get('segs', ()):
         pan = panes[seg['pane']]
         (s0, v0), (s1, v1) = seg['a'], seg['b']

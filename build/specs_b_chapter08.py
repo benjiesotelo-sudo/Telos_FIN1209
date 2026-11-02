@@ -46,6 +46,8 @@ SPECS_B['cy1'] = _cycle('AY', 76, 39, ['(76 + 1) / 2 = 38.5, rounded up to 39'],
 SPECS_B['cy2'] = _cycle('AZ', 75, 38, ['(75 / 2) + 1 = 38.5, rounded down to 38', '(2 x 75 + 3) / 4 = 38.25, rounded to 38'],
                         'The cycle is ours, made up to show the idea.')
 
+SPECS_B['cy2a'] = _cycle('CR', 75, 38, ['(75 / 2) + 1 = 38.5, rounded down to 38'], 'The cycle is ours, made up to show the idea.')
+
 SPECS_B['t3'] = dict(letter='BA', caption="The table is ours, from Lim's formulas (p. 252).", spec=dict(
     panes=[], marks=[],
     table=dict(xs=(2.4, 6.4, 9.6), header=('formula for the half cycle', 'worked on N = 75', 'half cycle'), top=3.3, step=.7,
@@ -65,12 +67,17 @@ def _sm(v, n):
 _FAST = [48, 62, 55, 70, 58, 66, 52, 60, 46, 58, 44, 54, 62, 70, 60, 68, 76, 64, 72, 66]
 _MED = _sm(_FAST, 3)
 _SLOW = _sm(_FAST, 8)
+def _bracket_pane(pid, vals, y, title):
+    return pane(pid, y=y, lo=38, hi=82, n=20, title=title + ' (lines at 40 and 80)', x=(1.3, 8.9), ref=[(40, ''), (80, '')])
+
+
+_PA = [('a', _FAST, (2.8, 3.4), 'RSI on the 5 minute bars'), ('b', _MED, (1.75, 2.35), 'RSI on the 15 minute bars'), ('c', _SLOW, (.7, 1.3), 'RSI on the 1 hour bars')]
 SPECS_B['mtf'] = dict(letter='BB', spec=dict(
-    panes=[pane('a', y=(2.8, 3.4), lo=40, hi=80, n=20, title='RSI on the 5 minute bars'),
-           pane('b', y=(1.75, 2.35), lo=40, hi=80, n=20, title='RSI on the 15 minute bars'),
-           pane('c', y=(.7, 1.3), lo=40, hi=80, n=20, title='RSI on the 1 hour bars')],
-    series=[dict(pane='a', values=_FAST), dict(pane='b', values=_MED, color=DEEP), dict(pane='c', values=_SLOW, color=GOLD)],
-    marks=[('pt', 'a', 10, _FAST[10]), ('pt', 'b', 10, _MED[10]), ('pt', 'c', 10, _SLOW[10])]))
+    panes=[_bracket_pane(pid, v, y, t) for pid, v, y, t in _PA],
+    series=[dict(pane=pid, values=v) for pid, v, y, t in _PA],
+    segs=[dict(pane=pid, a=(19.9, min(v)), b=(19.9, max(v)), color=DEEP, dashed=False) for pid, v, y, t in _PA],
+    texts=[(X(_bracket_pane(pid, v, y, t), 19.9) + .25, Y(_bracket_pane(pid, v, y, t), (min(v) + max(v)) / 2) - .08, f'{min(v):g} to {max(v):g}', 'left', DEEP) for pid, v, y, t in _PA],
+    marks=[('pt', pid, 19.9, (min(v) + max(v)) / 2) for pid, v, y, t in _PA]))
 
 SPECS_B['mf'] = dict(letter='BC', caption='The table is ours, from the book\'s own numbers (p. 253).', spec=dict(
     panes=[], marks=[],
@@ -101,11 +108,18 @@ def _closes(n=96):
 _CL = _closes()
 _R14, _R42 = _rsi(_CL, 14), _rsi(_CL, 42)
 _hi14 = max(range(42, 96), key=lambda i: _R14[i])
+_P42 = pane('p', y=(.6, 3.0), lo=0, hi=100, n=96, x=(1.3, 9.2), ref=[(100, '100'), (50, '50'), (0, '0')])
+_l14, _h14 = min(x for x in _R14[42:] if x is not None), max(x for x in _R14[42:] if x is not None)
+_l42, _h42 = min(x for x in _R42[42:] if x is not None), max(x for x in _R42[42:] if x is not None)
 SPECS_B['rsi42'] = dict(letter='BD', caption='The closes are ours, made up to show the idea. Both lines use plain averages of gains and losses.', spec=dict(
-    panes=[pane('p', y=(.6, 3.0), lo=0, hi=100, n=96, x=(1.3, 10.3), ref=[(100, '100'), (50, '50'), (0, '0')])],
-    series=[dict(pane='p', values=_R14, lw=1.8), dict(pane='p', values=_R42, color=GOLD, lw=3.4)],
-    texts=[(1.45, 3.3, 'black: 14 period RSI   gold: 42 period RSI, the same closes', 'left', DEEP)],
-    marks=[('pt', 'p', _hi14, _R14[_hi14]), ('pt', 'p', _hi14, _R42[_hi14])]))
+    panes=[_P42],
+    series=[dict(pane='p', values=_R14, lw=1.8), dict(pane='p', values=_R42, color=DEEP, lw=3.4)],
+    segs=[dict(pane='p', a=(95.2, _l14), b=(95.2, _h14), color=INK, dashed=False), dict(pane='p', a=(96.4, _l42), b=(96.4, _h42), color=DEEP, dashed=False)],
+    texts=[(1.45, 3.3, 'thin black: 14 period RSI   thick green: 42 period RSI, the same closes', 'left', DEEP),
+           (X(_P42, 95.6) + .6, Y(_P42, (_l14 + _h14) / 2) + .4, f'14: {_l14:.0f} to {_h14:.0f}', 'left', INK),
+           (X(_P42, 95.6) + .6, Y(_P42, (_l42 + _h42) / 2) - .45, f'42: {_l42:.0f} to {_h42:.0f}', 'left', DEEP)],
+    marks=[('pt', 'p', 95.2, _h14), ('pt', 'p', 96.4, _h42)]),
+    angles={1: (0, 25, -25), 2: (0, 25, -25)})
 
 SPECS_B['mfm'] = dict(letter='BE', caption='The table is ours: the book\'s method (p. 253) on the 15 minute timeframe.', spec=dict(
     panes=[], marks=[],
@@ -154,6 +168,7 @@ _RF = [40, 55, 70, 60, 50]
 SPECS_B['srw'] = dict(letter='BJ', spec=dict(
     panes=[pane(lo=30, hi=80, n=5, x=(1.6, 7.6))],
     series=[dict(pane='p', values=_RF, labels=[(0, '40', 0, -.45), (1, '55', 0, .28), (2, '70', 0, .28), (3, '60', 0, .28), (4, '50', 0, .28)])],
+    texts=[(1.7, 3.4, 'latest reading 50: (50 - 40) / (70 - 40) = 0.33', 'left', DEEP)],
     levels=[dict(pane='p', value=70, label='highest RSI of the 5: 70', dy=-.1, side='right', slots=(0, 4)),
             dict(pane='p', value=40, label='lowest RSI of the 5: 40', dy=-.1, side='right', slots=(0, 4), color=DEEP)],
     marks=[('pt', 'p', 2, 70), ('pt', 'p', 0, 40), ('pt', 'p', 4, 50)]))
@@ -163,29 +178,34 @@ _P1 = [7, 4, 3, 3, 2, 4, 5, 4]
 _P2 = [9, 4, 3, 3, 2, 4, 5, 4]
 
 
-def _drop(letter, prices, a1, a2, note):
+def _drop(letter, prices, a1, a2, n=8, x=(1.5, 7.9)):
+    pn = pane(y=(.9, 2.75), lo=0.5, hi=11, n=n, x=x)
+    last = n - 1
     return dict(letter=letter, spec=dict(
-        panes=[pane(y=(.8, 2.75), lo=0, hi=11, n=8, x=(1.5, 9.5))],
-        series=[dict(pane='p', values=prices, labels=[(i, f'${v}', 0, .3 if v >= 4 else -.45) for i, v in enumerate(prices)])],
-        segs=[dict(pane='p', a=(0, a1), b=(6, a1), color=DEEP, dashed=False),
-              dict(pane='p', a=(1, a2), b=(7, a2), color=GOLD, dashed=False)],
-        texts=[(1.5, 3.42, f'first window: the first seven prices, average ${a1:.2f}', 'left', DEEP),
-               (1.5, 3.12, f'next window: drop the first, add the new $4, average ${a2:.2f}', 'left', GOLD)],
-        marks=[('pt', 'p', 0, prices[0]), ('pt', 'p', 7, prices[7]), ('pt', 'p', 6, a1), ('pt', 'p', 7, a2)]))
+        panes=[pn],
+        series=[dict(pane='p', values=prices, labels=[(i, f'${v}', .35 if i == 1 else 0, .3 if v >= 4 else -.45) for i, v in enumerate(prices)])],
+        segs=[dict(pane='p', a=(0, a1), b=(last - 1, a1), color=DEEP, dashed=False),
+              dict(pane='p', a=(1, a2), b=(last, a2), color=GOLD, dashed=False)],
+        texts=[(1.5, 3.42, f'first window: the first {n - 1} prices, average ${a1:.2f}', 'left', DEEP),
+               (1.5, 3.12, f'next window: drop the first, add the new $4, average ${a2:.2f}', 'left', GOLD),
+               (X(pn, last) + .5, Y(pn, a1) + .2, f'${a1:.2f}', 'left', DEEP), (X(pn, last) + .5, Y(pn, a2) - .3, f'${a2:.2f}', 'left', GOLD), (X(pn, last) + .5, Y(pn, a2) - .62, f'down ${a1 - a2:.2f}', 'left', INK)],
+        marks=[('pt', 'p', 0, prices[0]), ('pt', 'p', last, prices[last]), ('pt', 'p', 3, a1), ('pt', 'p', 5, a2)]))
 
 
-SPECS_B['dr1'] = _drop('BK', _P1, round(sum(_P1[:7]) / 7, 2), round(sum(_P1[1:]) / 7, 2), 'the average falls from $4.00 to $3.57')
-SPECS_B['dr2'] = _drop('BL', _P2, round(sum(_P2[:7]) / 7, 2), round(sum(_P2[1:]) / 7, 2), 'the average falls from $4.29 to $3.57')
+SPECS_B['dr1'] = _drop('BK', _P1, round(sum(_P1[:7]) / 7, 2), round(sum(_P1[1:]) / 7, 2))
+SPECS_B['dr2'] = _drop('BL', _P2, round(sum(_P2[:7]) / 7, 2), round(sum(_P2[1:]) / 7, 2))
 
 _P14 = [9, 4, 3, 3, 2, 4, 5, 4, 3, 4, 3, 5, 4, 4, 4]
+_a14, _b14 = round(sum(_P14[:14]) / 14, 2), round(sum(_P14[1:]) / 14, 2)
+_pm = pane(y=(.8, 2.75), lo=1.5, hi=11, n=15, x=(1.3, 8.9))
 SPECS_B['dr3'] = dict(letter='BM', spec=dict(
-    panes=[pane(y=(.8, 2.75), lo=0, hi=11, n=15, x=(1.3, 9.9))],
-    series=[dict(pane='p', values=_P14, labels=[(0, '$9', 0, .3), (14, '$4', 0, -.45)])],
-    segs=[dict(pane='p', a=(0, round(sum(_P14[:14]) / 14, 2)), b=(13, round(sum(_P14[:14]) / 14, 2)), color=DEEP, dashed=False),
-          dict(pane='p', a=(1, round(sum(_P14[1:]) / 14, 2)), b=(14, round(sum(_P14[1:]) / 14, 2)), color=GOLD, dashed=False)],
-    texts=[(1.4, 3.42, f'first window: the first 14 prices, average ${sum(_P14[:14]) / 14:.2f}', 'left', DEEP),
-           (1.4, 3.12, f'next window: drop the $9, add the new $4, average ${sum(_P14[1:]) / 14:.2f}', 'left', GOLD)],
-    marks=[('pt', 'p', 0, 9), ('pt', 'p', 14, 4), ('pt', 'p', 13, round(sum(_P14[:14]) / 14, 2)), ('pt', 'p', 14, round(sum(_P14[1:]) / 14, 2))]))
+    panes=[_pm],
+    series=[dict(pane='p', values=_P14, labels=[(i, f'${v}', .35 if i == 1 else 0, .3 if v >= 4 else -.45) for i, v in enumerate(_P14)])],
+    segs=[dict(pane='p', a=(0, _a14), b=(13, _a14), color=DEEP, dashed=False), dict(pane='p', a=(1, _b14), b=(14, _b14), color=GOLD, dashed=False)],
+    texts=[(1.4, 3.42, f'first window: the first 14 prices, average ${_a14:.2f}', 'left', DEEP),
+           (1.4, 3.12, f'next window: drop the $9, add the new $4, average ${_b14:.2f}', 'left', GOLD),
+           (X(_pm, 14) + .5, Y(_pm, _a14) + .2, f'${_a14:.2f}', 'left', DEEP), (X(_pm, 14) + .5, Y(_pm, _b14) - .3, f'${_b14:.2f}', 'left', GOLD), (X(_pm, 14) + .5, Y(_pm, _b14) - .62, f'down ${_a14 - _b14:.2f}', 'left', INK)],
+    marks=[('pt', 'p', 0, 9), ('pt', 'p', 14, 4), ('pt', 'p', 13, _a14), ('pt', 'p', 14, _b14)]))
 
 # ============================================================ 8.5 trend trading
 _TPU = [44, 46, 48, 50, 52, 51, 49, 47.5, 47, 48.5, 51, 53, 55, 57]
@@ -201,16 +221,18 @@ def _trend(letter, up):
     cx = _cross(osc, sig, 6, up)
     eq = _cross(osc, [50] * len(osc), 6, up)
     pl, ph = (42, 59) if up else (min(price) - 2, max(price) + 2)
-    tl = [(0.0, 'oversold: 30' if up else 'overbought: 70')]
     lvl = 30 if up else 70
+    # the trend as a line: under the lows of an uptrend (slots 0 and 8), over the highs of a downtrend
+    v0, v8 = price[0], price[8]
+    tl = [round(v0 + (v8 - v0) / 8 * k, 2) for k in range(14)]
     return dict(letter=letter, spec=dict(
-        panes=[pane('t', y=(2.35, 3.4), lo=pl, hi=ph, n=14, x=(1.3, 8.4), title='price: ' + ('an uptrend with a pullback' if up else 'a downtrend with a bounce')),
-               pane('b', y=(.45, 1.95), lo=0, hi=100, n=14, title='oscillator and its signal line', x=(1.3, 8.4), ref=[(50, '50')])],
+        panes=[pane('t', y=(2.35, 3.4), lo=pl, hi=ph, n=14, x=(1.3, 8.4),
+                    title='price: ' + ('an uptrend of higher lows (dashed line)' if up else 'a downtrend of lower highs (dashed line)')),
+               pane('b', y=(.45, 1.95), lo=0, hi=100, n=14, title='black: oscillator   gold: its signal line, a 3 bar average', x=(1.3, 8.4), ref=[(50, '50')])],
         series=[dict(pane='t', values=price), dict(pane='b', values=osc), dict(pane='b', values=sig, color=GOLD, lw=2.8)],
-        levels=[dict(pane='b', value=lvl, label=tl[0][1], dy=-.35 if up else .1, side='right', color=DEEP, slots=(0, 13))],
-        marks=[('pt', 't', 4 if up else 4, price[4]),
-               ('pt', 'b', 8 if up else 8, osc[8]),
-               ('pt', 'b', cx[0], cx[1])]))
+        segs=[dict(pane='t', a=(0, tl[0]), b=(13, tl[13]), color=DEEP, dashed=True)],
+        levels=[dict(pane='b', value=lvl, label='oversold: 30' if up else 'overbought: 70', dy=-.35 if up else .1, side='right', color=DEEP, slots=(0, 13))],
+        marks=[('pt', 't', 4, round(tl[4], 2)), ('pt', 'b', 8, osc[8]), ('pt', 'b', cx[0], cx[1]), ('pt', 'b', eq[0], eq[1])]))
 
 
 SPECS_B['tru'] = _trend('BN', True)
@@ -293,34 +315,44 @@ _E12, _E26 = _ema(_MC, 12), _ema(_MC, 26)
 _MD = [round(a - b, 3) for a, b in zip(_E12, _E26)]
 _cu = _cross(_E12, _E26, 20, True)
 _cd = _cross(_E12, _E26, 54, False)
+
+
+def _vals(slot):
+    a, b = _E12[slot], _E26[slot]
+    return f'bar {slot + 1}: 12 EMA {a:.2f}, 26 EMA {b:.2f}, MACD {a - b:+.2f}'
+
+
+_mt = pane('t', y=(2.15, 3.1), lo=92, hi=132, n=80, title='the 12 period EMA (gold) and the 26 period EMA (green)', x=(1.3, 10.3))
 SPECS_B['mc'] = dict(letter='BW', caption='The closes are ours, made up to show the idea.', spec=dict(
-    panes=[pane('t', y=(1.95, 3.1), lo=96, hi=132, n=80, title='the 12 period EMA (gold) and the 26 period EMA (green)', x=(1.3, 10.3)),
-           pane('b', y=(.5, 1.5), lo=-5, hi=7, n=80, title='MACD = 12 period EMA minus 26 period EMA', x=(1.3, 10.3), ref=[(0, '0')])],
+    panes=[_mt, pane('b', y=(1.05, 1.8), lo=-5, hi=7, n=80, title='MACD = 12 period EMA minus 26 period EMA', x=(1.3, 10.3), ref=[(0, '0')])],
     series=[dict(pane='t', values=[round(x, 2) for x in _E12], color=GOLD, lw=2.8),
             dict(pane='t', values=[round(x, 2) for x in _E26], color=DEEP, lw=2.8), dict(pane='b', values=_MD)],
-    marks=[('pt', 't', _cu[0], _cu[1]), ('pt', 'b', _cu[0], 0)]))
+    texts=[(1.4, .75, _vals(66), 'left', DEEP), (1.4, .5, _vals(73), 'left', DEEP)],
+    marks=[('pt', 't', _cd[0], _cd[1]), ('pt', 'b', _cd[0], 0)]))
 
 _SG = [round(x, 3) for x in _ema(_MD, 9)]
 _HS = [round(a - b, 3) for a, b in zip(_MD, _SG)]
-_hx = _cross(_MD, _SG, 20, True)
+_hx = _cross(_MD, _SG, 54, False)
 SPECS_B['mh'] = dict(letter='BX', caption='The closes are ours, made up to show the idea.', spec=dict(
     panes=[pane('t', y=(1.95, 3.1), lo=-3, hi=7, n=80, title='MACD and its 9 period signal line', x=(1.3, 10.3), ref=[(0, '0')]),
-           pane('b', y=(.5, 1.5), lo=-2, hi=2, n=80, title='histogram = MACD minus signal line', x=(1.3, 10.3), ref=[(0, '0')])],
+           pane('b', y=(.75, 1.55), lo=-2, hi=2, n=80, title='histogram = MACD minus signal line', x=(1.3, 10.3), ref=[(0, '0')])],
     series=[dict(pane='t', values=_MD), dict(pane='t', values=_SG, color=GOLD, lw=2.8)],
     hist=[dict(pane='b', values=_HS, color=DEEP, lw=3.6)],
-    marks=[('pt', 't', _hx[0], _hx[1]), ('pt', 'b', _hx[0], 0)]))
+    texts=[(1.4, .42, f'bar {int(_hx[0]) + 1}: MACD {_MD[int(_hx[0])]:+.2f}, signal {_SG[int(_hx[0])]:+.2f}, histogram {_HS[int(_hx[0])]:+.2f}', 'left', DEEP)],
+    marks=[('pt', 't', _hx[0], _hx[1]), ('pt', 'b', _hx[0], 0), ('pt', 't', _cd[0], 0)]))
 
 # average true range
+_TR = pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4))
+_RED, _BLUE = '#C62828', '#1F5FAD'
 SPECS_B['tr'] = dict(letter='BY', spec=dict(
-    panes=[pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4))],
-    bars=[dict(pane='p', rows=[(100.5, 102.5, 99.5, 102.0), (106.0, 108.0, 105.5, 107.5)], labels=[], half=.2)],
+    panes=[_TR],
+    bars=[dict(pane='p', rows=[(100.5, 102.5, 99.5, 102.0), (106.0, 108.0, 105.5, 107.5)], labels=[(1, 'high 108.00', -.95, .05)], half=.2)],
     segs=[dict(pane='p', a=(2.4, 105.5), b=(2.4, 108.0), color=GOLD, dashed=False),
-          dict(pane='p', a=(3.4, 102.0), b=(3.4, 108.0), color=DEEP, dashed=False),
-          dict(pane='p', a=(4.4, 102.0), b=(4.4, 105.5), color=MUTED, dashed=False)],
+          dict(pane='p', a=(3.4, 102.0), b=(3.4, 108.0), color=_RED, dashed=False),
+          dict(pane='p', a=(4.4, 102.0), b=(4.4, 105.5), color=_BLUE, dashed=False)],
     levels=[dict(pane='p', value=102.0, label='previous close 102.00', side='right', dy=-.1, slots=(0, 4.4), color=MUTED)],
-    texts=[(X(pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4)), 2.4), Y(pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4)), 109), '2.50', 'center', INK),
-           (X(pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4)), 3.4), Y(pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4)), 109), '6.00', 'center', INK),
-           (X(pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4)), 4.4), Y(pane(y=(.7, 3.0), lo=98, hi=111, n=6, x=(1.4, 9.4)), 109), '3.50', 'center', INK)],
+    texts=[(X(_TR, 2.4), Y(_TR, 109.7), 'bar range\n2.50', 'center', INK), (X(_TR, 3.4), Y(_TR, 109.7), 'close to\nhigh 6.00', 'center', INK),
+           (X(_TR, 4.4), Y(_TR, 109.7), 'close to\nlow 3.50', 'center', INK), (X(_TR, 1) - .2, Y(_TR, 105.5) - .3, 'low 105.50', 'center', INK)],
     marks=[('pt', 'p', 2.4, 106.75), ('pt', 'p', 3.4, 105.0), ('pt', 'p', 4.4, 103.75)]))
 
 SPECS_B['atr'] = dict(letter='BZ', spec=dict(
@@ -369,20 +401,24 @@ _SD = _sma(_FD)          # slow %D
 
 
 def _stoch_chart(letter, lines, labels, note):
+    pt = pane('t', y=(2.5, 3.4), lo=45, hi=58.5, n=10, title='ten bars of ours, numbered 1 to 10, lookback of 3', x=(1.3, 9.6))
     return dict(letter=letter, spec=dict(
-        panes=[pane('t', y=(2.15, 3.4), lo=48.5, hi=55, n=10, title='ten bars of ours, lookback of 3', x=(1.3, 9.6)),
-               pane('b', y=(.75, 1.8), lo=-15, hi=118, n=10, title=note, x=(1.3, 9.6), ref=[(0, '0')])],
+        panes=[pt, pane('b', y=(.55, 1.75), lo=-15, hi=118, n=10, title=note, x=(1.3, 9.6), ref=[(0, '0')])],
         bars=[dict(pane='t', rows=_SB, half=.1)],
         series=lines,
+        texts=[(X(pt, i), 2.45, str(i + 1), 'center', DEEP) for i in range(10)] +
+              [(X(pt, 6) + .55, Y(pt, 53.6) + .28, 'H 53.60', 'center', INK)],
         marks=labels))
 
 
-SPECS_B['fs'] = _stoch_chart('CC', [dict(pane='b', values=_RK, labels=[(4, f'{_RK[4]}', 0, -.42), (6, f'{_RK[6]}', 0, .3), (9, f'{_RK[9]}', 0, -.42)]),
-                                    dict(pane='b', values=_FD, color=GOLD, lw=3.0, labels=[(6, f'{_FD[6]}', .5, -.2), (8, f'{_FD[8]}', 0, .28)])],
-                            [('pt', 'b', 6, _RK[6]), ('pt', 'b', 6, _FD[6])], 'black: raw %K   gold: fast %D')
-SPECS_B['ss'] = _stoch_chart('CD', [dict(pane='b', values=_FD, color=GOLD, lw=3.0, labels=[(7, f'{_FD[7]}', 0, .3), (9, f'{_FD[9]}', 0, -.45)]),
-                                    dict(pane='b', values=_SD, color=INK, lw=2.4, labels=[(7, f'{_SD[7]}', 0, -.6), (9, f'{_SD[9]}', 0, .28)])],
-                            [('pt', 'b', 7, _FD[7]), ('pt', 'b', 7, _SD[7])], 'gold: slow %K   black: slow %D')
+SPECS_B['fs'] = _stoch_chart('CC', [dict(pane='b', values=_RK, labels=[(4, f'{_RK[4]}', 0, -.42), (5, f'{_RK[5]}', -.3, .3), (6, f'{_RK[6]}', 0, .3), (9, f'{_RK[9]}', 0, -.42)]),
+                                    dict(pane='b', values=_FD, color=GOLD, lw=3.0, labels=[(8, f'{_FD[8]}', 0, .28)])],
+                            [('pt', 'b', 6, _RK[6]), ('pt', 'b', 6, _FD[6]), ('box', 't', 4, 6, 49.4, 53.95)], 'black: raw %K   gold: fast %D')
+SPECS_B['ss'] = _stoch_chart('CD', [dict(pane='b', values=_FD, color=INK, lw=2.4, labels=[(7, f'{_FD[7]}', 0, .3), (9, f'{_FD[9]}', 0, -.45)]),
+                                    dict(pane='b', values=_SD, color=GOLD, lw=3.0, labels=[(7, f'{_SD[7]}', 0, -.3), (9, f'{_SD[9]}', 0, .28)])],
+                            [('pt', 'b', 7, _FD[7]), ('pt', 'b', 7, _SD[7])], 'black: slow %K   gold: slow %D')
+
+SPECS_B['ss']['angles'] = {1: (90, 70, 110), 2: (270, 250, 290)}
 
 # signal line crossovers on lines of ours: the fast pair and the slow pair
 _KF = [30, 46, 64, 78, 70, 54, 36, 26, 36, 54, 70, 76, 62, 48]
@@ -415,11 +451,15 @@ SPECS_B['sdf'] = dict(letter='CG', spec=dict(
             dict(pane='p', value=20, label='oversold: 20', side='right', dy=-.1, color=DEEP, slots=(0, 13))],
     marks=[('pt', 'p', 3, 90), ('pt', 'p', 9, 12)]))
 
-SPECS_B['nm'] = dict(letter='CH', caption='The table is ours, made up to show the idea.', spec=dict(
-    panes=[], marks=[],
-    table=dict(xs=(2.3, 6.0, 9.6), header=('range of the lookback', 'close up 0.10', 'close up 0.15'), top=3.3, step=.75,
-               rows=(('narrow: 0.20', '0.10 / 0.20 = 50 percent', '0.15 / 0.20 = 75 percent'),
-                     ('wide: 2.00', '0.10 / 2.00 = 5 percent', '0.15 / 2.00 = 7.5 percent')))))
+SPECS_B['nm'] = dict(letter='CH', spec=dict(
+    panes=[pane('l', x=(1.3, 4.9), y=(.7, 2.7), lo=-30, hi=105, n=2, title='range 0.20: closes 0.03 and 0.17 above the low'),
+           pane('r', x=(6.9, 10.5), y=(.7, 2.7), lo=-30, hi=105, n=2, title='range 2.00: the same two closes')],
+    series=[dict(pane='l', values=[15, 85], labels=[(0, '15', 0, -.45), (1, '85', 0, -.45)]),
+            dict(pane='r', values=[1.5, 8.5], labels=[(0, '1.5', 0, -.45), (1, '8.5', 0, -.45)])],
+    levels=[dict(pane='l', value=80, label='80', side='right', dy=-.1, color=DEEP), dict(pane='l', value=20, label='20', side='right', dy=-.1, color=DEEP),
+            dict(pane='r', value=80, label='80', side='right', dy=-.1, color=DEEP), dict(pane='r', value=20, label='20', side='right', dy=-.1, color=DEEP)],
+    texts=[(3.1, 3.55, 'raw %K swings from oversold to overbought', 'center', INK), (8.7, 3.55, 'the same closes barely move it', 'center', INK)],
+    marks=[('pt', 'l', 0, 15), ('pt', 'l', 1, 85), ('pt', 'r', 1, 8.5)]))
 
 # RSI: the formula and a worked example
 SPECS_B['rsf'] = dict(letter='CI', spec=dict(
@@ -478,16 +518,15 @@ SPECS_B['ag'] = dict(letter='CL', spec=dict(
 
 
 # ================================================================ 8.7 overlay indicators
-_CF = [53.0, 52.2, 51.4, 50.8, 50.3, 50.1, 50.4, 51.0, 51.8, 52.4]
+_CF = [51.6, 51.0, 50.6, 50.3, 50.2, 50.1, 50.2, 50.4, 51.0, 51.8]
+_CFA = [None] * 4 + [round(sum(_CF[i - 4:i + 1]) / 5, 2) for i in range(4, 10)]
 SPECS_B['cf'] = dict(letter='CM', spec=dict(
-    panes=[pane(y=(.7, 3.2), lo=48.5, hi=55, n=10, x=(1.3, 8.2))],
+    panes=[pane(y=(.7, 3.2), lo=49.2, hi=52.4, n=10, x=(1.3, 8.2))],
     series=[dict(pane='p', values=_CF, labels=[(5, '50.10', 0, -.45)]),
-            dict(pane='p', values=_sma(_CF, 3), color=DEEP, lw=2.4, role='average', of=0, n=5)],
+            dict(pane='p', values=_CFA, color=DEEP, lw=2.4, role='average', of=0, n=5, labels=[(5, f'{_CFA[5]:.2f}', .5, .45)])],
     levels=[dict(pane='p', value=50.0, label='prior support 50.00', side='right', dy=-.35, color=MUTED, slots=(0, 9)),
-            dict(pane='p', value=50.3, label='Fibonacci level 50.30', side='right', dy=.05, color=GOLD, slots=(0, 9))],
-    marks=[('pt', 'p', .5, 50.0), ('pt', 'p', .5, 50.3), ('box', 'p', 7, 8, 50.35, 51.25), ('box', 'p', 4, 6, 49.85, 50.55)]))
-# the moving average of the closes is drawn at the closes it names, so a machine check can test it
-SPECS_B['cf']['spec']['series'][1]['values'] = [None] * 4 + [round(sum(_CF[i - 4:i + 1]) / 5, 2) for i in range(4, 10)]
+            dict(pane='p', value=50.3, label='Fibonacci level 50.30', side='right', dy=.05, color='#C62828', slots=(0, 9))],
+    marks=[('pt', 'p', .5, 50.0), ('pt', 'p', .5, 50.3), ('pt', 'p', 5, _CFA[5]), ('box', 'p', 4, 6, 49.85, 50.45)]))
 SPECS_B['cf']['angles'] = {1: (270, 250, 290), 2: (90, 70, 110)}
 
 # Floor Trader's Pivot Points on a day of ours: H 52.00, L 48.00, C 51.20
@@ -509,16 +548,45 @@ SPECS_B['pv1'] = dict(letter='CN', spec=dict(
     panes=[pane(y=(.7, 3.3), lo=46.5, hi=54.5, n=8, x=(1.3, 8.1))],
     bars=[dict(pane='p', rows=_YB, labels=[], half=.2)],
     levels=[_lv(_PP, f'PP = {_PP:.2f}', DEEP), _lv(_R1, f'R1 = {_R1:.2f}', GOLD), _lv(_S1, f'S1 = {_S1:.2f}', GOLD, dy=-.4)],
-    texts=[(X(pane(y=(.7, 3.3), lo=46.5, hi=54.5, n=8, x=(1.3, 8.1)), 0), 3.4, 'yesterday', 'center', DEEP)],
+    texts=[(X(pane(y=(.7, 3.3), lo=46.5, hi=54.5, n=8, x=(1.3, 8.1)), 0), 3.4, 'yesterday', 'center', DEEP), (X(pane(y=(.7, 3.3), lo=46.5, hi=54.5, n=8, x=(1.3, 8.1)), 3), 3.4, 'today: the levels from yesterday', 'center', DEEP)],
     marks=[('pt', 'p', 0, 52.0), ('pt', 'p', 0, 48.0), ('pt', 'p', .2, 51.2), ('pt', 'p', 3, _PP), ('pt', 'p', 3, _R1), ('pt', 'p', 3, _S1)]))
 
+_P2 = pane(y=(.7, 3.3), lo=44.5, hi=56.5, n=8, x=(1.3, 8.1))
 SPECS_B['pv2'] = dict(letter='CO', spec=dict(
-    panes=[pane(y=(.7, 3.3), lo=44.5, hi=56.5, n=8, x=(1.3, 8.1))],
+    panes=[_P2],
     bars=[dict(pane='p', rows=_YB, labels=[], half=.2)],
     levels=[_lv(_PP, f'PP = {_PP:.2f}', DEEP), _lv(_R2, f'R2 = {_R2:.2f}', GOLD), _lv(_S2P, f'S2 = {_S2P:.2f}', GOLD, dy=-.4)],
-    segs=[dict(pane='p', a=(5, _PP), b=(5, _R2), color=DEEP, dashed=False), dict(pane='p', a=(5, _PP), b=(5, _S2P), color=DEEP, dashed=False)],
-    texts=[(X(pane(y=(.7, 3.3), lo=44.5, hi=56.5, n=8, x=(1.3, 8.1)), 0), 3.4, 'yesterday', 'center', DEEP)],
-    marks=[('pt', 'p', 3, _PP), ('pt', 'p', 3, _R2), ('pt', 'p', 3, _S2P), ('pt', 'p', 0, 50.0)]))
+    segs=[dict(pane='p', a=(5, _PP), b=(5, _R2), color=DEEP, dashed=False), dict(pane='p', a=(5, _PP), b=(5, _S2P), color=DEEP, dashed=False),
+          dict(pane='p', a=(.55, 48.0), b=(.55, 52.0), color=INK, dashed=False)],
+    texts=[(X(_P2, 0), 3.4, 'yesterday', 'center', DEEP), (X(_P2, 5) + .45, Y(_P2, 52.4), '+ 4.00', 'left', DEEP), (X(_P2, 5) + .45, Y(_P2, 48.4), '- 4.00', 'left', DEEP),
+           (X(_P2, 0) - .15, Y(_P2, 52.0) + .05, 'H 52.00', 'right', INK), (X(_P2, 0) - .15, Y(_P2, 48.0) - .05, 'L 48.00', 'right', INK),
+           (X(_P2, 1.0), Y(_P2, 50.0) - .35, 'range 4.00', 'left', INK)],
+    marks=[('pt', 'p', 3, _PP), ('pt', 'p', 3, _R2), ('pt', 'p', 3, _S2P), ('pt', 'p', .55, 50.0)]))
+
+# two days with the same high and low: the close at the middle of the range, and above it
+_P3 = pane(y=(.6, 3.3), lo=47, hi=54.5, n=10, x=(1.3, 7.8))
+_ZB = [(49.0, 52.0, 48.0, 50.0), (49.0, 52.0, 48.0, 51.2)]
+SPECS_B['pv1b'] = dict(letter='CS', spec=dict(
+    panes=[_P3],
+    bars=[dict(pane='p', rows=_ZB, labels=[], half=.25)],
+    segs=[dict(pane='p', a=(5.2, 50.0), b=(9, 50.0), color=MUTED, dashed=True), 
+          dict(pane='p', a=(2, 50.0), b=(4, 50.0), color=DEEP, dashed=False), dict(pane='p', a=(2, 52.0), b=(4, 52.0), color=DEEP, dashed=False), dict(pane='p', a=(2, 48.0), b=(4, 48.0), color=DEEP, dashed=False),
+          dict(pane='p', a=(6, 50.4), b=(8, 50.4), color=GOLD, dashed=False), dict(pane='p', a=(6, 52.8), b=(8, 52.8), color=GOLD, dashed=False), dict(pane='p', a=(6, 48.8), b=(8, 48.8), color=GOLD, dashed=False)],
+    texts=[(X(_P3, 0), 3.4, 'close 50.00', 'center', DEEP), (X(_P3, 1) + .75, 3.4, 'close 51.20', 'center', DEEP),
+           (X(_P3, 3), Y(_P3, 50.0) - .32, 'PP 50.00', 'center', DEEP), (X(_P3, 4) + .5, Y(_P3, 52.0) - .1, 'R1 52.00', 'left', DEEP), (X(_P3, 4) + .5, Y(_P3, 48.0) - .1, 'S1 48.00', 'left', DEEP),
+           (X(_P3, 8) + .5, Y(_P3, 50.4) + .02, 'PP 50.40', 'left', GOLD), (X(_P3, 8) + .5, Y(_P3, 52.8) - .1, 'R1 52.80', 'left', GOLD), (X(_P3, 8) + .5, Y(_P3, 48.8) - .2, 'S1 48.80', 'left', GOLD),
+           (X(_P3, 5.4), 3.4, 'dashed: the middle, 50.00', 'left', MUTED), (X(_P3, 5.4), 3.1, 'raised: PP +0.40, R1 +0.80, S1 +0.80', 'left', GOLD)],
+    marks=[('pt', 'p', 0, 52.0), ('pt', 'p', 0, 50.0), ('pt', 'p', 1, 51.2), ('pt', 'p', 7, 50.4)]))
+
+# Check 23: our own day, so the answer is not printed on the question
+_P4 = pane(y=(.6, 3.3), lo=86, hi=118, n=8, x=(1.3, 8.4))
+SPECS_B['pck'] = dict(letter='CT', spec=dict(
+    panes=[_P4],
+    bars=[dict(pane='p', rows=[(100.0, 110.0, 90.0, 106.0)], labels=[], half=.25)],
+    levels=[_lv(102, 'PP 102', DEEP, slots=(1, 7))],
+    texts=[(X(_P4, 0), 3.4, 'yesterday', 'center', DEEP), (X(_P4, 0) + .5, Y(_P4, 110) + .05, 'H 110', 'left', INK), (X(_P4, 0) + .5, Y(_P4, 90) - .05, 'L 90', 'left', INK),
+           (X(_P4, 0) + .5, Y(_P4, 106) + .05, 'C 106', 'left', INK)],
+    marks=[('pt', 'p', 0, 110), ('pt', 'p', 0, 90), ('pt', 'p', 4, 102)]))
 
 SPECS_B['pv3'] = dict(letter='CP', spec=dict(
     panes=[pane(y=(.55, 3.3), lo=41, hi=59.5, n=8, x=(1.3, 8.1))],
@@ -526,12 +594,12 @@ SPECS_B['pv3'] = dict(letter='CP', spec=dict(
             _lv(_R1, f'R1 = {_R1:.2f}', MUTED, dy=.0), _lv(_PP, f'PP = {_PP:.2f}', DEEP, dy=.0), _lv(_S1, f'S1 = {_S1:.2f}', MUTED, dy=.0),
             _lv(_S2P, f'S2 = {_S2P:.2f}', MUTED, dy=.0), _lv(_S3, f'S3 = {_S3:.2f}', GOLD, dy=.0), _lv(_S4, f'S4 = {_S4:.2f}', GOLD, dy=.0)],
     marks=[('pt', 'p', 1, _R3), ('pt', 'p', 1, _R4), ('pt', 'p', 1, _S3), ('pt', 'p', 1, _S4)]),
-    angles={n: (180, 165, 195, 150, 210) for n in (1, 2, 3, 4)})
+    angles={1: (270, 250, 290), 2: (90, 70, 110), 3: (90, 70, 110), 4: (270, 250, 290)})
 
 _DP = [51.0, 51.6, 52.4, 53.2, 53.9, 54.7, 54.2, 53.6]
 SPECS_B['pvd'] = dict(letter='CQ', spec=dict(
-    panes=[pane(y=(.6, 3.3), lo=48, hi=56, n=8, x=(1.3, 8.1))],
+    panes=[pane(y=(.6, 3.3), lo=48, hi=57.8, n=8, x=(1.3, 8.1))],
     series=[dict(pane='p', values=_DP, labels=[(0, '51.00', 0, -.45), (5, '54.70', 0, .3)])],
     levels=[_lv(_PP, f'PP = {_PP:.2f}', DEEP, slots=(0, 7)), _lv(_R1, f'R1 = {_R1:.2f}', MUTED, slots=(0, 7)),
-            _lv(_R2, f'R2 = {_R2:.2f}', MUTED, slots=(0, 7))],
+            _lv(_R2, f'R2 = {_R2:.2f}', MUTED, slots=(0, 7)), _lv(_R3, f'R3 = {_R3:.2f}, not reached', MUTED, slots=(0, 7))],
     marks=[('pt', 'p', 0, 51.0), ('pt', 'p', 2.5, _PP), ('pt', 'p', 5, 54.7)]))

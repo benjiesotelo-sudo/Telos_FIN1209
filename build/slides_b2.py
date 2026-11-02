@@ -12,25 +12,25 @@ PURPLE = P
 
 
 # ------------------------------------------------------------------ Lim's figures
-F818_A = fig('8.18', (0, 0, 0.442, 1), "Figure 8.18, left part: Goldman Sachs with its ROC under it. In the first box the price is flat or ranging and the ROC declines; in the second the price rises steadily and the ROC is flat or ranging.",
-             [M(1, G, 0.28, 0.76, 0.43, 0.935, at=(0.25, 0.85)), M(2, R, 0.055, 0.755, 0.222, 0.93, at=(0.032, 0.80))], 256)
-F818_B = fig('8.18', (0.455, 0, 1, 1), "Figure 8.18, right part: the ROC with Lim's historical overbought level, his zero line crossovers and his Points 1, 2 and 3.",
-             [M(1, G, 0.525, 0.855, 0.70, 0.935, at=(0.51, 0.80)), M(2, R, 0.64, 0.765, 0.965, 0.81, at=(0.985, 0.70)),
-              M(3, B, 0.652, 0.20, 0.695, 0.30, kind='circle', at=(0.625, 0.34)), M(4, P, 0.776, 0.19, 0.82, 0.29, kind='circle', at=(0.752, 0.34)),
-              M(5, G, 0.91, 0.19, 0.955, 0.29, kind='circle', at=(0.885, 0.34))], 256, 'sc')
+F818_A = fig('8.18', (0, 0.45, 0.442, 1), "Figure 8.18, left part: Goldman Sachs with its ROC under it. In the first box the price is flat or ranging and the ROC declines; in the second the price rises steadily and the ROC is flat or ranging.",
+             [M(1, G, 0.28, 0.76, 0.43, 0.935, at=(0.25, 0.85)), M(2, R, 0.055, 0.745, 0.222, 0.885, at=(0.032, 0.80))], 256)
+F818_B = fig('8.18', (0.455, 0, 1, 1), "Figure 8.18, right part: the ROC with Lim's historical overbought level, his zero line crossovers and his circled Points 1, 2 and 3.",
+             [M(1, G, 0.68, 0.86, 0.714, 0.94, kind='circle', at=(0.697, 0.835)), M(2, R, 0.73, 0.85, 0.764, 0.93, kind='circle', at=(0.747, 0.825)),
+              M(3, B, 0.805, 0.855, 0.839, 0.935, kind='circle', at=(0.822, 0.83)), M(4, P, 0.665, 0.787, 0.955, 0.787, kind='line', at=(1.02, 0.72)),
+              M(5, G, 0.64, 0.185, 0.96, 0.305, at=(1.02, 0.245))], 256, 'sc')
 F818_B.masks = ((0.455, 0.015, 0.497, 0.052), (0.455, 0.715, 0.476, 0.738), (0.455, 0.935, 0.476, 0.975))
 F819_TOP = fig('8.19', (0, 0, 1, 0.8), "Figure 8.19, upper part: Goldman Sachs with its 12 and 26 day EMAs, and under it the MACD, with Lim's solid arrows from the crossings of the two averages down to the MACD at zero.",
                [M(1, G, 0.19, 0.69, 0.222, 0.76, kind='circle', at=(0.235, 0.66)), M(2, R, 0.263, 0.70, 0.295, 0.77, kind='circle', at=(0.31, 0.665)),
                 M(3, B, 0.485, 0.69, 0.517, 0.76, kind='circle', at=(0.535, 0.66))], 257, 'sc')
 F819_LOW = fig('8.19', (0, 0.55, 1, 1), "Figure 8.19, lower part: the MACD with its signal line and, under it, the MACD histogram, with Lim's dotted arrows from the signal line crossings down to the histogram at zero.",
-               [M(1, G, 0.074, 0.835, 0.106, 0.89, kind='circle', at=(0.05, 0.80)), M(2, R, 0.409, 0.84, 0.441, 0.895, kind='circle', at=(0.385, 0.805)),
+               [M(1, G, 0.074, 0.835, 0.106, 0.89, kind='circle', at=(0.12, 0.775)), M(2, R, 0.409, 0.84, 0.441, 0.895, kind='circle', at=(0.445, 0.775)),
                 M(3, B, 0.664, 0.84, 0.696, 0.895, kind='circle', at=(0.64, 0.805)), M(4, P, 0.804, 0.84, 0.836, 0.895, kind='circle', at=(0.78, 0.805))], 258, 'sc')
 F820 = fig('8.20', (0, 0, 1, 1), "Figure 8.20: the hourly USDJPY with its MACD under it, a historically overbought level marked in the MACD window and three arrows from the MACD peaks up to the price tops.",
-           [M(1, G, 0.2, 0.69, 0.48, 0.745, at=(0.50, 0.72)), M(2, R, 0.165, 0.655, 0.205, 0.715, kind='circle', at=(0.12, 0.60)),
+           [M(1, G, 0.25, 0.682, 0.49, 0.682, kind='line', at=(0.37, 0.635)), M(2, R, 0.165, 0.655, 0.205, 0.715, kind='circle', at=(0.12, 0.60)),
             M(3, B, 0.515, 0.655, 0.555, 0.715, kind='circle', at=(0.47, 0.60)), M(4, P, 0.81, 0.655, 0.85, 0.715, kind='circle', at=(0.765, 0.60))], 258, 'sc')
-F821 = fig('8.21', (0, 0, 1, 1), "Figure 8.21: daily gold with its true range under it, a historically overextended level, and the 16 times since August 2007 that the true range has reached it, numbered 1 to 16.",
-           [M(1, G, 0.445, 0.70, 0.73, 0.75, at=(0.42, 0.725)), M(2, R, 0.088, 0.775, 0.13, 0.865, kind='circle', at=(0.108, 0.725)),
-            M(3, B, 0.724, 0.775, 0.766, 0.865, kind='circle', at=(0.745, 0.725)), M(4, P, 0.874, 0.775, 0.916, 0.865, kind='circle', at=(0.895, 0.725))], 259, 'sc')
+F821 = fig('8.21', (0, 0.48, 1, 1), "Figure 8.21: daily gold with its true range under it, a historically overextended level, and the 16 times since August 2007 that the true range has reached it, numbered 1 to 16.",
+           [M(1, G, 0.47, 0.812, 0.72, 0.812, kind='line', at=(0.60, 0.865)), M(2, R, 0.092, 0.795, 0.128, 0.855, kind='circle', at=(0.11, 0.905)),
+            M(3, B, 0.727, 0.795, 0.763, 0.855, kind='circle', at=(0.745, 0.905)), M(4, P, 0.877, 0.795, 0.913, 0.855, kind='circle', at=(0.895, 0.905))], 259, 'sc')
 
 
 def slides():
@@ -78,7 +78,7 @@ def slides():
             notes=('A steady rise in dollars makes the ROC fall.',),
             origin='Lim (2016), p. 256. This part is our arithmetic from his formula. ' + OUR,
             title='A steady rise in dollars makes the ROC fall',
-            lines=("Lim says that if prices rise $10 every 10 periods the ROC flattens out as prices rise (p. 256). Here: price $100, $110, $120, $130 [1]; the ROC over 10 periods falls from 10.0 [2] to 9.1 to 8.3 percent [3], because the same $10 is a smaller share of a bigger price.",),
+            lines=("Lim says that if prices rise $10 every 10 periods the ROC flattens out as prices rise (p. 256). Here price climbs $10 at a time from $100 to $130 [1]; the ROC over 10 periods falls from 10.0 [2] to 9.1 to 8.3 percent [3], because the same $10 is a smaller share of a bigger price.",),
         ),
         chart('rcd', 'BS', 'A steady rise in dollars makes the ROC fall',
               'Our price rising $10 every ten periods from $100 and its ROC falling from 10.0 to 9.1 to 8.3 percent.',
@@ -87,26 +87,33 @@ def slides():
             notes=('Steady in percent keeps the ROC flat.', 'Say that this is our reading of his formula.'),
             origin='Lim (2016), p. 256. This part is our arithmetic from his formula. ' + OUR,
             title='A steady rise in percent keeps the ROC flat',
-            lines=("Lim says the ROC stays flat when price rises at a steady rate, yet he used steady for dollars just before. Only a steady percentage keeps it flat; that reading is ours, from his formula. Here: price rises 10 percent every 10 periods, $100, $110, $121, $133.10 [1], and the ROC stays 10.0 [2] [3].",),
+            lines=("Lim says the ROC stays flat when price rises at a steady rate (p. 256), and says the same of the MOM (p. 257). A steady dollar rise cannot do both: it made the ROC fall just now. For the ROC only a steady percentage rise keeps it flat, our reading from his formula. Here price climbs 10 percent at a time to $133.10 [1] and the ROC stays 10.0 [2] [3].",),
         ),
         chart('rcpc', 'BT', 'A steady rise in percent keeps the ROC flat',
               'Our price rising 10 percent every ten periods from $100 and its ROC staying at 10.0 percent.',
               ('Gold 1 the price, red 2 and blue 3 the ROC, 10.0 each time.',)),
         # ---- rows 52 and 53: Figure 8.18
         pair('Figure 8.18: flat, then declining',
-             ("Lim's Figure 8.18 shows the ROC on Goldman Sachs. Where price rises at a constant rate the ROC stays flat [1]; where price starts ranging the ROC declines [2] (p. 256). Lim's words: the ROC declines when prices are flat and remains flat during constant rates of price increase.",),
+             ("Lim's Figure 8.18 shows the ROC on Goldman Sachs. Where price rises at a constant rate the ROC stays flat [1]; where price starts ranging the ROC declines [2] (p. 256). The figure's own labels read \"ROC declines when prices are flat\" and \"ROC remains flat during constant rates of price increase\".",),
              F818_A, ('Gold 1 the flat ROC during the steady rise, red 2 the declining ROC.',), 'Lim (2016), p. 256, Figure 8.18. The marks are ours, added for teaching.', w=4.4),
         pair('Figure 8.18: the zero line, the overbought level and Points 1 to 3',
-             ("On the right Lim marks the zero line crossovers [1] and a historically overbought level [2], and Points 1 [3], 2 [4] and 3 [5] where the ROC reaches it. He says the ROC reverses before price at Points 1 to 3, the most important and useful characteristic of momentum oscillators (p. 257). His text calls them tops and bottoms; all three are tops.",),
-             F818_B, ('Gold 1 the zero crossovers, red 2 the level, then the three points.',), 'Lim (2016), pp. 256 to 257, Figure 8.18. The marks are ours, added for teaching.', w=4.4),
+             ("On the right Lim marks three zero line crossovers [1] [2] [3], which he says give buy and sell signals (p. 256), a historically overbought level [4] and his circled Points 1, 2 and 3 [5] where the ROC reaches it. He says the ROC reverses before price at Points 1 to 3, the most important and useful characteristic of momentum oscillators (p. 256). His text says tops and bottoms; all three are tops.",),
+             F818_B, ('Gold 1 the zero crossovers, red 2 the level, then the three points.',), 'Lim (2016), pp. 256 to 257, Figure 8.18. The marks are ours, added for teaching.', w=4.9),
         # ---- rows 54 and 55: the MOM
         Content(
-            notes=('MOM is the price difference.', 'The ROC has a non-linearity the MOM lacks.'),
-            origin='Lim (2016), pp. 256 to 257. This part is our arithmetic from his formula. ' + OUR,
+            notes=('MOM is the price difference.', 'Lim does not define non-linearity.'),
+            origin='Lim (2016), pp. 256 to 257.',
             title='MOM: the price difference over N periods',
-            lines=("Momentum, MOM, is the price difference over N periods: latest price minus price N periods back, usually on closes (pp. 256 to 257). Lim says it lacks the ROC's non-linearity (p. 257): a rise of $10 gives MOM 10 at any price. Here: $100, $110, $120, $130 [1] and MOM 10, 10, 10 [2] [3], so it does not flatten.",),
+            lines=("Momentum, MOM, is the price difference over N periods: latest price minus price N periods back, usually on closes (pp. 256 to 257). Lim says it does not have the ROC's non-linearity (p. 257) and does not define the word. We read it as the ROC worked two ways showed: the same $10 rise gives a different ROC at a different starting price, while the MOM gives 10 at any price.",),
+            accent='The ROC is a share of the price; the MOM is a plain difference.',
         ),
-        chart('mom', 'BU', 'MOM: the price difference over N periods',
+        Content(
+            notes=('Gold 1 the price, red 2 and blue 3 the MOM.',),
+            origin='Lim (2016), p. 257. This part is our arithmetic from his formula. ' + OUR,
+            title='The same prices, the MOM',
+            lines=("Here the price climbs $10 at a time from $100 to $130 [1] and the MOM over 10 periods is 10, 10, 10 [2] [3], so it does not flatten the way the ROC did.",),
+        ),
+        chart('mom', 'BU', 'The same prices, the MOM',
               'Our price rising $10 every ten periods from $100 and its MOM staying at 10.',
               ('Gold 1 the price, red 2 and blue 3 the MOM, 10 each time.',)),
         # ---- row 56: ROC and MOM side by side
@@ -136,28 +143,28 @@ def slides():
             notes=('Gerald Appel; one moving average minus another.', 'Gold 1 the EMA crossing, red 2 the MACD at zero.'),
             origin='Lim (2016), p. 257. ' + OUR,
             title='The MACD: two moving averages detrended',
-            lines=("The MACD, created by Gerald Appel, subtracts one moving average from another, which Lim calls detrending them (p. 257): MACD = 12 period EMA minus 26 period EMA. Here: the 12 period EMA crosses above the 26 period EMA [1] and the MACD crosses above zero [2] at the same bar; it stays positive while the 12 is above the 26.",),
+            lines=("The MACD, created by Gerald Appel, subtracts one moving average from another, which Lim calls detrending them (p. 257): MACD = 12 period EMA minus 26 period EMA. Here the 12 period EMA crosses below the 26 period EMA [1] and the MACD crosses below zero [2] at the same bar; it stays negative while the 12 is below the 26.",),
         ),
         chart('mc', 'BW', 'The MACD: two moving averages detrended',
               'Our 12 and 26 period EMAs crossing, and under them the MACD, their difference, crossing zero at the same bar.',
               ('Gold 1 the EMAs crossing, red 2 the MACD crossing zero.',)),
         # ---- row 61: Figure 8.19, upper part
         pair('Figure 8.19: the MACD tests zero when the EMAs cross',
-             ("Lim says every time the 12 EMA tests or crosses the 26 EMA, the MACD tests zero (p. 257). His solid arrows [1] [2] [3] run from where the averages meet down to the MACD at zero. His text points to Figure 8.16 here; the MACD is Figure 8.19. When the averages diverge the MACD moves away from zero, and when they converge it moves toward it.",),
+             ("Lim says every time the 12 EMA tests or crosses the 26 EMA, the MACD tests zero (p. 257). Three of his solid arrows [1] [2] [3] run from where the averages meet down to the MACD at zero. His text points to Figure 8.16 here; the MACD is Figure 8.19. When the averages diverge the MACD moves away from zero, and when they converge it moves toward it.",),
              F819_TOP, ('Gold 1, red 2 and blue 3 the arrowheads at the MACD zero level.',), 'Lim (2016), p. 257, Figure 8.19. The marks are ours, added for teaching.', w=4.2),
         # ---- row 62: the histogram
         Content(
             notes=('MACD minus its nine period signal line.', 'Gold 1 the MACD crossing its signal line, red 2 the histogram crossing zero.'),
             origin='Lim (2016), p. 258. ' + OUR,
             title='The MACD histogram',
-            lines=("The MACD histogram is the MACD minus its 9 period signal line; Lim calls it a double detrended oscillator (p. 258). It reaches zero when the MACD crosses its signal line. Here: the MACD crosses its signal line [1] and the histogram crosses zero [2] at that bar, before the MACD itself reaches zero.",),
+            lines=("The MACD histogram is the MACD minus its 9 period signal line; Lim calls it a double detrended oscillator (p. 258). It reaches zero when the MACD crosses its signal line. Here the MACD falls through its signal line [1] and the histogram crosses zero [2] at that bar, thirteen bars before the MACD itself crosses zero [3].",),
         ),
         chart('mh', 'BX', 'The MACD histogram',
               'Our MACD and its signal line, and under them the histogram, their difference, crossing zero when the MACD crosses its signal line.',
               ('Gold 1 the MACD crossing its signal line, red 2 the histogram at zero.',)),
         # ---- row 63: Figure 8.19, lower part
         top('Figure 8.19: the histogram reacts first',
-            ("Lim's dotted arrows [1] [2] [3] [4] run from the MACD crossing its signal line down to the histogram at zero. He says the histogram tends to react faster than the MACD by reversing before it (p. 258). He also says detrending removes the trend component (p. 257) and then that it removes the lag (p. 258); the book does not reconcile the two."),
+            ("Lim's dotted arrows [1] [2] [3] [4] run from the MACD crossing its signal line down to the histogram at zero. He says the histogram tends to react faster than the MACD by reversing before it. Detrending removes the lag from oscillators, so double detrending creates an even more responsive oscillator (p. 258)."),
             F819_LOW, ('Gold 1 to purple 4 the histogram zero crossings.',), 'Lim (2016), p. 258, Figure 8.19. The marks are ours, added for teaching.'),
         # ---- row 64: Figure 8.20
         pair('Figure 8.20: a historically overbought MACD',
@@ -223,7 +230,7 @@ def slides():
               ('Gold 1 the rising price, red 2 the falling ATR, blue 3 the last bars.',)),
         # ---- row 73: Figure 8.21
         top('Figure 8.21: the true range reaching its overextended level',
-            ("Figure 8.21 is the true range, an ATR with a lookback of 1, on gold. Lim marks a historically overextended level [1] reached 16 times since August 2007, for example touches 1 [2], 8 [3] and 16 [4]. His text says a correction follows every time it is passed (p. 259); the figure says prices normally stall or retrace (p. 260). We show both."),
+            ("Figure 8.21 is the true range, an ATR with a lookback of 1, on gold. Lim marks a historically overextended level [1] reached 16 times since August 2007, for example Lim's touches 1 [2], 8 [3] and 16 [4]. His text says a correction follows every time it is passed (p. 259); the figure says prices normally stall or retrace (p. 260). We show both."),
             F821, ('Gold 1 the level, red 2, blue 3 and purple 4 touches 1, 8 and 16.',), 'Lim (2016), pp. 259 to 260, Figure 8.21. The marks are ours, added for teaching.'),
         # ---- rows 74 and 75: Check 19
         CourseCheck(

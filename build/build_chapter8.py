@@ -178,14 +178,18 @@ def _fix_divider_notes(path: Path) -> None:
     from pptx import Presentation
     prs = Presentation(path)
     changed = False
+    words = {1: "one term", 2: "two terms", 3: "three terms", 4: "four terms", 5: "five terms", 6: "six terms"}
     for slide in prs.slides:
         if slide.has_notes_slide:
             frame = slide.notes_slide.notes_text_frame
             if "three covers lines" in frame.text:
+                shown = " ".join(sh.text_frame.text for sh in slide.shapes if sh.has_text_frame)
+                m = re.search(r"Part (\d+) of", shown)
+                section = next((sec for sec in CHAPTER.sections if m and sec.number == int(m.group(1))), None)
+                count = words[len(section.covers)] if section else "the terms"
                 for para in frame.paragraphs:
                     for run in para.runs:
-                        run.text = run.text.replace("Read the three covers lines, then move.",
-                                                    "Read the five terms, then move.")
+                        run.text = run.text.replace("Read the three covers lines, then move.", f"Read the {count}, then move.")
                 changed = True
     if changed:
         prs.save(path)
@@ -283,6 +287,34 @@ def _key_problems() -> list[str]:
     return problems
 
 
+def _label_problems() -> list[str]:
+    """Machine check: a number written on a line at a slot is the value that line has there, and a
+    number written on a bar is that bar's high, low or close. Catches a label that drifted from its data."""
+    from specs_b_chapter08 import SPECS_B
+    from specs_chapter08 import SPECS
+    problems = []
+    for key, entry in {**SPECS, **SPECS_B}.items():
+        spec = entry["spec"]
+        for ser in spec.get("series", ()):
+            for item in ser.get("labels", ()):
+                slot, text = item[0], str(item[1]).replace("$", "")
+                m = re.fullmatch(r"-?\d+(?:\.\d+)?", text)
+                if not m or ser.get("start", 0) > slot:
+                    continue
+                v = ser["values"][slot - ser.get("start", 0)]
+                if v is None or abs(float(text) - v) > max(0.06, abs(v) * 0.002):
+                    problems.append(f"chart {entry['letter']}: label {text} at slot {slot} but the line is {v}")
+        for bar in spec.get("bars", ()):
+            for item in bar.get("labels", ()):
+                slot, text = item[0], str(item[1])
+                m = re.search(r"\d+\.\d+", text)
+                if m and slot - bar.get("slot0", 0) < len(bar["rows"]):
+                    row = bar["rows"][slot - bar.get("slot0", 0)]
+                    if not any(abs(float(m.group()) - v) < 0.011 for v in row):
+                        problems.append(f"chart {entry['letter']}: bar label {text} at slot {slot} is none of {row}")
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--edition", choices=deckkit.EDITIONS, default=deckkit.TEACHING)
@@ -322,7 +354,7 @@ def main() -> int:
     audit_pptx(args.out, CHARTS_DIR, chapter)
     _fix_divider_notes(args.out)
     _section_footers(args.out, chapter)
-    deck_problems = _deck_problems(args.out, args.with_figures) + _chart_data_problems() + _row_problems() + _key_problems()
+    deck_problems = _deck_problems(args.out, args.with_figures) + _chart_data_problems() + _row_problems() + _key_problems() + _label_problems()
     if deck_problems:
         print("Deck checks failed:", file=sys.stderr)
         for problem in deck_problems:

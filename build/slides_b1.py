@@ -6,7 +6,7 @@ Every number on a chart is ours, invented for teaching; every Lim figure is read
 words only, and our numbers never go on his picture. Marks on Lim's figures are fractions of
 the whole master figure, read off a grid and checked on a zoomed crop.
 """
-from deckkit import Content, Question
+from deckkit import Content, Mark, Question
 from chartlayout_chapter08 import CourseCheck, TopPair, WidePair, book_crop, course_chart
 from samples_chapter08 import FIGURE_8_17, FIGURE_8_7_CCI, FIGURE_8_8
 from slides_a2 import B, G, M, P, R, fig
@@ -34,25 +34,25 @@ def Q(n, stem, right, wrong, reason):
 
 # ---------------------------------------------------------------- Lim's figure 8.16
 F816_ALL = fig('8.16', (0, 0, 1, 1), 'Figure 8.16: the GBPUSD daily chart with six measured cycles, the label Dominant cycle = 75 bars, the 38 period cycle-tuned stochastic under the price and the default 14 period stochastic under that.',
-               [M(1, G, 0.062, 0.185, 0.385, 0.28, at=(0.415, 0.23)), M(2, R, 0.335, 0.435, 0.46, 0.565, at=(0.49, 0.50)),
+               [M(1, G, 0.062, 0.185, 0.385, 0.28, at=(0.415, 0.23)), M(2, R, 0.335, 0.435, 0.46, 0.565, at=(0.31, 0.50)),
                 M(3, B, 0.205, 0.895, 0.375, 0.985, at=(0.18, 0.945))], 252)
 F816_CYC = fig('8.16', (0, 0, 1, 0.62), "Figure 8.16, cropped to the price chart: six cycles measured from trough to trough, 78, 75, 78, 105, 68 and 47 bars, and the label Dominant cycle = 75 bars.",
-               [M(1, G, 0.125, 0.04, 0.215, 0.125, at=(0.17, 0.165)), M(2, R, 0.222, 0.04, 0.303, 0.125, at=(0.262, 0.165)),
-                M(3, B, 0.31, 0.04, 0.395, 0.125, at=(0.352, 0.165)), M(4, P, 0.405, 0.04, 0.515, 0.125, at=(0.46, 0.165)),
-                M(5, G, 0.524, 0.04, 0.596, 0.125, at=(0.56, 0.165)), M(6, R, 0.604, 0.04, 0.668, 0.125, at=(0.695, 0.075)),
-                M(7, B, 0.062, 0.185, 0.385, 0.28, at=(0.415, 0.235))], 252)
+               [M(1, G, 0.125, 0.135, 0.215, 0.135, at=(0.17, 0.175), kind='line'), M(2, R, 0.222, 0.135, 0.303, 0.135, at=(0.262, 0.175), kind='line'),
+                M(3, B, 0.31, 0.135, 0.395, 0.135, at=(0.352, 0.175), kind='line'), M(4, P, 0.405, 0.135, 0.515, 0.135, at=(0.46, 0.175), kind='line'),
+                M(5, G, 0.524, 0.135, 0.596, 0.135, at=(0.56, 0.175), kind='line'), M(6, R, 0.604, 0.135, 0.668, 0.135, at=(0.695, 0.09), kind='line'),
+                M(7, B, 0.062, 0.29, 0.385, 0.29, kind='line', at=(0.415, 0.29))], 252)
 F816_OSC = fig('8.16', (0, 0.6, 1, 1), "Figure 8.16, cropped to its two stochastics: the 38 period cycle-tuned one with its circled troughs, and under it the default 14 period one.",
-               [M(1, G, 0.0, 0.68, 0.975, 0.745, at=(0.988, 0.665)), M(2, R, 0.0, 0.755, 0.975, 0.895, at=(0.988, 0.835))], 253)
+               [M(1, G, 0.0, 0.68, 0.975, 0.752, at=(0.988, 0.665)), M(2, R, 0.0, 0.762, 0.975, 0.895, at=(0.988, 0.835))], 253)
 F816_MATH = fig('8.16', (0, 0, 1, 0.62), "Figure 8.16, cropped to the price chart again: the six measured cycles and, on the right, Lim's working for the half cycle.",
-                [M(1, G, 0.12, 0.04, 0.66, 0.125, at=(0.095, 0.085)), M(2, R, 0.49, 0.345, 0.945, 0.52, at=(0.465, 0.43))], 252)
+                [M(1, G, 0.12, 0.04, 0.672, 0.125, at=(0.095, 0.085)), M(2, R, 0.49, 0.345, 0.945, 0.52, at=(0.465, 0.43))], 252)
 
 # Figure 8.17, cropped to its three oscillator windows. Mark pairs sit on the same weeks: the StochRSI above, the RSI below.
 F817_RESP = fig('8.17', (0, 0.46, 1, 1), 'Figure 8.17, cropped to its three oscillator windows. From the top: the StochRSI, the slow stochastic and the RSI, under the Dow Jones.',
-                [M(1, G, 0.292, 0.518, 0.348, 0.668, at=(0.27, 0.60)), M(2, R, 0.292, 0.878, 0.348, 0.93, at=(0.27, 0.905)),
-                 M(3, B, 0.37, 0.518, 0.408, 0.668, at=(0.425, 0.60)), M(4, P, 0.37, 0.878, 0.408, 0.93, at=(0.425, 0.905))], 254, 'sc')
+                [M(1, G, 0.292, 0.518, 0.348, 0.668, at=(0.27, 0.60)), M(2, R, 0.292, 0.878, 0.348, 0.93, at=(0.32, 0.955)),
+                 M(3, B, 0.37, 0.518, 0.408, 0.668, at=(0.425, 0.60)), M(4, P, 0.37, 0.878, 0.408, 0.93, at=(0.39, 0.955))], 254, 'sc')
 F817_ALL = fig('8.17', (0, 0.46, 1, 1), 'Figure 8.17, cropped to its three oscillator windows. From the top: the StochRSI, the slow stochastic and the RSI, under the Dow Jones.',
-               [M(1, G, 0.005, 0.508, 0.91, 0.668, at=(0.957, 0.59)), M(2, R, 0.005, 0.672, 0.91, 0.83, at=(0.957, 0.75)),
-                M(3, B, 0.005, 0.834, 0.91, 0.995, at=(0.957, 0.915))], 254, 'sc')
+               [M(1, G, 0.005, 0.508, 0.91, 0.668, at=(1.035, 0.59)), M(2, R, 0.005, 0.672, 0.91, 0.83, at=(1.035, 0.75)),
+                M(3, B, 0.005, 0.834, 0.91, 0.995, at=(1.035, 0.915))], 254, 'sc')
 
 
 def pair(title, lines, picture, notes, origin, accent='', w=4.4):
@@ -62,6 +62,23 @@ def pair(title, lines, picture, notes, origin, accent='', w=4.4):
 def top(title, lines, picture, notes, origin):
     return TopPair(notes=notes, origin=origin, left=Content(title=title, lines=(lines,) if isinstance(lines, str) else tuple(lines)),
                    picture=picture, text_w=8.0)
+
+
+def _m(n, color, x0, y0, x1, y1, at, kind='box'):
+    return Mark(number=n, kind=kind, x0=x0, y0=y0, x1=x1, y1=y1, color=color, at=at, size=0.28)
+
+
+REF_17 = book_crop('8.17', (0.0, 0.30, 1.0, 1.0), FIGURE_8_17.shows,
+                   marks=(_m(1, 'gold', 0.005, 0.834, 0.91, 0.995, (1.035, 0.915)), _m(2, 'red', 0.005, 0.672, 0.91, 0.83, (1.035, 0.75)),
+                          _m(3, 'blue', 0.005, 0.508, 0.91, 0.668, (1.035, 0.59))))
+REF_17.origin = FIGURE_8_17.origin
+REF_88 = book_crop('8.8', (0.0, 0.30, 1.0, 1.0), FIGURE_8_8.shows,
+                   marks=(_m(1, 'gold', 0.005, 0.662, 0.935, 0.812, (1.035, 0.74)), _m(2, 'red', 0.005, 0.816, 0.935, 0.985, (1.035, 0.90))))
+REF_88.origin = FIGURE_8_8.origin
+REF_CCI = book_crop('8.7', (0.0, 0.5, 1.0, 1.0), FIGURE_8_7_CCI.shows,
+                    marks=(_m(1, 'gold', 0.005, 0.814, 0.93, 0.992, (0.45, 0.795)), _m(2, 'red', 0.60, 0.892, 0.80, 0.892, (1.035, 0.862), 'line'),
+                           _m(3, 'blue', 0.60, 0.9375, 0.80, 0.9375, (1.035, 0.968), 'line')))
+REF_CCI.origin = FIGURE_8_7_CCI.origin
 
 
 def reference(title, lines, picture, notes, page, w=4.9):
@@ -77,9 +94,9 @@ def slides(S):
             origin='Lim (2016), pp. 251, 254, 259 and 262, Figure 8.17. The marks are ours, added for teaching.',
             left=Content(
                 title='The bounded oscillators we now tune and build (1 of 3)',
-                lines=("In the first class we only read these on Lim's charts. In this second class we tune them and then build them. The three bounded oscillators, 0 to 100 percent, are the relative strength index or RSI [1], the stochastic [2] and the StochRSI [3]. The first thing to tune is how many periods each one looks back over, its lookback (p. 252). Lim's chart prints the StochRSI [3] from 0 to 1: 0.8 there is 80 percent.",),
+                lines=("We tune these, then build them. The bounded oscillators, 0 to 100 percent, are the relative strength index or RSI [1], average gain over average loss; the stochastic [2], where the close sits in the recent range; and the StochRSI [3], the stochastic applied to RSI values. First we tune each one's lookback, the number of periods it looks back over (p. 252). Lim prints the StochRSI from 0 to 1.",),
             ),
-            picture=FIGURE_8_17, text_w=4.9),
+            picture=REF_17, text_w=3.7),
         WidePair(
             notes=('The same Figure 8.8 as the first class.',),
             origin='Lim (2016), pp. 245, 253 and 257, Figure 8.8. The marks are ours, added for teaching.',
@@ -87,20 +104,14 @@ def slides(S):
                 title='The unbounded oscillators we now tune and build (2 of 3)',
                 lines=("The moving average convergence divergence or MACD [1] and the rate of change or ROC [2] are unbounded. The MACD has three numbers to set: a 12 period and a 26 period moving average and a 9 period signal line (pp. 253, 257). When we move to another timeframe in a few slides, all three change.",),
             ),
-            picture=FIGURE_8_8, text_w=4.9),
-        WidePair(
-            notes=('The same lower half of Figure 8.7 as the first class.',),
-            origin='Lim (2016), pp. 242 and 244, Figure 8.7. The marks are ours, added for teaching.',
-            left=Content(
-                title='The unbounded oscillators we now tune and build (3 of 3)',
-                lines=("The CCI [1] is the last on our list, with its plus 100 line [2] and minus 100 line [3] (pp. 242, 244). This chapter gives no calculation for it, so we do not tune or build it. Everything else on the list is built in this class, from the stochastic to the RSI to the MACD, ROC and MOM, and the average true range, ATR.",),
-            ),
-            picture=FIGURE_8_7_CCI, text_w=4.9),
+            picture=REF_88, text_w=4.6),
+        top('The unbounded oscillators we now tune and build (3 of 3)',
+            "The commodity channel index or CCI [1] is the last on our list, with its plus 100 line [2] and minus 100 line [3] (pp. 242, 244). The chapter gives no calculation for it, so we do not tune or build it. The rest of the list is built in this class, and so are two more: the momentum oscillator, MOM, and the average true range, ATR.",
+            REF_CCI, ('The same lower half of Figure 8.7 as the first class.',), 'Lim (2016), pp. 242 and 244, Figure 8.7. The marks are ours, added for teaching.'),
         # ---- row 4: tune to the cycle
-        reference('Tune an oscillator to the cycle, not just the default',
-                  ("Until now we used each oscillator at its default setting. Lim says oscillators and most overlays normally give more effective signals when tuned to the dominant half cycle period, not just the default lookback, which may give too few or too many signals (p. 252). Chapter 5 taught the wave cycle; Lim does not define dominant, and in his example it is the cycle length he measures and averages.",
-                   "On his Figure 8.16 see the dominant cycle label [1], the tuned stochastic [2] and the default 14 period one [3]."),
-                  F816_ALL, ('Gold 1 the dominant cycle label, red 2 the tuned stochastic, blue 3 the default stochastic.', 'Say that Lim does not define dominant.'), 252, w=5.3),
+        top('Tune an oscillator to the cycle, not just the default',
+            "Lim says oscillators and most overlays normally give better signals tuned to the dominant half cycle, half the dominant cycle's length, than at the default lookback, which may give too few or too many (p. 252). On Figure 8.16 see his labels for the dominant cycle [1], the tuned stochastic [2] and the default 14 period [3].",
+            F816_ALL, ('Gold 1 the dominant cycle label, red 2 the tuned stochastic, blue 3 the default stochastic.', 'Say that Lim does not define dominant.'), 'Lim (2016), p. 252, Figure 8.16. The marks are ours, added for teaching.'),
         # ---- rows 5 and 8: the first formula
         Content(
             notes=('Formula 1 and our chart of it.', 'Gold 1 and red 2 the two troughs, blue 3 the half cycle.'),
@@ -118,7 +129,7 @@ def slides(S):
             title='Half the cycle, formula 2: (N / 2) + 1',
             lines=("The second is (N / 2) + 1, rounded down if N is odd (p. 252). On our second cycle the troughs [1] [2] are 75 bars apart, so N is 75, which is odd. (75 / 2) + 1 = 38.5, rounded down to 38 [3].",),
         ),
-        chart('cy2', 'AZ', 'Half the cycle, formula 2: (N / 2) + 1',
+        chart('cy2a', 'CR', 'Half the cycle, formula 2: (N / 2) + 1',
               'Our cycle of 75 bars from one trough to the next, and a bracket for its half, 38 bars, worked two ways.',
               ('Gold 1 and red 2 the two troughs 75 bars apart, blue 3 the end of the 38 bar half cycle.',)),
         Content(
@@ -170,7 +181,7 @@ def slides(S):
             notes=('Three RSI lines on one chart.', 'Gold 1 the 5 minute RSI, red 2 the 15 minute, blue 3 the hourly.'),
             origin='Lim (2016), p. 253. ' + OUR,
             title='Several timeframes on one chart',
-            lines=("So far each indicator has run on the timeframe of its own chart. Lim shows another way: plot the same indicator from several timeframes on one chart. His example is the 5 minute, the 15 minute and the 1 hour RSI on a 5 minute chart (p. 253). Our three lines are made up to show the idea. The 5 minute RSI [1] swings the most, the 15 minute RSI [2] less and the hourly RSI [3] least.",),
+            lines=("Plot the same indicator from several timeframes on one chart, for more effective comparison of oscillator action and price action (p. 253). Lim's example is the 5 minute, 15 minute and 1 hour RSI on a 5 minute chart. Our lines are made up: the swing of the 5 minute RSI [1] is widest, the 15 minute [2] narrower, the hourly [3] narrowest.",),
         ),
         chart('mtf', 'BB', 'Several timeframes on one chart',
               'Three RSI lines of ours, one for each timeframe, the 5 minute one jumpy and the hourly one smooth.',
@@ -188,7 +199,7 @@ def slides(S):
             notes=('14 x 3 = 42 and 14 x 12 = 168.', 'Gold 1 the 14 period swing, red 2 the 42 period line at the same time.'),
             origin='Lim (2016), pp. 253 and 262. ' + OUR,
             title='A 14 period RSI becomes 42 and 168',
-            lines=("To put a 15 minute RSI on a 5 minute chart, multiply its 14 periods by the MF: 14 x 3 = 42. The hourly RSI is 14 x 12 = 168 (p. 253). On our chart the same closes give a 14 period RSI [1] that swings widely and a 42 period RSI [2] that swings far less. Ours uses plain averages of gains and losses; Wilder's own averaging is in 8.6.",),
+            lines=("To put a 15 minute RSI on a 5 minute chart, multiply its 14 periods by the MF: 14 x 3 = 42. The hourly RSI is 14 x 12 = 168 (p. 253). On our closes the 14 period RSI [1] swings from about 10 to 89 and the 42 period RSI [2] only from about 40 to 60. Ours uses plain averages of gains and losses; the RSI's own averaging is built in 8.6.",),
         ),
         chart('rsi42', 'BD', 'A 14 period RSI becomes 42 and 168',
               'Our closes with a 14 period RSI that swings widely and a 42 period RSI that stays near the middle.',
@@ -197,7 +208,7 @@ def slides(S):
             notes=('Increase all the variables.', 'The book works only the moving average.'),
             origin='Lim (2016), p. 253. The MACD numbers are ours, worked by the book\'s method.',
             title='The MACD: every number is multiplied',
-            lines=("Lim says to increase all the variables via the MF (p. 253). The MACD, built in 8.6, has three: a 12 period and a 26 period average and a 9 period signal line. With MF = 3 they become 36, 78 and 27 (ours). His example: a 20 period hourly average is 20 x 12 = 240 periods on a 5 minute chart, with very small differences (p. 253).",),
+            lines=("Lim says to increase all the variables via the MF (p. 253). The MACD, built in 8.6, has a 12 period and a 26 period average and a 9 period signal line. For a 15 minute MACD on a 5 minute chart MF = 3, so they become 36, 78 and 27 (ours). His example: a 20 period hourly average is 240 periods on a 5 minute chart, differing very slightly from the real one (p. 253).",),
         ),
         chart('mfm', 'BE', 'The MACD: every number is multiplied',
               'A table of the MACD settings 12, 26 and 9 multiplied by 3, and the book\'s 20 period moving average multiplied by 12 to give 240.',
@@ -228,7 +239,7 @@ def slides(S):
             notes=('Oscillators lag; divergence is the exception.', 'Gold 1 the price peak, red 2 the later peak of the line.'),
             origin='Lim (2016), p. 253. ' + OUR,
             title='Oscillators usually lag price',
-            lines=("Lim says oscillators usually lag price action because they are derived from price (p. 253). Our line is the average of the last four closes, a plain way to show something derived from price. Price peaks at 62.00 [1] and the line peaks two bars later, at 60.50 [2]. Divergence, which we met in the first class, is the exception: Lim calls it a leading signal (p. 253).",),
+            lines=("Lim says oscillators usually lag price action because they are derived from price (p. 253). Our line is the average of the last four closes. Price peaks at 62.00 [1] and the line peaks two bars later, at 60.50 [2]. Divergence is the exception: Lim calls it a leading signal, one that comes before price turns (p. 253); the next slide lists what leads.",),
         ),
         chart('lag', 'BG', 'Oscillators usually lag price',
               'Our price peaking at 62.00 and a line derived from it, the average of four closes, peaking two bars later at 60.50.',
@@ -262,12 +273,19 @@ def slides_84():
     return (
         # ---- rows 27 and 28: an oscillator fed an oscillator
         Content(
-            notes=('The StochRSI replaces price with RSI.', 'Gold 1 the RSI peak, red 2 the fraction at its top, blue 3 at its bottom.'),
-            origin='Lim (2016), pp. 253 and 254. ' + OUR,
+            notes=('The StochRSI replaces price with RSI.',),
+            origin='Lim (2016), pp. 253 and 254.',
             title='An oscillator can be fed another oscillator',
-            lines=("Our oscillators so far used price. Lim says an oscillator can use other data, even another oscillator (p. 253): the StochRSI is the stochastic fraction (C - Ln) / (Hn - Ln) with RSI values for prices. Here: an RSI [1] and, under it, that fraction with n = 5, 1 at the RSI's highest [2] and 0 at its lowest [3].",),
+            lines=("So far our oscillators were calculated from price. Lim says an oscillator can use other data, even another oscillator's readings (p. 253). His example is the StochRSI. It starts from the stochastic fraction (C - Ln) / (Hn - Ln): C is the latest value, Ln the lowest and Hn the highest of the last n periods, and Lim calls the fraction the raw %K. The StochRSI puts RSI values where the prices were; the next slides give it as Lim prints it (p. 254).",),
+            accent='Same fraction, but fed RSI readings instead of prices.',
         ),
-        chart('srf', 'BI', 'An oscillator can be fed another oscillator',
+        Content(
+            notes=('Gold 1 the RSI peak, red 2 the fraction at its top, blue 3 at its bottom.',),
+            origin='Lim (2016), p. 253. ' + OUR,
+            title='The fraction on RSI readings',
+            lines=("Here the top window is an RSI of ours [1]. Under it is the fraction on those readings with n = 5: it is 1 whenever the latest RSI is the highest of the last five [2] and 0 whenever it is the lowest of the last five [3].",),
+        ),
+        chart('srf', 'BI', 'The fraction on RSI readings',
               'Our RSI readings and under them the stochastic fraction worked on those readings with five readings in the window, reaching 1 at the RSI peak and 0 at its low.',
               ('Gold 1 the RSI peak at 72, red 2 the fraction at 1.00, blue 3 the fraction at 0.00.',)),
         # ---- row 29: the formula as printed, and the fraction worked
@@ -275,14 +293,14 @@ def slides_84():
             notes=('Five RSI readings, n = 5.', 'The book gives no length for the average, so we stop at the fraction.'),
             origin='Lim (2016), p. 254. ' + OUR,
             title='The StochRSI as printed, and its fraction worked',
-            lines=("As printed, the StochRSI is a moving average of (RSI now - lowest RSI of n) / (highest RSI of n - lowest RSI) (p. 254), with no length given and no x 100, as its charts run 0 to 1. Five RSI readings of ours, 40, 55, 70, 60 and 50: highest 70 [1], lowest 40 [2]; the latest, 50 [3], gives (50 - 40) / (70 - 40) = 0.33.",),
+            lines=("As printed, the StochRSI is a moving average of (RSI now - lowest RSI of n) / (highest RSI of n - lowest RSI) (p. 254). Lim gives a default lookback of 14 bars, but not the length of the average, and no x 100, as his charts run 0 to 1. Five RSI readings of ours, 40, 55, 70, 60 and 50: highest 70 [1], lowest 40 [2]; the latest, 50 [3], gives 0.33.",),
         ),
         chart('srw', 'BJ', 'The StochRSI as printed, and its fraction worked',
               'Our five RSI readings 40, 55, 70, 60 and 50 with lines at the highest, 70, and the lowest, 40.',
               ('Gold 1 the highest reading 70, red 2 the lowest 40, blue 3 the latest 50.',)),
         # ---- row 30: Figure 8.17 and its three panels
         top("Figure 8.17: the StochRSI, the stochastic and the RSI together",
-                  ("Lim's Figure 8.17 draws three oscillators under the Dow Jones, from the top: the StochRSI [1], the slow stochastic [2] and the RSI [3]. His text lists them in another order, stochastic, StochRSI, RSI (p. 254); we read the figure. The StochRSI runs from 0 to 1, the other two from 0 to 100."),
+                  ("Lim's Figure 8.17 draws three oscillators under the Dow Jones, from the top: the StochRSI [1], the stochastic [2], which his chart labels Slow STO (slow and fast come in 8.6), and the RSI [3]. His text lists them in another order, stochastic, StochRSI, RSI (p. 254); we read the figure. The StochRSI runs 0 to 1, the other two 0 to 100."),
                   F817_ALL, ('Gold 1 the StochRSI, red 2 the slow stochastic, blue 3 the RSI.',), 'Lim (2016), p. 254, Figure 8.17. The marks are ours, added for teaching.'),
         # ---- row 31: the StochRSI is more responsive
         top('Figure 8.17: the StochRSI is more responsive',
@@ -303,7 +321,7 @@ def slides_84():
             notes=('A bigger old value, a bigger jump.', 'The book prints $3.75 for $3.57 once; say so.'),
             origin='Lim (2016), pp. 254 and 255. ' + OUR,
             title='A big old value makes a big jump',
-            lines=("Replace the $7 by $9 and the first average is $30 / 7 = $4.29 [3]. When the $9 [1] drops out and the $4 [2] comes in, the average is $3.57 again [4]. The fall is ($4.29 - $3.57) / $4.29 = 16.7 percent, against ($4.00 - $3.57) / $4.00 = 10.75 percent for the $7 (pp. 254 to 255). Lim prints 16.72, we get 16.7, and once he prints the new average as $3.75; it is $3.57.",),
+            lines=("Replace the $7 by $9: the first average is $30 / 7 = $4.29 [3]. The $9 [1] drops out, the $4 [2] comes in, and the average is $3.57 again [4], a fall of (30/7 - 25/7) / (30/7) = 16.7 percent, against ($4.00 - $3.57) / $4.00 = 10.75 percent for the $7 (pp. 254 to 255). Lim prints 16.72, and once $3.75 for $3.57.",),
         ),
         chart('dr2', 'BL', 'A big old value makes a big jump',
               'Seven prices of $9, $4, $3, $3, $2, $4 and $5 and a new $4, with averages of $4.29 and $3.57.',
@@ -337,33 +355,46 @@ def slides_85():
     return (
         # ---- rows 38 to 40: buy signals in an uptrend
         Content(
-            notes=('Trade with the larger trend.', 'Gold 1 the uptrend, red 2 the dip to oversold.'),
+            notes=('Trade with the larger trend.', 'Gold 1 the uptrend, red 2 the dip to oversold, blue 3 the signal line, purple 4 the 50 crossing.'),
             origin='Lim (2016), p. 255; Chapter 6, "Why the larger trend matters, with numbers". ' + OUR,
             title='Trade with the larger trend',
-            lines=("Lim says to time continuations and breakouts in the direction of the existing trend, because it is always best to trade with the larger existing trend (p. 255); Chapter 6 showed why. On our chart price is in an uptrend [1]; a pullback pushes the oscillator to oversold [2], and its rise back across its signal line [3] gives the cue.",),
+            lines=("Lim says to time continuations and breakouts in the direction of the existing trend: it is always best to trade with the larger trend (p. 255), as Chapter 6 showed. Here price is in an uptrend of higher lows [1]; a pullback pushes the oscillator to oversold [2], and its rise across its signal line [3] and then across 50 [4] gives the buy signal.",),
         ),
         chart('tru', 'BN', 'Trade with the larger trend',
-              'Our price in an uptrend with a pullback, and under it an oscillator that dips below 30, oversold, and rises back across its signal line.',
-              ('Gold 1 the uptrend, red 2 the oversold dip, blue 3 the rise across the signal line.',)),
+              'Our price in an uptrend of higher lows with a pullback, and under it an oscillator and its signal line, dipping below 30 and rising back across the signal line and across 50.',
+              ('Gold 1 the uptrend line, red 2 the oversold dip, blue 3 the signal line crossing, purple 4 the crossing of 50.',)),
         Content(
-            notes=('Five buy signals in an uptrend.', 'Red 2 the oversold dip, blue 3 the rise across the signal line.'),
-            origin='Lim (2016), p. 255. ' + OUR,
+            notes=('Lim\'s five buy signals.',),
+            origin='Lim (2016), p. 255.',
             title='In an uptrend there are five buy signals',
-            lines=("Lim lists five buy signals in an uptrend (p. 255): crossing above equilibrium, crossing above the signal line, reaching oversold or rising back above it, a bullish divergence, and a breach of a pattern or trendline upward. Here: in the uptrend [1] the dip [2] reaches oversold, and the rise [3] crosses 30 and the signal line in one bar.",),
+            lines=("In an existing uptrend Lim lists five buy signals (p. 255): the oscillator crossing above its equilibrium; crossing above its signal line; reaching oversold or rising back above it; a bullish divergence, standard or reverse; and the oscillator breaking a chart pattern or trendline drawn on it, upward.",),
+            accent='Divergence and the pattern break are drawn later in this class; the first three are on the next chart.',
         ),
-        chart('tru', 'BN', 'In an uptrend there are five buy signals',
-              'The same uptrend with the oversold dip and the rise across the signal line marked.',
-              ('Red 2 the oversold dip, blue 3 the rise across the signal line.',)),
+        Content(
+            notes=('Three of the five on one chart.',),
+            origin='Lim (2016), p. 255. ' + OUR,
+            title='Three of the five on one chart',
+            lines=("Here the uptrend [1] pulls back and the oscillator reaches oversold [2]. Its rise crosses 30 and its signal line in one bar [3] and then crosses 50 [4], so three of the five buy signals show on this chart.",),
+        ),
+        chart('tru', 'BN', 'Three of the five on one chart',
+              'The same uptrend with the oversold dip, the signal line crossing and the crossing of 50 marked.',
+              ('Gold 1 the uptrend, red 2 the dip, blue 3 the signal line crossing, purple 4 the crossing of 50.',)),
         # ---- rows 41 and 42: sell signals in a downtrend
         Content(
-            notes=('The mirror: five sell signals in a downtrend.', 'Gold 1 the downtrend, red 2 the overbought bounce, blue 3 the fall across the signal line.'),
-            origin='Lim (2016), p. 255. ' + OUR,
+            notes=('The mirror: five sell signals in a downtrend.',),
+            origin='Lim (2016), p. 255.',
             title='In a downtrend there are five sell signals',
-            lines=("In a downtrend the mirror five are sell signals (p. 255): crossing below equilibrium, crossing below the signal line, reaching overbought or falling back below it, a bearish divergence, and a breach downward. Here: price falls [1], a bounce lifts the oscillator to overbought [2], and its fall across 70 and the signal line [3] is the sell.",),
+            lines=("In an existing downtrend Lim lists the mirror five sell signals (p. 255): the oscillator crossing below its equilibrium; crossing below its signal line; reaching overbought or falling back below it; a bearish divergence, standard or reverse; and the oscillator breaking a pattern or trendline drawn on it, downward.",),
         ),
-        chart('trd', 'BO', 'In a downtrend there are five sell signals',
-              'Our price in a downtrend with a bounce, and under it an oscillator that rises above 70, overbought, and falls back across its signal line.',
-              ('Gold 1 the downtrend, red 2 the overbought bounce, blue 3 the fall across the signal line.',)),
+        Content(
+            notes=('Gold 1 the downtrend line, red 2 the overbought bounce, blue 3 the signal line crossing, purple 4 the crossing of 50.',),
+            origin='Lim (2016), p. 255. ' + OUR,
+            title='Three of the five sell signals on one chart',
+            lines=("Here price is in a downtrend of lower highs [1] and a bounce lifts the oscillator to overbought [2]. Its fall crosses 70 and its signal line in one bar [3] and then crosses 50 [4], so three of the five sell signals show on this chart.",),
+        ),
+        chart('trd', 'BO', 'Three of the five sell signals on one chart',
+              'Our price in a downtrend of lower highs with a bounce, and under it an oscillator and its signal line, rising above 70 and falling back across the signal line and across 50.',
+              ('Gold 1 the downtrend line, red 2 the overbought bounce, blue 3 the signal line crossing, purple 4 the crossing of 50.',)),
         # ---- rows 43 and 44: Check 16
         CourseCheck(
             notes=('Both answers come from the trend trading slides.',),
@@ -372,7 +403,7 @@ def slides_85():
             questions=(
                 Q(9, 'In an existing uptrend, which of these is one of Lim\'s buy signals?', 'The oscillator rising back above oversold',
                   ('The oscillator falling below its signal line', 'The oscillator reaching overbought', 'A bearish divergence'),
-                  'Reaching oversold or rising back above it is one of the five buy signals in an uptrend (p. 255). The other three are sell signals.'),
+                  'Reaching oversold or rising back above it is one of the five buy signals in an uptrend (p. 255). The other three are the mirror signals Lim gives for a downtrend; in an uptrend they are not buy signals.'),
                 Q(10, "Lim's rule for using an oscillator in a trend is to", 'trade in the direction of the larger existing trend', ('trade only against the trend', 'ignore the larger trend', 'trade only at overbought'),
                   'It is always best to trade in the direction of the larger existing trend (p. 255).'),
             ),

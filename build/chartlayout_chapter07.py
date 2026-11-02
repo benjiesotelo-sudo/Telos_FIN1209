@@ -1362,13 +1362,13 @@ def draw(path, *, key, page=0, display_font=None):
     return path
 
 
-def audit_pptx(path, charts_dir):
+def audit_pptx(path, charts_dir, chapter=None):
     """Refuse a deck that scales the validated artwork below its contract."""
     import hashlib
     from pathlib import Path
     from pptx import Presentation
     DATA = _data()
-    CHAPTER = importlib.import_module(CONTENT_MODULE).CHAPTER
+    CHAPTER = chapter or importlib.import_module(CONTENT_MODULE).CHAPTER
     placed={s.asset for section in CHAPTER.sections for s in section.slides if isinstance(s,CourseChart)}
     assets={hashlib.sha256((Path(charts_dir)/f'chart-{key}-{page}.png').read_bytes()).hexdigest(): (key,page)
             for key,spec in DATA.items() if key in placed for page in range(len(page_specs(spec)))}

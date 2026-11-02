@@ -4,12 +4,18 @@ Lim (2016), Chapter 8, "Window Oscillators and Overlay Indicators", printed
 pages 235 to 266. The approved source map and outline are in the instructor's
 plan folder outside this public repository.
 
-**Part A (sections 8.1 and 8.2) is built.** `build/content_chapter08.py` joins the approved sample
-slides (`build/samples_chapter08.py`) to the hand written slides in `build/slides_a1.py` (8.1) and
-`build/slides_a2.py` (8.2); nothing generates teaching text. Part B (8.3 to 8.8) is built after Part A is
-delivered. Each part stops at 150 slides. Our charts are plain data in `build/specs_chapter08.py`, drawn by
-`oscillatorcharts_chapter08.paint_spec`. The run card is `build/build_plan8.py` (three pages, minutes counted
-from the deck). Both editions build: `--edition student` drops every check and speaker note.
+**Both classes are built.** `build/content_chapter08.py` joins the approved sample slides
+(`build/samples_chapter08.py`) to the hand written slides: `slides_a1.py` and `slides_a2.py` for the first
+class (8.1 and 8.2), `slides_b1.py` to `slides_b4.py` for the second class (8.3 to 8.8). Nothing generates
+teaching text. Each class stops at 150 slides; the second class is 130. Our charts are plain data in
+`build/specs_chapter08.py` and `build/specs_b_chapter08.py`, drawn by `oscillatorcharts_chapter08.paint_spec`.
+Every slide in `slides_b*.py` sits under a `# ---- row N` comment naming the outline row it answers, and the
+build fails if a row from 1 to 135 has none. A wide figure sits under its text (`TopPair`) and a narrow one
+beside it (`WidePair`). The run cards are `build/build_plan8.py` (`--part A` or `--part B`), three pages each,
+minutes counted from the deck. Both editions build: `--edition student` drops every check and speaker note.
+
+`build_chapter8.py` builds the whole chapter by default, which is what the committed decks are. `--part A`
+and `--part B` build one class alone (they need `--out`); the second class then numbers its checks 12 to 23.
 
 ## Figures
 

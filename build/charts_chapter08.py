@@ -64,7 +64,8 @@ DATA['ew'] = _paint('AX', oc.paint_eight_ways, (), 'The examples are from the sl
 DATA['tbl'] = _paint('AS', oc.paint_static_dynamic, (), 'The table is ours, from Lim\'s lists (pp. 239 to 240).')
 _COLORS = ('gold', 'red', 'blue', 'purple')
 from specs_chapter08 import SPECS  # noqa: E402
-for _key, _entry in SPECS.items():
+from specs_b_chapter08 import SPECS_B  # noqa: E402
+for _key, _entry in {**SPECS, **SPECS_B}.items():
     DATA[_key] = _spec(_entry['letter'], _entry['spec'], _entry.get('caption', NOTE), _entry.get('angles'))
 
 from chartlayout_chapter08 import artwork  # noqa: E402

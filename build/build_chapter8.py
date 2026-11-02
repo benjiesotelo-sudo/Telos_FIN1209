@@ -15,7 +15,7 @@ import chartkit
 import deckkit
 from chartlayout_chapter08 import audit_pptx, course_slide_renderer
 from charts_chapter08 import CHARTS
-from content_chapter08 import CHAPTER
+from content_chapter08 import CHAPTER, CHAPTER_A, CHAPTER_B
 
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = REPO / "chapter-08" / "FIN1209-Chapter-08.pptx"
@@ -39,7 +39,7 @@ def _inside_repo(path: Path) -> bool:
     return resolved == REPO or REPO in resolved.parents
 
 
-def _artwork_problems(figures_dir: Path) -> list[str]:
+def _artwork_problems(figures_dir: Path, chapter=CHAPTER) -> list[str]:
     """Every reason an artwork build must be refused.
 
     All 28 of the chapter's figures must be present at the recorded size, not
@@ -58,7 +58,7 @@ def _artwork_problems(figures_dir: Path) -> list[str]:
         from PIL import Image
     except ImportError as exc:  # pragma: no cover - build environment guard
         return [f"Pillow is required to check figure sizes: {exc}"]
-    statuses = deckkit.figure_status(CHAPTER, figures_dir)
+    statuses = deckkit.figure_status(chapter, figures_dir)
     placed_missing = sorted({f for _n, f, have in statuses if not have})
     if placed_missing:
         problems.append("missing figure files: " + ", ".join(placed_missing))
@@ -194,11 +194,11 @@ def _fix_divider_notes(path: Path) -> None:
 SECTIONS_IN_CHAPTER = 8   # Lim's 8.1 to 8.8; Chapter 7's footer form is "Part n of N - 7.n name"
 
 
-def _section_footers(path: Path) -> None:
+def _section_footers(path: Path, chapter=CHAPTER) -> None:
     """Chapter 7's form numbers the chapter's sections as parts: "Part 2 of 4 - 7.2 name".
     Chapter 8 has eight sections, so the total is Lim's eight, not the count built so far."""
     from pptx import Presentation
-    n_built = len(CHAPTER.sections)
+    n_built = len(chapter.sections)
     prs = Presentation(path)
     pat = re.compile(rf"Part (\d+) of {n_built}\b")
     for slide in prs.slides:
@@ -218,9 +218,10 @@ def _chart_data_problems() -> list[str]:
     """Machine check (d): every line a chart calls a trendline passes through two points of
     the series it is drawn from, at turning points, and every moving average equals the
     average of the closes it names."""
+    from specs_b_chapter08 import SPECS_B
     from specs_chapter08 import SPECS
     problems = []
-    for key, entry in SPECS.items():
+    for key, entry in {**SPECS, **SPECS_B}.items():
         series = entry["spec"].get("series", ())
         for k, ser in enumerate(series):
             role = ser.get("role")
@@ -248,19 +249,62 @@ def _chart_data_problems() -> list[str]:
     return problems
 
 
+ROW_FILES = ("slides_b1.py", "slides_b2.py", "slides_b3.py", "slides_b4.py")
+SAMPLE_ROWS = set(range(76, 86))   # the approved sample slides, taken as built from samples_chapter08
+
+
+def _row_problems() -> list[str]:
+    """Machine check: every outline row of the second class (1 to 135) is marked by a hand written
+    slide. Each slide in slides_b1 to slides_b4 sits under a '# ---- row N' comment naming its rows."""
+    covered = set(SAMPLE_ROWS)
+    for name in ROW_FILES:
+        for line in (Path(__file__).resolve().parent / name).read_text().splitlines():
+            m = re.search(r"# ---- rows? (\d+)(?: (to|and) (\d+))?", line)
+            if not m:
+                continue
+            a, joiner, b = int(m.group(1)), m.group(2), m.group(3)
+            covered |= {a} if b is None else set(range(a, int(b) + 1)) if joiner == "to" else {a, int(b)}
+    missing = sorted(set(range(1, 136)) - covered)
+    return [f"outline row {n} has no slide" for n in missing]
+
+
+def _key_problems() -> list[str]:
+    """Machine check: the whole chapter's answer key. No letter over 35 percent or under 15, and no
+    three identical answers in a row (the guard in deckkit reaches only the checks it tallies)."""
+    seq = [q.answer for sec in CHAPTER.sections for sl in sec.slides if isinstance(sl, deckkit.Check) for q in sl.questions]
+    problems = []
+    for letter in "ABCD":
+        share = seq.count(letter) / len(seq)
+        if not 0.15 <= share <= 0.35:
+            problems.append(f"answer key: {letter} is {share:.0%} of {len(seq)} answers")
+    for i in range(len(seq) - 2):
+        if seq[i] == seq[i + 1] == seq[i + 2]:
+            problems.append(f"answer key: three {seq[i]} in a row at question {i + 1}")
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--edition", choices=deckkit.EDITIONS, default=deckkit.TEACHING)
     parser.add_argument("--out", type=Path, default=None)
+    parser.add_argument("--part", choices=("all", "A", "B"), default="all",
+                        help="all: the whole chapter (the committed decks); A: the first class; B: the second class alone")
     parser.add_argument("--with-figures", action="store_true")
     parser.add_argument("--figures-dir", type=Path, default=FIGURES_DIR)
     args = parser.parse_args()
+    chapter = {"all": CHAPTER, "A": CHAPTER_A, "B": CHAPTER_B}[args.part]
     if args.out is None:
+        if args.part != "all":
+            parser.error("--part A and --part B need --out")
         args.out = STUDENT_OUT if args.edition == deckkit.STUDENT else DEFAULT_OUT
+    # The second class alone numbers its checks on from the first class and counts the whole chapter.
+    n_a = sum(1 for sec in CHAPTER_A.sections for sl in sec.slides if isinstance(sl, deckkit.Check))
+    n_all = sum(1 for sec in CHAPTER.sections for sl in sec.slides if isinstance(sl, deckkit.Check))
+    check_kw = dict(check_offset=n_a, check_total=n_all) if args.part == "B" else dict(check_total=n_all) if args.part == "A" else {}
     if args.with_figures and _inside_repo(args.out):
         parser.error("artwork builds must be written outside the repository")
     if args.with_figures:
-        problems = _artwork_problems(args.figures_dir)
+        problems = _artwork_problems(args.figures_dir, chapter)
         if problems:
             print("Artwork build refused:", file=sys.stderr)
             for problem in problems:
@@ -272,19 +316,19 @@ def main() -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with course_slide_renderer():
         slides, checks = deckkit.build(
-            CHAPTER, args.out,
+            chapter, args.out,
             figures_dir=args.figures_dir if args.with_figures else None,
-            charts_dir=CHARTS_DIR, edition=args.edition)
-    audit_pptx(args.out, CHARTS_DIR)
+            charts_dir=CHARTS_DIR, edition=args.edition, **check_kw)
+    audit_pptx(args.out, CHARTS_DIR, chapter)
     _fix_divider_notes(args.out)
-    _section_footers(args.out)
-    deck_problems = _deck_problems(args.out, args.with_figures) + _chart_data_problems()
+    _section_footers(args.out, chapter)
+    deck_problems = _deck_problems(args.out, args.with_figures) + _chart_data_problems() + _row_problems() + _key_problems()
     if deck_problems:
         print("Deck checks failed:", file=sys.stderr)
         for problem in deck_problems:
             print(f"  {problem}", file=sys.stderr)
         return 1
-    figures = deckkit.figure_status(CHAPTER, args.figures_dir if args.with_figures else None)
+    figures = deckkit.figure_status(chapter, args.figures_dir if args.with_figures else None)
     placed = sum(1 for _n, _f, have in figures if have)
     print(f"deck    : {args.out}")
     print(f"edition : {args.edition}")

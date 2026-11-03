@@ -332,7 +332,7 @@ def main() -> int:
     # The second class alone numbers its checks on from the first class and counts the whole chapter.
     n_a = sum(1 for sec in CHAPTER_A.sections for sl in sec.slides if isinstance(sl, deckkit.Check))
     n_all = sum(1 for sec in CHAPTER.sections for sl in sec.slides if isinstance(sl, deckkit.Check))
-    check_kw = dict(check_offset=n_a, check_total=n_all) if args.part == "B" else dict(check_total=n_all) if args.part == "A" else {}
+    check_kw = dict(check_offset=n_a, check_total=n_all) if args.part == "B" else {}
     if args.with_figures and _inside_repo(args.out):
         parser.error("artwork builds must be written outside the repository")
     if args.with_figures:

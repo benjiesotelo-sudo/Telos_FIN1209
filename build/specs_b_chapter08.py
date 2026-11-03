@@ -320,7 +320,7 @@ _cd = _cross(_E12, _E26, 54, False)
 
 def _vals(slot):
     a, b = _E12[slot], _E26[slot]
-    return f'bar {slot + 1}: 12 EMA {a:.2f}, 26 EMA {b:.2f}, MACD {a - b:+.2f}'
+    return f'bar {slot + 1}: 12 EMA {a:.2f}, 26 EMA {b:.2f}, MACD {round(a, 2) - round(b, 2):+.2f}'
 
 
 _mt = pane('t', y=(2.15, 3.1), lo=92, hi=132, n=80, title='the 12 period EMA (gold) and the 26 period EMA (green)', x=(1.3, 10.3))
@@ -339,7 +339,7 @@ SPECS_B['mh'] = dict(letter='BX', caption='The closes are ours, made up to show 
            pane('b', y=(.75, 1.55), lo=-2, hi=2, n=80, title='histogram = MACD minus signal line', x=(1.3, 10.3), ref=[(0, '0')])],
     series=[dict(pane='t', values=_MD), dict(pane='t', values=_SG, color=GOLD, lw=2.8)],
     hist=[dict(pane='b', values=_HS, color=DEEP, lw=3.6)],
-    texts=[(1.4, .42, f'bar {int(_hx[0]) + 1}: MACD {_MD[int(_hx[0])]:+.2f}, signal {_SG[int(_hx[0])]:+.2f}, histogram {_HS[int(_hx[0])]:+.2f}', 'left', DEEP)],
+    texts=[(1.4, .42, f'bar {int(_hx[0]) + 1}: MACD {_MD[int(_hx[0])]:+.2f}, signal {_SG[int(_hx[0])]:+.2f}, histogram {round(_MD[int(_hx[0])], 2) - round(_SG[int(_hx[0])], 2):+.2f}', 'left', DEEP)],
     marks=[('pt', 't', _hx[0], _hx[1]), ('pt', 'b', _hx[0], 0), ('pt', 't', _cd[0], 0)]))
 
 # average true range

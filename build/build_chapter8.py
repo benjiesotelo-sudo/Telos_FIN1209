@@ -315,6 +315,36 @@ def _label_problems() -> list[str]:
     return problems
 
 
+def _arithmetic_problems() -> list[str]:
+    """Machine check: every printed sum or difference on our charts agrees with the printed parts it
+    comes from. Reads the text of each chart for 'EMA a, EMA b, MACD c' and 'MACD a, signal b,
+    histogram c' lines and for 'a - b = c' and 'a + b = c' working, and checks them to the printed digits."""
+    from specs_b_chapter08 import SPECS_B
+    from specs_chapter08 import SPECS
+    problems = []
+    num = r"([+-]?\d+(?:\.\d+)?)"
+    for key, entry in {**SPECS, **SPECS_B}.items():
+        for t in entry["spec"].get("texts", ()):
+            text = str(t[2])
+            for m in re.finditer(rf"12 EMA {num}, 26 EMA {num}, MACD {num}", text):
+                a, b_, c = map(float, m.groups())
+                if abs((a - b_) - c) > 0.0051:
+                    problems.append(f"chart {entry['letter']}: {a} - {b_} is not {c}")
+            for m in re.finditer(rf"MACD {num}, signal {num}, histogram {num}", text):
+                a, b_, c = map(float, m.groups())
+                if abs((a - b_) - c) > 0.0051:
+                    problems.append(f"chart {entry['letter']}: {a} - {b_} is not {c}")
+            # a working such as "3 + 2 + 1 = 6" or "50.40 - 1.60 = 48.80", chains included
+            for m in re.finditer(rf"(?<![\d.])(\d+(?:\.\d+)?(?: [-+] \d+(?:\.\d+)?)+) = {num}", text):
+                try:
+                    value = eval(m.group(1))   # digits and + - only, from the pattern above
+                except Exception:
+                    continue
+                if abs(value - float(m.group(2))) > 0.0051:
+                    problems.append(f"chart {entry['letter']}: {m.group(1)} is not {m.group(2)}")
+    return problems
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--edition", choices=deckkit.EDITIONS, default=deckkit.TEACHING)
@@ -354,7 +384,7 @@ def main() -> int:
     audit_pptx(args.out, CHARTS_DIR, chapter)
     _fix_divider_notes(args.out)
     _section_footers(args.out, chapter)
-    deck_problems = _deck_problems(args.out, args.with_figures) + _chart_data_problems() + _row_problems() + _key_problems() + _label_problems()
+    deck_problems = _deck_problems(args.out, args.with_figures) + _chart_data_problems() + _row_problems() + _key_problems() + _label_problems() + _arithmetic_problems()
     if deck_problems:
         print("Deck checks failed:", file=sys.stderr)
         for problem in deck_problems:

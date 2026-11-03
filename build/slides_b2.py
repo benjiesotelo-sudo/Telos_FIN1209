@@ -144,7 +144,7 @@ def slides():
             title='The MACD: two moving averages detrended',
             lines=("The MACD, created by Gerald Appel, subtracts one moving average from another, which Lim calls detrending them (p. 257): MACD = 12 period EMA minus 26 period EMA. Here the 12 period EMA crosses below the 26 period EMA [1] and the MACD crosses below zero [2] at the same bar; it stays negative while the 12 is below the 26.",),
         ),
-        chart('mc', 'BW', 'The MACD: two moving averages detrended',
+        chart('mc_b', 'BW', 'The MACD: two moving averages detrended',
               'Our 12 and 26 period EMAs crossing, and under them the MACD, their difference, crossing zero at the same bar.',
               ('Gold 1 the EMAs crossing, red 2 the MACD crossing zero.',)),
         # ---- row 61: Figure 8.19, upper part

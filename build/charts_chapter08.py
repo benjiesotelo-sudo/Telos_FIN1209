@@ -65,6 +65,12 @@ DATA['tbl'] = _paint('AS', oc.paint_static_dynamic, (), 'The table is ours, from
 _COLORS = ('gold', 'red', 'blue', 'purple')
 from specs_chapter08 import SPECS  # noqa: E402
 from specs_b_chapter08 import SPECS_B  # noqa: E402
+# One key, one chart: a key used twice would have the later chart overwrite the earlier picture
+# (Part B's MACD once replaced Part A's slide 91). Keys, letters and asset file names must all be unique.
+_dup = (set(SPECS) & set(SPECS_B)) | ({k for k in list(SPECS) + list(SPECS_B) if k in DATA})
+assert not _dup, f'chart keys used by two specs: {sorted(_dup)}'
+_letters = [e['letter'] for e in list(SPECS.values()) + list(SPECS_B.values())] + [d['letter'] for d in DATA.values()]
+assert len(_letters) == len(set(_letters)), 'a chart letter is used twice'
 for _key, _entry in {**SPECS, **SPECS_B}.items():
     DATA[_key] = _spec(_entry['letter'], _entry['spec'], _entry.get('caption', NOTE), _entry.get('angles'))
 

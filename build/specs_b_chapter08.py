@@ -324,7 +324,7 @@ def _vals(slot):
 
 
 _mt = pane('t', y=(2.15, 3.1), lo=92, hi=132, n=80, title='the 12 period EMA (gold) and the 26 period EMA (green)', x=(1.3, 10.3))
-SPECS_B['mc'] = dict(letter='BW', caption='The closes are ours, made up to show the idea.', spec=dict(
+SPECS_B['mc_b'] = dict(letter='BW', caption='The closes are ours, made up to show the idea.', spec=dict(
     panes=[_mt, pane('b', y=(1.05, 1.8), lo=-5, hi=7, n=80, title='MACD = 12 period EMA minus 26 period EMA', x=(1.3, 10.3), ref=[(0, '0')])],
     series=[dict(pane='t', values=[round(x, 2) for x in _E12], color=GOLD, lw=2.8),
             dict(pane='t', values=[round(x, 2) for x in _E26], color=DEEP, lw=2.8), dict(pane='b', values=_MD)],

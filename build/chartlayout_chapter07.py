@@ -28,6 +28,7 @@ from matplotlib.transforms import Bbox
 CHAPTER_DIR = 'chapter-07'
 DATA_MODULE = 'charts_chapter07'
 CONTENT_MODULE = 'content_chapter07'
+BARE_UNMARKED = False   # Chapter 8 turns this on: see CourseChart.bare
 
 
 def _data():
@@ -49,10 +50,13 @@ class CourseChart(dk.Chart):
     # A crop of the book's own drawing of the same form, shown beside a
     # narrower chart; the sentences read the chart, whose marks they name.
     figure: dk.Figure | None = None
+    # A copy drawn with no mark at all, for a slide whose sentences name none: no dot or
+    # leader of a mark that is not on the slide is left on the picture.
+    bare: bool = False
 
     @property
     def filename(self):
-        return f'chart-{self.asset}-{self.page}.png'
+        return f'chart-{self.asset}-{self.page}{"-bare" if self.bare else ""}.png'
 
     @property
     def credit(self):
@@ -147,10 +151,11 @@ def page_specs(spec):
 
 
 def artwork(data):
-    return tuple(ck.ChartArt(letter=f'{key}-{page}', draw=draw,
-                             kwargs=dict(key=key, page=page))
+    return tuple(ck.ChartArt(letter=f'{key}-{page}{suffix}', draw=draw,
+                             kwargs=dict(key=key, page=page, bare=bool(suffix)))
                  for key, spec in data.items()
-                 for page in range(len(page_specs(spec))))
+                 for page in range(len(page_specs(spec)))
+                 for suffix in (('', '-bare') if BARE_UNMARKED and spec.get('marks_by_sentence') else ('',)))
 
 
 TEXT_H = 1.2   # four lines of 17 point teaching text above the chart
@@ -297,7 +302,8 @@ def expand_chart_pages(chapter):
                         shown = tuple(m for m in marks if m.number in named)
                     result.append(replace(slide, page=page, letter=internal, title=title,
                                           teaching=chunk, notes=slide.notes or (slide.shows,),
-                                          marks=shown))
+                                          marks=shown,
+                                          bare=BARE_UNMARKED and bool(DATA[slide.asset].get('marks_by_sentence')) and not shown))
         return tuple(result)
     openers = expand(chapter.openers or ())
     sections = tuple(replace(section, slides=expand(section.slides)) for section in chapter.sections)
@@ -942,8 +948,8 @@ def _target_specs(key, spec):
     return spec.get('targets', ())
 
 
-@lru_cache(maxsize=128)
-def layout(key, page=0):
+@lru_cache(maxsize=256)
+def layout(key, page=0, bare=False):
     DATA = _data()
     spec = DATA[key]
     W = chart_width(spec)
@@ -1346,6 +1352,9 @@ def layout(key, page=0):
             assert not clash, f'group box crosses text: {[labels[i].get_text() for i in clash]}'
         fig.group_gap=spec.get('group_gap',0)
         fig.paint_boxes=spec.get('special') == 'paint'
+        if bare:
+            targets.clear()
+            groups.clear()
         marks=_marks(fig,targets,_target_specs(key,spec),boxes,
                      segments+ink+(columns if vbox else []),groups,brackets,vbox)
     except AssertionError as error:
@@ -1356,8 +1365,8 @@ def layout(key, page=0):
     return fig,marks
 
 
-def draw(path, *, key, page=0, display_font=None):
-    fig,_marks=layout(key,page)
+def draw(path, *, key, page=0, display_font=None, bare=False):
+    fig,_marks=layout(key,page,bare)
     fig.savefig(path,dpi=ck.DPI,facecolor=ck.WHITE)
     return path
 
@@ -1372,13 +1381,27 @@ def audit_pptx(path, charts_dir, chapter=None):
     placed={s.asset for section in CHAPTER.sections for s in section.slides if isinstance(s,CourseChart)}
     assets={hashlib.sha256((Path(charts_dir)/f'chart-{key}-{page}.png').read_bytes()).hexdigest(): (key,page)
             for key,spec in DATA.items() if key in placed for page in range(len(page_specs(spec)))}
+    bare_assets={}
+    for key,spec in DATA.items():
+        if BARE_UNMARKED and key in placed and spec.get('marks_by_sentence'):
+            for page in range(len(page_specs(spec))):
+                bare_assets[hashlib.sha256((Path(charts_dir)/f'chart-{key}-{page}-bare.png').read_bytes()).hexdigest()]=(key,page)
     presentation=Presentation(path)
     found=set()
     for page,slide in enumerate(presentation.slides,1):
+        badges=[sh for sh in slide.shapes if sh.has_text_frame and re.fullmatch(r'\d{1,2}',sh.text_frame.text.strip()) and sh.width<914400*.5]
         for shape in slide.shapes:
             if shape.shape_type != 13:
                 continue
-            key=assets.get(hashlib.sha256(shape.image.blob).hexdigest())
+            digest=hashlib.sha256(shape.image.blob).hexdigest()
+            if digest in bare_assets and digest not in assets:
+                assert not badges, f'Slide {page}: a bare chart carries a mark badge'
+                key=bare_assets[digest]
+            else:
+                key=assets.get(digest)
+                # A chart drawn with marks but showing no badge leaves stubs of marks the slide does not name.
+                if BARE_UNMARKED and key is not None and DATA[key[0]].get('marks_by_sentence') and not badges and digest not in bare_assets:
+                    raise AssertionError(f'Slide {page}: chart {key[0]} shows no mark badge but is not the bare copy (mark stubs)')
             if key is None:
                 continue
             found.add(key)

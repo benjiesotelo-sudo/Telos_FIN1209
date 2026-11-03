@@ -9,6 +9,7 @@ import chartlayout_chapter07 as _layout
 _layout.CHAPTER_DIR = 'chapter-08'
 _layout.DATA_MODULE = 'charts_chapter08'
 _layout.CONTENT_MODULE = 'content_chapter08'
+_layout.BARE_UNMARKED = True
 # Chapter 7's layout caches nothing before this point, but clear it anyway.
 _layout.layout.cache_clear()
 

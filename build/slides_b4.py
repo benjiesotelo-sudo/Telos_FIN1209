@@ -44,7 +44,7 @@ def slides_87():
             notes=('Overlays work best when they bunch up.', 'Say that confluence here means overlays at one price.'),
             origin='Lim (2016), p. 263. ' + OUR,
             title='Overlays work best when they bunch up',
-            lines=("Lim says clusters, or confluences, of indicators in a narrow price range make a strong barrier (p. 263). Here confluence means overlays at one price, not the stochastic and RSI agreeing. Here: a prior support [1], a Fibonacci level [2] and a moving average [3] near 50.00, and price reacting [4].",),
+            lines=("Lim says clusters, or confluences, of indicators in a narrow price range make a strong barrier (p. 263). Lim uses confluence here for overlays bunched at one price, a second sense of the word he used for the stochastic and RSI agreeing (p. 262). Here: a prior support [1], a Fibonacci level [2] and a moving average [3] near 50.00, and price reacting [4].",),
         ),
         chart('cf', 'CM', 'Overlays work best when they bunch up',
               'Our price falling to 50.10 where a prior support at 50.00, a Fibonacci level at 50.30 and a moving average bunch together, then rising.',

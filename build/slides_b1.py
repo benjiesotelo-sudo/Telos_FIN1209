@@ -94,7 +94,7 @@ def slides(S):
             origin='Lim (2016), pp. 251, 254, 259 and 262, Figure 8.17. The marks are ours, added for teaching.',
             left=Content(
                 title='The bounded oscillators we now tune and build (1 of 3)',
-                lines=("We tune these, then build them. The bounded oscillators, 0 to 100 percent, are the relative strength index or RSI [1], average gain over average loss; the stochastic [2], where the close sits in the recent range; and the StochRSI [3], the stochastic applied to RSI values. First we tune each one's lookback, the number of periods it looks back over (p. 252). Lim prints the StochRSI from 0 to 1.",),
+                lines=("We tune these, then build them. The bounded ones, 0 to 100 percent, are the relative strength index or RSI [1], built from the average gain and the average loss; the stochastic [2], where the close sits in the recent range; and the StochRSI [3], the stochastic applied to RSI values. First we tune each lookback, the periods it looks back over (p. 252). Lim prints the StochRSI 0 to 1.",),
             ),
             picture=REF_17, text_w=3.7),
         WidePair(
@@ -110,7 +110,7 @@ def slides(S):
             REF_CCI, ('The same lower half of Figure 8.7 as the first class.',), 'Lim (2016), pp. 242 and 244, Figure 8.7. The marks are ours, added for teaching.'),
         # ---- row 4: tune to the cycle
         top('Tune an oscillator to the cycle, not just the default',
-            "Lim says oscillators and most overlays normally give better signals tuned to the dominant half cycle, half the dominant cycle's length, than at the default lookback, which may give too few or too many (p. 252). On Figure 8.16 see his labels for the dominant cycle [1], the tuned stochastic [2] and the default 14 period [3].",
+            "Lim says oscillators tuned to the dominant half cycle, half the dominant cycle's length, normally beat the default lookback (p. 252). A cycle runs trough to trough. Lim does not define dominant; his example takes the average of the recent cycle lengths [1], and so do we. Also marked: the tuned stochastic [2] and the default [3].",
             F816_ALL, ('Gold 1 the dominant cycle label, red 2 the tuned stochastic, blue 3 the default stochastic.', 'Say that Lim does not define dominant.'), 'Lim (2016), p. 252, Figure 8.16. The marks are ours, added for teaching.'),
         # ---- rows 5 and 8: the first formula
         Content(
@@ -199,7 +199,7 @@ def slides(S):
             notes=('14 x 3 = 42 and 14 x 12 = 168.', 'Gold 1 the 14 period swing, red 2 the 42 period line at the same time.'),
             origin='Lim (2016), pp. 253 and 262. ' + OUR,
             title='A 14 period RSI becomes 42 and 168',
-            lines=("To put a 15 minute RSI on a 5 minute chart, multiply its 14 periods by the MF: 14 x 3 = 42. The hourly RSI is 14 x 12 = 168 (p. 253). On our closes the 14 period RSI [1] swings from about 10 to 89 and the 42 period RSI [2] only from about 40 to 60. Ours uses plain averages of gains and losses; the RSI's own averaging is built in 8.6.",),
+            lines=("A 15 minute RSI on a 5 minute chart has its 14 periods times the MF: 14 x 3 = 42; the hourly is 14 x 12 = 168 (p. 253). On our closes the 14 period RSI [1] swings from about 10 to 89 and the 42 period RSI [2] only from about 40 to 60. Ours uses plain averages of gains and losses. The RSI itself is built in 8.6, also on plain averages, because the book gives no formula for Wilder's own averaging.",),
         ),
         chart('rsi42', 'BD', 'A 14 period RSI becomes 42 and 168',
               'Our closes with a 14 period RSI that swings widely and a 42 period RSI that stays near the middle.',

@@ -59,7 +59,7 @@ def slides():
             notes=('Percent change over N periods.', 'This chapter does not define typical price, midprice or weighted close.'),
             origin='Lim (2016), p. 256. ' + OUR,
             title='ROC: the percent change over N periods',
-            lines=("The rate of change, ROC, is the percent change in price over N periods: (latest price - price N periods back) / price N periods back, times 100 percent (p. 256). It usually uses closes; Lim also names typical price, midprice and weighted close; this chapter does not define them. Here: latest $110 [1], ten periods back $100 [2], so 10 percent.",),
+            lines=("The rate of change, ROC, is the percent change in price over N periods: (latest price - price N periods back) / price N periods back, times 100 percent (p. 256). It usually uses closes; Lim also names typical price, midprice and weighted close; this chapter defines none of them, and 8.7 gives Lim's formulas for the first two from his later chapters. Here: latest $110 [1], ten periods back $100 [2], so 10 percent.",),
         ),
         chart('rcp', 'BQ', 'ROC: the percent change over N periods',
               'Our price rising from $100 to $110 over ten periods, a ROC of 10 percent.',
@@ -120,7 +120,7 @@ def slides():
             notes=('Review question 8.',),
             origin='Lim (2016), p. 257, review question 8. The table is ours, from his two formulas.',
             title='ROC and MOM on the same prices',
-            lines=("Review question 8 asks how the two differ. Lim says that in most ways they act alike; the difference he names is the ROC's non-linearity (p. 257). On our prices the ROC falls, 10.0, 9.1, 8.3 percent, while the MOM stays at 10 dollars.",),
+            lines=("Review question 8 asks how the two differ. Lim says that in most ways the MOM's action is identical to the ROC's; the difference he names is the ROC's non-linearity (p. 257). On our prices the ROC falls, 10.0, 9.1, 8.3 percent, while the MOM stays at 10 dollars.",),
         ),
         chart('rm', 'BV', 'ROC and MOM on the same prices',
               'A table of ours with the ROC falling and the MOM staying at 10 over three equal dollar rises.',
@@ -229,7 +229,7 @@ def slides():
               ('Gold 1 the rising price, red 2 the falling ATR, blue 3 the last bars.',)),
         # ---- row 73: Figure 8.21
         top('Figure 8.21: the true range reaching its overextended level',
-            ("Figure 8.21 is the true range, an ATR with a lookback of 1, on gold. Lim marks a historically overextended level [1] reached 16 times since August 2007, for example Lim's touches 1 [2], 8 [3] and 16 [4]. His text says a correction follows every time it is passed (p. 259); the figure says prices normally stall or retrace (p. 260). We show both."),
+            ("The true range on gold. Lim marks a historically overextended level [1], reached 16 times, with touches 1 [2], 8 [3] and 16 [4]. Here overextended means a true range far larger than usual, our reading, not the first class's overbought. His text says a correction follows every time (p. 259); the figure, prices normally stall or retrace (p. 260)."),
             F821, ('Gold 1 the level, red 2, blue 3 and purple 4 touches 1, 8 and 16.',), 'Lim (2016), pp. 259 to 260, Figure 8.21. The marks are ours, added for teaching.'),
         # ---- rows 74 and 75: Check 19
         CourseCheck(

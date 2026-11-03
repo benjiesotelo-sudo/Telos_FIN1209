@@ -402,24 +402,24 @@ _SD = _sma(_FD)          # slow %D
 
 
 def _stoch_chart(letter, lines, labels, note, worked=True, blo=-30, bhi=118):
-    pt = pane('t', y=(2.0, 3.2), lo=47.6, hi=55.6, n=10, title='ten bars of ours, lookback of 3; bar 7 closes at 53.20', x=(1.3, 9.6))
-    texts = [(X(pt, i), 1.86, str(i + 1), 'center', DEEP) for i in range(10)]
+    pt = pane('t', y=(2.2, 3.25), lo=47.6, hi=55.6, n=10, title='ten bars of ours, lookback of 3; bar 7 closes at 53.20', x=(1.3, 9.6))
+    texts = [(X(pt, i), 1.98, str(i + 1), 'center', DEEP) for i in range(10)]
     if worked:
         texts += [(X(pt, 6) + .05, Y(pt, 53.6) + .22, 'H 53.60', 'center', INK), (X(pt, 5), Y(pt, 50.6) - .27, 'L 50.60', 'center', INK)]
     return dict(letter=letter, spec=dict(
-        panes=[pt, pane('b', y=(.4, 1.25), lo=blo, hi=bhi, n=10, title=note, x=(1.3, 9.6), ref=[(0, '0')] if blo <= 0 else [])],
+        panes=[pt, pane('b', y=(.5, 1.5), lo=blo, hi=bhi, n=10, title=note, x=(1.3, 9.6), ref=[(20, '20'), (80, '80')])],
         bars=[dict(pane='t', rows=_SB, half=.14)],
         series=lines,
         texts=texts,
         marks=labels))
 
 
-SPECS_B['fs'] = _stoch_chart('CC', [dict(pane='b', values=_RK, labels=[(4, f'{_RK[4]}', 0, -.3), (5, f'{_RK[5]}', -.3, .3), (6, f'{_RK[6]}', 0, .3), (9, f'{_RK[9]}', 0, -.3)]),
-                                    dict(pane='b', values=_FD, color=GOLD, lw=3.0, labels=[(8, f'{_FD[8]}', 0, .28)])],
-                            [('pt', 'b', 6, _RK[6]), ('pt', 'b', 6, _FD[6]), ('box', 't', 4, 6, 49.9, 54.1)], 'black: raw %K   gold: fast %D, 49.5 at bar 7', blo=-60)
-SPECS_B['ss'] = _stoch_chart('CD', [dict(pane='b', values=_FD, color=INK, lw=2.4, labels=[(7, f'{_FD[7]}', 0, .3), (9, f'{_FD[9]}', 0, -.45)]),
-                                    dict(pane='b', values=_SD, color=GOLD, lw=3.0, labels=[(9, f'{_SD[9]}', 0, .28)])],
-                            [('pt', 'b', 7, _FD[7]), ('pt', 'b', 7, _SD[7])], 'black: slow %K   gold: slow %D', worked=False, blo=20, bhi=78)
+SPECS_B['fs'] = _stoch_chart('CC', [dict(pane='b', values=_RK, labels=[(4, f'{_RK[4]}', 0, -.3), (5, f'{_RK[5]}', 0, .45), (6, f'{_RK[6]}', 0, .3), (9, f'{_RK[9]}', 0, -.3)]),
+                                    dict(pane='b', values=_FD, color=GOLD, lw=3.0, labels=[(8, f'{_FD[8]}', 0, .3)])],
+                            [('pt', 'b', 6, _RK[6]), ('pt', 'b', 6, _FD[6]), ('box', 't', 4, 6, 49.9, 54.1)], 'black: raw %K   gold: fast %D, 49.5 at bar 7', blo=-30, bhi=112)
+SPECS_B['ss'] = _stoch_chart('CD', [dict(pane='b', values=_FD, color=INK, lw=2.4, labels=[(7, f'{_FD[7]}', .4, .45)]),
+                                    dict(pane='b', values=_SD, color=GOLD, lw=3.0)],
+                            [('pt', 'b', 7, _FD[7]), ('pt', 'b', 7, _SD[7])], 'black: slow %K   gold: slow %D', worked=False, blo=10, bhi=90)
 
 
 # signal line crossovers on lines of ours: the fast pair and the slow pair

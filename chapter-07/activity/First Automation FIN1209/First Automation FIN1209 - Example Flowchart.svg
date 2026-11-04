@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 1550 920" width="1550" height="920" font-family="Helvetica, Arial, sans-serif" font-size="12">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 1550 960" width="1550" height="960" font-family="Helvetica, Arial, sans-serif" font-size="12">
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
-<rect x="10" y="20" width="260" height="860" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<rect x="10" y="20" width="260" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
 <text x="22" y="42" font-size="15" font-weight="bold" fill="#1E5631">Data in</text>
-<rect x="280" y="20" width="420" height="860" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<rect x="280" y="20" width="420" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
 <text x="292" y="42" font-size="15" font-weight="bold" fill="#1E5631">Measure</text>
-<rect x="710" y="20" width="420" height="860" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<rect x="710" y="20" width="420" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
 <text x="722" y="42" font-size="15" font-weight="bold" fill="#1E5631">Decide</text>
-<rect x="1140" y="20" width="380" height="860" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<rect x="1140" y="20" width="380" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
 <text x="1152" y="42" font-size="15" font-weight="bold" fill="#1E5631">Report</text>
 <polyline points="140,98 140,138" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
 <polyline points="140,202 140,268" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
@@ -45,11 +45,11 @@
 <text x="1237" y="565.5" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
 <polyline points="1295,630 1402,630" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
 <polyline points="1420,681 1420,708" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="1230,662 1230,732" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1255,500 1300,500 1300,880 24,880 24,300 75,300" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1230,662 1230,712 1215,712 1215,732" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1255,500 1300,500 1300,900 24,900 24,300 75,300" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
 <text x="1269.5" y="493" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
 <circle cx="140" cy="80" r="18" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="140" y="114" text-anchor="middle" font-size="11.5">Run the script</text>
+<text x="166" y="84" text-anchor="start" font-size="11.5">Run the script</text>
 <rect x="75" y="138" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
 <text x="140" y="160" text-anchor="middle" font-size="12">1. List the CSV</text>
 <text x="140" y="174" text-anchor="middle" font-size="12">files in the</text>
@@ -163,11 +163,11 @@
 <path d="M1402,605 L1428,605 L1438,615 L1438,655 L1402,655 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
 <path d="M1428,605 L1428,615 L1438,615" fill="none" stroke="#222" stroke-width="1.2"/>
 <text x="1420" y="670" text-anchor="middle" font-size="11.5" font-weight="bold">signals.csv</text>
-<path d="M1284,708 L1270,708 L1270,782 L1284,782" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="1278" y="723" font-size="11" fill="#222">ticker, date, side, entry,</text>
-<text x="1278" y="736.5" font-size="11" fill="#222">rsi, macd, stoch (BUY, SELL or empty),</text>
-<text x="1278" y="750" font-size="11" fill="#222">agree (how many agree)</text>
-<circle cx="1230" cy="750" r="18" fill="#fff" stroke="#222" stroke-width="4.5"/>
-<text x="1230" y="784" text-anchor="middle" font-size="11.5">Signals and</text>
-<text x="1230" y="798" text-anchor="middle" font-size="11.5">charts ready</text>
+<path d="M1309,708 L1295,708 L1295,782 L1309,782" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="1303" y="723" font-size="11" fill="#222">ticker, date, side, entry,</text>
+<text x="1303" y="736.5" font-size="11" fill="#222">rsi, macd, stoch (BUY, SELL,</text>
+<text x="1303" y="750" font-size="11" fill="#222">or empty), agree (how many agree)</text>
+<circle cx="1215" cy="750" r="18" fill="#fff" stroke="#222" stroke-width="4.5"/>
+<text x="1215" y="784" text-anchor="middle" font-size="11.5">Signals and</text>
+<text x="1215" y="798" text-anchor="middle" font-size="11.5">charts ready</text>
 </svg>

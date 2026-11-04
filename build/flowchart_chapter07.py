@@ -22,10 +22,10 @@ def _n(i, cx, cy, w, h, *lines):
 
 def build() -> Diagram:
     d = Diagram("OscillatorExample", "Example script: three window oscillators")
-    G = lambda i, name, x0, x1: Node(i, "group", name, (x0 + x1) / 2, 450, (), w=x1 - x0, h=860)
+    G = lambda i, name, x0, x1: Node(i, "group", name, (x0 + x1) / 2, 470, (), w=x1 - x0, h=900)
     d.nodes = [
         G("S1", "Data in", 10, 270), G("S2", "Measure", 280, 700), G("S3", "Decide", 710, 1130), G("S4", "Report", 1140, 1520),
-        Node("Start", "start", "Run the script", 140, 80, ("Run the script",)),
+        Node("Start", "start", "Run the script", 140, 80, ("Run the script",), "right"),
         _t("T1", 1, 140, 170, "List the CSV", "files in the", "data folder"),
         _t("T2", 2, 140, 300, "Read each file", "and clean its dates"),
         Node("D1", "data", "data/<ticker>.csv", 140, 430, ("data/<ticker>.csv",), "right"),
@@ -59,8 +59,8 @@ def build() -> Diagram:
         Node("G4", X, "Another file left?", 1230, 500, ("Another", "file left?"), "aboveleft"),
         _t("T14", 14, 1230, 630, "Write the", "signals table"),
         Node("D4", "data", "signals.csv", 1420, 630, ("signals.csv",), "below"),
-        _n("N8", 1395, 745, 250, 74, "ticker, date, side, entry,", "rsi, macd, stoch (BUY, SELL or empty),", "agree (how many agree)"),
-        Node("End", "end", "Signals and charts ready", 1230, 750, ("Signals and", "charts ready")),
+        _n("N8", 1405, 745, 220, 74, "ticker, date, side, entry,", "rsi, macd, stoch (BUY, SELL,", "or empty), agree (how many agree)"),
+        Node("End", "end", "Signals and charts ready", 1215, 750, ("Signals and", "charts ready")),
     ]
     E = lambda i, a, b, pts, lab="", k="flow": Edge(i, a, b, tuple(pts), lab, k)
     d.edges = [
@@ -96,7 +96,7 @@ def build() -> Diagram:
         E("F20", "G4", "T14", [(1230, 525), (1230, 598)], "no"),
         E("O3", "T14", "D4", [(1295, 630), (1402, 630)], "", "dataout"),
         E("A9", "D4", "N8", [(1420, 681), (1420, 708)], "", "assoc"),
-        E("F21", "T14", "End", [(1230, 662), (1230, 732)]),
-        E("F22", "G4", "T2", [(1255, 500), (1300, 500), (1300, 880), (24, 880), (24, 300), (75, 300)], "yes"),
+        E("F21", "T14", "End", [(1230, 662), (1230, 712), (1215, 712), (1215, 732)]),
+        E("F22", "G4", "T2", [(1255, 500), (1300, 500), (1300, 900), (24, 900), (24, 300), (75, 300)], "yes"),
     ]
     return d

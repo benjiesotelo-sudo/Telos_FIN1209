@@ -206,6 +206,9 @@ def to_svg(d: Diagram, scale: float = 1.0) -> str:
             sw = 1.8 if n.kind == "start" else 4.5
             s.append(f'<circle cx="{n.cx:g}" cy="{n.cy:g}" r="18" fill="#fff" stroke="#222" stroke-width="{sw}"/>')
             for k, t in enumerate(n.lines or (n.name,)):
-                s.append(f'<text x="{n.cx:g}" y="{y+hh+16+k*14:g}" text-anchor="middle" font-size="11.5">{escape(t)}</text>')
+                if n.label_at == "right":
+                    s.append(f'<text x="{n.cx + 26:g}" y="{n.cy + 4 + (k - (len(n.lines or (n.name,)) - 1) / 2) * 14:g}" text-anchor="start" font-size="11.5">{escape(t)}</text>')
+                else:
+                    s.append(f'<text x="{n.cx:g}" y="{y+hh+16+k*14:g}" text-anchor="middle" font-size="11.5">{escape(t)}</text>')
     s.append('</svg>')
     return "\n".join(s)

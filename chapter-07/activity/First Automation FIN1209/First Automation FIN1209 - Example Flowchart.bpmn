@@ -134,8 +134,8 @@ give no sell trigger</bpmn:text></bpmn:textAnnotation>
     </bpmn:task>
     <bpmn:dataObjectReference id="D4" name="signals.csv" dataObjectRef="DO_D4" />
     <bpmn:textAnnotation id="N8"><bpmn:text>ticker, date, side, entry,
-rsi, macd, stoch (BUY, SELL or empty),
-agree (how many agree)</bpmn:text></bpmn:textAnnotation>
+rsi, macd, stoch (BUY, SELL,
+or empty), agree (how many agree)</bpmn:text></bpmn:textAnnotation>
     <bpmn:endEvent id="End" name="Signals and charts ready">
       <bpmn:incoming>F21</bpmn:incoming>
     </bpmn:endEvent>
@@ -173,20 +173,20 @@ agree (how many agree)</bpmn:text></bpmn:textAnnotation>
   <bpmndi:BPMNDiagram id="Diagram_OscillatorExample">
     <bpmndi:BPMNPlane id="Plane_OscillatorExample" bpmnElement="OscillatorExample">
       <bpmndi:BPMNShape id="S1_di" bpmnElement="S1">
-        <dc:Bounds x="10" y="20" width="260" height="860" />
+        <dc:Bounds x="10" y="20" width="260" height="900" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="S2_di" bpmnElement="S2">
-        <dc:Bounds x="280" y="20" width="420" height="860" />
+        <dc:Bounds x="280" y="20" width="420" height="900" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="S3_di" bpmnElement="S3">
-        <dc:Bounds x="710" y="20" width="420" height="860" />
+        <dc:Bounds x="710" y="20" width="420" height="900" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="S4_di" bpmnElement="S4">
-        <dc:Bounds x="1140" y="20" width="380" height="860" />
+        <dc:Bounds x="1140" y="20" width="380" height="900" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
         <dc:Bounds x="122" y="62" width="36" height="36" />
-        <bpmndi:BPMNLabel><dc:Bounds x="80" y="102" width="120" height="27" /></bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel><dc:Bounds x="162" y="66" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T1_di" bpmnElement="T1">
         <dc:Bounds x="75" y="138" width="130" height="64" />
@@ -284,11 +284,11 @@ agree (how many agree)</bpmn:text></bpmn:textAnnotation>
         <bpmndi:BPMNLabel><dc:Bounds x="1360" y="659" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N8_di" bpmnElement="N8">
-        <dc:Bounds x="1270" y="708" width="250" height="74" />
+        <dc:Bounds x="1295" y="708" width="220" height="74" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="End_di" bpmnElement="End">
-        <dc:Bounds x="1212" y="732" width="36" height="36" />
-        <bpmndi:BPMNLabel><dc:Bounds x="1170" y="772" width="120" height="27" /></bpmndi:BPMNLabel>
+        <dc:Bounds x="1197" y="732" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1155" y="772" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="F1_di" bpmnElement="F1">
         <di:waypoint x="140" y="98" />
@@ -434,13 +434,15 @@ agree (how many agree)</bpmn:text></bpmn:textAnnotation>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F21_di" bpmnElement="F21">
         <di:waypoint x="1230" y="662" />
-        <di:waypoint x="1230" y="732" />
+        <di:waypoint x="1230" y="712" />
+        <di:waypoint x="1215" y="712" />
+        <di:waypoint x="1215" y="732" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F22_di" bpmnElement="F22">
         <di:waypoint x="1255" y="500" />
         <di:waypoint x="1300" y="500" />
-        <di:waypoint x="1300" y="880" />
-        <di:waypoint x="24" y="880" />
+        <di:waypoint x="1300" y="900" />
+        <di:waypoint x="24" y="900" />
         <di:waypoint x="24" y="300" />
         <di:waypoint x="75" y="300" />
       </bpmndi:BPMNEdge>

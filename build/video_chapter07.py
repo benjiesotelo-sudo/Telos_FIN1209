@@ -60,33 +60,36 @@ def _sheets_scenes() -> tuple:
                  for t, say, ref in steps)
 
 
-def _corr() -> dict:
+def _info() -> dict:
     import json
     from pathlib import Path
     f = Path(__file__).resolve().parent / "generated" / "activity2" / "why_info.json"
     try:
-        return json.loads(f.read_text()).get("corr", {})
+        return json.loads(f.read_text())
     except OSError:
         return {}
 
 
-_C = _corr()
+_I = _info()
+_C = _I.get("corr", {})
+_B = _I.get("bar", {})
 
 SCENES = (
     Scene("Welcome",
-          "This is a short guide to your first automation. You will teach R to read three window oscillators from "
-          "Chapter 8: the R S I, the M A C D, and the stochastic. For each day it finds each oscillator's buy or sell "
-          "signal, counts how many agree, and gives the price to act at. You need R and RStudio, both free, and one "
-          "package, T T R. The handout has the links.",
+          "This is a short guide to your first automation. You will teach R to read price, bars and volume, from "
+          "Chapters 1 to 7, and three window oscillators from Chapter 8. For each day it takes five votes for buy or "
+          "sell, counts how many agree, checks the volume, and gives the price to act at. You need R and RStudio, both "
+          "free, and one package, T T R. The manual has the links.",
           "web", "posit-rstudio"),
 ) + _sheets_scenes() + (
     Scene("The flowchart",
           "Here is what the script does, as a B P M N flowchart in four stages. Data in: one price file per stock, with a "
-          "date, four prices, and a volume. Measure: for each day, the R S I, the M A C D and the stochastic, each with "
-          "its rule written beside it, and its slide. A signal is the day one line crosses another. Decide: count how "
-          "many of the three crossed the same way. None means skip the day. Otherwise choose buy or sell by the net "
-          "vote, and set the price: a buy at the day's high, which is Lim's trigger, and a sell at the close, which is "
-          "our choice. Report: a chart, a summary for each stock, and one table of the signals.",
+          "date, four prices, and a volume. Measure: five votes for each day. The price trend, from Chapter 5. The price "
+          "bar, a key reversal, from Chapter 7. And the R S I, the M A C D and the stochastic from Chapter 8, each with "
+          "its rule beside it and its slide. Decide: add the votes. A signal day is a day the bar or an oscillator fires "
+          "and the votes do not cancel. Choose buy or sell by the net vote, and set the price: a buy at the day's high, "
+          "which is Lim's trigger, and a sell at the close, which is our choice. Volume is not a vote: above average "
+          "volume marks the day confirmed. Report: a chart, a summary for each stock, and one table of the signals.",
           "web", "bpmn-example-open"),
 
     Scene("Start a script",
@@ -97,73 +100,81 @@ SCENES = (
           "Step one: read a price file. A variable holds a value. Read dot csv opens the file as a table, one row per "
           "day, and as dot Date turns the Google Sheets date into a real date. Run it with Code, Source.",
           "clip", "01-read"),
-    Scene("Step 2: the RSI",
-          "Step two: a package. T T R holds the indicators, and you install it once with install dot packages. "
-          "Library loads it. R S I gives the relative strength index, fourteen days, plain averages as on slide "
-          "195.",
-          "clip", "02-rsi"),
-    Scene("Step 3: a crossing",
-          "Step three: a crossing is a signal. This small function gives plus one on the day one line crosses above "
-          "another, and minus one when it crosses below. The R S I crossing fifty is the signal on slide 74. Here are "
-          "the days it happened.",
-          "clip", "03-cross", speed=1.4),
-    Scene("Step 4: three oscillators",
-          "Step four: the other two. The M A C D is a twelve day average minus a twenty six day average, with a nine "
-          "day signal line, slides 166 to 168. Its signal line crossing is on slide 83. The stochastic is on slide "
-          "187. Add the three signals to get a vote: positive is a buy, negative a sell.",
-          "clip", "04-three", speed=1.6),
-    Scene("Step 5: the table",
-          "Step five: the table. One row per signal day: the date, buy or sell, the entry price, what each "
-          "oscillator said, and how many agree. A buy uses the day's high, slide 201. The slides give no sell "
-          "trigger, so a sell uses the close. That is our choice, not Lim's rule.",
-          "clip", "05-table", speed=1.6),
+    Scene("Step 2: the price trend",
+          "Step two, vote one: the price trend. T T R is a package of indicators. You install it once with install dot "
+          "packages, and library loads it. S M A is a simple moving average. Chapter 5, slides 109 and 110: price above "
+          "its three bar average is bullish, below it is bearish. Plus one for up, minus one for down.",
+          "clip", "02-trend", speed=1.3),
+    Scene("Step 3: the price bar",
+          "Step three, vote two: the price bar. The key reversal day, Chapter 7, slides 123 and 126. A higher high "
+          "than yesterday with a close at or below yesterday's close is bearish. A lower low with a close at or above "
+          "is bullish. Here are the days it happened.",
+          "clip", "03-bar", speed=1.3),
+    Scene("Step 4: the oscillators",
+          "Step four, votes three to five. A function packs lines under a name. This one gives plus one on the day one "
+          "line crosses above another, and minus one when it crosses below. The R S I crossing fifty, slide 74. The M A "
+          "C D crossing its signal line, slide 83. The stochastic percent K crossing percent D, slide 187.",
+          "clip", "04-osc", speed=1.8),
+    Scene("Step 5: the votes and the table",
+          "Step five: count the votes. A signal day is a day the bar or an oscillator fires and the votes do not "
+          "cancel. Positive is a buy, negative a sell, and agree counts the votes on that side. A buy uses the day's "
+          "high, slide 201. The slides give no sell trigger, so a sell uses the close. That is our choice, not Lim's "
+          "rule. Volume above the average marks the day confirmed, slide 128.",
+          "clip", "05-table", speed=1.8),
     Scene("Step 6: the chart",
-          "Step six: the chart. Price on top, the three oscillators below, and a triangle on every signal day. Green "
-          "up is a buy, red down is a sell, and the big numbered ones are where two or more agree.",
-          "clip", "06-chart", speed=1.5),
+          "Step six: the chart. Price on top with its three bar average, then volume, then the three oscillators. A "
+          "triangle on every signal day, green up for a buy and red down for a sell, and the big numbered ones are "
+          "where three or more votes agree.",
+          "clip", "06-chart", speed=1.6),
     Scene("Step 7: every file",
-          "Step seven: do it for every file in the data folder, and print a line per stock. That is the whole "
-          "script. Source it.",
+          "Step seven: do it for every file in the data folder, and print a line per stock. That is the whole script. "
+          "Source it.",
           "clip", "07-files", speed=3.0),
 
     Scene("The answer",
-          "Here is the answer for each stock: how many signal days, and how many had two or more oscillators "
-          "agreeing. The numbers are in the table.",
+          "Here is the answer for each stock: how many signal days, how many had three or more votes agreeing, and how "
+          "many were on above average volume. The details are in the table.",
           "frame", "07-files", crop=(0, 545, 650, 900)),
     Scene("The table",
-          "Here is the table. Each row is a signal day, with the side, the entry price, each oscillator's signal, "
-          "and the agree count.",
+          "Here is the table. Each row is a signal day: the side, the entry price, each vote, how many agree, and "
+          "whether the volume confirmed it.",
           "clip", "08-outputs"),
     Scene("The chart",
-          "And the chart. Price on top, then the R S I with its fifty line, the M A C D with its signal line, and "
-          "the stochastic. The big numbered triangles are the days two oscillators agreed. Notice the M A C D panel is empty at the start: it needs about thirty four days of history first. So for your own stock, pull about a year.",
+          "And the chart. Price on top, then volume, the R S I with its fifty line, the M A C D with its signal line, "
+          "and the stochastic. Notice the M A C D panel is empty at the start: it needs about thirty four days of "
+          "history first. So for your own stock, pull about a year.",
           "gen", "start/KO"),
     Scene("Add new data",
           "That is the automation. Download the files again with a later end date, replace them, and run the script "
           "again. The table and the charts update.",
           "clip", "09-update", speed=1.5),
 
-    Scene("Why a buy",
-          "Now the justification. The script gives numbers. This is what they mean. Take a real buy from the KO "
-          "table. On the day line, the R S I crosses up through fifty, and the stochastic crosses up through its "
-          "signal line. Two of three agree, and that is the buy signal. The price to act at is that day's high, the "
-          "entry, as slide 201 says. The M A C D did not cross that day, so it is empty in the table.",
+    Scene("Why: a price bar on volume",
+          "Now the justification. The script gives numbers. This is what they mean. Take a real bearish key reversal "
+          "from the " + str(_B.get("ticker", "KO")) + " table. One: yesterday's high. Two: today makes a new high. Three: "
+          "today closes below yesterday's close. Buyers pushed price up and could not hold it, so the bar votes sell. "
+          "Four: the volume is above average, so the day is confirmed. Volume does not vote. It tells you how much "
+          "weight the move carried.",
+          "gen", "why/why-bar"),
+    Scene("Why an oscillator buy",
+          "An oscillator vote is a crossing. Here the R S I crosses up through fifty, and the stochastic crosses up "
+          "through its signal line. Those two vote buy, and the price to act at is that day's high, as slide 201 says.",
           "gen", "why/why-buy"),
-    Scene("Why a sell",
-          "The sell is the mirror image. Here the M A C D crosses down through its signal line, and the stochastic "
-          "crosses down too. The slides give no sell trigger, so the entry is that day's close. That is our choice, not Lim's rule.",
+    Scene("Why an oscillator sell",
+          "The sell is the mirror image. Here the R S I and the M A C D cross down, and the entry is the close. The "
+          "slides give no sell trigger, so that is our choice.",
           "gen", "why/why-sell"),
     Scene("False consensus",
-          "But agreeing is not proof. All three are built from the same closing prices. On this data the R S I and "
-          "the stochastic correlate at " + str(_C.get("rsi_stoch", "")) + ", and the R S I and M A C D at " +
-          str(_C.get("rsi_macd", "")) + ". Lim calls this multicollinearity, a false consensus and a false sense of "
-          "confidence. His cure is oscillators built from different data, such as volume.",
+          "But agreeing is not proof. The R S I, the M A C D and the stochastic are all built from the same closing "
+          "prices. On this data the R S I and the stochastic correlate at " + str(_C.get("rsi_stoch", "")) + ", and the "
+          "R S I and M A C D at " + str(_C.get("rsi_macd", "")) + ". Lim calls this multicollinearity, a false "
+          "consensus. His cure is data other than price, such as volume, which is why the volume check stands apart.",
           "card", card=("Agreeing is not proof", f"RSI and stochastic: correlation {_C.get('rsi_stoch', '')}",
                         f"RSI and MACD: correlation {_C.get('rsi_macd', '')}", "Lim, slide 78: multicollinearity = false consensus")),
 
     Scene("Your task",
-          "Your task: your own stock, and your own pair of the three oscillators. Write your script, and draw its "
-          "flowchart. The due date is in the manual.",
+          "Your task: your own stock, and your own pair of the three oscillators, with the price trend, price bar and "
+          "volume check. Write your script, and draw its flowchart. The due date is in the manual.",
           "card", card=("Your task", "Your own stock", "Your own pair of oscillators", "Script + flowchart")),
     Scene("Submit",
           "Submit two files. Your script, named First Automation, underscore, surname, underscore, first name, dot R. "

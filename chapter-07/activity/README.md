@@ -1,28 +1,41 @@
 # Chapter 7, Activity 2 - First Automation FIN1209
 
-A take-home in which students automate three Chapter 8 window oscillators in R: a Google Sheets price
-file in a folder, a short script, a signals table and a chart, and the same again when new rows are added.
-Worth **100** points. The students get the manual, a video, the example script and the example
-flowchart (PDF and `.bpmn`), and **no price files**.
+A take-home in which students automate what Chapters 1 to 8 teach about reading a chart: a price trend vote
+(Chapter 5), a price bar vote (Chapter 7), a volume check (Chapter 7) and three window oscillators (Chapter 8).
+A Google Sheets price file goes in a folder, a short script runs, and a signals table and a chart come out, and
+again when rows are added. Worth **100** points. Students get the manual, a video, the example script and the
+example flowchart (PDF and `.bpmn`), and **no price files**.
 
 | File (in `First Automation FIN1209/`) | Who | What |
 |---|---|---|
-| `First Automation FIN1209.pdf` | Students | The manual: install, where the data comes from, what the script does, the three rules, the script in seven steps, running it, why the signals are where they are, the contract, the task, the AI rule, the marks and the course rubric |
-| `... - Example Script.R` | Students | About 47 lines, base R plus `TTR`. Numbers only |
-| `... - Example Flowchart.pdf / .svg / .bpmn` | Students | BPMN with four stages, a data object for the input, each metric's rule and slide, the agreement gateway, the output objects and the next-file loop |
-| `... - Narration Script.md` | Instructor | What the video says, scene by scene, to record in his own voice |
+| `First Automation FIN1209.pdf` | Students | The manual |
+| `... - Example Script.R` | Students | About 60 lines, base R plus `TTR`. Numbers only |
+| `... - Example Flowchart.pdf / .svg / .bpmn` | Students | BPMN in four stages with the input's data types, every metric's rule and slide, the signal-day gateway, the volume check, the output objects and the next-file loop |
+| `... - Narration Script.md` | Instructor | What the video says, scene by scene |
 
 The grading key, the unseen test files, the oracle and the grader are **not in this repository**.
 
-## The rules, from the Chapter 8 student edition
+## The rules, and the slide each comes from
 
-RSI over its 50 line (slides 74, 193 to 195: 14 days, plain averages); MACD (12, 26, 9, EMAs, not percent)
-over its signal line (slides 83, 166 to 168); stochastic fast %K (14) over %D (3) (slides 185, 187, 189). A
-signal day is a day at least one oscillator crosses; `agree` counts how many gave the winning side. A BUY's
-entry is the signal day's high (slide 201). **The slides give no sell trigger, so a SELL uses the close; that is
-our choice and the manual and video say so.** Lim's warning that oscillators built from the same prices give a
-false consensus (multicollinearity, slides 78 and 81) is the point of the justification part: it is shown with
-the real correlations of the example data. The script prints no "why" text; the video and manual explain.
+Votes are +1 BUY, -1 SELL; each is cited in the script comment and the manual.
+
+| Vote or check | Rule | Slides (student edition) |
+|---|---|---|
+| trend | close above its 3 bar average (PLdot) is up | Chapter 5, 109 "Drummond geometry", 110 "Reading a PLdot line" |
+| bar | key reversal: bearish = higher high and close at or below the previous close; bullish = lower low and close at or above | Chapter 7, 123 "The key reversal is when a strong move suddenly turns", 126 "The bullish key reversal is the same rule in the opposite direction" |
+| volume (not a vote) | above-average volume marks a signal CONFIRMED | Chapter 7, 128 "Figure 7.15 shows the key reversal on the book's chart" |
+| rsi | RSI 14 (plain averages) crossing 50 | Chapter 8, 74, 193 to 195 |
+| macd | MACD 12/26 (EMAs) over its 9 signal line | Chapter 8, 83, 166 to 168 |
+| stoch | fast %K 14 over %D 3 | Chapter 8, 185, 187, 189 |
+| entry | a BUY at the signal day's high | Chapter 8, 201 |
+
+**Our choices, said in the manual and the video:** a SELL's entry is the close (the slides give no sell trigger);
+the trend averages closes (slide 110's own chart; the book's PLdot averages typical price, which Chapter 5 does not
+define); "near or below the previous close" is read as at or below; "above-average volume" is the average of the
+whole file, because the slides give no period (it looks ahead, which is a known limit); Chapter 2's peaks and
+troughs trend is not computed. A signal day is a day the bar or an oscillator fires and the five votes do not cancel;
+`agree` counts the votes on the winning side. Lim's warning that oscillators built from the same prices give a false
+consensus (slides 78 and 81) is the point of the justification part. The script prints no "why" text.
 
 ## Build order
 
@@ -34,7 +47,7 @@ the real correlations of the example data. The script prints no "why" text; the 
 ```
 
 `run_stages.py` runs every step of the guide in R and records what R printed and the two "why" charts
-(`build/r/explain_osc.R`); `activity_chapter07_code.py` holds the seven stages and the last is read from the
+(`build/r/explain_osc.R`, `explain_bar.R`); `activity_chapter07_code.py` holds the seven stages and the last is read from the
 committed script, so the manual, the file and what is typed in the video cannot differ. The narration is
 audio made from the scene list, so swapping the voice is `--voice` on the last command.
 

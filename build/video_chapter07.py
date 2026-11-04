@@ -136,7 +136,7 @@ SCENES = (
           "clip", "08-outputs"),
     Scene("The chart",
           "And the chart. Price on top, then the R S I with its fifty line, the M A C D with its signal line, and "
-          "the stochastic. The big numbered triangles are the days two oscillators agreed.",
+          "the stochastic. The big numbered triangles are the days two oscillators agreed. Notice the M A C D panel is empty at the start: it needs about thirty four days of history first. So for your own stock, pull about a year.",
           "gen", "start/KO"),
     Scene("Add new data",
           "That is the automation. Download the files again with a later end date, replace them, and run the script "

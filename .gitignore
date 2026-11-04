@@ -19,3 +19,6 @@ assets/figures/
 # Build output: the charts this course draws for itself.
 # Generated from build/charts_chapter01.py on every build, not authored here.
 build/generated/
+# Chapter 7 Activity 2: price files and script output are never committed
+chapter-07/activity/First Automation FIN1209/data/*.csv
+chapter-07/activity/First Automation FIN1209/output/

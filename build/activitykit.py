@@ -195,6 +195,19 @@ class Figure(Block):
 
 
 @dataclass
+class Code(Block):
+    """A script, with the lines this step adds picked out in colour.
+
+    `new` holds 1-based line numbers. `output` is what R printed when the
+    script was really run; it is supplied by the build, never typed.
+    """
+    lines: tuple[str, ...]
+    new: tuple[int, ...] = ()
+    output: str = ""
+    label: str = ""
+
+
+@dataclass
 class KeyOnly(Block):
     """A block that exists only in the instructor's copy."""
     inner: Block
@@ -475,7 +488,24 @@ def render_block(b: Block, shots: Shots, key: bool) -> str:
     if isinstance(b, Figure):
         return _figure_html(b)
 
+    if isinstance(b, Code):
+        return _blk(_code_html(b), cls="code")
+
     raise TypeError(f"unhandled block {type(b).__name__}")
+
+
+def _code_html(c: Code) -> str:
+    rows = []
+    for n, line in enumerate(c.lines, 1):
+        cls = "cl new" if n in c.new else "cl"
+        rows.append(f'<div class="{cls}"><span class="ln">{n}</span>'
+                    f'<span class="tx">{html.escape(line) or "&nbsp;"}</span></div>')
+    label = f'<span class="codelabel">{html.escape(c.label)}</span>' if c.label else ""
+    out = ""
+    if c.output:
+        out = (f'<div class="rout"><span class="codelabel">R printed</span>'
+               f'<pre>{html.escape(c.output)}</pre></div>')
+    return f'<div class="codebox">{label}{"".join(rows)}</div>{out}'
 
 
 def _step_html(s: Step, shots: Shots) -> str:
@@ -784,6 +814,26 @@ figure.shot .shotart {{
   font-family: {MONO_FONT}; font-size: 8.4pt; word-break: break-all;
 }}
 .tnote {{ margin-top: 1.2mm; font-size: 8.6pt; color: {MUTED}; }}
+
+/* ---- code ------------------------------------------------------------ */
+.codebox {{
+  background: #ffffff; border: 0.6pt solid {BORDER}; border-radius: 1.6mm;
+  padding: 1.2mm 0; font-family: {MONO_FONT}; font-size: 7.8pt; line-height: 1.36;
+}}
+.cl {{ display: flex; padding: 0 2mm; white-space: pre-wrap; }}
+.cl .ln {{ width: 6mm; color: {MUTED}; flex: none; text-align: right; margin-right: 2.4mm; }}
+.cl .tx {{ flex: 1; }}
+.cl.new {{ background: #fff0b8; border-left: 1.4mm solid {GOLD}; padding-left: 0.6mm; }}
+.codelabel {{
+  display: block; font-family: {BODY_FONT}; font-size: 7.4pt; letter-spacing: 0.05em;
+  text-transform: uppercase; color: {MUTED}; padding: 0 2mm 0.6mm 2mm;
+}}
+.rout {{
+  margin-top: 1.4mm; background: #1f2a24; color: #e8f1ea; border-radius: 1.6mm;
+  padding: 1.2mm 2mm;
+}}
+.rout .codelabel {{ color: #9fb8a8; padding: 0 0 0.6mm 0; }}
+.rout pre {{ margin: 0; font-family: {MONO_FONT}; font-size: 7.8pt; line-height: 1.34; white-space: pre-wrap; }}
 
 /* ---- figures --------------------------------------------------------- */
 .fig .art {{

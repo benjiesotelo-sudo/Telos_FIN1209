@@ -66,7 +66,7 @@ Step three: test one day. Yesterday is row i minus one. Did today open above yes
 
 *Picture: a screen recording (04-loop)*
 
-Step four: test every day. A for loop repeats the test for each day. If the Oops happened, print a sell, with the entry and the stoploss. Else if the day mirrors it, slide 199, print a buy. Here are the signals.
+Step four: test every day. A for loop repeats the test for each day. If the Oops happened, print a sell, with the entry, the stoploss, and a plain why, built from that day's own prices. Else if the day mirrors it, slide 199, print a buy. Here are the signals, each one explained.
 
 ## 12. Step 5: keep the signals
 
@@ -90,7 +90,7 @@ Step seven: do it for every file in the data folder, and print a plain answer fo
 
 *Picture: the last frame of 07-files*
 
-Here is the answer. For each stock, how many signals, and the latest one: sell at eighty seven twenty eight, with the stoploss at eighty seven fifty two. That is the price the rule says to act at.
+Here is the answer. Every signal comes with its why. For example: it opened above the previous day's high, then fell back to it, so the sell order at that price filled, and the stoploss is the day's high. Then, for each stock, how many signals, and the latest one.
 
 ## 16. The table
 

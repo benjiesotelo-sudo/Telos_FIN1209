@@ -36,9 +36,15 @@ LOOP_PRINT = '''for (i in seq_along(bars$Date)[-1]) {
   prev_high <- bars$High[i - 1]
   prev_low <- bars$Low[i - 1]
   if (bars$Open[i] > prev_high && bars$Low[i] <= prev_high) {
-    cat(format(bars$Date[i]), "SELL at", prev_high, "stoploss", bars$High[i], "\\n")
+    cat(format(bars$Date[i], "%d %b %Y"), "SELL at", prev_high, "stoploss", bars$High[i], "\\n",
+        " Why: it opened at", bars$Open[i], "above the previous day's high of", prev_high,
+        "(a gap up), then fell back to", prev_high, "so the sell order filled.",
+        "Stoploss is the day's high (Oops, slide 194)\\n")
   } else if (bars$Open[i] < prev_low && bars$High[i] >= prev_low) {
-    cat(format(bars$Date[i]), "BUY at", prev_low, "stoploss", bars$Low[i], "\\n")
+    cat(format(bars$Date[i], "%d %b %Y"), "BUY at", prev_low, "stoploss", bars$Low[i], "\\n",
+        " Why: it opened at", bars$Open[i], "below the previous day's low of", prev_low,
+        "(a gap down), then rose back to", prev_low, "so the buy order filled.",
+        "Stoploss is the day's low (Oops, slide 199)\\n")
   }
 }'''
 
@@ -49,10 +55,18 @@ LOOP_ROWS = '''for (i in seq_along(bars$Date)[-1]) {
     row <- data.frame(ticker = ticker, date = bars$Date[i], side = "SELL",
                       entry = prev_high, stoploss = bars$High[i])
     signals <- rbind(signals, row)
+    cat(format(bars$Date[i], "%d %b %Y"), "SELL at", prev_high, "stoploss", bars$High[i], "\\n",
+        " Why: it opened at", bars$Open[i], "above the previous day's high of", prev_high,
+        "(a gap up), then fell back to", prev_high, "so the sell order filled.",
+        "Stoploss is the day's high (Oops, slide 194)\\n")
   } else if (bars$Open[i] < prev_low && bars$High[i] >= prev_low) {
     row <- data.frame(ticker = ticker, date = bars$Date[i], side = "BUY",
                       entry = prev_low, stoploss = bars$Low[i])
     signals <- rbind(signals, row)
+    cat(format(bars$Date[i], "%d %b %Y"), "BUY at", prev_low, "stoploss", bars$Low[i], "\\n",
+        " Why: it opened at", bars$Open[i], "below the previous day's low of", prev_low,
+        "(a gap down), then rose back to", prev_low, "so the buy order filled.",
+        "Stoploss is the day's low (Oops, slide 199)\\n")
   }
 }'''
 
@@ -92,7 +106,7 @@ STAGES = (
           "`for (i in ...)` repeats the lines inside the braces once per day. `seq_along(bars$Date)[-1]` is "
           "every day number except the first, which has no yesterday. `if` runs its lines only when the "
           "condition is true, `&&` means both tests must pass, and `else if` is the mirror image on slide 199: "
-          "open below yesterday's low, then price comes back up to it. `cat()` prints a line.",
+          "open below yesterday's low, then price comes back up to it. `cat()` prints a line. The line is built from that day's own numbers, so every signal explains itself in plain words.",
           HEAD + '\n' + READ + '\n' + DATE + '\n' + LOOP_PRINT),
     Stage("table", "Keep the signals in a table",
           "Printing is not enough: we want a table we can save. `empty` is a table with the right columns "

@@ -183,7 +183,7 @@ BRIEF = Section(
             "re-reading the chart by eye.")),
         Callout(label="You do not need to know R", tone="gold", text=(
             "Nobody in this class was taught to code, and you are not "
-            "expected to know how. The script is only about 40 lines. Part 6 "
+            "expected to know how. The script is under 50 lines. Part 6 "
             "shows what it does as a flowchart, and Part 7 builds it in seven "
             "small steps, typing a few lines at a time and running each piece. "
             "You only write your own script in Part 10.")),
@@ -598,12 +598,14 @@ def run_section(counts: dict) -> Section:
                  text=("With the finished script open, click **Source**. R "
                        "reads every file in `data`, finds the signals, draws "
                        "one chart per stock and writes the table."),
-                 then=(f"The Console answers for each stock. On the first-run "
-                       f"files that is {counts.get('KO_start', '?')} signals "
-                       f"for KO and {counts.get('F_start', '?')} for F, and "
-                       f"the latest one, for example `SELL at 87.28 stoploss "
-                       f"87.52`. That line is the answer: **the price the "
-                       f"rule says to sell at, and where its stoploss is**."),
+                 then=(f"The Console prints every signal with a plain **Why** built "
+                       f"from that day's own prices, for example `SELL at 84.56 "
+                       f"stoploss 85.68` and why. Then, for each stock, how "
+                       f"many signals it found and the latest one. On the "
+                       f"first-run files that is {counts.get('KO_start', '?')} "
+                       f"signals for KO and {counts.get('F_start', '?')} for F. "
+                       f"That is the answer: **the price the rule says to act "
+                       f"at, and where its stoploss is**."),
                  shot=Shot("r04-source")),
             Step(title="Look at what it made",
                  text=("The **Files** pane now has an `output` folder with "

@@ -16,10 +16,18 @@ for (path in list.files("data", pattern = "\\.csv$", full.names = TRUE)) {
       row <- data.frame(ticker = ticker, date = bars$Date[i], side = "SELL",
                         entry = prev_high, stoploss = bars$High[i])
       signals <- rbind(signals, row)
+      cat(format(bars$Date[i], "%d %b %Y"), "SELL at", prev_high, "stoploss", bars$High[i], "\n",
+          " Why: it opened at", bars$Open[i], "above the previous day's high of", prev_high,
+          "(a gap up), then fell back to", prev_high, "so the sell order filled.",
+          "Stoploss is the day's high (Oops, slide 194)\n")
     } else if (bars$Open[i] < prev_low && bars$High[i] >= prev_low) {
       row <- data.frame(ticker = ticker, date = bars$Date[i], side = "BUY",
                         entry = prev_low, stoploss = bars$Low[i])
       signals <- rbind(signals, row)
+      cat(format(bars$Date[i], "%d %b %Y"), "BUY at", prev_low, "stoploss", bars$Low[i], "\n",
+          " Why: it opened at", bars$Open[i], "below the previous day's low of", prev_low,
+          "(a gap down), then rose back to", prev_low, "so the buy order filled.",
+          "Stoploss is the day's low (Oops, slide 199)\n")
     }
   }
   png(file.path("output", paste0(ticker, ".png")), width = 1200, height = 700)

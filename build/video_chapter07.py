@@ -94,7 +94,8 @@ SCENES = (
           "clip", "03-test"),
     Scene("Step 4: test every day",
           "Step four: test every day. A for loop repeats the test for each day. If the Oops happened, print a sell, "
-          "with the entry and the stoploss. Else if the day mirrors it, slide 199, print a buy. Here are the signals.",
+          "with the entry, the stoploss, and a plain why, built from that day's own prices. Else if the day mirrors "
+          "it, slide 199, print a buy. Here are the signals, each one explained.",
           "clip", "04-loop", speed=1.3),
     Scene("Step 5: keep the signals",
           "Step five: keep them. Each signal becomes a row in a table, and write dot csv saves the table in an "
@@ -110,8 +111,9 @@ SCENES = (
           "clip", "07-files", speed=2.5),
 
     Scene("The answer",
-          "Here is the answer. For each stock, how many signals, and the latest one: sell at eighty seven twenty eight, "
-          "with the stoploss at eighty seven fifty two. That is the price the rule says to act at.",
+          "Here is the answer. Every signal comes with its why. For example: it opened above the previous day's high, "
+          "then fell back to it, so the sell order at that price filled, and the stoploss is the day's high. Then, for "
+          "each stock, how many signals, and the latest one.",
           "frame", "07-files", crop=(0, 545, 650, 900)),
     Scene("The table",
           "And the table. Every signal, with the date, side, entry price and stoploss.",

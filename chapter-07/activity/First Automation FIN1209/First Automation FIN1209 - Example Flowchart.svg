@@ -1,53 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 1550 960" width="1550" height="960" font-family="Helvetica, Arial, sans-serif" font-size="12">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 1570 1030" width="1570" height="1030" font-family="Helvetica, Arial, sans-serif" font-size="12">
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
-<rect x="10" y="20" width="260" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<rect x="10" y="20" width="260" height="970" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
 <text x="22" y="42" font-size="15" font-weight="bold" fill="#1E5631">Data in</text>
-<rect x="280" y="20" width="420" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
-<text x="292" y="42" font-size="15" font-weight="bold" fill="#1E5631">Measure</text>
-<rect x="710" y="20" width="420" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
-<text x="722" y="42" font-size="15" font-weight="bold" fill="#1E5631">Decide</text>
-<rect x="1140" y="20" width="380" height="900" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
-<text x="1152" y="42" font-size="15" font-weight="bold" fill="#1E5631">Report</text>
+<rect x="280" y="20" width="440" height="970" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<text x="292" y="42" font-size="15" font-weight="bold" fill="#1E5631">Measure: five votes</text>
+<rect x="730" y="20" width="420" height="970" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<text x="742" y="42" font-size="15" font-weight="bold" fill="#1E5631">Decide</text>
+<rect x="1160" y="20" width="380" height="970" rx="14" fill="#f4f8f5" stroke="#1E5631" stroke-width="1.6" stroke-dasharray="10 5"/>
+<text x="1172" y="42" font-size="15" font-weight="bold" fill="#1E5631">Report</text>
 <polyline points="140,98 140,138" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
 <polyline points="140,202 140,268" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="140,405 140,332" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
-<polyline points="140,504 140,455" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="205,300 245,300 245,55 590,55 590,128" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="525,160 475,160" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="590,192 590,308" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="525,340 475,340" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="590,372 590,488" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="525,520 475,520" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="655,520 680,520 680,100 850,100" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="915,132 915,190" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="940,215 982,215" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="915,240 915,298" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="922" y="273" font-size="12" font-weight="bold" fill="#8a1c1c">1, 2 or 3</text>
-<polyline points="915,362 915,415" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="890,440 835,440" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="854.5" y="433" font-size="12" font-weight="bold" fill="#8a1c1c">BUY</text>
-<polyline points="940,440 995,440" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="959.5" y="433" font-size="12" font-weight="bold" fill="#8a1c1c">SELL</text>
-<polyline points="770,408 770,386" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="1060,408 1060,386" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="770,472 770,540 915,540 915,588" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1060,472 1060,540 915,540 915,588" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="890,215 702,215 702,730 890,730" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="788" y="208" font-size="12" font-weight="bold" fill="#8a1c1c">none: skip</text>
-<polyline points="915,652 915,705" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="915,755 915,815 1140,815 1140,100 1165,100" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1230,132 1230,208" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1230,272 1230,348" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1230,412 1230,475" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1295,100 1402,100" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
-<polyline points="1295,240 1402,240" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
-<polyline points="1230,525 1230,598" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="1237" y="565.5" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
-<polyline points="1295,630 1402,630" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
-<polyline points="1420,681 1420,708" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
-<polyline points="1230,662 1230,712 1215,712 1215,732" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1255,500 1300,500 1300,900 24,900 24,300 75,300" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="1269.5" y="493" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
+<polyline points="140,415 140,332" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
+<polyline points="140,528 140,465" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="205,300 250,300 250,55 610,55 610,108" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="545,140 485,140" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="610,172 610,268" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="545,300 485,300" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="610,332 610,438" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="545,470 485,470" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="610,502 610,608" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="545,640 485,640" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="610,672 610,778" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="545,810 485,810" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="675,810 700,810 700,100 875,100" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="940,132 940,200" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="940,250 940,318" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="947" y="288" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
+<polyline points="940,382 940,440" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="915,465 865,465" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="882" y="458" font-size="12" font-weight="bold" fill="#8a1c1c">BUY</text>
+<polyline points="965,465 1020,465" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="984.5" y="458" font-size="12" font-weight="bold" fill="#8a1c1c">SELL</text>
+<polyline points="800,433 800,411" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="1085,433 1085,411" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="800,497 800,560 940,560 940,608" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1085,497 1085,560 940,560 940,608" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1005,640 1020,640" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="940,672 940,738" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1005,770 1020,770" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="940,802 940,865" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="915,225 742,225 742,890 915,890" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="820.5" y="218" font-size="12" font-weight="bold" fill="#8a1c1c">no: skip</text>
+<polyline points="940,915 940,945 1155,945 1155,100 1185,100" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1250,132 1250,218" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1250,282 1250,368" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1250,432 1250,505" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1315,100 1432,100" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
+<polyline points="1315,250 1432,250" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
+<polyline points="1250,555 1250,638" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="1257" y="600.5" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
+<polyline points="1315,670 1432,670" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="2 3" marker-end="url(#ar)"/>
+<polyline points="1450,721 1450,750" fill="none" stroke="#555" stroke-width="1.2" stroke-dasharray="2 3"/>
+<polyline points="1250,702 1250,760 1240,760 1240,802" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="1275,530 1330,530 1330,975 24,975 24,300 75,300" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="1294.5" y="523" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
 <circle cx="140" cy="80" r="18" fill="#fff" stroke="#222" stroke-width="1.8"/>
 <text x="166" y="84" text-anchor="start" font-size="11.5">Run the script</text>
 <rect x="75" y="138" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
@@ -57,117 +63,141 @@
 <rect x="75" y="268" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
 <text x="140" y="297" text-anchor="middle" font-size="12">2. Read each file</text>
 <text x="140" y="311" text-anchor="middle" font-size="12">and clean its dates</text>
-<path d="M122,405 L148,405 L158,415 L158,455 L122,455 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
-<path d="M148,405 L148,415 L158,415" fill="none" stroke="#222" stroke-width="1.2"/>
-<text x="164" y="434" text-anchor="start" font-size="11.5" font-weight="bold">data/&lt;ticker&gt;.csv</text>
-<path d="M34,504 L20,504 L20,616 L34,616" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="28" y="519" font-size="11" fill="#222">Input: one CSV file per stock,</text>
-<text x="28" y="532.5" font-size="11" fill="#222">about a year of daily rows.</text>
-<text x="28" y="546" font-size="11" fill="#222">Date (a date)</text>
-<text x="28" y="559.5" font-size="11" fill="#222">Open, High, Low, Close (prices,</text>
-<text x="28" y="573" font-size="11" fill="#222">numbers)</text>
-<text x="28" y="586.5" font-size="11" fill="#222">Volume (a whole number)</text>
-<path d="M299,104 L285,104 L285,216 L299,216" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="293" y="119" font-size="11" fill="#222">RSI, 14 days (slide 195)</text>
-<text x="293" y="132.5" font-size="11" fill="#222">Equilibrium line: 50</text>
-<text x="293" y="146" font-size="11" fill="#222">BUY: crosses above 50</text>
-<text x="293" y="159.5" font-size="11" fill="#222">SELL: crosses below 50</text>
-<text x="293" y="173" font-size="11" fill="#222">(slide 74)</text>
-<rect x="525" y="128" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="590" y="157" text-anchor="middle" font-size="12">3. Work out the RSI</text>
-<text x="590" y="171" text-anchor="middle" font-size="12">and its crossings</text>
-<path d="M299,277 L285,277 L285,403 L299,403" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="293" y="292" font-size="11" fill="#222">MACD: 12 day EMA minus</text>
-<text x="293" y="305.5" font-size="11" fill="#222">26 day EMA, signal line</text>
-<text x="293" y="319" font-size="11" fill="#222">of 9 days (slides 166-168)</text>
-<text x="293" y="332.5" font-size="11" fill="#222">BUY: MACD crosses above</text>
-<text x="293" y="346" font-size="11" fill="#222">its signal line</text>
-<text x="293" y="359.5" font-size="11" fill="#222">SELL: crosses below it</text>
-<text x="293" y="373" font-size="11" fill="#222">(slide 83)</text>
-<rect x="525" y="308" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="590" y="337" text-anchor="middle" font-size="12">4. Work out MACD</text>
-<text x="590" y="351" text-anchor="middle" font-size="12">and its crossings</text>
-<path d="M299,464 L285,464 L285,576 L299,576" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="293" y="479" font-size="11" fill="#222">Stochastic: %K over 14 days,</text>
-<text x="293" y="492.5" font-size="11" fill="#222">%D = 3 day average of %K</text>
-<text x="293" y="506" font-size="11" fill="#222">(slides 185, 187)</text>
-<text x="293" y="519.5" font-size="11" fill="#222">BUY: %K crosses above %D</text>
-<text x="293" y="533" font-size="11" fill="#222">SELL: %K crosses below %D</text>
-<rect x="525" y="488" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="590" y="510" text-anchor="middle" font-size="12">5. Work out the</text>
-<text x="590" y="524" text-anchor="middle" font-size="12">stochastic and</text>
-<text x="590" y="538" text-anchor="middle" font-size="12">its crossings</text>
-<rect x="850" y="68" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="915" y="90" text-anchor="middle" font-size="12">6. Count how many</text>
-<text x="915" y="104" text-anchor="middle" font-size="12">oscillators crossed</text>
-<text x="915" y="118" text-anchor="middle" font-size="12">each day</text>
-<polygon points="915,190 940,215 915,240 890,215" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M907,207 L923,223 M923,207 L907,223" stroke="#222" stroke-width="2.4"/>
-<text x="905" y="268" text-anchor="end" font-size="11.5">How many of</text>
-<text x="905" y="282" text-anchor="end" font-size="11.5">the 3 agree?</text>
-<path d="M996,185 L982,185 L982,245 L996,245" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="990" y="200" font-size="11" fill="#222">agree = oscillators that</text>
-<text x="990" y="213.5" font-size="11" fill="#222">crossed the same way</text>
-<rect x="850" y="298" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="915" y="327" text-anchor="middle" font-size="12">7. Choose BUY or</text>
-<text x="915" y="341" text-anchor="middle" font-size="12">SELL by net vote</text>
-<polygon points="915,415 940,440 915,465 890,440" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M907,432 L923,448 M923,432 L907,448" stroke="#222" stroke-width="2.4"/>
-<text x="915" y="481" text-anchor="middle" font-size="11.5">BUY or SELL?</text>
-<path d="M725,324 L711,324 L711,386 L725,386" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="719" y="339" font-size="11" fill="#222">BUY price = the</text>
-<text x="719" y="352.5" font-size="11" fill="#222">day&#x27;s high (Lim&#x27;s</text>
-<text x="719" y="366" font-size="11" fill="#222">trigger, slide 201)</text>
-<path d="M994,324 L980,324 L980,386 L994,386" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="988" y="339" font-size="11" fill="#222">SELL price = the close:</text>
-<text x="988" y="352.5" font-size="11" fill="#222">our choice, the slides</text>
-<text x="988" y="366" font-size="11" fill="#222">give no sell trigger</text>
-<rect x="705" y="408" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="770" y="437" text-anchor="middle" font-size="12">8. BUY price =</text>
-<text x="770" y="451" text-anchor="middle" font-size="12">the day&#x27;s high</text>
-<rect x="995" y="408" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1060" y="437" text-anchor="middle" font-size="12">9. SELL price =</text>
-<text x="1060" y="451" text-anchor="middle" font-size="12">the day&#x27;s close</text>
-<rect x="850" y="588" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="915" y="610" text-anchor="middle" font-size="12">10. Record the</text>
-<text x="915" y="624" text-anchor="middle" font-size="12">signal day: side,</text>
-<text x="915" y="638" text-anchor="middle" font-size="12">price, agree</text>
-<polygon points="915,705 940,730 915,755 890,730" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M907,722 L923,738 M923,722 L907,738" stroke="#222" stroke-width="2.4"/>
-<text x="947" y="734" text-anchor="start" font-size="11.5"></text>
-<rect x="1165" y="68" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1230" y="90" text-anchor="middle" font-size="12">11. Draw the chart:</text>
-<text x="1230" y="104" text-anchor="middle" font-size="12">price + 3</text>
-<text x="1230" y="118" text-anchor="middle" font-size="12">oscillators</text>
-<path d="M1402,75 L1428,75 L1438,85 L1438,125 L1402,125 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
-<path d="M1428,75 L1428,85 L1438,85" fill="none" stroke="#222" stroke-width="1.2"/>
-<text x="1420" y="140" text-anchor="middle" font-size="11.5" font-weight="bold">chart</text>
-<text x="1420" y="154" text-anchor="middle" font-size="11.5" font-weight="bold">output/&lt;ticker&gt;.png</text>
-<rect x="1165" y="208" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1230" y="237" text-anchor="middle" font-size="12">12. Print summary</text>
-<text x="1230" y="251" text-anchor="middle" font-size="12">for this stock</text>
-<path d="M1402,215 L1428,215 L1438,225 L1438,265 L1402,265 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
-<path d="M1428,215 L1428,225 L1438,225" fill="none" stroke="#222" stroke-width="1.2"/>
-<text x="1420" y="280" text-anchor="middle" font-size="11.5" font-weight="bold">console summary</text>
-<text x="1420" y="294" text-anchor="middle" font-size="11.5" font-weight="bold">(signal days, agree)</text>
-<rect x="1165" y="348" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1230" y="377" text-anchor="middle" font-size="12">13. Add signals to</text>
-<text x="1230" y="391" text-anchor="middle" font-size="12">the full list</text>
-<polygon points="1230,475 1255,500 1230,525 1205,500" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M1222,492 L1238,508 M1238,492 L1222,508" stroke="#222" stroke-width="2.4"/>
-<text x="1206" y="457" text-anchor="end" font-size="11.5">Another</text>
-<text x="1206" y="471" text-anchor="end" font-size="11.5">file left?</text>
-<rect x="1165" y="598" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1230" y="627" text-anchor="middle" font-size="12">14. Write the</text>
-<text x="1230" y="641" text-anchor="middle" font-size="12">signals table</text>
-<path d="M1402,605 L1428,605 L1438,615 L1438,655 L1402,655 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
-<path d="M1428,605 L1428,615 L1438,615" fill="none" stroke="#222" stroke-width="1.2"/>
-<text x="1420" y="670" text-anchor="middle" font-size="11.5" font-weight="bold">signals.csv</text>
-<path d="M1309,708 L1295,708 L1295,782 L1309,782" fill="none" stroke="#555" stroke-width="1.4"/>
-<text x="1303" y="723" font-size="11" fill="#222">ticker, date, side, entry,</text>
-<text x="1303" y="736.5" font-size="11" fill="#222">rsi, macd, stoch (BUY, SELL,</text>
-<text x="1303" y="750" font-size="11" fill="#222">or empty), agree (how many agree)</text>
-<circle cx="1215" cy="750" r="18" fill="#fff" stroke="#222" stroke-width="4.5"/>
-<text x="1215" y="784" text-anchor="middle" font-size="11.5">Signals and</text>
-<text x="1215" y="798" text-anchor="middle" font-size="11.5">charts ready</text>
+<path d="M122,415 L148,415 L158,425 L158,465 L122,465 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M148,415 L148,425 L158,425" fill="none" stroke="#222" stroke-width="1.2"/>
+<text x="164" y="444" text-anchor="start" font-size="11.5" font-weight="bold">data/&lt;ticker&gt;.csv</text>
+<path d="M34,528 L20,528 L20,652 L34,652" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="28" y="543" font-size="11" fill="#222">Input: one CSV file per stock,</text>
+<text x="28" y="556.5" font-size="11" fill="#222">about a year of daily rows.</text>
+<text x="28" y="570" font-size="11" fill="#222">Date (a date)</text>
+<text x="28" y="583.5" font-size="11" fill="#222">Open, High, Low, Close (prices,</text>
+<text x="28" y="597" font-size="11" fill="#222">numbers)</text>
+<text x="28" y="610.5" font-size="11" fill="#222">Volume (a whole number)</text>
+<path d="M299,90 L285,90 L285,190 L299,190" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="293" y="105" font-size="11" fill="#222">Price trend (Chapter 5)</text>
+<text x="293" y="118.5" font-size="11" fill="#222">Close above its 3 bar average</text>
+<text x="293" y="132" font-size="11" fill="#222">of closes: up, else down</text>
+<text x="293" y="145.5" font-size="11" fill="#222">(slides 109, 110)</text>
+<rect x="545" y="108" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="610" y="137" text-anchor="middle" font-size="12">3. Vote 1: price trend</text>
+<text x="610" y="151" text-anchor="middle" font-size="12">up or down</text>
+<path d="M299,244 L285,244 L285,356 L299,356" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="293" y="259" font-size="11" fill="#222">Price bar (Chapter 7)</text>
+<text x="293" y="272.5" font-size="11" fill="#222">BUY: new low, close at or</text>
+<text x="293" y="286" font-size="11" fill="#222">above the previous close</text>
+<text x="293" y="299.5" font-size="11" fill="#222">SELL: new high, close at or</text>
+<text x="293" y="313" font-size="11" fill="#222">below it (slides 123, 126)</text>
+<rect x="545" y="268" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="610" y="297" text-anchor="middle" font-size="12">4. Vote 2: price bar</text>
+<text x="610" y="311" text-anchor="middle" font-size="12">(key reversal)</text>
+<path d="M299,420 L285,420 L285,520 L299,520" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="293" y="435" font-size="11" fill="#222">RSI, 14 days (slide 195)</text>
+<text x="293" y="448.5" font-size="11" fill="#222">BUY: crosses above 50</text>
+<text x="293" y="462" font-size="11" fill="#222">SELL: crosses below 50</text>
+<text x="293" y="475.5" font-size="11" fill="#222">(slide 74)</text>
+<rect x="545" y="438" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="610" y="467" text-anchor="middle" font-size="12">5. Vote 3: RSI</text>
+<text x="610" y="481" text-anchor="middle" font-size="12">crossing 50</text>
+<path d="M299,578 L285,578 L285,702 L299,702" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="293" y="593" font-size="11" fill="#222">MACD 12, 26, signal line 9</text>
+<text x="293" y="606.5" font-size="11" fill="#222">(slides 166 to 168)</text>
+<text x="293" y="620" font-size="11" fill="#222">BUY: MACD crosses above</text>
+<text x="293" y="633.5" font-size="11" fill="#222">its signal line</text>
+<text x="293" y="647" font-size="11" fill="#222">SELL: crosses below it</text>
+<text x="293" y="660.5" font-size="11" fill="#222">(slide 83)</text>
+<rect x="545" y="608" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="610" y="637" text-anchor="middle" font-size="12">6. Vote 4: MACD</text>
+<text x="610" y="651" text-anchor="middle" font-size="12">crossing its signal</text>
+<path d="M299,754 L285,754 L285,866 L299,866" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="293" y="769" font-size="11" fill="#222">Stochastic: %K 14 days,</text>
+<text x="293" y="782.5" font-size="11" fill="#222">%D = 3 day average</text>
+<text x="293" y="796" font-size="11" fill="#222">BUY: %K crosses above %D</text>
+<text x="293" y="809.5" font-size="11" fill="#222">SELL: %K crosses below %D</text>
+<text x="293" y="823" font-size="11" fill="#222">(slides 185, 187)</text>
+<rect x="545" y="778" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="610" y="807" text-anchor="middle" font-size="12">7. Vote 5: stochastic</text>
+<text x="610" y="821" text-anchor="middle" font-size="12">%K crossing %D</text>
+<rect x="875" y="68" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="940" y="97" text-anchor="middle" font-size="12">8. Add the five votes</text>
+<text x="940" y="111" text-anchor="middle" font-size="12">for each day</text>
+<polygon points="940,200 965,225 940,250 915,225" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M932,217 L948,233 M948,217 L932,233" stroke="#222" stroke-width="2.4"/>
+<text x="930" y="278" text-anchor="end" font-size="11.5">Signal day?</text>
+<text x="930" y="292" text-anchor="end" font-size="11.5">(a bar or oscillator</text>
+<text x="930" y="306" text-anchor="end" font-size="11.5">fired, votes not cancel)</text>
+<rect x="875" y="318" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="940" y="347" text-anchor="middle" font-size="12">9. Choose BUY or</text>
+<text x="940" y="361" text-anchor="middle" font-size="12">SELL by net vote</text>
+<polygon points="940,440 965,465 940,490 915,465" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M932,457 L948,473 M948,457 L932,473" stroke="#222" stroke-width="2.4"/>
+<text x="940" y="506" text-anchor="middle" font-size="11.5">BUY or SELL?</text>
+<path d="M769,349 L755,349 L755,411 L769,411" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="763" y="364" font-size="11" fill="#222">BUY price = the</text>
+<text x="763" y="377.5" font-size="11" fill="#222">day&#x27;s high</text>
+<text x="763" y="391" font-size="11" fill="#222">(slide 201)</text>
+<path d="M1024,349 L1010,349 L1010,411 L1024,411" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="1018" y="364" font-size="11" fill="#222">SELL price = the close:</text>
+<text x="1018" y="377.5" font-size="11" fill="#222">our choice, the slides</text>
+<text x="1018" y="391" font-size="11" fill="#222">give no sell trigger</text>
+<rect x="735" y="433" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="800" y="462" text-anchor="middle" font-size="12">10. BUY price =</text>
+<text x="800" y="476" text-anchor="middle" font-size="12">the day&#x27;s high</text>
+<rect x="1020" y="433" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="1085" y="462" text-anchor="middle" font-size="12">11. SELL price =</text>
+<text x="1085" y="476" text-anchor="middle" font-size="12">the day&#x27;s close</text>
+<rect x="875" y="608" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="940" y="630" text-anchor="middle" font-size="12">12. Record the</text>
+<text x="940" y="644" text-anchor="middle" font-size="12">signal day: side,</text>
+<text x="940" y="658" text-anchor="middle" font-size="12">price, agree</text>
+<path d="M1034,600 L1020,600 L1020,680 L1034,680" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="1028" y="615" font-size="11" fill="#222">agree = the votes</text>
+<text x="1028" y="628.5" font-size="11" fill="#222">on the winning</text>
+<text x="1028" y="642" font-size="11" fill="#222">side, of five</text>
+<rect x="875" y="738" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="940" y="760" text-anchor="middle" font-size="12">13. Mark the volume:</text>
+<text x="940" y="774" text-anchor="middle" font-size="12">CONFIRMED if above</text>
+<text x="940" y="788" text-anchor="middle" font-size="12">the average</text>
+<path d="M1034,730 L1020,730 L1020,810 L1034,810" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="1028" y="745" font-size="11" fill="#222">Volume is not a vote.</text>
+<text x="1028" y="758.5" font-size="11" fill="#222">Average of the whole</text>
+<text x="1028" y="772" font-size="11" fill="#222">file (slide 128)</text>
+<polygon points="940,865 965,890 940,915 915,890" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M932,882 L948,898 M948,882 L932,898" stroke="#222" stroke-width="2.4"/>
+<text x="972" y="894" text-anchor="start" font-size="11.5"></text>
+<rect x="1185" y="68" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="1250" y="90" text-anchor="middle" font-size="12">14. Draw the chart:</text>
+<text x="1250" y="104" text-anchor="middle" font-size="12">price, volume, and</text>
+<text x="1250" y="118" text-anchor="middle" font-size="12">three oscillators</text>
+<path d="M1432,75 L1458,75 L1468,85 L1468,125 L1432,125 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M1458,75 L1458,85 L1468,85" fill="none" stroke="#222" stroke-width="1.2"/>
+<text x="1450" y="140" text-anchor="middle" font-size="11.5" font-weight="bold">chart</text>
+<text x="1450" y="154" text-anchor="middle" font-size="11.5" font-weight="bold">output/&lt;ticker&gt;.png</text>
+<rect x="1185" y="218" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="1250" y="247" text-anchor="middle" font-size="12">15. Print a summary</text>
+<text x="1250" y="261" text-anchor="middle" font-size="12">for this stock</text>
+<path d="M1432,225 L1458,225 L1468,235 L1468,275 L1432,275 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M1458,225 L1458,235 L1468,235" fill="none" stroke="#222" stroke-width="1.2"/>
+<text x="1450" y="290" text-anchor="middle" font-size="11.5" font-weight="bold">console summary</text>
+<text x="1450" y="304" text-anchor="middle" font-size="11.5" font-weight="bold">(signal days, votes)</text>
+<rect x="1185" y="368" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="1250" y="397" text-anchor="middle" font-size="12">16. Add its signals</text>
+<text x="1250" y="411" text-anchor="middle" font-size="12">to the full list</text>
+<polygon points="1250,505 1275,530 1250,555 1225,530" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M1242,522 L1258,538 M1258,522 L1242,538" stroke="#222" stroke-width="2.4"/>
+<text x="1226" y="487" text-anchor="end" font-size="11.5">Another</text>
+<text x="1226" y="501" text-anchor="end" font-size="11.5">file left?</text>
+<rect x="1185" y="638" width="130" height="64" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="1250" y="667" text-anchor="middle" font-size="12">17. Write the</text>
+<text x="1250" y="681" text-anchor="middle" font-size="12">signals table</text>
+<path d="M1432,645 L1458,645 L1468,655 L1468,695 L1432,695 Z" fill="#fff" stroke="#222" stroke-width="1.5"/>
+<path d="M1458,645 L1458,655 L1468,655" fill="none" stroke="#222" stroke-width="1.2"/>
+<text x="1450" y="710" text-anchor="middle" font-size="11.5" font-weight="bold">signals.csv</text>
+<path d="M1354,750 L1340,750 L1340,850 L1354,850" fill="none" stroke="#555" stroke-width="1.4"/>
+<text x="1348" y="765" font-size="11" fill="#222">ticker, date, side, entry,</text>
+<text x="1348" y="778.5" font-size="11" fill="#222">trend, bar, rsi, macd, stoch,</text>
+<text x="1348" y="792" font-size="11" fill="#222">agree (votes on the side),</text>
+<text x="1348" y="805.5" font-size="11" fill="#222">volume (CONFIRMED or NOT)</text>
+<circle cx="1240" cy="820" r="18" fill="#fff" stroke="#222" stroke-width="4.5"/>
+<text x="1240" y="854" text-anchor="middle" font-size="11.5">Signals and</text>
+<text x="1240" y="868" text-anchor="middle" font-size="11.5">charts ready</text>
 </svg>

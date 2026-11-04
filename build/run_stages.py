@@ -78,11 +78,17 @@ def main():
             info[w[0].lower()] = {"ticker": w[1], "date": w[2], "entry": w[4], "agree": w[6].split("+")}
         if w and w[0] == "CORR":
             info["corr"] = {"rsi_macd": w[2], "rsi_stoch": w[4], "macd_stoch": w[6]}
+    rb = subprocess.run([RSCRIPT, str(REPO / "build" / "r" / "explain_bar.R"), str(why), str(a.data / "start" / "KO.csv"), "KO", str(a.data / "start" / "F.csv"), "F"],
+                        capture_output=True, text=True, check=True)
+    for ln in rb.stdout.splitlines():
+        w = ln.split()
+        if w and w[0] == "BAR":
+            info["bar"] = {"ticker": w[1], "date": w[2], "side": w[3], "volume": w[5], "avg": w[7]}
     (OUT / "why_info.json").write_text(json.dumps(info))
     (OUT / "stage_outputs.json").write_text(json.dumps(outs, indent=1))
     (OUT / "counts.json").write_text(json.dumps({**counts, **fills}, indent=1))
     print(json.dumps({**counts, **fills}))
-    for k in ("rsi", "cross", "three", "files"):
+    for k in ("trend", "bar", "osc", "files"):
         print("--", k); print(outs[k][:400])
 
 if __name__ == "__main__":

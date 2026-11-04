@@ -136,12 +136,13 @@ BRIEF = Section(
     flow=True,
     blocks=(
         Para(text=(
-            "You will teach R to read the **window oscillators** of Chapter 8. You put a Google Sheets price file in "
-            "a folder, run a short **R script**, and it works out, day by day, where the **RSI**, the **MACD** and "
-            "the **stochastic** each give a buy or sell signal, how many of them agree, and the price to act at. It "
-            "writes a table and a chart. Add new prices and run it again, and both update. That is **automation**.")),
+            "You will teach R to read **price, bars and volume** (Chapters 1 to 7) and the three **window oscillators** of "
+            "Chapter 8. You put a Google Sheets price file in a folder, run a short **R script**, and it works out, day by "
+            "day, five votes for buy or sell: the **price trend**, the **price bar**, the **RSI**, the **MACD** and the "
+            "**stochastic**. It counts how many agree, checks the **volume**, and gives the price to act at. It writes a "
+            "table and a chart. Add new prices and run it again, and both update. That is **automation**.")),
         Callout(label="You do not need to know R", tone="gold", text=(
-            "Nobody in this class was taught to code. The script is under 50 lines, Part 3 shows what it does, and "
+            "Nobody in this class was taught to code. The script is about 60 lines, Part 3 shows what it does, and "
             "Part 5 builds it in seven small steps. The numbers it prints are not advice: Part 7 shows what they "
             "mean, and why signals that agree may agree for a bad reason.")),
         Table(
@@ -229,35 +230,42 @@ INSTALL = Section(
 # --------------------------------------------------------------------------
 
 RULE = Section(
-    title="4. The three rules",
-    kicker="Each rule as the Chapter 8 slides give it. Slide numbers are those of the Chapter 8 student edition.",
+    title="4. The five votes and the volume check",
+    kicker="Each rule as the slides give it, with the slide number and title. Chapter 5, 7 and 8 student editions.",
     footer="The rules",
     blocks=(
         Table(
             title="What the slides say",
             headers=("Slide", "Rule"),
-            widths=(10, 90),
+            widths=(16, 84),
             rows=(
-                ("74", "An oscillator's equilibrium is 50 for a bounded one. Crossing above it is a buy signal and "
-                 "crossing below it a sell signal. The RSI is bounded, so we use its 50 line."),
-                ("83, 166, 168", "A signal line is a moving average of the oscillator itself. The MACD is a 12 "
-                 "period EMA minus a 26 period EMA, with a 9 period signal line. Crossing above the signal line is a "
-                 "buy and crossing below it a sell."),
-                ("185, 187, 189", "The fast stochastic: %K is where the close sits in the last 14 bars' range, and %D "
-                 "is a 3 period average of it. %K crossing above %D is a buy, below it a sell."),
-                ("193 to 195", "The RSI uses 14 periods, with the average gain and average loss as plain averages "
-                 "(the book gives no formula for Wilder's own)."),
-                ("201", "Lim says the trigger for entry is normally the high of the bar tied to the buy signal."),
-                ("78, 81", "Oscillators built from the same prices are highly correlated and give the same signals. "
-                 "Lim calls this multicollinearity and says it creates a false consensus."),
+                ("Ch 5: 109, 110 \"Drummond geometry\", \"Reading a PLdot line\"",
+                 "**Trend vote.** A three bar moving average of price: price above it is bullish, below it is bearish."),
+                ("Ch 7: 123, 126 \"The key reversal is when a strong move suddenly turns\"",
+                 "**Bar vote.** A bearish key reversal bar forms a higher high than the previous bar and closes near or "
+                 "below the previous close. The bullish one is the opposite: a new low, then a close near or above."),
+                ("Ch 7: 128 \"Figure 7.15 shows the key reversal on the book's chart\"",
+                 "**Volume check.** The key reversal day is marked with above-average volume. Volume is not a vote: it "
+                 "marks a signal CONFIRMED or not."),
+                ("Ch 8: 74", "**RSI vote.** Crossing above the 50 equilibrium line is a buy and below it a sell."),
+                ("Ch 8: 83, 166 to 168", "**MACD vote.** 12 period EMA minus 26 period EMA, 9 period signal line. Crossing "
+                 "above the signal line is a buy, below it a sell."),
+                ("Ch 8: 185, 187, 189", "**Stochastic vote.** %K over 14 bars, %D its 3 period average. %K crossing above "
+                 "%D is a buy, below it a sell."),
+                ("Ch 8: 193 to 195", "The RSI uses 14 periods and plain averages of gains and losses."),
+                ("Ch 8: 201", "The trigger for entry is normally the high of the bar tied to the buy signal."),
+                ("Ch 8: 78, 81", "Oscillators built from the same prices are highly correlated: multicollinearity, a "
+                 "false consensus."),
             ),
         ),
         Callout(label="Our choices, not Lim's rule", tone="gold", text=(
-            "**Entry price.** A buy uses the signal day's high, as slide 201 says. The slides give no trigger for a "
-            "sell, so a sell uses the day's close. **That is our choice, not Lim's rule.**\n\n**One vote each.** A signal day is any day at least one "
-            "oscillator crosses. If a buy and a sell cancel, the day is skipped. `agree` counts the oscillators that "
-            "gave the winning side.\n\n**No trend filter, no exit.** The slides give none that a computer can "
-            "run, so the script reports the signals and stops.")),
+            "**Trend.** Slide 110's own chart averages closes, and the book's PLdot averages typical price, which "
+            "Chapter 5 does not define. We average the closes. Chapter 2's peaks and troughs trend is not computed.\n\n"
+            "**Key reversal.** The slides say \"near or below\" the previous close. We read it as at or below, and at or "
+            "above for the bullish one.\n\n**Volume.** The slides give no period for \"average\", so it is the "
+            "average volume of the whole file.\n\n**Entry.** A buy uses the signal day's high, as slide 201 says. The "
+            "slides give no sell trigger, so a sell uses the day's close.\n\n**Signal day.** Any day the bar or an "
+            "oscillator fires and the five votes do not cancel. `agree` counts the votes on the winning side.")),
     ),
 )
 
@@ -291,11 +299,13 @@ CONTRACT = Section(
                 ("date", "The signal day, `YYYY-MM-DD`", "2026-04-08"),
                 ("side", "`BUY` or `SELL`: the side most oscillators gave", "BUY"),
                 ("entry", "A buy: the day's high. A sell: the day's close", "77.37"),
+                ("trend, bar", "The two price votes: `BUY`, `SELL` or empty", "BUY"),
                 ("rsi, macd, stoch", "One column for each oscillator you use, from `rsi`, `macd`, `stoch`. "
                  "`BUY`, `SELL` or empty. **Use at least two.** The columns you use tell the marker your pair.", "BUY"),
-                ("agree", "How many of your oscillators gave the `side`", "2"),
+                ("agree", "How many of your votes gave the `side`", "3"),
+                ("volume", "`CONFIRMED` if that day's volume is above the file's average, else `NOT`", "CONFIRMED"),
             ),
-            note="One row per day on which at least one oscillator crosses. Rows go ticker by ticker, then by date. "
+            note="One row per signal day: the bar or an oscillator fires and the votes do not cancel. Rows go ticker by ticker, then by date. "
                  "The chart number of a day is its row number in the file.",
         ),
     ),
@@ -448,25 +458,28 @@ def flow_section() -> Section:
         ("Start event", "Run the script", "the moment you click Source"),
         ("1", "List the CSV files in the data folder", _span("for (path in list.files")),
         ("2", "Read each file and clean its dates", _span("ticker <- sub", "bars$Date <- as.Date")),
-        ("3", "Work out the RSI and its crossings", _span("rsi <- RSI") + " and " + _span("rsi_sig <- cross")),
-        ("4", "Work out the MACD and its crossings", _span("macd <- MACD") + " and " + _span("macd_sig <- cross")),
-        ("5", "Work out the stochastic and its crossings", _span("sto <- stoch") + " and " + _span("stoch_sig <- cross")),
-        ("6", "Count how many oscillators crossed each day", _span("votes <- ")),
-        ("Gateway", "How many of the 3 agree?", _span("day <- which(votes != 0)") + " and the agree column"),
-        ("7", "Choose BUY or SELL by the net vote", _span("side <- ifelse(votes")),
-        ("8, 9", "BUY price = high, SELL price = close", _span("entry = ifelse(side")),
-        ("10", "Record the signal day", _span("signals <- data.frame", "agree = rowSums")),
-        ("11", "Draw the chart: price and three oscillators", _span("png(file.path", "dev.off()")),
-        ("12", "Print summary for this stock", _span("cat(ticker")),
-        ("13", "Add signals to the full list", _span("all_signals <- rbind(all_signals, signals)")),
-        ("14", "Write the signals table", _span("write.csv(all_signals")),
+        ("3", "Vote 1: price trend", _span("pldot <- SMA", "trend_vote[is.na")),
+        ("4", "Vote 2: price bar (key reversal)", _span("bar_vote <- ifelse", "bar_vote[is.na")),
+        ("5", "Vote 3: RSI crossing 50", _span("rsi <- RSI") + " and " + _span("rsi_sig <- cross")),
+        ("6", "Vote 4: MACD crossing its signal line", _span("macd <- MACD") + " and " + _span("macd_sig <- cross")),
+        ("7", "Vote 5: stochastic %K crossing %D", _span("sto <- stoch") + " and " + _span("stoch_sig <- cross")),
+        ("8", "Add the five votes for each day", _span("votes <- cbind")),
+        ("Gateway", "Signal day?", _span("fired <- ") + " and " + _span("day <- which")),
+        ("9", "Choose BUY or SELL by the net vote", _span("side <- ifelse(rowSums")),
+        ("10, 11", "BUY price = high, SELL price = close", _span("entry = ifelse(side")),
+        ("12", "Record the signal day", _span("signals <- data.frame", "agree = rowSums")),
+        ("13", "Mark the volume CONFIRMED or NOT", _span("volume = ifelse")),
+        ("14", "Draw the chart", _span("png(file.path", "dev.off()")),
+        ("15", "Print a summary for this stock", _span("cat(ticker")),
+        ("16", "Add its signals to the full list", _span("all_signals <- rbind(all_signals, signals)")),
+        ("17", "Write the signals table", _span("write.csv(all_signals")),
     )
     return Section(
         title="3. What the script does",
         kicker="Input, process, output. A flowchart says it in shapes; yours must match your script line for line.",
         footer="What the script does",
         blocks=(
-            Figure(path=STUDENT / f"{FLOW_NAME}.svg", height_mm=118.0,
+            Figure(path=STUDENT / f"{FLOW_NAME}.svg", height_mm=122.0,
                    caption=f"The example script as a BPMN flowchart. `{FLOW_NAME}.bpmn` opens in bpmn.io.",
                    credit="Drawn for this course by build/bpmnkit.py."),
             Table(
@@ -474,12 +487,14 @@ def flow_section() -> Section:
                 headers=("Part", "What happens"),
                 widths=(14, 86),
                 rows=(
-                    ("**Input**", "A price file per stock in the `data` folder, from Google Sheets."),
-                    ("**Process**", "For every stock and every day: work out the RSI, the MACD and the stochastic. "
-                     "A signal is the day a line crosses another (RSI over 50, MACD over its signal line, %K over %D). "
-                     "Count how many oscillators crossed the same way that day: that is `agree`."),
-                    ("**Output**", "A table of the signal days with a price to act at, and a chart of price with the "
-                     "three oscillators beneath it."),
+                    ("**Input**", "A price file per stock in the `data` folder, from Google Sheets: a date, four prices "
+                     "and a volume for each trading day."),
+                    ("**Process**", "For every stock and every day, five votes for buy or sell: the price trend and the "
+                     "price bar (Chapters 5 and 7), then the RSI, the MACD and the stochastic crossing (Chapter 8). A "
+                     "signal day is a day the bar or an oscillator fires and the votes do not cancel. `agree` counts the "
+                     "votes on the winning side, and above-average volume marks the day CONFIRMED."),
+                    ("**Output**", "A table of the signal days with a price to act at, a chart of price, volume and the "
+                     "three oscillators, and a summary line per stock."),
                 ),
             ),
             Table(
@@ -489,7 +504,8 @@ def flow_section() -> Section:
                 rows=tuple(rows),
                 note="BPMN needs five shapes: a thin circle starts, a thick circle ends, a rounded rectangle is a "
                      "task named with a verb, a diamond with an X is a yes or no question with every arrow labelled, "
-                     "and an arrow is the order. Every shape on your flowchart should point at lines of your script.",
+                     "and an arrow is the order. A page-shaped data object is a file, and a text annotation says a rule. "
+                     "Every shape on your flowchart should point at lines of your script.",
             ),
         ),
     )
@@ -520,18 +536,20 @@ def run_section(counts: dict) -> Section:
         blocks=(
             Step(title="Run it",
                  text="With the finished script open, click **Source**.",
-                 then=(f"The Console prints one line per stock: how many signal days, and how many had two or more "
-                       f"oscillators agreeing. First-run files: KO {counts.get('KO_start', '?')} signal days, F "
-                       f"{counts.get('F_start', '?')}."),
+                 then=(f"The Console prints one line per stock: how many signal days, how many had three or more votes "
+                       f"agreeing, and how many were on above-average volume. First-run files: KO "
+                       f"{counts.get('KO_start', '?')} signal days, F {counts.get('F_start', '?')}."),
                  shot=Shot("r04-source")),
             Step(title="Read the table",
-                 text=("Open `output/signals.csv`. Each row is a day on which an oscillator crossed: `side`, the "
-                       "`entry` price, what each oscillator said, and `agree`."),
+                 text=("Open `output/signals.csv`. Each row is a signal day: `side`, the `entry` price, what each vote "
+                       "said (`trend`, `bar`, `rsi`, `macd`, `stoch`), `agree`, and `volume`: CONFIRMED when the day's "
+                       "volume is above the file's average."),
                  shot=Shot("r06-signals-csv")),
             Step(title="Read the chart",
-                 text=("Open `output/KO.png`. Price is on top. Every triangle is a signal day, green up for a buy and "
-                       "red down for a sell; the bigger numbered ones are days two or more oscillators agreed. The "
-                       "three panels below are the oscillators. **The MACD panel is empty at the start:** the MACD needs about 34 "
+                 text=("Open `output/KO.png`. Price is on top with its orange three bar average. Every triangle is a "
+                       "signal day, green up for a buy and red down for a sell; the bigger numbered ones are days "
+                       "three or more votes agreed. Below are the volume (gold on CONFIRMED days) and the three "
+                       "oscillators. **The MACD panel is empty at the start:** the MACD needs about 34 "
                        "days of history before it can give a signal, so the first weeks of this 64 day example show none. "
                        "For your own stock pull about a year."),
                  shot=Shot("r07-chart")),
@@ -546,36 +564,46 @@ def run_section(counts: dict) -> Section:
 
 
 def why_section(info: dict) -> Section:
-    b, s, c = info.get("buy", {}), info.get("sell", {}), info.get("corr", {})
+    b, s_, c, bar = info.get("buy", {}), info.get("sell", {}), info.get("corr", {}), info.get("bar", {})
     why = STAGE_OUTPUTS.parent / "why"
     return Section(
         title="7. Why the signals are where they are",
-        kicker="One real buy and one real sell from the example tables (KO and F), drawn for the weeks around the day.",
+        kicker="Real signals from the example tables, drawn for the days around them. The script prints numbers only.",
         footer="Why",
         blocks=(
             Para(text=(
-                "The script prints numbers only. This part is how to read them. **A buy.** On the day the RSI, the "
-                "MACD or the stochastic crosses upward, that oscillator gives a buy signal. The price to act at is "
-                "that day's high (slide 201). In the chart the gold circles mark the oscillators that crossed and the "
-                "white ones the oscillators that did not.")),
+                "**A price bar on volume.** The bar vote is the key reversal day (slides 123 and 126). In the picture, "
+                "mark 1 is yesterday's high, mark 2 is today's new high, and mark 3 is the close, below yesterday's "
+                "close: the buyers pushed price up and could not hold it, so the vote is SELL. Mark 4 is the volume: "
+                "above the average of the file, so the day is CONFIRMED (slide 128). Volume does not vote. It says "
+                "how much weight the move carried.")),
+            Figure(path=why / "why-bar.png", height_mm=104.0,
+                   caption=(f"{bar.get('ticker', '')}, {bar.get('date', '')}: a key reversal day, vote {bar.get('side', '')}, on "
+                            f"{bar.get('volume', '')} million shares against an average of {bar.get('avg', '')}."),
+                   credit="Drawn by build/r/explain_bar.R from the example price file."),
+            Para(text=(
+                "**An oscillator buy.** On the day the RSI, the MACD or the stochastic crosses upward, that oscillator "
+                "votes BUY. The price to act at is that day's high (slide 201). Gold circles mark the oscillators that "
+                "crossed and white ones those that did not.")),
             Figure(path=why / "why-buy.png", height_mm=100.0,
                    caption=(f"{b.get('ticker', '')}, {b.get('date', '')}: a BUY where {' and '.join(x.upper() for x in b.get('agree', []))} "
-                            f"agree, so two of three. Entry {b.get('entry', '')}."),
-                   credit="Drawn by build/r/explain_osc.R from the KO price file."),
+                            f"cross. Entry {b.get('entry', '')}."),
+                   credit="Drawn by build/r/explain_osc.R from the example price files."),
             Para(text=(
-                "**A sell** is the mirror image: an oscillator crosses downward. The slides give no sell trigger, "
-                "so the entry is the close of the day. That is our choice, not Lim's rule.")),
+                "**A sell** is the mirror image: an oscillator crosses downward. The slides give no sell trigger, so "
+                "the entry is the close of the day. That is our choice, not Lim's rule.")),
             Figure(path=why / "why-sell.png", height_mm=100.0,
-                   caption=(f"{s.get('ticker', '')}, {s.get('date', '')}: a SELL where {' and '.join(x.upper() for x in s.get('agree', []))} "
-                            f"agree, so two of three. Entry {s.get('entry', '')}."),
-                   credit="Drawn by build/r/explain_osc.R from the KO price file."),
+                   caption=(f"{s_.get('ticker', '')}, {s_.get('date', '')}: a SELL where {' and '.join(x.upper() for x in s_.get('agree', []))} "
+                            f"cross. Entry {s_.get('entry', '')}."),
+                   credit="Drawn by build/r/explain_osc.R from the example price files."),
             Callout(label="Agreeing is not proof", tone="gold", text=(
-                "Three oscillators agreeing sounds like three witnesses. It is not. They are all built from the same "
-                f"closing prices, so they move together: on the example data the RSI and the stochastic have a correlation "
-                f"of {c.get('rsi_stoch', '')} and the RSI and MACD {c.get('rsi_macd', '')}. Lim calls this "
-                "**multicollinearity** and warns that it creates a **false consensus** and a false sense of "
-                "confidence (slide 78). His cure (slide 81) is oscillators built from different data, such as one "
-                "that uses volume. A signal is only a statement of what a rule says that day, not a forecast.")),
+                "Votes agreeing sounds like witnesses agreeing. It is not. The RSI, the MACD and the stochastic are all "
+                f"built from the same closing prices, so they move together: on the example data the RSI and the "
+                f"stochastic have a correlation of {c.get('rsi_stoch', '')} and the RSI and MACD {c.get('rsi_macd', '')}. "
+                "Lim calls this **multicollinearity** and warns that it creates a **false consensus** and a false sense of "
+                "confidence (slide 78). His cure (slide 81) is to use data other than price, such as volume, which is "
+                "why the volume check is separate. A signal is only a statement of what a rule says that day, not a "
+                "forecast.")),
         ),
     )
 
@@ -586,9 +614,10 @@ TASK = Section(
     footer="Your task",
     blocks=(
         Para(text=(
-            "Choose **your own stock** (a US stock, downloaded as in Part 2) and **your own pair** of the three "
-            "oscillators: RSI and MACD, RSI and stochastic, or MACD and stochastic. Write your own R script that meets "
-            "the contract in Part 8 for your pair, and draw a **flowchart** of how it works.")),
+            "Choose **your own stock** (a US stock, downloaded as in Part 2, about a year of daily rows) and **your own pair** "
+            "of the three oscillators: RSI and MACD, RSI and stochastic, or MACD and stochastic. Your script keeps the "
+            "price trend vote, the price bar vote and the volume check, adds your pair, and meets the contract in Part 8. "
+            "Then draw a **flowchart** of how it works.")),
         Callout(label="Due date", tone="gold", text="______________  (to be filled in: after the Saturday 7 November class)"),
         Table(
             title="Name your files exactly",

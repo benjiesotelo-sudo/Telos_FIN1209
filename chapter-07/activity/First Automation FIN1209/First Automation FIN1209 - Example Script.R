@@ -1,48 +1,47 @@
-# Williams' Oops (Lim 2016 p. 231, slides 194 and 199). Signals of a rule, not advice.
-# Put CSV files in the data folder, run this script, read output/signals.csv.
-empty <- data.frame(ticker = character(), date = as.Date(character()),
-                    side = character(), entry = numeric(), stoploss = numeric())
-all_signals <- empty
+# Three Chapter 8 window oscillators, each with the buy and sell rule from the slides:
+# RSI crossing 50 (slide 74), MACD crossing its signal line (slide 83), stochastic %K crossing %D (slide 187).
+# Put CSV files in the data folder, run this script, read output/signals.csv. Signals of rules, not advice.
+library(TTR)
+cross <- function(a, b) {        # +1 on the day a crosses above b, -1 on the day it crosses below
+  a <- round(a, 6)
+  b <- round(rep(b, length.out = length(a)), 6)     # rounding stops a rounding-error tie from counting as a cross
+  before <- function(x) c(NA, head(x, -1))
+  s <- ifelse(a > b & before(a) <= before(b), 1, ifelse(a < b & before(a) >= before(b), -1, 0))
+  s[is.na(s)] <- 0
+  s
+}
+word <- function(s) ifelse(s == 1, "BUY", ifelse(s == -1, "SELL", ""))
+all_signals <- NULL
 dir.create("output", showWarnings = FALSE)
 for (path in list.files("data", pattern = "\\.csv$", full.names = TRUE)) {
   ticker <- sub("\\.csv$", "", basename(path))
   bars <- read.csv(path)
   bars$Date <- as.Date(sub(" .*", "", bars$Date), tryFormats = c("%Y-%m-%d", "%m/%d/%Y"))
-  signals <- empty
-  for (i in seq_along(bars$Date)[-1]) {
-    prev_high <- bars$High[i - 1]
-    prev_low <- bars$Low[i - 1]
-    if (bars$Open[i] > prev_high && bars$Low[i] <= prev_high) {
-      row <- data.frame(ticker = ticker, date = bars$Date[i], side = "SELL",
-                        entry = prev_high, stoploss = bars$High[i])
-      signals <- rbind(signals, row)
-      cat(format(bars$Date[i], "%d %b %Y"), "SELL at", prev_high, "stoploss", bars$High[i], "\n",
-          " Why: it opened at", bars$Open[i], "above the previous day's high of", prev_high,
-          "(a gap up), then fell back to", prev_high, "so the sell order filled.",
-          "Stoploss is the day's high (Oops, slide 194)\n")
-    } else if (bars$Open[i] < prev_low && bars$High[i] >= prev_low) {
-      row <- data.frame(ticker = ticker, date = bars$Date[i], side = "BUY",
-                        entry = prev_low, stoploss = bars$Low[i])
-      signals <- rbind(signals, row)
-      cat(format(bars$Date[i], "%d %b %Y"), "BUY at", prev_low, "stoploss", bars$Low[i], "\n",
-          " Why: it opened at", bars$Open[i], "below the previous day's low of", prev_low,
-          "(a gap down), then rose back to", prev_low, "so the buy order filled.",
-          "Stoploss is the day's low (Oops, slide 199)\n")
-    }
-  }
-  png(file.path("output", paste0(ticker, ".png")), width = 1200, height = 700)
-  plot(bars$Date, bars$Close, type = "l", xlab = "", ylab = "Close", main = paste(ticker, "- Oops signals"))
-  if (nrow(signals) > 0) {
-    sell <- signals$side == "SELL"
-    points(signals$date, signals$entry, pch = ifelse(sell, 25, 24), bg = ifelse(sell, "red", "darkgreen"), cex = 1.5)
-    text(signals$date, signals$entry, labels = seq_len(nrow(signals)), pos = 3)
-  }
+  rsi <- RSI(bars$Close, n = 14, maType = "SMA")
+  macd <- MACD(bars$Close, nFast = 12, nSlow = 26, nSig = 9, percent = FALSE)
+  sto <- stoch(bars[, c("High", "Low", "Close")], nFastK = 14, nFastD = 3)
+  rsi_sig <- cross(rsi, 50)
+  macd_sig <- cross(macd[, "macd"], macd[, "signal"])
+  stoch_sig <- cross(sto[, "fastK"], sto[, "fastD"])
+  votes <- rsi_sig + macd_sig + stoch_sig
+  day <- which(votes != 0)
+  side <- ifelse(votes[day] > 0, "BUY", "SELL")
+  signals <- data.frame(ticker = ticker, date = bars$Date[day], side = side,
+                        entry = ifelse(side == "BUY", bars$High[day], bars$Close[day]),
+                        rsi = word(rsi_sig[day]), macd = word(macd_sig[day]), stoch = word(stoch_sig[day]),
+                        agree = rowSums(cbind(rsi_sig, macd_sig, stoch_sig)[day, , drop = FALSE] == ifelse(side == "BUY", 1, -1)))
+  png(file.path("output", paste0(ticker, ".png")), width = 1200, height = 1000)
+  layout(matrix(1:4), heights = c(3, 1, 1, 1))
+  par(mar = c(2, 4, 3, 1))
+  plot(bars$Date, bars$Close, type = "l", xlab = "", ylab = "Close", main = paste(ticker, "- window oscillator signals"))
+  big <- signals$agree >= 2
+  points(signals$date, signals$entry, pch = ifelse(side == "BUY", 24, 25), bg = ifelse(side == "BUY", "darkgreen", "red"), cex = ifelse(big, 1.8, 0.7))
+  if (any(big)) text(signals$date[big], signals$entry[big], labels = which(big), pos = 3)
+  plot(bars$Date, rsi, type = "l", xlab = "", ylab = "RSI"); abline(h = 50, lty = 2)
+  matplot(bars$Date, macd, type = "l", lty = 1, xlab = "", ylab = "MACD"); abline(h = 0, lty = 2)
+  matplot(bars$Date, sto[, c("fastK", "fastD")], type = "l", lty = 1, xlab = "", ylab = "Stochastic")
   dev.off()
-  cat(ticker, ":", nrow(signals), "signals\n")
-  if (nrow(signals) > 0) {
-    last <- signals[nrow(signals), ]
-    cat("  latest:", last$side, "at", last$entry, "stoploss", last$stoploss, "on", format(last$date), "\n")
-  }
   all_signals <- rbind(all_signals, signals)
+  cat(ticker, ":", nrow(signals), "signal days,", sum(signals$agree >= 2), "with two or more oscillators agreeing\n")
 }
 write.csv(all_signals, "output/signals.csv", row.names = FALSE, quote = FALSE)

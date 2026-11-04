@@ -72,7 +72,7 @@ Step four: the other two. The M A C D is a twelve day average minus a twenty six
 
 *Picture: a screen recording (05-table)*
 
-Step five: the table. One row per signal day: the date, buy or sell, the entry price, what each oscillator said, and how many agree. A buy uses the day's high, slide 201. The slides give no sell trigger, so a sell uses the close.
+Step five: the table. One row per signal day: the date, buy or sell, the entry price, what each oscillator said, and how many agree. A buy uses the day's high, slide 201. The slides give no sell trigger, so a sell uses the close. That is our choice, not Lim's rule.
 
 ## 13. Step 6: the chart
 

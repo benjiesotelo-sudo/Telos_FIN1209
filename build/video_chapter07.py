@@ -114,7 +114,7 @@ SCENES = (
     Scene("Step 5: the table",
           "Step five: the table. One row per signal day: the date, buy or sell, the entry price, what each "
           "oscillator said, and how many agree. A buy uses the day's high, slide 201. The slides give no sell "
-          "trigger, so a sell uses the close.",
+          "trigger, so a sell uses the close. That is our choice, not Lim's rule.",
           "clip", "05-table", speed=1.6),
     Scene("Step 6: the chart",
           "Step six: the chart. Price on top, the three oscillators below, and a triangle on every signal day. Green "

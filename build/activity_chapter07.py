@@ -311,24 +311,11 @@ SOURCES = Section(
             "Chapter 1 names the data technical analysis reads: **price, "
             "volume and open interest**. For this activity you need one "
             "bar per trading day, with six columns.")),
-        Table(
-            title="The data and what each column is for",
-            headers=("Column", "What it is", "Where the course's rules use it"),
-            widths=(14, 34, 52),
-            mono_cols=(0,),
-            rows=(
-                ("Date", "The trading day", "Puts the bars in order and names each signal."),
-                ("Open", "The first price of the day", "The Oops tests the open against the previous bar's high or low (slides 194, 199)."),
-                ("High", "The highest price of the day", "The Oops sell-stop entry is the previous high and its stoploss is the new high."),
-                ("Low", "The lowest price of the day", "The Oops buy-stop entry is the previous low and its stoploss is the new low."),
-                ("Close", "The last price of the day", "Colours the candle white or black. Other Chapter 7 rules use the close."),
-                ("Volume", "Shares traded in the day", "The Oops does not use it. Chapter 7 mentions volume in some bar patterns, and Chapter 6 covers it in full. Keep the column if your rule's slides use it."),
-            ),
-            note="**Open interest** is the number of futures contracts "
-                 "still open, so it exists only for futures. A stock has "
-                 "no open interest, and none of the sources below gives "
-                 "one for a share.",
-        ),
+        Para(text=(
+            "The script needs six columns: Date, Open, High, Low, Close and Volume. The RSI and the MACD use the "
+            "close; the stochastic uses the high, low and close; a buy's entry price uses the high. Volume is not "
+            "used here (Chapter 6 covers it). **Open interest** exists only for futures, so a stock has none, and "
+            "no source below gives one for a share.")),
         Table(
             title="The free sources, and what we found",
             headers=("Source", "Open, high, low, close, volume", "Account", "CSV file"),

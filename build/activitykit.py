@@ -528,6 +528,15 @@ def _step_html(s: Step, shots: Shots) -> str:
 def _shot_html(shot: Shot, shots: Shots) -> str:
     cap = (f'<p class="shotcap">{_inline(shot.caption)}</p>'
            if shot.caption else "")
+    if not shots.exists(shot) and shot.name not in {
+            p.stem for p in shots.prepared.values()}:
+        # Only a draft build gets here (validate() refuses a missing file).
+        return (f'<figure class="shot" style="width:{shot.width_pct}%">'
+                f'<div class="shotart" style="height:42mm;display:flex;'
+                f'align-items:center;justify-content:center;'
+                f'border:0.6pt dashed #888;color:#666;font-size:10pt">'
+                f'Screenshot pending: {html.escape(shot.name)}</div>'
+                f"{cap}</figure>")
     return (f'<figure class="shot" style="width:{shot.width_pct}%">'
             f'<div class="shotart" role="img" aria-label="screenshot" '
             f'style="height:{shots.height_mm(shot):.2f}mm;'

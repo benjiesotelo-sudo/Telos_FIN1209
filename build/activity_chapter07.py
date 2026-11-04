@@ -636,6 +636,10 @@ def flow_section() -> Section:
                 f"drawn in **BPMN**, a standard set of shapes for describing "
                 f"a process. Open `{FLOW_NAME}.bpmn` in bpmn.io to see it "
                 f"as a file you can move around. You need only five shapes.")),
+            Figure(path=STUDENT / f"{FLOW_NAME}.svg", height_mm=72.0,
+                   caption="The example script as a BPMN flowchart. The "
+                           "numbers match the table below.",
+                   credit="Drawn for this course by build/bpmnkit.py."),
             Table(
                 title="The BPMN shapes you need",
                 headers=("Shape", "Name", "Use it for"),

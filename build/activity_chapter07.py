@@ -417,6 +417,59 @@ CONTRACT = Section(
     ),
 )
 
+SOURCES = Section(
+    title="3b. Where to get price data, and what kind",
+    kicker="Checked on the public sites on 4 November 2026. Where a claim "
+           "needs an account, it says so instead of guessing.",
+    footer="Price data",
+    blocks=(
+        Para(text=(
+            "Chapter 1 names the data technical analysis reads: **price, "
+            "volume and open interest**. For this activity you need one "
+            "bar per trading day, with six columns.")),
+        Table(
+            title="The data and what each column is for",
+            headers=("Column", "What it is", "Where the course's rules use it"),
+            widths=(14, 34, 52),
+            mono_cols=(0,),
+            rows=(
+                ("Date", "The trading day", "Puts the bars in order and names each signal."),
+                ("Open", "The first price of the day", "The Oops tests the open against the previous bar's high or low (slides 194, 199)."),
+                ("High", "The highest price of the day", "The Oops sell-stop entry is the previous high and its stoploss is the new high."),
+                ("Low", "The lowest price of the day", "The Oops buy-stop entry is the previous low and its stoploss is the new low."),
+                ("Close", "The last price of the day", "Colours the candle white or black. Other Chapter 7 rules use the close."),
+                ("Volume", "Shares traded in the day", "The Oops does not use it. Chapter 7 mentions volume in some bar patterns, and Chapter 6 covers it in full. Keep the column if your rule's slides use it."),
+            ),
+            note="**Open interest** is the number of futures contracts "
+                 "still open, so it exists only for futures. A stock has "
+                 "no open interest, and none of the sources below gives "
+                 "one for a share.",
+        ),
+        Table(
+            title="The free sources, and what we found",
+            headers=("Source", "Open, high, low, close, volume", "Account", "CSV file"),
+            widths=(20, 36, 18, 26),
+            rows=(
+                ("**Google Sheets, GOOGLEFINANCE**", "Yes, daily or weekly, all five, with the formula `\"all\"`. The Help page lists them.", "A Google account", "Yes: File, Download, CSV. **This handout uses it.** Google Finance has no quote page for Philippine tickers such as BDO, so expect US stocks only."),
+                ("**PSE EDGE** (edge.pse.com.ph), the exchange's own site", "Today's open, high, low, last price and volume, and the 52-week range, for each Philippine stock. We found no table of past days.", "None to read", "No download link found. The site says its content is copyrighted."),
+                ("**Yahoo Finance**", "A history table of date, open, high, low, close, adjusted close and volume for US stocks, readable without signing in. We found no Philippine stocks.", "None to read the table", "No Download button when signed out. Whether one appears after signing in is not checked."),
+                ("**Investing.com**", "Not checked: the site refused our automated visit.", "Not checked", "Not checked"),
+                ("**TradingView**", "Charts Philippine stocks, for example PSE:BDO, with a free public page. Export of the chart data was not checked.", "None to view; export needs an account", "Not checked, needs an account"),
+                ("**Your broker's platform**, for example COL Financial", "Not checked: it sits behind a login.", "Yes, a brokerage account", "Not checked"),
+            ),
+            note="Prices in the **adjusted close** column are corrected for "
+                 "splits and dividends. The example does not use it.",
+        ),
+        Para(text=(
+            "**The script works with any source** whose CSV has the columns "
+            "of Part 3. Google Sheets is the one route this handout walks "
+            "through step by step, because every student already has an "
+            "account and it exports a CSV in the right layout. If you find "
+            "Philippine data elsewhere and can save it as a CSV with those "
+            "column names, it will run.")),
+    ),
+)
+
 EXAMPLE_TICKERS = (("NYSE:KO", "KO"), ("NYSE:F", "F"))
 
 
@@ -464,9 +517,9 @@ DATA = Section(
         Callout(label="Swap the ticker, nothing else", tone="gold", text=(
             "To use another stock, change only the text inside the first "
             "quotes of the formula, for example `\"NASDAQ:AMD\"`. For a "
-            "Philippine stock try `\"PSE:\"` followed by its code, such as "
-            "`\"PSE:BDO\"`. If Sheets answers `#N/A` or gives fewer than "
-            "six columns, that exchange is not covered: use a US stock.")),
+            "Philippine stock, Google Finance has no quote page for them "
+            "(we checked BDO), so expect `#N/A`: use a US stock, or "
+            "another source from Part 3b.")),
         Para(text=(
             "A file from the **Download** step may have a time on every date "
             "(`2026-07-01 16:00:00`). The contract allows that and the "
@@ -918,7 +971,7 @@ def build_activity(fills: dict, counts: dict) -> Activity:
         source_note=("Prices are pulled by each student with GOOGLEFINANCE "
                      "in Google Sheets; none are distributed with the "
                      "course. The rule is Lim (2016) p. 231."),
-        sections=(BRIEF, INSTALL, RULE, CONTRACT, DATA, basics_section(fills),
+        sections=(BRIEF, INSTALL, RULE, CONTRACT, SOURCES, DATA, basics_section(fills),
                   run_section(counts), flow_section(), TASK, AI, MARKS,
                   RUBRIC_SECTION),
     )

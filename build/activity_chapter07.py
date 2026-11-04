@@ -135,10 +135,18 @@ def basics_blocks(fills: dict) -> tuple:
         out = outs.get(st.key, marker)
         # Stages that print nothing (the chart ones) say what to look at.
         blocks.append(Head(text=st.title, number=f"B{n}"))
-        blocks.append(Para(text=st.text))
-        blocks.append(Code(lines=tuple(code.splitlines()),
-                           new=_new_lines(prev, code), output=out,
-                           label=f"The script so far, step B{n}"))
+        blocks.append(Para(text=st.text, glue=True))
+        all_lines = code.splitlines()
+        new = _new_lines(prev, code)
+        CH = 34
+        for i in range(0, len(all_lines), CH):
+            last = i + CH >= len(all_lines)
+            tag = f"The script so far, step B{n}"
+            if len(all_lines) > CH:
+                tag += f" (lines {i + 1} to {min(i + CH, len(all_lines))})"
+            blocks.append(Code(lines=tuple(all_lines[i:i + CH]), first=i + 1,
+                               new=new, output=out if last else "",
+                               label=tag))
         png = STAGE_OUTPUTS.parent / f"stage-{st.key}.png"
         if st.key in ("plot", "marks") and png.is_file():
             blocks.append(Figure(
@@ -573,8 +581,8 @@ def run_section(counts: dict) -> Section:
         blocks=(
             Step(title="Set up the folder",
                  text=("Copy the folder `" + NAME + "` from the class Drive "
-                       "to your computer. Inside it are the script, the "
-                       "flowchart files, and two folders of prices. Make a "
+                       "to your computer. Inside it are the script and the "
+                       "flowchart files. Make a "
                        "folder called `data` next to the script, and copy "
                        "the two files `KO.csv` and `F.csv` you downloaded in "
                        "Part 4a, into it."),

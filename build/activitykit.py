@@ -84,6 +84,7 @@ class Head(Block):
 @dataclass
 class Para(Block):
     text: str
+    glue: bool = False       # keep with the block that follows
 
 
 @dataclass
@@ -205,6 +206,7 @@ class Code(Block):
     new: tuple[int, ...] = ()
     output: str = ""
     label: str = ""
+    first: int = 1           # number of the first line shown
 
 
 @dataclass
@@ -448,7 +450,8 @@ def render_block(b: Block, shots: Shots, key: bool) -> str:
         return _blk(f"<h3>{num}{_inline(b.text)}</h3>{kick}", cls="h", glue=True)
 
     if isinstance(b, Para):
-        return _blk(_paras(b.text, "pp"), cls="prose", split=True)
+        return _blk(_paras(b.text, "pp"), cls="prose", glue=b.glue,
+                    split=not b.glue)
 
     if isinstance(b, Points):
         tag = "ol" if b.numbered else "ul"
@@ -496,7 +499,7 @@ def render_block(b: Block, shots: Shots, key: bool) -> str:
 
 def _code_html(c: Code) -> str:
     rows = []
-    for n, line in enumerate(c.lines, 1):
+    for n, line in enumerate(c.lines, c.first):
         cls = "cl new" if n in c.new else "cl"
         rows.append(f'<div class="{cls}"><span class="ln">{n}</span>'
                     f'<span class="tx">{html.escape(line) or "&nbsp;"}</span></div>')

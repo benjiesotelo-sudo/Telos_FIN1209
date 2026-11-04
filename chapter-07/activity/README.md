@@ -69,6 +69,24 @@ The ticker is one swappable string in the formula. Copies of the files used to
 build the handout's outputs are kept privately, as test fixtures, outside the
 repository.
 
+## Screenshots and the video
+
+`screens/` holds ten real captures made on 4 November 2026 with the captain's
+word: the RStudio window and a Finder window of the example folder, nothing
+else. `r07` and `r10` are the script's own chart PNGs. RStudio is open source
+(AGPL) software from Posit; unlike the Google captures in Activity 1 no
+written permission note was found for its screenshots, so confirm that you are
+content to publish them. The Google Sheets steps (Part 4a) have **no
+screenshot**: it needs a signed-in Google account, which the builder did not
+have. The outputs printed in the handout came from price files fetched from
+Yahoo Finance and kept privately, not from a Sheets export, so a student's
+`GOOGLEFINANCE` file may differ in the last digits and signal counts; check
+once with a real export before handing out.
+
+The video (`build/build_video.py`, macOS `say` plus ffmpeg, about 4.5 minutes)
+is made from those screenshots and is too large for git; it is delivered with
+the student set outside the repository.
+
 ## Verification
 
 The example was run with R 4.6.2 on both data sets. Its signals match an

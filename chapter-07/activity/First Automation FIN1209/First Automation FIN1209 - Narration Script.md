@@ -24,7 +24,7 @@ Install R first, then RStudio Desktop, both free. The handout has the links and 
 
 *Picture: `r01-folder.png`*
 
-Step one. Copy the First Automation folder to your computer. Next to the script, make a folder called data, and copy into it the two price files from data, start here: K O dot csv and F dot csv.
+Step one. Copy the First Automation folder to your computer. Next to the script, make a folder called data, and copy into it the two price files you downloaded in Part 4 A: K O dot csv and F dot csv.
 
 ## 5. Step 2: open the script
 
@@ -66,7 +66,7 @@ Step seven. Open the K O chart. White candles closed up and black candles closed
 
 *Picture: `r08-new-data.png`*
 
-Step eight. This is the automation. Copy the two files from data, October update, over the ones in your data folder. They are the same two stocks with a month of new rows at the bottom.
+Step eight. This is the automation. Download both files again with the later end date from Part 4 A, and copy them over the ones in your data folder. They are the same two stocks with a month of new rows at the bottom.
 
 ## 12. Step 9: run it again
 

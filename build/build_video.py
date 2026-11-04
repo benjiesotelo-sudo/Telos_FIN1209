@@ -53,7 +53,8 @@ def card(scene, path: Path) -> None:
 def fit(src: Path, path: Path) -> None:
     from PIL import Image
     im = Image.open(src).convert("RGB")
-    im.thumbnail((W, H))
+    k = min(W / im.width, H / im.height)
+    im = im.resize((int(im.width * k), int(im.height * k)), Image.LANCZOS)
     bg = Image.new("RGB", (W, H), "#FFFFFF")
     bg.paste(im, ((W - im.width) // 2, (H - im.height) // 2))
     bg.save(path)

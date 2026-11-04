@@ -81,11 +81,12 @@ SCENES = (
           "web", "posit-rstudio"),
 ) + _sheets_scenes() + (
     Scene("The flowchart",
-          "Here is what the script does, as a B P M N flowchart. The input is a price file for each stock, in the "
-          "data folder. The process: for each stock, work out the three oscillators. A signal is the day one line "
-          "crosses another. The R S I crosses fifty, the M A C D crosses its signal line, the stochastic percent K "
-          "crosses percent D. Then count how many oscillators crossed the same way that day. The output is a table of "
-          "the signal days with a price to act at, and a chart of the price with the three oscillators underneath.",
+          "Here is what the script does, as a B P M N flowchart in four stages. Data in: one price file per stock, with a "
+          "date, four prices, and a volume. Measure: for each day, the R S I, the M A C D and the stochastic, each with "
+          "its rule written beside it, and its slide. A signal is the day one line crosses another. Decide: count how "
+          "many of the three crossed the same way. None means skip the day. Otherwise choose buy or sell by the net "
+          "vote, and set the price: a buy at the day's high, which is Lim's trigger, and a sell at the close, which is "
+          "our choice. Report: a chart, a summary for each stock, and one table of the signals.",
           "web", "bpmn-example-open"),
 
     Scene("Start a script",

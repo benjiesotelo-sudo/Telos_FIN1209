@@ -1,78 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 -5 1268 615" width="1268" height="615" font-family="Helvetica, Arial, sans-serif" font-size="12">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-45 -5 975 595" width="975" height="595" font-family="Helvetica, Arial, sans-serif" font-size="12">
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker></defs>
-<polyline points="78,150 125,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="255,150 275,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="405,150 465,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="515,150 575,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="523" y="144" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
-<polyline points="705,150 725,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="790,185 790,335" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="815,360 935,360" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="823" y="354" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
-<polyline points="960,385 960,435" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="966" y="401" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
-<polyline points="985,360 1105,360" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="993" y="354" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
-<polyline points="1130,385 1130,435" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="1136" y="401" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
-<polyline points="960,505 960,560 790,560 790,385" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1130,505 1130,560 790,560 790,385" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="1155,360 1250,360 1250,560 790,560 790,385" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="1163" y="354" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
-<polyline points="765,360 705,360" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="773" y="354" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
-<polyline points="575,360 555,360" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="490,325 490,175" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<polyline points="490,125 490,60 575,60" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
-<text x="496" y="141" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
-<polyline points="705,60 772,60" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="78,150 135,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="265,150 315,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="365,150 425,150" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="387" y="143" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
+<polyline points="490,185 490,305" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="515,330 635,330" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="567" y="323" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
+<polyline points="660,355 660,415" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="667" y="389" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
+<polyline points="685,330 795,330" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="732" y="323" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
+<polyline points="820,355 820,415" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="827" y="389" font-size="12" font-weight="bold" fill="#8a1c1c">yes</text>
+<polyline points="660,485 660,540 490,540 490,355" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="820,485 820,540 490,540 490,355" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="845,330 900,330 900,540 490,540 490,355" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="864.5" y="323" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
+<polyline points="465,330 415,330" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="432" y="323" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
+<polyline points="285,330 265,330" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="135,330 115,330" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="50,295 50,240 340,240 340,175" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<polyline points="340,125 340,60 425,60" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="347" y="96.5" font-size="12" font-weight="bold" fill="#8a1c1c">no</text>
+<polyline points="555,60 622,60" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>
 <circle cx="60" cy="150" r="18" fill="#fff" stroke="#222" stroke-width="1.8"/>
 <text x="60" y="184" text-anchor="middle" font-size="11.5">Run the script</text>
-<rect x="125" y="115" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="190" y="147" text-anchor="middle" font-size="11.5">1. Name the data</text>
-<text x="190" y="161" text-anchor="middle" font-size="11.5">and output folders</text>
-<rect x="275" y="115" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="340" y="147" text-anchor="middle" font-size="11.5">2. List the CSV files</text>
-<text x="340" y="161" text-anchor="middle" font-size="11.5">in the data folder</text>
-<polygon points="490,125 515,150 490,175 465,150" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M482,142 L498,158 M498,142 L482,158" stroke="#222" stroke-width="2.4"/>
-<text x="466" y="107" text-anchor="end" font-size="11.5">Another</text>
-<text x="466" y="121" text-anchor="end" font-size="11.5">file left?</text>
-<rect x="575" y="115" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="640" y="147" text-anchor="middle" font-size="11.5">3. Read the file</text>
-<text x="640" y="161" text-anchor="middle" font-size="11.5">into a table</text>
-<rect x="725" y="115" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="790" y="147" text-anchor="middle" font-size="11.5">4. Start an empty</text>
-<text x="790" y="161" text-anchor="middle" font-size="11.5">signals table</text>
-<polygon points="790,335 815,360 790,385 765,360" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M782,352 L798,368 M798,352 L782,368" stroke="#222" stroke-width="2.4"/>
-<text x="780" y="413" text-anchor="end" font-size="11.5">Another bar left?</text>
-<polygon points="960,335 985,360 960,385 935,360" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M952,352 L968,368 M968,352 L952,368" stroke="#222" stroke-width="2.4"/>
-<text x="960" y="313" text-anchor="middle" font-size="11.5">Gap up and back</text>
-<text x="960" y="327" text-anchor="middle" font-size="11.5">to previous high?</text>
-<polygon points="1130,335 1155,360 1130,385 1105,360" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<path d="M1122,352 L1138,368 M1138,352 L1122,368" stroke="#222" stroke-width="2.4"/>
-<text x="1130" y="313" text-anchor="middle" font-size="11.5">Gap down and back</text>
-<text x="1130" y="327" text-anchor="middle" font-size="11.5">to previous low?</text>
-<rect x="895" y="435" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="960" y="460" text-anchor="middle" font-size="11.5">5. Record a SELL signal</text>
-<text x="960" y="474" text-anchor="middle" font-size="11.5">entry = previous high</text>
-<text x="960" y="488" text-anchor="middle" font-size="11.5">stoploss = new high</text>
-<rect x="1065" y="435" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="1130" y="460" text-anchor="middle" font-size="11.5">6. Record a BUY signal</text>
-<text x="1130" y="474" text-anchor="middle" font-size="11.5">entry = previous low</text>
-<text x="1130" y="488" text-anchor="middle" font-size="11.5">stoploss = new low</text>
-<rect x="575" y="325" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="640" y="357" text-anchor="middle" font-size="11.5">7. Draw the chart</text>
-<text x="640" y="371" text-anchor="middle" font-size="11.5">and mark the signals</text>
-<rect x="425" y="325" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="490" y="357" text-anchor="middle" font-size="11.5">8. Add this file&#x27;s</text>
-<text x="490" y="371" text-anchor="middle" font-size="11.5">signals to the list</text>
-<rect x="575" y="25" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
-<text x="640" y="57" text-anchor="middle" font-size="11.5">9. Write</text>
-<text x="640" y="71" text-anchor="middle" font-size="11.5">output/signals.csv</text>
-<circle cx="790" cy="60" r="18" fill="#fff" stroke="#222" stroke-width="4.5"/>
-<text x="790" y="94" text-anchor="middle" font-size="11.5">Signals and</text>
-<text x="790" y="108" text-anchor="middle" font-size="11.5">charts updated</text>
+<rect x="135" y="115" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="200" y="147" text-anchor="middle" font-size="11.5">1. List the CSV files</text>
+<text x="200" y="161" text-anchor="middle" font-size="11.5">in the data folder</text>
+<polygon points="340,125 365,150 340,175 315,150" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M332,142 L348,158 M348,142 L332,158" stroke="#222" stroke-width="2.4"/>
+<text x="316" y="107" text-anchor="end" font-size="11.5">Another</text>
+<text x="316" y="121" text-anchor="end" font-size="11.5">file left?</text>
+<rect x="425" y="115" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="490" y="147" text-anchor="middle" font-size="11.5">2. Read the file and</text>
+<text x="490" y="161" text-anchor="middle" font-size="11.5">clean its dates</text>
+<polygon points="490,305 515,330 490,355 465,330" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M482,322 L498,338 M498,322 L482,338" stroke="#222" stroke-width="2.4"/>
+<text x="480" y="383" text-anchor="end" font-size="11.5">Another day left?</text>
+<polygon points="660,305 685,330 660,355 635,330" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M652,322 L668,338 M668,322 L652,338" stroke="#222" stroke-width="2.4"/>
+<text x="660" y="283" text-anchor="middle" font-size="11.5">Gap up, then back to</text>
+<text x="660" y="297" text-anchor="middle" font-size="11.5">yesterday&#x27;s high?</text>
+<polygon points="820,305 845,330 820,355 795,330" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<path d="M812,322 L828,338 M828,322 L812,338" stroke="#222" stroke-width="2.4"/>
+<text x="820" y="283" text-anchor="middle" font-size="11.5">Gap down, then back to</text>
+<text x="820" y="297" text-anchor="middle" font-size="11.5">yesterday&#x27;s low?</text>
+<rect x="595" y="415" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="660" y="440" text-anchor="middle" font-size="11.5">3. Record a SELL signal</text>
+<text x="660" y="454" text-anchor="middle" font-size="11.5">entry = yesterday&#x27;s high</text>
+<text x="660" y="468" text-anchor="middle" font-size="11.5">stoploss = today&#x27;s high</text>
+<rect x="755" y="415" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="820" y="440" text-anchor="middle" font-size="11.5">4. Record a BUY signal</text>
+<text x="820" y="454" text-anchor="middle" font-size="11.5">entry = yesterday&#x27;s low</text>
+<text x="820" y="468" text-anchor="middle" font-size="11.5">stoploss = today&#x27;s low</text>
+<rect x="285" y="295" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="350" y="327" text-anchor="middle" font-size="11.5">5. Draw the chart</text>
+<text x="350" y="341" text-anchor="middle" font-size="11.5">with the signals marked</text>
+<rect x="135" y="295" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="200" y="327" text-anchor="middle" font-size="11.5">6. Print the answer</text>
+<text x="200" y="341" text-anchor="middle" font-size="11.5">for this stock</text>
+<rect x="-15" y="295" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="50" y="327" text-anchor="middle" font-size="11.5">7. Add its signals</text>
+<text x="50" y="341" text-anchor="middle" font-size="11.5">to the full list</text>
+<rect x="425" y="25" width="130" height="70" rx="10" fill="#fff" stroke="#222" stroke-width="1.8"/>
+<text x="490" y="57" text-anchor="middle" font-size="11.5">8. Write</text>
+<text x="490" y="71" text-anchor="middle" font-size="11.5">output/signals.csv</text>
+<circle cx="640" cy="60" r="18" fill="#fff" stroke="#222" stroke-width="4.5"/>
+<text x="640" y="94" text-anchor="middle" font-size="11.5">Signals, charts</text>
+<text x="640" y="108" text-anchor="middle" font-size="11.5">and answers ready</text>
 </svg>

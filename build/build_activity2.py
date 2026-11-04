@@ -32,7 +32,8 @@ def main() -> int:
     a = ap.parse_args()
     gen = json.loads((GENERATED / "counts.json").read_text())
     fills = {"SELL_I": gen["SELL_I"], "BUY_I": gen["BUY_I"]}
-    act = A.build_activity(fills, gen)
+    info = json.loads((GENERATED / "why_info.json").read_text())
+    act = A.build_activity(fills, gen, info)
     for sec in act.sections:          # steps restart at 1 in every part
         n = 0
         for blk in sec.blocks:

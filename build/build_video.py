@@ -19,6 +19,7 @@ from video_chapter07 import SCENES  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
 SCREENS = REPO / "chapter-07" / "activity" / "screens"
+GEN = REPO / "build" / "generated" / "activity2"
 WEB = REPO / "build" / "generated" / "video" / "web"
 REC = Path("/Users/benjie/.treehouse/benjie-agent-workspace-8bf1b0/1/benjie-agent-workspace/data/fin1209-activity2/rec")
 HANDOUT = A.STUDENT / f"{A.NAME}.pdf"
@@ -34,7 +35,7 @@ def write_narration() -> None:
            "your own voice and change anything that is not how you talk.", ""]
     for n, s in enumerate(SCENES, 1):
         pic = {"card": "a title card", "shot": f"screenshot `{s.ref}`", "web": "a capture of a public web page",
-               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "clip": f"a screen recording ({s.ref})"}[s.kind]
+               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "frame": f"the last frame of {s.ref}", "gen": f"an image R drew ({s.ref})", "clip": f"a screen recording ({s.ref})"}[s.kind]
         pic = "Picture: " + pic
         out += [f"## {n}. {s.title}", "", f"*{pic}*", "", s.say, ""]
     NARRATION.write_text("\n".join(out), encoding="utf-8")
@@ -165,6 +166,21 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                 fit(src, img)
             elif s.kind == "page":
                 imgs = page_images(s.ref, s.crop, img, cache)
+            elif s.kind == "gen":
+                src = GEN / f"{s.ref}.png"
+                if not src.is_file():
+                    raise SystemExit(f"missing generated image {src}")
+                fit(src, img)
+            elif s.kind == "frame":
+                fr = t / f"{n:03d}_frame.png"
+                subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-sseof", "-0.4", "-i", str(REC / f"{s.ref}.mp4"),
+                                "-frames:v", "1", str(fr)], check=True)
+                from PIL import Image
+                im0 = Image.open(fr).convert("RGB")
+                if s.crop:
+                    im0 = im0.crop(s.crop)
+                im0.save(fr)
+                fit(fr, img)
             elif s.kind == "clip":
                 imgs = []                        # video comes from the recording, below
             elif s.kind == "code":
@@ -184,8 +200,10 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                 cd = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(src)],
                                           capture_output=True, text=True).stdout)
                 extra = max(0.0, dur - cd)       # hold the last frame if the narration is longer
-                vf = (f"scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:white,"
-                      f"tpad=stop_mode=clone:stop_duration={extra:.3f},fps=10")
+                cd = cd / s.speed
+                extra = max(0.0, dur - cd)
+                vf = (f"setpts=PTS/{s.speed},scale={W}:{H}:force_original_aspect_ratio=decrease,"
+                      f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:white,tpad=stop_mode=clone:stop_duration={extra:.3f},fps=10")
                 subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(src), "-vf", vf, "-an", "-c:v", "libx264",
                                 "-pix_fmt", "yuv420p", str(vv)], check=True)
             else:

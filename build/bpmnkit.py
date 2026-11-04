@@ -126,8 +126,11 @@ def to_svg(d: Diagram, scale: float = 1.0) -> str:
         s.append(f'<polyline points="{pts}" fill="none" stroke="#222" stroke-width="1.6" marker-end="url(#ar)"/>')
         if e.label:
             (ax, ay), (bx, by) = e.points[0], e.points[1]
-            s.append(f'<text x="{ax + (8 if bx != ax else 6):g}" y="{ay - 6 if by == ay else ay + 16:g}" '
-                     f'font-size="12" font-weight="bold" fill="#8a1c1c">{escape(e.label)}</text>')
+            if ay == by:      # horizontal first segment: label above its middle
+                lx, ly = (ax + bx) / 2 - 8, ay - 7
+            else:             # vertical: label to the right of it
+                lx, ly = ax + 7, (ay + by) / 2 + 4
+            s.append(f'<text x="{lx:g}" y="{ly:g}" font-size="12" font-weight="bold" fill="#8a1c1c">{escape(e.label)}</text>')
     for n in d.nodes:
         x, y, ww, hh = n.box
         if n.kind == "task":

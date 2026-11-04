@@ -4,87 +4,82 @@
     <bpmn:startEvent id="Start" name="Run the script">
       <bpmn:outgoing>F1</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="T1" name="1. Name the data and output folders">
+    <bpmn:task id="T1" name="1. List the CSV files in the data folder">
       <bpmn:incoming>F1</bpmn:incoming>
       <bpmn:outgoing>F2</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T2" name="2. List the CSV files in the data folder">
-      <bpmn:incoming>F2</bpmn:incoming>
-      <bpmn:outgoing>F3</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:exclusiveGateway id="G1" name="Another file left?">
-      <bpmn:incoming>F3</bpmn:incoming>
-      <bpmn:incoming>F16</bpmn:incoming>
-      <bpmn:outgoing>F4</bpmn:outgoing>
-      <bpmn:outgoing>F17</bpmn:outgoing>
+      <bpmn:incoming>F2</bpmn:incoming>
+      <bpmn:incoming>F15</bpmn:incoming>
+      <bpmn:outgoing>F3</bpmn:outgoing>
+      <bpmn:outgoing>F16</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:task id="T3" name="3. Read the file into a table">
-      <bpmn:incoming>F4</bpmn:incoming>
-      <bpmn:outgoing>F5</bpmn:outgoing>
+    <bpmn:task id="T2" name="2. Read the file and clean its dates">
+      <bpmn:incoming>F3</bpmn:incoming>
+      <bpmn:outgoing>F4</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T4" name="4. Start an empty signals table">
+    <bpmn:exclusiveGateway id="G2" name="Another day left?">
+      <bpmn:incoming>F4</bpmn:incoming>
+      <bpmn:incoming>F9</bpmn:incoming>
+      <bpmn:incoming>F10</bpmn:incoming>
+      <bpmn:incoming>F11</bpmn:incoming>
+      <bpmn:outgoing>F5</bpmn:outgoing>
+      <bpmn:outgoing>F12</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="G3" name="Gap up, then back to yesterday&#x27;s high?">
       <bpmn:incoming>F5</bpmn:incoming>
       <bpmn:outgoing>F6</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:exclusiveGateway id="G2" name="Another bar left?">
-      <bpmn:incoming>F6</bpmn:incoming>
-      <bpmn:incoming>F11</bpmn:incoming>
-      <bpmn:incoming>F12</bpmn:incoming>
-      <bpmn:incoming>F13</bpmn:incoming>
       <bpmn:outgoing>F7</bpmn:outgoing>
-      <bpmn:outgoing>F14</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="G3" name="Gap up and price back to the previous high?">
+    <bpmn:exclusiveGateway id="G4" name="Gap down, then back to yesterday&#x27;s low?">
       <bpmn:incoming>F7</bpmn:incoming>
       <bpmn:outgoing>F8</bpmn:outgoing>
-      <bpmn:outgoing>F9</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="G4" name="Gap down and price back to the previous low?">
-      <bpmn:incoming>F9</bpmn:incoming>
-      <bpmn:outgoing>F10</bpmn:outgoing>
-      <bpmn:outgoing>F13</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:task id="T5" name="5. Record a SELL signal entry = previous high stoploss = new high">
-      <bpmn:incoming>F8</bpmn:incoming>
       <bpmn:outgoing>F11</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="T3" name="3. Record a SELL signal entry = yesterday&#x27;s high stoploss = today&#x27;s high">
+      <bpmn:incoming>F6</bpmn:incoming>
+      <bpmn:outgoing>F9</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T6" name="6. Record a BUY signal entry = previous low stoploss = new low">
-      <bpmn:incoming>F10</bpmn:incoming>
-      <bpmn:outgoing>F12</bpmn:outgoing>
+    <bpmn:task id="T4" name="4. Record a BUY signal entry = yesterday&#x27;s low stoploss = today&#x27;s low">
+      <bpmn:incoming>F8</bpmn:incoming>
+      <bpmn:outgoing>F10</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T7" name="7. Draw the chart and mark the signals">
+    <bpmn:task id="T5" name="5. Draw the chart with the signals marked">
+      <bpmn:incoming>F12</bpmn:incoming>
+      <bpmn:outgoing>F13</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="T6" name="6. Print the answer for this stock">
+      <bpmn:incoming>F13</bpmn:incoming>
+      <bpmn:outgoing>F14</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="T7" name="7. Add its signals to the full list">
       <bpmn:incoming>F14</bpmn:incoming>
       <bpmn:outgoing>F15</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T8" name="8. Add this file&#x27;s signals to the list">
-      <bpmn:incoming>F15</bpmn:incoming>
-      <bpmn:outgoing>F16</bpmn:outgoing>
+    <bpmn:task id="T8" name="8. Write output/signals.csv">
+      <bpmn:incoming>F16</bpmn:incoming>
+      <bpmn:outgoing>F17</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T9" name="9. Write output/signals.csv">
+    <bpmn:endEvent id="End" name="Signals, charts and answers ready">
       <bpmn:incoming>F17</bpmn:incoming>
-      <bpmn:outgoing>F18</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:endEvent id="End" name="Signals and charts updated">
-      <bpmn:incoming>F18</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="F1" sourceRef="Start" targetRef="T1" />
-    <bpmn:sequenceFlow id="F2" sourceRef="T1" targetRef="T2" />
-    <bpmn:sequenceFlow id="F3" sourceRef="T2" targetRef="G1" />
-    <bpmn:sequenceFlow id="F4" name="yes" sourceRef="G1" targetRef="T3" />
-    <bpmn:sequenceFlow id="F5" sourceRef="T3" targetRef="T4" />
-    <bpmn:sequenceFlow id="F6" sourceRef="T4" targetRef="G2" />
-    <bpmn:sequenceFlow id="F7" name="yes" sourceRef="G2" targetRef="G3" />
-    <bpmn:sequenceFlow id="F8" name="yes" sourceRef="G3" targetRef="T5" />
-    <bpmn:sequenceFlow id="F9" name="no" sourceRef="G3" targetRef="G4" />
-    <bpmn:sequenceFlow id="F10" name="yes" sourceRef="G4" targetRef="T6" />
-    <bpmn:sequenceFlow id="F11" sourceRef="T5" targetRef="G2" />
-    <bpmn:sequenceFlow id="F12" sourceRef="T6" targetRef="G2" />
-    <bpmn:sequenceFlow id="F13" name="no" sourceRef="G4" targetRef="G2" />
-    <bpmn:sequenceFlow id="F14" name="no" sourceRef="G2" targetRef="T7" />
-    <bpmn:sequenceFlow id="F15" sourceRef="T7" targetRef="T8" />
-    <bpmn:sequenceFlow id="F16" sourceRef="T8" targetRef="G1" />
-    <bpmn:sequenceFlow id="F17" name="no" sourceRef="G1" targetRef="T9" />
-    <bpmn:sequenceFlow id="F18" sourceRef="T9" targetRef="End" />
+    <bpmn:sequenceFlow id="F2" sourceRef="T1" targetRef="G1" />
+    <bpmn:sequenceFlow id="F3" name="yes" sourceRef="G1" targetRef="T2" />
+    <bpmn:sequenceFlow id="F4" sourceRef="T2" targetRef="G2" />
+    <bpmn:sequenceFlow id="F5" name="yes" sourceRef="G2" targetRef="G3" />
+    <bpmn:sequenceFlow id="F6" name="yes" sourceRef="G3" targetRef="T3" />
+    <bpmn:sequenceFlow id="F7" name="no" sourceRef="G3" targetRef="G4" />
+    <bpmn:sequenceFlow id="F8" name="yes" sourceRef="G4" targetRef="T4" />
+    <bpmn:sequenceFlow id="F9" sourceRef="T3" targetRef="G2" />
+    <bpmn:sequenceFlow id="F10" sourceRef="T4" targetRef="G2" />
+    <bpmn:sequenceFlow id="F11" name="no" sourceRef="G4" targetRef="G2" />
+    <bpmn:sequenceFlow id="F12" name="no" sourceRef="G2" targetRef="T5" />
+    <bpmn:sequenceFlow id="F13" sourceRef="T5" targetRef="T6" />
+    <bpmn:sequenceFlow id="F14" sourceRef="T6" targetRef="T7" />
+    <bpmn:sequenceFlow id="F15" sourceRef="T7" targetRef="G1" />
+    <bpmn:sequenceFlow id="F16" name="no" sourceRef="G1" targetRef="T8" />
+    <bpmn:sequenceFlow id="F17" sourceRef="T8" targetRef="End" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="Diagram_OopsExample">
     <bpmndi:BPMNPlane id="Plane_OopsExample" bpmnElement="OopsExample">
@@ -93,131 +88,126 @@
         <bpmndi:BPMNLabel><dc:Bounds x="0" y="172" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T1_di" bpmnElement="T1">
-        <dc:Bounds x="125" y="115" width="130" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="T2_di" bpmnElement="T2">
-        <dc:Bounds x="275" y="115" width="130" height="70" />
+        <dc:Bounds x="135" y="115" width="130" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G1_di" bpmnElement="G1" isMarkerVisible="true">
-        <dc:Bounds x="465" y="125" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="355" y="94" width="120" height="27" /></bpmndi:BPMNLabel>
+        <dc:Bounds x="315" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="205" y="94" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="T3_di" bpmnElement="T3">
-        <dc:Bounds x="575" y="115" width="130" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="T4_di" bpmnElement="T4">
-        <dc:Bounds x="725" y="115" width="130" height="70" />
+      <bpmndi:BPMNShape id="T2_di" bpmnElement="T2">
+        <dc:Bounds x="425" y="115" width="130" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G2_di" bpmnElement="G2" isMarkerVisible="true">
-        <dc:Bounds x="765" y="335" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="655" y="399" width="120" height="27" /></bpmndi:BPMNLabel>
+        <dc:Bounds x="465" y="305" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="355" y="369" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G3_di" bpmnElement="G3" isMarkerVisible="true">
-        <dc:Bounds x="935" y="335" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="900" y="304" width="120" height="27" /></bpmndi:BPMNLabel>
+        <dc:Bounds x="635" y="305" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="600" y="274" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G4_di" bpmnElement="G4" isMarkerVisible="true">
-        <dc:Bounds x="1105" y="335" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="1070" y="304" width="120" height="27" /></bpmndi:BPMNLabel>
+        <dc:Bounds x="795" y="305" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="760" y="274" width="120" height="27" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T3_di" bpmnElement="T3">
+        <dc:Bounds x="595" y="415" width="130" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T4_di" bpmnElement="T4">
+        <dc:Bounds x="755" y="415" width="130" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T5_di" bpmnElement="T5">
-        <dc:Bounds x="895" y="435" width="130" height="70" />
+        <dc:Bounds x="285" y="295" width="130" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T6_di" bpmnElement="T6">
-        <dc:Bounds x="1065" y="435" width="130" height="70" />
+        <dc:Bounds x="135" y="295" width="130" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T7_di" bpmnElement="T7">
-        <dc:Bounds x="575" y="325" width="130" height="70" />
+        <dc:Bounds x="-15" y="295" width="130" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T8_di" bpmnElement="T8">
-        <dc:Bounds x="425" y="325" width="130" height="70" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="T9_di" bpmnElement="T9">
-        <dc:Bounds x="575" y="25" width="130" height="70" />
+        <dc:Bounds x="425" y="25" width="130" height="70" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="End_di" bpmnElement="End">
-        <dc:Bounds x="772" y="42" width="36" height="36" />
-        <bpmndi:BPMNLabel><dc:Bounds x="730" y="82" width="120" height="27" /></bpmndi:BPMNLabel>
+        <dc:Bounds x="622" y="42" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="580" y="82" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="F1_di" bpmnElement="F1">
         <di:waypoint x="78" y="150" />
-        <di:waypoint x="125" y="150" />
+        <di:waypoint x="135" y="150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F2_di" bpmnElement="F2">
-        <di:waypoint x="255" y="150" />
-        <di:waypoint x="275" y="150" />
+        <di:waypoint x="265" y="150" />
+        <di:waypoint x="315" y="150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F3_di" bpmnElement="F3">
-        <di:waypoint x="405" y="150" />
-        <di:waypoint x="465" y="150" />
+        <di:waypoint x="365" y="150" />
+        <di:waypoint x="425" y="150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F4_di" bpmnElement="F4">
-        <di:waypoint x="515" y="150" />
-        <di:waypoint x="575" y="150" />
+        <di:waypoint x="490" y="185" />
+        <di:waypoint x="490" y="305" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F5_di" bpmnElement="F5">
-        <di:waypoint x="705" y="150" />
-        <di:waypoint x="725" y="150" />
+        <di:waypoint x="515" y="330" />
+        <di:waypoint x="635" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F6_di" bpmnElement="F6">
-        <di:waypoint x="790" y="185" />
-        <di:waypoint x="790" y="335" />
+        <di:waypoint x="660" y="355" />
+        <di:waypoint x="660" y="415" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F7_di" bpmnElement="F7">
-        <di:waypoint x="815" y="360" />
-        <di:waypoint x="935" y="360" />
+        <di:waypoint x="685" y="330" />
+        <di:waypoint x="795" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F8_di" bpmnElement="F8">
-        <di:waypoint x="960" y="385" />
-        <di:waypoint x="960" y="435" />
+        <di:waypoint x="820" y="355" />
+        <di:waypoint x="820" y="415" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F9_di" bpmnElement="F9">
-        <di:waypoint x="985" y="360" />
-        <di:waypoint x="1105" y="360" />
+        <di:waypoint x="660" y="485" />
+        <di:waypoint x="660" y="540" />
+        <di:waypoint x="490" y="540" />
+        <di:waypoint x="490" y="355" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F10_di" bpmnElement="F10">
-        <di:waypoint x="1130" y="385" />
-        <di:waypoint x="1130" y="435" />
+        <di:waypoint x="820" y="485" />
+        <di:waypoint x="820" y="540" />
+        <di:waypoint x="490" y="540" />
+        <di:waypoint x="490" y="355" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F11_di" bpmnElement="F11">
-        <di:waypoint x="960" y="505" />
-        <di:waypoint x="960" y="560" />
-        <di:waypoint x="790" y="560" />
-        <di:waypoint x="790" y="385" />
+        <di:waypoint x="845" y="330" />
+        <di:waypoint x="900" y="330" />
+        <di:waypoint x="900" y="540" />
+        <di:waypoint x="490" y="540" />
+        <di:waypoint x="490" y="355" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F12_di" bpmnElement="F12">
-        <di:waypoint x="1130" y="505" />
-        <di:waypoint x="1130" y="560" />
-        <di:waypoint x="790" y="560" />
-        <di:waypoint x="790" y="385" />
+        <di:waypoint x="465" y="330" />
+        <di:waypoint x="415" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F13_di" bpmnElement="F13">
-        <di:waypoint x="1155" y="360" />
-        <di:waypoint x="1250" y="360" />
-        <di:waypoint x="1250" y="560" />
-        <di:waypoint x="790" y="560" />
-        <di:waypoint x="790" y="385" />
+        <di:waypoint x="285" y="330" />
+        <di:waypoint x="265" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F14_di" bpmnElement="F14">
-        <di:waypoint x="765" y="360" />
-        <di:waypoint x="705" y="360" />
+        <di:waypoint x="135" y="330" />
+        <di:waypoint x="115" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F15_di" bpmnElement="F15">
-        <di:waypoint x="575" y="360" />
-        <di:waypoint x="555" y="360" />
+        <di:waypoint x="50" y="295" />
+        <di:waypoint x="50" y="240" />
+        <di:waypoint x="340" y="240" />
+        <di:waypoint x="340" y="175" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F16_di" bpmnElement="F16">
-        <di:waypoint x="490" y="325" />
-        <di:waypoint x="490" y="175" />
+        <di:waypoint x="340" y="125" />
+        <di:waypoint x="340" y="60" />
+        <di:waypoint x="425" y="60" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="F17_di" bpmnElement="F17">
-        <di:waypoint x="490" y="125" />
-        <di:waypoint x="490" y="60" />
-        <di:waypoint x="575" y="60" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="F18_di" bpmnElement="F18">
-        <di:waypoint x="705" y="60" />
-        <di:waypoint x="772" y="60" />
+        <di:waypoint x="555" y="60" />
+        <di:waypoint x="622" y="60" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,9 +1,8 @@
 """The guide's running script: seven steps, each adding one idea, ending in the example script.
 
-Every stage is a whole script that runs by itself on data/KO.csv. The last stage is the
-committed example script, read from disk, so the guide's last step, the file students get
-and what is typed in the video cannot differ. Placeholders {SELL_I} and {BUY_I} are filled
-by the build with a real SELL and a real BUY row of the example file.
+Every stage is a whole script that runs by itself on data/KO.csv. The last stage is the committed
+example script, read from disk, so the guide's last step, the file students get and what is typed
+in the video cannot differ.
 """
 
 from __future__ import annotations
@@ -14,116 +13,98 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Stage:
     key: str
-    title: str            # the one new idea, as a heading
-    text: str             # what the step teaches, in plain words
+    title: str
+    text: str
     code: str             # the whole script at this step ("" = the final file)
     after: str = ""
 
 
-HEAD = '''# Williams' Oops (Lim 2016 p. 231, slides 194 and 199). Signals of a rule, not advice.
-# Put CSV files in the data folder, run this script, read output/signals.csv.'''
+HEAD = '''# Three Chapter 8 window oscillators, each with the buy and sell rule from the slides:
+# RSI crossing 50 (slide 74), MACD crossing its signal line (slide 83), stochastic %K crossing %D (slide 187).
+# Put CSV files in the data folder, run this script, read output/signals.csv. Signals of rules, not advice.'''
 
 READ = '''ticker <- "KO"
-bars <- read.csv(paste0("data/", ticker, ".csv"))'''
+bars <- read.csv(paste0("data/", ticker, ".csv"))
+bars$Date <- as.Date(sub(" .*", "", bars$Date), tryFormats = c("%Y-%m-%d", "%m/%d/%Y"))'''
 
-DATE = '''bars$Date <- as.Date(sub(" .*", "", bars$Date), tryFormats = c("%Y-%m-%d", "%m/%d/%Y"))'''
+CROSS = '''cross <- function(a, b) {        # +1 on the day a crosses above b, -1 on the day it crosses below
+  a <- round(a, 6)
+  b <- round(rep(b, length.out = length(a)), 6)     # rounding stops a rounding-error tie from counting as a cross
+  before <- function(x) c(NA, head(x, -1))
+  s <- ifelse(a > b & before(a) <= before(b), 1, ifelse(a < b & before(a) >= before(b), -1, 0))
+  s[is.na(s)] <- 0
+  s
+}
+word <- function(s) ifelse(s == 1, "BUY", ifelse(s == -1, "SELL", ""))'''
 
-EMPTY = '''empty <- data.frame(ticker = character(), date = as.Date(character()),
-                    side = character(), entry = numeric(), stoploss = numeric())
-signals <- empty'''
+OSC = '''rsi <- RSI(bars$Close, n = 14, maType = "SMA")
+macd <- MACD(bars$Close, nFast = 12, nSlow = 26, nSig = 9, percent = FALSE)
+sto <- stoch(bars[, c("High", "Low", "Close")], nFastK = 14, nFastD = 3)
+rsi_sig <- cross(rsi, 50)
+macd_sig <- cross(macd[, "macd"], macd[, "signal"])
+stoch_sig <- cross(sto[, "fastK"], sto[, "fastD"])'''
 
-LOOP_PRINT = '''for (i in seq_along(bars$Date)[-1]) {
-  prev_high <- bars$High[i - 1]
-  prev_low <- bars$Low[i - 1]
-  if (bars$Open[i] > prev_high && bars$Low[i] <= prev_high) {
-    cat(format(bars$Date[i], "%d %b %Y"), "SELL at", prev_high, "stoploss", bars$High[i], "\\n",
-        " Why: it opened at", bars$Open[i], "above the previous day's high of", prev_high,
-        "(a gap up), then fell back to", prev_high, "so the sell order filled.",
-        "Stoploss is the day's high (Oops, slide 194)\\n")
-  } else if (bars$Open[i] < prev_low && bars$High[i] >= prev_low) {
-    cat(format(bars$Date[i], "%d %b %Y"), "BUY at", prev_low, "stoploss", bars$Low[i], "\\n",
-        " Why: it opened at", bars$Open[i], "below the previous day's low of", prev_low,
-        "(a gap down), then rose back to", prev_low, "so the buy order filled.",
-        "Stoploss is the day's low (Oops, slide 199)\\n")
-  }
-}'''
+VOTES = '''votes <- rsi_sig + macd_sig + stoch_sig
+day <- which(votes != 0)
+side <- ifelse(votes[day] > 0, "BUY", "SELL")'''
 
-LOOP_ROWS = '''for (i in seq_along(bars$Date)[-1]) {
-  prev_high <- bars$High[i - 1]
-  prev_low <- bars$Low[i - 1]
-  if (bars$Open[i] > prev_high && bars$Low[i] <= prev_high) {
-    row <- data.frame(ticker = ticker, date = bars$Date[i], side = "SELL",
-                      entry = prev_high, stoploss = bars$High[i])
-    signals <- rbind(signals, row)
-    cat(format(bars$Date[i], "%d %b %Y"), "SELL at", prev_high, "stoploss", bars$High[i], "\\n",
-        " Why: it opened at", bars$Open[i], "above the previous day's high of", prev_high,
-        "(a gap up), then fell back to", prev_high, "so the sell order filled.",
-        "Stoploss is the day's high (Oops, slide 194)\\n")
-  } else if (bars$Open[i] < prev_low && bars$High[i] >= prev_low) {
-    row <- data.frame(ticker = ticker, date = bars$Date[i], side = "BUY",
-                      entry = prev_low, stoploss = bars$Low[i])
-    signals <- rbind(signals, row)
-    cat(format(bars$Date[i], "%d %b %Y"), "BUY at", prev_low, "stoploss", bars$Low[i], "\\n",
-        " Why: it opened at", bars$Open[i], "below the previous day's low of", prev_low,
-        "(a gap down), then rose back to", prev_low, "so the buy order filled.",
-        "Stoploss is the day's low (Oops, slide 199)\\n")
-  }
-}'''
-
-WRITE = '''dir.create("output", showWarnings = FALSE)
+TABLE = '''signals <- data.frame(ticker = ticker, date = bars$Date[day], side = side,
+                      entry = ifelse(side == "BUY", bars$High[day], bars$Close[day]),
+                      rsi = word(rsi_sig[day]), macd = word(macd_sig[day]), stoch = word(stoch_sig[day]),
+                      agree = rowSums(cbind(rsi_sig, macd_sig, stoch_sig)[day, , drop = FALSE] == ifelse(side == "BUY", 1, -1)))
+dir.create("output", showWarnings = FALSE)
 write.csv(signals, "output/signals.csv", row.names = FALSE, quote = FALSE)'''
 
-CHART = '''png(file.path("output", paste0(ticker, ".png")), width = 1200, height = 700)
-plot(bars$Date, bars$Close, type = "l", xlab = "", ylab = "Close", main = paste(ticker, "- Oops signals"))
-if (nrow(signals) > 0) {
-  sell <- signals$side == "SELL"
-  points(signals$date, signals$entry, pch = ifelse(sell, 25, 24), bg = ifelse(sell, "red", "darkgreen"), cex = 1.5)
-  text(signals$date, signals$entry, labels = seq_len(nrow(signals)), pos = 3)
-}
+CHART = '''png(file.path("output", paste0(ticker, ".png")), width = 1200, height = 1000)
+layout(matrix(1:4), heights = c(3, 1, 1, 1))
+par(mar = c(2, 4, 3, 1))
+plot(bars$Date, bars$Close, type = "l", xlab = "", ylab = "Close", main = paste(ticker, "- window oscillator signals"))
+big <- signals$agree >= 2
+points(signals$date, signals$entry, pch = ifelse(side == "BUY", 24, 25), bg = ifelse(side == "BUY", "darkgreen", "red"), cex = ifelse(big, 1.8, 0.7))
+if (any(big)) text(signals$date[big], signals$entry[big], labels = which(big), pos = 3)
+plot(bars$Date, rsi, type = "l", xlab = "", ylab = "RSI"); abline(h = 50, lty = 2)
+matplot(bars$Date, macd, type = "l", lty = 1, xlab = "", ylab = "MACD"); abline(h = 0, lty = 2)
+matplot(bars$Date, sto[, c("fastK", "fastD")], type = "l", lty = 1, xlab = "", ylab = "Stochastic")
 dev.off()'''
 
 STAGES = (
     Stage("read", "Read a price file",
-          "A **variable** is a name that holds a value: `ticker <- \"KO\"` puts the text KO into the name "
-          "`ticker`. `read.csv()` opens a CSV file and gives back a table, which R calls a data frame. "
-          "`paste0()` joins pieces of text, so the file is `data/KO.csv`. Each row is one trading day and "
-          "each column is one price. A line starting with `#` is a note for people; R skips it. "
-          "`head(bars, 3)` shows the first three rows.",
+          "A **variable** is a name that holds a value: `ticker <- \"KO\"` puts the text KO into the name `ticker`. "
+          "`read.csv()` opens a CSV file as a table, one row per trading day. `paste0()` joins text. "
+          "Google Sheets writes dates like `7/1/2026 16:00:00`: `sub()` cuts the time off and `as.Date()` makes a real "
+          "date. A line starting with `#` is a note for people.",
           HEAD + '\n' + READ + '\nprint(head(bars, 3))'),
-    Stage("date", "Clean the date",
-          "Google Sheets writes dates like `7/1/2026 16:00:00`. `sub(\" .*\", \"\", x)` cuts the time off, "
-          "and `as.Date()` turns the text into a real date, trying each layout in `tryFormats`. "
-          "`bars$Date` is the Date column, and assigning to it replaces the column.",
-          HEAD + '\n' + READ + '\n' + DATE + '\nprint(head(bars$Date, 3))'),
-    Stage("test", "Test one day for the Oops",
-          "Square brackets pick a row: `bars$Open[i]` is the open of day `i`, and `bars$High[i - 1]` is "
-          "yesterday's high. A comparison such as `>` gives `TRUE` or `FALSE`. The Oops on slide 194 "
-          "asks two questions: did the day open above yesterday's high, and did price then come back down "
-          "to that high, so that today's low is at or below it?",
-          HEAD + '\n' + READ + '\n' + DATE + '\ni <- {SELL_I}\n'
-          'print(bars$Open[i] > bars$High[i - 1])\nprint(bars$Low[i] <= bars$High[i - 1])'),
-    Stage("loop", "Test every day",
-          "`for (i in ...)` repeats the lines inside the braces once per day. `seq_along(bars$Date)[-1]` is "
-          "every day number except the first, which has no yesterday. `if` runs its lines only when the "
-          "condition is true, `&&` means both tests must pass, and `else if` is the mirror image on slide 199: "
-          "open below yesterday's low, then price comes back up to it. `cat()` prints a line. The line is built from that day's own numbers, so every signal explains itself in plain words.",
-          HEAD + '\n' + READ + '\n' + DATE + '\n' + LOOP_PRINT),
+    Stage("rsi", "Use a package: the RSI",
+          "R's maths comes in **packages**. TTR holds the technical indicators. Install it once, with "
+          "`install.packages(\"TTR\")` typed in the Console, then `library(TTR)` loads it. `RSI()` returns the "
+          "relative strength index, 14 days, with the plain averages the slides use (slide 195). "
+          "`tail()` shows the last rows. The RSI swings between 0 and 100 around its equilibrium, 50 (slide 74).",
+          HEAD + '\nlibrary(TTR)\n' + READ + '\nrsi <- RSI(bars$Close, n = 14, maType = "SMA")\nprint(tail(rsi, 3))'),
+    Stage("cross", "A crossing is a signal",
+          "A **function** packs lines under a name. `cross(a, b)` gives +1 on the day line a crosses above line b and "
+          "-1 on the day it crosses below: the RSI crossing 50 is a buy or sell signal on slide 74. `which()` finds "
+          "the days that are not zero.",
+          HEAD + '\nlibrary(TTR)\n' + CROSS + '\n' + READ + '\nrsi <- RSI(bars$Close, n = 14, maType = "SMA")\n'
+          'rsi_sig <- cross(rsi, 50)\nprint(bars$Date[which(rsi_sig != 0)])'),
+    Stage("three", "Two more oscillators, and a vote",
+          "The same `cross()` reads the other two rules. The MACD is a 12 day average minus a 26 day average, with a "
+          "9 day signal line (slides 166, 168), and its crossing of the signal line is a signal (slide 83). The "
+          "stochastic %K crossing %D is a signal on slide 187. Adding the three signals gives a vote: positive is a "
+          "buy, negative a sell, and the size says how many agree.",
+          HEAD + '\nlibrary(TTR)\n' + CROSS + '\n' + READ + '\n' + OSC + '\n' + VOTES + '\nprint(table(side))'),
     Stage("table", "Keep the signals in a table",
-          "Printing is not enough: we want a table we can save. `empty` is a table with the right columns "
-          "and no rows. Each signal becomes a one-row table, added to the bottom with `rbind()`. "
-          "`write.csv()` saves the table as a file, after `dir.create()` makes the output folder.",
-          HEAD + '\n' + READ + '\n' + DATE + '\n' + EMPTY + '\n' + LOOP_ROWS + '\n' + WRITE),
+          "Each signal day becomes a row: the date, buy or sell, the entry price, what each oscillator said, and how "
+          "many agree. The entry is the day's high for a buy (slide 201) and the close for a sell, because the "
+          "slides give no sell trigger. `write.csv()` saves the table in an output folder.",
+          HEAD + '\nlibrary(TTR)\n' + CROSS + '\n' + READ + '\n' + OSC + '\n' + VOTES + '\n' + TABLE),
     Stage("chart", "Draw the chart",
-          "`png()` opens a picture file, the plotting commands draw into it, and `dev.off()` closes it. "
-          "`plot()` draws the closing prices as a line, `points()` puts a triangle at each signal's entry price, "
-          "red pointing down for SELL and green pointing up for BUY, and `text()` writes the signal's number, "
-          "which is its row in `signals.csv`. The `if` skips the marks when a stock has no signals. When the "
-          "picture file is closed R prints `null device 1`. That is normal.",
-          HEAD + '\n' + READ + '\n' + DATE + '\n' + EMPTY + '\n' + LOOP_ROWS + '\n' + WRITE + '\n' + CHART),
+          "Price on top, the three oscillators in panels below. `points()` marks each signal day with a triangle, "
+          "green up for a buy and red down for a sell, and the days where two or more oscillators agree are bigger "
+          "and numbered with their row in `signals.csv`. `dev.off()` closes the picture file.",
+          HEAD + '\nlibrary(TTR)\n' + CROSS + '\n' + READ + '\n' + OSC + '\n' + VOTES + '\n' + TABLE + '\n' + CHART),
     Stage("files", "Do it for every file",
-          "`list.files()` lists the CSV files in `data`, and a `for` loop over them runs everything once per "
-          "stock, so any file you drop in is read. The last pieces are a plain answer printed for each stock, "
-          "and one table with every stock's signals. This is the finished script, exactly the file you were "
-          "given.",
+          "A `for` loop over `list.files()` runs everything once for each CSV in the data folder, adds each stock's "
+          "signals to one table, and prints how many signal days it found. This is the finished script, exactly the "
+          "file you were given.",
           ""),
 )

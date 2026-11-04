@@ -69,18 +69,20 @@ def main():
     # the two "why" charts, drawn by R from the real KO file
     why = OUT / "why"
     why.mkdir(parents=True, exist_ok=True)
-    r = subprocess.run([RSCRIPT, str(REPO / "build" / "r" / "explain_oops.R"), str(a.data / "start" / "KO.csv"), str(why), "KO"],
+    r = subprocess.run([RSCRIPT, str(REPO / "build" / "r" / "explain_osc.R"), str(a.data / "start" / "KO.csv"), str(why), "KO"],
                        capture_output=True, text=True, check=True)
     info = {}
     for ln in r.stdout.splitlines():
         w = ln.split()
         if w and w[0] in ("SELL", "BUY"):
-            info[w[0].lower()] = {"date": w[1], "entry": w[3], "stop": w[5]}
+            info[w[0].lower()] = {"date": w[1], "entry": w[3], "agree": w[5].split("+")}
+        if w and w[0] == "CORR":
+            info["corr"] = {"rsi_macd": w[2], "rsi_stoch": w[4], "macd_stoch": w[6]}
     (OUT / "why_info.json").write_text(json.dumps(info))
     (OUT / "stage_outputs.json").write_text(json.dumps(outs, indent=1))
     (OUT / "counts.json").write_text(json.dumps({**counts, **fills}, indent=1))
     print(json.dumps({**counts, **fills}))
-    for k in ("read", "test", "loop", "files"):
+    for k in ("rsi", "cross", "three", "files"):
         print("--", k); print(outs[k][:400])
 
 if __name__ == "__main__":

@@ -133,6 +133,9 @@ def basics_blocks(fills: dict) -> tuple:
         code = _stage_code(st, fills)
         marker = "" if st.key in outs else "(output appears after the real run)"
         out = outs.get(st.key, marker)
+        ol = out.splitlines()
+        if len(ol) > 8:                  # a long answer: show the start, say how much more
+            out = "\n".join(ol[:8]) + f"\n... ({len(ol) - 8} more lines)"
         # Stages that print nothing (the chart ones) say what to look at.
         blocks.append(Head(text=st.title, number=f"B{n}"))
         blocks.append(Para(text=st.text, glue=True))

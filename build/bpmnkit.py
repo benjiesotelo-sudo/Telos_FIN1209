@@ -97,6 +97,12 @@ def to_bpmn(d: Diagram) -> str:
         out.append(f'        <dc:Bounds x="{x:g}" y="{y:g}" width="{w}" height="{h}" />')
         if n.kind != "task":
             lx = n.cx - 60; ly = n.cy + h / 2 + 4
+            if n.label_at == "above":
+                ly = n.cy - h / 2 - 31
+            elif n.label_at == "aboveleft":
+                lx = n.cx - 135; ly = n.cy - h / 2 - 31
+            elif n.label_at == "belowleft":
+                lx = n.cx - 135; ly = n.cy + h / 2 + 14
             out.append(f'        <bpmndi:BPMNLabel><dc:Bounds x="{lx:g}" y="{ly:g}" width="120" height="27" /></bpmndi:BPMNLabel>')
         out.append('      </bpmndi:BPMNShape>')
     for e in d.edges:

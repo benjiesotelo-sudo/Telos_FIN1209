@@ -249,9 +249,9 @@ INSTALL = Section(
             "click the **Download R** link at the top. Open the file you "
             "downloaded and click Next through the installer, keeping every "
             "default.",
-            "Go to **https://posit.co/download/rstudio-desktop/**, scroll to "
-            "the list, and download the **Windows** installer. Open it and "
-            "click Next through the installer.",
+            "Go to **https://docs.posit.co/ide/user/download.html** and "
+            "click the big **Download for Windows** button. Open the file "
+            "and click Next through the installer.",
             "Open **RStudio** from the Start menu. A window opens with a "
             "pane called Console on the left. That is where R talks.",
         )),
@@ -262,8 +262,8 @@ INSTALL = Section(
             "(the Apple icon, then About This Mac, tells you whether it is "
             "Apple silicon or Intel). Open the file and click Continue "
             "through the installer.",
-            "Go to **https://posit.co/download/rstudio-desktop/**, download "
-            "the **macOS** installer, open it, and drag RStudio into the "
+            "Go to **https://docs.posit.co/ide/user/download.html**, click **Download for macOS**, "
+            "open the file, and drag RStudio into the "
             "Applications folder.",
             "Open **RStudio** from Applications. A window opens with a pane "
             "called Console on the left.",

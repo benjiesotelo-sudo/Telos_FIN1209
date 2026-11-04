@@ -100,7 +100,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G1_di" bpmnElement="G1" isMarkerVisible="true">
         <dc:Bounds x="465" y="125" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="430" y="179" width="120" height="27" /></bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel><dc:Bounds x="355" y="94" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T3_di" bpmnElement="T3">
         <dc:Bounds x="575" y="115" width="130" height="70" />
@@ -110,15 +110,15 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G2_di" bpmnElement="G2" isMarkerVisible="true">
         <dc:Bounds x="765" y="335" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="730" y="389" width="120" height="27" /></bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel><dc:Bounds x="655" y="399" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G3_di" bpmnElement="G3" isMarkerVisible="true">
         <dc:Bounds x="935" y="335" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="900" y="389" width="120" height="27" /></bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel><dc:Bounds x="900" y="304" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="G4_di" bpmnElement="G4" isMarkerVisible="true">
         <dc:Bounds x="1105" y="335" width="50" height="50" />
-        <bpmndi:BPMNLabel><dc:Bounds x="1070" y="389" width="120" height="27" /></bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel><dc:Bounds x="1070" y="304" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T5_di" bpmnElement="T5">
         <dc:Bounds x="895" y="435" width="130" height="70" />

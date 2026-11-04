@@ -150,7 +150,7 @@ SCENES = (
           "gen", "why/why-buy"),
     Scene("Why a sell",
           "The sell is the mirror image. Here the M A C D crosses down through its signal line, and the stochastic "
-          "crosses down too. The slides give no sell trigger, so the entry is that day's close.",
+          "crosses down too. The slides give no sell trigger, so the entry is that day's close. That is our choice, not Lim's rule.",
           "gen", "why/why-sell"),
     Scene("False consensus",
           "But agreeing is not proof. All three are built from the same closing prices. On this data the R S I and "

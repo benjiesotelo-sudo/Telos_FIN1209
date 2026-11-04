@@ -254,7 +254,7 @@ RULE = Section(
         ),
         Callout(label="Our choices, not Lim's rule", tone="gold", text=(
             "**Entry price.** A buy uses the signal day's high, as slide 201 says. The slides give no trigger for a "
-            "sell, so a sell uses the day's close.\n\n**One vote each.** A signal day is any day at least one "
+            "sell, so a sell uses the day's close. **That is our choice, not Lim's rule.**\n\n**One vote each.** A signal day is any day at least one "
             "oscillator crosses. If a buy and a sell cancel, the day is skipped. `agree` counts the oscillators that "
             "gave the winning side.\n\n**No trend filter, no exit.** The slides give none that a computer can "
             "run, so the script reports the signals and stops.")),
@@ -569,8 +569,8 @@ def why_section(info: dict) -> Section:
                             f"agree, so two of three. Entry {b.get('entry', '')}."),
                    credit="Drawn by build/r/explain_osc.R from the KO price file."),
             Para(text=(
-                "**A sell** is the mirror image: an oscillator crosses downward, and the slides give no sell trigger, "
-                "so the entry is the close of the day.")),
+                "**A sell** is the mirror image: an oscillator crosses downward. The slides give no sell trigger, "
+                "so the entry is the close of the day. That is our choice, not Lim's rule.")),
             Figure(path=why / "why-sell.png", height_mm=100.0,
                    caption=(f"KO, {s.get('date', '')}: a SELL where {' and '.join(x.upper() for x in s.get('agree', []))} "
                             f"agree, so two of three. Entry {s.get('entry', '')}."),

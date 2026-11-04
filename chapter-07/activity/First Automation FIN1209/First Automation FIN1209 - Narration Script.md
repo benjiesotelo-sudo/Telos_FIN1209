@@ -120,7 +120,7 @@ Now the justification. The script gives numbers. This is what they mean. Take a 
 
 *Picture: an image R drew (why/why-sell)*
 
-The sell is the mirror image. Here the M A C D crosses down through its signal line, and the stochastic crosses down too. The slides give no sell trigger, so the entry is that day's close.
+The sell is the mirror image. Here the M A C D crosses down through its signal line, and the stochastic crosses down too. The slides give no sell trigger, so the entry is that day's close. That is our choice, not Lim's rule.
 
 ## 21. False consensus
 

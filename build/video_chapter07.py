@@ -44,10 +44,10 @@ def _sheets_scenes() -> tuple:
         ("Sheets: a blank spreadsheet",
          "First, the data. Open sheets dot new in your Google account, and click cell A1.", "g1-blank-sheet"),
         ("Sheets: the formula",
-         "Type the GOOGLEFINANCE formula: the ticker, in quotes, the word all, a start date, an end date, and daily. "
+         "Type the GOOGLEFINANCE formula: the ticker, in quotes, the word all, a start date, an end date, and daily. Our start is the third of November twenty twenty five. "
          "Change only the ticker to pick another US company. For Coca Cola it is N Y S E colon K O.", "g2-formula"),
         ("Sheets: the result",
-         "Sixty four rows fill in, with Date, Open, High, Low, Close and Volume. The dates look like seven slash one "
+         "About two hundred rows fill in, with Date, Open, High, Low, Close and Volume. The dates look like seven slash one "
          "slash twenty twenty six. The script reads them as they are.", "g3-result"),
         ("Sheets: download",
          "Choose File, Download, Comma Separated Values. Rename the file K O dot csv, and put it in a folder called data. "
@@ -60,101 +60,121 @@ def _sheets_scenes() -> tuple:
                  for t, say, ref in steps)
 
 
+def _corr() -> dict:
+    import json
+    from pathlib import Path
+    f = Path(__file__).resolve().parent / "generated" / "activity2" / "why_info.json"
+    try:
+        return json.loads(f.read_text()).get("corr", {})
+    except OSError:
+        return {}
+
+
+_C = _corr()
+
 SCENES = (
     Scene("Welcome",
-          "This is a short guide to your first automation. You will teach R one rule from Chapter 7, Larry Williams' "
-          "Oops, so that it finds the buy and sell prices for you. You need R and RStudio, both free. The handout has "
-          "the download links.",
+          "This is a short guide to your first automation. You will teach R to read three window oscillators from "
+          "Chapter 8: the R S I, the M A C D, and the stochastic. For each day it finds each oscillator's buy or sell "
+          "signal, counts how many agree, and gives the price to act at. You need R and RStudio, both free, and one "
+          "package, T T R. The handout has the links.",
           "web", "posit-rstudio"),
 ) + _sheets_scenes() + (
     Scene("The flowchart",
-          "Here is what the script will do, as a B P M N flowchart. The input is the price files in the data folder. "
-          "The process: for every stock, go day by day. Did the day open above yesterday's high, then come back down "
-          "to it? That is a sell, with the stoploss at today's high. Did it open below yesterday's low, then come back "
-          "up to it? That is a buy, with the stoploss at today's low. The output is three things: an answer for each "
-          "stock, a chart with every signal marked, and a table of all the signals.",
+          "Here is what the script does, as a B P M N flowchart. The input is a price file for each stock, in the "
+          "data folder. The process: for each stock, work out the three oscillators. A signal is the day one line "
+          "crosses another. The R S I crosses fifty, the M A C D crosses its signal line, the stochastic percent K "
+          "crosses percent D. Then count how many oscillators crossed the same way that day. The output is a table of "
+          "the signal days with a price to act at, and a chart of the price with the three oscillators underneath.",
           "web", "bpmn-example-open"),
 
     Scene("Start a script",
-          "Now we write it. In RStudio, choose File, New File, R Script. Save it in your First Automation folder, "
-          "next to the data folder. Then choose Session, Set Working Directory, To Source File Location, so R looks "
-          "for the data folder here.",
+          "Now we write it. In RStudio choose File, New File, R Script. Save it in your First Automation folder, next "
+          "to the data folder. Then Session, Set Working Directory, To Source File Location.",
           "clip", "00-new-script"),
     Scene("Step 1: read a file",
-          "Step one: read a file. A variable holds a value, so ticker holds the text KO. Read dot csv opens the file as "
-          "a table, one row per day. Run it with Code, Source, and the first three rows appear.",
+          "Step one: read a price file. A variable holds a value. Read dot csv opens the file as a table, one row per "
+          "day, and as dot Date turns the Google Sheets date into a real date. Run it with Code, Source.",
           "clip", "01-read"),
-    Scene("Step 2: clean the date",
-          "Step two: clean the date. Cut the time off the text, and turn it into a real date. Google Sheets writes "
-          "month, day, year, and the script copes with that.",
-          "clip", "02-date"),
-    Scene("Step 3: test one day",
-          "Step three: test one day. Yesterday is row i minus one. Did today open above yesterday's high? Did "
-          "today's low come back down to it? Both true means the Oops on slide 194 happened that day.",
-          "clip", "03-test"),
-    Scene("Step 4: test every day",
-          "Step four: test every day. A for loop repeats the test for each day. If the Oops happened, print a sell, "
-          "with the entry, the stoploss, and a plain why, built from that day's own prices. Else if the day mirrors "
-          "it, slide 199, print a buy. Here are the signals, each one explained.",
-          "clip", "04-loop", speed=1.3),
-    Scene("Step 5: keep the signals",
-          "Step five: keep them. Each signal becomes a row in a table, and write dot csv saves the table in an "
-          "output folder.",
+    Scene("Step 2: the RSI",
+          "Step two: a package. T T R holds the indicators, and you install it once with install dot packages. "
+          "Library loads it. R S I gives the relative strength index, fourteen days, plain averages as on slide "
+          "195.",
+          "clip", "02-rsi"),
+    Scene("Step 3: a crossing",
+          "Step three: a crossing is a signal. This small function gives plus one on the day one line crosses above "
+          "another, and minus one when it crosses below. The R S I crossing fifty is the signal on slide 74. Here are "
+          "the days it happened.",
+          "clip", "03-cross", speed=1.4),
+    Scene("Step 4: three oscillators",
+          "Step four: the other two. The M A C D is a twelve day average minus a twenty six day average, with a nine "
+          "day signal line, slides 166 to 168. Its signal line crossing is on slide 83. The stochastic is on slide "
+          "187. Add the three signals to get a vote: positive is a buy, negative a sell.",
+          "clip", "04-three", speed=1.6),
+    Scene("Step 5: the table",
+          "Step five: the table. One row per signal day: the date, buy or sell, the entry price, what each "
+          "oscillator said, and how many agree. A buy uses the day's high, slide 201. The slides give no sell "
+          "trigger, so a sell uses the close.",
           "clip", "05-table", speed=1.6),
-    Scene("Step 6: draw the chart",
-          "Step six: draw the chart. The price line, a red triangle at each sell price, a green triangle at each buy "
-          "price, and each signal's number.",
+    Scene("Step 6: the chart",
+          "Step six: the chart. Price on top, the three oscillators below, and a triangle on every signal day. Green "
+          "up is a buy, red down is a sell, and the big numbered ones are where two or more agree.",
           "clip", "06-chart", speed=1.5),
     Scene("Step 7: every file",
-          "Step seven: do it for every file in the data folder, and print a plain answer for each stock. That is the "
-          "whole script, about forty lines. Source it.",
-          "clip", "07-files", speed=2.5),
+          "Step seven: do it for every file in the data folder, and print a line per stock. That is the whole "
+          "script. Source it.",
+          "clip", "07-files", speed=3.0),
 
     Scene("The answer",
-          "Here is the answer. Every signal comes with its why. For example: it opened above the previous day's high, "
-          "then fell back to it, so the sell order at that price filled, and the stoploss is the day's high. Then, for "
-          "each stock, how many signals, and the latest one.",
+          "Here is the answer for each stock: how many signal days, and how many had two or more oscillators "
+          "agreeing. The numbers are in the table.",
           "frame", "07-files", crop=(0, 545, 650, 900)),
     Scene("The table",
-          "And the table. Every signal, with the date, side, entry price and stoploss.",
+          "Here is the table. Each row is a signal day, with the side, the entry price, each oscillator's signal, "
+          "and the agree count.",
           "clip", "08-outputs"),
     Scene("The chart",
-          "And the chart. The line is the closing price. Each red triangle is a sell, each green triangle is a buy, "
-          "at the entry price, numbered like the table.",
+          "And the chart. Price on top, then the R S I with its fifty line, the M A C D with its signal line, and "
+          "the stochastic. The big numbered triangles are the days two oscillators agreed.",
           "gen", "start/KO"),
     Scene("Add new data",
-          "That is the automation. Download the files again with a later end date, replace them, and run the "
-          "script again. The table and the charts update. Nothing else changes.",
+          "That is the automation. Download the files again with a later end date, replace them, and run the script "
+          "again. The table and the charts update.",
           "clip", "09-update", speed=1.5),
 
-    Scene("Why a sell",
-          "Why is that a sell? Take one real signal from the KO table, zoomed in. One: yesterday's high, eighty seven "
-          "fifteen. Two: today opens above it, at eighty seven eighty six. Three: price comes back down to eighty "
-          "seven fifteen. The sell order waits there, so that is the sell price. The gap failed, which is the idea "
-          "of the Oops. Four: the stoploss, today's high. If price went there instead, the sale was wrong, and the "
-          "trade is closed.",
-          "gen", "why/why-sell"),
     Scene("Why a buy",
-          "The buy is the mirror image. One: yesterday's low. Two: today opens below it. Three: price comes back up "
-          "to it, and that is the buy price. Four: the stoploss, today's low. These are the prices a rule gives, "
-          "not a forecast.",
+          "Now the justification. The script gives numbers. This is what they mean. Take a real buy from the KO "
+          "table. On the day line, the R S I crosses up through fifty, and the stochastic crosses up through its "
+          "signal line. Two of three agree, and that is the buy signal. The price to act at is that day's high, the "
+          "entry, as slide 201 says. The M A C D did not cross that day, so it is empty in the table.",
           "gen", "why/why-buy"),
+    Scene("Why a sell",
+          "The sell is the mirror image. Here the M A C D crosses down through its signal line, and the stochastic "
+          "crosses down too. The slides give no sell trigger, so the entry is that day's close.",
+          "gen", "why/why-sell"),
+    Scene("False consensus",
+          "But agreeing is not proof. All three are built from the same closing prices. On this data the R S I and "
+          "the stochastic correlate at " + str(_C.get("rsi_stoch", "")) + ", and the R S I and M A C D at " +
+          str(_C.get("rsi_macd", "")) + ". Lim calls this multicollinearity, a false consensus and a false sense of "
+          "confidence. His cure is oscillators built from different data, such as volume.",
+          "card", card=("Agreeing is not proof", f"RSI and stochastic: correlation {_C.get('rsi_stoch', '')}",
+                        f"RSI and MACD: correlation {_C.get('rsi_macd', '')}", "Lim, slide 78: multicollinearity = false consensus")),
 
     Scene("Your task",
-          "Your task: write your own script for Oops, Hikkake, or another Chapter 1 to 7 rule with exact prices, "
-          "and draw its flowchart.",
-          "card", card=("Your task", "Your own script", "plus a flowchart of it", "Oops, Hikkake or another exact-price rule")),
+          "Your task: your own stock, and your own pair of the three oscillators. Write your script, and draw its "
+          "flowchart. The due date is in the manual.",
+          "card", card=("Your task", "Your own stock", "Your own pair of oscillators", "Script + flowchart")),
     Scene("Submit",
           "Submit two files. Your script, named First Automation, underscore, surname, underscore, first name, dot R. "
-          "And the flowchart, with the same name plus Flowchart, as a P D F, a dot bpmn file, or a Markdown file.",
+          "And the flowchart with the same name plus Flowchart, as a P D F, a dot bpmn file, or Markdown.",
           "card", card=("Submit two files", "FirstAutomation_Surname_Firstname.R",
                         "FirstAutomation_Surname_Firstname_Flowchart.pdf", "(or .bpmn, or .md with Mermaid)")),
     Scene("AI",
-          "You may use AI to help write the script. The condition: your flowchart must match the script you submit "
-          "and explain each step in your own words.",
+          "You may use AI to help. Your flowchart must match the script you submit and explain each step in your own "
+          "words.",
           "card", card=("AI is allowed", "if you can explain it", "The flowchart must match the script you submit")),
     Scene("Marks",
-          "One hundred points. Sixty are checked by running your script on files you have never seen. Forty are "
-          "judged from your flowchart. The handout has the details. Good luck.",
+          "One hundred points. Sixty come from running your script on files you have never seen. Forty come from "
+          "your flowchart. Good luck.",
           "card", card=("100 points", "60: your script, run on unseen files", "40: your flowchart", "Code style is not marked")),
 )

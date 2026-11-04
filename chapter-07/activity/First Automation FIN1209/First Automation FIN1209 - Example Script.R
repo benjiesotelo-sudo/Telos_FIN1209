@@ -1,5 +1,5 @@
 # First Automation FIN1209 - Example Script
-# Lim's Williams' Oops (FIN1209 Chapter 7, slides 194 to 201, Lim 2016 p. 231)
+# Williams' Oops (FIN1209 Chapter 7, slides 194 to 201, Lim 2016 p. 231)
 # as an R script.
 # Put CSV files in the data folder, run this script, read output/signals.csv
 # and look at the charts in output. Add new rows and run it again.

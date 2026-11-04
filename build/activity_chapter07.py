@@ -9,7 +9,7 @@ things are computed rather than typed so they cannot drift:
   after really running every stage;
 * the marks are added up here, and the build stops if they are not 100.
 
-The rule is Lim's Williams' Oops, quoted from the Chapter 7 student edition
+The rule is Williams' Oops, quoted from the Chapter 7 student edition
 built from origin/main (slides 194 to 201). Where the slides leave something
 open, the guide says so and calls the choice the student's own.
 """
@@ -549,8 +549,8 @@ def basics_section(fills: dict) -> Section:
         footer="R basics",
         blocks=(
             Para(text=(
-                "Before you start, make a folder on your computer called "
-                f"`{NAME}` and put the folder `data` inside it with the "
+                "Before you start, make a folder called "
+                f"`{NAME}` inside your Documents folder and put the folder `data` inside it with the "
                 "first-run price files KO and F from Part 4a. In RStudio use **File, New "
                 "File, R Script**, save it in that folder, then choose "
                 "**Session, Set Working Directory, To Source File "
@@ -581,7 +581,7 @@ def run_section(counts: dict) -> Section:
         blocks=(
             Step(title="Set up the folder",
                  text=("Copy the folder `" + NAME + "` from the class Drive "
-                       "to your computer. Inside it are the script and the "
+                       "to your Documents folder. Inside it are the script and the "
                        "flowchart files. Make a "
                        "folder called `data` next to the script, and copy "
                        "the two files `KO.csv` and `F.csv` you downloaded in "

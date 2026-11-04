@@ -45,7 +45,7 @@ SCENES = (
           "at all.",
           card=("Install", "1. R", "2. RStudio Desktop", "Or: Posit Cloud in the browser")),
     Scene("Step 1: the folder",
-          "Step one. Copy the First Automation folder to your computer. Next "
+          "Step one. Copy the First Automation folder to your Documents folder. Next "
           "to the script, make a folder called data, and copy into it the two "
           "price files you downloaded in Part 4 A: K O dot csv and F dot csv.",
           shot="r01-folder"),

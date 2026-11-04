@@ -102,7 +102,7 @@ Here is the table. Each row is a signal day, with the side, the entry price, eac
 
 *Picture: an image R drew (start/KO)*
 
-And the chart. Price on top, then the R S I with its fifty line, the M A C D with its signal line, and the stochastic. The big numbered triangles are the days two oscillators agreed.
+And the chart. Price on top, then the R S I with its fifty line, the M A C D with its signal line, and the stochastic. The big numbered triangles are the days two oscillators agreed. Notice the M A C D panel is empty at the start: it needs about thirty four days of history first. So for your own stock, pull about a year.
 
 ## 18. Add new data
 
@@ -126,7 +126,7 @@ The sell is the mirror image. Here the M A C D crosses down through its signal l
 
 *Picture: a title card*
 
-But agreeing is not proof. All three are built from the same closing prices. On this data the R S I and the stochastic correlate at 0.78, and the R S I and M A C D at 0.71. Lim calls this multicollinearity, a false consensus and a false sense of confidence. His cure is oscillators built from different data, such as volume.
+But agreeing is not proof. All three are built from the same closing prices. On this data the R S I and the stochastic correlate at 0.73, and the R S I and M A C D at 0.80. Lim calls this multicollinearity, a false consensus and a false sense of confidence. His cure is oscillators built from different data, such as volume.
 
 ## 22. Your task
 

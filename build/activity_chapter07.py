@@ -765,10 +765,9 @@ def build_activity(fills: dict, counts: dict, info: dict | None = None) -> Activ
         code="FIN1209",
         course="Technical Analysis in Investment",
         chapter="Chapter 7",
-        title=NAME + ": automate one of Lim's rules in R",
-        subtitle="Write a small R script that reads price files, finds where "
-                 "a rule says to buy or sell, and draws the signals. Then "
-                 "draw a flowchart that explains it.",
+        title=NAME + ": automate Chapter 8's window oscillators in R",
+        subtitle="Write a short R script that reads price files, finds where the RSI, the MACD and the stochastic "
+                 "give buy and sell signals, counts how many agree, and draws them. Then draw a flowchart that explains it.",
         presenter="Benjamin C. Sotelo  |  Institute of Accounts, Business "
                   "and Finance, FEU Manila",
         points=TOTAL,
@@ -776,7 +775,7 @@ def build_activity(fills: dict, counts: dict, info: dict | None = None) -> Activ
         replaces="a take-home automation activity",
         source_note=("Prices are pulled by each student with GOOGLEFINANCE "
                      "in Google Sheets; none are distributed with the "
-                     "course. The rule is Lim (2016) p. 231."),
+                     "course. The rules are from Lim (2016), Chapter 8."),
         sections=(BRIEF, INSTALL, SOURCES, DATA, flow_section(), RULE, script_section(fills),
                   run_section(counts), why_section(info), CONTRACT, TASK, AI, MARKS,
                   RUBRIC_SECTION),

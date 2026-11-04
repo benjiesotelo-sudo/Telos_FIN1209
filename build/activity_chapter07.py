@@ -345,7 +345,7 @@ EXAMPLE_TICKERS = (("NYSE:KO", "KO"), ("NYSE:F", "F"))
 
 
 def _gf(sym: str, end: str) -> str:
-    return f'=GOOGLEFINANCE("{sym}","all",DATE(2025,11,3),DATE({end}),"DAILY")'
+    return f'=GOOGLEFINANCE("{sym}","all",DATE(2026,7,1),DATE({end}),"DAILY")'
 
 
 DATA = Section(
@@ -373,7 +373,7 @@ DATA = Section(
                    "this first run."),
              shot=Shot("g2-formula", width_pct=40)),
         Step(title="Check the result",
-             text=("Wait a moment. About 228 rows fill down from A1, with the "
+             text=("Wait a moment. About 64 rows fill down from A1, with the "
                    "six column names in row 1. The dates read like "
                    "`7/1/2026 16:00:00`: that is the layout Google Sheets "
                    "gives, and the script reads it as it is, so you never "
@@ -531,7 +531,9 @@ def run_section(counts: dict) -> Section:
             Step(title="Read the chart",
                  text=("Open `output/KO.png`. Price is on top. Every triangle is a signal day, green up for a buy and "
                        "red down for a sell; the bigger numbered ones are days two or more oscillators agreed. The "
-                       "three panels below are the oscillators."),
+                       "three panels below are the oscillators. **The MACD panel is empty at the start:** the MACD needs about 34 "
+                       "days of history before it can give a signal, so the first weeks of this 64 day example show none. "
+                       "For your own stock pull about a year."),
                  shot=Shot("r07-chart")),
             Step(title="Add new data and run again",
                  text=("Download both files again with the later end date (Part 2), replace the ones in `data`, and "
@@ -548,7 +550,7 @@ def why_section(info: dict) -> Section:
     why = STAGE_OUTPUTS.parent / "why"
     return Section(
         title="7. Why the signals are where they are",
-        kicker="One real buy and one real sell from the KO table, drawn for the weeks around the day.",
+        kicker="One real buy and one real sell from the example tables (KO and F), drawn for the weeks around the day.",
         footer="Why",
         blocks=(
             Para(text=(
@@ -557,19 +559,19 @@ def why_section(info: dict) -> Section:
                 "that day's high (slide 201). In the chart the gold circles mark the oscillators that crossed and the "
                 "white ones the oscillators that did not.")),
             Figure(path=why / "why-buy.png", height_mm=100.0,
-                   caption=(f"KO, {b.get('date', '')}: a BUY where {' and '.join(x.upper() for x in b.get('agree', []))} "
+                   caption=(f"{b.get('ticker', '')}, {b.get('date', '')}: a BUY where {' and '.join(x.upper() for x in b.get('agree', []))} "
                             f"agree, so two of three. Entry {b.get('entry', '')}."),
                    credit="Drawn by build/r/explain_osc.R from the KO price file."),
             Para(text=(
                 "**A sell** is the mirror image: an oscillator crosses downward. The slides give no sell trigger, "
                 "so the entry is the close of the day. That is our choice, not Lim's rule.")),
             Figure(path=why / "why-sell.png", height_mm=100.0,
-                   caption=(f"KO, {s.get('date', '')}: a SELL where {' and '.join(x.upper() for x in s.get('agree', []))} "
+                   caption=(f"{s.get('ticker', '')}, {s.get('date', '')}: a SELL where {' and '.join(x.upper() for x in s.get('agree', []))} "
                             f"agree, so two of three. Entry {s.get('entry', '')}."),
                    credit="Drawn by build/r/explain_osc.R from the KO price file."),
             Callout(label="Agreeing is not proof", tone="gold", text=(
                 "Three oscillators agreeing sounds like three witnesses. It is not. They are all built from the same "
-                f"closing prices, so they move together: on this KO data the RSI and the stochastic have a correlation "
+                f"closing prices, so they move together: on the example data the RSI and the stochastic have a correlation "
                 f"of {c.get('rsi_stoch', '')} and the RSI and MACD {c.get('rsi_macd', '')}. Lim calls this "
                 "**multicollinearity** and warns that it creates a **false consensus** and a false sense of "
                 "confidence (slide 78). His cure (slide 81) is oscillators built from different data, such as one "

@@ -69,13 +69,13 @@ def main():
     # the two "why" charts, drawn by R from the real KO file
     why = OUT / "why"
     why.mkdir(parents=True, exist_ok=True)
-    r = subprocess.run([RSCRIPT, str(REPO / "build" / "r" / "explain_osc.R"), str(a.data / "start" / "KO.csv"), str(why), "KO"],
+    r = subprocess.run([RSCRIPT, str(REPO / "build" / "r" / "explain_osc.R"), str(why), str(a.data / "start" / "KO.csv"), "KO", str(a.data / "start" / "F.csv"), "F"],
                        capture_output=True, text=True, check=True)
     info = {}
     for ln in r.stdout.splitlines():
         w = ln.split()
         if w and w[0] in ("SELL", "BUY"):
-            info[w[0].lower()] = {"date": w[1], "entry": w[3], "agree": w[5].split("+")}
+            info[w[0].lower()] = {"ticker": w[1], "date": w[2], "entry": w[4], "agree": w[6].split("+")}
         if w and w[0] == "CORR":
             info["corr"] = {"rsi_macd": w[2], "rsi_stoch": w[4], "macd_stoch": w[6]}
     (OUT / "why_info.json").write_text(json.dumps(info))

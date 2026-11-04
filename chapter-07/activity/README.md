@@ -86,12 +86,17 @@ formula capture the end date reads 2026,10,30 while the handout's first run uses
 2026,9,30; the handout says so beside it. Every PNG was checked for local paths and
 agent names before it was committed.
 
-The video (`build/build_video.py`, macOS `say` plus ffmpeg) covers the whole handout in
-its order with a title card per part: real browser captures of the CRAN, Posit and
-bpmn.io pages (shapes placed live in bpmn.io), the Sheets and RStudio captures, the 14 R
-steps drawn from the guide's own stages, and zoomed handout pages where nothing honest
-can be recorded. It is about 25 minutes and too large for git, so it is delivered with the
-student set outside the repository.
+The video (`build/build_video.py`, macOS `say` plus ffmpeg) is one long tutorial of the whole
+handout, about 21 minutes, with a title card per part. The RStudio part is **really recorded**:
+`build/`-independent tooling in the instructor's private folder types the 12 R steps live, a few
+lines at a time, then runs the finished script, opens `signals.csv`, adds the update data and runs
+it again (RStudio's own window only, grabbed with `screencapture -l`; no other window is ever in
+a frame). The flowchart part is built shape by shape in bpmn.io (`build/record_bpmn.py`, each shape
+really created in the editor, with the code lines it stands for). The install part uses real
+captures of the CRAN, Posit and bpmn.io pages. **The Google Sheets segment is a marked slot**: it
+shows the four still screenshots labelled as stills, and is replaced automatically by a screen
+recording if `rec/sheets-recording.mp4` exists. The video is too large for git and is delivered with
+the student set outside the repository.
 
 ## Verification
 

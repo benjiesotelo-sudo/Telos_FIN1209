@@ -145,7 +145,7 @@ def basics_blocks(fills: dict) -> tuple:
                 path=png, height_mm=70.0,
                 caption=("What `output/KO.png` looks like after step "
                          f"B{n}."),
-                credit="Drawn by this script from the start-here KO price file."))
+                credit="Drawn by this script from the KO file you download in Part 4a."))
         if st.after:
             blocks.append(Para(text=st.after))
         prev = code
@@ -199,9 +199,6 @@ BRIEF = Section(
                 (SCRIPT_NAME, "The finished example script. It works."),
                 (f"{FLOW_NAME}.pdf / .bpmn", "The example's flowchart, as a "
                  "picture and as a file you can open and edit."),
-                ("data (start here), data (October update)",
-                 "Price files for the example, KO and F. The second set is "
-                 "the same two stocks with a month of new rows."),
                 (f"{NAME}.mp4 and a narration script", "A video of Part 5, "
                  "if the video is in the folder."),
             ),
@@ -420,6 +417,63 @@ CONTRACT = Section(
     ),
 )
 
+EXAMPLE_TICKERS = (("NYSE:KO", "KO"), ("NYSE:F", "F"))
+
+
+def _gf(sym: str, end: str) -> str:
+    return f'=GOOGLEFINANCE("{sym}","all",DATE(2026,7,1),DATE({end}))'
+
+
+DATA = Section(
+    title="4a. Get the example prices yourself",
+    kicker="The same route you will use for your own task. We give you no "
+           "price files.",
+    footer="Get prices",
+    blocks=(
+        Para(text=(
+            "**Google Sheets** can fetch daily prices with one formula, and "
+            "it gives exactly the columns the contract needs: Date, Open, "
+            "High, Low, Close, Volume. You do this once per stock, and you "
+            "use the same dates as below so your numbers match this "
+            "handout.")),
+        Points(numbered=True, items=(
+            "Open **https://sheets.new** while signed in to your Google "
+            "account. A blank spreadsheet opens.",
+            "Click cell **A1** and type this formula, then press Enter:",
+        )),
+        TypeBox(text=_gf(*(EXAMPLE_TICKERS[0][0], "2026,9,30")),
+                label="Cell A1, for KO"),
+        Points(numbered=True, items=(
+            "Wait a moment. About 64 rows fill down from A1, with the six "
+            "column names in row 1. If you see `#N/A`, check the quote marks "
+            "are straight and the ticker is spelled `NYSE:KO`.",
+            "Choose **File, Download, Comma-separated values (.csv)**. Your "
+            "browser saves a file named after the spreadsheet.",
+            "Rename it **KO.csv** and move it into your `data` folder. The "
+            "name matters: the script takes the ticker from it.",
+            "Do the same for the second stock in a new spreadsheet, with "
+            "`NYSE:F`, and save it as **F.csv** in `data`. Part 5 runs the "
+            "script on these two files.",
+            "**Later, for the update in Part 5:** in each spreadsheet change "
+            "`DATE(2026,9,30)` in the formula to `DATE(2026,10,30)`, "
+            "download again, and replace the file in `data` (still named "
+            "KO.csv and F.csv).",
+        )),
+        TypeBox(text=_gf(EXAMPLE_TICKERS[1][0], "2026,9,30"),
+                label="Cell A1, for F"),
+        Callout(label="Swap the ticker, nothing else", tone="gold", text=(
+            "To use another stock, change only the text inside the first "
+            "quotes of the formula, for example `\"NASDAQ:AMD\"`. For a "
+            "Philippine stock try `\"PSE:\"` followed by its code, such as "
+            "`\"PSE:BDO\"`. If Sheets answers `#N/A` or gives fewer than "
+            "six columns, that exchange is not covered: use a US stock.")),
+        Para(text=(
+            "A file from the **Download** step may have a time on every date "
+            "(`2026-07-01 16:00:00`). The contract allows that and the "
+            "script handles it.")),
+    ),
+)
+
 # --------------------------------------------------------------------------
 # 4 R basics, built from the script
 # --------------------------------------------------------------------------
@@ -436,7 +490,7 @@ def basics_section(fills: dict) -> Section:
             Para(text=(
                 "Before you start, make a folder on your computer called "
                 f"`{NAME}` and put the folder `data` inside it with the "
-                "start-here price files KO and F. In RStudio use **File, New "
+                "first-run price files KO and F from Part 4a. In RStudio use **File, New "
                 "File, R Script**, save it in that folder, then choose "
                 "**Session, Set Working Directory, To Source File "
                 "Location**. This tells R which folder you are working in, "
@@ -469,8 +523,8 @@ def run_section(counts: dict) -> Section:
                        "to your computer. Inside it are the script, the "
                        "flowchart files, and two folders of prices. Make a "
                        "folder called `data` next to the script, and copy "
-                       "the two files from **data (start here)**, `KO.csv` "
-                       "and `F.csv`, into it."),
+                       "the two files `KO.csv` and `F.csv` you downloaded in "
+                       "Part 4a, into it."),
                  then="The folder now holds the script and a `data` folder "
                       "with two `.csv` files in it.",
                  shot=Shot("r01-folder")),
@@ -490,7 +544,7 @@ def run_section(counts: dict) -> Section:
                        "pane. R reads both files, finds the signals, draws "
                        "two charts and writes the table."),
                  then=(f"The Console prints one line per file and the name "
-                       f"of the file it wrote. On the start-here files that "
+                       f"of the file it wrote. On the first-run files that "
                        f"is {counts.get('KO_start', '?')} signals for KO and "
                        f"{counts.get('F_start', '?')} for F."),
                  shot=Shot("r04-source")),
@@ -519,9 +573,9 @@ def run_section(counts: dict) -> Section:
                  shot=Shot("r07-chart")),
             Step(title="Add new data",
                  text=("This is the automation. Close nothing. Copy the two "
-                       "files from **data (October update)** over the ones "
-                       "in `data`, replacing them. They are the same two "
-                       "stocks with a month of new rows added at the "
+                       "files from the October download (Part 4a, step 6) over "
+                       "the ones in `data`, replacing them. They are the "
+                       "same two stocks with a month of new rows at the "
                        "bottom."),
                  shot=Shot("r08-new-data")),
             Step(title="Run it again",
@@ -687,14 +741,10 @@ TASK = Section(
             "16:00:00`. One file may have no signals at all. A script that "
             "only works on the example files will not pass.")),
         Para(text=(
-            "**Getting prices for your own testing.** In Google Sheets, in "
-            "any cell, type `=GOOGLEFINANCE(\"NASDAQ:KO\",\"all\",DATE(2026,1,2),DATE(2026,4,30))`, "
-            "then **File, Download, Comma-separated values (.csv)**. The "
-            "columns it makes are Date, Open, High, Low, Close and Volume, "
-            "which is the contract. Use a US-listed ticker such as "
-            "`NYSE:F` or `NASDAQ:AMD`. If you want a Philippine stock, try "
-            "`PSE:` followed by the ticker; if Sheets answers `#N/A` the "
-            "exchange is not covered, so use a US stock.")),
+            "**Getting prices for your own testing.** Use Part 4a: the "
+            "same formula, a different ticker and dates, then "
+            "File, Download, CSV. Several stocks and several periods make "
+            "the best test.")),
     ),
 )
 
@@ -861,11 +911,10 @@ def build_activity(fills: dict, counts: dict) -> Activity:
         points=TOTAL,
         duration="a few hours over a week",
         replaces="a take-home automation activity",
-        source_note=("Example prices are daily bars for KO and F, "
-                     "downloaded from Yahoo Finance for classroom use and "
-                     "not redistributed in the public course repository. "
-                     "The rule is Lim (2016) p. 231."),
-        sections=(BRIEF, INSTALL, RULE, CONTRACT, basics_section(fills),
+        source_note=("Prices are pulled by each student with GOOGLEFINANCE "
+                     "in Google Sheets; none are distributed with the "
+                     "course. The rule is Lim (2016) p. 231."),
+        sections=(BRIEF, INSTALL, RULE, CONTRACT, DATA, basics_section(fills),
                   run_section(counts), flow_section(), TASK, AI, MARKS,
                   RUBRIC_SECTION),
     )

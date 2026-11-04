@@ -47,7 +47,7 @@ SCENES = (
     Scene("Step 1: the folder",
           "Step one. Copy the First Automation folder to your computer. Next "
           "to the script, make a folder called data, and copy into it the two "
-          "price files from data, start here: K O dot csv and F dot csv.",
+          "price files you downloaded in Part 4 A: K O dot csv and F dot csv.",
           shot="r01-folder"),
     Scene("Step 2: open the script",
           "Step two. In RStudio, choose File, Open File, and pick the example "
@@ -77,8 +77,9 @@ SCENES = (
           "Check one yourself: find signal one in the table and see that the "
           "triangle sits at that entry price.", shot="r07-chart"),
     Scene("Step 8: add new data",
-          "Step eight. This is the automation. Copy the two files from data, "
-          "October update, over the ones in your data folder. They are the "
+          "Step eight. This is the automation. Download both files again with "
+          "the later end date from Part 4 A, and copy them over the ones in "
+          "your data folder. They are the "
           "same two stocks with a month of new rows at the bottom.",
           shot="r08-new-data"),
     Scene("Step 9: run it again",

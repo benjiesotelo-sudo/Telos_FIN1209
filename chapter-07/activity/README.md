@@ -11,7 +11,7 @@ students to build something. Worth **100** points.
 | `... - Example Script.R` | Students | The finished example, base R only. Williams' Oops, Lim p. 231, slides 194 to 201 |
 | `... - Example Flowchart.pdf / .bpmn / .svg` | Students | The example's BPMN flowchart; the `.bpmn` opens in bpmn.io with layout intact |
 | `... - Narration Script.md` | Instructor | What to say over the screenshots, to record in his own voice |
-| `data/`, `output/` | Nobody | Gitignored. Where a run writes; see **The data** below |
+| `data/`, `output/` | Nobody | Gitignored. Where a run reads and writes; see **The data** below |
 
 The grading key, the unseen test files, the expected signals and the grader are
 **not in this repository**. They live outside it, in the instructor's private
@@ -61,10 +61,13 @@ previous bar's range. FRED, which Activity 1 used, carries closes only.
   no signed-in Google session was available, so whether `PSE:` tickers resolve is
   unconfirmed. The handout says to fall back to a US ticker on `#N/A`.
 
-So no price data is committed. The example uses KO and F daily bars from Yahoo,
-1 July to 30 September 2026 ("start here") and to 30 October 2026 ("update").
-Those files are handed to the class on the instructor's own Drive, not published.
-The handout prints at most a few rows and the script's output on them.
+So no price data is committed, and none is handed out either: the class Drive
+is publicly readable, so a vendor file there would be redistribution too. Every
+student pulls the example's prices themselves with `GOOGLEFINANCE` (handout
+Part 4a, fixed dates so the numbers match), the same route as their own task.
+The ticker is one swappable string in the formula. Copies of the files used to
+build the handout's outputs are kept privately, as test fixtures, outside the
+repository.
 
 ## Verification
 

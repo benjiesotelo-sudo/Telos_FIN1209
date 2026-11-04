@@ -56,13 +56,18 @@ def card(scene, path: Path) -> None:
     im.save(path)
 
 
-def fit(src: Path, path: Path) -> None:
-    from PIL import Image
+def fit(src: Path, path: Path, label: str = "") -> None:
+    from PIL import Image, ImageDraw, ImageFont
     im = Image.open(src).convert("RGB")
     k = min(W / im.width, H / im.height)
     im = im.resize((int(im.width * k), int(im.height * k)), Image.LANCZOS)
     bg = Image.new("RGB", (W, H), "#FFFFFF")
     bg.paste(im, ((W - im.width) // 2, (H - im.height) // 2))
+    if label:
+        d = ImageDraw.Draw(bg)
+        f = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 36)
+        d.rectangle([0, 0, W, 64], fill="#F2A900")
+        d.text((W // 2, 32), label, font=f, fill="#222222", anchor="mm")
     bg.save(path)
 
 
@@ -152,7 +157,7 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                 src = screens / f"{s.ref}.png"
                 if not src.is_file():
                     raise SystemExit(f"missing screenshot {src}")
-                fit(src, img)
+                fit(src, img, s.label)
             elif s.kind == "web":
                 src = WEB / f"{s.ref}.png"
                 if not src.is_file():

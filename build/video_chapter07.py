@@ -31,6 +31,7 @@ class Scene:
     ref: str = ""
     crop: tuple = (0.0, 1.0)
     card: tuple = ()
+    label: str = ""          # overlay text drawn at the top of a still
 
 
 def part(n: str, title: str, sub: str = "") -> Scene:
@@ -97,6 +98,37 @@ def _flowchart_scenes() -> tuple:
             say += " The arrows are labelled " + " and ".join(x for x in fr["flows"] if x) + "."
         out.append(Scene(f"Draw: {name}", say, "web", fr["frame"].replace(".png", "")))
     return tuple(out)
+
+
+SHEETS_SLOT = "sheets-recording"      # rec/sheets-recording.mp4 : the screen recording, when it exists
+
+
+def _sheets_scenes() -> tuple:
+    """The Google Sheets segment. A recording in rec/ replaces the stills; nothing else changes."""
+    from pathlib import Path
+    rec = Path("/Users/benjie/.treehouse/benjie-agent-workspace-8bf1b0/1/benjie-agent-workspace/data/fin1209-activity2/rec") / f"{SHEETS_SLOT}.mp4"
+    steps = (
+        ("Sheets: a blank spreadsheet",
+         "Google Sheets is the one route this handout walks through, and it works for US listed stocks. "
+         "Go to sheets dot new while signed in to your Google account. A blank spreadsheet opens. Click cell A1.",
+         "g1-blank-sheet"),
+        ("Sheets: the formula",
+         "In A1 type the GOOGLEFINANCE formula with the ticker N Y S E colon K O, the word all, the start date, "
+         "the end date, and daily. Use the dates from the handout so your numbers match. For this first run the "
+         "end date is September thirtieth. To pick another company, change only the ticker inside the first quotes.",
+         "g2-formula"),
+        ("Sheets: the result",
+         "About sixty four rows fill in, with the six column names in row one. The dates read like seven slash one "
+         "slash twenty twenty six. That is how Google Sheets writes them, and the script reads them exactly as they "
+         "are, so you never edit a date.", "g3-result"),
+        ("Sheets: download",
+         "Choose File, Download, Comma Separated Values. The file holds the values, not the formula. Rename it K O "
+         "dot csv and put it in your data folder, then do the same for F in a new spreadsheet.", "g4-download-menu"),
+    )
+    if rec.is_file():
+        return (Scene("Sheets: the whole routine, recorded", " ".join(x[1] for x in steps), "clip", SHEETS_SLOT),)
+    return tuple(Scene(t, say, "shot", ref, label="STILL SCREENSHOT: the screen recording of this step is still to be added")
+                 for t, say, ref in steps)
 
 
 SCENES = (
@@ -198,23 +230,7 @@ SCENES = (
           "page", "The free sources", (0.0, 0.75)),
 
     part("4a", "Get the example prices yourself", "Google Sheets"),
-    Scene("Sheets: a blank spreadsheet",
-          "Google Sheets is the one route this handout walks through, and it works for US listed "
-          "stocks. Go to sheets dot new while signed in to your Google account. A blank spreadsheet "
-          "opens. Click cell A1.", "shot", "g1-blank-sheet"),
-    Scene("Sheets: the formula",
-          "In A1 type the GOOGLEFINANCE formula with the ticker N Y S E colon K O, the word all, "
-          "the start date, the end date, and daily. Use the dates from the handout so your numbers "
-          "match. For this first run the end date is September thirtieth. In this capture the end "
-          "date reads October thirtieth, so use the handout's date.", "shot", "g2-formula"),
-    Scene("Sheets: the result",
-          "About sixty four rows fill in, with the six column names in row one. The dates read like "
-          "seven slash one slash twenty twenty six. That is how Google Sheets writes them, and the "
-          "script reads them exactly as they are, so you never edit a date.", "shot", "g3-result"),
-    Scene("Sheets: download",
-          "Choose File, Download, Comma Separated Values. The file holds the values, not the "
-          "formula. Rename it K O dot csv and put it in your data folder, then do the same for F in "
-          "a new spreadsheet.", "shot", "g4-download-menu"),
+) + _sheets_scenes() + (
     Scene("Sheets: update and swap",
           "To update later, change the end date in the formula to October thirtieth, download "
           "again, and replace the file. To use another US stock, change only the ticker inside the "

@@ -114,7 +114,7 @@ You need one bar per trading day, with date, open, high, low, close and volume. 
 
 *Picture: the handout page: The free sources*
 
-Here are the free sources, checked on the public sites. Google Sheets with GOOGLEFINANCE gives daily open, high, low, close and volume, needs a Google account, and exports a CSV. P S E Edge shows today's prices only, with no download. Yahoo Finance shows a history table for US stocks but no Philippine stocks and no download button when signed out. Investing dot com, TradingView and broker platforms could not be checked without an account, and the handout says so. The script works with any source whose CSV matches the contract.
+Here are the free sources, checked on the public sites. Google Sheets with GOOGLEFINANCE gives daily open, high, low, close and volume for US stocks only, needs a Google account, and exports a CSV. P S E colon J F C returned N slash A, so there is no daily history there. P S E Edge shows today's prices only, with no download. Yahoo Finance shows a history table for US stocks but no Philippine stocks and no download button when signed out. Investing dot com, TradingView and broker platforms could not be checked without an account, and the handout says so. The script works with any source whose CSV matches the contract.
 
 ## 20. Part 4a: Get the example prices yourself
 
@@ -122,271 +122,367 @@ Here are the free sources, checked on the public sites. Google Sheets with GOOGL
 
 Part 4a. Get the example prices yourself.
 
-## 21. The GOOGLEFINANCE steps
+## 21. Sheets: a blank spreadsheet
+
+*Picture: screenshot `g1-blank-sheet`*
+
+Google Sheets is the one route this handout walks through, and it works for US listed stocks. Go to sheets dot new while signed in to your Google account. A blank spreadsheet opens. Click cell A1.
+
+## 22. Sheets: the formula
+
+*Picture: screenshot `g2-formula`*
+
+In A1 type the GOOGLEFINANCE formula with the ticker N Y S E colon K O, the word all, the start date, the end date, and daily. Use the dates from the handout so your numbers match. For this first run the end date is September thirtieth. To pick another company, change only the ticker inside the first quotes.
+
+## 23. Sheets: the result
+
+*Picture: screenshot `g3-result`*
+
+About sixty four rows fill in, with the six column names in row one. The dates read like seven slash one slash twenty twenty six. That is how Google Sheets writes them, and the script reads them exactly as they are, so you never edit a date.
+
+## 24. Sheets: download
+
+*Picture: screenshot `g4-download-menu`*
+
+Choose File, Download, Comma Separated Values. The file holds the values, not the formula. Rename it K O dot csv and put it in your data folder, then do the same for F in a new spreadsheet.
+
+## 25. Sheets: update and swap
 
 *Picture: the handout page: 4a. Get the example prices*
 
-Google Sheets is the one route this handout walks through. Open sheets dot new, type the GOOGLEFINANCE formula in cell A1 with the dates from the handout, wait for the rows to fill, then choose File, Download, comma separated values. Rename the file K O dot csv and put it in your data folder. Do the same for F. To update later, change the end date in the formula, download again, and replace the file. To use another stock, change only the ticker inside the first quotes.
+To update later, change the end date in the formula to October thirtieth, download again, and replace the file. To use another US stock, change only the ticker inside the first quotes. Philippine stocks do not work here: we tried P S E colon J F C and Sheets answered N slash A. For a Philippine stock you need another source from the survey, for example Investing dot com, saved as a CSV with the contract's columns.
 
-## 22. Part 4: R in 14 small steps
+## 26. Part 4: R in 14 small steps
 
 *Picture: a title card*
 
 Part 4. R in 14 small steps.
 
-## 23. B1: A named value (a variable)
+## 27. Start a new script
 
-*Picture: the code of R step variable*
+*Picture: a screen recording (00-new-script)*
 
-Step 1 of 14. A named value (a variable). A variable is a name that holds a value. The arrow arrow puts the value on the right into the name on the left. Text goes inside quotes. A line that starts with # is a comment: a note for people, which R skips. print() shows a value in the Console. The new lines are highlighted, and what R printed is below the code.
+Now we write the script ourselves. In RStudio choose File, New File, R Script. A blank script opens in the top left pane. Choose File, Save As, name it, and save it in the First Automation folder, next to the data folder. Then choose Session, Set Working Directory, To Source File Location, so R works in this folder.
 
-## 24. B2: Read a CSV file into a table
+## 28. B1: A named value (a variable)
 
-*Picture: the code of R step read*
+*Picture: a screen recording (01-variable)*
 
-Step 2 of 14. Read a CSV file into a table. read.csv() opens a CSV file and returns a table, which R calls a data frame. Each row is one trading day (one bar) and each column is one kind of price. head(bars, 3) shows only the first three rows. The new lines are highlighted, and what R printed is below the code.
+Step 1 of 14. A named value (a variable). A variable is a name that holds a value. The arrow arrow puts the value on the right into the name on the left. Text goes inside quotes. A line that starts with # is a comment: a note for people, which R skips. print() shows a value in the Console. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 25. B3: One column is a list of values (a vector)
+## 29. B2: Read a CSV file into a table
 
-*Picture: the code of R step column*
+*Picture: a screen recording (02-read)*
 
-Step 3 of 14. One column is a list of values (a vector). bars$High is the whole High column. R calls a list of values like this a vector. Square brackets pick a position: highs[4] is the fourth value and highs[1:5] is the first five. The new lines are highlighted, and what R printed is below the code.
+Step 2 of 14. Read a CSV file into a table. read.csv() opens a CSV file and returns a table, which R calls a data frame. Each row is one trading day (one bar) and each column is one kind of price. head(bars, 3) shows only the first three rows. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 26. B4: Cut text down (the date)
+## 30. B3: One column is a list of values (a vector)
 
-*Picture: the code of R step trim*
+*Picture: a screen recording (03-column)*
 
-Step 4 of 14. Cut text down (the date). The Date column is text and may carry a time, like 2026-07-02 16:00:00. substr(text, 1, 10) keeps only the first ten characters, the day. Assigning to bars$Date replaces the column. The new lines are highlighted, and what R printed is below the code.
+Step 3 of 14. One column is a list of values (a vector). bars$High is the whole High column. R calls a list of values like this a vector. Square brackets pick a position: highs[4] is the fourth value and highs[1:5] is the first five. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 27. B5: Compare two numbers
+## 31. B4: Clean up the date
 
-*Picture: the code of R step compare*
+*Picture: a screen recording (04-trim)*
 
-Step 5 of 14. Compare two numbers. A comparison such as > or <= gives TRUE or FALSE. We use the fourth bar, i arrow 4. The previous bar is i - 1. The first test asks the Oops question: did this bar open above the previous bar's high? The second asks whether price then came back to that high, that is, whether this bar's low is at or below it. The new lines are highlighted, and what R printed is below the code.
+Step 4 of 14. Clean up the date. The Date column is text, and it may look like 7/1/2026 16:00:00 (the Google Sheets layout) or 2026-07-02. sub(" .*", "", x) removes everything from the first space, which drops the time. as.Date() turns the text into a real date, trying each layout in tryFormats, and format() writes it back as YYYY-MM-DD. Assigning to bars$Date replaces the column. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 28. B6: Decide with if
+## 32. B5: Compare two numbers
 
-*Picture: the code of R step if*
+*Picture: a screen recording (05-compare)*
 
-Step 6 of 14. Decide with if. if (condition) { ... } runs the lines inside the braces only when the condition is TRUE. && means both conditions must be true. cat() prints text and values on one line. This is the bearish Oops on slide 194. The new lines are highlighted, and what R printed is below the code.
+Step 5 of 14. Compare two numbers. A comparison such as > or <= gives TRUE or FALSE. We use the fourth bar, i arrow 4. The previous bar is i - 1. The first test asks the Oops question: did this bar open above the previous bar's high? The second asks whether price then came back to that high, that is, whether this bar's low is at or below it. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 29. B7: Give if a second case (else if)
+## 33. B6: Decide with if
 
-*Picture: the code of R step elseif*
+*Picture: a screen recording (06-if)*
 
-Step 7 of 14. Give if a second case (else if). else if is tried only when the first condition is FALSE. The bullish Oops on slide 199 is the mirror image: open below the previous low, then price comes back up to it. We change i to a bar that opened below the previous low. The new lines are highlighted, and what R printed is below the code.
+Step 6 of 14. Decide with if. if (condition) { ... } runs the lines inside the braces only when the condition is TRUE. && means both conditions must be true. cat() prints text and values on one line. This is the bearish Oops on slide 194. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 30. B8: Repeat for every bar (a loop over rows)
+## 34. B7: Give if a second case (else if)
 
-*Picture: the code of R step loop*
+*Picture: a screen recording (07-elseif)*
 
-Step 8 of 14. Repeat for every bar (a loop over rows). for (i in 2:nrow(bars)) runs the lines inside the braces once for every bar from the second to the last, with i taking each number in turn. We start at 2 because the first bar has no previous bar. The new lines are highlighted, and what R printed is below the code.
+Step 7 of 14. Give if a second case (else if). else if is tried only when the first condition is FALSE. The bullish Oops on slide 199 is the mirror image: open below the previous low, then price comes back up to it. We change i to a bar that opened below the previous low. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 31. B9: Collect the results in a table
+## 35. B8: Repeat for every bar (a loop over rows)
 
-*Picture: the code of R step table*
+*Picture: a screen recording (08-loop)*
 
-Step 9 of 14. Collect the results in a table. Printing is not enough: we want a table we can save. First make an empty table with named columns. Then each time a signal is found, build a one-row table and add it to the bottom with rbind(). The new lines are highlighted, and what R printed is below the code.
+Step 8 of 14. Repeat for every bar (a loop over rows). for (i in 2:nrow(bars)) runs the lines inside the braces once for every bar from the second to the last, with i taking each number in turn. We start at 2 because the first bar has no previous bar. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 32. B10: Write a CSV file
+## 36. B9: Collect the results in a table
 
-*Picture: the code of R step write*
+*Picture: a screen recording (09-table)*
 
-Step 10 of 14. Write a CSV file. write.csv() saves a table as a CSV file. dir.create() makes the output folder first (it does nothing if the folder exists). Open the new file to see the signals. The new lines are highlighted, and what R printed is below the code.
+Step 9 of 14. Collect the results in a table. Printing is not enough: we want a table we can save. First make an empty table with named columns. Then each time a signal is found, build a one-row table and add it to the bottom with rbind(). Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 33. B11: Draw a chart
+## 37. B10: Write a CSV file
 
-*Picture: the code of R step plot*
+*Picture: a screen recording (10-write)*
 
-Step 11 of 14. Draw a chart. png() opens a picture file, the plot commands draw into it and dev.off() closes it. plot() makes the empty frame, segments() draws each bar's high-to-low line and rect() draws its body from the open to the close: white when the bar closed up, black when it closed down. When the picture file is closed R prints null device 1. That is normal. The new lines are highlighted, and what R printed is below the code.
+Step 10 of 14. Write a CSV file. write.csv() saves a table as a CSV file. dir.create() makes the output folder first (it does nothing if the folder exists). Open the new file to see the signals. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 34. B12: Mark the signals on the chart
+## 38. B11: Draw a chart
 
-*Picture: the code of R step marks*
+*Picture: a screen recording (11-plot)*
 
-Step 12 of 14. Mark the signals on the chart. Chart commands draw on top of what is already there. points() puts a triangle at each signal's entry price: red pointing down for SELL, green pointing up for BUY. A short dash marks the stoploss and text() writes the signal's number just beyond that dash; it is its row in signals.csv. The new lines are highlighted, and what R printed is below the code.
+Step 11 of 14. Draw a chart. png() opens a picture file, the plot commands draw into it and dev.off() closes it. plot() makes the empty frame, segments() draws each bar's high-to-low line and rect() draws its body from the open to the close: white when the bar closed up, black when it closed down. When the picture file is closed R prints null device 1. That is normal. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 35. B13: Give a block of code a name (a function)
+## 39. B12: Mark the signals on the chart
 
-*Picture: the code of R step function*
+*Picture: a screen recording (12-marks)*
 
-Step 13 of 14. Give a block of code a name (a function). A function packs lines under a name so they can be reused. name arrow function(inputs) { ... } defines it, and the last value it produces is what it gives back. We make three: read_bars, find_oops and draw_chart. The lines inside are the ones you already wrote; only the packaging is new. The new lines are highlighted, and what R printed is below the code.
+Step 12 of 14. Mark the signals on the chart. Chart commands draw on top of what is already there. points() puts a triangle at each signal's entry price: red pointing down for SELL, green pointing up for BUY. A short dash marks the stoploss and text() writes the signal's number just beyond that dash; it is its row in signals.csv. Watch it being typed, then run with Code, Source, and read what R printed in the console.
 
-## 36. B14: Repeat for every file (a loop over files)
+## 40. Steps 13 and 14: the finished script
 
-*Picture: the code of R step files*
+*Picture: a screen recording (13-finished-example)*
 
-Step 14 of 14. Repeat for every file (a loop over files). list.files() returns the names of the files in a folder. A for loop over them runs the three functions once per file, so any CSV you drop into data is read. Adding and saving all the signals together is the last piece. This is the finished script, exactly the file you were given. The new lines are highlighted, and what R printed is below the code.
+Steps 13 and 14 pack these lines into three functions and loop over every file in the data folder. Instead of retyping them, open the finished example script. It is exactly the file in your folder. We run it with Source: it reads both of the Google Sheets files, and the console says how many signals it found in each. Then the Files pane shows the output folder, and signals dot csv opens in the editor.
 
-## 37. Part 5: Run the finished example
+## 41. Adding new data
+
+*Picture: a screen recording (14-update)*
+
+Now the automation. Replace the two files in the data folder with the October downloads, the same stocks with a month of new rows. Run the script again and change nothing else. The counts go up, and the table and both charts are rewritten.
+
+## 42. Part 5: Run the finished example
 
 *Picture: a title card*
 
 Part 5. Run the finished example.
 
-## 38. Step 1: the folder
+## 43. Step 1: the folder
 
 *Picture: screenshot `r01-folder`*
 
 Step one. Copy the First Automation folder to your Documents folder. Next to the script, make a folder called data, and copy into it the two price files you downloaded: K O dot csv and F dot csv.
 
-## 39. Step 2: open the script
+## 44. Step 2: open the script
 
 *Picture: screenshot `r02-open-script`*
 
 Step two. In RStudio, choose File, Open File, and pick the example script. It opens in the top left pane.
 
-## 40. Step 3: set the folder
+## 45. Step 3: set the folder
 
 *Picture: screenshot `r03-working-dir`*
 
 Step three, the one people forget. Choose Session, Set Working Directory, To Source File Location. Without this, R cannot find the data folder.
 
-## 41. Step 4: run it
+## 46. Step 4: run it
 
 *Picture: screenshot `r04-source`*
 
 Step four. Click Source. R reads both files, finds the signals, draws two charts and writes the table. The console says how many signals it found in each file.
 
-## 42. Step 5: what it made
+## 47. Step 5: what it made
 
 *Picture: screenshot `r05-output-folder`*
 
 Step five. The Files pane now has an output folder. Inside are signals dot csv, and one chart for each stock.
 
-## 43. Step 6: the signals
+## 48. Step 6: the signals
 
 *Picture: screenshot `r06-signals-csv`*
 
 Step six. Open signals dot csv. Each row is one Oops. Side says sell or buy. Entry is the price where the stop order waits. Stoploss is where the trade is closed. Reverse is the opposite side Lim starts at the stoploss.
 
-## 44. Step 7: the chart
+## 49. Step 7: the chart
 
 *Picture: screenshot `r07-chart`*
 
 Step seven. Open the K O chart. White candles closed up and black candles closed down. A red triangle pointing down is a sell entry. A green triangle pointing up is a buy entry. The short dash is its stoploss, and the number is the signal's row in the table. Check one yourself: find signal one in the table and see that the triangle sits at that entry price.
 
-## 45. Step 8: add new data
+## 50. Step 8: add new data
 
 *Picture: screenshot `r08-new-data`*
 
 Step eight. This is the automation. Download both files again from Google Sheets with the later end date, and copy them over the ones in your data folder. They are the same two stocks with a month of new rows at the bottom.
 
-## 46. Step 9: run it again
+## 51. Step 9: run it again
 
 *Picture: screenshot `r09-rerun`*
 
 Step nine. Click Source again, and change nothing else. The counts go up, and the table and both charts are rewritten.
 
-## 47. Step 10: the updated chart
+## 52. Step 10: the updated chart
 
 *Picture: screenshot `r10-chart-updated`*
 
 Step ten. Open the K O chart again. It is longer, and the new signals continue the numbering. That is what automation means: the rule is applied the same way every time you add data.
 
-## 48. Part 6: The flowchart
+## 53. Part 6: The flowchart
 
 *Picture: a title card*
 
 Part 6. The flowchart.
 
-## 49. The example flowchart
+## 54. The example flowchart
 
 *Picture: a capture of a public web page*
 
 A flowchart says, in shapes, what the script does and in what order. This is the example's flowchart in BPMN, opened in bpmn dot io from the dot bpmn file. A thin circle starts it. Tasks are rounded rectangles, named with a verb. A diamond with an X is a yes or no question, with every arrow labelled. There are two loops: one gateway asks whether a file is left, and one asks whether a bar is left.
 
-## 50. Shapes tied to code
+## 55. Shapes tied to code
 
 *Picture: the handout page: Which lines of the example script*
 
 Each numbered shape stands for lines of the example script, and the handout's table gives them. Your flowchart must do the same: every shape should point at lines of your script, and every loop and decision in your code should be a shape.
 
-## 51. Drawing: a blank diagram
+## 56. Drawing it yourself
 
 *Picture: a capture of a public web page*
 
-Now let's draw a few shapes in bpmn dot io. Open demo dot bpmn dot io and choose create a new diagram. It starts with one start event. Double click it and name it, for example Run the script.
+Now we draw this same flowchart ourselves, one shape at a time, in bpmn dot io, and say which lines of the script each shape stands for. Open demo dot bpmn dot io and create a new diagram.
 
-## 52. Drawing: a task
-
-*Picture: a capture of a public web page*
-
-Pick the rounded rectangle from the palette on the left, or use the arrow on the start event, and place a task after it. Name it with a verb: Read the file into a table.
-
-## 53. Drawing: a gateway
+## 57. Draw: Run the script
 
 *Picture: a capture of a public web page*
 
-Add a diamond gateway for a question, and name it with the question: Gap up and back to the previous high?
+First the start event, a thin circle. Name it Run the script. It stands for the moment you click Source.
 
-## 54. Drawing: label the arrow
-
-*Picture: a capture of a public web page*
-
-Add the task that happens when the answer is yes, and click the arrow to label it yes. Every arrow leaving a gateway needs a label.
-
-## 55. Drawing: an end event
+## 58. Draw: Name the data and output folders
 
 *Picture: a capture of a public web page*
 
-Finish with a thick circle, an end event. Every path must reach one. When you are done, use the buttons at the bottom left to download your diagram as a dot bpmn file, and as an image or print it to a PDF. The PDF is the preferred submission.
+A task, a rounded rectangle, named with a verb: Name the data and output folders. It stands for lines 9 to 10 of the script.
 
-## 56. Part 7: Your task
+## 59. Draw: List the CSV files in the data folder
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: List the CSV files in the data folder. It stands for line 94 of the script.
+
+## 60. Draw: Another file left?
+
+*Picture: a capture of a public web page*
+
+A diamond gateway is a yes or no question: Another file left? It stands for line 96 of the script. Draw an arrow out of it for each answer, and label every one.
+
+## 61. Draw: Read the file into a table
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: Read the file into a table. It stands for lines 13 to 21 and line 98 of the script. The arrows are labelled yes.
+
+## 62. Draw: Start an empty signals table
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: Start an empty signals table. It stands for lines 33 to 36 of the script.
+
+## 63. Draw: Another bar left?
+
+*Picture: a capture of a public web page*
+
+A diamond gateway is a yes or no question: Another bar left? It stands for line 40 of the script. Draw an arrow out of it for each answer, and label every one.
+
+## 64. Draw: Gap up and price back to the previous high?
+
+*Picture: a capture of a public web page*
+
+A diamond gateway is a yes or no question: Gap up and price back to the previous high? It stands for line 43 of the script. Draw an arrow out of it for each answer, and label every one. The arrows are labelled yes.
+
+## 65. Draw: Record a SELL signal entry = previous high stoploss = new high
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: Record a SELL signal entry = previous high stoploss = new high. It stands for lines 45 to 48 of the script. The arrows are labelled yes.
+
+## 66. Draw: Gap down and price back to the previous low?
+
+*Picture: a capture of a public web page*
+
+A diamond gateway is a yes or no question: Gap down and price back to the previous low? It stands for line 49 of the script. Draw an arrow out of it for each answer, and label every one. The arrows are labelled no and no.
+
+## 67. Draw: Record a BUY signal entry = previous low stoploss = new low
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: Record a BUY signal entry = previous low stoploss = new low. It stands for lines 51 to 54 of the script. The arrows are labelled yes.
+
+## 68. Draw: Draw the chart and mark the signals
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: Draw the chart and mark the signals. It stands for lines 64 to 89 and line 100 of the script. The arrows are labelled no.
+
+## 69. Draw: Add this file's signals to the list
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: Add this file's signals to the list. It stands for line 102 of the script.
+
+## 70. Draw: Write output/signals.csv
+
+*Picture: a capture of a public web page*
+
+A task, a rounded rectangle, named with a verb: Write output/signals.csv. It stands for line 110 of the script. The arrows are labelled no.
+
+## 71. Draw: Signals and charts updated
+
+*Picture: a capture of a public web page*
+
+Last, the end event, a thick circle, named Signals and charts updated. Every path must reach one. When you are happy, use the buttons at the bottom left of bpmn dot io to download the diagram as a dot bpmn file and as an image, or print it to a PDF. The PDF is the preferred submission.
+
+## 72. Part 7: Your task
 
 *Picture: a title card*
 
 Part 7. Your task.
 
-## 57. Your task
+## 73. Your task
 
 *Picture: the handout page: 7. Your task*
 
 Your task is your own R script that applies one rule from Chapters one to seven and meets the contract, and a flowchart of how it works. Reuse Oops, or choose Hikkake, or another rule where the slides give exact buy and stop prices. Write the rule's name and slide numbers in a comment at the top. Where the slides leave something open, choose the simplest thing and say so. Do not bring in outside indicators.
 
-## 58. What to submit
+## 74. What to submit
 
 *Picture: the handout page: 7. Your task*
 
 Submit two files, named exactly. Your script: FirstAutomation, underscore, your surname, underscore, your first name, dot R. Your flowchart: the same name with underscore Flowchart, as a PDF, which is preferred, or a dot bpmn file, or a Markdown file with a Mermaid flowchart. Do not send price files or output.
 
-## 59. Check before you submit
+## 75. Check before you submit
 
 *Picture: the handout page: 7. Your task*
 
 Before you submit, check five things. Run your script in a clean folder with no changes and no installs. Check signals dot csv has the five columns and a chart exists for each file. Delete the output folder and run again. Run with an empty data folder, and it should not crash. And open your flowchart next to your script: every shape has lines behind it. The marker runs your script on files you have not seen, in both date layouts, and one file may have no signals.
 
-## 60. Part 8: Using AI
+## 76. Part 8: Using AI
 
 *Picture: a title card*
 
 Part 8. Using AI.
 
-## 61. The AI rule
+## 77. The AI rule
 
 *Picture: the handout page: 8. Using AI*
 
 You may use AI to help write your script. The condition is that you can properly visualise and explain it in your flowchart. The flowchart must match the script you actually submit. Each task must say, in your own words, what that part of the code does, and where the rule has a number, which slide it comes from. If you cannot explain a part of the script, do not submit it. A script that runs perfectly with a flowchart that does not match it loses the flowchart marks.
 
-## 62. Part 9: How it is marked
+## 78. Part 9: How it is marked
 
 *Picture: a title card*
 
 Part 9. How it is marked.
 
-## 63. The marks
+## 79. The marks
 
 *Picture: the handout page: 9. The marks*
 
 One hundred points. Sixty are checked against the record by running your script on files you have never seen: ten for running, ten for writing the files the contract names, twenty for finding the right signals, ten for the right prices, and ten for the chart showing them. Forty are judged from your flowchart: ten for correct BPMN, fifteen for matching your script, and fifteen for explaining each step. How your code looks is not marked.
 
-## 64. The rubric
+## 80. The rubric
 
 *Picture: the handout page: How a written answer is marked*
 
 The judged marks use the course's written answer rubric. An answer is marked on whether it is grounded, pointing at something specific you can check, and connected, so the conclusion follows. Naming what argues against you is never marked, but it is what the best answers do. The levels are full, partial, minimal and none, and the handout shows an example of every level.
 
-## 65. Good luck
+## 81. Good luck
 
 *Picture: a title card*
 

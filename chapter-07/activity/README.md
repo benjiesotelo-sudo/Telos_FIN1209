@@ -55,11 +55,15 @@ previous bar's range. FRED, which Activity 1 used, carries closes only.
   problem.
 * **PSE Edge**: the exchange's own data is copyrighted ("protected by copyright",
   its terms page) and offers no CSV.
-* **Google Sheets `GOOGLEFINANCE`**: gives Date, Open, High, Low, Close, Volume and
-  exports to CSV with a signed-in Google account, which students have. This is
-  the route the handout teaches for their own task. **Not verified by the author:**
-  no signed-in Google session was available, so whether `PSE:` tickers resolve is
-  unconfirmed. The handout says to fall back to a US ticker on `#N/A`.
+* **Google Sheets `GOOGLEFINANCE`**: gives Date, Open, High, Low, Close, Volume for
+  **US-listed stocks** and exports to CSV (File, Download, CSV saves values, not
+  formulas) with a signed-in Google account, which students have. Tested on
+  4 November 2026: `NYSE:KO` filled 64 rows; **`PSE:JFC` returned `#N/A`, so there is
+  no daily history for Philippine stocks.** Its Date column reads `7/1/2026 16:00:00`
+  (month/day/year plus a time), and the example script reads that as it is. This is
+  the route the handout walks through; for PSE stocks it says to use another source
+  (for example Investing.com, which could not be checked) and save a CSV in the
+  contract's layout.
 
 So no price data is committed, and none is handed out either: the class Drive
 is publicly readable, so a vendor file there would be redistribution too. Every
@@ -71,24 +75,26 @@ repository.
 
 ## Screenshots and the video
 
-`screens/` holds ten real captures made on 4 November 2026 with the captain's
-word: the RStudio window and a Finder window of the example folder, nothing
-else. `r07` and `r10` are the script's own chart PNGs. RStudio is open source
-(AGPL) software from Posit; unlike the Google captures in Activity 1 no
-written permission note was found for its screenshots, so confirm that you are
-content to publish them. The Google Sheets steps (Part 4a) have **no
-screenshot**: it needs a signed-in Google account, which the builder did not
-have. The outputs printed in the handout came from price files fetched from
-Yahoo Finance and kept privately, not from a Sheets export, so a student's
-`GOOGLEFINANCE` file may differ in the last digits and signal counts; check
-once with a real export before handing out.
+`screens/` holds real captures of the RStudio window and a Finder window, taken from a
+clean `~/Documents/First Automation FIN1209` folder, plus four Google Sheets captures
+(`g1` to `g4`, cropped to the sheet; they show no account name). `r07` and `r10` are the
+script's own chart PNGs. RStudio is open source (AGPL) software from Posit; unlike the
+Google captures in Activity 1 no written permission note was found for its screenshots,
+so confirm you are content to publish them. There is no capture of the second download
+(the update), because it is the same four steps, and the handout says so. In the
+formula capture the end date reads 2026,10,30 while the handout's first run uses
+2026,9,30; the handout says so beside it. Every PNG was checked for local paths and
+agent names before it was committed.
 
-The video (`build/build_video.py`, macOS `say` plus ffmpeg, about 4.5 minutes)
-is made from those screenshots and is too large for git; it is delivered with
-the student set outside the repository.
+The video (`build/build_video.py`, macOS `say` plus ffmpeg) covers the whole handout in
+its order with a title card per part: real browser captures of the CRAN, Posit and
+bpmn.io pages (shapes placed live in bpmn.io), the Sheets and RStudio captures, the 14 R
+steps drawn from the guide's own stages, and zoomed handout pages where nothing honest
+can be recorded. It is about 25 minutes and too large for git, so it is delivered with the
+student set outside the repository.
 
 ## Verification
 
-The example was run with R 4.6.2 on both data sets. Its signals match an
+The example was run with R 4.6.2 on both data sets, as exported by Google Sheets. Its signals match an
 independent Python implementation of the same rule exactly (33 on the start set,
 46 after the update). Every stage of the guide was run and its output recorded.

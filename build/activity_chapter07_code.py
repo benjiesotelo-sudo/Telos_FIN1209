@@ -21,10 +21,13 @@ class Stage:
     after: str = ""       # a sentence after the output
 
 
-READ = '''data_file <- "data/KO.csv"
+READ = '''# the file we will read
+data_file <- "data/KO.csv"
 bars <- read.csv(data_file, stringsAsFactors = FALSE)'''
 
-TRIM = '''bars$Date <- substr(bars$Date, 1, 10)'''
+TRIM = '''day <- sub(" .*", "", bars$Date)
+bars$Date <- format(as.Date(day, tryFormats = c("%Y-%m-%d", "%m/%d/%Y")),
+                    "%Y-%m-%d")'''
 
 LOOP_BODY = '''  prev_high <- bars$High[i - 1]
   prev_low  <- bars$Low[i - 1]
@@ -84,7 +87,9 @@ dev.off()'''
 
 FUNCS_BODY = '''read_bars <- function(path) {
   bars <- read.csv(path, stringsAsFactors = FALSE)
-  bars$Date <- substr(bars$Date, 1, 10)
+  day <- sub(" .*", "", bars$Date)
+  bars$Date <- format(as.Date(day, tryFormats = c("%Y-%m-%d", "%m/%d/%Y")),
+                      "%Y-%m-%d")
   bars
 }
 
@@ -154,17 +159,19 @@ STAGES = (
           "data frame. Each row is one trading day (one bar) and each column "
           "is one kind of price. `head(bars, 3)` shows only the first three "
           "rows.",
-          '# the file we will read\n' + READ + '\nprint(head(bars, 3))'),
+          READ + '\nprint(head(bars, 3))'),
     Stage("column", "One column is a list of values (a vector)",
           "`bars$High` is the whole High column. R calls a list of values "
           "like this a vector. Square brackets pick a position: `highs[4]` "
           "is the fourth value and `highs[1:5]` is the first five.",
           READ + '\nhighs <- bars$High\nprint(highs[1:5])\nprint(highs[4])'),
-    Stage("trim", "Cut text down (the date)",
-          "The Date column is text and may carry a time, like "
-          "`2026-07-02 16:00:00`. `substr(text, 1, 10)` keeps only the first "
-          "ten characters, the day. Assigning to `bars$Date` replaces the "
-          "column.",
+    Stage("trim", "Clean up the date",
+          "The Date column is text, and it may look like `7/1/2026 16:00:00` "
+          "(the Google Sheets layout) or `2026-07-02`. `sub(\" .*\", \"\", x)` "
+          "removes everything from the first space, which drops the time. "
+          "`as.Date()` turns the text into a real date, trying each layout "
+          "in `tryFormats`, and `format()` writes it back as `YYYY-MM-DD`. "
+          "Assigning to `bars$Date` replaces the column.",
           READ + '\n' + TRIM + '\nprint(bars$Date[1:3])'),
     Stage("compare", "Compare two numbers",
           "A comparison such as `>` or `<=` gives `TRUE` or `FALSE`. We use "

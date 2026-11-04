@@ -20,6 +20,7 @@ from video_chapter07 import SCENES  # noqa: E402
 REPO = Path(__file__).resolve().parent.parent
 SCREENS = REPO / "chapter-07" / "activity" / "screens"
 WEB = REPO / "build" / "generated" / "video" / "web"
+REC = Path("/Users/benjie/.treehouse/benjie-agent-workspace-8bf1b0/1/benjie-agent-workspace/data/fin1209-activity2/rec")
 HANDOUT = A.STUDENT / f"{A.NAME}.pdf"
 NARRATION = A.STUDENT / f"{A.NAME} - Narration Script.md"
 FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"
@@ -33,7 +34,7 @@ def write_narration() -> None:
            "your own voice and change anything that is not how you talk.", ""]
     for n, s in enumerate(SCENES, 1):
         pic = {"card": "a title card", "shot": f"screenshot `{s.ref}`", "web": "a capture of a public web page",
-               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}"}[s.kind]
+               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "clip": f"a screen recording ({s.ref})"}[s.kind]
         pic = "Picture: " + pic
         out += [f"## {n}. {s.title}", "", f"*{pic}*", "", s.say, ""]
     NARRATION.write_text("\n".join(out), encoding="utf-8")
@@ -159,6 +160,8 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                 fit(src, img)
             elif s.kind == "page":
                 imgs = page_images(s.ref, s.crop, img, cache)
+            elif s.kind == "clip":
+                imgs = []                        # video comes from the recording, below
             elif s.kind == "code":
                 code_image(s.ref, img, fills, outs)
             else:
@@ -168,15 +171,27 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
             seg = t / f"{n:03d}.mp4"
             dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(aiff)],
                                        capture_output=True, text=True).stdout) + 0.7
-            parts = []
-            for k, im in enumerate(imgs):
-                pv = t / f"{n:03d}_{k}.mp4"
-                subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-loop", "1", "-t", f"{dur / len(imgs):.3f}", "-i", str(im),
-                                "-c:v", "libx264", "-tune", "stillimage", "-pix_fmt", "yuv420p", "-r", "10", str(pv)], check=True)
-                parts.append(pv)
-            vl = t / f"{n:03d}_v.txt"; vl.write_text("".join(f"file '{p}'\n" for p in parts))
             vv = t / f"{n:03d}_v.mp4"
-            subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(vl), "-c", "copy", str(vv)], check=True)
+            if s.kind == "clip":
+                src = REC / f"{s.ref}.mp4"
+                if not src.is_file():
+                    raise SystemExit(f"missing recording {src}")
+                cd = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(src)],
+                                          capture_output=True, text=True).stdout)
+                extra = max(0.0, dur - cd)       # hold the last frame if the narration is longer
+                vf = (f"scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:white,"
+                      f"tpad=stop_mode=clone:stop_duration={extra:.3f},fps=10")
+                subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(src), "-vf", vf, "-an", "-c:v", "libx264",
+                                "-pix_fmt", "yuv420p", str(vv)], check=True)
+            else:
+                parts = []
+                for k, im in enumerate(imgs):
+                    pv = t / f"{n:03d}_{k}.mp4"
+                    subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-loop", "1", "-t", f"{dur / len(imgs):.3f}", "-i", str(im),
+                                    "-c:v", "libx264", "-tune", "stillimage", "-pix_fmt", "yuv420p", "-r", "10", str(pv)], check=True)
+                    parts.append(pv)
+                vl = t / f"{n:03d}_v.txt"; vl.write_text("".join(f"file '{p}'\n" for p in parts))
+                subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(vl), "-c", "copy", str(vv)], check=True)
             subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(vv), "-i", str(aiff), "-c:v", "copy", "-c:a", "aac",
                             "-b:a", "128k", "-af", "apad=pad_dur=0.7", "-shortest", str(seg)], check=True)
             segs.append(seg)

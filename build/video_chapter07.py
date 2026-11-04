@@ -11,6 +11,7 @@ handout in the handout's order, with a title card at the start of each part.
   page    a region of the built handout PDF (`ref` = text that finds the page,
           `crop` = (top, bottom) as fractions of the page height). Used where
           there is nothing honest to record on a screen.
+  clip    a screen recording in data/.../rec/ (`ref` = file stem), paced to the narration
   code    one step of the R basics guide, drawn from its stage (`ref` = key)
 """
 
@@ -43,12 +44,58 @@ def _plain(t: str) -> str:
 
 
 def _basics() -> tuple:
-    out = []
-    for n, st in enumerate(STAGES, 1):
+    """Steps 1 to 12 are typed live on screen (recorded by data/.../record_tutorial.py)."""
+    out = [Scene("Start a new script",
+                 "Now we write the script ourselves. In RStudio choose File, New File, R Script. "
+                 "A blank script opens in the top left pane. Choose File, Save As, name it, and "
+                 "save it in the First Automation folder, next to the data folder. Then choose "
+                 "Session, Set Working Directory, To Source File Location, so R works in this folder.",
+                 "clip", "00-new-script")]
+    for n, st in enumerate(STAGES[:12], 1):
         out.append(Scene(f"B{n}: {st.title}",
-                         f"Step {n} of 14. {st.title}. {_plain(st.text)} "
-                         "The new lines are highlighted, and what R printed is below the code.",
-                         "code", st.key))
+                         f"Step {n} of 14. {st.title}. {_plain(st.text)} Watch it being typed, then run "
+                         "with Code, Source, and read what R printed in the console.",
+                         "clip", f"{n:02d}-{st.key}"))
+    out.append(Scene("Steps 13 and 14: the finished script",
+                     "Steps 13 and 14 pack these lines into three functions and loop over every file in "
+                     "the data folder. Instead of retyping them, open the finished example script. "
+                     "It is exactly the file in your folder. We run it with Source: it reads both of "
+                     "the Google Sheets files, and the console says how many signals it found in each. "
+                     "Then the Files pane shows the output folder, and signals dot csv opens in the editor.",
+                     "clip", "13-finished-example"))
+    out.append(Scene("Adding new data",
+                     "Now the automation. Replace the two files in the data folder with the October "
+                     "downloads, the same stocks with a month of new rows. Run the script again and "
+                     "change nothing else. The counts go up, and the table and both charts are rewritten.",
+                     "clip", "14-update"))
+    return tuple(out)
+
+
+def _flowchart_scenes() -> tuple:
+    """One scene per shape, from the frames build/record_bpmn.py captured in bpmn.io."""
+    import json
+    from pathlib import Path
+    f = Path(__file__).resolve().parent / "generated" / "video" / "web" / "bpmn-build.json"
+    if not f.is_file():
+        return ()
+    out = []
+    for fr in json.loads(f.read_text()):
+        name = fr["name"].split(". ", 1)[-1] if fr["kind"] == "task" else fr["name"]
+        where = fr["lines"] if fr["lines"] and fr["lines"][0].isalpha() and not fr["lines"].startswith(("line", "lines")) else f"{fr['lines']} of the script"
+        if fr["kind"] == "start":
+            say = "First the start event, a thin circle. Name it Run the script. It stands for the moment you click Source."
+        elif fr["kind"] == "end":
+            say = ("Last, the end event, a thick circle, named Signals and charts updated. Every path must reach one. "
+                   "When you are happy, use the buttons at the bottom left of bpmn dot io to download the diagram as a "
+                   "dot bpmn file and as an image, or print it to a PDF. The PDF is the preferred submission.")
+        elif fr["kind"] == "xor":
+            say = (f"A diamond gateway is a yes or no question: {name.rstrip(chr(63))}? It stands for {where}. Draw an arrow out of it "
+                   "for each answer, and label every one.")
+        else:
+            say = f"A task, a rounded rectangle, named with a verb: {name}. It stands for {where}."
+        if fr["flows"] and fr["kind"] in ("task", "xor") and any(fr["flows"]):
+            say += " The arrows are labelled " + " and ".join(x for x in fr["flows"] if x) + "."
+        out.append(Scene(f"Draw: {name}", say, "web", fr["frame"].replace(".png", "")))
     return tuple(out)
 
 
@@ -142,7 +189,7 @@ SCENES = (
           "page", "3b. Where to get price data", (0.0, 0.5)),
     Scene("The free sources",
           "Here are the free sources, checked on the public sites. Google Sheets with GOOGLEFINANCE "
-          "gives daily open, high, low, close and volume, needs a Google account, and exports a CSV. "
+          "gives daily open, high, low, close and volume for US stocks only, needs a Google account, and exports a CSV. P S E colon J F C returned N slash A, so there is no daily history there. "
           "P S E Edge shows today's prices only, with no download. Yahoo Finance shows a history "
           "table for US stocks but no Philippine stocks and no download button when signed out. "
           "Investing dot com, TradingView and broker platforms could not be checked without an "
@@ -151,14 +198,30 @@ SCENES = (
           "page", "The free sources", (0.0, 0.75)),
 
     part("4a", "Get the example prices yourself", "Google Sheets"),
-    Scene("The GOOGLEFINANCE steps",
-          "Google Sheets is the one route this handout walks through. Open sheets dot new, type the "
-          "GOOGLEFINANCE formula in cell A1 with the dates from the handout, wait for the rows to "
-          "fill, then choose File, Download, comma separated values. Rename the file K O dot csv "
-          "and put it in your data folder. Do the same for F. To update later, change the end date "
-          "in the formula, download again, and replace the file. To use another stock, change only "
-          "the ticker inside the first quotes.",
-          "page", "4a. Get the example prices", (0.0, 0.8)),
+    Scene("Sheets: a blank spreadsheet",
+          "Google Sheets is the one route this handout walks through, and it works for US listed "
+          "stocks. Go to sheets dot new while signed in to your Google account. A blank spreadsheet "
+          "opens. Click cell A1.", "shot", "g1-blank-sheet"),
+    Scene("Sheets: the formula",
+          "In A1 type the GOOGLEFINANCE formula with the ticker N Y S E colon K O, the word all, "
+          "the start date, the end date, and daily. Use the dates from the handout so your numbers "
+          "match. For this first run the end date is September thirtieth. In this capture the end "
+          "date reads October thirtieth, so use the handout's date.", "shot", "g2-formula"),
+    Scene("Sheets: the result",
+          "About sixty four rows fill in, with the six column names in row one. The dates read like "
+          "seven slash one slash twenty twenty six. That is how Google Sheets writes them, and the "
+          "script reads them exactly as they are, so you never edit a date.", "shot", "g3-result"),
+    Scene("Sheets: download",
+          "Choose File, Download, Comma Separated Values. The file holds the values, not the "
+          "formula. Rename it K O dot csv and put it in your data folder, then do the same for F in "
+          "a new spreadsheet.", "shot", "g4-download-menu"),
+    Scene("Sheets: update and swap",
+          "To update later, change the end date in the formula to October thirtieth, download "
+          "again, and replace the file. To use another US stock, change only the ticker inside the "
+          "first quotes. Philippine stocks do not work here: we tried P S E colon J F C and Sheets "
+          "answered N slash A. For a Philippine stock you need another source from the survey, for "
+          "example Investing dot com, saved as a CSV with the contract's columns.",
+          "page", "4a. Get the example prices", (0.55, 1.0)),
 
     part("4", "R in 14 small steps", "one running script that grows"),
 ) + _basics() + (
@@ -215,27 +278,11 @@ SCENES = (
           "gives them. Your flowchart must do the same: every shape should point at lines of your "
           "script, and every loop and decision in your code should be a shape.",
           "page", "Which lines of the example script", (0.0, 0.7)),
-    Scene("Drawing: a blank diagram",
-          "Now let's draw a few shapes in bpmn dot io. Open demo dot bpmn dot io and choose create "
-          "a new diagram. It starts with one start event. Double click it and name it, for example "
-          "Run the script.", "web", "bpmn-draw-1"),
-    Scene("Drawing: a task",
-          "Pick the rounded rectangle from the palette on the left, or use the arrow on the start "
-          "event, and place a task after it. Name it with a verb: Read the file into a table.",
-          "web", "bpmn-draw-2"),
-    Scene("Drawing: a gateway",
-          "Add a diamond gateway for a question, and name it with the question: Gap up and back to "
-          "the previous high?",
-          "web", "bpmn-draw-3"),
-    Scene("Drawing: label the arrow",
-          "Add the task that happens when the answer is yes, and click the arrow to label it yes. "
-          "Every arrow leaving a gateway needs a label.", "web", "bpmn-draw-4"),
-    Scene("Drawing: an end event",
-          "Finish with a thick circle, an end event. Every path must reach one. When you are done, "
-          "use the buttons at the bottom left to download your diagram as a dot bpmn file, and as "
-          "an image or print it to a PDF. The PDF is the preferred submission.",
-          "web", "bpmn-draw-5"),
-
+    Scene("Drawing it yourself",
+          "Now we draw this same flowchart ourselves, one shape at a time, in bpmn dot io, and say which "
+          "lines of the script each shape stands for. Open demo dot bpmn dot io and create a new diagram.",
+          "web", "bpmn-draw-1"),
+) + _flowchart_scenes() + (
     part("7", "Your task", "your own script and flowchart"),
     Scene("Your task",
           "Your task is your own R script that applies one rule from Chapters one to seven and meets "

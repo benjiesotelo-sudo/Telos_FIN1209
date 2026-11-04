@@ -12,8 +12,11 @@ output_folder <- "output"
 # ---- Read one CSV file into a table ---------------------------------------
 read_bars <- function(path) {
   bars <- read.csv(path, stringsAsFactors = FALSE)
-  # The Date column may carry a time ("2026-07-02 16:00:00"); keep the day.
-  bars$Date <- substr(bars$Date, 1, 10)
+  # The Date column may carry a time and may be 2026-07-02 or 7/2/2026 (the
+  # Google Sheets layout). Drop the time, then write every date as YYYY-MM-DD.
+  day <- sub(" .*", "", bars$Date)
+  bars$Date <- format(as.Date(day, tryFormats = c("%Y-%m-%d", "%m/%d/%Y")),
+                      "%Y-%m-%d")
   bars
 }
 

@@ -392,8 +392,9 @@ CONTRACT = Section(
             widths=(20, 80),
             mono_cols=(0,),
             rows=(
-                ("Date", "Oldest row first. Either `2026-07-02` or "
-                 "`2026-07-02 16:00:00`."),
+                ("Date", "Oldest row first. Any of `2026-07-02`, "
+                 "`2026-07-02 16:00:00` or `7/2/2026 16:00:00`, which is "
+                 "how Google Sheets writes it. Use the file as it comes."),
                 ("Open", "The opening price of the bar."),
                 ("High", "The highest price of the bar."),
                 ("Low", "The lowest price of the bar."),
@@ -458,10 +459,10 @@ SOURCES = Section(
             headers=("Source", "Open, high, low, close, volume", "Account", "CSV file"),
             widths=(20, 36, 18, 26),
             rows=(
-                ("**Google Sheets, GOOGLEFINANCE**", "Yes, daily or weekly, all five, with the formula `\"all\"`. The Help page lists them.", "A Google account", "Yes: File, Download, CSV. **This handout uses it.** Google Finance has no quote page for Philippine tickers such as BDO, so expect US stocks only."),
+                ("**Google Sheets, GOOGLEFINANCE**", "Yes, daily or weekly, all five, with the formula `\"all\"`. The Help page lists them.", "A Google account", "Yes: File, Download, CSV. **This handout uses it, for US-listed stocks only.** `PSE:JFC` returned `#N/A`, so there is no daily history for Philippine stocks."),
                 ("**PSE EDGE** (edge.pse.com.ph), the exchange's own site", "Today's open, high, low, last price and volume, and the 52-week range, for each Philippine stock. We found no table of past days.", "None to read", "No download link found. The site says its content is copyrighted."),
                 ("**Yahoo Finance**", "A history table of date, open, high, low, close, adjusted close and volume for US stocks, readable without signing in. We found no Philippine stocks.", "None to read the table", "No Download button when signed out. Whether one appears after signing in is not checked."),
-                ("**Investing.com**", "Not checked: the site refused our automated visit.", "Not checked", "Not checked"),
+                ("**Investing.com**", "Not checked: the site refused our automated visit. It is a common place to look for Philippine stocks, so check what it offers for the one you want.", "Not checked", "Not checked"),
                 ("**TradingView**", "Charts Philippine stocks, for example PSE:BDO, with a free public page. Export of the chart data was not checked.", "None to view; export needs an account", "Not checked, needs an account"),
                 ("**Your broker's platform**, for example COL Financial", "Not checked: it sits behind a login.", "Yes, a brokerage account", "Not checked"),
             ),
@@ -482,7 +483,7 @@ EXAMPLE_TICKERS = (("NYSE:KO", "KO"), ("NYSE:F", "F"))
 
 
 def _gf(sym: str, end: str) -> str:
-    return f'=GOOGLEFINANCE("{sym}","all",DATE(2026,7,1),DATE({end}))'
+    return f'=GOOGLEFINANCE("{sym}","all",DATE(2026,7,1),DATE({end}),"DAILY")'
 
 
 DATA = Section(
@@ -494,44 +495,57 @@ DATA = Section(
         Para(text=(
             "**Google Sheets** can fetch daily prices with one formula, and "
             "it gives exactly the columns the contract needs: Date, Open, "
-            "High, Low, Close, Volume. You do this once per stock, and you "
-            "use the same dates as below so your numbers match this "
-            "handout.")),
-        Points(numbered=True, items=(
-            "Open **https://sheets.new** while signed in to your Google "
-            "account. A blank spreadsheet opens.",
-            "Click cell **A1** and type this formula, then press Enter:",
-        )),
-        TypeBox(text=_gf(*(EXAMPLE_TICKERS[0][0], "2026,9,30")),
-                label="Cell A1, for KO"),
-        Points(numbered=True, items=(
-            "Wait a moment. About 64 rows fill down from A1, with the six "
-            "column names in row 1. If you see `#N/A`, check the quote marks "
-            "are straight and the ticker is spelled `NYSE:KO`.",
-            "Choose **File, Download, Comma-separated values (.csv)**. Your "
-            "browser saves a file named after the spreadsheet.",
-            "Rename it **KO.csv** and move it into your `data` folder. The "
-            "name matters: the script takes the ticker from it.",
-            "Do the same for the second stock in a new spreadsheet, with "
-            "`NYSE:F`, and save it as **F.csv** in `data`. Part 5 runs the "
-            "script on these two files.",
+            "High, Low, Close, Volume. It works for **US-listed stocks**. "
+            "You do this once per stock, and you use the same dates as "
+            "below so your numbers match this handout.")),
+        Step(title="Open a blank spreadsheet",
+             text=("Go to **https://sheets.new** while signed in to your "
+                   "Google account. A blank spreadsheet opens. Click cell "
+                   "**A1**."),
+             shot=Shot("g1-blank-sheet", width_pct=62)),
+        Step(title="Type the formula",
+             text="In A1 type this formula for Coca-Cola, then press Enter:",
+             type_this=_gf(EXAMPLE_TICKERS[0][0], "2026,9,30"),
+             then=("The picture shows the formula being typed. Its end date "
+                   "in that capture reads 2026,10,30; **use 2026,9,30** for "
+                   "this first run."),
+             shot=Shot("g2-formula", width_pct=62)),
+        Step(title="Check the result",
+             text=("Wait a moment. About 64 rows fill down from A1, with the "
+                   "six column names in row 1. The dates read like "
+                   "`7/1/2026 16:00:00`: that is the layout Google Sheets "
+                   "gives, and the script reads it as it is, so you never "
+                   "edit a date. If you see `#N/A`, check the quote marks "
+                   "are straight and the ticker is spelled `NYSE:KO`."),
+             shot=Shot("g3-result", width_pct=62)),
+        Step(title="Download it as a CSV",
+             text=("Choose **File, Download, Comma Separated Values (.csv)**. "
+                   "The file holds the values, not the formula, so there is "
+                   "nothing more to do to it. Your browser saves a file "
+                   "named after the spreadsheet."),
+             shot=Shot("g4-download-menu", width_pct=62)),
+        Para(text=(
+            "Rename the file **KO.csv** and move it into your `data` folder. "
+            "The name matters: the script takes the ticker from it. Then do "
+            "the same for a second stock in a new spreadsheet, with this "
+            "formula, and save it as **F.csv** in `data`. Part 5 runs the "
+            "script on these two files.")),
+        TypeBox(text=_gf(EXAMPLE_TICKERS[1][0], "2026,9,30"),
+                label="Cell A1, for F (Ford)"),
+        Para(text=(
             "**Later, for the update in Part 5:** in each spreadsheet change "
             "`DATE(2026,9,30)` in the formula to `DATE(2026,10,30)`, "
-            "download again, and replace the file in `data` (still named "
-            "KO.csv and F.csv).",
-        )),
-        TypeBox(text=_gf(EXAMPLE_TICKERS[1][0], "2026,9,30"),
-                label="Cell A1, for F"),
+            "download again, and replace the file in `data`, still named "
+            "KO.csv and F.csv. There is no capture of that second download "
+            "because it is the same four steps.")),
         Callout(label="Swap the ticker, nothing else", tone="gold", text=(
-            "To use another stock, change only the text inside the first "
-            "quotes of the formula, for example `\"NASDAQ:AMD\"`. For a "
-            "Philippine stock, Google Finance has no quote page for them "
-            "(we checked BDO), so expect `#N/A`: use a US stock, or "
-            "another source from Part 3b.")),
-        Para(text=(
-            "A file from the **Download** step may have a time on every date "
-            "(`2026-07-01 16:00:00`). The contract allows that and the "
-            "script handles it.")),
+            "To use another US stock, change only the text inside the first "
+            "quotes of the formula, for example `\"NASDAQ:AMD\"`. "
+            "**Philippine stocks do not work here.** We tried `PSE:JFC` and "
+            "Sheets answered `#N/A`: GOOGLEFINANCE gives no daily history "
+            "for Philippine stocks. For a PSE stock you need another source "
+            "from Part 3b, for example Investing.com, then save its data as "
+            "a CSV with the columns of Part 3.")),
     ),
 )
 
@@ -634,7 +648,7 @@ def run_section(counts: dict) -> Section:
                  shot=Shot("r07-chart")),
             Step(title="Add new data",
                  text=("This is the automation. Close nothing. Copy the two "
-                       "files from the October download (Part 4a, step 6) over "
+                       "files from the update at the end of Part 4a over "
                        "the ones in `data`, replacing them. They are the "
                        "same two stocks with a month of new rows at the "
                        "bottom."),
@@ -802,8 +816,7 @@ TASK = Section(
         Callout(label="The marker runs your script on files you have not "
                 "seen", text=(
             "Real stocks, a different period, in the layout of Part 3. Some "
-            "files have `2026-07-02` dates and some have `2026-07-02 "
-            "16:00:00`. One file may have no signals at all. A script that "
+            "files write dates as `2026-07-02`, some as `7/2/2026 16:00:00`. One file may have no signals at all. A script that "
             "only works on the example files will not pass.")),
         Para(text=(
             "**Getting prices for your own testing.** Use Part 4a: the "

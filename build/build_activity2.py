@@ -33,7 +33,12 @@ def main() -> int:
     gen = json.loads((GENERATED / "counts.json").read_text())
     fills = {"SELL_I": gen["SELL_I"], "BUY_I": gen["BUY_I"]}
     act = A.build_activity(fills, gen)
-    ba.number_steps(act)
+    for sec in act.sections:          # steps restart at 1 in every part
+        n = 0
+        for blk in sec.blocks:
+            if isinstance(blk, activitykit.Step):
+                n += 1
+                blk.number = n
     shots = ba.prepare_shots(act, SCREENS, GENERATED / "shots")
     problems = activitykit.validate(act, shots)
     if a.draft:

@@ -95,21 +95,21 @@ SELL: %K crosses below %D
       <bpmn:outgoing>F12</bpmn:outgoing>
       <bpmn:outgoing>F13</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:textAnnotation id="N5"><bpmn:text>BUY price = the
-day&#x27;s high
+    <bpmn:textAnnotation id="N5"><bpmn:text>BUY trigger: above
+the day&#x27;s high
 (slide 201)</bpmn:text></bpmn:textAnnotation>
-    <bpmn:textAnnotation id="N6"><bpmn:text>SELL price = the close:
-our choice, the slides
-give no sell trigger</bpmn:text></bpmn:textAnnotation>
-    <bpmn:task id="T10" name="10. BUY price = the day&#x27;s high">
+    <bpmn:textAnnotation id="N6"><bpmn:text>SELL trigger: below the
+day&#x27;s low. The mirror of
+slide 201, our choice</bpmn:text></bpmn:textAnnotation>
+    <bpmn:task id="T10" name="10. BUY trigger: above the high">
       <bpmn:incoming>F12</bpmn:incoming>
       <bpmn:outgoing>F14</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T11" name="11. SELL price = the day&#x27;s close">
+    <bpmn:task id="T11" name="11. SELL trigger: below the low">
       <bpmn:incoming>F13</bpmn:incoming>
       <bpmn:outgoing>F15</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="T12" name="12. Record the signal day: side, price, agree">
+    <bpmn:task id="T12" name="12. Record the signal day: side, trigger, agree">
       <bpmn:incoming>F14</bpmn:incoming>
       <bpmn:incoming>F15</bpmn:incoming>
       <bpmn:outgoing>F16</bpmn:outgoing>
@@ -276,10 +276,10 @@ volume (CONFIRMED or NOT)</bpmn:text></bpmn:textAnnotation>
         <bpmndi:BPMNLabel><dc:Bounds x="880" y="494" width="120" height="27" /></bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N5_di" bpmnElement="N5">
-        <dc:Bounds x="755" y="349" width="118" height="62" />
+        <dc:Bounds x="739" y="349" width="134" height="62" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N6_di" bpmnElement="N6">
-        <dc:Bounds x="1010" y="349" width="150" height="62" />
+        <dc:Bounds x="1002" y="337" width="166" height="78" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="T10_di" bpmnElement="T10">
         <dc:Bounds x="735" y="433" width="130" height="64" />

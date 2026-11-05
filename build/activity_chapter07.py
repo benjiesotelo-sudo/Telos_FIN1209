@@ -49,7 +49,7 @@ CHECKABLE = (
      "The ticker, date and side of every signal match the record, with none "
      "missing and none extra."),
     ("It gets the prices right", 10,
-     "Entry and stoploss match the record, to the cent."),
+     "The trigger level (`entry`) matches the record, to the cent: a buy's is the signal day's high, a sell's is its low."),
     ("The chart shows them", 10,
      "Each chart is a real chart with every signal marked and numbered."),
 )
@@ -150,8 +150,11 @@ BRIEF = Section(
             "You will teach R to read **price, bars and volume** (Chapters 1 to 7) and the three **window oscillators** of "
             "Chapter 8. You put a Google Sheets price file in a folder, run a short **R script**, and it works out, day by "
             "day, five votes for buy or sell: the **price trend**, the **price bar**, the **RSI**, the **MACD** and the "
-            "**stochastic**. It counts how many agree, checks the **volume**, and gives the price to act at. It writes a "
+            "**stochastic**. It counts how many agree, checks the **volume**, and gives a trigger price. It writes a "
             "table and a chart. Add new prices and run it again, and both update. That is **automation**.")),
+        Callout(label="This program is not foolproof", tone="gold", text=(
+            "**It follows rules from our slides. Its signals can be wrong, and they can lose money. It is a class "
+            "exercise, not advice.**")),
         Callout(label="The guide video has two versions", tone="gold", text=_video_line()),
         Callout(label="You do not need to know R", tone="gold", text=(
             "Nobody in this class was taught to code. The script is about 60 lines, Part 3 shows what it does, and "
@@ -275,8 +278,11 @@ RULE = Section(
             "Chapter 5 does not define. We average the closes. Chapter 2's peaks and troughs trend is not computed.\n\n"
             "**Key reversal.** The slides say \"near or below\" the previous close. We read it as at or below, and at or "
             "above for the bullish one.\n\n**Volume.** The slides give no period for \"average\", so it is the "
-            "average volume of the whole file.\n\n**Entry.** A buy uses the signal day's high, as slide 201 says. The "
-            "slides give no sell trigger, so a sell uses the day's close.\n\n**Signal day.** Any day the bar or an "
+            "average volume of the whole file.\n\n**Entry.** A buy triggers above the signal day's high, as slide 201 says. The "
+            "slides give no sell trigger, so a sell triggers below the signal day's low: the mirror of Lim's buy trigger on "
+            "slide 201, our choice, not Lim's rule. (Lim's own drawing of the ID/NR6 pattern, Chapter 7 slide 207, puts its long "
+            "trigger at a bar's high and its short trigger at that bar's low, but that is one pattern.) For both sides the "
+            "price is a trigger level: the trade happens only if price later goes beyond it.\n\n**Signal day.** Any day the bar or an "
             "oscillator fires and the five votes do not cancel. `agree` counts the votes on the winning side.")),
     ),
 )
@@ -310,7 +316,7 @@ CONTRACT = Section(
                 ("ticker", "The file name without `.csv`", "KO"),
                 ("date", "The signal day, `YYYY-MM-DD`", "2026-04-08"),
                 ("side", "`BUY` or `SELL`: the side most oscillators gave", "BUY"),
-                ("entry", "A buy: the day's high. A sell: the day's close", "77.37"),
+                ("entry", "The trigger level. A buy: the signal day's high. A sell: the signal day's low", "77.37"),
                 ("trend, bar", "The two price votes: `BUY`, `SELL` or empty", "BUY"),
                 ("rsi, macd, stoch", "One column for each oscillator you use, from `rsi`, `macd`, `stoch`. "
                  "`BUY`, `SELL` or empty. **Use at least two.** The columns you use tell the marker your pair.", "BUY"),
@@ -335,7 +341,7 @@ SOURCES = Section(
             "bar per trading day, with six columns.")),
         Para(text=(
             "The script needs six columns: Date, Open, High, Low, Close and Volume. The RSI and the MACD use the "
-            "close; the stochastic uses the high, low and close; a buy's entry price uses the high. Volume is not "
+            "close; the stochastic uses the high, low and close; a buy's trigger uses the high and a sell's the low. Volume is not "
             "used here (Chapter 6 covers it). **Open interest** exists only for futures, so a stock has none, and "
             "no source below gives one for a share.")),
         Table(
@@ -559,7 +565,7 @@ def flow_section() -> Section:
         ("8", "Add the five votes for each day", _span("votes <- cbind")),
         ("Gateway", "Signal day?", _span("fired <- ") + " and " + _span("day <- which")),
         ("9", "Choose BUY or SELL by the net vote", _span("side <- ifelse(rowSums")),
-        ("10, 11", "BUY price = high, SELL price = close", _span("entry = ifelse(side")),
+        ("10, 11", "BUY trigger = high, SELL trigger = low", _span("entry = ifelse(side")),
         ("12", "Record the signal day", _span("signals <- data.frame", "agree = rowSums")),
         ("13", "Mark the volume CONFIRMED or NOT", _span("volume = ifelse")),
         ("14", "Draw the chart", _span("png(file.path", "dev.off()")),
@@ -586,7 +592,7 @@ def flow_section() -> Section:
                      "price bar (Chapters 5 and 7), then the RSI, the MACD and the stochastic crossing (Chapter 8). A "
                      "signal day is a day the bar or an oscillator fires and the votes do not cancel. `agree` counts the "
                      "votes on the winning side, and above-average volume marks the day CONFIRMED."),
-                    ("**Output**", "A table of the signal days with a price to act at, a chart of price, volume and the "
+                    ("**Output**", "A table of the signal days with a trigger level, a chart of price, volume and the "
                      "three oscillators, and a summary line per stock."),
                 ),
             ),
@@ -676,18 +682,19 @@ def why_section(info: dict) -> Section:
                    credit="Drawn by build/r/explain_bar.R from the example price file."),
             Para(text=(
                 "**An oscillator buy.** On the day the RSI, the MACD or the stochastic crosses upward, that oscillator "
-                "votes BUY. The price to act at is that day's high (slide 201). Gold circles mark the oscillators that "
+                "votes BUY. The trigger is above that day's high (slide 201): the trade happens only if price later goes above it. Gold circles mark the oscillators that "
                 "crossed and white ones those that did not.")),
             Figure(path=why / "why-buy.png", height_mm=100.0,
                    caption=(f"{b.get('ticker', '')}, {b.get('date', '')}: a BUY where {' and '.join(x.upper() for x in b.get('agree', []))} "
-                            f"cross. Entry {b.get('entry', '')}."),
+                            f"cross. Trigger {b.get('entry', '')}."),
                    credit="Drawn by build/r/explain_osc.R from the example price files."),
             Para(text=(
                 "**A sell** is the mirror image: an oscillator crosses downward. The slides give no sell trigger, so "
-                "the entry is the close of the day. That is our choice, not Lim's rule.")),
+                "the trigger is below the signal day's low: the mirror of Lim's buy trigger on slide 201, our choice, not "
+                "Lim's rule. The trade happens only if price later falls below it.")),
             Figure(path=why / "why-sell.png", height_mm=100.0,
                    caption=(f"{s_.get('ticker', '')}, {s_.get('date', '')}: a SELL where {' and '.join(x.upper() for x in s_.get('agree', []))} "
-                            f"cross. Entry {s_.get('entry', '')}."),
+                            f"cross. Trigger {s_.get('entry', '')}."),
                    credit="Drawn by build/r/explain_osc.R from the example price files."),
             Callout(label="Agreeing is not proof", tone="gold", text=(
                 "Votes agreeing sounds like witnesses agreeing. It is not. The RSI, the MACD and the stochastic are all "
@@ -838,7 +845,7 @@ WORKED = (
     Worked("Full",
            "Task 5, Add the votes and keep the signal days: it adds the three crossing signals, so a day with one "
            "buy and one sell cancels to zero and is skipped. Days with a total above zero are BUYs with entry = "
-           "High, as slide 201 says, and `agree` counts the oscillators that gave that side.",
+           "High, as slide 201 says, and SELLs with entry = Low, the mirror, and `agree` counts the oscillators that gave that side.",
            "Names what the code adds, a real consequence (cancelling), the exact price rule and the slide."),
     Worked("Partial",
            "Task 5, Add the votes and keep the signal days: it adds the signals and keeps the days with a signal, "
@@ -858,7 +865,7 @@ WORKED = (
 
 HONEST = (
     "A strong flowchart also says where its script is not Lim's rule: "
-    "\"the slides give no sell trigger, so this script uses the close.\" "
+    "\"the slides give no sell trigger, so this script uses the low, the mirror of the buy trigger.\" "
     "It is never marked, and it is the habit that makes a rule you automated one you can trust."
 )
 

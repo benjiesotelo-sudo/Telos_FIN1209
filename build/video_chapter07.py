@@ -107,21 +107,32 @@ _I = _info()
 _C = _I.get("corr", {})
 _B = _I.get("bar", {})
 
+_FOOLPROOF = ("This program is not foolproof. It follows rules from our slides. Its signals can be wrong, and they can lose "
+              "money. It is a class exercise, not advice.")
+_FOOLPROOF_CARD = ("This program is not foolproof", "It follows rules from our slides",
+                   "Its signals can be wrong and can lose money", "A class exercise, not advice")
+
 SCENES = (
+    Scene("Teaser",
+          "In the next half hour you will build a program that reads a stock's prices and, for every day, counts five votes "
+          "for buy or sell. It draws this chart. It writes this table. And when new prices arrive, it updates both by "
+          "itself. You do not need to know how to code, because we type every line together, and explain it. Let's build it.",
+          "teaser", "teaser"),
     Scene("Welcome",
           "This is a short guide to your first automation. You will teach R to read price, bars and volume, from "
           "Chapters 1 to 7, and three window oscillators from Chapter 8. For each day it takes five votes for buy or "
-          "sell, counts how many agree, checks the volume, and gives the price to act at. You need R and RStudio, both "
+          "sell, counts how many agree, checks the volume, and gives a trigger price. You need R and RStudio, both "
           "free, and one package, T T R. The manual has the links.",
           "web", "posit-rstudio"),
+    Scene("Not foolproof", "Before we start. " + _FOOLPROOF, "card", card=_FOOLPROOF_CARD),
 ) + _sheets_scenes() + (
     Scene("The flowchart",
           "Here is what the script does, as a B P M N flowchart in four stages. Data in: one price file per stock, with a "
           "date, four prices, and a volume. Measure: five votes for each day. The price trend, from Chapter 5. The price "
           "bar, a key reversal, from Chapter 7. And the R S I, the M A C D and the stochastic from Chapter 8, each with "
           "its rule beside it and its slide. Decide: add the votes. A signal day is a day the bar or an oscillator fires "
-          "and the votes do not cancel. Choose buy or sell by the net vote, and set the price: a buy at the day's high, "
-          "which is Lim's trigger, and a sell at the close, which is our choice. Volume is not a vote: above average "
+          "and the votes do not cancel. Choose buy or sell by the net vote, and set the trigger: a buy above the day's high, "
+          "which is Lim's trigger on slide 201, and a sell below the day's low, which is the mirror of it and our choice. Volume is not a vote: above average "
           "volume marks the day confirmed. Report: a chart, a summary for each stock, and one table of the signals.",
           "web", "bpmn-example-open"),
 
@@ -146,7 +157,7 @@ SCENES = (
           "many were on above average volume. The details are in the table.",
           "frame", "07z-run", crop=(0, 594, 645, 664)),
     Scene("The table",
-          "Here is the table. Each row is a signal day: the side, the entry price, each vote, how many agree, and "
+          "Here is the table. Each row is a signal day: the side, the trigger level, each vote, how many agree, and "
           "whether the volume confirmed it.",
           "clip", "08-outputs"),
     Scene("The chart",
@@ -168,11 +179,11 @@ SCENES = (
           "gen", "why/why-bar"),
     Scene("Why an oscillator buy",
           "An oscillator vote is a crossing. Here the R S I crosses up through fifty, and the stochastic crosses up "
-          "through its signal line. Those two vote buy, and the price to act at is that day's high, as slide 201 says.",
+          "through its signal line. Those two vote buy, and the trigger is above that day's high, as slide 201 says. The trade happens only if price later goes above it.",
           "gen", "why/why-buy"),
     Scene("Why an oscillator sell",
-          "The sell is the mirror image. Here the R S I and the M A C D cross down, and the entry is the close. The "
-          "slides give no sell trigger, so that is our choice.",
+          "The sell is the mirror image. Here the R S I and the M A C D cross down, and the trigger is below that day's low. The "
+          "slides give no sell trigger, so this is the mirror of Lim's buy trigger, our choice. The trade happens only if price later falls below it.",
           "gen", "why/why-sell"),
     Scene("False consensus",
           "But agreeing is not proof. The R S I, the M A C D and the stochastic are all built from the same closing "
@@ -182,6 +193,7 @@ SCENES = (
           "card", card=("Agreeing is not proof", f"RSI and stochastic: correlation {_C.get('rsi_stoch', '')}",
                         f"RSI and MACD: correlation {_C.get('rsi_macd', '')}", "Lim, slide 78: multicollinearity = false consensus")),
 
+    Scene("Not foolproof, again", "One more reminder before your task. " + _FOOLPROOF, "card", card=_FOOLPROOF_CARD),
     Scene("Your task",
           "Your task: your own stock, and your own pair of the three oscillators, with the price trend, price bar and "
           "volume check. Write your script, and draw its flowchart. The due date is in the manual.",

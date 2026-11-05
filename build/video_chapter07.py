@@ -15,6 +15,10 @@ then the task.
           (`speed` plays it faster)
   frame   the last frame of a recording, optionally cropped to `crop` (pixels), enlarged
   gen     an image R drew, in build/generated/activity2/ (`ref` = path without .png)
+  code    the stage's code with its new lines marked and what R printed (`ref` = stage key)
+
+Placeholders {T_SHORT}, {T_OUT} (on screen, mm:ss) and {S_SHORT}, {S_OUT} (spoken) are filled in by
+build_video.py from the real start of the short version and of the outputs in the finished video.
 """
 
 from __future__ import annotations
@@ -32,32 +36,30 @@ class Scene:
     label: str = ""
     speed: float = 1.0
     crop: tuple = ()
-
-
-SHEETS_SLOT = "sheets-recording"      # rec/sheets-recording.mp4 replaces the four stills when it exists
+    after: bool = False      # clip: play the recording first, then speak over its last frame
+    popup: str = ""         # banner drawn on the picture; may hold {T_SHORT} / {T_OUT}
 
 
 def _sheets_scenes() -> tuple:
-    from pathlib import Path
-    rec = Path("/Users/benjie/.treehouse/benjie-agent-workspace-8bf1b0/1/benjie-agent-workspace/data/fin1209-activity2/rec") / f"{SHEETS_SLOT}.mp4"
-    steps = (
-        ("Sheets: a blank spreadsheet",
-         "First, the data. Open sheets dot new in your Google account, and click cell A1.", "g1-blank-sheet"),
-        ("Sheets: the formula",
-         "Type the GOOGLEFINANCE formula: the ticker, in quotes, the word all, a start date, an end date, and daily. Our start is the third of November twenty twenty five. "
-         "Change only the ticker to pick another US company. For Coca Cola it is N Y S E colon K O.", "g2-formula"),
-        ("Sheets: the result",
-         "About two hundred rows fill in, with Date, Open, High, Low, Close and Volume. The dates look like seven slash one "
-         "slash twenty twenty six. The script reads them as they are.", "g3-result"),
-        ("Sheets: download",
-         "Choose File, Download, Comma Separated Values. Rename the file K O dot csv, and put it in a folder called data. "
-         "Philippine stocks do not work in Sheets, so for those, see the handout's list of other sources.",
-         "g4-download-menu"),
+    """The captain's own screen recording of Google Sheets, cut into four pieces; the voice holds the last
+    frame of a piece when it needs longer than the piece lasts."""
+    return (
+        Scene("Sheets: a blank spreadsheet",
+              "First, the data. Open sheets dot new in your Google account, and click cell A1.", "clip", "sheets-1"),
+        Scene("Sheets: the formula",
+              "Type the GOOGLEFINANCE formula: the ticker, in quotes, the word all, a start date, an end date, and daily. "
+              "Our start is the first of July twenty twenty six, and our end is the thirtieth of September. For Coca Cola "
+              "the ticker is N Y S E colon K O. About sixty rows fill in, with Date, Open, High, Low, Close and Volume.",
+              "clip", "sheets-2"),
+        Scene("Sheets: another company",
+              "To pick another US company, change only the ticker. Here it is N Y S E colon F, for Ford. The dates look "
+              "like seven slash one slash twenty twenty six. The script reads them as they are.",
+              "clip", "sheets-3"),
+        Scene("Sheets: download",
+              "Choose File, Download, Comma Separated Values. Rename the file K O dot csv, and put it in a folder called data. "
+              "Philippine stocks do not work in Sheets, so for those, see the handout's list of other sources.",
+              "clip", "sheets-4"),
     )
-    if rec.is_file():
-        return (Scene("Sheets: the whole routine, recorded", " ".join(x[1] for x in steps), "clip", SHEETS_SLOT),)
-    return tuple(Scene(t, say, "shot", ref, label="STILL SCREENSHOT: the screen recording of this step is still to be added")
-                 for t, say, ref in steps)
 
 
 def _info() -> dict:
@@ -68,6 +70,37 @@ def _info() -> dict:
         return json.loads(f.read_text())
     except OSError:
         return {}
+
+
+
+def _long_form() -> tuple:
+    """Every line typed at real speed, then explained: manifest-free, from the shared typing plan."""
+    from typing_plan import clip_names
+    import explain_chapter07 as EX
+    out, prev = [], "00-new-script"
+    for step in range(1, 8):
+        out.append(Scene(f"Step {step}: {EX.STEPS[step][0]}", EX.STEPS[step][1], "frame", prev))
+        for name, c in clip_names(step):
+            if c["kind"] == "run":
+                out.append(Scene(f"Step {step}: run it", EX.STEPS[step][2], "clip", name, after=True))
+            elif c["kind"] == "delete":
+                out.append(Scene(f"Step {step}: remove the check line", EX.DELETE_SAY, "clip", name, after=True))
+            else:
+                out.append(Scene(f"Step {step}: " + c["lines"][0].strip()[:40], c["say"], "clip", name, after=True))
+            prev = name
+    return tuple(out)
+
+
+def _short_form() -> tuple:
+    import explain_chapter07 as EX
+    from activity_chapter07_code import KEYS
+    out = [Scene("The short version",
+                 "This is the short version: the same seven steps, but we do not type. Each block of the finished script is "
+                 "shown, with what it does and what it produces.",
+                 "card", card=("The short version", "Seven blocks, explained as blocks"))]
+    for i, key in enumerate(KEYS, 1):
+        out.append(Scene(f"Block {i}: {EX.STEPS[i][0]}", EX.SHORT[i], "code", key))
+    return tuple(out)
 
 
 _I = _info()
@@ -92,49 +125,26 @@ SCENES = (
           "volume marks the day confirmed. Report: a chart, a summary for each stock, and one table of the signals.",
           "web", "bpmn-example-open"),
 
+    Scene("The long version",
+          "From here there are two versions of the coding. This is the long version: we type every line, at a speed you "
+          "can follow, and explain each one. If you only want the short version, which explains each block of code and "
+          "not each line, skip to {S_SHORT}.",
+          "card", card=("The long version", "Every line typed and explained"),
+          popup="Short version: skip to {T_SHORT}"),
     Scene("Start a script",
           "Now we write it. In RStudio choose File, New File, R Script. Save it in your First Automation folder, next "
           "to the data folder. Then Session, Set Working Directory, To Source File Location.",
           "clip", "00-new-script"),
-    Scene("Step 1: read a file",
-          "Step one: read a price file. A variable holds a value. Read dot csv opens the file as a table, one row per "
-          "day, and as dot Date turns the Google Sheets date into a real date. Run it with Code, Source.",
-          "clip", "01-read"),
-    Scene("Step 2: the price trend",
-          "Step two, vote one: the price trend. T T R is a package of indicators. You install it once with install dot "
-          "packages, and library loads it. S M A is a simple moving average. Chapter 5, slides 109 and 110: price above "
-          "its three bar average is bullish, below it is bearish. Plus one for up, minus one for down.",
-          "clip", "02-trend", speed=1.3),
-    Scene("Step 3: the price bar",
-          "Step three, vote two: the price bar. The key reversal day, Chapter 7, slides 123 and 126. A higher high "
-          "than yesterday with a close at or below yesterday's close is bearish. A lower low with a close at or above "
-          "is bullish. Here are the days it happened.",
-          "clip", "03-bar", speed=1.3),
-    Scene("Step 4: the oscillators",
-          "Step four, votes three to five. A function packs lines under a name. This one gives plus one on the day one "
-          "line crosses above another, and minus one when it crosses below. The R S I crossing fifty, slide 74. The M A "
-          "C D crossing its signal line, slide 83. The stochastic percent K crossing percent D, slide 187.",
-          "clip", "04-osc", speed=1.8),
-    Scene("Step 5: the votes and the table",
-          "Step five: count the votes. A signal day is a day the bar or an oscillator fires and the votes do not "
-          "cancel. Positive is a buy, negative a sell, and agree counts the votes on that side. A buy uses the day's "
-          "high, slide 201. The slides give no sell trigger, so a sell uses the close. That is our choice, not Lim's "
-          "rule. Volume above the average marks the day confirmed, slide 128.",
-          "clip", "05-table", speed=1.8),
-    Scene("Step 6: the chart",
-          "Step six: the chart. Price on top with its three bar average, then volume, then the three oscillators. A "
-          "triangle on every signal day, green up for a buy and red down for a sell, and the big numbered ones are "
-          "where three or more votes agree.",
-          "clip", "06-chart", speed=1.6),
-    Scene("Step 7: every file",
-          "Step seven: do it for every file in the data folder, and print a line per stock. That is the whole script. "
-          "Source it.",
-          "clip", "07-files", speed=3.0),
-
+) + _long_form() + (
+    Scene("Skip the short version",
+          "That was the long version. Already watched it? Skip to {S_OUT}, where the outputs start, and leave out the short "
+          "version.",
+          "frame", "07z-run", popup="Already watched the long version? Skip to {T_OUT}"),
+) + _short_form() + (
     Scene("The answer",
           "Here is the answer for each stock: how many signal days, how many had three or more votes agreeing, and how "
           "many were on above average volume. The details are in the table.",
-          "frame", "07-files", crop=(0, 545, 650, 900)),
+          "frame", "07z-run", crop=(0, 594, 645, 664)),
     Scene("The table",
           "Here is the table. Each row is a signal day: the side, the entry price, each vote, how many agree, and "
           "whether the volume confirmed it.",

@@ -160,3 +160,28 @@ def written(text: str) -> str:
 # Said while the throwaway check line is removed at the start of the next step.
 DELETE_SAY = ("That print line was only there to let us look. We select it and delete it, "
               "so the finished script stays short.")
+
+
+# The short version: the same seven steps, each block explained as a block (what it does, what it produces).
+SHORT = {
+    1: "Step one is the read block. It lists every csv file in the data folder and, for each one, works out the ticker "
+       "from the file name, reads the file into a table called bars, and turns the Google Sheets dates into real dates. "
+       "It produces a table of days with the open, high, low, close and volume.",
+    2: "Step two is the price trend block. It loads the T T R package, takes the three day moving average of the close, "
+       "and votes plus one when the close is above it and minus one when it is below. It produces the first vote for every "
+       "day, with zero on the first two days that have no average yet.",
+    3: "Step three is the price bar block. It looks at yesterday's bar and votes for a key reversal: a lower low that "
+       "closes at or above yesterday's close is a buy, a higher high that closes at or below it is a sell. It produces "
+       "the second vote, zero on every ordinary day.",
+    4: "Step four is the oscillator block. A small function finds the day one line crosses another. The R S I is tested "
+       "against fifty, the M A C D against its signal line, and the stochastic percent K against percent D. It produces "
+       "three more votes, one for each oscillator.",
+    5: "Step five is the table block. It puts the five votes side by side, keeps the days where the bar or an oscillator "
+       "fired and the votes do not cancel, and decides buy or sell by the net vote. It sets the entry price, counts how "
+       "many votes agree, checks the volume, and saves everything as signals dot csv.",
+    6: "Step six is the chart block. For each stock it draws one picture with five panels: price and its average with a "
+       "triangle on every signal, then volume, then the R S I, the M A C D and the stochastic. It produces one picture "
+       "file for each stock in the output folder.",
+    7: "Step seven is the summary line. For each stock it prints the number of signal days, how many had three or more "
+       "votes agreeing, and how many were on above average volume. That completes the script.",
+}

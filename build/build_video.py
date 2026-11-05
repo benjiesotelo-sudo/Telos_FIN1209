@@ -21,23 +21,67 @@ REPO = Path(__file__).resolve().parent.parent
 SCREENS = REPO / "chapter-07" / "activity" / "screens"
 GEN = REPO / "build" / "generated" / "activity2"
 WEB = REPO / "build" / "generated" / "video" / "web"
-REC = Path("/Users/benjie/.treehouse/benjie-agent-workspace-8bf1b0/1/benjie-agent-workspace/data/fin1209-activity2/rec")
+import os
+REC = Path(os.environ.get("FM_REC") or "/Users/benjie/.treehouse/benjie-agent-workspace-8bf1b0/1/benjie-agent-workspace/data/fin1209-activity2/rec")
 HANDOUT = A.STUDENT / f"{A.NAME}.pdf"
 NARRATION = A.STUDENT / f"{A.NAME} - Narration Script.md"
 FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"
 W, H = 1920, 1080
+TIMES = REPO / "build" / "video_times.json"        # the real start of each version in the finished video
+MARKS = {"long": "The long version", "short": "The short version", "out": "The answer"}
 
 
-def write_narration() -> None:
+def load_times():
+    try:
+        return json.loads(TIMES.read_text())
+    except (OSError, ValueError):
+        return None
+
+
+def mmss(sec: int) -> str:
+    return f"{sec // 60}:{sec % 60:02d}"
+
+
+def spoken(sec: int) -> str:
+    m, r = divmod(sec, 60)
+    return f"{m} minute{'s' * (m != 1)} {r} second{'s' * (r != 1)}"
+
+
+def resolve(text: str, times) -> str:
+    """Fill {T_*} (on screen) and {S_*} (spoken) from the video's real times; mm:ss until they are known."""
+    for k in ("short", "out", "long"):
+        v = None if times is None else times.get(k)
+        text = text.replace("{T_%s}" % k.upper(), mmss(v) if v is not None else "mm:ss")
+        text = text.replace("{S_%s}" % k.upper(), spoken(v) if v is not None else "the time shown on screen")
+    return text
+
+
+def banner(path: Path, text: str) -> None:
+    from PIL import Image, ImageDraw, ImageFont
+    im = Image.open(path).convert("RGB")
+    d = ImageDraw.Draw(im)
+    f = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 64)
+    x0, y0, x1, y1 = d.textbbox((0, 0), text, font=f)
+    w, h = x1 - x0, y1 - y0
+    cx, cy = W // 2, H - 150
+    d.rounded_rectangle([cx - w // 2 - 50, cy - h // 2 - 38, cx + w // 2 + 50, cy + h // 2 + 38], radius=26,
+                        fill="#F2A900", outline="#1E5631", width=8)
+    d.text((cx, cy), text, font=f, fill="#222222", anchor="mm")
+    im.save(path)
+
+
+def write_narration(times=None) -> None:
     out = [f"# {A.NAME}: narration script", "",
            "Read this over the video's pictures, one "
-           "section per picture, in the handout's order. About twenty minutes. Say the words in "
+           "section per picture, in the handout's order. The video has a long and a short version of the coding, and the skip times below are the real ones. Say the words in "
            "your own voice and change anything that is not how you talk.", ""]
     for n, s in enumerate(SCENES, 1):
         pic = {"card": "a title card", "shot": f"screenshot `{s.ref}`", "web": "a capture of a public web page",
-               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "frame": f"the last frame of {s.ref}", "gen": f"an image R drew ({s.ref})", "clip": f"a screen recording ({s.ref})"}[s.kind]
+               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "frame": f"the last frame of {s.ref}", "code": f"the code of R step {s.ref}", "gen": f"an image R drew ({s.ref})", "clip": f"a screen recording ({s.ref})"}[s.kind]
         pic = "Picture: " + pic
-        out += [f"## {n}. {s.title}", "", f"*{pic}*", "", s.say, ""]
+        out += [f"## {n}. {s.title}", "", f"*{pic}*", "", resolve(s.say, times), ""]
+        if s.popup:
+            out[-3:-3] = [f"*On screen: {resolve(s.popup, times)}*", ""]
     NARRATION.write_text("\n".join(out), encoding="utf-8")
     print("wrote", NARRATION.name)
 
@@ -143,6 +187,11 @@ def code_image(key: str, out: Path, fills: dict, outs: dict) -> None:
                     f"--screenshot={out}", h.as_uri()], check=True, capture_output=True)
 
 
+def _probe(path: Path) -> float:
+    return float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+                                capture_output=True, text=True).stdout)
+
+
 def make_video(out: Path, screens: Path, voice: str) -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     gen = json.loads((REPO / "build" / "generated" / "activity2" / "counts.json").read_text())
@@ -150,10 +199,13 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
     fills = {"SELL_I": gen["SELL_I"], "BUY_I": gen["BUY_I"]}
     cache: dict = {}
     with tempfile.TemporaryDirectory() as t:
-        t = Path(t); segs = []
-        for n, s in enumerate(SCENES, 1):
+        t = Path(t)
+
+        def render(n: int, s, times) -> Path:
+            """One scene to one segment. Scenes that name a time are redrawn when the times move."""
             img = t / f"{n:03d}.png"
             imgs = [img]
+            say = resolve(s.say, times)
             if s.kind == "shot":
                 src = screens / f"{s.ref}.png"
                 if not src.is_file():
@@ -182,30 +234,33 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                 im0.save(fr)
                 fit(fr, img)
             elif s.kind == "clip":
-                imgs = []                        # video comes from the recording, below
+                imgs = []
             elif s.kind == "code":
                 code_image(s.ref, img, fills, outs)
             else:
                 card(s, img)
+            if s.popup:
+                for im in imgs:
+                    banner(im, resolve(s.popup, times))
             aiff = t / f"{n:03d}.aiff"
-            subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(aiff), s.say], check=True)
+            subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(aiff), say], check=True)
             seg = t / f"{n:03d}.mp4"
-            dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(aiff)],
-                                       capture_output=True, text=True).stdout) + 0.7
+            dur = _probe(aiff) + 0.7
             vv = t / f"{n:03d}_v.mp4"
             if s.kind == "clip":
                 src = REC / f"{s.ref}.mp4"
                 if not src.is_file():
                     raise SystemExit(f"missing recording {src}")
-                cd = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(src)],
-                                          capture_output=True, text=True).stdout)
-                extra = max(0.0, dur - cd)       # hold the last frame if the narration is longer
-                cd = cd / s.speed
-                extra = max(0.0, dur - cd)
+                cd = _probe(src) / s.speed
+                extra = dur if s.after else max(0.0, dur - cd)      # `after`: speak over the last frame, never over the typing
                 vf = (f"setpts=PTS/{s.speed},scale={W}:{H}:force_original_aspect_ratio=decrease,"
                       f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:white,tpad=stop_mode=clone:stop_duration={extra:.3f},fps=10")
                 subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(src), "-vf", vf, "-an", "-c:v", "libx264",
                                 "-pix_fmt", "yuv420p", str(vv)], check=True)
+                if s.after:        # silence while the recording plays, then the voice
+                    subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(aiff), "-af",
+                                    f"adelay={int(cd * 1000)}:all=1,apad=pad_dur=0.7", str(aiff.with_suffix(".wav"))], check=True)
+                    aiff = aiff.with_suffix(".wav")
             else:
                 parts = []
                 for k, im in enumerate(imgs):
@@ -217,13 +272,78 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                 subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(vl), "-c", "copy", str(vv)], check=True)
             subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(vv), "-i", str(aiff), "-c:v", "copy", "-c:a", "aac",
                             "-b:a", "128k", "-af", "apad=pad_dur=0.7", "-shortest", str(seg)], check=True)
-            segs.append(seg)
+            return seg
+
+        def joined(segs: list, name: str) -> Path:
+            lst = t / f"{name}.txt"
+            lst.write_text("".join(f"file '{p}'\n" for p in segs))
+            f = t / f"{name}.mp4"
+            subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lst), "-c", "copy", str(f)], check=True)
+            return f
+
+        def locate(final: Path, seg: Path, approx: float, win: float = 8.0) -> float:
+            """When a scene really starts in the joined file: the first frame, near where the sums say, that equals the
+            scene's own first frame. The sums of segment lengths drift by a second or two, so they are not trusted."""
+            import numpy as np
+            from PIL import Image
+            d = t / "loc"; shutil.rmtree(d, ignore_errors=True); d.mkdir()
+            ref = d / "ref.png"
+            subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-ss", "0.25", "-i", str(seg), "-frames:v", "1",
+                            "-vf", "scale=320:-1", str(ref)], check=True)
+            t0 = max(0.0, approx - win)
+            subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-ss", f"{t0:.3f}", "-t", f"{2 * win:.3f}", "-i", str(final),
+                            "-vf", "fps=10,scale=320:-1", str(d / "%04d.png")], check=True)
+            r = np.asarray(Image.open(ref).convert("L"), dtype=float)
+            for i, f in enumerate(sorted(d.glob("0*.png"))):
+                g = np.asarray(Image.open(f).convert("L"), dtype=float)
+                if g.shape == r.shape and abs(g - r).mean() < 2.5:
+                    return t0 + i / 10
+            raise SystemExit(f"could not find the start of {seg.name} in the joined video near {approx:.1f}s")
+
+        def starts(segs: list) -> dict:
+            final = joined(segs, "probe")
+            acc, at = 0.0, {}
+            for n, (sc, sg) in enumerate(zip(SCENES, segs)):
+                for k, title in MARKS.items():
+                    if sc.title == title:
+                        at[k] = int(locate(final, sg, acc))          # whole second at or just before the real start
+                acc += _probe(sg)
+            return at
+
+        times = {"short": 20 * 60, "out": 40 * 60, "long": 5 * 60}       # provisional, so the first drawing has the right shape
+        times = {k: v for k, v in (load_times() or times).items() if k in times}
+        segs = [render(n, s, times) for n, s in enumerate(SCENES, 1)]
+        timed = [n for n, s in enumerate(SCENES) if "{" in s.say or "{" in s.popup]
+        for rounds in range(30):
+            real = starts(segs)
+            if real == times:
+                break
+            times = real
+            for n in timed:
+                segs[n] = render(n + 1, SCENES[n], times)
+        else:
+            raise SystemExit(f"the times did not settle: {times} vs {real}")
+        TIMES.write_text(json.dumps({**times, "label": {k: mmss(v) for k, v in times.items()}}, indent=1))
         lst = t / "list.txt"
         lst.write_text("".join(f"file '{p}'\n" for p in segs))
         subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-f", "concat", "-safe", "0",
                         "-i", str(lst), "-c", "copy", str(out)], check=True)
+        chk = {}
+        acc = 0.0
+        for n, (sc, sg) in enumerate(zip(SCENES, segs)):
+            for k, title in MARKS.items():
+                if sc.title == title:
+                    chk[k] = locate(out, sg, acc)
+            acc += _probe(sg)
+        for k, v in chk.items():                 # what the popups say must be where the scene really starts
+            if not (times[k] <= v < times[k] + 1.0 + 1e-6):
+                raise SystemExit(f"the time shown for {k} ({mmss(times[k])}) is not where it starts ({v:.2f}s)")
+        print("verified in the finished file:", {k: round(v, 2) for k, v in chk.items()})
+        total = _probe(out)
+        print("times (mm:ss):", {k: mmss(v) for k, v in times.items()}, "| length", mmss(int(total)), f"({total:.1f}s)")
         if a_keep:
             shutil.copytree(t, a_keep, dirs_exist_ok=True)
+    write_narration(times)         # the narration script carries the same times
     print("wrote", out)
 
 
@@ -239,7 +359,7 @@ if __name__ == "__main__":
     ap.add_argument("--keep-frames", type=Path)
     a = ap.parse_args()
     a_keep = a.keep_frames
-    write_narration()
+    write_narration(load_times())
     if not a.narration_only:
         if not a.video_out:
             raise SystemExit("--video-out is required")

@@ -129,6 +129,17 @@ def _outputs() -> dict:
 # What this is
 # --------------------------------------------------------------------------
 
+def _video_line() -> str:
+    """The guide video's two versions and where its outputs start, as the finished video has them."""
+    try:
+        t = json.loads((Path(__file__).resolve().parent / "video_times.json").read_text(encoding="utf-8"))["label"]
+    except (OSError, ValueError, KeyError):
+        t = {"long": "mm:ss", "short": "mm:ss", "out": "mm:ss"}
+    return (f"**Long version from {t['long']}, short version from {t['short']}, outputs from {t['out']}.** "
+            "The long version types every line and explains it. The short version explains each block of code and what it "
+            "produces. Watch one of the two, then carry on from the outputs.")
+
+
 BRIEF = Section(
     title="What you are making",
     kicker="Read this page first. It is short.",
@@ -141,6 +152,7 @@ BRIEF = Section(
             "day, five votes for buy or sell: the **price trend**, the **price bar**, the **RSI**, the **MACD** and the "
             "**stochastic**. It counts how many agree, checks the **volume**, and gives the price to act at. It writes a "
             "table and a chart. Add new prices and run it again, and both update. That is **automation**.")),
+        Callout(label="The guide video has two versions", tone="gold", text=_video_line()),
         Callout(label="You do not need to know R", tone="gold", text=(
             "Nobody in this class was taught to code. The script is about 60 lines, Part 3 shows what it does, and "
             "Part 5 builds it in seven small steps. The numbers it prints are not advice: Part 7 shows what they "
@@ -374,14 +386,14 @@ DATA = Section(
              text=("Go to **https://sheets.new** while signed in to your "
                    "Google account. A blank spreadsheet opens. Click cell "
                    "**A1**."),
-             shot=Shot("g1-blank-sheet", width_pct=40)),
+             shot=Shot("g1-blank-sheet", width_pct=33)),
         Step(title="Type the formula",
              text="In A1 type this formula for Coca-Cola, then press Enter:",
              type_this=_gf(EXAMPLE_TICKERS[0][0], "2026,9,30"),
              then=("The picture shows the formula being typed. Its end date "
                    "in that capture reads 2026,10,30; **use 2026,9,30** for "
                    "this first run."),
-             shot=Shot("g2-formula", width_pct=40)),
+             shot=Shot("g2-formula", width_pct=33)),
         Step(title="Check the result",
              text=("Wait a moment. About 64 rows fill down from A1, with the "
                    "six column names in row 1. The dates read like "
@@ -389,13 +401,13 @@ DATA = Section(
                    "gives, and the script reads it as it is, so you never "
                    "edit a date. If you see `#N/A`, check the quote marks "
                    "are straight and the ticker is spelled `NYSE:KO`."),
-             shot=Shot("g3-result", width_pct=40)),
+             shot=Shot("g3-result", width_pct=33)),
         Step(title="Download it as a CSV",
              text=("Choose **File, Download, Comma Separated Values (.csv)**. "
                    "The file holds the values, not the formula, so there is "
                    "nothing more to do to it. Your browser saves a file "
                    "named after the spreadsheet."),
-             shot=Shot("g4-download-menu", width_pct=40)),
+             shot=Shot("g4-download-menu", width_pct=33)),
         Para(text=(
             "Rename the file **KO.csv** and move it into your `data` folder. "
             "The name matters: the script takes the ticker from it. Then do "
@@ -452,7 +464,8 @@ def basics_blocks(fills: dict) -> tuple:
             blocks.append(Code(lines=shown[:20], output=out,
                                label=f"Typed in step {n}, and the line that prints the result"))
         else:
-            blocks.append(Code(lines=("(R prints one line per stock)",), output=out, label="What R printed"))
+            last = tuple(x for x in lines if x.lstrip().startswith("cat("))
+            blocks.append(Code(lines=last, output=out, label="Typed in step 7, and what R printed"))
         blocks.append(Para(text="**Run it** with Code, Source. " + written(STEPS[n][2]), glue=False))
         prev = code
     return tuple(blocks)
@@ -531,33 +544,6 @@ DATA = Section(
 # --------------------------------------------------------------------------
 # 4 R basics, built from the script
 # --------------------------------------------------------------------------
-
-
-def basics_blocks(fills: dict) -> tuple:
-    """Each step shows only the lines it adds, and what R printed."""
-    outs = _outputs()
-    blocks = []
-    prev = ""
-    for n, st in enumerate(STAGES, 1):
-        code = _stage_code(st, fills)
-        out = outs.get(st.key, "(output appears after the real run)")
-        ol = out.splitlines()
-        if len(ol) > 7:
-            out = "\n".join(ol[:7]) + f"\n... ({len(ol) - 7} more lines)"
-        blocks.append(Head(text=st.title, number=f"{n}"))
-        blocks.append(Para(text=st.text, glue=True))
-        if st.code == "":
-            blocks.append(Callout(label="The finished script",
-                                  text=f"`{SCRIPT_NAME}`, {len(code.splitlines())} lines. The video types it."))
-            blocks.append(Code(lines=("(R prints one line per stock)",), output=out, label="What R printed"))
-        else:
-            new_idx = _new_lines(prev, code)
-            lines = code.splitlines()
-            shown = tuple(lines[i - 1] for i in new_idx if not lines[i - 1].lstrip().startswith("#"))
-            blocks.append(Code(lines=shown or ("(no new lines)",), output=out, label=f"New in step {n}"))
-        png = STAGE_OUTPUTS.parent / f"stage-{st.key}.png"
-        prev = code
-    return tuple(blocks)
 
 
 def flow_section() -> Section:
@@ -901,9 +887,10 @@ def build_activity(fills: dict, counts: dict, info: dict | None = None) -> Activ
         code="FIN1209",
         course="Technical Analysis in Investment",
         chapter="Chapter 7",
-        title=NAME + ": automate Chapter 8's window oscillators in R",
-        subtitle="Write a short R script that reads price files, finds where the RSI, the MACD and the stochastic "
-                 "give buy and sell signals, counts how many agree, and draws them. Then draw a flowchart that explains it.",
+        title=NAME + ": automate price, bars, volume and three oscillators in R",
+        subtitle="Write a short R script that reads price files and takes five votes a day (the price trend and price bar, "
+                 "then the RSI, the MACD and the stochastic), counts how many agree, checks the volume, and draws the signals. "
+                 "Then draw a flowchart that explains it.",
         presenter="Benjamin C. Sotelo  |  Institute of Accounts, Business "
                   "and Finance, FEU Manila",
         points=TOTAL,

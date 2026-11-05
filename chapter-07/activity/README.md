@@ -58,8 +58,8 @@ download for a signed-out user; no redistribution), Stooq (no Philippine stocks;
 download), PSE EDGE (copyrighted; today's prices only; no CSV), Google Sheets `GOOGLEFINANCE` (US stocks
 only: `PSE:JFC` returns `#N/A`; File, Download, CSV saves values, and the Date column reads
 `7/1/2026 16:00:00`, which the script reads as it is). No price data is committed or handed out. Each
-student pulls the example with `GOOGLEFINANCE` from 3 November 2025 (the MACD needs about 34 bars), ending
-30 September 2026 and, for the update, 30 October 2026. The files used to build the outputs are kept
+student pulls the example with `GOOGLEFINANCE` from 1 July 2026 (the MACD needs about 34 bars, so its first weeks show no
+signal), ending 30 September 2026 and, for the update, 30 October 2026. The files used to build the outputs are kept
 privately.
 
 ## Verification
@@ -70,10 +70,20 @@ the three-oscillator example and for a two-oscillator variant.
 
 ## Screenshots and the video
 
-`screens/` holds real captures of RStudio's window taken from a clean `~/Documents` folder, and four Google
-Sheets captures cropped to the sheet. RStudio is open source (AGPL) software from Posit; no written permission
-note was found for its screenshots, so confirm you are content to publish them. The video is a guide shown on
-screen: the RStudio part is really recorded and typed live, the flowchart is shown, the justification uses
-charts R drew from the data, and the Google Sheets segment is a marked slot of still screenshots until a
-recording is dropped in as `rec/sheets-recording.mp4`. It is too large for git and is delivered with the
-student set.
+`screens/` holds RStudio window captures cut from the recorded clips (`r03` to `r09`; `r07` is the chart R drew) and four
+Google Sheets captures cropped to the sheet. RStudio is open source (AGPL) software from Posit; no written permission note
+was found for its screenshots, so confirm you are content to publish them.
+
+The video holds **both forms in one file**, in this order: welcome, Sheets, flowchart, the **long version** (every line typed at
+real speed, one line or a short group at a time, then explained; the narration speaks over the last frame, never over the
+typing), the **short version** (the same seven steps, one block each, what it does and what it produces), then the outputs, the
+justification, and the task, submission, AI rule and marks. A popup at the start of the long version says where the short version
+begins, and one at its end says where the outputs begin. The times are the real starts in the finished video: `build_video.py`
+settles them over several passes, writes them to `build/video_times.json`, and the manual quotes that file, so **rebuild the
+manual after the video** and never retype a time.
+
+The typed order lives in `build/typing_plan.py` (shared by the recorder and the scenes) and the plain-word explanation of each
+line in `build/explain_chapter07.py` (shared by the video and the manual). The recording itself is made by a private script
+outside this repository that types into RStudio (frontmost check on every keystroke, menu items by name, no close shortcuts);
+the video is too large for git and is delivered with the student set. The Sheets part is the instructor's own screen recording,
+cut into four pieces with his account picture covered.

@@ -1,109 +1,63 @@
-# First Automation FIN1209 - Example Script
-# Williams' Oops (FIN1209 Chapter 7, slides 194 to 201, Lim 2016 p. 231)
-# as an R script.
-# Put CSV files in the data folder, run this script, read output/signals.csv
-# and look at the charts in output. Add new rows and run it again.
-# These are a rule's signals, not investment advice.
-
-# ---- Settings -------------------------------------------------------------
-data_folder   <- "data"
-output_folder <- "output"
-
-# ---- Read one CSV file into a table ---------------------------------------
-read_bars <- function(path) {
-  bars <- read.csv(path, stringsAsFactors = FALSE)
-  # The Date column may carry a time ("2026-07-02 16:00:00"); keep the day.
-  bars$Date <- substr(bars$Date, 1, 10)
-  bars
+# Price, bars and volume (Chapters 1 to 7) and three oscillators (Chapter 8), each a vote for BUY (+1) or SELL (-1):
+#   trend  price above its 3 bar average of closes is up (Chapter 5, slides 109 and 110, "Drummond geometry", "Reading a PLdot line")
+#   bar    key reversal day (Chapter 7, slides 123 and 126, "The key reversal is when a strong move suddenly turns")
+#   rsi    RSI crossing 50 (Chapter 8, slide 74), macd  MACD crossing its signal line (slide 83), stoch  %K crossing %D (slide 187)
+# Volume is not a vote: a signal day on above-average volume is CONFIRMED (Chapter 7, slide 128, "Figure 7.15 shows the key reversal").
+# Put CSV files in the data folder, run this script, read output/signals.csv. Signals of rules, not advice.
+library(TTR)
+cross <- function(a, b) {        # +1 on the day a crosses above b, -1 on the day it crosses below
+  a <- round(a, 6)
+  b <- round(rep(b, length.out = length(a)), 6)     # rounding stops a rounding-error tie from counting as a cross
+  before <- function(x) c(NA, head(x, -1))
+  s <- ifelse(a > b & before(a) <= before(b), 1, ifelse(a < b & before(a) >= before(b), -1, 0))
+  s[is.na(s)] <- 0
+  s
 }
-
-# ---- Find the Oops signals in one table -----------------------------------
-# Lim p. 231 (slides 194 and 199): a bar that opens above the previous bar's high puts a sell-stop
-# at the previous high and a stoploss at the new bar's high (bearish Oops).
-# A bar that opens below the previous bar's low puts a buy-stop at the
-# previous low and a stoploss at the new bar's low (bullish Oops).
-# A stop and reverse order starts at the stoploss level (slide 197), so the
-# reverse column names the opposite side, to be taken at the stoploss price.
-# OUR OWN CHOICES, not Lim's (the slides leave them open): a signal needs the
-# fill on the same bar as the gap; no trend filter; no profit target.
-find_oops <- function(bars, ticker) {
-  signals <- data.frame(ticker = character(), date = character(),
-                        side = character(), entry = numeric(),
-                        stoploss = numeric(), reverse = character(),
-                        stringsAsFactors = FALSE)
-  if (nrow(bars) < 2) {
-    return(signals)
-  }
-  for (i in 2:nrow(bars)) {
-    prev_high <- bars$High[i - 1]
-    prev_low  <- bars$Low[i - 1]
-    if (bars$Open[i] > prev_high && bars$Low[i] <= prev_high) {
-      # Gap up, then price falls back to the previous high: the sell-stop fills.
-      row <- data.frame(ticker = ticker, date = bars$Date[i], side = "SELL",
-                        entry = prev_high, stoploss = bars$High[i],
-                        reverse = "BUY", stringsAsFactors = FALSE)
-      signals <- rbind(signals, row)
-    } else if (bars$Open[i] < prev_low && bars$High[i] >= prev_low) {
-      # Gap down, then price rises back to the previous low: the buy-stop fills.
-      row <- data.frame(ticker = ticker, date = bars$Date[i], side = "BUY",
-                        entry = prev_low, stoploss = bars$Low[i],
-                        reverse = "SELL", stringsAsFactors = FALSE)
-      signals <- rbind(signals, row)
-    }
-  }
-  signals
-}
-
-# ---- Draw the chart with the signals marked -------------------------------
-# Black and white candles; a red down triangle is a SELL entry, a green up
-# triangle is a BUY entry, the short dash is its stoploss, and the number is
-# the signal's row number for this ticker in signals.csv.
-draw_chart <- function(bars, signals, ticker, path) {
-  n <- nrow(bars)
-  png(path, width = 1400, height = 800, res = 120)
-  plot(NA, xlim = c(0.5, n + 0.5), ylim = range(bars$Low, bars$High),
-       xaxt = "n", xlab = "", ylab = "Price",
-       main = paste(ticker, "- Williams' Oops signals"))
-  ticks <- unique(round(seq(1, n, length.out = 8)))
-  axis(1, at = ticks, labels = bars$Date[ticks], cex.axis = 0.8)
-  segments(1:n, bars$Low, 1:n, bars$High)
-  rect(1:n - 0.3, pmin(bars$Open, bars$Close),
-       1:n + 0.3, pmax(bars$Open, bars$Close),
-       col = ifelse(bars$Close >= bars$Open, "white", "black"))
-  if (nrow(signals) > 0) {
-    x <- match(signals$date, bars$Date)
-    is_sell <- signals$side == "SELL"
-    mark_col <- ifelse(is_sell, "red", "darkgreen")
-    points(x, signals$entry, pch = ifelse(is_sell, 25, 24),
-           bg = mark_col, col = mark_col, cex = 1.6)
-    points(x, signals$stoploss, pch = 95, col = mark_col, cex = 2)
-    text(x, signals$stoploss, labels = seq_len(nrow(signals)),
-         pos = ifelse(is_sell, 3, 1), col = mark_col, cex = 0.9, font = 2)
-  }
-  legend("topleft", legend = c("SELL entry", "BUY entry", "stoploss"),
-         pch = c(25, 24, 95), col = c("red", "darkgreen", "gray30"),
-         pt.bg = c("red", "darkgreen", NA), bg = "white", cex = 0.8)
-  dev.off()
-}
-
-# ---- Main: every CSV in the data folder ------------------------------------
-dir.create(output_folder, showWarnings = FALSE)
-files <- list.files(data_folder, pattern = "\\.csv$", full.names = TRUE)
+word <- function(s) ifelse(s == 1, "BUY", ifelse(s == -1, "SELL", ""))
 all_signals <- NULL
-for (path in files) {
-  ticker  <- sub("\\.csv$", "", basename(path))
-  bars    <- read_bars(path)
-  signals <- find_oops(bars, ticker)
-  draw_chart(bars, signals, ticker,
-             file.path(output_folder, paste0(ticker, ".png")))
+dir.create("output", showWarnings = FALSE)
+for (path in list.files("data", pattern = "\\.csv$", full.names = TRUE)) {
+  ticker <- sub("\\.csv$", "", basename(path))
+  bars <- read.csv(path)
+  bars$Date <- as.Date(sub(" .*", "", bars$Date), tryFormats = c("%Y-%m-%d", "%m/%d/%Y"))
+  before <- function(x) c(NA, head(x, -1))
+  pldot <- SMA(bars$Close, 3)
+  trend_vote <- ifelse(bars$Close > pldot, 1, -1)
+  trend_vote[is.na(trend_vote)] <- 0
+  bar_vote <- ifelse(bars$Low < before(bars$Low) & bars$Close >= before(bars$Close), 1,
+                     ifelse(bars$High > before(bars$High) & bars$Close <= before(bars$Close), -1, 0))
+  bar_vote[is.na(bar_vote)] <- 0
+  rsi <- RSI(bars$Close, n = 14, maType = "SMA")
+  macd <- MACD(bars$Close, nFast = 12, nSlow = 26, nSig = 9, percent = FALSE)
+  sto <- stoch(bars[, c("High", "Low", "Close")], nFastK = 14, nFastD = 3)
+  rsi_sig <- cross(rsi, 50)
+  macd_sig <- cross(macd[, "macd"], macd[, "signal"])
+  stoch_sig <- cross(sto[, "fastK"], sto[, "fastD"])
+  votes <- cbind(trend_vote, bar_vote, rsi_sig, macd_sig, stoch_sig)
+  fired <- bar_vote != 0 | rsi_sig != 0 | macd_sig != 0 | stoch_sig != 0
+  day <- which(fired & rowSums(votes) != 0)
+  side <- ifelse(rowSums(votes)[day] > 0, "BUY", "SELL")
+  signals <- data.frame(ticker = ticker, date = bars$Date[day], side = side,
+                        entry = ifelse(side == "BUY", bars$High[day], bars$Close[day]),
+                        trend = word(trend_vote[day]), bar = word(bar_vote[day]), rsi = word(rsi_sig[day]),
+                        macd = word(macd_sig[day]), stoch = word(stoch_sig[day]),
+                        agree = rowSums(votes[day, , drop = FALSE] == ifelse(side == "BUY", 1, -1)),
+                        volume = ifelse(bars$Volume[day] > mean(bars$Volume), "CONFIRMED", "NOT"))
+  png(file.path("output", paste0(ticker, ".png")), width = 1200, height = 1200)
+  layout(matrix(1:5), heights = c(3, 1, 1, 1, 1))
+  par(mar = c(2, 4, 3, 1))
+  plot(bars$Date, bars$Close, type = "l", xlab = "", ylab = "Close", main = paste(ticker, "- price, bars, volume and oscillators"))
+  lines(bars$Date, pldot, col = "orange")
+  big <- signals$agree >= 3
+  points(signals$date, signals$entry, pch = ifelse(side == "BUY", 24, 25), bg = ifelse(side == "BUY", "darkgreen", "red"), cex = ifelse(big, 1.8, 0.7))
+  if (any(big)) text(signals$date[big], signals$entry[big], labels = which(big), pos = 3)
+  plot(bars$Date, bars$Volume, type = "h", xlab = "", ylab = "Volume", col = ifelse(bars$Date %in% signals$date[signals$volume == "CONFIRMED"], "gold", "gray"))
+  abline(h = mean(bars$Volume), lty = 2)
+  plot(bars$Date, rsi, type = "l", xlab = "", ylab = "RSI"); abline(h = 50, lty = 2)
+  matplot(bars$Date, macd, type = "l", lty = 1, xlab = "", ylab = "MACD"); abline(h = 0, lty = 2)
+  matplot(bars$Date, sto[, c("fastK", "fastD")], type = "l", lty = 1, xlab = "", ylab = "Stochastic")
+  dev.off()
   all_signals <- rbind(all_signals, signals)
-  cat(ticker, ":", nrow(signals), "signals\n")
+  cat(ticker, ":", nrow(signals), "signal days,", sum(signals$agree >= 3), "with three or more votes agreeing,", sum(signals$volume == "CONFIRMED"), "on above-average volume\n")
 }
-if (is.null(all_signals)) {
-  all_signals <- data.frame(ticker = character(), date = character(),
-                            side = character(), entry = numeric(),
-                            stoploss = numeric(), reverse = character())
-}
-write.csv(all_signals, file.path(output_folder, "signals.csv"),
-          row.names = FALSE, quote = FALSE)
-cat("Wrote", file.path(output_folder, "signals.csv"), "\n")
+write.csv(all_signals, "output/signals.csv", row.names = FALSE, quote = FALSE)

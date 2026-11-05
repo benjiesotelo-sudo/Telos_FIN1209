@@ -30,7 +30,7 @@ draw <- function(k, i, side, file) {
   bars <- D[[k]]$bars; rsi <- D[[k]]$rsi; macd <- D[[k]]$macd; sto <- D[[k]]$sto; sig <- D[[k]]$sig; ticker <- tickers[k]
   w <- max(1, i - 14):min(nrow(bars), i + 6); d <- bars$Date[w]
   sign <- if (side == "BUY") 1 else -1
-  entry <- if (side == "BUY") bars$High[i] else bars$Close[i]
+  entry <- if (side == "BUY") bars$High[i] else bars$Low[i]
   who <- names(which(sig[i, ] == sign)); n_agree <- length(who)
   png(file, width = 1200, height = 900, res = 110)
   layout(matrix(1:4), heights = c(2.4, 1, 1, 1)); par(mar = c(1.5, 5, 3.5, 2))
@@ -39,8 +39,8 @@ draw <- function(k, i, side, file) {
   abline(v = bars$Date[i], lty = 2, col = "gray40")
   abline(h = entry, lty = 3, col = if (side == "BUY") "darkgreen" else "red")
   points(bars$Date[i], entry, pch = if (side == "BUY") 24 else 25, bg = if (side == "BUY") "darkgreen" else "red", cex = 2.4)
-  text(bars$Date[i], entry, "1  entry", pos = 4, cex = 1.1, font = 2)
-  text(d[length(d)] + 0.4, entry, if (side == "BUY") "entry = that day's high (slide 201)" else "entry = that day's close (no sell trigger in the slides)", adj = c(1, if (side == "BUY") 1.6 else -0.6), cex = 0.95, col = "gray20")
+  text(bars$Date[i], entry, "1  trigger", pos = 4, cex = 1.1, font = 2)
+  text(d[length(d)] + 0.4, entry, if (side == "BUY") "trigger = above that day's high (slide 201)" else "trigger = below that day's low (mirror of slide 201, our choice)", adj = c(1, if (side == "BUY") 1.6 else -0.6), cex = 0.95, col = "gray20")
   mark <- function(name, col) {
     got <- sig[i, name] == sign
     points(bars$Date[i], col, pch = 21, bg = if (got) "gold" else "white", cex = 3)
@@ -59,7 +59,7 @@ B <- find(1); S <- find(-1)
 draw(B$k, B$i, "BUY", file.path(out, "why-buy.png")); draw(S$k, S$i, "SELL", file.path(out, "why-sell.png"))
 bb <- D[[B$k]]; ss <- D[[S$k]]
 cat("BUY", tickers[B$k], format(bb$bars$Date[B$i]), "entry", bb$bars$High[B$i], "agree", paste(names(which(bb$sig[B$i, ] == 1)), collapse = "+"), "\n")
-cat("SELL", tickers[S$k], format(ss$bars$Date[S$i]), "entry", ss$bars$Close[S$i], "agree", paste(names(which(ss$sig[S$i, ] == -1)), collapse = "+"), "\n")
+cat("SELL", tickers[S$k], format(ss$bars$Date[S$i]), "entry", ss$bars$Low[S$i], "agree", paste(names(which(ss$sig[S$i, ] == -1)), collapse = "+"), "\n")
 al <- do.call(rbind, lapply(D, function(x) cbind(rsi = x$rsi, macd = x$macd[, "macd"], stoch = x$sto[, "fastK"])))
 r <- cor(al, use = "complete.obs")
 cat(sprintf("CORR rsi_macd %.2f rsi_stoch %.2f macd_stoch %.2f\n", r["rsi", "macd"], r["rsi", "stoch"], r["macd", "stoch"]))

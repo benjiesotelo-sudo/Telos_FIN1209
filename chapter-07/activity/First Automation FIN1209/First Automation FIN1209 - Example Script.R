@@ -38,7 +38,7 @@ for (path in list.files("data", pattern = "\\.csv$", full.names = TRUE)) {
   day <- which(fired & rowSums(votes) != 0)
   side <- ifelse(rowSums(votes)[day] > 0, "BUY", "SELL")
   signals <- data.frame(ticker = ticker, date = bars$Date[day], side = side,
-                        entry = ifelse(side == "BUY", bars$High[day], bars$Close[day]),
+                        entry = ifelse(side == "BUY", bars$High[day], bars$Low[day]),   # trigger: BUY above the high, SELL below the low
                         trend = word(trend_vote[day]), bar = word(bar_vote[day]), rsi = word(rsi_sig[day]),
                         macd = word(macd_sig[day]), stoch = word(stoch_sig[day]),
                         agree = rowSums(votes[day, , drop = FALSE] == ifelse(side == "BUY", 1, -1)),

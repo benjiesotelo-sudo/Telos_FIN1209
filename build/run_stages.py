@@ -63,6 +63,7 @@ def main():
             (OUT / phase).mkdir(parents=True, exist_ok=True)
             for png in (work / "output").glob("*.png"):
                 shutil.copy(png, OUT / phase / png.name)
+            shutil.copy(work / "output" / "signals.csv", OUT / phase / "signals.csv")      # the real table, for the video's teaser
             for ln in (work / "output" / "signals.csv").read_text().splitlines()[1:]:
                 k = ln.split(",")[0]
                 counts[f"{k}_{phase}"] = counts.get(f"{k}_{phase}", 0) + 1

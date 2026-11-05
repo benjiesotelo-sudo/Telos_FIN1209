@@ -27,9 +27,12 @@ Votes are +1 BUY, -1 SELL; each is cited in the script comment and the manual.
 | rsi | RSI 14 (plain averages) crossing 50 | Chapter 8, 74, 193 to 195 |
 | macd | MACD 12/26 (EMAs) over its 9 signal line | Chapter 8, 83, 166 to 168 |
 | stoch | fast %K 14 over %D 3 | Chapter 8, 185, 187, 189 |
-| entry | a BUY at the signal day's high | Chapter 8, 201 |
+| entry | a BUY triggers above the signal day's high | Chapter 8, 201 |
 
-**Our choices, said in the manual and the video:** a SELL's entry is the close (the slides give no sell trigger);
+**Our choices, said in the manual and the video:** a SELL triggers below the signal day's low, the mirror of slide 201 (the slides give no sell trigger; the Chapter 1 to 8
+Student Editions were searched again for one. The only short trigger Lim draws is for the ID/NR6 pattern, Chapter 7 slide 207, at
+the low of a bar, one pattern only, so it is cited as support, not used as the rule). `entry` is a trigger level for both sides:
+the trade happens only if price later goes beyond it. The manual's first page says the program is not foolproof;
 the trend averages closes (slide 110's own chart; the book's PLdot averages typical price, which Chapter 5 does not
 define); "near or below the previous close" is read as at or below; "above-average volume" is the average of the
 whole file, because the slides give no period (it looks ahead, which is a known limit); Chapter 2's peaks and
@@ -87,3 +90,11 @@ line in `build/explain_chapter07.py` (shared by the video and the manual). The r
 outside this repository that types into RStudio (frontmost check on every keystroke, menu items by name, no close shortcuts);
 the video is too large for git and is delivered with the student set. The Sheets part is the instructor's own screen recording,
 cut into four pieces with his account picture covered.
+
+**The video also has** a 15 to 25 second teaser first (the real chart and the real table of the final script), a spoken and
+on-screen "not foolproof" disclaimer near the start and again before the task, and subtitles burned into the picture and delivered as
+`First Automation FIN1209.srt`. The subtitles are the narration word for word (spelled-out letters and code names are written as
+typed, "R S I" as RSI, "read dot csv" as read.csv), one sentence at a time so each cue time is exact, in a strip at the bottom
+that stills leave free; over a recording the strip sits on the empty part of the console, never on the editor where the
+highlighted line is. The two skip popups are at the top so they never meet the subtitles. If the sell rule changes again, the
+recorder (`FROM_STEP=5`) retypes steps 1 to 4 off camera and records from step 5 on.

@@ -31,7 +31,7 @@ STEPS = {
     5: ("Count the votes and keep the signal days",
         "Step five: add up the votes, and keep the signal days in a table.",
         "Run it. The Console shows the last three rows of the signals table. Each row is a signal day, with the side, "
-        "the entry price, each vote, how many agree, and whether the volume confirmed it. It is also saved as signals dot csv."),
+        "the trigger level, each vote, how many agree, and whether the volume confirmed it. It is also saved as signals dot csv."),
     6: ("Draw the chart",
         "Step six: draw the chart.",
         "Run it. Nothing prints, because the chart goes into a picture file. In the output folder there is now one "
@@ -92,8 +92,9 @@ GROUPS = [
                 "votes do not cancel out. Which gives the row numbers of those days."),
     (5, 39, 39, "If the votes add up above zero the side is B U Y, otherwise S E L L."),
     (5, 40, 41, "Now the table. Data dot frame builds it, one row for each signal day. Ticker, date and side. The entry "
-                "price: a buy at the day's high, slide 201, and a sell at the close. That is our choice, because the slides "
-                "give no sell trigger."),
+                "is a trigger level. A buy triggers above the signal day's high, as Lim says on slide 201. A sell triggers "
+                "below the signal day's low. That is the mirror of Lim's buy trigger, our choice, because the slides give no "
+                "sell trigger. The trade happens only if price later goes beyond the level."),
     (5, 42, 45, "Then what each vote said, written as words, and agree: how many of the five votes are on the winning "
                 "side. And the volume: if the day's volume is above the average volume of the file, it is CONFIRMED, as "
                 "slide 128 marks the key reversal day. Volume is not a vote. It says how much weight the day carried."),
@@ -104,7 +105,7 @@ GROUPS = [
     (6, 49, 50, "Plot draws the closing price as a line, against the date. Lines adds the orange three day average on top "
                 "of it."),
     (6, 51, 53, "Now mark the signals. Big means three or more votes agree. Points puts a triangle at each signal's "
-                "entry price, green up for a buy, red down for a sell, and bigger when three or more agree. Text numbers "
+                "trigger level, green up for a buy, red down for a sell, and bigger when three or more agree. Text numbers "
                 "the big ones with their row in the table."),
     (6, 54, 55, "The second panel is the volume as bars, gold on the days confirmed by volume, with a dashed line at the "
                 "average."),
@@ -177,7 +178,7 @@ SHORT = {
        "against fifty, the M A C D against its signal line, and the stochastic percent K against percent D. It produces "
        "three more votes, one for each oscillator.",
     5: "Step five is the table block. It puts the five votes side by side, keeps the days where the bar or an oscillator "
-       "fired and the votes do not cancel, and decides buy or sell by the net vote. It sets the entry price, counts how "
+       "fired and the votes do not cancel, and decides buy or sell by the net vote. It sets the trigger level, a buy above the high and a sell below the low, counts how "
        "many votes agree, checks the volume, and saves everything as signals dot csv.",
     6: "Step six is the chart block. For each stock it draws one picture with five panels: price and its average with a "
        "triangle on every signal, then volume, then the R S I, the M A C D and the stochastic. It produces one picture "

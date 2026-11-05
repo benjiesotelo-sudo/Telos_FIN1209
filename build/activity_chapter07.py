@@ -427,6 +427,113 @@ DATA = Section(
 
 
 def basics_blocks(fills: dict) -> tuple:
+    """Each step: what it adds, line by line in plain words (the same words as the video), then what R printed."""
+    from activity_chapter07_code import stage_code
+    from explain_chapter07 import GROUPS, STEPS, written
+    outs = _outputs()
+    blocks = []
+    prev = ""
+    for n, st in enumerate(STAGES, 1):
+        code = _stage_code(st, fills)
+        out = outs.get(st.key, "(output appears after the real run)")
+        ol = out.splitlines()
+        if len(ol) > 7:
+            out = "\n".join(ol[:7]) + f"\n... ({len(ol) - 7} more lines)"
+        blocks.append(Head(text=STEPS[n][0], number=f"{n}"))
+        blocks.append(Para(text=STEPS[n][1] + " Type each group of lines, read what it does, then move on.", glue=True))
+        rows = tuple((f"{a}" if a == b else f"{a} to {b}", written(t)) for (s_, a, b, t) in GROUPS if s_ == n)
+        if rows:
+            blocks.append(Table(title=f"What the new lines do (line numbers of the finished script)",
+                                headers=("Lines", "What they do"), widths=(14, 86), rows=rows))
+        new_idx = _new_lines(prev, code)
+        lines = code.splitlines()
+        shown = tuple(lines[i - 1] for i in new_idx if not lines[i - 1].lstrip().startswith("#"))
+        if n < 7 and shown:
+            blocks.append(Code(lines=shown[:20], output=out,
+                               label=f"Typed in step {n}, and the line that prints the result"))
+        else:
+            blocks.append(Code(lines=("(R prints one line per stock)",), output=out, label="What R printed"))
+        blocks.append(Para(text="**Run it** with Code, Source. " + written(STEPS[n][2]), glue=False))
+        prev = code
+    return tuple(blocks)
+
+
+EXAMPLE_TICKERS = (("NYSE:KO", "KO"), ("NYSE:F", "F"))
+
+
+def _gf(sym: str, end: str) -> str:
+    return f'=GOOGLEFINANCE("{sym}","all",DATE(2026,7,1),DATE({end}),"DAILY")'
+
+
+DATA = Section(
+    title="2b. Get the example prices yourself",
+    kicker="The same route you will use for your own task. We give you no "
+           "price files.",
+    footer="Get prices",
+    blocks=(
+        Para(text=(
+            "**Google Sheets** can fetch daily prices with one formula, and "
+            "it gives exactly the columns the contract needs: Date, Open, "
+            "High, Low, Close, Volume. It works for **US-listed stocks**. "
+            "You do this once per stock, and you use the same dates as "
+            "below so your numbers match this handout.")),
+        Step(title="Open a blank spreadsheet",
+             text=("Go to **https://sheets.new** while signed in to your "
+                   "Google account. A blank spreadsheet opens. Click cell "
+                   "**A1**."),
+             shot=Shot("g1-blank-sheet", width_pct=40)),
+        Step(title="Type the formula",
+             text="In A1 type this formula for Coca-Cola, then press Enter:",
+             type_this=_gf(EXAMPLE_TICKERS[0][0], "2026,9,30"),
+             then=("The picture shows the formula being typed. Its end date "
+                   "in that capture reads 2026,10,30; **use 2026,9,30** for "
+                   "this first run."),
+             shot=Shot("g2-formula", width_pct=40)),
+        Step(title="Check the result",
+             text=("Wait a moment. About 64 rows fill down from A1, with the "
+                   "six column names in row 1. The dates read like "
+                   "`7/1/2026 16:00:00`: that is the layout Google Sheets "
+                   "gives, and the script reads it as it is, so you never "
+                   "edit a date. If you see `#N/A`, check the quote marks "
+                   "are straight and the ticker is spelled `NYSE:KO`."),
+             shot=Shot("g3-result", width_pct=40)),
+        Step(title="Download it as a CSV",
+             text=("Choose **File, Download, Comma Separated Values (.csv)**. "
+                   "The file holds the values, not the formula, so there is "
+                   "nothing more to do to it. Your browser saves a file "
+                   "named after the spreadsheet."),
+             shot=Shot("g4-download-menu", width_pct=40)),
+        Para(text=(
+            "Rename the file **KO.csv** and move it into your `data` folder. "
+            "The name matters: the script takes the ticker from it. Then do "
+            "the same for a second stock in a new spreadsheet, with this "
+            "formula, and save it as **F.csv** in `data`. Part 6 runs the "
+            "script on these two files.")),
+        TypeBox(text=_gf(EXAMPLE_TICKERS[1][0], "2026,9,30"),
+                label="Cell A1, for F (Ford)"),
+        Para(text=(
+            "**Later, for the update in Part 6:** in each spreadsheet change "
+            "`DATE(2026,9,30)` in the formula to `DATE(2026,10,30)`, "
+            "download again, and replace the file in `data`, still named "
+            "KO.csv and F.csv. There is no capture of that second download "
+            "because it is the same four steps.")),
+        Callout(label="Swap the ticker, nothing else", tone="gold", text=(
+            "To use another US stock, change only the text inside the first "
+            "quotes of the formula, for example `\"NASDAQ:AMD\"`. "
+            "**Philippine stocks do not work here.** We tried `PSE:JFC` and "
+            "Sheets answered `#N/A`: GOOGLEFINANCE gives no daily history "
+            "for Philippine stocks. For a PSE stock you need another source "
+            "from Part 2, for example Investing.com, then save its data as "
+            "a CSV with the columns of Part 5.")),
+    ),
+)
+
+# --------------------------------------------------------------------------
+# 4 R basics, built from the script
+# --------------------------------------------------------------------------
+
+
+def basics_blocks(fills: dict) -> tuple:
     """Each step shows only the lines it adds, and what R printed."""
     outs = _outputs()
     blocks = []

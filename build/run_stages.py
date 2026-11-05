@@ -88,7 +88,7 @@ def main():
     (OUT / "stage_outputs.json").write_text(json.dumps(outs, indent=1))
     (OUT / "counts.json").write_text(json.dumps({**counts, **fills}, indent=1))
     print(json.dumps({**counts, **fills}))
-    for k in ("trend", "bar", "osc", "files"):
+    for k in ("read", "trend", "bar", "osc", "table", "files"):
         print("--", k); print(outs[k][:400])
 
 if __name__ == "__main__":

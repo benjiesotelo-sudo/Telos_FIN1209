@@ -30,10 +30,9 @@ def main() -> int:
     ap.add_argument("--draft", action="store_true")
     ap.add_argument("--out", type=Path, default=OUT)
     a = ap.parse_args()
-    gen = json.loads((GENERATED / "counts.json").read_text())
-    fills = {"SELL_I": gen["SELL_I"], "BUY_I": gen["BUY_I"]}
+    modes = json.loads((GENERATED / "modes.json").read_text())
     info = json.loads((GENERATED / "why_info.json").read_text())
-    act = A.build_activity(fills, gen, info)
+    act = A.build_activity(modes, info)
     for sec in act.sections:          # steps restart at 1 in every part
         n = 0
         for blk in sec.blocks:
@@ -44,9 +43,9 @@ def main() -> int:
     problems = activitykit.validate(act, shots)
     if a.draft:
         problems = [p for p in problems if "screenshot" not in p]
-    if "(output appears after the real run)" in json.dumps(
+    if "(run build/run_stages.py)" in json.dumps(
             [getattr(b, "output", "") for s in act.sections for b in s.blocks]):
-        problems.append("a step has no real R output; run build/run_stages.py")
+        problems.append("a run has no real R output; run build/run_stages.py")
     if problems:
         raise SystemExit("Rules violated:\n  " + "\n  ".join(problems))
     pages = ba.build_one(act, shots, a.out, chrome.CHROME, key=False, keep_html=False)

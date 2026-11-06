@@ -9,9 +9,9 @@ things are computed rather than typed so they cannot drift:
   after really running every stage;
 * the marks are added up here, and the build stops if they are not 100.
 
-The rule is Williams' Oops, quoted from the Chapter 7 student edition
-built from origin/main (slides 194 to 201). Where the slides leave something
-open, the guide says so and calls the choice the student's own.
+The rules are the five votes of Chapters 5, 7 and 8, quoted by slide number and title, and a buy or sell answer built on them.
+Where the slides leave something open (the sell trigger, the stop, how many votes must agree), the guide says so and calls the
+choice our own. The script is walked block by block from build/walk_chapter07.py; what R printed comes from build/run_stages.py.
 """
 
 from __future__ import annotations
@@ -22,13 +22,14 @@ from pathlib import Path
 from activitykit import (Activity, Applied, Callout, Code, Figure, Head, Para, Points,
                          Section, Shot, Step, Table, TypeBox, Worked,
                          show_marks, written_rubric)
-from activity_chapter07_code import STAGES
+import walk_chapter07 as W
+from activitykit import Walk
 from rubric import WRITTEN
 
 REPO = Path(__file__).resolve().parent.parent
 STUDENT = REPO / "chapter-07" / "activity" / "First Automation FIN1209"
 SCRIPT_FILE = STUDENT / "First Automation FIN1209 - Example Script.R"
-STAGE_OUTPUTS = REPO / "build" / "generated" / "activity2" / "stage_outputs.json"
+STAGE_OUTPUTS = REPO / "build" / "generated" / "activity2" / "modes.json"
 
 NAME = "First Automation FIN1209"
 SCRIPT_NAME = "First Automation FIN1209 - Example Script.R"
@@ -40,18 +41,16 @@ FLOW_NAME = "First Automation FIN1209 - Example Flowchart"
 
 CHECKABLE = (
     ("The script runs", 10,
-     "On a folder of files you have never seen, with no changes and no "
-     "installs, in under 60 seconds."),
+     "In buy mode and in sell mode, on a file you have never seen, with no change except the four settings lines and "
+     "no installs, in under 30 seconds each."),
     ("It writes the files the contract names", 10,
-     "`output/signals.csv` with the required columns (5), and one "
-     "`output/<ticker>.png` for every input file (5)."),
-    ("It finds the right signals", 20,
-     "The ticker, date and side of every signal match the record, with none "
-     "missing and none extra."),
-    ("It gets the prices right", 10,
-     "The trigger level (`entry`) matches the record, to the cent: a buy's is the signal day's high, a sell's is its low."),
-    ("The chart shows them", 10,
-     "Each chart is a real chart with every signal marked and numbered."),
+     "`output/signals.csv` with the required columns (4), `output/answer.txt` (3), and `output/<stock>.png` (3)."),
+    ("It finds the right signal days", 15,
+     "The date and side of every signal day match the record, with none missing and none extra."),
+    ("The buy mode answer is right", 10,
+     "BUY or WAIT, and the numbers in the answer, match the record."),
+    ("The sell mode answers are right", 15,
+     "SELL now or HOLD, and the numbers in the answer, match the record, for two different bought dates."),
 )
 JUDGED = (
     ("The flowchart is correct BPMN", 10),
@@ -90,35 +89,7 @@ def _after(text: str) -> int:
     return next(i for i, ln in enumerate(_script_lines()) if text in ln)
 
 
-def _stage_code(stage, fills: dict) -> str:
-    if stage.code == "":
-        return SCRIPT_FILE.read_text(encoding="utf-8").rstrip("\n")
-    out = stage.code
-    for k, v in fills.items():
-        out = out.replace("{" + k + "}", str(v))
-    return out
-
-
-def _new_lines(prev: str, cur: str) -> tuple[int, ...]:
-    """1-based lines of `cur` whose text (ignoring indentation) is not in
-    `prev`. Comments and blank lines are never highlighted."""
-    seen: dict[str, int] = {}
-    for ln in prev.splitlines():
-        t = ln.strip()
-        seen[t] = seen.get(t, 0) + 1
-    new = []
-    for n, ln in enumerate(cur.splitlines(), 1):
-        t = ln.strip()
-        if not t or t.startswith("#"):
-            continue
-        if seen.get(t, 0) > 0:
-            seen[t] -= 1
-        else:
-            new.append(n)
-    return tuple(new)
-
-
-def _outputs() -> dict:
+def _modes() -> dict:
     try:
         return json.loads(STAGE_OUTPUTS.read_text(encoding="utf-8"))
     except OSError:
@@ -129,17 +100,6 @@ def _outputs() -> dict:
 # What this is
 # --------------------------------------------------------------------------
 
-def _video_line() -> str:
-    """The guide video's two versions and where its outputs start, as the finished video has them."""
-    try:
-        t = json.loads((Path(__file__).resolve().parent / "video_times.json").read_text(encoding="utf-8"))["label"]
-    except (OSError, ValueError, KeyError):
-        t = {"long": "mm:ss", "short": "mm:ss", "out": "mm:ss"}
-    return (f"**Long version from {t['long']}, short version from {t['short']}, outputs from {t['out']}.** "
-            "The long version types every line and explains it. The short version explains each block of code and what it "
-            "produces. Watch one of the two, then carry on from the outputs.")
-
-
 BRIEF = Section(
     title="What you are making",
     kicker="Read this page first. It is short.",
@@ -147,35 +107,37 @@ BRIEF = Section(
     flow=True,
     blocks=(
         Para(text=(
-            "You will teach R to read **price, bars and volume** (Chapters 1 to 7) and the three **window oscillators** of "
-            "Chapter 8. You put a Google Sheets price file in a folder, run a short **R script**, and it works out, day by "
-            "day, five votes for buy or sell: the **price trend**, the **price bar**, the **RSI**, the **MACD** and the "
-            "**stochastic**. It counts how many agree, checks the **volume**, and gives a trigger price. It writes a "
-            "table and a chart. Add new prices and run it again, and both update. That is **automation**.")),
+            "You will teach R to answer one question for a stock you choose: **should I buy it today, or, if I already "
+            "own it, should I sell it?** You put a Google Sheets price file in a folder, type four settings at the top of a "
+            "short **R script**, and run it. It reads **price, bars and volume** (Chapters 1 to 7) and the three **window "
+            "oscillators** of Chapter 8, takes five votes for buy or sell every day, and keeps the days when **at least 3 "
+            "of the 5 agree**. In **buy mode** it says BUY, with a level to enter above and a stop, or WAIT. In **sell mode**, "
+            "from the price and the day you bought, it says SELL now or HOLD, with a stop. It writes the answer, a table and "
+            "a chart. Add new prices and run it again, and the answer updates. That is **automation**.")),
         Callout(label="This program is not foolproof", tone="gold", text=(
             "**It follows rules from our slides. Its signals can be wrong, and they can lose money. It is a class "
             "exercise, not advice.**")),
-        Callout(label="The guide video has two versions", tone="gold", text=_video_line()),
         Callout(label="You do not need to know R", tone="gold", text=(
-            "Nobody in this class was taught to code. The script is about 60 lines, Part 3 shows what it does, and "
-            "Part 5 builds it in seven small steps. The numbers it prints are not advice: Part 7 shows what they "
-            "mean, and why signals that agree may agree for a bad reason.")),
+            "Nobody in this class was taught to code. The script is about 90 lines in six labelled blocks. Part 5 "
+            "walks through it block by block: each line shown whole and highlighted, then its key part, with one plain "
+            "sentence on each. The script uses no pipe operators, only plain R and one package.")),
         Table(
             title="What you get, and what you hand in",
             headers=("", "What"),
             widths=(26, 74),
             rows=(
-                ("**You get**", "This manual, a video that shows every step on screen, the finished example script "
-                 "and the example flowchart (`.pdf` and `.bpmn`). No price files: you download them yourself."),
-                ("**You hand in**", "Your own R script and a flowchart of how it works. Your own stock, and your own "
-                 "pair of Chapter 8 oscillators (Part 9)."),
-                ("**Due date**", "______________ (to be filled in: after the Saturday 7 November Chapter 8 class)"),
+                ("**You get**", "This manual, a guide video, the finished example script and the example flowchart (`.pdf` and "
+                 "`.bpmn`). No price files: you download them yourself."),
+                ("**You hand in**", "Your own R script, with the four settings lines at the top, and a flowchart of how it works. "
+                 "Your own stock (Part 9)."),
+                ("**Due date**", "______________ (to be filled in)"),
             ),
         ),
-        Callout(label="What these signals are", text=(
-            "The output is **the signals of three rules, applied to past prices**. It is not investment advice and it "
-            "does not say what price will do next. Chapter 1's point still holds: a forecast cannot be checked when "
-            "it is made.")),
+        Callout(label="What the answer is, and is not", text=(
+            "The answer is what the rules say about past prices **up to the last row of your file**. That row is the latest "
+            "trading day in your download, not the live market price: Google Sheets prices can be up to about 20 minutes late, and "
+            "the script does not read a live price. It does not say what price will do next. Chapter 1's point still "
+            "holds: a forecast cannot be checked when it is made.")),
     ),
 )
 
@@ -192,11 +154,10 @@ INSTALL = Section(
             "You need two programs. **R** is the language, and it does the "
             "work. **RStudio Desktop** is a friendly window for writing and "
             "running R. Install R first, then RStudio.")),
-        Callout(label="No R packages", text=(
-            "The example needs **no packages at all**. It uses only what "
-            "comes with R. You never type `install.packages`. Your own "
-            "script should not need one either, because the marker's "
-            "computer will not have it.")),
+        Callout(label="One package: TTR", text=(
+            "The example uses one package, **TTR**, which works out the moving average, the RSI, the MACD and the "
+            "stochastic. Install it once, in the Console, by typing `install.packages(\"TTR\")`. Never put "
+            "`install.packages` inside your script. Use no other package: the marker's computer has TTR and nothing else.")),
         Head(text="Windows", number="W"),
         Points(numbered=True, items=(
             "Go to **https://cran.r-project.org/bin/windows/base/** and "
@@ -282,14 +243,36 @@ RULE = Section(
             "slides give no sell trigger, so a sell triggers below the signal day's low: the mirror of Lim's buy trigger on "
             "slide 201, our choice, not Lim's rule. (Lim's own drawing of the ID/NR6 pattern, Chapter 7 slide 207, puts its long "
             "trigger at a bar's high and its short trigger at that bar's low, but that is one pattern.) For both sides the "
-            "price is a trigger level: the trade happens only if price later goes beyond it.\n\n**Signal day.** Any day the bar or an "
-            "oscillator fires and the five votes do not cancel. `agree` counts the votes on the winning side.")),
+            "price is a trigger level: the trade happens only if price later goes beyond it.\n\n**Signal day.** The slides do not say "
+            "how many votes must agree. At least 3 of the 5 is our choice. `agree` counts the votes on the winning side.\n\n"
+            "**Your stop.** Chapter 5, slide 74 says a stop is usually placed just below a significant trough for a long position, "
+            "and gives no rule or number. Ours is the low of the signal day in buy mode, and the low of the day you bought in "
+            "sell mode. It is our choice, not the book's rule.")),
+        Table(
+            title="What the script answers",
+            headers=("Answer", "When, and what it prints"),
+            widths=(22, 78),
+            rows=(
+                ("**Signal day**", "A day when at least 3 of the 5 votes agree: 3 or more BUY, or 3 or more SELL. `agree` counts them."),
+                ("**Today**", "The last row of your file: the latest trading day in the download. It is not a live price; Google "
+                 "Sheets prices can be up to about 20 minutes late."),
+                ("**BUY** (buy mode)", "Today is a buy signal day. Enter if price trades above today's high (slide 201), with a "
+                 "stop at today's low."),
+                ("**WAIT** (buy mode)", "Today is not a buy signal day. It says how many votes say BUY today, shows the last buy "
+                 "signal in the file with its levels, and says what must happen next: 3 of the 5 votes on BUY."),
+                ("**SELL now** (sell mode)", "Since the day you bought there was a sell signal, or the price closed below your "
+                 "stop. It prints about the last close and your gain or loss in percent, and why."),
+                ("**HOLD** (sell mode)", "Neither happened. It prints your stop and your gain or loss so far."),
+            ),
+            note="In sell mode you give the script the price you paid and the day you bought, in the four settings lines. "
+                 "In buy mode it assumes today's price is the last row of your file.",
+        ),
     ),
 )
 
 CONTRACT = Section(
     title="8. The contract: what every script must do",
-    kicker="Your script is marked by running it on files you have never seen, so everybody follows this exactly.",
+    kicker="Your script is marked by running it on a file you have never seen, in buy mode and in sell mode, so everybody follows this exactly.",
     footer="The contract",
     blocks=(
         Table(
@@ -298,13 +281,15 @@ CONTRACT = Section(
             widths=(24, 76),
             rows=(
                 ("Where it runs", "From the folder that holds the script, which holds a folder called `data`."),
-                ("Input", "Every `.csv` in `data` is one stock; the ticker is the file name without `.csv`. At least "
-                 "60 daily rows each, oldest first. Columns `Date, Open, High, Low, Close, Volume` exactly. `Date` "
-                 "may be `2026-07-02`, `2026-07-02 16:00:00` or `7/2/2026 16:00:00` (Google Sheets)."),
-                ("Output", "`output/signals.csv`, every stock together, and one `output/<ticker>.png` per file: price "
-                 "on top, your oscillators below, signal days marked."),
+                ("The settings", "The first lines of your script are these four, in this order, with exactly these names, each on its "
+                 "own line, so the marker can change them: `mode <- \"buy\"`, `stock <- \"KO\"`, `bought_price <- 87.29`, "
+                 "`bought_date <- \"2026-08-12\"`. `mode` is `\"buy\"` or `\"sell\"`. A comment after a value is fine."),
+                ("Input", "`data/<stock>.csv`, at least 60 daily rows, oldest first. Columns `Date, Open, High, Low, Close, "
+                 "Volume` exactly. `Date` may be `2026-07-02`, `2026-07-02 16:00:00` or `7/2/2026 16:00:00` (Google Sheets)."),
+                ("Output", "`output/signals.csv`, `output/answer.txt` and `output/<stock>.png`: price on top, volume and the "
+                 "three oscillators below, signal days marked, today's answer marked."),
                 ("Packages", "Base R and `TTR`. Nothing else, and no `install.packages` inside the script."),
-                ("Time", "Under two minutes for three files of a year each."),
+                ("Time", "Under 30 seconds for each run."),
             ),
         ),
         Table(
@@ -313,18 +298,28 @@ CONTRACT = Section(
             widths=(18, 56, 26),
             mono_cols=(0, 2),
             rows=(
-                ("ticker", "The file name without `.csv`", "KO"),
-                ("date", "The signal day, `YYYY-MM-DD`", "2026-04-08"),
-                ("side", "`BUY` or `SELL`: the side most oscillators gave", "BUY"),
-                ("entry", "The trigger level. A buy: the signal day's high. A sell: the signal day's low", "77.37"),
-                ("trend, bar", "The two price votes: `BUY`, `SELL` or empty", "BUY"),
-                ("rsi, macd, stoch", "One column for each oscillator you use, from `rsi`, `macd`, `stoch`. "
-                 "`BUY`, `SELL` or empty. **Use at least two.** The columns you use tell the marker your pair.", "BUY"),
-                ("agree", "How many of your votes gave the `side`", "3"),
+                ("ticker", "The stock: your `stock` setting", "KO"),
+                ("date", "The signal day, `YYYY-MM-DD`", "2026-09-22"),
+                ("side", "`BUY` or `SELL`: the side that has 3 or more votes", "BUY"),
+                ("entry", "The trigger level. A buy: the signal day's high. A sell: the signal day's low", "88.97"),
+                ("stop", "A buy: the signal day's low. A sell: the signal day's high", "87.46"),
+                ("trend, bar, rsi, macd, stoch", "What each of the five votes said that day: `BUY`, `SELL` or empty", "BUY"),
+                ("agree", "How many of the five votes gave the `side`", "3"),
                 ("volume", "`CONFIRMED` if that day's volume is above the file's average, else `NOT`", "CONFIRMED"),
             ),
-            note="One row per signal day: the bar or an oscillator fires and the votes do not cancel. Rows go ticker by ticker, then by date. "
-                 "The chart number of a day is its row number in the file.",
+            note="One row for each signal day, oldest first. Zero rows is fine: the file still has its header.",
+        ),
+        Table(
+            title="output/answer.txt: what the marker reads",
+            headers=("Mode and answer", "The first line starts with, and contains"),
+            widths=(26, 74),
+            rows=(
+                ("buy mode, BUY", "`BUY` and the two levels: the level to enter above (today's high) and the stop (today's low)."),
+                ("buy mode, WAIT", "`WAIT`. Further lines give the last buy signal in the file: its date, its high and its low."),
+                ("sell mode, SELL", "`SELL` and the last close and your gain or loss in percent."),
+                ("sell mode, HOLD", "`HOLD` and your stop and your gain or loss in percent."),
+            ),
+            note="Use your own words if you like, but the first word and these numbers must be in the file. The example script is the model.",
         ),
     ),
 )
@@ -341,8 +336,8 @@ SOURCES = Section(
             "bar per trading day, with six columns.")),
         Para(text=(
             "The script needs six columns: Date, Open, High, Low, Close and Volume. The RSI and the MACD use the "
-            "close; the stochastic uses the high, low and close; a buy's trigger uses the high and a sell's the low. Volume is not "
-            "used here (Chapter 6 covers it). **Open interest** exists only for futures, so a stock has none, and "
+            "close; the stochastic uses the high, low and close; a buy's trigger uses the high and a sell's the low. Volume marks a signal "
+            "CONFIRMED when it is above the file's average. **Open interest** exists only for futures, so a stock has none, and "
             "no source below gives one for a share.")),
         Table(
             title="The free sources, and what we found",
@@ -392,114 +387,6 @@ DATA = Section(
              text=("Go to **https://sheets.new** while signed in to your "
                    "Google account. A blank spreadsheet opens. Click cell "
                    "**A1**."),
-             shot=Shot("g1-blank-sheet", width_pct=33)),
-        Step(title="Type the formula",
-             text="In A1 type this formula for Coca-Cola, then press Enter:",
-             type_this=_gf(EXAMPLE_TICKERS[0][0], "2026,9,30"),
-             then=("The picture shows the formula being typed. Its end date "
-                   "in that capture reads 2026,10,30; **use 2026,9,30** for "
-                   "this first run."),
-             shot=Shot("g2-formula", width_pct=33)),
-        Step(title="Check the result",
-             text=("Wait a moment. About 64 rows fill down from A1, with the "
-                   "six column names in row 1. The dates read like "
-                   "`7/1/2026 16:00:00`: that is the layout Google Sheets "
-                   "gives, and the script reads it as it is, so you never "
-                   "edit a date. If you see `#N/A`, check the quote marks "
-                   "are straight and the ticker is spelled `NYSE:KO`."),
-             shot=Shot("g3-result", width_pct=33)),
-        Step(title="Download it as a CSV",
-             text=("Choose **File, Download, Comma Separated Values (.csv)**. "
-                   "The file holds the values, not the formula, so there is "
-                   "nothing more to do to it. Your browser saves a file "
-                   "named after the spreadsheet."),
-             shot=Shot("g4-download-menu", width_pct=33)),
-        Para(text=(
-            "Rename the file **KO.csv** and move it into your `data` folder. "
-            "The name matters: the script takes the ticker from it. Then do "
-            "the same for a second stock in a new spreadsheet, with this "
-            "formula, and save it as **F.csv** in `data`. Part 6 runs the "
-            "script on these two files.")),
-        TypeBox(text=_gf(EXAMPLE_TICKERS[1][0], "2026,9,30"),
-                label="Cell A1, for F (Ford)"),
-        Para(text=(
-            "**Later, for the update in Part 6:** in each spreadsheet change "
-            "`DATE(2026,9,30)` in the formula to `DATE(2026,10,30)`, "
-            "download again, and replace the file in `data`, still named "
-            "KO.csv and F.csv. There is no capture of that second download "
-            "because it is the same four steps.")),
-        Callout(label="Swap the ticker, nothing else", tone="gold", text=(
-            "To use another US stock, change only the text inside the first "
-            "quotes of the formula, for example `\"NASDAQ:AMD\"`. "
-            "**Philippine stocks do not work here.** We tried `PSE:JFC` and "
-            "Sheets answered `#N/A`: GOOGLEFINANCE gives no daily history "
-            "for Philippine stocks. For a PSE stock you need another source "
-            "from Part 2, for example Investing.com, then save its data as "
-            "a CSV with the columns of Part 5.")),
-    ),
-)
-
-# --------------------------------------------------------------------------
-# 4 R basics, built from the script
-# --------------------------------------------------------------------------
-
-
-def basics_blocks(fills: dict) -> tuple:
-    """Each step: what it adds, line by line in plain words (the same words as the video), then what R printed."""
-    from activity_chapter07_code import stage_code
-    from explain_chapter07 import GROUPS, STEPS, written
-    outs = _outputs()
-    blocks = []
-    prev = ""
-    for n, st in enumerate(STAGES, 1):
-        code = _stage_code(st, fills)
-        out = outs.get(st.key, "(output appears after the real run)")
-        ol = out.splitlines()
-        if len(ol) > 7:
-            out = "\n".join(ol[:7]) + f"\n... ({len(ol) - 7} more lines)"
-        blocks.append(Head(text=STEPS[n][0], number=f"{n}"))
-        blocks.append(Para(text=STEPS[n][1] + " Type each group of lines, read what it does, then move on.", glue=True))
-        rows = tuple((f"{a}" if a == b else f"{a} to {b}", written(t)) for (s_, a, b, t) in GROUPS if s_ == n)
-        if rows:
-            blocks.append(Table(title=f"What the new lines do (line numbers of the finished script)",
-                                headers=("Lines", "What they do"), widths=(14, 86), rows=rows))
-        new_idx = _new_lines(prev, code)
-        lines = code.splitlines()
-        shown = tuple(lines[i - 1] for i in new_idx if not lines[i - 1].lstrip().startswith("#"))
-        if n < 7 and shown:
-            blocks.append(Code(lines=shown[:20], output=out,
-                               label=f"Typed in step {n}, and the line that prints the result"))
-        else:
-            last = tuple(x for x in lines if x.lstrip().startswith("cat("))
-            blocks.append(Code(lines=last, output=out, label="Typed in step 7, and what R printed"))
-        blocks.append(Para(text="**Run it** with Code, Source. " + written(STEPS[n][2]), glue=False))
-        prev = code
-    return tuple(blocks)
-
-
-EXAMPLE_TICKERS = (("NYSE:KO", "KO"), ("NYSE:F", "F"))
-
-
-def _gf(sym: str, end: str) -> str:
-    return f'=GOOGLEFINANCE("{sym}","all",DATE(2026,7,1),DATE({end}),"DAILY")'
-
-
-DATA = Section(
-    title="2b. Get the example prices yourself",
-    kicker="The same route you will use for your own task. We give you no "
-           "price files.",
-    footer="Get prices",
-    blocks=(
-        Para(text=(
-            "**Google Sheets** can fetch daily prices with one formula, and "
-            "it gives exactly the columns the contract needs: Date, Open, "
-            "High, Low, Close, Volume. It works for **US-listed stocks**. "
-            "You do this once per stock, and you use the same dates as "
-            "below so your numbers match this handout.")),
-        Step(title="Open a blank spreadsheet",
-             text=("Go to **https://sheets.new** while signed in to your "
-                   "Google account. A blank spreadsheet opens. Click cell "
-                   "**A1**."),
              shot=Shot("g1-blank-sheet", width_pct=40)),
         Step(title="Type the formula",
              text="In A1 type this formula for Coca-Cola, then press Enter:",
@@ -514,7 +401,8 @@ DATA = Section(
                    "`7/1/2026 16:00:00`: that is the layout Google Sheets "
                    "gives, and the script reads it as it is, so you never "
                    "edit a date. If you see `#N/A`, check the quote marks "
-                   "are straight and the ticker is spelled `NYSE:KO`."),
+                   "are straight and the ticker is spelled `NYSE:KO`. The last row is the latest trading day, and Google prices can "
+                   "be up to about 20 minutes late."),
              shot=Shot("g3-result", width_pct=40)),
         Step(title="Download it as a CSV",
              text=("Choose **File, Download, Comma Separated Values (.csv)**. "
@@ -555,23 +443,25 @@ DATA = Section(
 def flow_section() -> Section:
     rows = (
         ("Start event", "Run the script", "the moment you click Source"),
-        ("1", "List the CSV files in the data folder", _span("for (path in list.files")),
-        ("2", "Read each file and clean its dates", _span("ticker <- sub", "bars$Date <- as.Date")),
+        ("1", "Read the settings: mode, stock, bought price, bought date", _span("mode <-", "bought_date <-")),
+        ("2", "Read the data file for the stock", _span("bars <- read.csv", "n <- nrow")),
         ("3", "Vote 1: price trend", _span("pldot <- SMA", "trend_vote[is.na")),
         ("4", "Vote 2: price bar (key reversal)", _span("bar_vote <- ifelse", "bar_vote[is.na")),
         ("5", "Vote 3: RSI crossing 50", _span("rsi <- RSI") + " and " + _span("rsi_sig <- cross")),
         ("6", "Vote 4: MACD crossing its signal line", _span("macd <- MACD") + " and " + _span("macd_sig <- cross")),
         ("7", "Vote 5: stochastic %K crossing %D", _span("sto <- stoch") + " and " + _span("stoch_sig <- cross")),
-        ("8", "Add the five votes for each day", _span("votes <- cbind")),
-        ("Gateway", "Signal day?", _span("fired <- ") + " and " + _span("day <- which")),
-        ("9", "Choose BUY or SELL by the net vote", _span("side <- ifelse(rowSums")),
-        ("10, 11", "BUY trigger = high, SELL trigger = low", _span("entry = ifelse(side")),
-        ("12", "Record the signal day", _span("signals <- data.frame", "agree = rowSums")),
-        ("13", "Mark the volume CONFIRMED or NOT", _span("volume = ifelse")),
-        ("14", "Draw the chart", _span("png(file.path", "dev.off()")),
-        ("15", "Print a summary for this stock", _span("cat(ticker")),
-        ("16", "Add its signals to the full list", _span("all_signals <- rbind(all_signals, signals)")),
-        ("17", "Write the signals table", _span("write.csv(all_signals")),
+        ("8", "Count the BUY and SELL votes for each day", _span("votes <- cbind", "sells <- rowSums")),
+        ("Gateway", "3 or more of the 5 votes agree?", _span("day <- which")),
+        ("9", "Record the signal day: side, trigger, stop, agree, volume", _span("side <- ifelse(buys", "volume = ifelse")),
+        ("Gateway", "Mode: buy or sell?", _span("if (mode == \"buy\")")),
+        ("Gateway", "Buy signal today?", _span("if (n %in% day")),
+        ("10", "BUY: enter above the signal day's high, stop at its low", _span("answer <- paste0(\"BUY: enter")),
+        ("11", "WAIT: the last buy signal and what must happen next", _span("answer <- paste0(\"WAIT", "Next one:")),
+        ("Gateway", "Sell signal since you bought, or close below the stop?", _span("if (length(sell_day)")),
+        ("12", "SELL now, at about the last close, with the percent", _span("answer <- paste0(\"SELL now")),
+        ("13", "HOLD: your stop and the percent so far", _span("answer <- paste0(\"HOLD")),
+        ("14", "Draw the chart with today's answer marked", _span("png(file.path", "dev.off()")),
+        ("15", "Write signals.csv and answer.txt, print the answer", _span("write.csv(signals", "cat(answer")),
     )
     return Section(
         title="3. What the script does",
@@ -586,14 +476,13 @@ def flow_section() -> Section:
                 headers=("Part", "What happens"),
                 widths=(14, 86),
                 rows=(
-                    ("**Input**", "A price file per stock in the `data` folder, from Google Sheets: a date, four prices "
-                     "and a volume for each trading day."),
-                    ("**Process**", "For every stock and every day, five votes for buy or sell: the price trend and the "
-                     "price bar (Chapters 5 and 7), then the RSI, the MACD and the stochastic crossing (Chapter 8). A "
-                     "signal day is a day the bar or an oscillator fires and the votes do not cancel. `agree` counts the "
-                     "votes on the winning side, and above-average volume marks the day CONFIRMED."),
-                    ("**Output**", "A table of the signal days with a trigger level, a chart of price, volume and the "
-                     "three oscillators, and a summary line per stock."),
+                    ("**Input**", "Four settings you type (buy or sell, your stock, and for a sale the price and day you bought), "
+                     "and a price file from Google Sheets: a date, four prices and a volume for each trading day."),
+                    ("**Process**", "Five votes for buy or sell every day: the price trend and the price bar (Chapters 5 and 7), then "
+                     "the RSI, the MACD and the stochastic crossing (Chapter 8). A signal day is a day when at least 3 of the 5 "
+                     "agree. Then your mode decides: BUY or WAIT, or SELL now or HOLD."),
+                    ("**Output**", "The answer, in the Console and in `answer.txt`; a table of the signal days; a chart of price, "
+                     "volume and the three oscillators with today's answer marked."),
                 ),
             ),
             Table(
@@ -610,54 +499,92 @@ def flow_section() -> Section:
     )
 
 
-def script_section(fills: dict) -> Section:
+def script_section() -> Section:
+    """Part 5: the script block by block. Each block is labelled; each important line is shown whole and highlighted,
+    then its key part is boxed, with one plain sentence on each."""
+    blocks = [
+        Step(title="Set up",
+             text=("Make a folder `" + NAME + "` in your Documents folder with a folder `data` inside it, and put "
+                   "the two Part 2 files `KO.csv` and `F.csv` in `data`. In RStudio choose **File, New File, R "
+                   "Script**, save it in the folder, then **Session, Set Working Directory, To Source File "
+                   "Location**. Type `install.packages(\"TTR\")` in the Console once. Run your script with "
+                   "**Code, Source**."),
+             shot=Shot("r03-working-dir", width_pct=60)),
+        Para(text=("The example script, `" + SCRIPT_NAME + "`, has six labelled blocks. Read them in order. Each line below "
+                   "is shown whole on a yellow bar, then the key part of it is boxed, with one plain sentence on each. "
+                   "The script uses **no pipe operators**: every line is plain R."), glue=False),
+    ]
+    for k, title, purpose, a, b, rows in W.blocks():
+        blocks.append(Head(text=title, number=f"{k}"))
+        blocks.append(Para(text=f"**Block {k}, lines {a} to {b}.** {purpose}", glue=True))
+        for i in range(0, len(rows), 3):
+            blocks.append(Walk(rows=tuple(rows[i:i + 3])))
     return Section(
-        title="5. Write the script in seven steps",
-        kicker="Each step adds one idea. The new lines are highlighted, and what R printed is under them.",
-        footer="Write the script",
-        blocks=(
-            Step(title="Set up",
-                 text=("Make a folder `" + NAME + "` in your Documents folder with a folder `data` inside it, and put "
-                       "the two Part 2 files `KO.csv` and `F.csv` in `data`. In RStudio choose **File, New File, R "
-                       "Script**, save it in the folder, then **Session, Set Working Directory, To Source File "
-                       "Location**. Type `install.packages(\"TTR\")` in the Console once. Run your script with "
-                       "**Code, Source**."),
-                 shot=Shot("r03-working-dir", width_pct=70)),
-        ) + basics_blocks(fills),
+        title="5. The script, block by block",
+        kicker="Six labelled blocks. Each important line is shown whole, then its key part, with one plain sentence each.",
+        footer="The script",
+        blocks=tuple(blocks),
     )
 
 
-def run_section(counts: dict) -> Section:
+def run_section(modes: dict) -> Section:
+    def run(name: str):
+        r = modes.get(name, {})
+        return r.get("settings", "").splitlines(), r.get("answer", "(run build/run_stages.py)")
+
+    st_b, out_b = run("buy_wait")
+    st_s, out_s = run("buy_signal")
+    st_n, out_n = run("sell_now")
+    st_h, out_h = run("sell_hold")
+    st_u, out_u = run("buy_update")
+    sig = modes.get("buy_wait", {}).get("head", [])
+    modes_dir = STAGE_OUTPUTS.parent / "modes"
     return Section(
-        title="6. Run it and read the output",
-        kicker="One answer per stock, a table, a chart. Then new data, and run it again.",
+        title="6. Run it and read the answer",
+        kicker="Real runs of the example script, one for each answer. Change the four settings, click Source, read the answer.",
         footer="Run it",
         blocks=(
-            Step(title="Run it",
-                 text="With the finished script open, click **Source**.",
-                 then=(f"The Console prints one line per stock: how many signal days, how many had three or more votes "
-                       f"agreeing, and how many were on above-average volume. First-run files: KO "
-                       f"{counts.get('KO_start', '?')} signal days, F {counts.get('F_start', '?')}."),
-                 shot=Shot("r04-source")),
-            Step(title="Read the table",
-                 text=("Open `output/signals.csv`. Each row is a signal day: `side`, the `entry` price, what each vote "
-                       "said (`trend`, `bar`, `rsi`, `macd`, `stoch`), `agree`, and `volume`: CONFIRMED when the day's "
-                       "volume is above the file's average."),
-                 shot=Shot("r06-signals-csv")),
-            Step(title="Read the chart",
-                 text=("Open `output/KO.png`. Price is on top with its orange three bar average. Every triangle is a "
-                       "signal day, green up for a buy and red down for a sell; the bigger numbered ones are days "
-                       "three or more votes agreed. Below are the volume (gold on CONFIRMED days) and the three "
-                       "oscillators. **The MACD panel is empty at the start:** the MACD needs about 34 "
-                       "days of history before it can give a signal, so the first weeks of this 64 day example show none. "
-                       "For your own stock pull about a year."),
-                 shot=Shot("r07-chart")),
-            Step(title="Add new data and run again",
-                 text=("Download both files again with the later end date (Part 2), replace the ones in `data`, and "
-                       "click **Source** again. Nothing else changes."),
-                 then=(f"The counts go up: KO from {counts.get('KO_start', '?')} to {counts.get('KO_update', '?')} "
-                       f"signal days, F from {counts.get('F_start', '?')} to {counts.get('F_update', '?')}."),
-                 shot=Shot("r09-rerun")),
+            Head(text="Buy mode: WAIT", number="1"),
+            Para(text=("Settings: `mode` is `\"buy\"` and the stock is KO, the file you downloaded with the end date 30 September. "
+                       "Click **Source**. The Console prints the answer, and the same lines go to `output/answer.txt`."), glue=True),
+            Code(lines=tuple(st_b), first=3, label="The four settings lines, as typed", output=out_b),
+            Para(text=("No buy signal today: the latest day has 0 of the 5 votes on BUY. It also shows the last buy signal in the "
+                       "file and what has to happen for the next one."), glue=False),
+            Head(text="Buy mode: BUY", number="2"),
+            Para(text=("The same file for Ford (F), downloaded a day earlier, ends on 29 October, a day with a buy signal."), glue=True),
+            Code(lines=tuple(st_s), first=3, label="The four settings lines, as typed", output=out_s),
+            Para(text=("Enter if price trades above that day's high, with the stop at its low. Remember that this is a trigger level: "
+                       "the trade happens only if price later goes above it."), glue=False),
+            Head(text="Sell mode: SELL now", number="3"),
+            Para(text=("Now change `mode` to `\"sell\"` and tell the script what you paid and when. Here you bought KO on 12 August."), glue=True),
+            Code(lines=tuple(st_n), first=3, label="The four settings lines, as typed", output=out_n),
+            Para(text=("A sell signal appeared after you bought, so the answer is SELL now, at about the last close, with your gain or "
+                       "loss in percent and the reason."), glue=False),
+            Head(text="Sell mode: HOLD", number="4"),
+            Para(text=("The KO file with the end date 30 October, and a purchase on 12 October."), glue=True),
+            Code(lines=tuple(st_h), first=3, label="The four settings lines, as typed", output=out_h),
+            Para(text=("No sell signal and no close below the stop since you bought, so you hold, with your stop and your gain so far."),
+                 glue=False),
+            Head(text="Read the table and the chart", number="5"),
+            Para(text=("`output/signals.csv` has one row for each signal day: the `side`, the trigger level `entry`, the `stop`, what "
+                       "each vote said, `agree`, and `volume`, CONFIRMED when the day's volume is above the file's average."),
+                 glue=True),
+            Code(lines=tuple(sig), label="output/signals.csv, the first rows (buy mode, KO)"),
+            Para(text=("`output/KO.png`: price on top with its orange three bar average. Each triangle is a signal day, green up for a "
+                       "buy and red down for a sell. The dashed line is today, labelled with the answer. In sell mode a cross shows "
+                       "where you bought and a dotted red line is your stop. Below are the volume (gold on CONFIRMED days) and the "
+                       "three oscillators. **The MACD panel is empty at the start:** it needs about 34 days of history, so the "
+                       "first weeks of this 64 day example show none. For your own stock pull about a year."), glue=True),
+            Figure(path=modes_dir / "buy_wait.png", height_mm=112.0,
+                   caption="Buy mode on KO: the answer is WAIT, marked at the right edge.",
+                   credit="Drawn by the example script from the Part 2 price file."),
+            Figure(path=modes_dir / "sell_hold.png", height_mm=112.0,
+                   caption="Sell mode on KO with the file to 30 October: HOLD, with the cross where you bought and the dotted stop.",
+                   credit="Drawn by the example script from the Part 2 price file."),
+            Head(text="Add new data and run again", number="6"),
+            Para(text=("Download the file again with a later end date (Part 2), replace the one in `data`, and click **Source** again. "
+                       "Nothing else changes. For KO with the file to 30 October, buy mode now answers:"), glue=True),
+            Code(lines=tuple(st_u), first=3, label="The four settings lines, as typed", output=out_u),
         ),
     )
 
@@ -714,11 +641,12 @@ TASK = Section(
     footer="Your task",
     blocks=(
         Para(text=(
-            "Choose **your own stock** (a US stock, downloaded as in Part 2, about a year of daily rows) and **your own pair** "
-            "of the three oscillators: RSI and MACD, RSI and stochastic, or MACD and stochastic. Your script keeps the "
-            "price trend vote, the price bar vote and the volume check, adds your pair, and meets the contract in Part 8. "
-            "Then draw a **flowchart** of how it works.")),
-        Callout(label="Due date", tone="gold", text="______________  (to be filled in: after the Saturday 7 November class)"),
+            "Choose **your own stock** (a US stock, downloaded as in Part 2, about a year of daily rows) and write **your own "
+            "script**. It has the same four settings lines at the top, takes the five votes, keeps the days when at least 3 of "
+            "the 5 agree, and answers in **both modes**: BUY or WAIT, and SELL now or HOLD. It writes the three output files and "
+            "meets the contract in Part 8. Test it yourself: run it in buy mode, then change `mode` to `\"sell\"`, type a "
+            "price and a day you bought, and run it again. Then draw a **flowchart** of how it works.")),
+        Callout(label="Due date", tone="gold", text="______________  (to be filled in)"),
         Table(
             title="Name your files exactly",
             headers=("File", "Name"),
@@ -733,15 +661,16 @@ TASK = Section(
             note="Two files, nothing else. No price files or output: they are rebuilt from your script.",
         ),
         Points(title="Before you submit, check", numbered=True, items=(
-            "Put your script in a clean folder with a `data` folder of the example files and run it, with no changes.",
-            "`output/signals.csv` has `ticker, date, side, entry`, your oscillator columns and `agree`, and a `.png` "
-            "per file is in `output`.",
+            "Put your script in a clean folder with a `data` folder holding your stock's file, and run it in buy mode and "
+            "again in sell mode, changing only the four settings lines.",
+            "`output` has `signals.csv` with the columns of Part 8, `answer.txt` and a `.png` named after your stock.",
             "Delete `output` and run again. It must come back.",
             "Open your flowchart next to your script. Every shape has lines behind it.",
         )),
         Callout(label="The marker runs your script on files you have not seen", text=(
-            "Real stocks, a different period, in the layout of Part 8. Some files write dates as `2026-07-02`, some "
-            "as `7/2/2026 16:00:00`. A script that only works on the example files will not pass.")),
+            "A file you have not seen, in the layout of Part 8, run in buy mode and in sell mode with settings the marker "
+            "chooses. Some files write dates as `2026-07-02`, some as `7/2/2026 16:00:00`. A script that only works on "
+            "the example file, or that needs more than the four settings lines changed, will not pass.")),
     ),
 )
 
@@ -843,23 +772,22 @@ WRITTEN_MARKS = tuple(
 
 WORKED = (
     Worked("Full",
-           "Task 5, Add the votes and keep the signal days: it adds the three crossing signals, so a day with one "
-           "buy and one sell cancels to zero and is skipped. Days with a total above zero are BUYs with entry = "
-           "High, as slide 201 says, and SELLs with entry = Low, the mirror, and `agree` counts the oscillators that gave that side.",
-           "Names what the code adds, a real consequence (cancelling), the exact price rule and the slide."),
+           "Task 9, Record the signal day: it keeps only the days when 3 or more of the five votes agree, so a day with two "
+           "BUY votes is skipped. A BUY day's trigger is its High, as slide 201 says, a SELL day's is its Low, the mirror, "
+           "and `agree` counts the votes on that side.",
+           "Names what the code keeps, a real consequence (days skipped), the exact price rule and the slide."),
     Worked("Partial",
-           "Task 5, Add the votes and keep the signal days: it adds the signals and keeps the days with a signal, "
-           "using the slide 201 entry price.",
-           "Right idea and a slide, but it never says what is added or what `agree` counts, so it cannot be checked."),
+           "Task 9, Record the signal day: it keeps the days with a signal and writes the trigger using the slide 201 rule.",
+           "Right idea and a slide, but it never says how many votes make a signal or what `agree` counts, so it cannot be checked."),
     Worked("Partial",
-           "Task 5, Add the votes and keep the signal days: it adds the three signals and keeps the days that are not "
-           "zero, because three oscillators agreeing means price will rise.",
+           "Task 9, Record the signal day: it keeps the days with 3 or more votes, because three votes agreeing means price "
+           "will rise.",
            "Checkable action, but the reason does not follow: the code does not predict anything."),
     Worked("Minimal",
-           "Task 5, Add the votes and keep the signal days: this is where the program decides which days matter.",
+           "Task 9, Record the signal day: this is where the program decides which days matter.",
            "A reason, but general: it could describe any task."),
     Worked("None",
-           "Task 5, Add the votes and keep the signal days: votes.",
+           "Task 9, Record the signal day: signals.",
            "A label with no reasoning."),
 )
 
@@ -878,7 +806,7 @@ RUBRIC_SECTION = Section(
     blocks=written_rubric(
         WRITTEN,
         applied=WRITTEN_MARKS,
-        question=("Here is task 5 of the example flowchart explained five "
+        question=("Here is task 9 of the example flowchart explained five "
                   "ways, one at each level, and two at Partial because "
                   "there are two ways to be partial. They are written on "
                   "the example, not on yours."),
@@ -888,16 +816,16 @@ RUBRIC_SECTION = Section(
 )
 
 
-def build_activity(fills: dict, counts: dict, info: dict | None = None) -> Activity:
+def build_activity(modes: dict, info: dict | None = None) -> Activity:
     info = info or {}
     return Activity(
         code="FIN1209",
         course="Technical Analysis in Investment",
         chapter="Chapter 7",
-        title=NAME + ": automate price, bars, volume and three oscillators in R",
-        subtitle="Write a short R script that reads price files and takes five votes a day (the price trend and price bar, "
-                 "then the RSI, the MACD and the stochastic), counts how many agree, checks the volume, and draws the signals. "
-                 "Then draw a flowchart that explains it.",
+        title=NAME + ": ask R whether to buy or sell",
+        subtitle="Write a short R script that reads a stock's prices, takes five votes a day (price trend, price bar, RSI, MACD "
+                 "and stochastic), and answers: buy today or wait, or, if you own it, sell now or hold. Then draw a flowchart "
+                 "that explains it.",
         presenter="Benjamin C. Sotelo  |  Institute of Accounts, Business "
                   "and Finance, FEU Manila",
         points=TOTAL,
@@ -905,8 +833,8 @@ def build_activity(fills: dict, counts: dict, info: dict | None = None) -> Activ
         replaces="a take-home automation activity",
         source_note=("Prices are pulled by each student with GOOGLEFINANCE "
                      "in Google Sheets; none are distributed with the "
-                     "course. The rules are from Lim (2016), Chapter 8."),
-        sections=(BRIEF, INSTALL, SOURCES, DATA, flow_section(), RULE, script_section(fills),
-                  run_section(counts), why_section(info), CONTRACT, TASK, AI, MARKS,
+                     "course. The rules are from Lim (2016), Chapters 5, 7 and 8."),
+        sections=(BRIEF, INSTALL, SOURCES, DATA, flow_section(), RULE, script_section(),
+                  run_section(modes), why_section(info), CONTRACT, TASK, AI, MARKS,
                   RUBRIC_SECTION),
     )

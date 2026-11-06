@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Really run every stage of the guide's script and record what R printed.
+"""Really run the example script in its four modes and record what R printed.
 
     .venv/bin/python build/run_stages.py --data DIR
 
@@ -13,60 +13,72 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import activity_chapter07 as A  # noqa: E402
-from activity_chapter07_code import STAGES  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "build" / "generated" / "activity2"
 RSCRIPT = shutil.which("Rscript") or "/opt/homebrew/bin/Rscript"
 
 
-def indexes(csv_path: Path):
-    rows = [ln.split(",") for ln in csv_path.read_text().splitlines()[1:]]
-    b = [(float(r[1]), float(r[2]), float(r[3])) for r in rows]   # o, h, l
-    sell = [i + 1 for i in range(1, len(b)) if b[i][0] > b[i-1][1] and b[i][2] <= b[i-1][1]]
-    buy = [i + 1 for i in range(1, len(b)) if b[i][0] < b[i-1][2] and b[i][1] >= b[i-1][2]]
-    return sell[0], buy[0]
+import re
+
+SCENARIOS = (
+    # name, folder, file, mode, stock, bought date, drop the last row, what it shows
+    ("buy_wait", "start", None, "buy", "KO", "2026-08-12", 0),
+    ("buy_signal", "update", None, "buy", "F", "2026-08-12", 1),
+    ("sell_now", "start", None, "sell", "KO", "2026-08-12", 0),
+    ("sell_hold", "update", None, "sell", "KO", "2026-10-12", 0),
+    ("buy_update", "update", None, "buy", "KO", "2026-08-12", 0),
+)
 
 
-def run(code: str, work: Path) -> str:
-    (work / "stage.R").write_text(code)
-    r = subprocess.run([RSCRIPT, "stage.R"], cwd=work, capture_output=True, text=True, timeout=120)
-    if r.returncode != 0:
-        raise SystemExit("stage failed:\n" + code + "\n" + r.stderr)
-    return (r.stdout + r.stderr).rstrip("\n")
+def settle(script: str, mode: str, stock: str, price: str, date: str) -> str:
+    """The script with its four settings lines changed, comments kept."""
+    def setv(name, val, s):
+        return re.sub(r"^(%s <- )[^#\n]*?(\s*#.*)?$" % name, lambda m: m.group(1) + val + (m.group(2) or ""), s, flags=re.M, count=1)
+    for k, v in (("mode", f'"{mode}"'), ("stock", f'"{stock}"'), ("bought_price", price), ("bought_date", f'"{date}"')):
+        script = setv(k, v, script)
+    return script
+
+
+def close_on(csv_path: Path, date: str) -> str:
+    for ln in csv_path.read_text().splitlines()[1:]:
+        f = ln.split(",")
+        m, d, y = f[0].split(" ")[0].split("/")
+        if f"{y}-{int(m):02d}-{int(d):02d}" == date:
+            return f[4]
+    raise SystemExit(f"no row for {date}")
 
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--data", type=Path, required=True)
     a = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    sell_i, buy_i = indexes(a.data / "start" / "KO.csv")
-    fills = {"SELL_I": sell_i, "BUY_I": buy_i}
-    outs = {}
-    with tempfile.TemporaryDirectory() as t:
-        work = Path(t)
-        shutil.copytree(a.data / "start", work / "data")
-        for st in STAGES:
-            code = A._stage_code(st, fills)
-            o = run(code, work)
-            outs[st.key] = o
-            if st.key == "chart":
-                shutil.copy(work / "output" / "KO.png", OUT / f"stage-{st.key}.png")
-        # the final stage must print what the committed script prints
-    counts = {}
-    for phase in ("start", "update"):
+    (OUT / "modes").mkdir(exist_ok=True)
+    script0 = A.SCRIPT_FILE.read_text()
+    runs = {}
+    for name, folder, _f, mode, stock, date, drop in SCENARIOS:
         with tempfile.TemporaryDirectory() as t:
             work = Path(t)
-            shutil.copytree(a.data / phase, work / "data")
-            shutil.copy(A.SCRIPT_FILE, work / "script.R")
-            subprocess.run([RSCRIPT, "script.R"], cwd=work, check=True, capture_output=True)
-            (OUT / phase).mkdir(parents=True, exist_ok=True)
-            for png in (work / "output").glob("*.png"):
-                shutil.copy(png, OUT / phase / png.name)
-            shutil.copy(work / "output" / "signals.csv", OUT / phase / "signals.csv")      # the real table, for the video's teaser
-            for ln in (work / "output" / "signals.csv").read_text().splitlines()[1:]:
-                k = ln.split(",")[0]
-                counts[f"{k}_{phase}"] = counts.get(f"{k}_{phase}", 0) + 1
+            shutil.copytree(a.data / folder, work / "data")
+            if drop:                                   # the same file, downloaded a day earlier
+                p = work / "data" / f"{stock}.csv"
+                ls = p.read_text().splitlines()
+                p.write_text("\n".join(ls[:-drop]) + "\n")
+            price = close_on(a.data / folder / f"{stock}.csv", date) if mode == "sell" else "87.29"
+            code = settle(script0, mode, stock, price, date)
+            (work / "s.R").write_text(code)
+            r = subprocess.run([RSCRIPT, "s.R"], cwd=work, capture_output=True, text=True, timeout=120)
+            if r.returncode != 0:
+                raise SystemExit(f"{name} failed:\n{r.stderr}")
+            settings = "\n".join(code.splitlines()[2:6])
+            sig = (work / "output" / "signals.csv").read_text().splitlines()
+            shutil.copy(work / "output" / f"{stock}.png", OUT / "modes" / f"{name}.png")
+            runs[name] = {"mode": mode, "stock": stock, "settings": settings,
+                          "answer": (work / "output" / "answer.txt").read_text().rstrip("\n"),
+                          "signals": len(sig) - 1, "head": sig[:5], "rows": len(ls) - 1 - drop if drop else None}
+    (OUT / "modes.json").write_text(json.dumps(runs, indent=1))
+    shutil.copy(OUT / "modes" / "buy_wait.png", OUT / "start-chart.png")
+    counts = {}
     # the two "why" charts, drawn by R from the real KO file
     why = OUT / "why"
     why.mkdir(parents=True, exist_ok=True)
@@ -86,11 +98,8 @@ def main():
         if w and w[0] == "BAR":
             info["bar"] = {"ticker": w[1], "date": w[2], "side": w[3], "volume": w[5], "avg": w[7]}
     (OUT / "why_info.json").write_text(json.dumps(info))
-    (OUT / "stage_outputs.json").write_text(json.dumps(outs, indent=1))
-    (OUT / "counts.json").write_text(json.dumps({**counts, **fills}, indent=1))
-    print(json.dumps({**counts, **fills}))
-    for k in ("read", "trend", "bar", "osc", "table", "files"):
-        print("--", k); print(outs[k][:400])
+    for k, v in runs.items():
+        print("--", k); print(v["answer"])
 
 if __name__ == "__main__":
     main()

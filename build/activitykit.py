@@ -210,6 +210,15 @@ class Code(Block):
 
 
 @dataclass
+class Walk(Block):
+    """A few lines of the script, each shown whole and highlighted, then its key part boxed, with one plain line on each.
+
+    `rows` is a tuple of (line number, line text, key part, what the line does, what the boxed part is).
+    """
+    rows: tuple = ()
+
+
+@dataclass
 class KeyOnly(Block):
     """A block that exists only in the instructor's copy."""
     inner: Block
@@ -494,6 +503,9 @@ def render_block(b: Block, shots: Shots, key: bool) -> str:
     if isinstance(b, Code):
         return _blk(_code_html(b), cls="code")
 
+    if isinstance(b, Walk):
+        return _blk(_walk_html(b), cls="walk")
+
     raise TypeError(f"unhandled block {type(b).__name__}")
 
 
@@ -509,6 +521,20 @@ def _code_html(c: Code) -> str:
         out = (f'<div class="rout"><span class="codelabel">R printed</span>'
                f'<pre>{html.escape(c.output)}</pre></div>')
     return f'<div class="codebox">{label}{"".join(rows)}</div>{out}'
+
+
+def _walk_html(w: Walk) -> str:
+    out = []
+    for ln, text, key, line_says, key_says in w.rows:
+        esc = html.escape(text)
+        if key and html.escape(key) in esc:
+            esc = esc.replace(html.escape(key), f'<mark class="kp">{html.escape(key)}</mark>', 1)
+        out.append(
+            f'<div class="wrow"><div class="cl new wline"><span class="ln">{ln}</span><span class="tx">{esc}</span></div>'
+            f'<p class="wsay"><b>This line:</b> {_inline(line_says)}</p>'
+            + (f'<p class="wsay wkey"><b>The boxed part:</b> {_inline(key_says)}</p>' if key_says else "")
+            + '</div>')
+    return "".join(out)
 
 
 def _step_html(s: Step, shots: Shots) -> str:
@@ -836,6 +862,12 @@ figure.shot .shotart {{
 .cl .ln {{ width: 6mm; color: {MUTED}; flex: none; text-align: right; margin-right: 2.4mm; }}
 .cl .tx {{ flex: 1; }}
 .cl.new {{ background: #fff0b8; border-left: 1.4mm solid {GOLD}; padding-left: 0.6mm; }}
+.wrow {{ margin: 0 0 2.4mm 0; }}
+.wline {{ font-family: {MONO_FONT}; font-size: 7.8pt; line-height: 1.4; border-radius: 0.8mm; }}
+.wline .ln {{ width: 6mm; color: {MUTED}; flex: none; text-align: right; margin-right: 2.4mm; }}
+mark.kp {{ background: #ffd54a; outline: 0.7pt solid #b8860b; border-radius: 0.6mm; padding: 0 0.3mm; }}
+.wsay {{ margin: 0.8mm 0 0 8.4mm; font-size: 9pt; line-height: 1.32; }}
+.wsay.wkey {{ color: #5a4500; }}
 .codelabel {{
   display: block; font-family: {BODY_FONT}; font-size: 7.4pt; letter-spacing: 0.05em;
   text-transform: uppercase; color: {MUTED}; padding: 0 2mm 0.6mm 2mm;

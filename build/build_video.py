@@ -9,7 +9,7 @@ build/video_chapter07.py, the same scenes the video speaks. The video is made
 with macOS `say` and ffmpeg and is too large for git, so it is written to a
 path outside the repository. Pass --screens for the folder of screenshots.
 """
-import argparse, html, json, re, shutil, subprocess, sys, tempfile
+import argparse, hashlib, html, json, re, shutil, subprocess, sys, tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -21,6 +21,7 @@ REPO = Path(__file__).resolve().parent.parent
 SCREENS = REPO / "chapter-07" / "activity" / "screens"
 GEN = REPO / "build" / "generated" / "activity2"
 WEB = REPO / "build" / "generated" / "video" / "web"
+SAYCACHE = REPO / "build" / "generated" / "video" / "saycache"
 import os
 REC = Path(os.environ.get("FM_REC") or "/Users/benjie/.treehouse/benjie-agent-workspace-8bf1b0/1/benjie-agent-workspace/data/fin1209-activity2/rec")
 HANDOUT = A.STUDENT / f"{A.NAME}.pdf"
@@ -257,7 +258,20 @@ def speak(t: Path, n: int, text: str, voice: str):
     parts, cues, at, gap = [], [], 0.0, 0.18
     for i, sen in enumerate(sentences(text)):
         f = t / f"{n:03d}_s{i}.aiff"
-        subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(f), sen], check=True)
+        key = hashlib.sha1(f"{voice}|165|{sen}".encode()).hexdigest()[:20]
+        cached = SAYCACHE / f"{key}.aiff"
+        if not cached.is_file():          # speech is kept per sentence, so a stalled or repeated build resumes where it stopped
+            SAYCACHE.mkdir(parents=True, exist_ok=True)
+            for attempt in range(4):
+                try:
+                    subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(cached) + ".part", sen], check=True, timeout=120)
+                    break
+                except subprocess.TimeoutExpired:
+                    print("say stalled on one sentence; trying again", flush=True)
+            else:
+                raise SystemExit("the speech synthesiser kept stalling")
+            Path(str(cached) + ".part").rename(cached)
+        shutil.copy(cached, f)
         d = _probe(f)
         chunks = cue_chunks(sen)
         tot = sum(len(c) for c in chunks)
@@ -311,7 +325,7 @@ def teaser_images(t: Path, n: int) -> list:
         fh, fb = ImageFont.truetype(FONT, 38), ImageFont.truetype("/System/Library/Fonts/Menlo.ttc", 36)
         d.text((W // 2, 110), "output/signals.csv, written by the script", font=fh, fill="#1E5631", anchor="mm")
         cols = [0, 1, 2, 3, 6, 7, 8, 9, 10]
-        xs = [110, 280, 540, 700, 860, 1000, 1180, 1370, 1470]
+        xs = [110, 270, 520, 670, 810, 960, 1130, 1320, 1470]
         y = 190
         for x, j in zip(xs, cols):
             d.text((x, y), head[j], font=fb, fill="#FFFFFF")

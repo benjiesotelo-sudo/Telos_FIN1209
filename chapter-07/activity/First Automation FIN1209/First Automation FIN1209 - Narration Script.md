@@ -6,7 +6,7 @@ Read this over the video's pictures, one section per picture, in the handout's o
 
 *Picture: the finished chart, then the finished table filling in (real outputs of the final script)*
 
-In the next half hour you will build a program that reads a stock's prices and, for every day, counts five votes for buy or sell. It draws this chart. It writes this table. And when new prices arrive, it updates both by itself. Let's build it.
+In the next half hour you will build a program that reads a stock's prices and, for every day, counts five votes for buy or sell. It draws this chart. It writes this table. And when new prices arrive, it updates both by itself. You do not need to know how to code, because we type every line together, and explain it. Let's build it.
 
 ## 2. Welcome
 
@@ -53,10 +53,10 @@ Here is what the script does, as a B P M N flowchart in four stages. Data in: on
 ## 9. The long version
 
 *Picture: a title card*
-*On screen: Short version: skip to 28:03*
+*On screen: Short version: skip to 28:12*
 
 
-From here there are two versions of the coding. This is the long version: we type every line, at a speed you can follow, and explain each one. If you only want the short version, which explains each block of code and not each line, skip to 28 minutes 3 seconds.
+From here there are two versions of the coding. This is the long version: we type every line, at a speed you can follow, and explain each one. If you only want the short version, which explains each block of code and not each line, skip to 28 minutes 12 seconds.
 
 ## 10. Start a script
 
@@ -403,10 +403,10 @@ Run it for the last time. The Console now prints one line for each stock: how ma
 ## 67. Skip the short version
 
 *Picture: the last frame of 07z-run*
-*On screen: Already watched the long version? Skip to 30:12*
+*On screen: Already watched the long version? Skip to 30:20*
 
 
-That was the long version. Already watched it? Skip to 30 minutes 12 seconds, where the outputs start, and leave out the short version.
+That was the long version. Already watched it? Skip to 30 minutes 20 seconds, where the outputs start, and leave out the short version.
 
 ## 68. The short version
 

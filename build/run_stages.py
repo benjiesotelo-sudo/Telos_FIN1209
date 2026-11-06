@@ -75,7 +75,7 @@ def main():
             shutil.copy(work / "output" / f"{stock}.png", OUT / "modes" / f"{name}.png")
             runs[name] = {"mode": mode, "stock": stock, "settings": settings,
                           "answer": (work / "output" / "answer.txt").read_text().rstrip("\n"),
-                          "signals": len(sig) - 1, "head": sig[:5], "rows": len(ls) - 1 - drop if drop else None}
+                          "signals": len(sig) - 1, "head": sig[:13], "rows": len(ls) - 1 - drop if drop else None}
     (OUT / "modes.json").write_text(json.dumps(runs, indent=1))
     shutil.copy(OUT / "modes" / "buy_wait.png", OUT / "start-chart.png")
     counts = {}

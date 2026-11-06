@@ -1,18 +1,18 @@
 # First Automation FIN1209: narration script
 
-Read this over the video's pictures, one section per picture, in the handout's order. The video has a long and a short version of the coding, and the skip times below are the real ones. Say the words in your own voice and change anything that is not how you talk.
+Read this over the video's pictures, one section per picture, in the order of the video. Say the words in your own voice and change anything that is not how you talk.
 
 ## 1. Teaser
 
 *Picture: the finished chart, then the finished table filling in (real outputs of the final script)*
 
-In the next half hour you will build a program that reads a stock's prices and, for every day, counts five votes for buy or sell. It draws this chart. It writes this table. And when new prices arrive, it updates both by itself. You do not need to know how to code, because we type every line together, and explain it. Let's build it.
+In the next fifteen minutes you will build a program that looks at a stock's prices and tells you one of four things: buy today, wait, sell now, or hold. You type buy or sell, and your stock, at the top. It draws this chart, writes this table, and when new prices arrive it answers again. You do not need to know how to code, because we go through every line together. Let's build it.
 
 ## 2. Welcome
 
 *Picture: a capture of a public web page*
 
-This is a short guide to your first automation. You will teach R to read price, bars and volume, from Chapters 1 to 7, and three window oscillators from Chapter 8. For each day it takes five votes for buy or sell, counts how many agree, checks the volume, and gives a trigger price. You need R and RStudio, both free, and one package, T T R. The manual has the links.
+This is a short guide to your first automation. You will teach R to read price, bars and volume, from Chapters 1 to 7, and three window oscillators from Chapter 8. Every day it takes five votes for buy or sell, and keeps the days when at least three of the five agree. Then your setting decides: buy mode says buy or wait, and sell mode says sell now or hold. You need R and RStudio, both free, and one package, T T R. The manual has the links.
 
 ## 3. Not foolproof
 
@@ -42,494 +42,676 @@ To pick another US company, change only the ticker. Here it is N Y S E colon F, 
 
 *Picture: a screen recording (sheets-4)*
 
-Choose File, Download, Comma Separated Values. Rename the file K O dot csv, and put it in a folder called data. Philippine stocks do not work in Sheets, so for those, see the handout's list of other sources.
+Choose File, Download, Comma Separated Values. Rename the file K O dot csv, and put it in a folder called data. The last row is the latest trading day in your download, not the live price, and Google prices can be about twenty minutes late. Philippine stocks do not work in Sheets, so for those, see the handout's list of other sources.
 
 ## 8. The flowchart
 
 *Picture: a capture of a public web page*
 
-Here is what the script does, as a B P M N flowchart in four stages. Data in: one price file per stock, with a date, four prices, and a volume. Measure: five votes for each day. The price trend, from Chapter 5. The price bar, a key reversal, from Chapter 7. And the R S I, the M A C D and the stochastic from Chapter 8, each with its rule beside it and its slide. Decide: add the votes. A signal day is a day the bar or an oscillator fires and the votes do not cancel. Choose buy or sell by the net vote, and set the trigger: a buy above the day's high, which is Lim's trigger on slide 201, and a sell below the day's low, which is the mirror of it and our choice. Volume is not a vote: above average volume marks the day confirmed. Report: a chart, a summary for each stock, and one table of the signals.
+Here is what the script does, as a B P M N flowchart. Settings and data: you type four settings, and the script reads your stock's file. Measure: five votes for each day. The price trend, from Chapter 5. The price bar, a key reversal, from Chapter 7. And the R S I, the M A C D and the stochastic from Chapter 8, each with its rule beside it and its slide. Signal days: a day counts only when at least three of the five votes agree. Answer: if the mode is buy, today is either a buy signal, so enter above the signal day's high with a stop at its low, or you wait. If the mode is sell, you sell now if there was a sell signal since you bought or the price closed below your stop, and otherwise you hold. Report: a chart with today's answer marked, the table of signal days, and the answer file.
 
-## 9. The long version
-
-*Picture: a title card*
-*On screen: Short version: skip to 28:12*
-
-
-From here there are two versions of the coding. This is the long version: we type every line, at a speed you can follow, and explain each one. If you only want the short version, which explains each block of code and not each line, skip to 28 minutes 12 seconds.
-
-## 10. Start a script
-
-*Picture: a screen recording (00-new-script)*
-
-Now we write it. In RStudio choose File, New File, R Script. Save it in your First Automation folder, next to the data folder. Then Session, Set Working Directory, To Source File Location.
-
-## 11. Step 1: Read every price file
-
-*Picture: the last frame of 00-new-script*
-
-Step one: read every price file in the data folder.
-
-## 12. Step 1: # Price, bars and volume (Chapters 1 to 
-
-*Picture: a screen recording (01a-type)*
-
-These six lines are comments. Anything after a hash is a note for people, and R skips it. Ours say what the script does, and which Chapter and slide each vote comes from. Always write down where a rule comes from.
-
-## 13. Step 1: for (path in list.files("data", pattern 
-
-*Picture: a screen recording (01b-type)*
-
-This is a loop. List dot files looks in the folder called data and gives back the name of every file that ends in dot csv. For path in means: take the files one at a time, and run everything inside the curly brackets once for each file. The script will work for one stock or twenty.
-
-## 14. Step 1: ticker <- sub("\\.csv$", "", basename(pa
-
-*Picture: a screen recording (01c-type)*
-
-Ticker is a variable, a name that holds a value. Basename strips the folder from the path, and sub removes the dot csv, so K O dot csv becomes K O. Read dot csv then opens the file as a table, one row per day, and calls it bars.
-
-## 15. Step 1: bars$Date <- as.Date(sub(" .*", "", bars
-
-*Picture: a screen recording (01d-type)*
-
-Google Sheets writes dates like seven slash one slash twenty twenty six, followed by a time. Sub cuts off everything from the first space. As dot Date turns the text into a real date, and tryFormats lists the two layouts it may find. Now R can sort and plot by date.
-
-## 16. Step 1: print(head(bars, 3))
-
-*Picture: a screen recording (01e-type)*
-
-To see what we have read, print the first three rows. Head gives the top of a table.
-
-## 17. Step 1: run it
-
-*Picture: a screen recording (01z-run)*
-
-Now run it with Code, then Source. In the Console you should see the first three rows of each file, one after the other: a date, the open, high, low and close prices, and the volume. The dates are now real dates, written year, month, day.
-
-## 18. Step 2: Vote 1: the price trend
-
-*Picture: the last frame of 01z-run*
-
-Step two, the first vote: is the price trending up or down?
-
-## 19. Step 2: remove the check line
-
-*Picture: a screen recording (02a-del)*
-
-That print line was only there to let us look. We select it and delete it, so the finished script stays short.
-
-## 20. Step 2: library(TTR)
-
-*Picture: a screen recording (02b-type)*
-
-R does a lot, but the indicators come in a package called T T R. Library loads it. You install it only once, with install dot packages, typed in the Console.
-
-## 21. Step 2: pldot <- SMA(bars$Close, 3)
-
-*Picture: a screen recording (02c-type)*
-
-S M A is a simple moving average. Three means the average of the last three closes. Chapter 5, slides 109 and 110, call this line the PLdot. Price above it is bullish, and below it bearish.
-
-## 22. Step 2: trend_vote <- ifelse(bars$Close > pldot,
-
-*Picture: a screen recording (02d-type)*
-
-If the close is above the average, the vote is plus one, up. Otherwise it is minus one, down. If else makes that choice for every day at once. A vote is just a number, plus one for buy, minus one for sell.
-
-## 23. Step 2: trend_vote[is.na(trend_vote)] <- 0
-
-*Picture: a screen recording (02e-type)*
-
-The first two days have no three day average yet, so the vote is missing. Is dot na finds the missing ones, and we set them to zero, no vote.
-
-## 24. Step 2: print(table(trend_vote))
-
-*Picture: a screen recording (02f-type)*
-
-To see the votes, print a table of them. Table counts how many days gave each value.
-
-## 25. Step 2: run it
-
-*Picture: a screen recording (02z-run)*
-
-Run it. The Console shows a small table with a count for minus one, plus one and zero. Most days are one or the other, and zero appears only on the first two days, which have no three day average yet.
-
-## 26. Step 3: Vote 2: the price bar
-
-*Picture: the last frame of 02z-run*
-
-Step three, the second vote: what is today's bar telling us?
-
-## 27. Step 3: remove the check line
-
-*Picture: a screen recording (03a-del)*
-
-That print line was only there to let us look. We select it and delete it, so the finished script stays short.
-
-## 28. Step 3: before <- function(x) c(NA, head(x, -1))
-
-*Picture: a screen recording (03b-type)*
-
-Before gives yesterday's value in today's row. It shifts a column down by one, and the first day gets N A, because it has no yesterday. We need it to compare today's bar with yesterday's.
-
-## 29. Step 3: bar_vote <- ifelse(bars$Low < before(bar
-
-*Picture: a screen recording (03c-type)*
-
-The key reversal, Chapter 7, slides 123 and 126. A bullish one: today's low is lower than yesterday's, but the close is at or above yesterday's close. That is plus one. Bearish: a higher high, and a close at or below yesterday's close. That is minus one. Otherwise zero. The book says near; we say at or.
-
-## 30. Step 3: bar_vote[is.na(bar_vote)] <- 0
-
-*Picture: a screen recording (03d-type)*
-
-The first day again has no yesterday, so the bar vote there is missing. Set it to zero.
-
-## 31. Step 3: print(bars$Date[which(bar_vote != 0)])
-
-*Picture: a screen recording (03e-type)*
-
-To see which days had a key reversal bar, print the dates where the vote is not zero.
-
-## 32. Step 3: run it
-
-*Picture: a screen recording (03z-run)*
-
-Run it. The Console lists the dates on which a key reversal bar happened, bullish or bearish. Not every day, only a handful.
-
-## 33. Step 4: Votes 3 to 5: the oscillators
-
-*Picture: the last frame of 03z-run*
-
-Step four, three more votes: the oscillators.
-
-## 34. Step 4: remove the check line
-
-*Picture: a screen recording (04a-del)*
-
-That print line was only there to let us look. We select it and delete it, so the finished script stays short.
-
-## 35. Step 4: cross <- function(a, b) {        # +1 on
-
-*Picture: a screen recording (04b-type)*
-
-A function packs lines under a name so we can reuse them. Cross takes two lines of numbers, a and b. It rounds them, so a rounding error is not mistaken for a cross. Then it gives plus one on the day a goes from at or below b to above it, minus one on the day it goes from at or above to below, and zero otherwise. A crossing is the signal.
-
-## 36. Step 4: word <- function(s) ifelse(s == 1, "BUY"
-
-*Picture: a screen recording (04c-type)*
-
-Word turns a vote into text: plus one becomes B U Y, minus one S E L L, zero nothing. We use it for the table.
-
-## 37. Step 4: rsi <- RSI(bars$Close, n = 14, maType = 
-
-*Picture: a screen recording (04d-type)*
-
-The R S I, the relative strength index. The input is the close. N equals fourteen means it looks at the last fourteen days. M A type S M A means plain averages, as slide 195 says. It swings between zero and one hundred.
-
-## 38. Step 4: macd <- MACD(bars$Close, nFast = 12, nSl
-
-*Picture: a screen recording (04e-type)*
-
-The M A C D is a twelve day average minus a twenty six day average, and its signal line is a nine day average of that, slides 166 to 168. N fast, n slow and n sig are those three numbers. Percent false keeps it as a plain difference.
-
-## 39. Step 4: sto <- stoch(bars[, c("High", "Low", "Cl
-
-*Picture: a screen recording (04f-type)*
-
-The stochastic uses the high, low and close. Fast K, fourteen days, says where the close sits within the last fourteen days' range. Fast D, three, is a three day average of it, slide 187.
-
-## 40. Step 4: rsi_sig <- cross(rsi, 50)
-
-*Picture: a screen recording (04g-type)*
-
-Now find the crossings. The R S I crossing its fifty line, slide 74. The M A C D crossing its signal line, slide 83. The stochastic K crossing D, slide 187. Each result is plus one, minus one, or zero.
-
-## 41. Step 4: print(colSums(abs(cbind(rsi_sig, macd_si
-
-*Picture: a screen recording (04h-type)*
-
-To check the oscillators, add up how many crossings each one found. Col sums adds each column.
-
-## 42. Step 4: run it
-
-*Picture: a screen recording (04z-run)*
-
-Run it. The Console shows, for each stock, how many times each oscillator crossed. The stochastic crosses most often, the M A C D least. These are just counts of crossings.
-
-## 43. Step 5: Count the votes and keep the signal days
-
-*Picture: the last frame of 04z-run*
-
-Step five: add up the votes, and keep the signal days in a table.
-
-## 44. Step 5: remove the check line
-
-*Picture: a screen recording (05a-del)*
-
-That print line was only there to let us look. We select it and delete it, so the finished script stays short.
-
-## 45. Step 5: all_signals <- NULL
-
-*Picture: a screen recording (05b-type)*
-
-All signals will collect every stock's signals. Dir dot create makes the output folder if it is not there. Both go before the loop, because we only want them once.
-
-## 46. Step 5: votes <- cbind(trend_vote, bar_vote, rsi
-
-*Picture: a screen recording (05c-type)*
-
-Cbind puts the five votes side by side, one column each, one row per day. Rows sums will add them up for each day.
-
-## 47. Step 5: fired <- bar_vote != 0 | rsi_sig != 0 | 
-
-*Picture: a screen recording (05d-type)*
-
-A signal day is a day the bar or an oscillator fired, written with the vertical bar for or, and the votes do not cancel out. Which gives the row numbers of those days.
-
-## 48. Step 5: side <- ifelse(rowSums(votes)[day] > 0, 
-
-*Picture: a screen recording (05e-type)*
-
-If the votes add up above zero the side is B U Y, otherwise S E L L.
-
-## 49. Step 5: signals <- data.frame(ticker = ticker, d
-
-*Picture: a screen recording (05f-type)*
-
-Now the table. Data dot frame builds it, one row for each signal day. Ticker, date and side. The entry is a trigger level. A buy triggers above the signal day's high, as Lim says on slide 201. A sell triggers below the signal day's low. That is the mirror of Lim's buy trigger, our choice, because the slides give no sell trigger. The trade happens only if price later goes beyond the level.
-
-## 50. Step 5: trend = word(trend_vote[day]), bar = wor
-
-*Picture: a screen recording (05g-type)*
-
-Then what each vote said, written as words, and agree: how many of the five votes are on the winning side. And the volume: if the day's volume is above the average volume of the file, it is CONFIRMED, as slide 128 marks the key reversal day. Volume is not a vote. It says how much weight the day carried.
-
-## 51. Step 5: all_signals <- rbind(all_signals, signal
-
-*Picture: a screen recording (05h-type)*
-
-R bind adds this stock's table under all the others.
-
-## 52. Step 5: print(tail(signals, 3))
-
-*Picture: a screen recording (05i-type)*
-
-To see the table, print its last three rows. Tail gives the end of a table.
-
-## 53. Step 5: write.csv(all_signals, "output/signals.c
-
-*Picture: a screen recording (05j-type)*
-
-After the loop, write dot csv saves the whole table as signals dot csv in the output folder.
-
-## 54. Step 5: run it
-
-*Picture: a screen recording (05z-run)*
-
-Run it. The Console shows the last three rows of the signals table. Each row is a signal day, with the side, the trigger level, each vote, how many agree, and whether the volume confirmed it. It is also saved as signals dot csv.
-
-## 55. Step 6: Draw the chart
-
-*Picture: the last frame of 05z-run*
-
-Step six: draw the chart.
-
-## 56. Step 6: remove the check line
-
-*Picture: a screen recording (06a-del)*
-
-That print line was only there to let us look. We select it and delete it, so the finished script stays short.
-
-## 57. Step 6: png(file.path("output", paste0(ticker, "
-
-*Picture: a screen recording (06b-type)*
-
-Png opens a picture file in the output folder, named after the stock. Layout splits it into five panels, the first three times as tall as the others. Par sets the margins.
-
-## 58. Step 6: plot(bars$Date, bars$Close, type = "l", 
-
-*Picture: a screen recording (06c-type)*
-
-Plot draws the closing price as a line, against the date. Lines adds the orange three day average on top of it.
-
-## 59. Step 6: big <- signals$agree >= 3
-
-*Picture: a screen recording (06d-type)*
-
-Now mark the signals. Big means three or more votes agree. Points puts a triangle at each signal's trigger level, green up for a buy, red down for a sell, and bigger when three or more agree. Text numbers the big ones with their row in the table.
-
-## 60. Step 6: plot(bars$Date, bars$Volume, type = "h",
-
-*Picture: a screen recording (06e-type)*
-
-The second panel is the volume as bars, gold on the days confirmed by volume, with a dashed line at the average.
-
-## 61. Step 6: plot(bars$Date, rsi, type = "l", xlab = 
-
-*Picture: a screen recording (06f-type)*
-
-Then one panel for each oscillator: the R S I with its fifty line, the M A C D with its signal line, and the stochastic.
-
-## 62. Step 6: dev.off()
-
-*Picture: a screen recording (06g-type)*
-
-Dev dot off closes the picture file. Until then nothing is saved.
-
-## 63. Step 6: run it
-
-*Picture: a screen recording (06z-run)*
-
-Run it. Nothing prints, because the chart goes into a picture file. In the output folder there is now one picture for each stock. Here is the K O chart.
-
-## 64. Step 7: A summary line for each stock
-
-*Picture: the last frame of 06z-run*
-
-Step seven: print one summary line for each stock.
-
-## 65. Step 7: cat(ticker, ":", nrow(signals), "signal 
-
-*Picture: a screen recording (07a-type)*
-
-Cat prints a line in the Console. It says the stock, how many signal days, how many had three or more votes agreeing, and how many were on above-average volume. The numbers come straight from the table.
-
-## 66. Step 7: run it
-
-*Picture: a screen recording (07z-run)*
-
-Run it for the last time. The Console now prints one line for each stock: how many signal days, how many had three or more votes agreeing, and how many were on above-average volume. That is the whole script.
-
-## 67. Skip the short version
-
-*Picture: the last frame of 07z-run*
-*On screen: Already watched the long version? Skip to 30:20*
-
-
-That was the long version. Already watched it? Skip to 30 minutes 20 seconds, where the outputs start, and leave out the short version.
-
-## 68. The short version
+## 9. The script, block by block
 
 *Picture: a title card*
 
-This is the short version: the same seven steps, but we do not type. Each block of the finished script is shown, with what it does and what it produces.
+Now the script. It has six labelled blocks: settings, read the data, the five votes, decide, draw the chart, and write the answer. For each block we look at the important lines. First the whole line is highlighted and explained, then the key part of it is boxed. The script uses no pipe operators: every line is plain R.
 
-## 69. Block 1: Read every price file
+## 10. Block 1: Settings
 
-*Picture: the code of R step read*
+*Picture: the labelled block b1 of the script*
 
-Step one is the read block. It lists every csv file in the data folder and, for each one, works out the ticker from the file name, reads the file into a table called bars, and turns the Google Sheets dates into real dates. It produces a table of days with the open, high, low, close and volume.
+Block 1 of 6: Settings. Lines 2 to 6. The only lines you edit. Change a value, run the script, read the answer.
 
-## 70. Block 2: Vote 1: the price trend
+## 11. Block 1, line 3
 
-*Picture: the code of R step trend*
+*Picture: line b1:r1:1 of the script, highlighted*
 
-Step two is the price trend block. It loads the T T R package, takes the three day moving average of the close, and votes plus one when the close is above it and minus one when it is below. It produces the first vote for every day, with zero on the first two days that have no average yet.
+Line 3. Your question. "buy" asks: should I buy today? "sell" asks: I already own it, should I sell?
 
-## 71. Block 3: Vote 2: the price bar
+## 12. Block 1, line 3: the boxed part
 
-*Picture: the code of R step bar*
+*Picture: line b1:r1:2 of the script, highlighted*
 
-Step three is the price bar block. It looks at yesterday's bar and votes for a key reversal: a lower low that closes at or above yesterday's close is a buy, a higher high that closes at or below it is a sell. It produces the second vote, zero on every ordinary day.
+The word in quotes is the setting. Type buy or sell exactly, in small letters.
 
-## 72. Block 4: Votes 3 to 5: the oscillators
+## 13. Block 1, line 4
 
-*Picture: the code of R step osc*
+*Picture: line b1:r2:1 of the script, highlighted*
 
-Step four is the oscillator block. A small function finds the day one line crosses another. The R S I is tested against fifty, the M A C D against its signal line, and the stochastic percent K against percent D. It produces three more votes, one for each oscillator.
+Line 4. Which price file to read. This one reads data/K O dot csv.
 
-## 73. Block 5: Count the votes and keep the signal days
+## 14. Block 1, line 4: the boxed part
 
-*Picture: the code of R step table*
+*Picture: line b1:r2:2 of the script, highlighted*
 
-Step five is the table block. It puts the five votes side by side, keeps the days where the bar or an oscillator fired and the votes do not cancel, and decides buy or sell by the net vote. It sets the trigger level, a buy above the high and a sell below the low, counts how many votes agree, checks the volume, and saves everything as signals dot csv.
+Your stock's name. It must match the file name in the data folder.
 
-## 74. Block 6: Draw the chart
+## 15. Block 1, line 5
 
-*Picture: the code of R step chart*
+*Picture: line b1:r3:1 of the script, highlighted*
 
-Step six is the chart block. For each stock it draws one picture with five panels: price and its average with a triangle on every signal, then volume, then the R S I, the M A C D and the stochastic. It produces one picture file for each stock in the output folder.
+Line 5. Sell mode only: the price you paid for each share.
 
-## 75. Block 7: A summary line for each stock
+## 16. Block 1, line 5: the boxed part
 
-*Picture: the code of R step files*
+*Picture: line b1:r3:2 of the script, highlighted*
 
-Step seven is the summary line. For each stock it prints the number of signal days, how many had three or more votes agreeing, and how many were on above average volume. That completes the script.
+A plain number, with no quotes.
 
-## 76. The answer
+## 17. Block 1, line 6
 
-*Picture: the last frame of 07z-run*
+*Picture: line b1:r4:1 of the script, highlighted*
 
-Here is the answer for each stock: how many signal days, how many had three or more votes agreeing, and how many were on above average volume. The details are in the table.
+Line 6. Sell mode only: the day you bought it.
 
-## 77. The table
+## 18. Block 1, line 6: the boxed part
 
-*Picture: a screen recording (08-outputs)*
+*Picture: line b1:r4:2 of the script, highlighted*
 
-Here is the table. Each row is a signal day: the side, the trigger level, each vote, how many agree, and whether the volume confirmed it.
+Year, month, day, in quotes. It must be a trading day in your file.
 
-## 78. The chart
+## 19. Block 2: Read the data
 
-*Picture: an image R drew (start/KO)*
+*Picture: the labelled block b2 of the script*
 
-And the chart. Price on top, then volume, the R S I with its fifty line, the M A C D with its signal line, and the stochastic. Notice the M A C D panel is empty at the start: it needs about thirty four days of history first. So for your own stock, pull about a year.
+Block 2 of 6: Read the data. Lines 7 to 11. Loads the indicator package and your stock's prices.
 
-## 79. Add new data
+## 20. Block 2, line 8
 
-*Picture: a screen recording (09-update)*
+*Picture: line b2:r1:1 of the script, highlighted*
 
-That is the automation. Download the files again with a later end date, replace them, and run the script again. The table and the charts update.
+Line 8. Loads the package that works out the moving average, the R S I, the M A C D and the stochastic.
 
-## 80. Why: a price bar on volume
+## 21. Block 2, line 8: the boxed part
+
+*Picture: line b2:r1:2 of the script, highlighted*
+
+T T R is the only package we use. Install it once, in the Console, with install dot packages("T T R").
+
+## 22. Block 2, line 9
+
+*Picture: line b2:r2:1 of the script, highlighted*
+
+Line 9. Reads your stock's file into a table called bars, one row for each trading day.
+
+## 23. Block 2, line 9: the boxed part
+
+*Picture: line b2:r2:2 of the script, highlighted*
+
+paste0 glues pieces of text together: the stock K O and dot csv make K O dot csv.
+
+## 24. Block 2, line 10
+
+*Picture: line b2:r3:1 of the script, highlighted*
+
+Line 10. Turns the Google Sheets dates into real dates, so R can sort and plot them.
+
+## 25. Block 2, line 10: the boxed part
+
+*Picture: line b2:r3:2 of the script, highlighted*
+
+Sheets writes a time after the date. This cuts off everything from the first space.
+
+## 26. Block 2, line 11
+
+*Picture: line b2:r4:1 of the script, highlighted*
+
+Line 11. n is the number of rows. Row n, the last row, is the latest trading day in the file: "today".
+
+## 27. Block 2, line 11: the boxed part
+
+*Picture: line b2:r4:2 of the script, highlighted*
+
+Today is the last day in your download, not a live price. Sheets prices can be about 20 minutes late.
+
+## 28. Block 3: The five votes
+
+*Picture: the labelled block b3 of the script*
+
+Block 3 of 6: The five votes. Lines 12 to 33. Each vote is plus one for BUY, minus one for SELL or 0 for nothing.
+
+## 29. Block 3, line 13
+
+*Picture: line b3:r1:1 of the script, highlighted*
+
+Line 13. A small helper: yesterday's value, placed in today's row.
+
+## 30. Block 3, line 13: the boxed part
+
+*Picture: line b3:r1:2 of the script, highlighted*
+
+Head with minus one is the list without its last value. The N A in front moves everything down one day.
+
+## 31. Block 3, line 14
+
+*Picture: line b3:r2:1 of the script, highlighted*
+
+Line 14. A helper that spots a crossing: plus one the day line a crosses above line b, minus one the day it crosses below, 0 otherwise.
+
+## 32. Block 3, line 14: the boxed part
+
+*Picture: line b3:r2:2 of the script, highlighted*
+
+A function packs lines under a name, so we write them once and use them three times.
+
+## 33. Block 3, line 17
+
+*Picture: line b3:r3:1 of the script, highlighted*
+
+Line 17. Above b today but not above b yesterday: that is a crossing up.
+
+## 34. Block 3, line 17: the boxed part
+
+*Picture: line b3:r3:2 of the script, highlighted*
+
+ifelse picks a value for every day at once: the first value when the test is true, the second when it is false. The ampersand means and.
+
+## 35. Block 3, line 21
+
+*Picture: line b3:r4:1 of the script, highlighted*
+
+Line 21. The three day average of the closes: the P L dot line of Chapter 5 (slides 109, 110).
+
+## 36. Block 3, line 21: the boxed part
+
+*Picture: line b3:r4:2 of the script, highlighted*
+
+S M A is a simple moving average: the average of the last 3 closes.
+
+## 37. Block 3, line 22
+
+*Picture: line b3:r5:1 of the script, highlighted*
+
+Line 22. Vote 1, the price trend: plus one when the close is above its average, minus one when it is below.
+
+## 38. Block 3, line 22: the boxed part
+
+*Picture: line b3:r5:2 of the script, highlighted*
+
+Greater than: it asks whether the close is bigger than its average.
+
+## 39. Block 3, line 24
+
+*Picture: line b3:r6:1 of the script, highlighted*
+
+Line 24. Vote 2, the price bar, a key reversal (Chapter 7, slides 123, 126): a lower low that closes at or above yesterday's close votes BUY; a higher high that closes at or below it votes SELL.
+
+## 40. Block 3, line 24: the boxed part
+
+*Picture: line b3:r6:2 of the script, highlighted*
+
+The ampersand joins two conditions: both must be true on the same day.
+
+## 41. Block 3, line 27
+
+*Picture: line b3:r7:1 of the script, highlighted*
+
+Line 27. The R S I over 14 days (Chapter 8, slides 193 to 195).
+
+## 42. Block 3, line 27: the boxed part
+
+*Picture: line b3:r7:2 of the script, highlighted*
+
+n = 14 is how many days it looks back.
+
+## 43. Block 3, line 28
+
+*Picture: line b3:r8:1 of the script, highlighted*
+
+Line 28. The M A C D: two averages (12 and 26 days) and a 9 day signal line (slides 166 to 168).
+
+## 44. Block 3, line 28: the boxed part
+
+*Picture: line b3:r8:2 of the script, highlighted*
+
+These numbers are the settings the slides use.
+
+## 45. Block 3, line 29
+
+*Picture: line b3:r9:1 of the script, highlighted*
+
+Line 29. The stochastic: percent K over 14 days and percent D, its 3 day average (slides 185, 187).
+
+## 46. Block 3, line 29: the boxed part
+
+*Picture: line b3:r9:2 of the script, highlighted*
+
+It needs the High, Low and Close columns, so we hand it those three.
+
+## 47. Block 3, line 30
+
+*Picture: line b3:r10:1 of the script, highlighted*
+
+Line 30. Votes 3 to 5: plus one when the R S I crosses above 50 and minus one below (slide 74). The next two lines do the same for the M A C D and its signal line (slide 83) and for percent K and percent D (slide 187).
+
+## 48. Block 3, line 30: the boxed part
+
+*Picture: line b3:r10:2 of the script, highlighted*
+
+The three lines use the same cross helper from above.
+
+## 49. Block 3, line 33
+
+*Picture: line b3:r11:1 of the script, highlighted*
+
+Line 33. Puts the five votes side by side: one column each, one row for each day.
+
+## 50. Block 3, line 33: the boxed part
+
+*Picture: line b3:r11:2 of the script, highlighted*
+
+cbind binds columns together.
+
+## 51. Block 4: Decide: signal days, then buy or sell
+
+*Picture: the labelled block b4 of the script*
+
+Block 4 of 6: Decide: signal days, then buy or sell. Lines 34 to 70. Counts the votes, finds the signal days, then your setting decides what to answer.
+
+## 52. Block 4, line 35
+
+*Picture: line b4:r1:1 of the script, highlighted*
+
+Line 35. For each day, counts how many of the five votes say BUY. The next line counts SELL.
+
+## 53. Block 4, line 35: the boxed part
+
+*Picture: line b4:r1:2 of the script, highlighted*
+
+Where a vote says BUY the test is true. rowSums adds up the true values across the five votes.
+
+## 54. Block 4, line 37
+
+*Picture: line b4:r2:1 of the script, highlighted*
+
+Line 37. A signal day is a day when at least 3 of the 5 votes agree. which() gives the row numbers of those days.
+
+## 55. Block 4, line 37: the boxed part
+
+*Picture: line b4:r2:2 of the script, highlighted*
+
+The vertical bar means or: 3 or more BUY, or 3 or more SELL.
+
+## 56. Block 4, line 40
+
+*Picture: line b4:r3:1 of the script, highlighted*
+
+Line 40. Builds the table of signal days, one row for each signal.
+
+## 57. Block 4, line 40: the boxed part
+
+*Picture: line b4:r3:2 of the script, highlighted*
+
+data.frame makes a table from columns of equal length.
+
+## 58. Block 4, line 41
+
+*Picture: line b4:r4:1 of the script, highlighted*
+
+Line 41. The trigger level. A buy triggers above the signal day's high (slide 201). A sell triggers below its low: the mirror, our choice. The trade happens only if price later goes beyond the level.
+
+## 59. Block 4, line 41: the boxed part
+
+*Picture: line b4:r4:2 of the script, highlighted*
+
+Square brackets pick rows: this is the High column, on the signal days only.
+
+## 60. Block 4, line 46
+
+*Picture: line b4:r5:1 of the script, highlighted*
+
+Line 46. Now your setting decides. Everything in the first brackets is buy mode.
+
+## 61. Block 4, line 46: the boxed part
+
+*Picture: line b4:r5:2 of the script, highlighted*
+
+The double equals sign asks: is it equal to?
+
+## 62. Block 4, line 48
+
+*Picture: line b4:r6:1 of the script, highlighted*
+
+Line 48. Is today, row n, one of the buy signal days?
+
+## 63. Block 4, line 48: the boxed part
+
+*Picture: line b4:r6:2 of the script, highlighted*
+
+the in operator asks whether a value is in a list.
+
+## 64. Block 4, line 49
+
+*Picture: line b4:r7:1 of the script, highlighted*
+
+Line 49. BUY: enter if price trades above today's high, with the stop at today's low.
+
+## 65. Block 4, line 49: the boxed part
+
+*Picture: line b4:r7:2 of the script, highlighted*
+
+Square brackets pick row n, today.
+
+## 66. Block 4, line 51
+
+*Picture: line b4:r8:1 of the script, highlighted*
+
+Line 51. WAIT: no buy signal today. It says how many votes say BUY today and that 3 are needed.
+
+## 67. Block 4, line 51: the boxed part
+
+*Picture: line b4:r8:2 of the script, highlighted*
+
+Square brackets again: the count for today.
+
+## 68. Block 4, line 57
+
+*Picture: line b4:r9:1 of the script, highlighted*
+
+Line 57. Sell mode starts here: finds the row of the day you bought.
+
+## 69. Block 4, line 57: the boxed part
+
+*Picture: line b4:r9:2 of the script, highlighted*
+
+Max of which takes the last row that is on or before your date.
+
+## 70. Block 4, line 58
+
+*Picture: line b4:r10:1 of the script, highlighted*
+
+Line 58. The stop: the low of the day you bought. Our choice. Chapter 5, slide 74 says a stop sits just below a significant trough but gives no rule.
+
+## 71. Block 4, line 58: the boxed part
+
+*Picture: line b4:r10:2 of the script, highlighted*
+
+i is the row of your buy day.
+
+## 72. Block 4, line 60
+
+*Picture: line b4:r11:1 of the script, highlighted*
+
+Line 60. The sell signal days after the day you bought.
+
+## 73. Block 4, line 60: the boxed part
+
+*Picture: line b4:r11:2 of the script, highlighted*
+
+Only days after your buy day count.
+
+## 74. Block 4, line 61
+
+*Picture: line b4:r12:1 of the script, highlighted*
+
+Line 61. The days after you bought that closed below your stop.
+
+## 75. Block 4, line 61: the boxed part
+
+*Picture: line b4:r12:2 of the script, highlighted*
+
+Less than: it asks whether the close is smaller than your stop.
+
+## 76. Block 4, line 62
+
+*Picture: line b4:r13:1 of the script, highlighted*
+
+Line 62. Your gain or loss so far, in percent, with a plus or minus sign.
+
+## 77. Block 4, line 62: the boxed part
+
+*Picture: line b4:r13:2 of the script, highlighted*
+
+sprintf turns a number into text in the layout you choose.
+
+## 78. Block 4, line 63
+
+*Picture: line b4:r14:1 of the script, highlighted*
+
+Line 63. SELL now if there was a sell signal or a close below the stop. Otherwise the answer is HOLD.
+
+## 79. Block 4, line 63: the boxed part
+
+*Picture: line b4:r14:2 of the script, highlighted*
+
+The double bar means or.
+
+## 80. Block 5: Draw the chart
+
+*Picture: the labelled block b5 of the script*
+
+Block 5 of 6: Draw the chart. Lines 71 to 87. One picture: price, volume and the three oscillators, with today's answer marked.
+
+## 81. Block 5, line 73
+
+*Picture: line b5:r1:1 of the script, highlighted*
+
+Line 73. Opens a picture file in the output folder, named after your stock.
+
+## 82. Block 5, line 73: the boxed part
+
+*Picture: line b5:r1:2 of the script, highlighted*
+
+The size of the picture in pixels.
+
+## 83. Block 5, line 76
+
+*Picture: line b5:r2:1 of the script, highlighted*
+
+Line 76. Draws the closing price against the date. The title carries today's answer.
+
+## 84. Block 5, line 76: the boxed part
+
+*Picture: line b5:r2:2 of the script, highlighted*
+
+type = "l" means a line.
+
+## 85. Block 5, line 78
+
+*Picture: line b5:r3:1 of the script, highlighted*
+
+Line 78. A triangle on every signal day: green pointing up for a buy, red pointing down for a sell.
+
+## 86. Block 5, line 78: the boxed part
+
+*Picture: line b5:r3:2 of the script, highlighted*
+
+pch is the shape of the mark: 24 points up, 25 points down.
+
+## 87. Block 5, line 79
+
+*Picture: line b5:r4:1 of the script, highlighted*
+
+Line 79. Today's answer on the chart: a dashed line at the latest day, labelled BUY, WAIT, SELL or HOLD.
+
+## 88. Block 5, line 79: the boxed part
+
+*Picture: line b5:r4:2 of the script, highlighted*
+
+abline draws a straight line. v is for vertical.
+
+## 89. Block 5, line 81
+
+*Picture: line b5:r5:1 of the script, highlighted*
+
+Line 81. In sell mode only: a cross where you bought and a dotted red line at your stop.
+
+## 90. Block 5, line 81: the boxed part
+
+*Picture: line b5:r5:2 of the script, highlighted*
+
+The cross is drawn at your buy date and the price you paid.
+
+## 91. Block 5, line 82
+
+*Picture: line b5:r6:1 of the script, highlighted*
+
+Line 82. The panels below: volume (gold on confirmed days), then the R S I, the M A C D and the stochastic.
+
+## 92. Block 5, line 82: the boxed part
+
+*Picture: line b5:r6:2 of the script, highlighted*
+
+type = "h" draws a thin bar for each day.
+
+## 93. Block 5, line 87
+
+*Picture: line b5:r7:1 of the script, highlighted*
+
+Line 87. Closes the picture file. Until then nothing is saved.
+
+## 94. Block 5, line 87: the boxed part
+
+*Picture: line b5:r7:2 of the script, highlighted*
+
+dev.off() turns the drawing off.
+
+## 95. Block 6: Write the answer
+
+*Picture: the labelled block b6 of the script*
+
+Block 6 of 6: Write the answer. Lines 88 to 91. Saves the signal days and today's answer, and prints the answer.
+
+## 96. Block 6, line 89
+
+*Picture: line b6:r1:1 of the script, highlighted*
+
+Line 89. Saves the table of signal days as output/signals dot csv.
+
+## 97. Block 6, line 89: the boxed part
+
+*Picture: line b6:r1:2 of the script, highlighted*
+
+row.names = false leaves out the row numbers.
+
+## 98. Block 6, line 90
+
+*Picture: line b6:r2:1 of the script, highlighted*
+
+Line 90. Saves today's answer as output/answer dot text, a fixed file anyone can open.
+
+## 99. Block 6, line 90: the boxed part
+
+*Picture: line b6:r2:2 of the script, highlighted*
+
+writeLines writes each piece of text on its own line.
+
+## 100. Block 6, line 91
+
+*Picture: line b6:r3:1 of the script, highlighted*
+
+Line 91. Prints the answer in the Console, one line each.
+
+## 101. Block 6, line 91: the boxed part
+
+*Picture: line b6:r3:2 of the script, highlighted*
+
+cat prints text as it is.
+
+## 102. Run it: buy mode, wait
+
+*Picture: the settings and the real printed answer (buy_wait)*
+
+Now we run it. In buy mode, for Coca Cola, with the file to the thirtieth of September. The answer is WAIT: no buy signal today, because none of the five votes say buy. It also shows the last buy signal in the file, with the level to enter above and the stop, and what has to happen next: three of the five votes on buy.
+
+## 103. The chart
+
+*Picture: an image R drew (modes/buy_wait)*
+
+And the chart. Price on top with its three bar average, a triangle on every signal day, and a dashed line at today, labelled with the answer. Below are the volume, the R S I, the M A C D and the stochastic. Notice the M A C D panel is empty at the start: it needs about thirty four days of history first. So for your own stock, pull about a year.
+
+## 104. Run it: buy mode, buy
+
+*Picture: the settings and the real printed answer (buy_signal)*
+
+The same file for Ford, downloaded a day earlier, ends on a day with a buy signal. The answer is BUY: enter if price trades above that day's high, with the stop at its low. This is a trigger level: the trade happens only if price later goes above it.
+
+## 105. Run it: sell mode, sell now
+
+*Picture: the settings and the real printed answer (sell_now)*
+
+Now sell mode. You tell the script what you paid and the day you bought. Here you bought Coca Cola on the twelfth of August. A sell signal appeared after that, so the answer is SELL now, at about the last close, with your gain or loss in percent, and the reason.
+
+## 106. Run it: sell mode, hold
+
+*Picture: the settings and the real printed answer (sell_hold)*
+
+And with the file to the thirtieth of October, and a purchase on the twelfth of October, there is no sell signal and no close below the stop, so the answer is HOLD, with your stop and your gain so far.
+
+## 107. The chart in sell mode
+
+*Picture: an image R drew (modes/sell_hold)*
+
+In sell mode the chart also shows a cross where you bought, and a dotted red line at your stop.
+
+## 108. The table
+
+*Picture: the settings and the real printed answer (table)*
+
+And the table. Each row of signals dot csv is a signal day: the side, the trigger level, the stop, what each vote said, how many agree, and whether the volume confirmed it.
+
+## 109. Add new data
+
+*Picture: the settings and the real printed answer (buy_update)*
+
+That is the automation. Download the file again with a later end date, replace it, and run the script again. The answer, the table and the chart update.
+
+## 110. Why: a price bar on volume
 
 *Picture: an image R drew (why/why-bar)*
 
-Now the justification. The script gives numbers. This is what they mean. Take a real bearish key reversal from the KO table. One: yesterday's high. Two: today makes a new high. Three: today closes below yesterday's close. Buyers pushed price up and could not hold it, so the bar votes sell. Four: the volume is above average, so the day is confirmed. Volume does not vote. It tells you how much weight the move carried.
+Now the justification. The script gives an answer. This is what the signals mean. Take a real bearish key reversal from the KO table. One: yesterday's high. Two: today makes a new high. Three: today closes below yesterday's close. Buyers pushed price up and could not hold it, so the bar votes sell. Four: the volume is above average, so the day is confirmed. Volume does not vote. It tells you how much weight the move carried.
 
-## 81. Why an oscillator buy
+## 111. Why an oscillator buy
 
 *Picture: an image R drew (why/why-buy)*
 
 An oscillator vote is a crossing. Here the R S I crosses up through fifty, and the stochastic crosses up through its signal line. Those two vote buy, and the trigger is above that day's high, as slide 201 says. The trade happens only if price later goes above it.
 
-## 82. Why an oscillator sell
+## 112. Why an oscillator sell
 
 *Picture: an image R drew (why/why-sell)*
 
 The sell is the mirror image. Here the R S I and the M A C D cross down, and the trigger is below that day's low. The slides give no sell trigger, so this is the mirror of Lim's buy trigger, our choice. The trade happens only if price later falls below it.
 
-## 83. False consensus
+## 113. The stop
+
+*Picture: a title card*
+
+The stop is our choice too. Chapter 5, slide 74, says a stop is usually placed just below a significant trough for a long position, but it gives no rule. Ours is the low of the signal day in buy mode, and the low of the day you bought in sell mode.
+
+## 114. False consensus
 
 *Picture: a title card*
 
 But agreeing is not proof. The R S I, the M A C D and the stochastic are all built from the same closing prices. On this data the R S I and the stochastic correlate at 0.73, and the R S I and M A C D at 0.80. Lim calls this multicollinearity, a false consensus. His cure is data other than price, such as volume, which is why the volume check stands apart.
 
-## 84. Not foolproof, again
+## 115. Not foolproof, again
 
 *Picture: a title card*
 
 One more reminder before your task. This program is not foolproof. It follows rules from our slides. Its signals can be wrong, and they can lose money. It is a class exercise, not advice.
 
-## 85. Your task
+## 116. Your task
 
 *Picture: a title card*
 
-Your task: your own stock, and your own pair of the three oscillators, with the price trend, price bar and volume check. Write your script, and draw its flowchart. The due date is in the manual.
+Your task: your own stock, and your own script. It has the same four settings at the top, takes the five votes, keeps the days when at least three agree, and answers in both modes. Test it: run it in buy mode, then change the mode to sell, type a price and a day you bought, and run it again. Then draw its flowchart. The due date is in the manual.
 
-## 86. Submit
+## 117. Submit
 
 *Picture: a title card*
 
 Submit two files. Your script, named First Automation, underscore, surname, underscore, first name, dot R. And the flowchart with the same name plus Flowchart, as a P D F, a dot bpmn file, or Markdown.
 
-## 87. AI
+## 118. AI
 
 *Picture: a title card*
 
 You may use AI to help. Your flowchart must match the script you submit and explain each step in your own words.
 
-## 88. Marks
+## 119. Marks
 
 *Picture: a title card*
 
-One hundred points. Sixty come from running your script on files you have never seen. Forty come from your flowchart. Good luck.
+One hundred points. Sixty come from running your script, in both modes, on a file you have never seen. Forty come from your flowchart. Good luck.

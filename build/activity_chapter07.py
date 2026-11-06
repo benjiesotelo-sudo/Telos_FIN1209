@@ -3,10 +3,10 @@
 Data about the activity, not drawing code; build/activitykit.py draws it. Three
 things are computed rather than typed so they cannot drift:
 
-* the running script's stages come from build/activity_chapter07_code.py, and
-  the last one is the committed example script itself;
-* what R printed at each stage is read from the file build/run_stages.py wrote
-  after really running every stage;
+* the script's walkthrough (Part 5) is read from build/walk_chapter07.py, which finds every
+  line number in the committed example script by its text;
+* what R printed in each mode is read from the file build/run_stages.py wrote after really
+  running the example script four ways;
 * the marks are added up here, and the build stops if they are not 100.
 
 The rules are the five votes of Chapters 5, 7 and 8, quoted by slide number and title, and a buy or sell answer built on them.
@@ -537,7 +537,7 @@ def run_section(modes: dict) -> Section:
     st_n, out_n = run("sell_now")
     st_h, out_h = run("sell_hold")
     st_u, out_u = run("buy_update")
-    sig = modes.get("buy_wait", {}).get("head", [])
+    sig = modes.get("buy_wait", {}).get("head", [])[:5]
     modes_dir = STAGE_OUTPUTS.parent / "modes"
     return Section(
         title="6. Run it and read the answer",

@@ -154,7 +154,9 @@ def write_narration(times=None) -> None:
            "your own voice and change anything that is not how you talk.", ""]
     for n, s in enumerate(SCENES, 1):
         pic = {"card": "a title card", "block": f"the labelled block {s.ref} of the script", "walk": f"line {s.ref} of the script, highlighted", "run": f"the settings and the real printed answer ({s.ref})", "shot": f"screenshot `{s.ref}`", "web": "a capture of a public web page",
-               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "frame": f"the last frame of {s.ref}", "code": f"the code of R step {s.ref}", "gen": f"an image R drew ({s.ref})", "clip": f"a screen recording ({s.ref})"}[s.kind]
+               "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "frame": f"the last frame of {s.ref}", "code": f"the code of R step {s.ref}", "gen": f"an image R drew ({s.ref})", "clip": f"a screen recording ({s.ref})",
+               "opening": "the animated opening: the question, the real Google Sheets recording, RStudio drawn from the real runs "
+                          "(buy mode, then sell mode), and the trade on a price chart"}[s.kind]
         pic = "Picture: " + pic
         out += [f"## {n}. {s.title}", "", f"*{pic}*", "", resolve(s.say, times), ""]
         if s.popup:
@@ -228,6 +230,24 @@ def _probe(path: Path) -> float:
                                 capture_output=True, text=True).stdout)
 
 
+def say_clip(chunk: str, voice: str) -> Path:
+    """The cached `say` clip of one caption chunk (speech is kept per chunk, so a stalled or repeated build resumes)."""
+    key = hashlib.sha1(f"{voice}|165|{chunk}".encode()).hexdigest()[:20]
+    cached = SAYCACHE / f"{key}.aiff"
+    if not cached.is_file():
+        SAYCACHE.mkdir(parents=True, exist_ok=True)
+        for attempt in range(4):
+            try:
+                subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(cached) + ".part", chunk], check=True, timeout=120)
+                break
+            except subprocess.TimeoutExpired:
+                print("say stalled on one chunk; trying again", flush=True)
+        else:
+            raise SystemExit("the speech synthesiser kept stalling")
+        Path(str(cached) + ".part").rename(cached)
+    return cached
+
+
 def speak(t: Path, n: int, text: str, voice: str):
     """The scene's speech, one subtitle chunk at a time: each chunk is its own `say` clip, so its cue's start and
     end are exactly that clip's own ffprobe duration, never a share of a longer sentence guessed by character count.
@@ -238,20 +258,7 @@ def speak(t: Path, n: int, text: str, voice: str):
         for chunk in cue_chunks(sen):
             i += 1
             f = t / f"{n:03d}_s{i}.aiff"
-            key = hashlib.sha1(f"{voice}|165|{chunk}".encode()).hexdigest()[:20]
-            cached = SAYCACHE / f"{key}.aiff"
-            if not cached.is_file():      # speech is kept per chunk, so a stalled or repeated build resumes where it stopped
-                SAYCACHE.mkdir(parents=True, exist_ok=True)
-                for attempt in range(4):
-                    try:
-                        subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(cached) + ".part", chunk], check=True, timeout=120)
-                        break
-                    except subprocess.TimeoutExpired:
-                        print("say stalled on one chunk; trying again", flush=True)
-                else:
-                    raise SystemExit("the speech synthesiser kept stalling")
-                Path(str(cached) + ".part").rename(cached)
-            shutil.copy(cached, f)
+            shutil.copy(say_clip(chunk, voice), f)
             d = _probe(f)
             cues.append((at, at + d, display(chunk)))
             parts.append(f); at += d + gap
@@ -354,7 +361,7 @@ def walk_image(ref: str, path: Path) -> None:
 def run_image(ref: str, path: Path, modes: dict) -> None:
     """The four settings lines as typed and what R really printed (or the first rows of signals.csv)."""
     titles = {"buy_wait": "Buy mode: WAIT", "buy_signal": "Buy mode: BUY", "sell_now": "Sell mode: SELL now",
-              "sell_now_f": "Sell mode: SELL now (Ford)", "sell_hold": "Sell mode: HOLD",
+              "sell_hold": "Sell mode: HOLD",
               "buy_update": "New data, run again", "table": "output/signals.csv"}
     if ref == "table":
         head = modes["buy_wait"]["head"][:8]
@@ -392,6 +399,11 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
             img = t / f"{n:03d}.png"
             imgs = [img]
             say = resolve(s.say, times)
+            if s.kind == "opening":       # the opening is drawn frame by frame, with its own timed captions (opening_chapter07.py)
+                import opening_chapter07 as OP
+                seg, cues = OP.build(t, n, voice, say_clip, _probe, sub_image, W, PICTURE_H, H, FFMPEG, REC)
+                cuelog[n] = cues
+                return seg
             if s.kind == "shot":
                 src = screens / f"{s.ref}.png"
                 if not src.is_file():

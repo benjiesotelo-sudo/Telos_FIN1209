@@ -26,15 +26,22 @@ SCENARIOS = (
     ("buy_wait", "start", None, "buy", "KO", "2026-08-12", 0),
     ("buy_signal", "update", None, "buy", "F", "2026-08-12", 1),
     ("sell_now", "start", None, "sell", "KO", "2026-08-12", 0),
+    ("sell_now_f", "start", None, "sell", "F", "2026-08-12", 0),   # the opening's sell example, a different company from the opening's buy example
     ("sell_hold", "update", None, "sell", "KO", "2026-10-12", 0),
     ("buy_update", "update", None, "buy", "KO", "2026-08-12", 0),
 )
 
 
 def settle(script: str, mode: str, stock: str, price: str, date: str) -> str:
-    """The script with its four settings lines changed, comments kept."""
+    """The script with its four settings lines changed, comments kept except the stock line's, which is rewritten
+    to name the stock actually set (the committed script always says "data/KO.csv")."""
     def setv(name, val, s):
-        return re.sub(r"^(%s <- )[^#\n]*?(\s*#.*)?$" % name, lambda m: m.group(1) + val + (m.group(2) or ""), s, flags=re.M, count=1)
+        def repl(m):
+            head = m.group(1) + val
+            if name == "stock":
+                return head + " " * max(1, 31 - len(head)) + f"# which file in the data folder: data/{stock}.csv"
+            return head + (m.group(2) or "")
+        return re.sub(r"^(%s <- )[^#\n]*?(\s*#.*)?$" % name, repl, s, flags=re.M, count=1)
     for k, v in (("mode", f'"{mode}"'), ("stock", f'"{stock}"'), ("bought_price", price), ("bought_date", f'"{date}"')):
         script = setv(k, v, script)
     return script

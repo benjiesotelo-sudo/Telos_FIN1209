@@ -1,10 +1,11 @@
 """The guide video's scenes, as data: one picture or recording and what is said over it.
 
 The same list makes the narration script and the computer-voice video, so the two cannot differ.
-Order: teaser, welcome, not foolproof, get the data (the instructor's own Google Sheets recording), the flowchart, then the
-script block by block (each block labelled; each important line shown whole and highlighted, then its key part boxed, with a caption
-that is also spoken), the four answers run for real (BUY, WAIT, SELL now, HOLD), why the signals are where they are, not
-foolproof again, and the task. No RStudio recording: every code picture is drawn from the committed script, every printed answer is
+Order: a real opening example (Coca Cola in buy mode, then Ford in sell mode, both real Rscript output), welcome, not
+foolproof, get the data (the instructor's own Google Sheets recording), the flowchart, then the script block by block (each
+block labelled; each important line shown whole and highlighted, then its key part boxed, with a caption that is also
+spoken), the four answers run for real (BUY, WAIT, SELL now, HOLD), why the signals are where they are, not foolproof
+again, and the task. No RStudio recording: every code picture is drawn from the committed script, every printed answer is
 real Rscript output (build/run_stages.py).
 
 `kind` says where the picture comes from:
@@ -12,7 +13,6 @@ real Rscript output (build/run_stages.py).
   web     a capture of a public web page in build/generated/video/web/
   clip    a screen recording in data/.../rec/ (`ref` = file stem)
   gen     an image R drew, in build/generated/activity2/ (`ref` = path without .png)
-  teaser  the finished chart, the answer and the table filling in
   block   a labelled block of the script, drawn from the script (`ref` = "b3")
   walk    one line of a block highlighted whole (phase 1) or with its key part boxed (phase 2) (`ref` = "b3:r5:1")
   run     the four settings lines and the real answer of a mode (`ref` = "buy_wait")
@@ -111,12 +111,25 @@ _FOOLPROOF_CARD = ("This program is not foolproof", "It follows rules from our s
                    "Its signals can be wrong and can lose money", "A class exercise, not advice")
 
 SCENES = (
-    Scene("Teaser",
-          "In the next fifteen minutes you will build a program that looks at a stock's prices and tells you one of four things: "
-          "buy today, wait, sell now, or hold. You type buy or sell, and your stock, at the top. It draws this chart, writes "
-          "this table, and when new prices arrive it answers again. You do not need to know how to code, because we go through "
-          "every line together. Let's build it.",
-          "teaser", "teaser"),
+    Scene("Opening example: Coca Cola, buy mode",
+          "Before anything else, here is the program working on real prices. This is Coca Cola, bought and sold using "
+          "Chapters 1 to 8. In buy mode it takes five votes every day, and today it says WAIT, no buy signal. But watch "
+          "the last one: on the twenty second of September it signalled BUY, enter above eighty eight ninety seven, "
+          "stop at eighty seven forty six. A real trigger price and a real stop, from a real chart.",
+          "gen", "modes/buy_wait"),
+    Scene("Opening example: the real answer, Coca Cola",
+          "Four settings at the top, and the script's own real answer below them.",
+          "run", "buy_wait"),
+    Scene("Opening example: Ford, sell mode",
+          "Now sell mode, on a different company: Ford. Say you bought it on the twelfth of August, at thirteen eighty "
+          "three. The script checks every day since: is there a sell signal, or has price closed below your stop? "
+          "Here, yes, on the twenty eighth of August. So the real answer is SELL now, at about twelve oh six, a loss of "
+          "twelve point eight percent.",
+          "gen", "modes/sell_now_f"),
+    Scene("Opening example: the real answer, Ford",
+          "The same four settings, and the real loss the script prints. That is what you are about to build: real buy "
+          "and sell prices, every time you run it. Let's build it.",
+          "run", "sell_now_f"),
     Scene("Welcome",
           "This is a short guide to your first automation. You will teach R to read price, bars and volume, from "
           "Chapters 1 to 7, and three window oscillators from Chapter 8. Every day it takes five votes for buy or "

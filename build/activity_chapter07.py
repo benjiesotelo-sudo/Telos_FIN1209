@@ -130,7 +130,7 @@ BRIEF = Section(
                  "`.bpmn`). No price files: you download them yourself."),
                 ("**You hand in**", "Your own R script, built on your own rules, not a copy of the example with the stock changed "
                  "(Part 9), with the four settings lines at the top, and a flowchart that also shows where your script differs "
-                 "from the example. Your own stock. Share a Drive folder, as Part 9 describes."),
+                 "from the example. Your own stock. Upload into the folder linked in your email, as Part 9 describes."),
                 ("**Due date**", "Sunday, 15 November 2026, 11:59 PM."),
             ),
         ),
@@ -677,11 +677,12 @@ TASK = Section(
             note="Two files, nothing else. No price files or output: they are rebuilt from your script.",
         ),
         Points(title="How to submit", numbered=True, items=(
-            "In your own Google Drive, make a folder named FirstAutomation_Surname_Firstname "
-            "(your own surname and first name).",
-            "Put your two files in it, named as in the table above.",
-            "Share the folder with benjiesotelo@gmail.com as Viewer before the deadline.",
-            "Do not change the files after the deadline: the time each file was last changed is checked.",
+            "Use the folder linked in your email. Do not make your own folder, and do not share anything.",
+            "Upload your two files into it, named as in the table above. Upload the actual files, not shortcuts "
+            "or links to files in your own Drive.",
+            "Do not change the files after the deadline: the time each file was uploaded is checked.",
+            "If you already shared a folder of your own, upload your files into the linked folder instead: "
+            "that is the one that gets graded.",
         )),
         Points(title="Before you submit, check", numbered=True, items=(
             "Your comments at the top state which two (or more) of the three things you changed, plainly.",

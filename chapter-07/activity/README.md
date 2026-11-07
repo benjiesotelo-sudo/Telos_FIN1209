@@ -93,8 +93,9 @@ the three-oscillator example and for a two-oscillator variant.
 ## The video
 
 One block by block walkthrough, no RStudio recording needed: the labelled blocks and highlighted lines are drawn from the committed script,
-and each printed answer is real Rscript output. Order: the opening (about a minute and a half, drawn frame by frame by
+and each printed answer is real Rscript output. Order: the opening (just under two minutes, drawn frame by frame by
 `build/opening_chapter07.py`: the question "Should you buy Coca-Cola today?", 7 seconds of the instructor's real Google Sheets recording,
+which pulls July to October 2026, with a text label, marked not recorded, of the same formula with this example's own dates,
 RStudio drawn, not recorded, with the real settings and the real Console output of the buy run, a price-only chart with the signal day,
 trigger and stop marked as the voice names them, sell mode every day saying HOLD, the real sell run, and the real +11.4% gain, then
 "your own buy and sell prices, in one click", with quiet music made from sine tones under the opening only), the "not foolproof" card

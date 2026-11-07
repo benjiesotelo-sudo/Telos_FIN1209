@@ -21,6 +21,8 @@ HERE = Path(__file__).resolve().parent
 INFO = HERE / "generated" / "activity2" / "opening.json"
 SHEETS = "sheets-2.mp4"           # the second piece of the Sheets recording, in build_video.REC
 SHEETS_FROM, SHEETS_TO, SHEETS_SPEED = 2.5, 14.5, 1.7      # the formula typed, then the rows filling in, sped up 1.7 times
+PICTURE_DATES_Y = 790             # top of the dates label over the Sheets recording, inside the 1080 px picture
+SWITCH = 0.6                     # sell mode: seconds for the stop line to move to the sell stop before the first HOLD
 FPS = 20                         # 10240 (the other segments' time base) / 20 is whole, so the joined file keeps exact times
 SCRIPT = "First Automation FIN1209 - Example Script.R"
 HELV = "/System/Library/Fonts/Helvetica.ttc"
@@ -93,13 +95,18 @@ def cues() -> list:
     pw = pct.strip("+%").replace(".", " point ")
     pw = " point ".join(words(int(x)) for x in pw.split(" point "))
     yr = f"twenty {words(int(y) - 2000)}"
+    fy = O["file_first"][:4]
+    fday, fyr = day(O["file_first"]), f"twenty {words(int(fy) - 2000)}"
     c = [
         ("q", "q1", "Should you buy Coca-Cola today?", None, 0.35),
         ("q", "q2", "And if you do, when should you sell?", None, 0.35),
         ("q", "q3", "In this activity, your own program answers both, from real prices.", None, 0.6),
         ("s", "s1", "First, the prices.", None, 0.25),
         ("s", "s2", "One Google Sheets formula pulls Coca-Cola's daily prices.", None, 0.3),
-        ("s", "s3", "You download them as a file, and the program reads it.", None, 0.6),
+        ("s", "s3", "You download them as a file, and the program reads it.", None, 0.3),
+        ("s", "s4", "This recording pulls July to October twenty twenty six.", "This recording pulls July to October 2026.", 0.25),
+        ("s", "s5", f"Our example uses the same formula, from {fday[0]}, {fyr}.",
+         f"Our example uses the same formula, from {fday[1]} {fy}.", 0.6),
         ("r", "r1", f"Our file ends on {bday[0]}, {yr}.", f"Our file ends on {bday[1]} {y}.", 0.3),
         ("r", "r2", "Four settings at the top: buy mode, for Coca-Cola.", None, 0.3),
         ("r", "r3", "Then click Source.", None, 1.0),
@@ -115,7 +122,8 @@ def cues() -> list:
         ("c", "c6", f"So you buy there, at {paid[0]}.", f"So you buy there, at {paid[1]}.", 0.4),
         ("c", "c7", "Now you run it again each day, in sell mode.", None, 0.3),
         ("c", "c8", f"Every day it says HOLD, with the stop at {sstop[0]}.", f"Every day it says HOLD, with the stop at {sstop[1]}.", 0.6),
-        ("e", "e1", f"On {sday[0]}, you run it again.", f"On {sday[1]}, you run it again.", 0.3),
+        ("e", "e1", f"On {sday[0]}, you download the file again, and run it.",
+         f"On {sday[1]}, you download the file again, and run it.", 0.3),
         ("e", "e2", "Sell mode, the price you paid, and the day you bought.", None, 0.3),
         ("e", "e3", "Then click Source.", None, 1.0),
         ("e", "e4", f"SELL now, at about {sold[0]}.", f"SELL now, at about {sold[1]}.", 0.3),
@@ -241,6 +249,11 @@ class Opening:
         self.series = O["series"]
         self.rec = Frames(rec / SHEETS, ffmpeg, W, H)
         self._chart = None
+        y, m, d = (int(v) for v in O["file_first"].split("-"))
+        y2, m2, d2 = (int(v) for v in O["buy_day"].split("-"))
+        self.formula = f'=GOOGLEFINANCE("NYSE:KO","all",DATE({y},{m},{d}),DATE({y2},{m2},{d2}),"DAILY")'
+        self.dates_note = (f"Rows {_short(O['file_first'])} to {_short(O['buy_day'])}. "
+                           f"Later the same formula is downloaded again to {_short(O['sell_day'])}.")
 
     # -- section 1: the question
     def question(self, t):
@@ -286,7 +299,7 @@ class Opening:
         box = lerp(typing, data, k)
         hold = max(0.0, t - t0 - self.rec.count / FPS)
         if hold > 0:                                   # the voice is still speaking: keep moving, slowly closer to the rows
-            z = 1 + 0.12 * ease(hold / 4)
+            z = 1 + 0.12 * ease(hold / 4) + 0.02 * hold     # and keeps moving for as long as the voice holds it
             cx, cy, bw, bh = 520, 120 + 1100 * 9 / 32, 1100 / z, 1100 * 9 / 16 / z
             box = (max(0, cx - bw / 2), cy - bh / 2, max(0, cx - bw / 2) + bw, cy + bh / 2)
         bw, bh = box[2] - box[0], box[3] - box[1]          # keep the box inside the recording, so no black edge shows
@@ -295,6 +308,19 @@ class Opening:
         box = (x0, y0, x0 + bw, y0 + bh)
         im = fr.transform((W, H), Image.EXTENT, box, Image.BICUBIC)
         d = ImageDraw.Draw(im)
+        a = ramp(t, self.T["s4"][0] - 0.2, 0.4)
+        if a > 0:                                     # this example's own dates, as text: the recording above has other dates
+            fx = self.formula
+            bx0, by0, bx1, by1 = 60, PICTURE_DATES_Y, W - 60, PICTURE_DATES_Y + 250
+            ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            od = ImageDraw.Draw(ov)
+            od.rounded_rectangle([bx0, by0, bx1, by1], radius=22, fill=(30, 86, 49, int(240 * a)), outline=(242, 169, 0, int(255 * a)), width=6)
+            od.text((bx0 + 40, by0 + 28), "The same formula, with this example's dates (not recorded):", font=font(38, True),
+                    fill=(255, 255, 255, int(255 * a)))
+            od.text((bx0 + 40, by0 + 96), fx, font=font(40, mono=True), fill=(255, 226, 122, int(255 * a)))
+            od.text((bx0 + 40, by0 + 168), self.dates_note, font=font(32), fill=(220, 236, 225, int(255 * a)))
+            im = Image.alpha_composite(im.convert("RGBA"), ov).convert("RGB")
+            d = ImageDraw.Draw(im)
         chip(d, (W - 40, 30), "Google Sheets: the real recording, sped up", font(34, True), GREEN, "#ffffff", anchor="rt")
         return im
 
@@ -308,7 +334,7 @@ class Opening:
         ids = ("e1", "e2", "e3", "e4", "e5") if sell else ("r1", "r2", "r3", "r4", "r5", "r6")
         R = O["sell" if sell else "buy"]
         final = R["settings"].splitlines()
-        start = O["buy"]["settings"].splitlines() if sell else [ln.replace('"buy"', '""   ').replace('"KO"', '""  ') for ln in final]
+        start = O["buy"]["settings"].splitlines()      # the committed script's own four lines: buy mode, KO
         # menu and toolbar
         d.rectangle([0, 0, W, 46], fill="#f4f6f8")
         x = 24
@@ -337,29 +363,10 @@ class Opening:
         # the code: lines 1 to 8 of the committed script, with the four settings lines of this run
         import activity_chapter07 as A
         code = A.SCRIPT_FILE.read_text().splitlines()[:8]
-        # typing: each settings line goes from `start` to `final`, one after another, during the settings cue
+        # typing: only the value of each changed settings line is retyped; the gap and the comment stay exactly as written
         a0, a1 = T[ids[1]][0], T[ids[1]][1]
+        shown, typing_line, cursor_x = settings_at(start, final, t, a0, a1)
         changed = [i for i in range(4) if start[i] != final[i]]
-        shown = list(start)
-        typing_line, cursor_x = None, ""
-        if t >= a0:
-            span = (a1 - a0) / max(1, len(changed))
-            for j, i in enumerate(changed):
-                k = min(1.0, max(0.0, (t - a0 - j * span) / (span * 0.85)))
-                if k <= 0:
-                    continue
-                if k >= 1:
-                    shown[i] = final[i]
-                    continue
-                fb, _, fc = final[i].partition("#")
-                sb = start[i].partition("#")[0]
-                body, live = _typed(sb.rstrip(), fb.rstrip(), k)
-                shown[i] = body.ljust(len(fb)) + ("#" + fc if fc else "")
-                if live:
-                    typing_line = i
-                    cursor_x = body
-        if sell and t < a0:
-            shown = list(start)
         code[2:6] = shown
         fm, lh = font(30, mono=True), 46
         y = EY0 + 112
@@ -379,9 +386,14 @@ class Opening:
             else:
                 d.text((xx, y), ln, font=fm, fill=col)
             if typing_line is not None and n - 3 == typing_line and int(t * 2.5) % 2 == 0:
-                fb = final[typing_line].partition("#")[0].rstrip()
-                cx = EX0 + 82 + fm.getlength(cursor_x[: len(cursor_x) - _common(start[typing_line].partition("#")[0].rstrip(), fb)[1]])
+                cx = EX0 + 82 + fm.getlength(cursor_x)
                 d.line([cx, y, cx, y + 36], fill="#000", width=3)
+            if not sell and n in (3, 4) and a0 <= t < T[ids[2]][0] + 0.3:      # buy mode: box the two values the voice names
+                if n == 3 or t >= (a0 + a1) / 2:
+                    m = SETTING.match(ln)
+                    bx0 = EX0 + 82 + fm.getlength(m.group(1))
+                    bx1 = bx0 + fm.getlength(m.group(2))
+                    d.rounded_rectangle([bx0 - 6, y - 4, bx1 + 6, y + 40], radius=6, outline=GOLD, width=4)
             y += lh
         # files pane
         FX0, FY0, FX1, FY1 = 1362, 104, W - 18, 600
@@ -502,6 +514,36 @@ class Opening:
         return camera(im, zoombox(W / 2, H / 2, 1 + 0.05 * ease((t - T["p1"][0]) / 5), W, H), W, H)
 
 
+import re as _re
+SETTING = _re.compile(r'^(\w+ <- )(\S+)(\s+#.*)$')     # name <- value   # comment
+
+
+def settings_at(start: list, final: list, t: float, a0: float, a1: float):
+    """The four settings lines as shown at time t while the changed ones are retyped one after another between a0 and a1.
+    Only the value changes: each line is the name, the value typed so far, then the line's own gap and comment, unchanged
+    (as an editor shows it while you type). Returns (lines, the line being typed or None, the text left of the cursor)."""
+    changed = [i for i in range(4) if start[i] != final[i]]
+    shown, typing_line, cursor = list(start), None, ""
+    if t < a0 or not changed:
+        return shown, None, ""
+    span = (a1 - a0) / len(changed)
+    for j, i in enumerate(changed):
+        k = min(1.0, max(0.0, (t - a0 - j * span) / (span * 0.85)))
+        if k <= 0:
+            continue
+        if k >= 1:
+            shown[i] = final[i]
+            continue
+        ms, mf = SETTING.match(start[i]), SETTING.match(final[i])
+        if not (ms and mf and ms.group(1) == mf.group(1) and ms.group(3) == mf.group(3)):
+            raise SystemExit(f"settings line {i + 3} changes more than its value: {start[i]!r} -> {final[i]!r}")
+        value, live = _typed(ms.group(2), mf.group(2), k)
+        shown[i] = ms.group(1) + value + ms.group(3)
+        if live:
+            typing_line, cursor = i, ms.group(1) + value
+    return shown, typing_line, cursor
+
+
 def _common(a: str, b: str):
     i = 0
     while i < min(len(a), len(b)) and a[i] == b[i]:
@@ -602,15 +644,10 @@ class Chart:
         }
 
     def upto(self, p: float):
-        """Draw the close line up to fractional index p."""
-        i = int(p)
-        xs, ys = self.x[: i + 1], self.c[: i + 1]
-        if i + 1 < len(self.x) and p > i:
-            f = p - i
-            xs = xs + [lerp(self.x[i], self.x[i + 1], f)]
-            ys = ys + [lerp(self.c[i], self.c[i + 1], f)]
-        self.line.set_data(xs, ys)
-        return xs[-1], ys[-1]
+        """Draw the close line through whole day int(p), never part of a day, so its end is always a real close."""
+        i = max(0, min(len(self.x) - 1, int(math.floor(p + 1e-9))))
+        self.line.set_data(self.x[: i + 1], self.c[: i + 1])
+        return (self.x[i], self.c[i]), i
 
     def draw(self, t, phase):
         from PIL import Image
@@ -626,9 +663,10 @@ class Chart:
             p = lerp(0, ib, ease((t - T["c1"][0] + 0.4) / max(1.0, T["c1"][1] - T["c1"][0] + 0.8)))
             if t >= T["c5"][0]:
                 p = lerp(ib, ibo, ease((t - T["c5"][0]) / 0.6))
-            if t >= T["c7"][0]:
-                p = lerp(ibo, isl - 1, ease((t - T["c7"][0]) / (T["c8"][1] - T["c7"][0])))
-            hx = self.upto(p)
+            if t >= T["c7"][0]:       # sell mode: the stop moves first, then one real day at a time, each with its HOLD
+                s0 = T["c7"][0] + SWITCH
+                p = lerp(ibo, isl - 1, ease((t - s0) / (T["c8"][1] - s0)))
+            hx, hi = self.upto(p)
             v = V["all"]
             if t >= T["c3"][0] - 0.3:
                 v = lerp(v, V["buy"], ease((t - T["c3"][0] + 0.3) / 0.9))
@@ -636,7 +674,7 @@ class Chart:
                 v = lerp(V["buy"], V["follow"], ease((t - T["c7"][0]) / 1.2))
         else:
             p = lerp(isl - 1, isl, ease((t - T["g1"][0]) / 0.6))
-            hx = self.upto(p)
+            hx, hi = self.upto(p)
             v = lerp(V["follow"], V["gain"], ease((t - T["g2"][0]) / 1.2))
             v = lerp(v, (v[0] + 3, v[1] - 0.5, v[2] + 0.2, v[3] - 0.2), ease((t - T["g3"][0]) / 3) * 0.6)
         p0 = T["c1"][0] if phase == "c" else T["g1"][0]
@@ -648,11 +686,14 @@ class Chart:
         ax.set_ylim(v[2], v[3])
         span = v[3] - v[2]
         # the moving head of the line, with its price
-        following = phase == "c" and T["c7"][0] <= t
+        sellmode = phase == "c" and T["c7"][0] <= t
+        following = phase == "c" and T["c7"][0] + SWITCH <= t
+        headtext = ""
         if following or (phase == "c" and t < T["c2"][0]):
             self.head.set_offsets([hx])
             self.headlab.set_position((hx[0] + 0.6, hx[1] + span * 0.03))
-            self.headlab.set_text(f"${hx[1]:.2f}")
+            headtext = f"${self.op.series[hi]['Close']:.2f}"     # that day's own close, from the price file
+            self.headlab.set_text(headtext)
         else:
             self.head.set_offsets(self.np_empty())
             self.headlab.set_text("")
@@ -682,10 +723,10 @@ class Chart:
         if t >= T["c4"][0]:
             k = ease((t - T["c4"][0]) / 0.8)
             lvl, lab = stop, f"Stop: ${stop:.2f}"
-            if phase == "g" or t >= T["c8"][0]:
-                kk = 1.0 if phase == "g" else ease((t - T["c8"][0] - 0.4) / 1.2)
+            if phase == "g" or sellmode:            # sell mode's stop, from the moment sell mode starts, before any HOLD
+                kk = 1.0 if phase == "g" else ease((t - T["c7"][0]) / (SWITCH * 0.8))
                 lvl = lerp(stop, sstop, kk)
-                lab = f"Stop in sell mode: ${sstop:.2f}, the low of {day(O['bought_day'])[1]}" if kk > 0.5 else lab
+                lab = f"Stop in sell mode: ${sstop:.2f}, the low of {day(O['bought_day'])[1]}"
             x1 = lerp(x[ib], v[1], k) if phase == "c" and t < T["c7"][0] else v[1]
             self.stop.set_data([x[ib], x1], [lvl, lvl])
             self.stoplab.set_position((v[1] - (v[1] - v[0]) * 0.01, lvl - span * 0.015))
@@ -701,7 +742,7 @@ class Chart:
             self.paidlab.set_position((x[ibo] - 0.8, paid + span * 0.09))
             self.paidlab.set_text(f"Bought {day(O['bought_day'])[1]}, at ${paid:.2f}" if big else
                                   f"{day(O['bought_day'])[1]}: opened at ${paid:.2f}")
-            if following or phase == "g":            # zoomed out: a short label in the empty space below, tied to its mark
+            if sellmode or phase == "g":            # zoomed out: a short label in the empty space below, tied to its mark
                 self.paidlab.set_text(f"Bought at ${paid:.2f}")
                 lx, ly = x[ibo] + 5.5, stop - span * 0.05
                 self.paidlab.set_ha("left"); self.paidlab.set_va("top")
@@ -717,12 +758,15 @@ class Chart:
         else:
             self.paidm.set_offsets(self.np_empty()); self.paidlab.set_text(""); self.paidtie.set_data([], [])
         # every day in sell mode: HOLD
+        badge = ""
         if following:
-            i = min(isl - 1, max(ibo, int(round(p))))
-            hold = dict(O["holds"]).get(self.op.series[i]["date"])
-            self.hold.set_text(f"Sell mode, {day(self.op.series[i]['date'])[1]}:  HOLD" if hold else "")
-        else:
-            self.hold.set_text("")
+            hold = dict(O["holds"]).get(self.op.series[hi]["date"])
+            if not hold:
+                raise SystemExit(f"no real HOLD answer for {self.op.series[hi]['date']}")
+            badge = f"Sell mode, {day(self.op.series[hi]['date'])[1]}:  HOLD"
+        self.hold.set_text(badge)
+        shown_stop = self.stoplab.get_text()
+        self.state = {"day": self.op.series[hi]["date"], "badge": badge, "head": headtext, "end": hx, "stop": shown_stop}
         # the sell and the gain
         if phase == "g":
             k = ease((t - T["g1"][0] - 0.3) / 0.35)
@@ -841,7 +885,7 @@ def build(tmp: Path, n: int, voice: str, say_clip, probe, sub_image, W: int, PIC
         caps.append((at, at + d, sh))
         clips.append((at, f))
         at += d + pz
-        if s == "s" and cid == "s3":           # the Sheets recording plays for its whole length before the next section
+        if s == "s" and cid == "s5":           # the Sheets recording plays for its whole length before the next section
             at = max(at, sec_start["s"] + (SHEETS_TO - SHEETS_FROM) / SHEETS_SPEED + 0.4)
     end = at
     order = ["q", "s", "r", "c", "e", "g", "p"]

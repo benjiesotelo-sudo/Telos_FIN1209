@@ -27,7 +27,7 @@ REC = Path(os.environ.get("FM_REC") or "/Users/benjie/.treehouse/benjie-agent-wo
 HANDOUT = A.STUDENT / f"{A.NAME}.pdf"
 NARRATION = A.STUDENT / f"{A.NAME} - Narration Script.md"
 FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"
-W, H = 1920, 1080
+W, PICTURE_H = 1920, 1080        # PICTURE_H is the picture area every generator still draws into, unchanged
 TIMES = REPO / "build" / "video_times.json"        # the real start of each version in the finished video
 MARKS = {}                       # no skip popups in v6: one walkthrough, not a long and a short form
 
@@ -57,7 +57,10 @@ def resolve(text: str, times) -> str:
     return text
 
 
-SUBH = 170                      # the strip at the bottom that stills leave free for subtitles
+SUBH = 230                      # the canvas is enlarged by this much below the unchanged picture area, for the
+                                 # subtitle alone, sized for the worst case measured from the real narration: two
+                                 # wrapped rows at up to 210px (build/README.md)
+H = PICTURE_H + SUBH             # the real frame height: the picture on top, the subtitle strip below it, never over it
 FONT = "/System/Library/Fonts/Helvetica.ttc"
 DISPLAY = (                     # how a spoken word is written in the subtitle: the same words, as you would type them
     ("R S I", "RSI"), ("M A C D", "MACD"), ("T T R", "TTR"), ("S M A", "SMA"), ("N Y S E", "NYSE"), ("B P M N", "BPMN"),
@@ -81,17 +84,29 @@ def sentences(text: str) -> list:
     return [x for x in re.split(r"(?<=[.!?])\s+", text.strip()) if x]
 
 
+def _protect(text: str) -> str:
+    """Join the words of a spoken phrase from DISPLAY with NUL so a chunk boundary never falls inside one
+    (so "R S I" is never cut to "R S" | "I")."""
+    for spoken, _ in DISPLAY:
+        if " " in spoken:
+            text = text.replace(spoken, spoken.replace(" ", "\x00"))
+    return text
+
+
 def cue_chunks(sentence: str, limit: int = 78) -> list:
-    """A sentence as one or more subtitle lines of at most two rows each, cut at commas and spaces."""
-    words, out, cur = display(sentence).split(), [], ""
+    """The sentence's own words, cut into chunks of at most two display rows each. Each chunk is returned as
+    its own spoken text (what `say` should read), so every chunk can be synthesised and timed on its own real
+    clip rather than a guess split from the whole sentence's duration."""
+    words, out, cur = _protect(sentence).split(), [], ""
     for w in words:
-        if cur and len(cur) + 1 + len(w) > limit:
+        cand = (cur + " " + w).strip()
+        if cur and len(display(cand.replace("\x00", " "))) > limit:
             out.append(cur); cur = w
         else:
-            cur = (cur + " " + w).strip()
+            cur = cand
     if cur:
         out.append(cur)
-    return out
+    return [c.replace("\x00", " ") for c in out]
 
 
 def sub_image(text: str, path: Path) -> None:
@@ -107,6 +122,8 @@ def sub_image(text: str, path: Path) -> None:
         else:
             cur = t
     rows.append(cur)
+    if len(rows) > 2:        # SUBH is sized for two rows (build/README.md); a third would dip into the picture
+        raise SystemExit(f"subtitle needs {len(rows)} rows, more than SUBH allows: {text!r}")
     im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     h = 80 * len(rows) + 30
@@ -136,7 +153,7 @@ def write_narration(times=None) -> None:
            "section per picture, in the order of the video. Say the words in "
            "your own voice and change anything that is not how you talk.", ""]
     for n, s in enumerate(SCENES, 1):
-        pic = {"card": "a title card", "block": f"the labelled block {s.ref} of the script", "walk": f"line {s.ref} of the script, highlighted", "run": f"the settings and the real printed answer ({s.ref})", "teaser": "the finished chart, then the finished table filling in (real outputs of the final script)", "shot": f"screenshot `{s.ref}`", "web": "a capture of a public web page",
+        pic = {"card": "a title card", "block": f"the labelled block {s.ref} of the script", "walk": f"line {s.ref} of the script, highlighted", "run": f"the settings and the real printed answer ({s.ref})", "shot": f"screenshot `{s.ref}`", "web": "a capture of a public web page",
                "page": "the handout page: " + s.ref, "code": f"the code of R step {s.ref}", "frame": f"the last frame of {s.ref}", "code": f"the code of R step {s.ref}", "gen": f"an image R drew ({s.ref})", "clip": f"a screen recording ({s.ref})"}[s.kind]
         pic = "Picture: " + pic
         out += [f"## {n}. {s.title}", "", f"*{pic}*", "", resolve(s.say, times), ""]
@@ -165,10 +182,10 @@ def fit(src: Path, path: Path, label: str = "") -> None:
     from PIL import Image, ImageDraw, ImageFont
     im = Image.open(src).convert("RGB")
     top = 70 if label else 0
-    k = min(W / im.width, (H - SUBH - top) / im.height)
+    k = min(W / im.width, (PICTURE_H - top) / im.height)
     im = im.resize((int(im.width * k), int(im.height * k)), Image.LANCZOS)
     bg = Image.new("RGB", (W, H), "#FFFFFF")
-    bg.paste(im, ((W - im.width) // 2, top + (H - SUBH - top - im.height) // 2))
+    bg.paste(im, ((W - im.width) // 2, top + (PICTURE_H - top - im.height) // 2))
     if label:
         d = ImageDraw.Draw(bg)
         f = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 36)
@@ -199,9 +216,9 @@ def page_images(marker: str, crop, out: Path, cache: dict) -> list:
         a = crop[0] + k * step
         b = min(1.0, a + step + 0.02)
         im = full.crop((int(w * 0.04), int(h * a), int(w * 0.96), int(h * b)))
-        sc = min(W / im.width, (H - SUBH) / im.height)
+        sc = min(W / im.width, PICTURE_H / im.height)
         im = im.resize((int(im.width * sc), int(im.height * sc)), Image.LANCZOS)
-        bg = Image.new("RGB", (W, H), "#FFFFFF"); bg.paste(im, ((W - im.width) // 2, (H - SUBH - im.height) // 2))
+        bg = Image.new("RGB", (W, H), "#FFFFFF"); bg.paste(im, ((W - im.width) // 2, (PICTURE_H - im.height) // 2))
         f = out.with_name(out.stem + f"_{k}.png"); bg.save(f); outs.append(f)
     return outs
 
@@ -212,33 +229,32 @@ def _probe(path: Path) -> float:
 
 
 def speak(t: Path, n: int, text: str, voice: str):
-    """The scene's speech, one sentence at a time so every subtitle's time is exact.
+    """The scene's speech, one subtitle chunk at a time: each chunk is its own `say` clip, so its cue's start and
+    end are exactly that clip's own ffprobe duration, never a share of a longer sentence guessed by character count.
     Returns (audio file, [(start, end, words)] relative to the start of the audio, audio length)."""
     parts, cues, at, gap = [], [], 0.0, 0.18
-    for i, sen in enumerate(sentences(text)):
-        f = t / f"{n:03d}_s{i}.aiff"
-        key = hashlib.sha1(f"{voice}|165|{sen}".encode()).hexdigest()[:20]
-        cached = SAYCACHE / f"{key}.aiff"
-        if not cached.is_file():          # speech is kept per sentence, so a stalled or repeated build resumes where it stopped
-            SAYCACHE.mkdir(parents=True, exist_ok=True)
-            for attempt in range(4):
-                try:
-                    subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(cached) + ".part", sen], check=True, timeout=120)
-                    break
-                except subprocess.TimeoutExpired:
-                    print("say stalled on one sentence; trying again", flush=True)
-            else:
-                raise SystemExit("the speech synthesiser kept stalling")
-            Path(str(cached) + ".part").rename(cached)
-        shutil.copy(cached, f)
-        d = _probe(f)
-        chunks = cue_chunks(sen)
-        tot = sum(len(c) for c in chunks)
-        x = at
-        for c in chunks:
-            w = d * len(c) / tot
-            cues.append((x, x + w, c)); x += w
-        parts.append(f); at += d + gap
+    i = 0
+    for sen in sentences(text):
+        for chunk in cue_chunks(sen):
+            i += 1
+            f = t / f"{n:03d}_s{i}.aiff"
+            key = hashlib.sha1(f"{voice}|165|{chunk}".encode()).hexdigest()[:20]
+            cached = SAYCACHE / f"{key}.aiff"
+            if not cached.is_file():      # speech is kept per chunk, so a stalled or repeated build resumes where it stopped
+                SAYCACHE.mkdir(parents=True, exist_ok=True)
+                for attempt in range(4):
+                    try:
+                        subprocess.run(["say", "-v", voice, "-r", "165", "-o", str(cached) + ".part", chunk], check=True, timeout=120)
+                        break
+                    except subprocess.TimeoutExpired:
+                        print("say stalled on one chunk; trying again", flush=True)
+                else:
+                    raise SystemExit("the speech synthesiser kept stalling")
+                Path(str(cached) + ".part").rename(cached)
+            shutil.copy(cached, f)
+            d = _probe(f)
+            cues.append((at, at + d, display(chunk)))
+            parts.append(f); at += d + gap
     out = t / f"{n:03d}.wav"
     ins = []
     for f in parts:
@@ -267,6 +283,19 @@ def burn(t: Path, n: int, video: Path, cues: list) -> Path:
     return out
 
 
+def _shoot_content(doc: str, path: Path) -> None:
+    """Screenshot an HTML page sized to the unchanged picture area, then pad it onto the enlarged frame so the
+    SUBH strip below it stays blank, left for the subtitle, never drawn into."""
+    from PIL import Image
+    h = path.with_suffix(".html"); h.write_text(doc)
+    subprocess.run([str(chrome.CHROME), "--headless", "--disable-gpu", "--hide-scrollbars", f"--window-size={W},{PICTURE_H}",
+                    f"--screenshot={path}", h.as_uri()], check=True, capture_output=True)
+    im = Image.open(path).convert("RGB")
+    bg = Image.new("RGB", (W, H), "#FFFFFF")
+    bg.paste(im, (0, 0))
+    bg.save(path)
+
+
 def _script_view(path: Path, title: str, lo: int, hi: int, hl=None, key=None, cap: int = 17, note: str = "") -> None:
     """A block of the committed script drawn large: the line `hl` highlighted whole, and its key part boxed when `key` is given."""
     import walk_chapter07 as WK
@@ -285,7 +314,7 @@ def _script_view(path: Path, title: str, lo: int, hi: int, hl=None, key=None, ca
     up = '<div class="m">... lines above not shown</div>' if start > lo else ""
     dn = '<div class="m">... lines below not shown</div>' if end < hi else ""
     doc = f"""<!doctype html><meta charset=utf-8><style>
-    body{{margin:0;width:{W}px;height:{H}px;background:#fff;font-family:Helvetica,Arial,sans-serif;overflow:hidden}}
+    body{{margin:0;width:{W}px;height:{PICTURE_H}px;background:#fff;font-family:Helvetica,Arial,sans-serif;overflow:hidden}}
     .bar{{height:24px;background:#1E5631;border-bottom:12px solid #F2A900}}
     h1{{font-size:46px;color:#1E5631;margin:22px 50px 4px;font-weight:600}}
     .note{{font-size:28px;color:#555;margin:0 50px 12px}}
@@ -296,9 +325,7 @@ def _script_view(path: Path, title: str, lo: int, hi: int, hl=None, key=None, ca
     .m{{padding:0 16px;color:#889;font:italic 22px Helvetica}}
     </style><div class=bar></div><h1>{html.escape(title)}</h1><div class=note>{html.escape(note)}</div>
     <div class=code>{up}{''.join(rows)}{dn}</div>"""
-    h = path.with_suffix(".html"); h.write_text(doc)
-    subprocess.run([str(chrome.CHROME), "--headless", "--disable-gpu", "--hide-scrollbars", f"--window-size={W},{H}",
-                    f"--screenshot={path}", h.as_uri()], check=True, capture_output=True)
+    _shoot_content(doc, path)
 
 
 def block_image(ref: str, path: Path) -> None:
@@ -327,7 +354,8 @@ def walk_image(ref: str, path: Path) -> None:
 def run_image(ref: str, path: Path, modes: dict) -> None:
     """The four settings lines as typed and what R really printed (or the first rows of signals.csv)."""
     titles = {"buy_wait": "Buy mode: WAIT", "buy_signal": "Buy mode: BUY", "sell_now": "Sell mode: SELL now",
-              "sell_hold": "Sell mode: HOLD", "buy_update": "New data, run again", "table": "output/signals.csv"}
+              "sell_now_f": "Sell mode: SELL now (Ford)", "sell_hold": "Sell mode: HOLD",
+              "buy_update": "New data, run again", "table": "output/signals.csv"}
     if ref == "table":
         head = modes["buy_wait"]["head"][:8]
         settings, out, label = [], "\n".join(head), "output/signals.csv, the first rows"
@@ -338,7 +366,7 @@ def run_image(ref: str, path: Path, modes: dict) -> None:
     box = f'<div class="code">{code}</div>' if settings else ""
     cap = '<div class="note">The four settings lines, as typed</div>' if settings else ""
     doc = f"""<!doctype html><meta charset=utf-8><style>
-    body{{margin:0;width:{W}px;height:{H}px;background:#fff;font-family:Helvetica,Arial,sans-serif;overflow:hidden}}
+    body{{margin:0;width:{W}px;height:{PICTURE_H}px;background:#fff;font-family:Helvetica,Arial,sans-serif;overflow:hidden}}
     .bar{{height:24px;background:#1E5631;border-bottom:12px solid #F2A900}}
     h1{{font-size:50px;color:#1E5631;margin:22px 50px 8px;font-weight:600}}
     .note{{font-size:28px;color:#555;margin:0 50px 10px}}
@@ -348,47 +376,7 @@ def run_image(ref: str, path: Path, modes: dict) -> None:
     .out b{{display:block;font:600 22px Helvetica;color:#9fb8a8;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}}
     </style><div class=bar></div><h1>{html.escape(titles[ref])}</h1>{cap}{box}
     <div class=out><b>{html.escape(label)}</b>{html.escape(out)}</div>"""
-    h = path.with_suffix(".html"); h.write_text(doc)
-    subprocess.run([str(chrome.CHROME), "--headless", "--disable-gpu", "--hide-scrollbars", f"--window-size={W},{H}",
-                    f"--screenshot={path}", h.as_uri()], check=True, capture_output=True)
-
-
-def teaser_images(t: Path, n: int) -> list:
-    """The finished chart, then the finished table filling in: both are what the final script really writes."""
-    from PIL import Image, ImageDraw, ImageFont
-    chart = GEN / "modes" / "buy_wait.png"
-    rows = [r.split(",") for r in json.loads((GEN / "modes.json").read_text())["buy_wait"]["head"]]
-    head, body = rows[0], rows[1:12]
-    imgs = []
-    c = t / f"{n:03d}_chart.png"
-    fit(chart, c)
-    imgs += [c, c]
-    ans = t / f"{n:03d}_answer.png"
-    modes = json.loads((GEN / "modes.json").read_text())
-    run_image("buy_wait", ans, modes)
-    imgs.append(ans)
-    for k, cnt in enumerate((3, 6, 11)):
-        im = Image.new("RGB", (W, H), "#FFFFFF")
-        d = ImageDraw.Draw(im)
-        d.rectangle([0, 0, W, 24], fill="#1E5631"); d.rectangle([0, 24, W, 36], fill="#F2A900")
-        fh, fb = ImageFont.truetype(FONT, 38), ImageFont.truetype("/System/Library/Fonts/Menlo.ttc", 36)
-        d.text((W // 2, 110), "output/signals.csv, written by the script", font=fh, fill="#1E5631", anchor="mm")
-        cols = [0, 1, 2, 3, 6, 7, 8, 9, 10]
-        xs = [110, 270, 520, 670, 810, 960, 1130, 1320, 1470]
-        y = 190
-        for x, j in zip(xs, cols):
-            d.text((x, y), head[j], font=fb, fill="#FFFFFF")
-        d.rectangle([90, y - 12, W - 90, y + 48], fill="#1E5631")
-        for x, j in zip(xs, cols):
-            d.text((x, y), head[j], font=fb, fill="#FFFFFF")
-        for i, r in enumerate(body[:cnt]):
-            yy = y + 70 + i * 56
-            if i % 2 == 0:
-                d.rectangle([90, yy - 8, W - 90, yy + 44], fill="#EEF3EF")
-            for x, j in zip(xs, cols):
-                d.text((x, yy), r[j], font=fb, fill="#222222")
-        p = t / f"{n:03d}_tab{k}.png"; im.save(p); imgs.append(p)
-    return imgs
+    _shoot_content(doc, path)
 
 
 def make_video(out: Path, screens: Path, voice: str) -> None:
@@ -431,8 +419,6 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                     im0 = im0.crop(s.crop)
                 im0.save(fr)
                 fit(fr, img)
-            elif s.kind == "teaser":
-                imgs = teaser_images(t, n)
             elif s.kind == "block":
                 block_image(s.ref, img)
             elif s.kind == "walk":
@@ -456,8 +442,9 @@ def make_video(out: Path, screens: Path, voice: str) -> None:
                     raise SystemExit(f"missing recording {src}")
                 cd = _probe(src) / s.speed
                 extra = dur if s.after else max(0.0, dur - cd)      # `after`: speak over the last frame, never over the typing
-                vf = (f"setpts=PTS/{s.speed},scale={W}:{H}:force_original_aspect_ratio=decrease,"
-                      f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:white,tpad=stop_mode=clone:stop_duration={extra:.3f},fps=10")
+                vf = (f"setpts=PTS/{s.speed},scale={W}:{PICTURE_H}:force_original_aspect_ratio=decrease,"
+                      f"pad={W}:{PICTURE_H}:(ow-iw)/2:(oh-ih)/2:white,pad={W}:{H}:0:0:white,"
+                      f"tpad=stop_mode=clone:stop_duration={extra:.3f},fps=10")
                 subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-i", str(src), "-vf", vf, "-an", "-c:v", "libx264",
                                 "-pix_fmt", "yuv420p", str(vv)], check=True)
                 if s.after:        # silence while the recording plays, then the voice

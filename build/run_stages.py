@@ -26,6 +26,7 @@ SCENARIOS = (
     ("buy_wait", "start", None, "buy", "KO", "2026-08-12", 0),
     ("buy_signal", "update", None, "buy", "F", "2026-08-12", 1),
     ("sell_now", "start", None, "sell", "KO", "2026-08-12", 0),
+    ("sell_now_f", "start", None, "sell", "F", "2026-08-12", 0),   # the opening's sell example, a different company from the opening's buy example
     ("sell_hold", "update", None, "sell", "KO", "2026-10-12", 0),
     ("buy_update", "update", None, "buy", "KO", "2026-08-12", 0),
 )

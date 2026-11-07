@@ -62,8 +62,9 @@ consensus (slides 78 and 81) is the point of the justification part. The script 
 .venv/bin/python build/build_video.py --video-out <path outside the repo>.mp4 [--voice NAME]
 ```
 
-`run_stages.py` runs the committed script for real in four modes (buy WAIT, buy BUY on a file downloaded a day earlier, sell SELL now, sell
-HOLD, plus buy mode on the update file) by changing only the four settings lines, and records the printed answers, the first rows of
+`run_stages.py` runs the committed script for real in six scenarios (buy WAIT on Coca Cola, buy BUY on Ford on a file downloaded a day
+earlier, sell SELL now on Coca Cola, sell SELL now on Ford for the video's opening example, sell HOLD, plus buy mode on the update file)
+by changing only the four settings lines, and records the printed answers, the first rows of
 `signals.csv` and the charts (`build/generated/activity2/modes.json`); it also draws the two "why" charts (`build/r/explain_osc.R`,
 `explain_bar.R`). The manual's walkthrough (Part 5) and the video's code scenes both come from `build/walk_chapter07.py`, which finds every
 line number in the committed script by its text and fails the build if a line or key part is not there, so the manual, the file and the
@@ -89,9 +90,13 @@ the three-oscillator example and for a two-oscillator variant.
 ## The video
 
 One block by block walkthrough, no RStudio recording needed: the labelled blocks and highlighted lines are drawn from the committed script,
-and each printed answer is real Rscript output. Order: a teaser of the real outputs, welcome, a "not foolproof" card, the instructor's
+and each printed answer is real Rscript output. Order: a real opening example (Coca Cola in buy mode, then Ford in sell mode, both run for
+real with Rscript so the trigger price, stop, and gain or loss are not invented), welcome, a "not foolproof" card, the instructor's
 own Google Sheets recording (four pieces, his account picture covered), the flowchart as bpmn.io draws it, the six blocks (each important
 line highlighted whole and explained, then its key part boxed and explained), the four answers, the chart and table, new data, the why part,
 "not foolproof" again, and the task. Subtitles are burned in and match the narration word for word (spelled-out letters and code names are
-written as typed); `First Automation FIN1209.srt` carries the same text. The video (about 17 minutes) is too large for git and is delivered with
-the student set. `screens/r03-working-dir.png` is the only RStudio capture the manual still uses.
+written as typed); every caption is its own `say` clip, timed from its own ffprobe duration, never a share of a longer sentence guessed by
+character count. Every picture leaves a blank strip below it for the caption (the canvas is taller than the picture itself: see
+`build/build_video.py`'s PICTURE_H and SUBH), so a caption never covers the chart, the code, the output or the Sheets recording.
+`First Automation FIN1209.srt` carries the same text as the burned-in captions. The video (about 17 minutes) is too large for git and is
+delivered with the student set. `screens/r03-working-dir.png` is the only RStudio capture the manual still uses.

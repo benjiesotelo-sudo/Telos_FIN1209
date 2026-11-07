@@ -703,7 +703,7 @@ code {{ font-family: {MONO_FONT}; font-size: 9.2pt; }}
 
 .blk {{ margin-bottom: 2.4mm; }}
 .main {{ width: 100%; }}
-.main p {{ margin: 0 0 1.8mm 0; }}
+.main p {{ margin: 0 0 1.8mm 0; overflow-wrap: break-word; }}
 .main p:last-child {{ margin-bottom: 0; }}
 .main strong {{ font-weight: 700; }}
 .main code {{

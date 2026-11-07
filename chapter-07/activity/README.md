@@ -56,15 +56,18 @@ consensus (slides 78 and 81) is the point of the justification part. The script 
 ## Build order
 
 ```
-.venv/bin/python build/run_stages.py --data <folder with start/ and update/ price files>
+.venv/bin/python build/run_stages.py --data <folder with start/ and update/ price files> --year <folder with a year of KO.csv>
 .venv/bin/python build/build_flowchart.py
 .venv/bin/python build/build_activity2.py
 .venv/bin/python build/build_video.py --video-out <path outside the repo>.mp4 [--voice NAME]
 ```
 
-`run_stages.py` runs the committed script for real in six scenarios (buy WAIT on Coca Cola, buy BUY on Ford on a file downloaded a day
-earlier, sell SELL now on Coca Cola, sell SELL now on Ford for the video's opening example, sell HOLD, plus buy mode on the update file)
-by changing only the four settings lines, and records the printed answers, the first rows of
+`run_stages.py` runs the committed script for real in five scenarios (buy WAIT on Coca Cola, buy BUY on Ford on a file downloaded a day
+earlier, sell SELL now on Coca Cola, sell HOLD, plus buy mode on the update file) by changing only the four settings lines, and the
+video's opening round trip on a year of Coca Cola (`--year`, a Google Sheets file from 3 November 2025): buy mode on the file cut at
+20 January 2026 answers BUY above 71.78 with the stop at 69.79, the next day opens at 71.98, above the trigger, and sell mode run on the
+file cut at every later day answers HOLD (stop 70.83) until 2 March 2026, when it answers SELL now at about 80.22, +11.4%. Every one of
+those claims is its own Rscript run, and the build stops if any is not what the opening says (`opening.json`). It records the printed answers, the first rows of
 `signals.csv` and the charts (`build/generated/activity2/modes.json`); it also draws the two "why" charts (`build/r/explain_osc.R`,
 `explain_bar.R`). The manual's walkthrough (Part 5) and the video's code scenes both come from `build/walk_chapter07.py`, which finds every
 line number in the committed script by its text and fails the build if a line or key part is not there, so the manual, the file and the
@@ -90,13 +93,18 @@ the three-oscillator example and for a two-oscillator variant.
 ## The video
 
 One block by block walkthrough, no RStudio recording needed: the labelled blocks and highlighted lines are drawn from the committed script,
-and each printed answer is real Rscript output. Order: a real opening example (Coca Cola in buy mode, then Ford in sell mode, both run for
-real with Rscript so the trigger price, stop, and gain or loss are not invented), welcome, a "not foolproof" card, the instructor's
+and each printed answer is real Rscript output. Order: the opening (just under two minutes, drawn frame by frame by
+`build/opening_chapter07.py`: the question "Should you buy Coca-Cola today?", 7 seconds of the instructor's real Google Sheets recording,
+which pulls July to October 2026, with a text label, marked not recorded, of the same formula with this example's own dates,
+RStudio drawn, not recorded, with the real settings and the real Console output of the buy run, a price-only chart with the signal day,
+trigger and stop marked as the voice names them, sell mode every day saying HOLD, the real sell run, and the real +11.4% gain, then
+"your own buy and sell prices, in one click", with quiet music made from sine tones under the opening only), the "not foolproof" card
+right after it so the opening never promises only wins, welcome, the instructor's
 own Google Sheets recording (four pieces, his account picture covered), the flowchart as bpmn.io draws it, the six blocks (each important
 line highlighted whole and explained, then its key part boxed and explained), the four answers, the chart and table, new data, the why part,
 "not foolproof" again, and the task. Subtitles are burned in and match the narration word for word (spelled-out letters and code names are
 written as typed); every caption is its own `say` clip, timed from its own ffprobe duration, never a share of a longer sentence guessed by
 character count. Every picture leaves a blank strip below it for the caption (the canvas is taller than the picture itself: see
 `build/build_video.py`'s PICTURE_H and SUBH), so a caption never covers the chart, the code, the output or the Sheets recording.
-`First Automation FIN1209.srt` carries the same text as the burned-in captions. The video (about 17 minutes) is too large for git and is
+`First Automation FIN1209.srt` carries the same text as the burned-in captions. The video (about 19 minutes) is too large for git and is
 delivered with the student set. `screens/r03-working-dir.png` is the only RStudio capture the manual still uses.

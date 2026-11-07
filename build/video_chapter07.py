@@ -1,8 +1,9 @@
 """The guide video's scenes, as data: one picture or recording and what is said over it.
 
 The same list makes the narration script and the computer-voice video, so the two cannot differ.
-Order: a real opening example (Coca Cola in buy mode, then Ford in sell mode, both real Rscript output), welcome, not
-foolproof, get the data (the instructor's own Google Sheets recording), the flowchart, then the script block by block (each
+Order: the opening (one real Coca Cola trade, buy mode then sell mode, every number real Rscript output, drawn frame by
+frame by build/opening_chapter07.py), not foolproof right after it so the hype never promises only wins, welcome, get the
+data (the instructor's own Google Sheets recording), the flowchart, then the script block by block (each
 block labelled; each important line shown whole and highlighted, then its key part boxed, with a caption that is also
 spoken), the four answers run for real (BUY, WAIT, SELL now, HOLD), why the signals are where they are, not foolproof
 again, and the task. No RStudio recording: every code picture is drawn from the committed script, every printed answer is
@@ -16,6 +17,7 @@ real Rscript output (build/run_stages.py).
   block   a labelled block of the script, drawn from the script (`ref` = "b3")
   walk    one line of a block highlighted whole (phase 1) or with its key part boxed (phase 2) (`ref` = "b3:r5:1")
   run     the four settings lines and the real answer of a mode (`ref` = "buy_wait")
+  opening the animated opening, drawn frame by frame from build/generated/activity2/opening.json (opening_chapter07.py)
 """
 
 from __future__ import annotations
@@ -110,26 +112,11 @@ _FOOLPROOF = ("This program is not foolproof. It follows rules from our slides. 
 _FOOLPROOF_CARD = ("This program is not foolproof", "It follows rules from our slides",
                    "Its signals can be wrong and can lose money", "A class exercise, not advice")
 
+import opening_chapter07 as _OP  # noqa: E402
+
 SCENES = (
-    Scene("Opening example: Coca Cola, buy mode",
-          "Before anything else, here is the program working on real prices. This is Coca Cola, bought and sold using "
-          "Chapters 1 to 8. In buy mode it takes five votes every day, and today it says WAIT, no buy signal. But watch "
-          "the last one: on the twenty second of September it signalled BUY, enter above eighty eight ninety seven, "
-          "stop at eighty seven forty six. A real trigger price and a real stop, from a real chart.",
-          "gen", "modes/buy_wait"),
-    Scene("Opening example: the real answer, Coca Cola",
-          "Four settings at the top, and the script's own real answer below them.",
-          "run", "buy_wait"),
-    Scene("Opening example: Ford, sell mode",
-          "Now sell mode, on a different company: Ford. Say you bought it on the twelfth of August, at thirteen eighty "
-          "three. The script checks every day since: is there a sell signal, or has price closed below your stop? "
-          "Here, yes, on the twenty eighth of August. So the real answer is SELL now, at about twelve oh six, a loss of "
-          "twelve point eight percent.",
-          "gen", "modes/sell_now_f"),
-    Scene("Opening example: the real answer, Ford",
-          "The same four settings, and the real loss the script prints. That is what you are about to build: real buy "
-          "and sell prices, every time you run it. Let's build it.",
-          "run", "sell_now_f"),
+    Scene("Opening: one real Coca Cola trade", _OP.narration(), "opening"),
+    Scene("Not foolproof", "Before we start. " + _FOOLPROOF, "card", card=_FOOLPROOF_CARD),
     Scene("Welcome",
           "This is a short guide to your first automation. You will teach R to read price, bars and volume, from "
           "Chapters 1 to 7, and three window oscillators from Chapter 8. Every day it takes five votes for buy or "
@@ -137,7 +124,6 @@ SCENES = (
           "or wait, and sell mode says sell now or hold. You need R and RStudio, both free, and one package, T T R. The "
           "manual has the links.",
           "web", "posit-rstudio"),
-    Scene("Not foolproof", "Before we start. " + _FOOLPROOF, "card", card=_FOOLPROOF_CARD),
 ) + _sheets_scenes() + (
     Scene("The flowchart",
           "Here is what the script does, as a B P M N flowchart. Settings and data: you type four settings, and the script "

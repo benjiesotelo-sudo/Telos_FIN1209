@@ -22,6 +22,7 @@ INFO = HERE / "generated" / "activity2" / "opening.json"
 SHEETS = "sheets-2.mp4"           # the second piece of the Sheets recording, in build_video.REC
 SHEETS_FROM, SHEETS_TO, SHEETS_SPEED = 2.5, 14.5, 1.7      # the formula typed, then the rows filling in, sped up 1.7 times
 PICTURE_DATES_Y = 790             # top of the dates label over the Sheets recording, inside the 1080 px picture
+BADGE_RIGHT = 0.955               # the sell-mode badge's right edge, as a share of the width: a clear margin on every date
 SWITCH = 0.6                     # sell mode: seconds for the stop line to move to the sell stop before the first HOLD
 FPS = 20                         # 10240 (the other segments' time base) / 20 is whole, so the joined file keeps exact times
 SCRIPT = "First Automation FIN1209 - Example Script.R"
@@ -605,8 +606,8 @@ class Chart:
         ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("$%.0f"))
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%-d %b"))
         ax.grid(True, color="#e3e7ea", lw=1.5)
-        self.f.text(0.085, 0.93, "Coca-Cola (KO), daily close", fontsize=46, weight="bold", color=GREEN)
-        self.f.text(0.085, 0.885, f"Real prices: our Google Sheets file, from {day(O['file_first'])[1]} {O['file_first'][:4]}",
+        self.titletext = self.f.text(0.085, 0.93, "Coca-Cola (KO), daily close", fontsize=46, weight="bold", color=GREEN)
+        self.subtext = self.f.text(0.085, 0.885, f"Real prices: our Google Sheets file, from {day(O['file_first'])[1]} {O['file_first'][:4]}",
                     fontsize=24, color="#555555")
         self.line, = ax.plot([], [], color="#1f3b57", lw=5, solid_capstyle="round", zorder=3)
         self.head = ax.scatter([], [], s=260, color="#1f3b57", zorder=5)
@@ -624,7 +625,7 @@ class Chart:
         self.paidtie, = ax.plot([], [], color=GOLD, lw=3, zorder=6)
         self.sellm = ax.scatter([], [], marker="v", s=1500, color=RED, edgecolor="white", lw=3, zorder=7)
         self.selllab = ax.text(0, 0, "", fontsize=30, weight="bold", color=RED, ha="right", va="bottom", zorder=8)
-        self.hold = self.f.text(0.62, 0.885, "", fontsize=30, weight="bold", color="white", zorder=9,
+        self.hold = self.f.text(BADGE_RIGHT, 0.94, "", ha="right", va="center", fontsize=26, weight="bold", color="white", zorder=9,
                                 bbox=dict(boxstyle="round,pad=0.45", fc=GREEN, ec=GREEN))
         self.paidline, = ax.plot([], [], color=GOLD, lw=3, ls=(0, (2, 3)), zorder=2)
         self.sellline, = ax.plot([], [], color=RED, lw=3, ls=(0, (2, 3)), zorder=2)
@@ -642,6 +643,14 @@ class Chart:
             "follow": view(self.x[self.ib] - 12, self.x[self.isell] + 8, 0.2),
             "gain": view(self.x[self.ib] - 12, self.x[self.isell] + 10, 0.22),
         }
+
+    @staticmethod
+    def pushed(v, dt: float):
+        """View v after dt seconds of the slow push-in (at most 10 percent)."""
+        k = min(0.10, 0.004 * max(0.0, dt))
+        cx_, cy_ = (v[0] + v[1]) / 2, (v[2] + v[3]) / 2
+        return (cx_ - (cx_ - v[0]) * (1 - k * 0.6), cx_ + (v[1] - cx_) * (1 - k * 0.6),
+                cy_ - (cy_ - v[2]) * (1 - k), cy_ + (v[3] - cy_) * (1 - k))
 
     def upto(self, p: float):
         """Draw the close line through whole day int(p), never part of a day, so its end is always a real close."""
@@ -671,17 +680,15 @@ class Chart:
             if t >= T["c3"][0] - 0.3:
                 v = lerp(v, V["buy"], ease((t - T["c3"][0] + 0.3) / 0.9))
             if t >= T["c7"][0]:
-                v = lerp(V["buy"], V["follow"], ease((t - T["c7"][0]) / 1.2))
+                # one smooth move to the sweep's fixed view, done before the first HOLD badge; then the axes stay put
+                v = lerp(self.pushed(V["buy"], T["c7"][0] - T["c1"][0]), V["follow"], ease((t - T["c7"][0]) / (SWITCH * 0.9)))
         else:
             p = lerp(isl - 1, isl, ease((t - T["g1"][0]) / 0.6))
             hx, hi = self.upto(p)
             v = lerp(V["follow"], V["gain"], ease((t - T["g2"][0]) / 1.2))
             v = lerp(v, (v[0] + 3, v[1] - 0.5, v[2] + 0.2, v[3] - 0.2), ease((t - T["g3"][0]) / 3) * 0.6)
-        p0 = T["c1"][0] if phase == "c" else T["g1"][0]
-        k = min(0.10, 0.004 * max(0.0, t - p0))
-        cx_, cy_ = (v[0] + v[1]) / 2, (v[2] + v[3]) / 2
-        v = (cx_ - (cx_ - v[0]) * (1 - k * 0.6), cx_ + (v[1] - cx_) * (1 - k * 0.6),
-             cy_ - (cy_ - v[2]) * (1 - k), cy_ + (v[3] - cy_) * (1 - k))
+        if not (phase == "c" and t >= T["c7"][0]):          # the slow push-in, except in the sell-mode sweep
+            v = self.pushed(v, t - (T["c1"][0] if phase == "c" else T["g1"][0]))
         ax.set_xlim(v[0], v[1])
         ax.set_ylim(v[2], v[3])
         span = v[3] - v[2]
@@ -763,10 +770,11 @@ class Chart:
             hold = dict(O["holds"]).get(self.op.series[hi]["date"])
             if not hold:
                 raise SystemExit(f"no real HOLD answer for {self.op.series[hi]['date']}")
-            badge = f"Sell mode, {day(self.op.series[hi]['date'])[1]}:  HOLD"
+            badge = f"Sell mode, {day(self.op.series[hi]['date'])[1]}: HOLD"
         self.hold.set_text(badge)
         shown_stop = self.stoplab.get_text()
-        self.state = {"day": self.op.series[hi]["date"], "badge": badge, "head": headtext, "end": hx, "stop": shown_stop}
+        self.state = {"day": self.op.series[hi]["date"], "badge": badge, "head": headtext, "end": hx, "stop": shown_stop,
+                      "xlim": tuple(ax.get_xlim()), "ylim": tuple(ax.get_ylim())}
         # the sell and the gain
         if phase == "g":
             k = ease((t - T["g1"][0] - 0.3) / 0.35)
@@ -813,6 +821,12 @@ class Chart:
         else:
             self.rings.set_offsets(self.np_empty())
         self.f.canvas.draw()
+        if badge:                                     # the badge's drawn box in pixels, and the y ticks, for the checks
+            bb = self.hold.get_bbox_patch().get_window_extent()
+            self.state["badge_box"] = (bb.x0, bb.x1, bb.y0, bb.y1)
+            self.state["text_boxes"] = [(e.x0, e.x1, e.y0, e.y1) for e in
+                                        (self.titletext.get_window_extent(), self.subtext.get_window_extent())]
+        self.state["yticks"] = tuple(round(v, 3) for v in ax.get_yticks())
         buf = self.f.canvas.buffer_rgba()
         im = Image.frombuffer("RGBA", self.f.canvas.get_width_height(), buf, "raw", "RGBA", 0, 1).convert("RGB")
         return im

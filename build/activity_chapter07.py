@@ -129,10 +129,15 @@ BRIEF = Section(
                 ("**You get**", "This manual, a guide video, the finished example script and the example flowchart (`.pdf` and "
                  "`.bpmn`). No price files: you download them yourself."),
                 ("**You hand in**", "Your own R script, with the four settings lines at the top, and a flowchart of how it works. "
-                 "Your own stock (Part 9)."),
-                ("**Due date**", "______________ (to be filled in)"),
+                 "Your own stock (Part 9). Submit both at the form below."),
+                ("**Due date**", "Sunday, 15 November 2026, 11:59 PM."),
             ),
         ),
+        Para(text=(
+            "Submission form: https://docs.google.com/forms/d/e/1FAIpQLSevSBbDVjCfPR8aH1TbxZQXsIsLrDve5h2neKr5WMa3go9MWw/viewform")),
+        Callout(label="This also counts as your Chapter 8 quiz and your final quiz", tone="gold", text=(
+            "**There will be no reschedules for this activity: late or missing work is not re-opened.** This "
+            "is too hard to check case by case, so there is no exception.")),
         Callout(label="What the answer is, and is not", text=(
             "The answer is what the rules say about past prices **up to the last row of your file**. That row is the latest "
             "trading day in your download, not the live market price: Google Sheets prices can be up to about 20 minutes late, and "
@@ -646,7 +651,10 @@ TASK = Section(
             "the 5 agree, and answers in **both modes**: BUY or WAIT, and SELL now or HOLD. It writes the three output files and "
             "meets the contract in Part 8. Test it yourself: run it in buy mode, then change `mode` to `\"sell\"`, type a "
             "price and a day you bought, and run it again. Then draw a **flowchart** of how it works.")),
-        Callout(label="Due date", tone="gold", text="______________  (to be filled in)"),
+        Callout(label="Due date", tone="gold", text="Sunday, 15 November 2026, 11:59 PM."),
+        Callout(label="This also counts as your Chapter 8 quiz and your final quiz", tone="gold", text=(
+            "**There will be no reschedules for this activity: late or missing work is not re-opened.** This "
+            "is too hard to check case by case, so there is no exception.")),
         Table(
             title="Name your files exactly",
             headers=("File", "Name"),
@@ -660,6 +668,8 @@ TASK = Section(
             ),
             note="Two files, nothing else. No price files or output: they are rebuilt from your script.",
         ),
+        Para(text=(
+            "Submit both files at https://docs.google.com/forms/d/e/1FAIpQLSevSBbDVjCfPR8aH1TbxZQXsIsLrDve5h2neKr5WMa3go9MWw/viewform.")),
         Points(title="Before you submit, check", numbered=True, items=(
             "Put your script in a clean folder with a `data` folder holding your stock's file, and run it in buy mode and "
             "again in sell mode, changing only the four settings lines.",

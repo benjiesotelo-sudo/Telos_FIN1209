@@ -45,12 +45,12 @@ CHECKABLE = (
      "no installs, in under 30 seconds each."),
     ("It writes the files the contract names", 10,
      "`output/signals.csv` with the required columns (4), `output/answer.txt` (3), and `output/<stock>.png` (3)."),
-    ("It finds the right signal days", 15,
-     "The date and side of every signal day match the record, with none missing and none extra."),
-    ("The buy mode answer is right", 10,
-     "BUY or WAIT, and the numbers in the answer, match the record."),
-    ("The sell mode answers are right", 15,
-     "SELL now or HOLD, and the numbers in the answer, match the record, for two different bought dates."),
+    ("It finds the signal days your own rules give", 15,
+     "The date and side of every signal day match what you stated in your comments, with none missing and none extra."),
+    ("The buy mode answer follows your own rules", 10,
+     "BUY or WAIT, and the numbers in the answer, follow what you stated, not the example's rules."),
+    ("The sell mode answers follow your own rules", 15,
+     "SELL now or HOLD, and the numbers in the answer, follow what you stated, for two different bought dates."),
 )
 JUDGED = (
     ("The flowchart is correct BPMN", 10),
@@ -128,8 +128,9 @@ BRIEF = Section(
             rows=(
                 ("**You get**", "This manual, a guide video, the finished example script and the example flowchart (`.pdf` and "
                  "`.bpmn`). No price files: you download them yourself."),
-                ("**You hand in**", "Your own R script, with the four settings lines at the top, and a flowchart of how it works. "
-                 "Your own stock (Part 9). Submit both at the form below."),
+                ("**You hand in**", "Your own R script, built on your own rules, not a copy of the example with the stock changed "
+                 "(Part 9), with the four settings lines at the top, and a flowchart that also shows where your script differs "
+                 "from the example. Your own stock. Submit both at the form below."),
                 ("**Due date**", "Sunday, 15 November 2026, 11:59 PM."),
             ),
         ),
@@ -305,11 +306,12 @@ CONTRACT = Section(
             rows=(
                 ("ticker", "The stock: your `stock` setting", "KO"),
                 ("date", "The signal day, `YYYY-MM-DD`", "2026-09-22"),
-                ("side", "`BUY` or `SELL`: the side that has 3 or more votes", "BUY"),
-                ("entry", "The trigger level. A buy: the signal day's high. A sell: the signal day's low", "88.97"),
-                ("stop", "A buy: the signal day's low. A sell: the signal day's high", "87.46"),
-                ("trend, bar, rsi, macd, stoch", "What each of the five votes said that day: `BUY`, `SELL` or empty", "BUY"),
-                ("agree", "How many of the five votes gave the `side`", "3"),
+                ("side", "`BUY` or `SELL`: the side your rule says agrees enough that day", "BUY"),
+                ("entry", "The trigger level, by your rule. The example: a buy is the signal day's high, a sell its low", "88.97"),
+                ("stop", "The stop, by your rule. The example: a buy's is the signal day's low, a sell's its high", "87.46"),
+                ("trend, bar, rsi, macd, stoch", "What each vote said that day: `BUY`, `SELL` or empty. These five are the "
+                 "example's. Your script has one column per vote of its own, named to match", "BUY"),
+                ("agree", "How many of your votes gave the `side`", "3"),
                 ("volume", "`CONFIRMED` if that day's volume is above the file's average, else `NOT`", "CONFIRMED"),
             ),
             note="One row for each signal day, oldest first. Zero rows is fine: the file still has its header.",
@@ -642,15 +644,23 @@ def why_section(info: dict) -> Section:
 
 TASK = Section(
     title="9. Your task",
-    kicker="Your own script, on your own stock, and a flowchart of it.",
+    kicker="Your own program, on your own stock: the rules are yours to write, not the example's.",
     footer="Your task",
     blocks=(
         Para(text=(
-            "Choose **your own stock** (a US stock, downloaded as in Part 2, about a year of daily rows) and write **your own "
-            "script**. It has the same four settings lines at the top, takes the five votes, keeps the days when at least 3 of "
-            "the 5 agree, and answers in **both modes**: BUY or WAIT, and SELL now or HOLD. It writes the three output files and "
-            "meets the contract in Part 8. Test it yourself: run it in buy mode, then change `mode` to `\"sell\"`, type a "
-            "price and a day you bought, and run it again. Then draw a **flowchart** of how it works.")),
+            "**Your job is not to copy the example script.** Your job is to write your own program. Choose your own stock "
+            "(a US stock, downloaded as in Part 2, about a year of daily rows) and write your own rules for at least **two** "
+            "of these three: (a) which indicators vote, or how a vote is decided, (b) how many votes must agree for a signal "
+            "day, (c) where the stop goes. State your rules in comments at the top of your script, plainly, so the marker can "
+            "read them. Everything else stays fixed so the marker can run every script the same way: the same four settings "
+            "lines at the top (`mode`, `stock`, `bought_price`, `bought_date`), the same answer words (BUY or WAIT in buy "
+            "mode, SELL now or HOLD in sell mode, with the numbers), and the three output files of Part 8. Test it yourself: "
+            "run it in buy mode, then change `mode` to `\"sell\"`, type a price and a day you bought, and run it again. Then "
+            "draw a **flowchart** of how it works, and mark on it where your program differs from the example.")),
+        Callout(label="A copy is worth zero for the script part", tone="gold", text=(
+            "**A script that is the example with only the stock changed, or that matches the example line for line, gets "
+            "zero for the 60 script points**, even if it runs and writes the right files. Changing one of the three things "
+            "above is not enough either: you need at least two.")),
         Callout(label="Due date", tone="gold", text="Sunday, 15 November 2026, 11:59 PM."),
         Callout(label="This also counts as your Chapter 8 quiz and your final quiz", tone="gold", text=(
             "**There will be no reschedules for this activity: late or missing work is not re-opened.** This "
@@ -671,16 +681,19 @@ TASK = Section(
         Para(text=(
             "Submit both files at https://docs.google.com/forms/d/e/1FAIpQLSevSBbDVjCfPR8aH1TbxZQXsIsLrDve5h2neKr5WMa3go9MWw/viewform.")),
         Points(title="Before you submit, check", numbered=True, items=(
+            "Your comments at the top state which two (or more) of the three things you changed, plainly.",
             "Put your script in a clean folder with a `data` folder holding your stock's file, and run it in buy mode and "
             "again in sell mode, changing only the four settings lines.",
             "`output` has `signals.csv` with the columns of Part 8, `answer.txt` and a `.png` named after your stock.",
             "Delete `output` and run again. It must come back.",
-            "Open your flowchart next to your script. Every shape has lines behind it.",
+            "Open your flowchart next to your script. Every shape has lines behind it, and it marks where you differ "
+            "from the example.",
         )),
         Callout(label="The marker runs your script on files you have not seen", text=(
             "A file you have not seen, in the layout of Part 8, run in buy mode and in sell mode with settings the marker "
             "chooses. Some files write dates as `2026-07-02`, some as `7/2/2026 16:00:00`. A script that only works on "
-            "the example file, or that needs more than the four settings lines changed, will not pass.")),
+            "the example file, or that needs more than the four settings lines changed, will not pass. The answers it "
+            "writes are checked against your own stated rules, not against the example's.")),
     ),
 )
 
@@ -707,13 +720,16 @@ AI = Section(
             "code does, and where the rule has a number, which slide it "
             "comes from.",
             "If you cannot explain a part of the script, do not submit it. "
-            "Ask for a simpler version you can explain, or go back to the "
-            "example.",
+            "Ask for a simpler version you can explain, but it still has "
+            "to be your own program on your own rules (Part 9), not the "
+            "example with the stock changed.",
         )),
         Para(text=(
             "A script that runs perfectly with a flowchart that does not "
             "match it loses the flowchart marks. A modest script with a "
-            "flowchart that matches it and explains every step does well.")),
+            "flowchart that matches it and explains every step does well. "
+            "None of this is a reason to hand in the example itself: that "
+            "scores zero for the script part, however good the flowchart.")),
     ),
 )
 
@@ -724,18 +740,19 @@ AI = Section(
 MARKS = Section(
     title="11. The marks",
     kicker=f"{show_marks(TOTAL)} points. {show_marks(CHECK_TOTAL)} are checked "
-           f"against the record by running your script, and "
+           f"by running your script and reading your stated rules, and "
            f"{show_marks(JUDGE_TOTAL)} are judged from your flowchart.",
     footer="The marks",
     blocks=(
         Table(
-            title="Checked against the record",
+            title="Checked by running your script",
             headers=("What", "Marks", "How"),
             widths=(30, 10, 60),
             rows=tuple((a, show_marks(m), h) for a, m, h in CHECKABLE)
                  + (("**Subtotal**", f"**{show_marks(CHECK_TOTAL)}**", ""),),
-            note="Right or wrong. No rubric is needed because the record "
-                 "decides.",
+            note="Right or wrong against the rules you stated in your comments, not against the example's rules. A "
+                 "script that is the example with only the stock changed, or that matches it line for line, scores "
+                 "zero here, whatever it prints.",
         ),
         Table(
             title="Judged, with the course rubric on the next pages",
@@ -743,11 +760,13 @@ MARKS = Section(
             widths=(60, 40),
             rows=tuple((a, show_marks(m)) for a, m in JUDGED)
                  + (("**Subtotal**", f"**{show_marks(JUDGE_TOTAL)}**"),),
+            note="Includes whether your flowchart shows where your program differs from the example.",
         ),
         Callout(label="Not marked", text=(
-            "**How your code looks.** Neat or messy, short or long, with "
-            "comments or without: not marked. Only whether it works and "
-            "whether the flowchart explains it.")),
+            "**How your code looks.** Neat or messy, short or long: not "
+            "marked. Only whether it works, whether your comments state "
+            "your own rules plainly enough to check, and whether the "
+            "flowchart explains it.")),
         Callout(label="Your flowchart is marked on its own pages, and the "
                 "signals are not a forecast", tone="gold", text=(
             "The script reports what a rule says at a point in the past. "
@@ -769,9 +788,11 @@ WRITTEN_MARKS = tuple(
          "The shapes are used for what they mean: a diamond is a question, a "
          "rectangle is an action, and no path stops without an end event."),
         ("Points at the line of your script each shape stands for, and at "
-         "every loop and decision in the code having a shape.",
+         "every loop and decision in the code having a shape, with the "
+         "shapes that differ from the example marked as such.",
          "Following the arrows reproduces what running the script does, in "
-         "the same order, with no shape for code that is not there."),
+         "the same order, with no shape for code that is not there, and a "
+         "reader can see where your rules depart from the example's."),
         ("Each task says what its lines do, with the actual column, price or "
          "file the code uses, and names the slide where the rule has a "
          "price.",

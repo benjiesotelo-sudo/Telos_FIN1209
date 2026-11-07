@@ -130,12 +130,10 @@ BRIEF = Section(
                  "`.bpmn`). No price files: you download them yourself."),
                 ("**You hand in**", "Your own R script, built on your own rules, not a copy of the example with the stock changed "
                  "(Part 9), with the four settings lines at the top, and a flowchart that also shows where your script differs "
-                 "from the example. Your own stock. Submit both at the form below."),
+                 "from the example. Your own stock. Share a Drive folder, as Part 9 describes."),
                 ("**Due date**", "Sunday, 15 November 2026, 11:59 PM."),
             ),
         ),
-        Para(text=(
-            "Submission form: https://docs.google.com/forms/d/e/1FAIpQLSevSBbDVjCfPR8aH1TbxZQXsIsLrDve5h2neKr5WMa3go9MWw/viewform")),
         Callout(label="This also counts as your Chapter 8 quiz and your final quiz", tone="gold", text=(
             "**There will be no reschedules for this activity: late or missing work is not re-opened.** This "
             "is too hard to check case by case, so there is no exception.")),
@@ -678,8 +676,13 @@ TASK = Section(
             ),
             note="Two files, nothing else. No price files or output: they are rebuilt from your script.",
         ),
-        Para(text=(
-            "Submit both files at https://docs.google.com/forms/d/e/1FAIpQLSevSBbDVjCfPR8aH1TbxZQXsIsLrDve5h2neKr5WMa3go9MWw/viewform.")),
+        Points(title="How to submit", numbered=True, items=(
+            "In your own Google Drive, make a folder named FirstAutomation_Surname_Firstname "
+            "(your own surname and first name).",
+            "Put your two files in it, named as in the table above.",
+            "Share the folder with benjiesotelo@gmail.com as Viewer before the deadline.",
+            "Do not change the files after the deadline: the time each file was last changed is checked.",
+        )),
         Points(title="Before you submit, check", numbered=True, items=(
             "Your comments at the top state which two (or more) of the three things you changed, plainly.",
             "Put your script in a clean folder with a `data` folder holding your stock's file, and run it in buy mode and "

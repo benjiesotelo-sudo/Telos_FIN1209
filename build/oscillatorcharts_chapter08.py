@@ -8,6 +8,7 @@ invented for teaching, and printed on the chart.
 from __future__ import annotations
 
 import chartkit as ck
+from matplotlib.lines import Line2D
 from shapecharts_chapter07 import Panel
 
 MUTED, GREEN_DEEP, INK = ck.MUTED, ck.GREEN_DEEP, ck.INK
@@ -274,6 +275,9 @@ def _mark_hex(name):
 def paint_spec(c, spec):
     """Draw one chart from a spec. ``marks`` is the ordered list of mark targets:
     ('pt', pane, slot, value) or ('box', pane, slot0, slot1, lo, hi)."""
+    # A dollar sign in a label is a dollar sign, never matplotlib's math mode.
+    _text = c.text
+    c.text = lambda x, y, s, *a, **k: _text(x, y, s.replace('$', r'\$'), *a, **k)
     panes = {}
     for p in spec['panes']:
         panes[p['id']] = Panel(c, p['x'][0], p['x'][1], p['y'][0], p['y'][1], p['lo'], p['hi'], p['n'])
@@ -319,13 +323,35 @@ def paint_spec(c, spec):
             slot, text, dx, dy = item
             row = bar['rows'][slot - bar.get('slot0', 0)]
             c.text(pan.x(slot) + dx, pan.y(row[1]) + dy, text, color=INK)
+    for h in spec.get('hist', ()):
+        pan = panes[h['pane']]
+        base = pan.y(h.get('base', 0))
+        for i, v in enumerate(h['values']):
+            if v is not None:
+                x = pan.x(h.get('start', 0) + i)
+                # butt ends: a default projecting cap adds half the width to each end and draws the bar too tall
+                c.fig.add_artist(Line2D([x, x], [base, pan.y(v)], transform=c.fig.dpi_scale_trans, color=h.get('color', MUTED),
+                                        lw=h.get('lw', 7), solid_capstyle='butt'))
     for seg in spec.get('segs', ()):
         pan = panes[seg['pane']]
         (s0, v0), (s1, v1) = seg['a'], seg['b']
         c.stroke((pan.x(s0), pan.x(s1)), (pan.y(v0), pan.y(v1)), color=seg.get('color', GREEN_DEEP), lw=2.4, dashed=seg.get('dashed', True))
+        if seg.get('arrow'):
+            # an arrowhead at b: two short strokes swept back from the tip
+            import math as _m
+            xa, ya, xb, yb = pan.x(s0), pan.y(v0), pan.x(s1), pan.y(v1)
+            ang = _m.atan2(yb - ya, xb - xa)
+            for side in (-1, 1):
+                hl = min(.16, .5 * _m.hypot(xb - xa, yb - ya))
+                hx = xb - hl * _m.cos(ang + side * .5)
+                hy = yb - hl * _m.sin(ang + side * .5)
+                c.stroke((xb, hx), (yb, hy), color=seg.get('color', GREEN_DEEP), lw=2.4, ink=False)
     for t in spec.get('texts', ()):
         x, y, text = t[0], t[1], t[2]
         c.text(x, y, text, ha=t[3] if len(t) > 3 else 'center', color=t[4] if len(t) > 4 else GREEN_DEEP)
+    if spec.get('table'):
+        t = spec['table']
+        _table(c, t['xs'], t['header'], t['rows'], top=t.get('top', 3.5), step=t.get('step', .4))
     for n, m in enumerate(spec['marks'], 1):
         if m[0] == 'pt':
             pan = panes[m[1]]

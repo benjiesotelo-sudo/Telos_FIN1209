@@ -1855,8 +1855,9 @@ def _validate(chapter: Chapter) -> list[str]:
                                 f"{m.color!r} is not in MARK_COLORS")
             if not 1 <= m.number <= 9:
                 problems.append(f"{where}: mark numbers run 1 to 9")
-            points = (m.x0, m.y0, m.x1, m.y1) + tuple(m.at or ())
-            if not all(0.0 <= f <= 1.0 for f in points):
+            points = (m.x0, m.y0, m.x1, m.y1)
+            # a badge may sit just beyond the picture's edge, clear of the axis labels inside it
+            if not (all(0.0 <= f <= 1.0 for f in points) and all(-0.06 <= f <= 1.06 for f in tuple(m.at or ()))):
                 problems.append(f"{where}: mark {m.number} reaches outside "
                                 "its picture; fractions run 0 to 1")
         if picture.crop and (len(picture.crop) != 4
@@ -2047,7 +2048,8 @@ def _validate(chapter: Chapter) -> list[str]:
 
 
 def build(chapter: Chapter, out_path, *, display_font: str | None = None,
-          figures_dir=None, charts_dir=None, edition: str = TEACHING):
+          figures_dir=None, charts_dir=None, edition: str = TEACHING,
+          check_offset: int = 0, check_total: int | None = None):
     """Render the chapter to a .pptx. Deterministic: same input, same deck.
 
     ``figures_dir`` is where render_figure looks for the textbook artwork. Pass
@@ -2106,6 +2108,8 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
             if isinstance(slide, Check):
                 checks.append((section.number, slide))
     total_checks = len(checks)
+    # A part built on its own numbers its checks from where the earlier part stopped.
+    shown_total = total_checks if check_total is None else check_total
 
     render_title(prs, TitleSlide(
         course=f"{chapter.code}  {chapter.course}",
@@ -2158,7 +2162,7 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
             ),
         ), marker=f"{chapter.chapter} - Roadmap")
 
-    check_index = 0
+    check_index = check_offset
     for section in chapter.sections:
         if chapter.dividers:
             render_section_open(prs, SectionOpen(
@@ -2185,8 +2189,8 @@ def build(chapter: Chapter, out_path, *, display_font: str | None = None,
                 check_index += 1
                 marker = (f"Part {section.number} of {total_sections} - "
                           f"{section.short}  |  Check {check_index}")
-                render_check(prs, slide, marker, check_index, total_checks)
-                render_reveal(prs, slide, marker, check_index, total_checks)
+                render_check(prs, slide, marker, check_index, shown_total)
+                render_reveal(prs, slide, marker, check_index, shown_total)
                 continue
             position += 1
             marker = (f"Part {section.number} of {total_sections} - "

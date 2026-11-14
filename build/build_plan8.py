@@ -63,7 +63,8 @@ import chrome  # noqa: E402
 import deckkit  # noqa: E402
 import notekit  # noqa: E402
 import plan_chapter08 as plan  # noqa: E402
-from content_chapter08 import CHAPTER  # noqa: E402
+from content_chapter08 import CHAPTER_A as CHAPTER, CHAPTER_B  # noqa: E402
+import plan_chapter08b  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
 PDF_OUT = REPO / "chapter-08" / "FIN1209-Chapter-08-Part-A-Run-Card.pdf"
@@ -179,7 +180,8 @@ def index_deck(chapter) -> tuple[dict[str, int], dict[str, tuple[int, object]],
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--out", type=Path, default=PDF_OUT)
+    parser.add_argument("--part", choices=("A", "B"), default="A", help="A: the first class card, B: the second class card")
+    parser.add_argument("--out", type=Path, default=None)
     parser.add_argument("--chrome", type=Path, default=chrome.CHROME)
     parser.add_argument(
         "--keep-html", action="store_true",
@@ -187,16 +189,25 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    slides, where, facts, collisions = index_deck(CHAPTER)
+    chapter = CHAPTER if args.part == "A" else CHAPTER_B
+    if args.out is None:
+        args.out = PDF_OUT if args.part == "A" else PDF_OUT.with_name("FIN1209-Chapter-08-Part-B-Run-Card.pdf")
+    slides, where, facts, collisions = index_deck(chapter)
     if collisions:
         print("warning: ambiguous slide keys, first occurrence wins: "
               + ", ".join(sorted(set(collisions))), file=sys.stderr)
 
-    p1 = slides["end:1"] - slides["part:1"] + 1
-    p2 = slides["end:2"] - slides["part:2"] + 1
-    stats = dict(total=facts.total_slides, opening=slides["part:1"] - 1, part1=p1, part2=p2, checks=facts.total_checks)
-    assert stats["opening"] + p1 + p2 == facts.total_slides, stats
-    the_plan = plan.make(stats)
+    if args.part == "A":
+        p1 = slides["end:1"] - slides["part:1"] + 1
+        p2 = slides["end:2"] - slides["part:2"] + 1
+        stats = dict(total=facts.total_slides, opening=slides["part:1"] - 1, part1=p1, part2=p2, checks=facts.total_checks)
+        assert stats["opening"] + p1 + p2 == facts.total_slides, stats
+        the_plan = plan.make(stats)
+    else:
+        parts = {n: slides[f"end:{n}"] - slides[f"part:{n}"] + 1 for n in range(3, 9)}
+        stats = dict(total=facts.total_slides, opening=slides["part:3"] - 1, parts=parts, checks=facts.total_checks)
+        assert stats["opening"] + sum(parts.values()) == facts.total_slides, stats
+        the_plan = plan_chapter08b.make(stats)
 
     # No answers are handed to the resolver, so an {a:N} placeholder in the
     # card fails the build as an unresolved key instead of printing a letter.

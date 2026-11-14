@@ -9,6 +9,7 @@ import chartlayout_chapter07 as _layout
 _layout.CHAPTER_DIR = 'chapter-08'
 _layout.DATA_MODULE = 'charts_chapter08'
 _layout.CONTENT_MODULE = 'content_chapter08'
+_layout.BARE_UNMARKED = True
 # Chapter 7's layout caches nothing before this point, but clear it anyway.
 _layout.layout.cache_clear()
 
@@ -100,16 +101,28 @@ def course_slide_renderer():  # noqa: F811
             return original_check(prs, s, marker, index, total)
 
         _dk.render_check = check
+        original_pair = _dk.render_pair
+
+        def pair(prs, s, marker):
+            if isinstance(s, TopPair):
+                return _top_pair(prs, s, marker)
+            return original_pair(prs, s, marker)
+
+        _dk.render_pair = pair
         try:
             yield
         finally:
+            _dk.render_pair = original_pair
             _dk.render_check = original_check
 
 
 # Tables are not charts of invented data: their credit says what they are made from.
 _TABLES = {'AS': 'FIN1209 table, from Lim\'s lists (pp. 239 to 240).',
            'AW': 'FIN1209 table, from Lim\'s four definitions (pp. 246 to 247).',
-           'AX': 'FIN1209 table: examples from the slides of this class, our charts and Lim\'s figures.'}
+           'AX': 'FIN1209 table: examples from the slides of this class, our charts and Lim\'s figures.',
+           'BA': "FIN1209 table, from Lim's three formulas (p. 252).", 'BC': "FIN1209 table, from the book's own numbers (p. 253).",
+           'BE': "FIN1209 table: the book's method (p. 253), worked on our numbers.", 'BF': "FIN1209 table, worked by the book's method (p. 253).",
+           'BH': "FIN1209 table, from Lim's list (p. 253)."}
 _orig_credit = CourseChart_credit = _layout.CourseChart.credit
 
 
@@ -118,3 +131,46 @@ def _credit(self):
 
 
 _layout.CourseChart.credit = property(_credit)
+
+
+# A wide book figure under four lines of text, the way a course chart sits under its text. A figure
+# wider than about two to one is drawn at the full width of the slide this way; beside a text column it
+# came out a third of the height of the slide with the rest empty.
+@_dataclass
+class TopPair(_layout.WidePair):
+    """Text across the top, the figure under it as large as the slide allows."""
+
+
+TOP_Y, TOP_H = 2.62, 3.8
+
+
+def _top_pair(prs, s, marker):
+    from pathlib import Path
+    slide = _dk._blank(prs)
+    _dk._ground(slide, _dk.PAPER)
+    _dk._rect(slide, 0, 0, _dk.SLIDE_W, _In(.16), _dk.GREEN)
+    frame = _dk._textbox(slide, _dk.MARGIN, _In(.42), _dk.CONTENT_W, _In(.84))
+    _dk._para(frame, s.left.title, size=28, color=_dk.GREEN, font=_dk.DISPLAY_FONT, first=True, line_spacing=1.0)
+    _dk._header_rule(slide, _In(1.25))
+    refs = {m.number: m.rgb for m in s.picture.marks}
+    text = ' '.join(s.left.lines)
+    assert _dk._text_height(text, _dk.CONTENT_W.inches, 17, spacing=1.26) <= _layout.TEXT_H, (s.left.title, 'text runs past four lines')
+    frame = _dk._textbox(slide, _dk.MARGIN, _In(1.33), _dk.CONTENT_W, _In(_layout.TEXT_H))
+    _dk._para(frame, text, size=17, color=_dk.INK, first=True, line_spacing=1.0, refs=refs)
+    picture = s.picture
+    root = _dk.FIGURES_DIR if isinstance(picture, _dk.Figure) else _dk.CHARTS_DIR
+    path = None if root is None else _Path(root) / picture.filename
+    px_w, px_h = _dk._picture_size(picture, path) or (picture.aspect * 1000.0, 1000.0)
+    scale = min(_dk.CONTENT_W.inches / px_w, TOP_H / px_h)
+    pic_w, pic_h = px_w * scale, px_h * scale
+    pic_x = (_dk.SLIDE_W.inches - pic_w) / 2
+    _dk._rect(slide, _In(pic_x - .04), _In(TOP_Y - .04), _In(pic_w + .08), _In(pic_h + .08), _dk.WHITE, line=_dk.BORDER)
+    if path is not None and path.is_file():
+        _dk._add_picture(slide, picture, path, pic_x, TOP_Y, pic_w, pic_h)
+    else:
+        _dk._placeholder_plate(slide, picture, pic_x, TOP_Y, pic_w, pic_h)
+    _dk._draw_marks(slide, picture.marks, pic_x, TOP_Y, pic_w, pic_h)
+    frame = _dk._textbox(slide, _In(pic_x), _In(TOP_Y + pic_h + .1), _In(pic_w), _In(.22))
+    _dk._para(frame, picture.credit, size=11, color=_dk.MUTED, first=True)
+    _dk._progress(slide, marker)
+    _dk._notes(slide, s.notes)

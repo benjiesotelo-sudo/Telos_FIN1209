@@ -50,7 +50,7 @@ F88 = fig('8.8', (0, 0, 1, 1), 'Figure 8.8: Apple with the RSI, MACD and ROC und
           [M(1, G, 0.155, 0.07, 0.345, 0.222, at=(0.37, 0.05)), M(2, R, 0.713, 0.312, 0.878, 0.388, at=(0.90, 0.35)),
            M(3, B, 0.02, 0.515, 0.93, 0.642, at=(0.955, 0.58)), M(4, P, 0.02, 0.655, 0.93, 0.80, at=(0.955, 0.73)),
            M(5, R, 0.02, 0.81, 0.93, 0.985, at=(0.955, 0.90))], 245, 'sc')
-F89 = fig('8.9', (0, 0.25, 1, 1), 'Figure 8.9: Goldman Sachs with its MACD and signal line under it, vertical time lines, and Lim\'s label for the signal line crossovers.',
+F89 = fig('8.9', (0, 0, 1, 1), 'Figure 8.9: Goldman Sachs with its MACD and signal line under it, vertical time lines, and Lim\'s label for the signal line crossovers.',
           [M(1, G, 0.425, 0.485, 0.585, 0.592, at=(0.405, 0.44)), M(2, R, 0.275, 0.795, 0.315, 0.857, kind='circle', at=(0.25, 0.77)),
            M(3, B, 0.415, 0.72, 0.455, 0.784, kind='circle', at=(0.39, 0.69))], 246, 'sc')
 F810_L = fig('8.10', (0, 0, 0.55, 1), 'Figure 8.10, left half: the GBPUSD chart with its MACD and Lim\'s labelled divergence lines: standard bullish, standard bearish and reverse bullish.',

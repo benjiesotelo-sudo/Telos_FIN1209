@@ -27,7 +27,7 @@ F819_LOW = fig('8.19', (0, 0.55, 1, 1), "Figure 8.19, lower part: the MACD with 
 F820 = fig('8.20', (0, 0, 1, 1), "Figure 8.20: the hourly USDJPY with its MACD under it, a historically overbought level marked in the MACD window and three arrows from the MACD peaks up to the price tops.",
            [M(1, G, 0.25, 0.682, 0.49, 0.682, kind='line', at=(0.37, 0.635)), M(2, R, 0.165, 0.655, 0.205, 0.715, kind='circle', at=(0.12, 0.60)),
             M(3, B, 0.515, 0.655, 0.555, 0.715, kind='circle', at=(0.47, 0.60)), M(4, P, 0.81, 0.655, 0.85, 0.715, kind='circle', at=(0.765, 0.60))], 258, 'sc')
-F821 = fig('8.21', (0, 0.48, 1, 1), "Figure 8.21: daily gold with its true range under it, a historically overextended level, and the 16 times since August 2007 that the true range has reached it, numbered 1 to 16.",
+F821 = fig('8.21', (0, 0, 1, 1), "Figure 8.21: daily gold with its true range under it, a historically overextended level, and the 16 times since August 2007 that the true range has reached it, numbered 1 to 16.",
            [M(1, G, 0.47, 0.812, 0.72, 0.812, kind='line', at=(0.60, 0.865)), M(2, R, 0.092, 0.795, 0.128, 0.855, kind='circle', at=(0.11, 0.905)),
             M(3, B, 0.727, 0.808, 0.763, 0.86, kind='circle', at=(0.745, 0.905)), M(4, P, 0.877, 0.795, 0.913, 0.855, kind='circle', at=(0.895, 0.905))], 259, 'sc')
 

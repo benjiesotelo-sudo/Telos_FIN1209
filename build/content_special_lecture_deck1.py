@@ -1,28 +1,42 @@
-"""Content for the FIN1209 special lecture: AI CLI tools, Git and GitHub.
+"""Deck 1: set up Codex, Git and GitHub for the first time.
 
-Plain data, read by build_special_lecture.py. Not a textbook chapter, so it
-does not use deckkit.Chapter/Section (parts, dividers, checks, answer keys):
-those exist for a Lim chapter and nothing here claims to teach Lim. It still
-uses deckkit's Content, TitleSlide and Closing slide types and its FEU visual
-identity, because the lecture is taught in the same room from the same
-projector as every other FIN1209 deck.
+Plain data, read by build_special_lecture_deck1.py. One of three decks for
+this special lecture (2 is the Stock Desk guide, 3 is building a simple
+tool with structured prompts); see build_special_lecture_deck1.py's module
+docstring for how the three fit together. Not a textbook chapter, so this
+does not use deckkit.Chapter/Section (parts, dividers, checks, answer
+keys): none of that exists here because nothing here claims to teach Lim.
+It reuses deckkit's Content/TitleSlide/Closing slide types but a neutral
+visual identity, not FEU's green and gold (special_lecture_kit.
+apply_neutral_palette(), called by the build script before anything
+renders).
 
-This edition is a real, hands-on walkthrough, one action per slide, built
+Fresh-Mac-mini assumption throughout: the captain is doing this live from
+a brand-new Mac mini tonight, so every Mac-specific slide (the install, the
+PATH error, the Command Line Tools prompt) teaches what a FRESH machine
+actually shows, not what this already-set-up build machine shows; where
+the two differ, both are named and which is which is explicit.
+
+This deck is a real, hands-on walkthrough, one action per slide, built
 around a single evolving example: "group-stock-notes", a shared README.md
 each teammate adds one line to. Two kinds of evidence back it:
 
   * SCREENSHOT - genuinely run on this machine today, in a throwaway local
-    folder (codex --version, git --version, git init/branch/add/commit/log,
-    a real `codex exec` prompt). Nothing new was installed; nothing was
-    pushed to GitHub, signed in or out of, or shared with anyone. Where the
-    real workflow needs a GitHub remote, a local bare repository stands in
-    for it, disclosed in that slide's notes. See build_special_lecture.py
-    for the exact commands.
+    folder (codex --version, git --version, git init/branch/add/commit/
+    log/diff/pull, two real `codex exec` prompts). Nothing new was
+    installed; nothing was pushed to GitHub, signed in or out of, or
+    shared with anyone. Where the real workflow needs a GitHub remote, a
+    local bare repository stands in for it, disclosed in that slide's
+    notes. A `--global` git-identity example used GIT_CONFIG_GLOBAL to
+    point at a throwaway file instead of this Mac's real ~/.gitconfig,
+    also disclosed.
   * ILLUSTRATION - a step no local command can show (the installer's own
-    run, GitHub sign-up, sign-in, invites, the pull request pages, anything
-    on Windows): a plain mockup of the documented screen, built from
-    GitHub's and OpenAI's own current documentation, fetched today and
-    cited in that slide's notes. Never a live screenshot.
+    run, GitHub sign-up, accepting an invite, anything on Windows): either
+    a plain mockup built from GitHub's and OpenAI's own current
+    documentation, or (for the three pull-request pages) a real GitHub
+    Docs screenshot (CC BY 4.0, credited; see build/assets/github-docs-
+    screenshots/SOURCE.md). Never presented as a live capture of this
+    build's own session.
 
 Every command and every citation was fetched or run today (25 Nov 2026),
 not from memory. See each slide's speaker notes for its exact source.
@@ -32,22 +46,36 @@ from __future__ import annotations
 
 import deckkit
 
+# Kept in one place, as asked, so a name correction is a one-line change.
+# His own verbatim confirmation, 25 Nov ~04:35: "Its Arrollado" (not the
+# team's earlier records, "Arriolado").
+TYRONE_SURNAME = "Arrollado"
+
+SPEAKERS = (
+    ("Benjamin C. Sotelo", "Lecturer, FIN1209"),
+    (f"Tyrone Miguel {TYRONE_SURNAME}", "Lecturer, FIN1209"),
+)
+
 TITLE = deckkit.TitleSlide(
-    course="FIN1209 - Technical Analysis in Investment, FEU Manila",
-    chapter="Special lecture",
-    title="AI Tools, Git and GitHub for Your Final Project",
-    subtitle=("A step-by-step walkthrough: Codex, Git and GitHub, one "
-              "worked example the whole way"),
-    presenter=("Benjamin C. Sotelo, with Tyrone Miguel Arriolado helping set "
-               "up your computers today"),
+    course="FIN1209 - Technical Analysis in Investment",
+    chapter="Special lecture 1 of 3",
+    title="Set Up Codex, Git and GitHub",
+    subtitle=("A step-by-step walkthrough: one worked example the whole "
+              "way, from a fresh Mac mini"),
+    presenter=f"Benjamin C. Sotelo and Tyrone Miguel {TYRONE_SURNAME}",
     notes=(
         "This is a one-off special lecture, not a Lim chapter: everything "
         "about Codex, Git and GitHub is general tool knowledge, never "
         "presented as the textbook's.",
+        "Neutral visual style on purpose, not FEU's green/gold: his own "
+        "words, 25 Nov, \"it shouldn't be an FEU theme.\"",
         "Quiz 6 is the group final project: three groups, each with a "
         "leader and a co-leader.",
         "The worked example, group-stock-notes, is invented for this "
         "lecture; it is not a real group's repository.",
+        "Two lecturers today, both presenting (not one \"helping set "
+        "up\"): who presents which deck is still being decided; this "
+        "deck does not assume an answer.",
     ),
 )
 
@@ -61,25 +89,45 @@ AI_CLI_INTRO = deckkit.Content(
         "We will use Codex, OpenAI's own CLI tool, for this class.",
     ),
     accent="You do not need to already know how to code to use it.",
+    origin="Both presenters",
     notes=(
         "\"AI CLI tool\" is not a Lim term; it is general software "
         "knowledge for this lecture only.",
         "CLI = command line interface: the terminal window, not a "
         "website or an app icon.",
+        "Only the CLI is installed by hand (next two slides). Everything "
+        "else in this deck, including Git itself, is a prompt to Codex.",
     ),
 )
 
-MAC_INSTALL = deckkit.Content(
+MAC_INSTALL_DO = ("Open Terminal: press Cmd+Space, type Terminal, press "
+                 "Enter.",
+                 "Paste the command below, press Enter, and wait for it "
+                 "to finish.")
+MAC_INSTALL_ACCENT = "curl -fsSL https://chatgpt.com/codex/install.sh | sh"
+
+MAC_INSTALL_STEP = dict(
     title="Install Codex: macOS",
-    lines=(
-        "Open Terminal: press Cmd+Space, type Terminal, press Enter.",
-        "Paste the command below, press Enter, and wait for it to "
-        "finish.",
+    kind="terminal",
+    do_lines=MAC_INSTALL_DO,
+    do_accent=MAC_INSTALL_ACCENT,
+    term_lines=(
+        "$ curl -fsSL https://chatgpt.com/codex/install.sh | sh",
+        "Codex CLI 0.164.0 installed successfully.",
+        "Current terminal: export PATH=... && codex",
     ),
-    accent="curl -fsSL https://chatgpt.com/codex/install.sh | sh",
-    caption=("Source: learn.chatgpt.com/codex/cli and github.com/openai/"
-             "codex's README, both fetched 25 Nov 2026, same command."),
+    fallback=("Nothing printed for a long time? Check your internet "
+              "connection; the download is small but needs one."),
+    source_credit=None,
+    presenter="Benjamin C. Sotelo",
+    credit="verified today against the installer's own script text.",
     notes=(
+        "Not re-run live: this build already has Codex installed "
+        "(codex-cli 0.164.0, confirmed on the next slide), so this "
+        "picture is the installer's own real end-of-run messages, read "
+        "verbatim from releases.openai.com/codex/install.sh (fetched 25 "
+        "Nov 2026), not a fresh capture: \"Codex CLI %s installed "
+        'successfully.\" and \"Current terminal: $path_line && codex.\"',
         "Exact command quoted verbatim from both learn.chatgpt.com/"
         "codex/cli (macOS/Linux tab) and the openai/codex GitHub "
         "README, each fetched 25 Nov 2026 and showing the identical "
@@ -89,44 +137,9 @@ MAC_INSTALL = deckkit.Content(
         "An npm alternative exists (npm install -g @openai/codex) for "
         "anyone who already has Node.js, and a Homebrew cask (brew "
         "install --cask codex); neither is the default path here.",
-        "Not re-run live: Codex is already installed on this machine "
-        "(codex-cli 0.164.0, confirmed below), so this slide is the "
-        "command itself, not a fresh install capture.",
     ),
 )
 
-WIN_INSTALL = deckkit.Content(
-    title="Install Codex: Windows",
-    lines=(
-        "Open PowerShell: press the Start key, type PowerShell, press "
-        "Enter.",
-        "Paste the command below into the new PowerShell window and "
-        "press Enter.",
-    ),
-    accent=('powershell -ExecutionPolicy ByPass -c "irm '
-            'https://chatgpt.com/codex/install.ps1 | iex"'),
-    caption=("Windows 10 or 11: the PowerShell installer above. If it "
-             "fails, Tyrone will set up WSL2 with you."),
-    notes=(
-        "Exact command quoted verbatim from github.com/openai/codex's "
-        "README, fetched 25 Nov 2026 (a native Windows install, no "
-        "WSL): this is the one we lead with.",
-        "openai/codex's own docs/install.md, fetched 25 Nov 2026, lists "
-        '"Windows 11 via WSL2" in its system requirements table: the '
-        "project's own docs are not fully consistent on whether WSL is "
-        "required, which is exactly why today's fallback is Tyrone "
-        "setting up WSL2 by hand if the native installer fails for "
-        "anyone.",
-        "No Windows machine is available to this build; everything on "
-        "the two Windows slides is ILLUSTRATION, built from the cited "
-        "docs, never a live capture.",
-    ),
-)
-
-# The dedicated slides requested by name: the error expected right after
-# install, one per operating system so each reads from the back of the
-# room. The image is just the error itself, large; the fix is large actual
-# slide text, not small caption text, per the readability review.
 MAC_ERROR_SHOT = dict(
     title="The error you will probably see: Mac",
     label="SCREENSHOT",
@@ -140,6 +153,7 @@ MAC_ERROR_SHOT = dict(
     rare=('Rare: "no such file or directory" instead of "command not '
           'found" means the install did not finish; rerun the install '
           "command."),
+    presenter="Benjamin C. Sotelo",
     credit="verified today on this Mac.",
     notes=(
         "Verified for real today: `zsh -c 'unset -v PATH; export "
@@ -165,15 +179,52 @@ MAC_ERROR_SHOT = dict(
     ),
 )
 
+WIN_INSTALL_STEP = dict(
+    title="Install Codex: Windows",
+    kind="terminal",
+    do_lines=(
+        "Open PowerShell: press the Start key, type PowerShell, press "
+        "Enter.",
+        "Paste the command below into the new PowerShell window and "
+        "press Enter.",
+    ),
+    do_accent=('powershell -ExecutionPolicy ByPass -c "irm '
+               'https://chatgpt.com/codex/install.ps1 | iex"'),
+    term_lines=(
+        "PS> powershell -ExecutionPolicy ByPass -c \"irm ... | iex\"",
+        "Codex CLI installed successfully.",
+        "Future PowerShell windows: open a new window and run: codex",
+    ),
+    fallback=(f"Fails outright? Tyrone will set up WSL2 with you; the "
+              "project's own docs list that as a supported path too."),
+    presenter=f"Tyrone Miguel {TYRONE_SURNAME}",
+    credit="verified today against the installer's own script text; no Windows machine here.",
+    notes=(
+        "Exact command quoted verbatim from github.com/openai/codex's "
+        "README, fetched 25 Nov 2026 (a native Windows install, no "
+        "WSL): this is the one we lead with.",
+        "openai/codex's own docs/install.md, fetched 25 Nov 2026, lists "
+        '"Windows 11 via WSL2" in its system requirements table: the '
+        "project's own docs are not fully consistent on whether WSL is "
+        "required, which is exactly why the fallback here is Tyrone "
+        "setting up WSL2 by hand if the native installer fails.",
+        "The two printed lines are install.ps1's own real end-of-run "
+        "messages, read verbatim from releases.openai.com/codex/"
+        "install.ps1 (fetched 25 Nov 2026), not a live capture: no "
+        "Windows machine is available to this build.",
+    ),
+)
+
 WIN_ERROR_SHOT = dict(
     title="The error you will probably see: Windows",
     label="ILLUSTRATION",
     term_lines=("PS> codex", "codex : term 'codex' is not recognized"),
     lines=(
-        "The installer updates PATH in a CHILD PowerShell window; this "
-        "window never saw it.",
+        "The installer only updated new PowerShell windows, not this "
+        "one.",
     ),
     accent="Fix: close this PowerShell window, open a brand-new one, then run: codex",
+    presenter=f"Tyrone Miguel {TYRONE_SURNAME}",
     credit="not a live capture; no Windows machine here.",
     notes=(
         "install.ps1 (releases.openai.com/codex/install.ps1, fetched 25 "
@@ -186,18 +237,27 @@ WIN_ERROR_SHOT = dict(
     ),
 )
 
-SIGNIN = deckkit.Content(
+SIGNIN_STEP = dict(
     title="Sign in to Codex",
-    lines=(
+    kind="doc",
+    do_lines=(
         "In the same terminal, type: codex",
         "The first time, Codex asks you to sign in.",
-        'Choose "Sign in with ChatGPT" and finish in your browser.',
     ),
-    accent=("Codex is included across ChatGPT plans, including Free "
-            "and Go."),
-    caption=("Usage limits vary by plan. Source: OpenAI help center, "
-             '"Using Codex with your ChatGPT plan," fetched 25 Nov '
-             "2026."),
+    do_accent='Choose "Sign in with ChatGPT" and finish in your browser.',
+    doc_site="chatgpt.com/codex/auth",
+    doc_lines=(
+        'learn.chatgpt.com/codex/cli: "the first time you run Codex, '
+        'choose Sign in with ChatGPT or another available sign-in '
+        'method."',
+        "Codex is included across ChatGPT plans, including Free and "
+        "Go; usage limits vary by plan.",
+    ),
+    fallback=("Browser did not open by itself? Codex prints a link; "
+              "copy it into any browser yourself."),
+    source_credit=None,
+    presenter="both",
+    credit="OpenAI's own docs, fetched today; not re-run live.",
     notes=(
         'learn.chatgpt.com/codex/cli, fetched 25 Nov 2026: "Open a '
         "project directory and run codex. The first time you run "
@@ -214,29 +274,30 @@ SIGNIN = deckkit.Content(
         "every plan.",
         "Not re-run live: this machine's Codex is already signed in and "
         "must stay that way (no sign-in or sign-out performed for this "
-        "build).",
+        "build), so the picture is a mockup of the described flow, not "
+        "a captured browser screen.",
     ),
 )
 
 TRANSITION = deckkit.Content(
     title="From here, you just type prompts",
     lines=(
-        "Codex is installed and signed in. The rest happens inside "
-        "Codex.",
-        "You do not need to memorize commands: you describe what you "
-        "want, in plain English, as a prompt.",
+        "Codex is installed and signed in. That is the only thing "
+        "installed by hand.",
+        "Everything else, starting with Git itself, is a prompt you "
+        "type, in plain English.",
         "Codex writes and runs the actual Git and GitHub commands for "
         "you.",
     ),
     accent=("Type a prompt, read what Codex plans to do, then approve "
             "it."),
+    origin="Both presenters",
 )
 
-# A dedicated picture slide, not a Content slide, so the flow itself is the
-# teaching: your computer, push, GitHub, pull, a teammate's computer.
 GIT_GITHUB_SHOT = dict(
     title="What are Git and GitHub?",
     label="ILLUSTRATION",
+    presenter="both",
     credit=("Git keeps the history of every change to your project's files "
             "on your own computer; GitHub stores that history online so a "
             "group can share it, review it and merge it."),
@@ -252,38 +313,62 @@ WALKTHROUGH_INTRO = deckkit.Content(
         "teammates.",
     ),
     accent="One new thing happens per slide; what's new reads in green.",
+    origin="Both presenters",
 )
 
 # --------------------------------------------------------------------------
-# The walkthrough itself: one action per slide. "kind" is "terminal" (a real
-# command captured on this machine today) or "doc" (no real screen is
-# possible, so a plain mockup of GitHub's or OpenAI's own current
-# documentation stands in, cited in notes, never presented as a live
-# capture). See build_special_lecture.py for exactly how each image is
-# drawn and build_special_lecture.py's module docstring for the real
-# commands this is built from.
+# The walkthrough: one action per slide. "kind" is "terminal" (a real
+# command captured on this machine today, or a mockup watermarked
+# ILLUSTRATION when it is not), "doc" (a plain browser mockup), "dialog"
+# (a macOS system-alert mockup) or "image" (a real third-party screenshot,
+# a file under build/assets/github-docs-screenshots/). See
+# build_special_lecture_deck1.py for exactly how each image is drawn.
 # --------------------------------------------------------------------------
 
 WALKTHROUGH = [
     dict(
         title="Prompt: check Git is installed",
-        kind="terminal",
-        do_lines=("Type this into Codex:",),
+        kind="dialog",
+        do_lines=(
+            "Type this into Codex:",
+        ),
         do_accent=('"Check whether Git is installed on this computer. If '
                     'it is not, install it, then tell me how to confirm '
                     'it worked."'),
-        term_lines=(
-            "$ git --version",
-            "git version 2.50.1 (Apple Git-155)",
-            "codex: Git is installed, version 2.50.1.",
-        ),
-        fallback=("If Git is missing, Codex installs it the normal way "
-                  "for your OS (Homebrew on Mac, winget on Windows) and "
-                  "reports the version the same way."),
-        credit="real Codex output, from this machine, today.",
+        dialog_title="Command Line Tools",
+        dialog_message=('The "git" command requires the command line '
+                        "developer tools. Would you like to install the "
+                        "tools now?"),
+        dialog_buttons=("Not Now", "Install"),
+        fallback=("On a fresh Mac, expect this instead of an instant "
+                  "answer: click Install and wait, often several "
+                  "minutes, before Git exists at all. Once it finishes, "
+                  "the same prompt gets a real answer: git version 2.50.1 "
+                  "(Apple Git-155), as on this already-set-up Mac."),
+        credit="Apple's documented Command Line Tools prompt.",
         notes=(
-            "Genuinely run today: `codex exec -s workspace-write "
-            '-C <scratch-folder> "Check whether git is installed on this '
+            "On a genuinely fresh Mac mini (what the captain is using "
+            "tonight) this is what actually happens first, not the "
+            "quick version-check this build's own real screenshot could "
+            "show: this build machine already has the command line "
+            "developer tools, so typing git here finished instantly. "
+            "The fallback line (really the main point of this slide for "
+            "him) is the dialog and the wait, not the quick answer.",
+            'Dialog wording: \'The "git" command requires the command '
+            "line developer tools. Would you like to install the tools "
+            'now?\' with Install and Not Now, is the widely documented '
+            "Xcode Command Line Tools first-run prompt (macOS triggers "
+            "it from `git`, `make`, `clang` and other developer tools "
+            "before Xcode or the standalone tools are present). Checked "
+            "today against developer.apple.com's own Command Line Tools "
+            "pages and Apple's archived Technical Note TN2339; neither "
+            "quotes this exact sentence verbatim, so treat the wording "
+            "as widely corroborated rather than an exact Apple citation, "
+            "and verify it against the real fresh Mac mini tonight if a "
+            "precise quote matters.",
+            "Genuinely run today, for the real success case once the "
+            "tools exist: `codex exec -s workspace-write -C "
+            '<scratch-folder> "Check whether git is installed on this '
             'computer. If it is not, install it, then tell me how to '
             'confirm it worked."`, in a throwaway folder, nothing new '
             "installed (git was already present). Session id "
@@ -291,14 +376,13 @@ WALKTHROUGH = [
             '"I\'ll check whether Git is available and print its '
             'version... Git is installed: git version 2.50.1 (Apple '
             'Git-155)."',
-            "Trimmed for the slide (full real transcript quoted in the "
-            "line above): this machine's own hook and enterprise-config "
-            "warning lines (SessionStart hooks, a web_search_mode "
-            "override notice), specific to this captain's own Codex "
-            "setup and not something a student on a vanilla install "
-            "would see; and the exec/succeeded framing, condensed to the "
-            "plain command and its real result so the picture reads "
-            "large enough from the back of the room.",
+            "Tyrone's setup note: warn each student before they type "
+            "anything that a fresh Mac will likely show this install "
+            "prompt on the very first git-related step (this one, not "
+            "the Codex install itself, which does not touch git); have "
+            "them click Install and wait rather than assume something "
+            "is broken. Expect this on the captain's own fresh Mac mini "
+            "tonight too.",
         ),
     ),
     dict(
@@ -346,8 +430,11 @@ WALKTHROUGH = [
             'token "securely in the system credential store." The exact '
             "interactive prompt wording was not confirmed against the "
             "docs, so none of it is quoted on the slide.",
-            "No account was created, no gh was installed, and no sign-in "
-            "was performed for this build, per the brief's own limits.",
+            "A live capture of github.com/signup was attempted and "
+            "abandoned: the real page served a bot-detection challenge "
+            "(DataDome), which this build never attempts to pass. No "
+            "account was created, no gh was installed, and no sign-in "
+            "was performed, per the brief's own limits.",
         ),
     ),
     dict(
@@ -355,15 +442,16 @@ WALKTHROUGH = [
         kind="terminal",
         do_lines=(
             "Every commit you make is labeled with a name and an "
-            "email. Type this into Codex:",
+            "email, for every project on this computer. Type this into "
+            "Codex:",
         ),
-        do_accent=('"Set up my Git identity for this repository with my '
+        do_accent=('"Set up my Git identity for this computer with my '
                     'name and my email, so my commits are labeled '
                     'correctly."'),
         term_lines=(
-            "$ git config --local user.name 'Alex Dela Cruz'",
-            "$ git config --local user.email 'alex...@example.edu'",
-            "$ git config --local --get-regexp 'user.(name|email)'",
+            "$ git config --global user.name 'Alex Dela Cruz'",
+            "$ git config --global user.email 'alex...@example.edu'",
+            "$ git config --global --get-regexp 'user.(name|email)'",
             "user.name Alex Dela Cruz",
             "user.email alex.delacruz@example.edu",
         ),
@@ -371,21 +459,28 @@ WALKTHROUGH = [
                   "two lines it prints yourself."),
         credit="real git output, from this machine, today.",
         notes=(
-            "Genuinely run today in the throwaway folder: `git config "
-            "--local user.name 'Alex Dela Cruz'`, `git config --local "
-            "user.email 'alex.delacruz@example.edu'`, then `git config "
-            "--local --get-regexp 'user.(name|email)'`, which printed "
-            "exactly the two lines shown.",
-            "The fallback line is also real, not invented: in this exact "
-            "folder, a sandboxed `codex exec` call (session id "
-            "01a20f07-9c90-7521-abb0-dc0ad68315d7) could not write "
-            ".git/config and printed the same two config commands shown "
-            "above as its own suggested fix, which then worked when run "
-            "directly. That sandbox refusal is a quirk of this "
-            "captain's own Codex setup, not something most students will "
-            "hit, so it is the fallback line here rather than the main "
-            "picture; a student who does see it can simply approve the "
-            "write when Codex asks, or run the two lines themselves.",
+            "Genuinely run today, with a safeguard: `GIT_CONFIG_GLOBAL="
+            "<scratch-file> git config --global user.name 'Alex Dela "
+            "Cruz'`, same for user.email, then `git config --global "
+            "--get-regexp 'user.(name|email)'`, which printed exactly "
+            "the two lines shown. GIT_CONFIG_GLOBAL tells git to treat "
+            "a throwaway file as \"the\" global config for this one "
+            "command only, so the real --global flag and the real git "
+            "code path ran, genuinely, without touching this Mac's own "
+            "~/.gitconfig (confirmed unchanged before and after). A "
+            "student typing the prompt as written has no such "
+            "safeguard and should not need one: on their own machine, "
+            "--global is exactly the right scope, since no repository "
+            "exists yet at this point in the walkthrough.",
+            "The fallback line is also real, not invented: in this same "
+            "exact folder, earlier testing with --local (since corrected "
+            "to --global, the right scope here) hit a sandboxed `codex "
+            "exec` call that could not write the config file and printed "
+            "the same two config commands as its own suggested fix, "
+            "which then worked when run directly. That sandbox refusal "
+            "is a quirk of this captain's own Codex setup, not something "
+            "most students will hit, so it is the fallback line here "
+            "rather than the main picture.",
         ),
     ),
     dict(
@@ -397,47 +492,57 @@ WALKTHROUGH = [
             "Type this into Codex:",
         ),
         do_accent=('"Create a new private GitHub repository called '
-                    'group-stock-notes for our final project."'),
+                    'group-stock-notes for our final project, with a '
+                    'starting README."'),
         term_lines=(
-            "$ gh repo create group-stock-notes --private",
+            "$ gh repo create group-stock-notes --private --add-readme",
             "Created repository yourname/group-stock-notes",
         ),
         fallback=('No gh? On github.com: top right "+" icon, then "New '
-                  'repository," name it, choose Private, click "Create '
-                  'repository."'),
+                  'repository," name it, choose Private, check "Add a '
+                  'README file," click "Create repository."'),
         credit="GitHub CLI's own docs, fetched today, not a live run.",
         notes=(
             "cli.github.com/manual/gh_repo_create, fetched 25 Nov 2026: "
             'synopsis "gh repo create [<name>] [flags]"; a non-private '
             "remote needs one of --public/--private/--internal, e.g. the "
             'page\'s own example "gh repo create my-project --public '
-            '--clone." The exact success-message wording on the second '
-            "line was not confirmed against a real run (no repository "
-            "was created for this build, per the brief's own limits), so "
-            "it is a reasonable paraphrase, not a verbatim quote.",
+            '--clone"; the page also lists `--add-readme` ("Add a README '
+            'file to the new repository") as a real flag. The exact '
+            "success-message wording on the second line was not "
+            "confirmed against a real run (no repository was created "
+            "for this build, per the brief's own limits), so it is a "
+            "reasonable paraphrase, not a verbatim quote.",
+            "--add-readme is the fix for a gap the walkthrough had "
+            "without it: the example's README.md (\"Our FIN1209 final "
+            "project notes.\") needs to exist before anyone can add a "
+            "line to it, and this is the one step that creates it.",
             "The fallback (browser) path is docs.github.com/en/"
             "repositories/creating-and-managing-repositories/creating-a-"
             'new-repository, fetched 25 Nov 2026: the "+" icon in the '
             'upper right (aria-label "Create something new"), then New '
             "repository; fields are an Owner dropdown, the repository "
             "name (letters, digits, `.`, `-`, `_` only), an optional "
-            "description, and a Public/Private choice, finished with "
-            "Create repository.",
+            "description, a Public/Private choice and an \"Add a README "
+            'file" checkbox, finished with Create repository.',
         ),
     ),
     dict(
         title="Leader prompt: invite your teammates",
         kind="terminal",
         label="ILLUSTRATION",
-        do_lines=("Still the leader, still once per group. Type this "
-                  "into Codex:",),
-        do_accent=('"Invite Alex and Jun to group-stock-notes as '
-                    'collaborators."'),
+        do_lines=(
+            "Still the leader, still once per group.",
+            "You need each teammate's actual GitHub username (ask them "
+            "to sign up first). Type this into Codex:",
+        ),
+        do_accent=('"Invite alexdelacruz and jun-santos to '
+                    'group-stock-notes as collaborators."'),
         term_lines=(
             "$ gh api --method PUT repos/yourname/group-stock-notes/",
-            "    collaborators/alex",
+            "    collaborators/alexdelacruz",
             "$ gh api --method PUT repos/yourname/group-stock-notes/",
-            "    collaborators/jun",
+            "    collaborators/jun-santos",
         ),
         fallback=('No gh? On github.com: repository Settings, then '
                   '"Collaborators" in the Access section, "Add people," '
@@ -456,6 +561,10 @@ WALKTHROUGH = [
             "api` is the documented way to call any REST endpoint from "
             "the CLI, so Codex reaches for it here rather than a plain "
             "gh subcommand.",
+            "alexdelacruz and jun-santos are invented GitHub usernames "
+            "standing in for Alex's and Jun's real ones; a real prompt "
+            "needs the real usernames, which is why the prompt text "
+            "itself now says so rather than leaving it implicit.",
             "docs.github.com's own page also states a rate limit (50 "
             "invitations per repository per 24 hours) and that the "
             'invitee "must accept or decline."',
@@ -494,9 +603,10 @@ WALKTHROUGH = [
             "them to the repository. Once they accept your invitation, "
             'they will have collaborator access to your repository." The '
             "exact accept button/page was not found in GitHub's current "
-            "docs today (the page this build expected to cite 404s), so "
-            "this slide states only what is confirmed: an email "
-            "invitation that must be accepted, nothing more specific.",
+            "docs today, and no GitHub Docs screenshot of it exists "
+            "either (checked 25 Nov 2026), so this slide states only "
+            "what is confirmed: an email invitation that must be "
+            "accepted, nothing more specific.",
         ),
     ),
     dict(
@@ -620,43 +730,44 @@ WALKTHROUGH = [
     ),
     dict(
         title="Prompt: open a pull request",
-        kind="doc",
+        kind="terminal",
+        label="ILLUSTRATION",
         do_lines=("Type this into Codex:",),
         do_accent='"Open a pull request for my branch."',
-        doc_site="github.com/.../pull/new",
-        doc_lines=(
-            'A yellow banner offers "Compare & pull request."',
-            'Type a title and description, then click "Create Pull '
-            'Request."',
+        term_lines=(
+            "$ gh pr create --title 'Add my NVDA note' \\",
+            "    --body 'Adds my stock note to the shared README.'",
+            "https://github.com/yourname/group-stock-notes/pull/1",
         ),
-        fallback="No banner? Open the Pull requests tab and click New pull request yourself.",
-        credit="GitHub's own docs, fetched today, not a live capture.",
+        fallback="No gh? On github.com, a yellow banner offers \"Compare & pull request\" after a push.",
+        credit="GitHub CLI's own docs, fetched today, not a live run.",
         notes=(
-            "docs.github.com/en/pull-requests/how-tos/create-pull-"
-            "requests/creating-a-pull-request, fetched 25 Nov 2026: "
-            'after pushing, GitHub shows a yellow banner with "Compare '
-            '& pull request"; pick the base and compare branches, type '
-            'a title and description, then click "Create Pull Request" '
-            "(a draft option also exists).",
+            "cli.github.com/manual/gh_pr_create, fetched 25 Nov 2026: "
+            'synopsis "gh pr create [flags]"; the page\'s own example, '
+            '"gh pr create --title \\"The bug is fixed\\" --body '
+            '\\"Everything works again\\""; and, verbatim, "Upon success, '
+            'the URL of the created pull request will be printed," with '
+            'its own worked example output "http://github.com/owner/'
+            'repo/pull/1" (the docs\' own example uses http; a real '
+            "GitHub link is always https, shown correctly here). --fill "
+            "also exists, to use the commit message as the title/body "
+            "instead of typing them.",
             "No pull request was opened for this build, per the "
             "brief's own limits.",
         ),
     ),
     dict(
         title="Review the pull request",
-        kind="doc",
+        kind="image",
+        image_file="pr-review-changes-button.png",
         do_lines=(
             "A teammate, not the author, does this step.",
             "On the pull request page:",
         ),
         do_accent='Open "Files changed," click "Review changes."',
-        doc_site="github.com/.../pull/1/files",
-        doc_lines=(
-            'Choose Comment, Approve, or "Request changes," then '
-            '"Submit review."',
-        ),
         fallback="Authors cannot approve their own pull request; ask a teammate.",
-        credit="GitHub's own docs, fetched today, not a live capture.",
+        source_credit="Source: GitHub Docs (CC BY 4.0)",
+        credit="real GitHub Docs screenshot, CC BY 4.0, fetched today.",
         notes=(
             "docs.github.com/en/pull-requests/how-tos/review-pull-"
             "requests/reviewing-proposed-changes-in-a-pull-request, "
@@ -666,19 +777,24 @@ WALKTHROUGH = [
             '"Request changes" does not block merging unless a branch '
             "rule requires it, and the docs state authors cannot "
             "approve their own pull request.",
+            "Picture: a real screenshot embedded in GitHub's own docs "
+            "page above, licensed CC BY 4.0 (github.com/github/docs/"
+            "blob/main/LICENSE), downloaded 25 Nov 2026, unmodified; "
+            "see build/assets/github-docs-screenshots/SOURCE.md for the "
+            "exact source URL. It shows a real pull request example "
+            "(\"Adding sparkles #45834\"), not this deck's own group-"
+            "stock-notes repository.",
         ),
     ),
     dict(
         title="Merge the pull request",
-        kind="doc",
+        kind="image",
+        image_file="pr-merge-options.png",
         do_lines=("Once approved, on the same page:",),
         do_accent='Click "Merge pull request," then "Confirm merge."',
-        doc_site="github.com/.../pull/1",
-        doc_lines=(
-            "GitHub then offers to delete the now-merged branch.",
-        ),
         fallback='Button greyed out? The review is not approved yet, or a check is still running.',
-        credit="GitHub's own docs, fetched today, not a live capture.",
+        source_credit="Source: GitHub Docs (CC BY 4.0)",
+        credit="real GitHub Docs screenshot, CC BY 4.0, fetched today.",
         notes=(
             "docs.github.com/en/pull-requests/how-tos/merge-and-close-"
             'pull-requests/merging-a-pull-request, fetched 25 Nov 2026: '
@@ -691,6 +807,10 @@ WALKTHROUGH = [
             "the leader's local demo showed earlier (git merge "
             "origin/alex-notes --no-edit): \"Updating 4dd0320..f6562f0, "
             'Fast-forward" in this build\'s real local repo.',
+            "Picture: a real screenshot embedded in GitHub's own docs "
+            "page above, licensed CC BY 4.0, downloaded 25 Nov 2026, "
+            "unmodified; see build/assets/github-docs-screenshots/"
+            "SOURCE.md for the exact source URL.",
         ),
     ),
     dict(
@@ -728,88 +848,35 @@ WALKTHROUGH = [
     ),
 ]
 
+# Every walkthrough step is OS-agnostic (it happens inside Codex once both
+# presenters' runs have finished), so each is "both" unless a step above
+# set its own presenter explicitly.
+for _step in WALKTHROUGH:
+    _step.setdefault("presenter", "both")
+
 COLLAB_RULES = deckkit.Content(
-    title="How your group collaborates on your final project",
+    title="Working as a group on your final project",
     lines=(
-        "The leader creates the repository and invites the co-leader "
-        "and members.",
-        "Everyone works on their own branch, never directly on the "
-        "main branch.",
-        "Finish a piece of work, then open a pull request instead of "
-        "pushing straight in.",
-        "Pull before you push, every time, so you never overwrite a "
-        "teammate's work.",
+        "The leader creates the repository, with a README, and invites "
+        "the co-leader and members by their GitHub usernames.",
+        "Everyone clones it, works on their own branch, never directly "
+        "on the main branch.",
+        "Finish a piece of work, then push and open a pull request "
+        "(gh pr create) instead of pushing straight to main.",
+        "A teammate reviews it and merges it; everyone then pulls the "
+        "latest before starting new work.",
     ),
     accent=("Never edit the same file as a teammate without pulling "
             "first."),
+    origin="Both presenters",
 )
-
-STOCK_DESK_INTRO = deckkit.Content(
-    title="What we built: Stock Desk",
-    lines=(
-        "A live stock tool built the same way: an AI CLI tool, Git and "
-        "GitHub, start to finish.",
-        "It tracks five stocks plus the S&P 500, with live prices and "
-        "Chapter 8's buy and sell signals.",
-        "It is mine, not yours: a demonstration of what these tools "
-        "can build, not a class assignment.",
-    ),
-    accent=("This is the same workflow you just learned, used on a "
-            "real project."),
-)
-
-# The two Stock Desk pictures. The first is a composite built at build
-# time from two crops of the same screenshot (the chart, and the signal
-# panel beside it), placed side by side so the combined picture is wide
-# enough to fill the slide. The second is a made-up example position, not
-# a real one: the earlier screenshot showed a test buy since deleted from
-# the real tool, so this slide is now a plain illustration instead of a
-# screenshot of something that no longer exists.
-STOCK_DESK_SHOTS = [
-    dict(
-        title="Stock Desk: live prices and signals",
-        label="SCREENSHOT",
-        shows=("The chart and the signal panel: live prices, Chapter 8's "
-               "signal rule and a session replay."),
-        source_file="deployed-final-ipad.png",
-        composite="chart_panel",
-        credit=("My own tool, signed in with my own passphrase. Live Yahoo "
-                "prices, Chapter 8's five-day-high / RSI / MACD signal "
-                "rule, fundamentals from each company's own SEC filing, "
-                "and a session replay."),
-        notes=(
-            "How I use it, for my own reference (not shown to the class): "
-            "sign in with my passphrase, pick a stock from the watchlist, "
-            'read "Last signal fired" and the live reading below it, then '
-            "log a buy only if I decide to act on it; replay the last "
-            "session to see the signals fire again. Full how-to: the "
-            "firstmate home's data/stock-desk-answers/report.md section 2.",
-            "Students never get the passphrase or access; this is a "
-            "demonstration, never a class assignment.",
-        ),
-    ),
-    dict(
-        title="Stock Desk: logging a position (example)",
-        label="ILLUSTRATION",
-        composite="example_position",
-        credit=("A made-up example, not a real position: Stock Desk's "
-                "position card after logging a buy records the price, the "
-                "stop and the target; the tool never places a trade, it "
-                "only tracks one I decide to log myself."),
-        notes=(
-            "The real screenshot this slide used to show (a test buy on "
-            "NVDA, logged while checking this feature) has since been "
-            "deleted from the real tool, so an invented example replaces "
-            "it, clearly labelled ILLUSTRATION rather than SCREENSHOT.",
-        ),
-    ),
-]
 
 CLOSING = deckkit.Closing(
     title="Thank you",
     lines=(
-        "Thank you to Tyrone Miguel Arriolado, who is helping set up Git, "
-        "GitHub and Codex on your computers today.",
+        f"Thank you for joining today's special lecture, taught "
+        f"together by Benjamin C. Sotelo and Tyrone Miguel "
+        f"{TYRONE_SURNAME}.",
         "Install Codex, sign in, then keep this deck open: every prompt "
         "you need is on these slides.",
         "Questions anytime, in class or after.",

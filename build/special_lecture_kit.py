@@ -479,6 +479,378 @@ def make_chart_panel_composite(src: Path, dst: Path, *, chart_crop, panel_crop,
     composite.save(dst)
 
 
+def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
+                       accent_index: int | None = None,
+                       width=2300, height=460) -> None:
+    """A plain "how it works" picture: boxes in a row, one arrow between
+    each pair, no code names. ``nodes`` is (title, body) pairs, left to
+    right; ``accent_index`` picks the one box (if any) drawn in the deck's
+    own accent colour, the rest in the neutral dark bar used elsewhere in
+    this kit, matching the "one deliberate colour" rule."""
+    bg = (248, 248, 249)
+    ink = (26, 26, 26)
+    muted = (110, 110, 110)
+    accent = (METRO_ACCENT[0], METRO_ACCENT[1], METRO_ACCENT[2])
+    neutral_bar = (60, 70, 74)
+
+    n = len(nodes)
+    margin = 40
+    gap = 54
+    box_w = (width - 2 * margin - (n - 1) * gap) // n
+    box_h = 260
+    y = (height - box_h) // 2
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 30)
+    body_font = ImageFont.truetype(ARIAL, 23)
+
+    def wrap(text, font, max_w):
+        words = text.split()
+        lines, cur = [], ""
+        for w in words:
+            trial = f"{cur} {w}".strip()
+            if draw.textlength(trial, font=font) <= max_w:
+                cur = trial
+            else:
+                if cur:
+                    lines.append(cur)
+                cur = w
+        if cur:
+            lines.append(cur)
+        return lines
+
+    centers = []
+    for i, (title, body) in enumerate(nodes):
+        x = margin + i * (box_w + gap)
+        bar = accent if i == accent_index else neutral_bar
+        draw.rounded_rectangle([x, y, x + box_w, y + box_h], radius=18,
+                               fill=(255, 255, 255), outline=(220, 222, 226),
+                               width=2)
+        draw.rectangle([x, y, x + box_w, y + 6], fill=bar)
+        pad = 22
+        ty = y + 28
+        for line in wrap(title, title_font, box_w - 2 * pad):
+            draw.text((x + pad, ty), line, font=title_font, fill=ink)
+            ty += 38
+        ty += 10
+        for line in wrap(body, body_font, box_w - 2 * pad):
+            draw.text((x + pad, ty), line, font=body_font, fill=muted)
+            ty += 32
+        centers.append((x + box_w, x + box_w + gap, y + box_h // 2))
+
+    for x_start, x_end, ay in centers[:-1]:
+        draw.line([(x_start, ay), (x_end, ay)], fill=ink, width=4)
+        draw.polygon([(x_end, ay), (x_end - 16, ay - 10),
+                     (x_end - 16, ay + 10)], fill=ink)
+
+    _generated_dir()
+    img.save(path)
+
+
+def _bpmn_task(draw, cx, cy, w, h, title, *, value=None, multi_instance=False,
+              subprocess=False, fonts=None, value_above=False):
+    """One BPMN task box centered at (cx, cy): a rounded rectangle, an
+    optional sequential multi-instance marker (three small horizontal
+    bars sitting on the bottom border, his standing rule for a
+    once-per-item step), an optional "+" sub-process marker on the same
+    border, and an optional dotted-border value annotation connected by a
+    line. Returns (x, y, w, h) of the box in case a caller needs its
+    exact edges."""
+    title_font, body_font = fonts
+    x, y = cx - w / 2, cy - h / 2
+    draw.rounded_rectangle([x, y, x + w, y + h], radius=10,
+                          fill=(255, 255, 255), outline=(40, 44, 54), width=3)
+    words = title.split()
+    lines, cur = [], ""
+    for word in words:
+        trial = f"{cur} {word}".strip()
+        if draw.textlength(trial, font=title_font) <= w - 28:
+            cur = trial
+        else:
+            if cur:
+                lines.append(cur)
+            cur = word
+    if cur:
+        lines.append(cur)
+    line_h = 26
+    text_zone_h = h - (34 if (multi_instance or subprocess) else 8)
+    ty = y + 10 + max(0, (text_zone_h - len(lines) * line_h) / 2)
+    for line in lines:
+        draw.text((cx, ty), line, font=title_font, fill=(26, 26, 26),
+                  anchor="ma")
+        ty += line_h
+
+    if multi_instance:
+        bar_w, bar_gap = 20, 5
+        bx = cx - (bar_w * 1.5 + bar_gap)
+        by = y + h - 10
+        for _ in range(3):
+            draw.line([(bx, by), (bx + bar_w, by)], fill=(26, 26, 26), width=3)
+            by -= 6
+    if subprocess:
+        sz = 20
+        bcx, bcy = cx, y + h - 2
+        draw.rectangle([bcx - sz / 2, bcy - sz / 2, bcx + sz / 2, bcy + sz / 2],
+                       outline=(26, 26, 26), width=2, fill=(255, 255, 255))
+        draw.line([(bcx - sz / 2 + 4, bcy), (bcx + sz / 2 - 4, bcy)],
+                  fill=(26, 26, 26), width=2)
+        draw.line([(bcx, bcy - sz / 2 + 4), (bcx, bcy + sz / 2 - 4)],
+                  fill=(26, 26, 26), width=2)
+
+    if value:
+        ann_w, ann_h = w + 20, 90
+        ax = cx - ann_w / 2
+        ay = (y - ann_h - 26) if value_above else (y + h + 26)
+        for seg in range(0, int(ann_w), 14):
+            draw.line([(ax + seg, ay), (min(ax + seg + 8, ax + ann_w), ay)],
+                      fill=(140, 140, 140), width=2)
+            draw.line([(ax + seg, ay + ann_h), (min(ax + seg + 8, ax + ann_w), ay + ann_h)],
+                      fill=(140, 140, 140), width=2)
+        for seg in range(0, int(ann_h), 14):
+            draw.line([(ax, ay + seg), (ax, min(ay + seg + 8, ay + ann_h))],
+                      fill=(140, 140, 140), width=2)
+            draw.line([(ax + ann_w, ay + seg), (ax + ann_w, min(ay + seg + 8, ay + ann_h))],
+                      fill=(140, 140, 140), width=2)
+        link_y = (ay + ann_h) if value_above else ay
+        box_y = y if value_above else (y + h)
+        draw.line([(cx, link_y), (cx, box_y)], fill=(140, 140, 140), width=2)
+        vlines = []
+        cur = ""
+        for word in value.split():
+            trial = f"{cur} {word}".strip()
+            if draw.textlength(trial, font=body_font) <= ann_w - 20:
+                cur = trial
+            else:
+                if cur:
+                    vlines.append(cur)
+                cur = word
+        if cur:
+            vlines.append(cur)
+        vy = ay + ann_h / 2 - (len(vlines) * 24) / 2
+        for vline in vlines:
+            draw.text((cx, vy), vline, font=body_font, fill=(90, 90, 90),
+                      anchor="ma")
+            vy += 24
+    return (x, y, w, h)
+
+
+def _bpmn_elbow(draw, p0, p1, *, label=None, font=None, via="auto"):
+    """A sequence-flow arrow from p0 to p1, elbowed (one bend) unless the
+    two points already share an axis. ``via`` picks which leg comes first
+    when a bend is needed: "h" (horizontal then vertical) or "v" (the
+    reverse); "auto" picks horizontal-first."""
+    x0, y0 = p0
+    x1, y1 = p1
+    if x0 == x1 or y0 == y1:
+        segs = [(p0, p1)]
+    elif via == "v":
+        segs = [(p0, (x0, y1)), ((x0, y1), p1)]
+    else:
+        segs = [(p0, (x1, y0)), ((x1, y0), p1)]
+    for a, b in segs:
+        draw.line([a, b], fill=(26, 26, 26), width=3)
+    ex, ey = p1
+    px, py = segs[-1][0]
+    if ex == px:
+        dirv = 1 if ey > py else -1
+        tip = [(ex, ey), (ex - 7, ey - 11 * dirv), (ex + 7, ey - 11 * dirv)]
+    else:
+        dirh = 1 if ex > px else -1
+        tip = [(ex, ey), (ex - 11 * dirh, ey - 7), (ex - 11 * dirh, ey + 7)]
+    draw.polygon(tip, fill=(26, 26, 26))
+    if label:
+        a, b = segs[0]
+        lx, ly = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
+        draw.text((lx, ly - 18), label, font=font, fill=(90, 90, 90), anchor="mm")
+
+
+def _bpmn_link_event(draw, cx, cy, label, *, outgoing, font):
+    """A BPMN link intermediate event: a small circle holding a filled
+    arrow, labelled. Used here as an off-page connector between the two
+    display rows of one long pool, standard practice for a BPMN diagram
+    too wide for one line, rather than one long routed arrow across the
+    whole canvas."""
+    r = 28
+    draw.ellipse([cx - r, cy - r, cx + r, cy + r], outline=(26, 26, 26),
+                width=3, fill=(255, 255, 255))
+    d = 1 if outgoing else -1
+    draw.polygon([(cx - 10 * d, cy - 10), (cx - 10 * d, cy + 10),
+                 (cx + 12 * d, cy)], fill=(26, 26, 26))
+    draw.text((cx, cy + r + 10), label, font=font, fill=(26, 26, 26),
+              anchor="ma")
+
+
+def make_bpmn_signal_png(path: Path, *, width=2300, height=1500) -> None:
+    """The buy/sell decision process, two lanes (Stock Desk / You), proper
+    BPMN shapes: start/end events, tasks, one exclusive gateway, lanes,
+    drawn as two stacked display rows of the same pool (linked by a BPMN
+    link-event pair, "A"), since eleven steps do not fit one legible line.
+    His standing rules: a "+" marks a sub-process, horizontal bars on a
+    task's bottom border mark a once-per-item (sequential multi-instance)
+    step, and every task carries a dotted value annotation.
+
+    Checked against the real code (engine/signals.ts, worker/engine-run.ts,
+    worker/buys.ts): the gate is three checks (trend, RSI-or-MACD, the
+    5-bar trigger), not four. Volume is reported on the chart and
+    strengthens the reading's wording ("confirmed" vs "a weaker" reading)
+    but never gates the signal; that is drawn as a label inside the checks
+    task, not a fourth check box, and flagged in the deck's own notes as a
+    difference from the first draft."""
+    bg = (250, 250, 250)
+    ink = (26, 26, 26)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 21)
+    body_font = ImageFont.truetype(ARIAL, 17)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 20)
+    small_font = ImageFont.truetype(ARIAL, 16)
+    fonts = (title_font, body_font)
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    lane_x0, lane_x1 = 160, width - 40
+    task_w, task_h = 220, 130
+
+    def lanes(top, mid, bot, labels):
+        draw.rectangle([lane_x0, top, lane_x1, bot], outline=(190, 190, 195),
+                      width=2)
+        draw.line([(lane_x0, mid), (lane_x1, mid)], fill=(190, 190, 195),
+                 width=2)
+        for band_top, band_bot, label in ((top, mid, labels[0]),
+                                          (mid, bot, labels[1])):
+            band = Image.new("RGBA", (band_bot - band_top, 50), (0, 0, 0, 0))
+            bd = ImageDraw.Draw(band)
+            bd.text((band.width / 2, 25), label, font=lane_font, fill=ink,
+                   anchor="mm")
+            band = band.rotate(90, expand=True)
+            img.paste(band, (lane_x0 - 54, band_top), band)
+
+    # Row A: Stock Desk lane on top, You lane below.
+    rowA_top, rowA_mid, rowA_bot = 50, 390, 610
+    lanes(rowA_top, rowA_mid, rowA_bot, ("STOCK DESK", "YOU"))
+    rA_sd_y = rowA_top + 150   # Stock Desk task row, row A
+    rA_you_y = rowA_mid + 110  # You task row, row A
+
+    ev_start = (250, rA_sd_y)
+    draw.ellipse([ev_start[0] - 30, ev_start[1] - 30, ev_start[0] + 30,
+                 ev_start[1] + 30], outline=ink, width=3, fill=(255, 255, 255))
+    draw.text((ev_start[0], ev_start[1] + 44), "New price", font=small_font,
+              fill=ink, anchor="ma")
+
+    c_ind = (560, rA_sd_y)
+    _bpmn_task(draw, *c_ind, task_w, task_h, "Compute indicators",
+              value="One shared formula, every stock, no arguing over the math",
+              multi_instance=True, fonts=fonts)
+
+    c_chk = (900, rA_sd_y)
+    _bpmn_task(draw, *c_chk, task_w, task_h,
+              "Three checks: trend, momentum, trigger",
+              value="No signal fires on a hunch (volume is shown beside it, "
+                    "not required to fire one)",
+              multi_instance=True, fonts=fonts)
+
+    gw_cx, gw_cy = 1230, rA_sd_y
+    gw_size = 90
+    draw.polygon([(gw_cx, gw_cy - gw_size / 2), (gw_cx + gw_size / 2, gw_cy),
+                 (gw_cx, gw_cy + gw_size / 2), (gw_cx - gw_size / 2, gw_cy)],
+                outline=ink, width=3, fill=(255, 255, 255))
+    draw.line([(gw_cx - 13, gw_cy - 13), (gw_cx + 13, gw_cy + 13)], fill=ink, width=3)
+    draw.line([(gw_cx - 13, gw_cy + 13), (gw_cx + 13, gw_cy - 13)], fill=ink, width=3)
+    draw.text((gw_cx, gw_cy - gw_size / 2 - 12), "All three pass?",
+              font=small_font, fill=ink, anchor="mb")
+
+    c_sig = (1560, rA_sd_y)
+    _bpmn_task(draw, *c_sig, task_w, task_h, "Show BUY or SELL signal",
+              value="You see it the moment it is real, never a stale page",
+              fonts=fonts)
+
+    ev_hold = (gw_cx, rowA_mid - 40)
+    draw.ellipse([ev_hold[0] - 28, ev_hold[1] - 28, ev_hold[0] + 28,
+                 ev_hold[1] + 28], outline=ink, width=5, fill=(255, 255, 255))
+    draw.text((ev_hold[0], ev_hold[1] + 40), "No signal (HOLD)",
+              font=small_font, fill=ink, anchor="ma")
+
+    c_decide = (1560, rA_you_y)
+    _bpmn_task(draw, *c_decide, task_w, task_h, "You decide",
+              value="Your money, your call, always", fonts=fonts)
+
+    _bpmn_elbow(draw, (ev_start[0] + 30, ev_start[1]),
+               (c_ind[0] - task_w / 2, c_ind[1]))
+    _bpmn_elbow(draw, (c_ind[0] + task_w / 2, c_ind[1]),
+               (c_chk[0] - task_w / 2, c_chk[1]))
+    _bpmn_elbow(draw, (c_chk[0] + task_w / 2, c_chk[1]),
+               (gw_cx - gw_size / 2, gw_cy))
+    _bpmn_elbow(draw, (gw_cx + gw_size / 2, gw_cy),
+               (c_sig[0] - task_w / 2, c_sig[1]), label="yes", font=small_font)
+    _bpmn_elbow(draw, (gw_cx, gw_cy + gw_size / 2), ev_hold, label="no",
+               font=small_font)
+    _bpmn_elbow(draw, (c_sig[0], c_sig[1] + task_h / 2 + 95),
+               (c_decide[0], c_decide[1] - task_h / 2))
+
+    link_a_out = (lane_x1 - 60, rA_you_y)
+    _bpmn_link_event(draw, *link_a_out, "A", outgoing=True, font=small_font)
+    _bpmn_elbow(draw, (c_decide[0] + task_w / 2, c_decide[1]),
+               (link_a_out[0] - 28, link_a_out[1]))
+
+    # Row B: same lane order, continuing from link event "A".
+    rowB_top, rowB_mid, rowB_bot = 700, 1040, 1260
+    lanes(rowB_top, rowB_mid, rowB_bot, ("STOCK DESK", "YOU"))
+    rB_sd_y = rowB_top + 150
+    rB_you_y = rowB_mid + 110
+
+    link_a_in = (250, rB_you_y)
+    _bpmn_link_event(draw, *link_a_in, "A", outgoing=False, font=small_font)
+
+    c_buy = (560, rB_you_y)
+    _bpmn_task(draw, *c_buy, task_w, task_h, "Log a buy",
+              value="One record, so the scoreboard can grade it later",
+              fonts=fonts)
+    _bpmn_elbow(draw, (link_a_in[0] + 28, link_a_in[1]),
+               (c_buy[0] - task_w / 2, c_buy[1]))
+
+    c_advice = (560, rB_sd_y)
+    _bpmn_task(draw, *c_advice, task_w, task_h,
+              "Stop and target shown, as advice", value_above=True,
+              value="A number to check yourself against, never an auto-sell",
+              fonts=fonts)
+    _bpmn_elbow(draw, (c_buy[0], c_buy[1] - task_h / 2),
+               (c_advice[0], c_advice[1] + task_h / 2))
+
+    c_sellhold = (900, rB_you_y)
+    _bpmn_task(draw, *c_sellhold, task_w, task_h, "You sell or hold",
+              value="Still your call", fonts=fonts)
+    _bpmn_elbow(draw, (c_buy[0] + task_w / 2, c_buy[1]),
+               (c_sellhold[0] - task_w / 2, c_sellhold[1]))
+
+    c_logsell = (1230, rB_you_y)
+    _bpmn_task(draw, *c_logsell, task_w, task_h, "Log a sell",
+              value="Closes the record the scoreboard will grade", fonts=fonts)
+    _bpmn_elbow(draw, (c_sellhold[0] + task_w / 2, c_sellhold[1]),
+               (c_logsell[0] - task_w / 2, c_logsell[1]), label="sell",
+               font=small_font)
+
+    c_score = (1230, rB_sd_y)
+    _bpmn_task(draw, *c_score, task_w, task_h,
+              "Scoreboard checks the signal, 5 trading days later",
+              value="Proof the rule works, or does not, in public",
+              subprocess=True, value_above=True, fonts=fonts)
+    _bpmn_elbow(draw, (c_logsell[0] - 45, c_logsell[1] - task_h / 2),
+               (c_score[0] - 45, c_score[1] + task_h / 2))
+
+    ev_end = (1560, rB_sd_y)
+    draw.ellipse([ev_end[0] - 30, ev_end[1] - 30, ev_end[0] + 30, ev_end[1] + 30],
+                outline=ink, width=5, fill=(255, 255, 255))
+    _bpmn_elbow(draw, (c_score[0] + task_w / 2, c_score[1]),
+               (ev_end[0] - 30, ev_end[1]))
+
+    legend_y = height - 60
+    draw.text((lane_x0, legend_y), "+ sub-process    ||| once-per-item step "
+             "(sequential)    dotted box: what that step is worth",
+             font=small_font, fill=(110, 110, 110))
+
+    _generated_dir()
+    img.save(path)
+
+
 # --------------------------------------------------------------------------
 # Slide renderers not in deckkit, since deckkit knows nothing about any
 # chapter and none of these three decks is one

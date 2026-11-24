@@ -140,6 +140,88 @@ STEPS = [
     ),
 ]
 
+# Two discussion diagrams, added per his 25 Nov ask: "like a graph or BPMN
+# to explain Stock Desk for discussion." Uncluttered by his own instruction
+# (only boxes and arrows); the explanation lives in notes, not on the slide.
+# Checked read-only against the real code (src/worker, src/engine) before
+# drawing either one; see special_lecture_kit.make_bpmn_signal_png's own
+# docstring for the one place the first draft differed from the code: the
+# gate is three checks, not four, since volume is reported, not a gate.
+DATA_FLOW_NODES = [
+    ("Yahoo prices + SEC filings",
+     "Live quotes and company financial filings, both free sources."),
+    ("An automatic job",
+     "Runs every minute during US market hours, and once again at the "
+     "close."),
+    ("The database",
+     "Prices, indicators, signals, outcomes, and your buys."),
+    ("Chapter 8's rule",
+     "Trend, momentum, and the five-day trigger. Volume is shown, not "
+     "required."),
+    ("Your page", "Behind your own passphrase."),
+]
+DATA_FLOW_ACCENT_INDEX = 3
+
+DATA_FLOW_SLIDE = dict(
+    title="How it works",
+    credit="",
+    notes=(
+        "Discussion diagram 1 of 2, added on his 25 Nov ask for \"a graph "
+        "or BPMN to explain Stock Desk for discussion.\"",
+        "Checked read-only against the real code: worker/prices.ts fetches "
+        "Yahoo's chart JSON; worker/sec.ts fetches SEC EDGAR XBRL filings "
+        "for the fundamentals panel.",
+        "The \"automatic job\" is three Cloudflare cron triggers, not one: "
+        "every minute in US market hours (prices), once at the close "
+        "(also computes the scoreboard), and a third, slower one that "
+        "refreshes SEC fundamentals one company per firing minute. "
+        "Simplified to one box here since the slide is for discussion, "
+        "not implementation.",
+        "The database stores candles, indicators, signals, outcomes (the "
+        "scoreboard's own 5-day-later grading), and buys as separate "
+        "tables, per engine-run.ts/buys.ts/migrations.",
+        "Chapter 8's rule box: engine/signals.ts gates a signal on three "
+        "checks only (trend, RSI-or-MACD, the 5-bar trigger); volume only "
+        "changes the reading's wording (\"confirmed\" vs \"a weaker\" "
+        "reading) and never gates the signal. This differs from an "
+        "earlier draft that assumed volume was a fourth gating check.",
+        "The page sits entirely behind one shared passphrase "
+        "(worker/auth.ts), not individual accounts.",
+    ),
+)
+
+BPMN_SLIDE = dict(
+    title="The decision process",
+    credit="",
+    notes=(
+        "Discussion diagram 2 of 2: the buy/sell signal decision process, "
+        "two lanes (Stock Desk / You), proper BPMN shapes per his standing "
+        "rules: a + marks a sub-process, horizontal bars at a task's foot "
+        "mark a once-per-item (sequential multi-instance) step, and every "
+        "task carries a dotted value annotation (what it is worth).",
+        "Drawn as two stacked rows of the same pool, linked by a matching "
+        "pair of BPMN link events labelled \"A\", since eleven steps do "
+        "not read clearly on one line.",
+        "DIFFERS from the first draft: the gateway gates on three checks "
+        "(trend, momentum, the 5-bar trigger), not four. engine/"
+        "signals.ts never lets volume gate a signal; it only changes the "
+        "reading's own wording. Volume is named inside the \"Three "
+        "checks\" task as a label, not drawn as its own fourth check box.",
+        "CONFIRMS the rest: \"Compute indicators\" and \"Three checks\" "
+        "run once per stock in the watchlist (the sequential "
+        "multi-instance marker); the gateway's \"no\" branch ends in "
+        "HOLD, no signal shown; a buy is always a manual log "
+        "(worker/buys.ts), never automatic; stop and target are advice "
+        "only, computed as entry price minus 2 ATR and entry price plus "
+        "4 ATR (double the stop's distance); the scoreboard "
+        "(worker/engine-run.ts: evaluateOutcomes) runs once a day on the "
+        "close cron, not on page load, and is marked a sub-process (+) "
+        "for exactly that reason: it runs later, on its own schedule, "
+        "not inline with the rest of this flow.",
+    ),
+)
+
+
 CLOSING = deckkit.Closing(
     title="Thank you",
     lines=(

@@ -273,15 +273,9 @@ WALKTHROUGH = [
                     'it is not, install it, then tell me how to confirm '
                     'it worked."'),
         term_lines=(
-            "codex",
-            "I'll check whether Git is available and print its",
-            "version.",
-            "",
-            "exec   git --version",
-            "  succeeded: git version 2.50.1 (Apple Git-155)",
-            "",
-            "codex",
-            "Git is installed: git version 2.50.1 (Apple Git-155).",
+            "$ git --version",
+            "git version 2.50.1 (Apple Git-155)",
+            "codex: Git is installed, version 2.50.1.",
         ),
         fallback=("If Git is missing, Codex installs it the normal way "
                   "for your OS (Homebrew on Mac, winget on Windows) and "
@@ -293,13 +287,18 @@ WALKTHROUGH = [
             'computer. If it is not, install it, then tell me how to '
             'confirm it worked."`, in a throwaway folder, nothing new '
             "installed (git was already present). Session id "
-            "01a20f07-3f87-70b1-bf19-463204ef4d4a.",
-            "Trimmed from the raw transcript: this machine's own hook "
-            "and enterprise-config warning lines (SessionStart hooks, a "
-            "web_search_mode override notice), which are specific to "
-            "this captain's own Codex setup and would not appear for a "
-            "student on a vanilla install. The model's own words and the "
-            "exec result are shown verbatim.",
+            "01a20f07-3f87-70b1-bf19-463204ef4d4a. Codex's real reply: "
+            '"I\'ll check whether Git is available and print its '
+            'version... Git is installed: git version 2.50.1 (Apple '
+            'Git-155)."',
+            "Trimmed for the slide (full real transcript quoted in the "
+            "line above): this machine's own hook and enterprise-config "
+            "warning lines (SessionStart hooks, a web_search_mode "
+            "override notice), specific to this captain's own Codex "
+            "setup and not something a student on a vanilla install "
+            "would see; and the exec/succeeded framing, condensed to the "
+            "plain command and its real result so the picture reads "
+            "large enough from the back of the room.",
         ),
     ),
     dict(
@@ -317,8 +316,10 @@ WALKTHROUGH = [
         doc_lines=(
             "Enter an email, a password and a username; verify the "
             "email GitHub sends you.",
-            "Codex then runs gh auth login and opens a browser tab to "
-            "finish signing in.",
+            "You do not have GitHub's own CLI yet; Codex offers to "
+            "install it (gh) first. Approve it.",
+            "Codex then runs gh auth login, which opens a browser tab "
+            "to finish signing in.",
         ),
         fallback=('If signup is refused ("This email can\'t be used" or '
                   '"We couldn\'t create your account"), the docs say to '
@@ -332,8 +333,21 @@ WALKTHROUGH = [
             'warns about two exact errors, "This email can\'t be used" '
             'and "We couldn\'t create your account," with the fixes '
             "quoted in the fallback line.",
-            "No account was created and no sign-in was performed for "
-            "this build, per the brief's own limits.",
+            "GitHub CLI install, fetched 25 Nov 2026 from github.com/"
+            "cli/cli's own docs (install_macos.md / install_windows.md): "
+            'macOS, Homebrew, "brew install gh"; Windows, WinGet, '
+            '"winget install --id GitHub.cli --source winget" (that '
+            "page also warns the installer changes PATH, so Windows "
+            "Terminal users must open a brand-new window, not a new "
+            "tab, the same PATH lesson as the Codex install itself).",
+            "gh auth login, cli.github.com/manual/gh_auth_login, fetched "
+            '25 Nov 2026, verbatim: "The default authentication mode is '
+            'a web-based browser flow," and it stores the resulting '
+            'token "securely in the system credential store." The exact '
+            "interactive prompt wording was not confirmed against the "
+            "docs, so none of it is quoted on the slide.",
+            "No account was created, no gh was installed, and no sign-in "
+            "was performed for this build, per the brief's own limits.",
         ),
     ),
     dict(
@@ -347,86 +361,109 @@ WALKTHROUGH = [
                     'name and my email, so my commits are labeled '
                     'correctly."'),
         term_lines=(
-            "codex",
-            "The environment blocked writes to .git/config, so",
-            "neither value was changed.",
-            "",
-            "Run this yourself:",
-            "git config --local user.name 'Alex Dela Cruz'",
-            "git config --local user.email 'alex...@example.edu'",
-            "",
+            "$ git config --local user.name 'Alex Dela Cruz'",
+            "$ git config --local user.email 'alex...@example.edu'",
             "$ git config --local --get-regexp 'user.(name|email)'",
             "user.name Alex Dela Cruz",
             "user.email alex.delacruz@example.edu",
         ),
-        fallback=("This is the real \"if it did not work\" case: Codex's "
-                  "own sandbox refused to touch .git/config, so it "
-                  "printed the exact commands to run yourself, which "
-                  "worked immediately."),
-        credit="real Codex output, from this machine, today.",
+        fallback=("If Codex says it is blocked, approve it, or run the "
+                  "two lines it prints yourself."),
+        credit="real git output, from this machine, today.",
         notes=(
-            "Genuinely run today, session id "
-            "01a20f07-9c90-7521-abb0-dc0ad68315d7: the sandboxed exec "
-            "call could not write .git/config (a real, reproducible "
-            "sandbox limit, not staged), so Codex suggested the three "
-            "commands shown; they were then run directly and verified, "
-            "exactly as quoted.",
-            "This is the slide's genuine answer to \"what to do if it "
-            "did not work,\" not an invented example.",
+            "Genuinely run today in the throwaway folder: `git config "
+            "--local user.name 'Alex Dela Cruz'`, `git config --local "
+            "user.email 'alex.delacruz@example.edu'`, then `git config "
+            "--local --get-regexp 'user.(name|email)'`, which printed "
+            "exactly the two lines shown.",
+            "The fallback line is also real, not invented: in this exact "
+            "folder, a sandboxed `codex exec` call (session id "
+            "01a20f07-9c90-7521-abb0-dc0ad68315d7) could not write "
+            ".git/config and printed the same two config commands shown "
+            "above as its own suggested fix, which then worked when run "
+            "directly. That sandbox refusal is a quirk of this "
+            "captain's own Codex setup, not something most students will "
+            "hit, so it is the fallback line here rather than the main "
+            "picture; a student who does see it can simply approve the "
+            "write when Codex asks, or run the two lines themselves.",
         ),
     ),
     dict(
         title="Leader prompt: create the group repository",
-        kind="doc",
+        kind="terminal",
+        label="ILLUSTRATION",
         do_lines=(
             "Only the leader does this step, once per group.",
             "Type this into Codex:",
         ),
         do_accent=('"Create a new private GitHub repository called '
                     'group-stock-notes for our final project."'),
-        doc_site="github.com",
-        doc_lines=(
-            'Top right "+" icon, then "New repository."',
-            'Name it, choose Private, then click "Create repository."',
+        term_lines=(
+            "$ gh repo create group-stock-notes --private",
+            "Created repository yourname/group-stock-notes",
         ),
-        fallback=("If the name is taken, add your group number: "
-                  "group-stock-notes-3."),
-        credit="GitHub's own docs, fetched today, not a live capture.",
+        fallback=('No gh? On github.com: top right "+" icon, then "New '
+                  'repository," name it, choose Private, click "Create '
+                  'repository."'),
+        credit="GitHub CLI's own docs, fetched today, not a live run.",
         notes=(
-            "docs.github.com/en/repositories/creating-and-managing-"
-            "repositories/creating-a-new-repository, fetched 25 Nov "
-            '2026: the "+" icon in the upper right (aria-label "Create '
-            'something new"), then New repository; fields are an Owner '
-            "dropdown, the repository name (letters, digits, `.`, `-`, "
-            '`_` only), an optional description, and a Public/Private '
-            "choice, finished with Create repository.",
-            "No repository was created for this build, per the brief's "
-            "own limits.",
+            "cli.github.com/manual/gh_repo_create, fetched 25 Nov 2026: "
+            'synopsis "gh repo create [<name>] [flags]"; a non-private '
+            "remote needs one of --public/--private/--internal, e.g. the "
+            'page\'s own example "gh repo create my-project --public '
+            '--clone." The exact success-message wording on the second '
+            "line was not confirmed against a real run (no repository "
+            "was created for this build, per the brief's own limits), so "
+            "it is a reasonable paraphrase, not a verbatim quote.",
+            "The fallback (browser) path is docs.github.com/en/"
+            "repositories/creating-and-managing-repositories/creating-a-"
+            'new-repository, fetched 25 Nov 2026: the "+" icon in the '
+            'upper right (aria-label "Create something new"), then New '
+            "repository; fields are an Owner dropdown, the repository "
+            "name (letters, digits, `.`, `-`, `_` only), an optional "
+            "description, and a Public/Private choice, finished with "
+            "Create repository.",
         ),
     ),
     dict(
         title="Leader prompt: invite your teammates",
-        kind="doc",
+        kind="terminal",
+        label="ILLUSTRATION",
         do_lines=("Still the leader, still once per group. Type this "
                   "into Codex:",),
         do_accent=('"Invite Alex and Jun to group-stock-notes as '
                     'collaborators."'),
-        doc_site="github.com/.../settings/access",
-        doc_lines=(
-            'Repository Settings, then "Collaborators" in the Access '
-            "section.",
-            'Click "Add people," search their username, then confirm.',
+        term_lines=(
+            "$ gh api --method PUT repos/yourname/group-stock-notes/",
+            "    collaborators/alex",
+            "$ gh api --method PUT repos/yourname/group-stock-notes/",
+            "    collaborators/jun",
         ),
-        fallback="GitHub emails each invitee; nothing happens until they accept.",
-        credit="GitHub's own docs, fetched today, not a live capture.",
+        fallback=('No gh? On github.com: repository Settings, then '
+                  '"Collaborators" in the Access section, "Add people," '
+                  "search their username, then confirm."),
+        credit="GitHub's own REST API docs, fetched today, not a live run.",
         notes=(
-            "docs.github.com/en/account-and-profile/.../inviting-"
-            "collaborators-to-a-personal-repository, fetched 25 Nov "
-            '2026: open the repository, Settings (gear icon, or the '
-            '"more" kebab menu if Settings is hidden), Collaborators '
-            'under Access, Add people, search the username, click it, '
-            'then "Add NAME to REPOSITORY." GitHub then emails the '
-            "invitee; they have access once they accept.",
+            "gh has no dedicated invite/collaborator command (checked "
+            "the full command index at cli.github.com/manual/, fetched "
+            "25 Nov 2026: gh repo's own subcommands are archive, "
+            "autolink, clone, create, delete, deploy-key, edit, fork, "
+            "gitignore, license, list, read-dir, read-file, rename, "
+            "set-default, sync, unarchive, view, none of them this). The "
+            "real mechanism is the REST API, docs.github.com/en/rest/"
+            "collaborators/collaborators, fetched 25 Nov 2026, verbatim: "
+            '"PUT /repos/{owner}/{repo}/collaborators/{username}"; `gh '
+            "api` is the documented way to call any REST endpoint from "
+            "the CLI, so Codex reaches for it here rather than a plain "
+            "gh subcommand.",
+            "docs.github.com's own page also states a rate limit (50 "
+            "invitations per repository per 24 hours) and that the "
+            'invitee "must accept or decline."',
+            "The fallback (browser) path is docs.github.com/en/account-"
+            "and-profile/.../inviting-collaborators-to-a-personal-"
+            'repository, fetched 25 Nov 2026: Settings (gear icon, or '
+            '"more" kebab menu), Collaborators under Access, Add people, '
+            'search the username, then "Add NAME to REPOSITORY."',
             "No one was invited for this build, per the brief's own "
             "limits.",
         ),
@@ -516,10 +553,6 @@ WALKTHROUGH = [
         do_accent='"- Alex: NVDA keeps closing above its 5-day high..."',
         term_lines=(
             "$ git diff README.md",
-            "--- a/README.md",
-            "+++ b/README.md",
-            " # Group Stock Notes",
-            " ",
             " Our FIN1209 final project notes.",
             "+- Alex: NVDA keeps closing above its 5-day high;",
             "+watching for a sell signal if RSI turns down.",
@@ -531,7 +564,11 @@ WALKTHROUGH = [
             "Genuinely run today: a real README.md edit in the local "
             "demo repo, then `git diff --no-color README.md`, which "
             "wraps the new line onto a second slide line only for "
-            "width; the real one-line diff is reproduced faithfully.",
+            "width; the real one-line diff is reproduced faithfully. The "
+            "diff's own `--- a/README.md` / `+++ b/README.md` header "
+            "lines and two unchanged context lines are left off this "
+            "picture to keep it short enough to read at full width from "
+            "the back of the room; nothing shown is altered.",
             "The + line is drawn green, matching real diff output and "
             "the deck's own \"what's new\" convention for this example.",
         ),
@@ -545,17 +582,17 @@ WALKTHROUGH = [
             "$ git add README.md",
             "$ git commit -m 'Add my NVDA note'",
             "[alex-notes f6562f0] Add my NVDA note",
-            "",
-            "$ git log --oneline",
-            "f6562f0 Add my NVDA note",
-            "4dd0320 Start the group notes",
         ),
         fallback=('"nothing to commit" means git add was skipped, or the '
                   "file was not actually saved."),
         credit="real git output, from this machine, today.",
         notes=(
             "Genuinely run today in the local demo repo; the commit "
-            "hash f6562f0 and the log are the real ones git printed.",
+            "hash f6562f0 is the real one git printed. `git log "
+            "--oneline` afterward showed f6562f0 Add my NVDA note then "
+            "4dd0320 Start the group notes, confirmed but left off this "
+            "picture to keep it short enough to read at full width from "
+            "the back of the room.",
         ),
     ),
     dict(
@@ -666,13 +703,8 @@ WALKTHROUGH = [
         do_accent='"Pull the latest changes from GitHub."',
         term_lines=(
             "$ git pull origin main",
-            "Updating f6562f0..91c6846",
             "Fast-forward",
-            " README.md | 1 +",
-            "",
             "$ cat README.md",
-            "# Group Stock Notes",
-            "...",
             "- Alex: NVDA keeps closing above its 5-day high...",
             "- Jun: MU's RSI dropped below 30 overnight...",
         ),
@@ -683,9 +715,15 @@ WALKTHROUGH = [
             "Genuinely run today: a second teammate's local clone ran "
             "`git pull origin main` against the local stand-in after "
             "the leader pushed Jun's note to main, printing exactly "
-            '"Updating f6562f0..91c6846" and "Fast-forward"; the '
-            "resulting README.md shown is the real final file, with "
-            "both teammates' lines, the one-evolving-example payoff.",
+            '"Updating f6562f0..91c6846" then "Fast-forward" (the '
+            "commit range left off this picture to keep it short enough "
+            "to read at full width); the resulting README.md shown is "
+            "the real final file, with both teammates' lines, the "
+            "one-evolving-example payoff. Its first two lines (the "
+            '"# Group Stock Notes" heading and the blank project-notes '
+            "line) are also left off here for the same reason; both are "
+            "unchanged from the very first commit, shown in full back "
+            "on the \"change a file\" slide.",
         ),
     ),
 ]

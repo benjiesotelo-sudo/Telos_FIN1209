@@ -86,17 +86,26 @@ MONO_FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 
 
 def make_terminal_png(path: Path, lines: tuple[str, ...], *, width=1760,
-                      font_size=34, line_h=54, diff_mode=False) -> None:
+                      font_size=42, line_h=66, diff_mode=False,
+                      watermark=None) -> None:
     """One terminal window, large monospace text (readable from the back
     of a classroom).
 
     Used for both kinds of terminal picture this deck places: the two
-    PATH-error illustrations (just the error, 2 lines, a bigger font) and
-    the walkthrough's real command transcripts (more lines, this smaller
-    default size so a ten-line transcript still fits one picture). Colour
-    carries meaning the same way a real terminal's does: red for an error,
-    cyan for a typed prompt line, green for an added diff line or a
-    successful result, exactly like `git diff` and a shell's own output.
+    PATH-error illustrations (just the error, 2 lines) and the
+    walkthrough's command transcripts. Every transcript is kept short (at
+    most about five lines) specifically so this picture stays wide enough
+    to render at full slide width with its text at a consistent size,
+    instead of shrinking to fit a taller box. Colour carries meaning the
+    same way a real terminal's does: red for an error, cyan for a typed
+    prompt line, green for an added diff line or a successful result,
+    exactly like `git diff` and a shell's own output.
+
+    ``watermark``, when given, prints a small gold label in the title bar
+    (e.g. "ILLUSTRATION"): for a command this build could not actually run
+    (it would need a real GitHub account or repository), so the picture
+    itself, not only the slide's caption, says plainly that it is not a
+    captured result.
     """
     bar_h = 54
     pad_top = 28
@@ -111,6 +120,11 @@ def make_terminal_png(path: Path, lines: tuple[str, ...], *, width=1760,
         r = bar_h * 0.18
         draw.ellipse([cx - r, bar_h / 2 - r, cx + r, bar_h / 2 + r],
                      fill=dot_color)
+    if watermark:
+        wm_font = ImageFont.truetype(
+            "/System/Library/Fonts/Supplemental/Arial Bold.ttf", 22)
+        draw.text((width - 24, bar_h / 2), watermark, font=wm_font,
+                  fill=(230, 170, 40), anchor="rm")
 
     font = ImageFont.truetype(MONO_FONT_PATH, font_size, index=0)
     y = bar_h + pad_top
@@ -448,7 +462,7 @@ STEP_TEXT_TOP = 1.95
 STEP_CREDIT_Y = 6.58
 STEP_FALLBACK_BOTTOM = 6.46
 STEP_IMAGE_MIN_H = 1.1
-STEP_IMAGE_MAX_H = 2.75
+STEP_IMAGE_MAX_H = 3.0
 
 
 def render_prompt_step(prs, *, title, label, do_lines, do_accent, image_path,
@@ -539,8 +553,11 @@ def _build_walkthrough_images() -> list[Path]:
     for i, step in enumerate(content.WALKTHROUGH):
         dst = GENERATED / f"walkthrough-{i:02d}.png"
         if step["kind"] == "terminal":
+            watermark = ("ILLUSTRATION"
+                        if step.get("label") == "ILLUSTRATION" else None)
             make_terminal_png(dst, step["term_lines"],
-                              diff_mode=step.get("diff_mode", False))
+                              diff_mode=step.get("diff_mode", False),
+                              watermark=watermark)
         elif step["kind"] == "doc":
             make_doc_card_png(dst, site=step["doc_site"], lines=step["doc_lines"])
         else:
@@ -636,7 +653,8 @@ def build(edition: str, out_path: Path) -> int:
                 notes=slide.get("notes", ()),
             )
         elif kind == "step":
-            label = "SCREENSHOT" if slide["kind"] == "terminal" else "ILLUSTRATION"
+            label = slide.get("label") or (
+                "SCREENSHOT" if slide["kind"] == "terminal" else "ILLUSTRATION")
             render_prompt_step(
                 prs,
                 title=slide["title"],

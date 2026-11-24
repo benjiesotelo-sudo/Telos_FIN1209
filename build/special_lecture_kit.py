@@ -125,18 +125,33 @@ def _metro_blank(prs):
     return slide
 
 
-def metro_frame(slide, title: str) -> float:
+def metro_frame(slide, title: str, *, position: int | None = None,
+                total: int | None = None) -> float:
     """The Metropolis frame title: a slim dark bar with the title in it,
-    a thin accent rule under it. Returns the y (inches) content may start
-    at."""
+    a thin progress line under it. Returns the y (inches) content may
+    start at.
+
+    The line is a true Beamer-Metropolis progress indicator, not a static
+    decoration: its accent-coloured portion runs from the left edge to
+    ``position / total`` of the slide's width, the rest left in a muted
+    track colour, so a glance at the line says how far into the deck this
+    slide sits. Pass neither (a divider or any slide outside the normal
+    position/total count) to draw a plain full-width accent line instead."""
     deckkit._rect(slide, 0, 0, deckkit.SLIDE_W, Inches(BAR_H), METRO_DARK)
     frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(0.18),
                              deckkit.CONTENT_W, Inches(BAR_H - 0.2),
                              anchor=deckkit.MSO_ANCHOR.MIDDLE)
     deckkit._para(frame, title, size=26, color=METRO_WHITE,
                   font=METRO_SANS, first=True, line_spacing=1.05)
-    deckkit._rect(slide, 0, Inches(BAR_H), deckkit.SLIDE_W, PROGRESS_H,
-                  METRO_ACCENT)
+    if position is not None and total:
+        deckkit._rect(slide, 0, Inches(BAR_H), deckkit.SLIDE_W, PROGRESS_H,
+                      METRO_BORDER)
+        filled_w = int(deckkit.SLIDE_W * (position / total))
+        deckkit._rect(slide, 0, Inches(BAR_H), filled_w, PROGRESS_H,
+                      METRO_ACCENT)
+    else:
+        deckkit._rect(slide, 0, Inches(BAR_H), deckkit.SLIDE_W, PROGRESS_H,
+                      METRO_ACCENT)
     return BAR_H + 0.25
 
 
@@ -491,37 +506,67 @@ def draw_presenter(slide, presenter: str | None) -> None:
                   italic=True, align=deckkit.PP_ALIGN.RIGHT, first=True)
 
 
+SHOT_BOTTOM = 6.65  # leaves room for the presenter line/footer below
+
+
 def render_shot(prs, *, title, image_path, credit, position, total, notes=(),
                 band_top=None, band_h=None, caption_y=None, presenter=None,
-                **_ignored):
-    """A screenshot or an illustration, one to a slide, with its own
-    caption line under it (substantive content, not a provenance footer:
-    see the module docstring)."""
+                layout=None, **_ignored):
+    """A screenshot or an illustration, one to a slide. A wide picture
+    fills the content width with its caption under it; a tall or square
+    one fills the available height instead, with the caption beside it,
+    so a portrait crop never shrinks to a third of the slide the way a
+    width-first fit would leave it. ``layout`` forces "wide" or "tall";
+    left alone, the image's own aspect ratio decides (>=1.3 counts as
+    wide)."""
     top = FIGURE_TOP if band_top is None else band_top
-    height = FIGURE_H if band_h is None else band_h
-    cap_y = FIGURE_CAPTION_Y if caption_y is None else caption_y
+    px_w, px_h = deckkit._png_size(image_path)
+    wide = (px_w / px_h >= 1.3) if layout is None else (layout == "wide")
 
     slide = _metro_blank(prs)
-    metro_frame(slide, title)
-
-    band_w = deckkit.CONTENT_W.inches
-    px_w, px_h = deckkit._png_size(image_path)
+    metro_frame(slide, title, position=position, total=total)
     pad = 0.13
-    scale = min((band_w - 2 * pad) / px_w, (height - 2 * pad) / px_h)
-    w, h = px_w * scale, px_h * scale
-    x = deckkit.MARGIN.inches + (band_w - w) / 2.0
-    y = top + (height - h) / 2.0
 
-    deckkit._rect(slide, Inches(x - pad), Inches(y - pad),
-                  Inches(w + 2 * pad), Inches(h + 2 * pad), deckkit.WHITE,
-                  line=deckkit.BORDER)
-    slide.shapes.add_picture(str(image_path), Inches(x), Inches(y),
-                             Inches(w), Inches(h))
+    if wide:
+        height = FIGURE_H if band_h is None else band_h
+        cap_y = FIGURE_CAPTION_Y if caption_y is None else caption_y
+        band_w = deckkit.CONTENT_W.inches
+        scale = min((band_w - 2 * pad) / px_w, (height - 2 * pad) / px_h)
+        w, h = px_w * scale, px_h * scale
+        x = deckkit.MARGIN.inches + (band_w - w) / 2.0
+        y = top + (height - h) / 2.0
 
-    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(cap_y),
-                             deckkit.CONTENT_W, Inches(0.7))
-    deckkit._para(frame, credit, size=12, color=deckkit.MUTED,
-                  first=True, line_spacing=1.15)
+        deckkit._rect(slide, Inches(x - pad), Inches(y - pad),
+                      Inches(w + 2 * pad), Inches(h + 2 * pad), deckkit.WHITE,
+                      line=deckkit.BORDER)
+        slide.shapes.add_picture(str(image_path), Inches(x), Inches(y),
+                                 Inches(w), Inches(h))
+
+        frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(cap_y),
+                                 deckkit.CONTENT_W, Inches(0.7))
+        deckkit._para(frame, credit, size=12, color=deckkit.MUTED,
+                      first=True, line_spacing=1.15)
+    else:
+        avail_h = SHOT_BOTTOM - top
+        img_col_w = deckkit.CONTENT_W.inches * 0.46
+        scale = min((img_col_w - 2 * pad) / px_w, (avail_h - 2 * pad) / px_h)
+        w, h = px_w * scale, px_h * scale
+        x = deckkit.MARGIN.inches + (img_col_w - w) / 2.0
+        y = top + (avail_h - h) / 2.0
+
+        deckkit._rect(slide, Inches(x - pad), Inches(y - pad),
+                      Inches(w + 2 * pad), Inches(h + 2 * pad), deckkit.WHITE,
+                      line=deckkit.BORDER)
+        slide.shapes.add_picture(str(image_path), Inches(x), Inches(y),
+                                 Inches(w), Inches(h))
+
+        cap_x = deckkit.MARGIN.inches + img_col_w + 0.4
+        cap_w = deckkit.CONTENT_W.inches - img_col_w - 0.4
+        frame = deckkit._textbox(slide, Inches(cap_x), Inches(top),
+                                 Inches(cap_w), Inches(avail_h),
+                                 anchor=deckkit.MSO_ANCHOR.MIDDLE)
+        deckkit._para(frame, credit, size=17, color=deckkit.INK,
+                      first=True, line_spacing=1.3)
 
     draw_presenter(slide, presenter)
     metro_footer(slide, position, total)
@@ -541,7 +586,7 @@ def render_shot_text(prs, *, title, image_path, lines, accent, position, total,
     ``rare`` is an optional extra line, still large, for a rarer wording of
     the same error."""
     slide = _metro_blank(prs)
-    metro_frame(slide, title)
+    metro_frame(slide, title, position=position, total=total)
 
     band_w = deckkit.CONTENT_W.inches
     px_w, px_h = deckkit._png_size(image_path)
@@ -610,7 +655,7 @@ def render_prompt_step(prs, *, title, do_lines, do_accent, image_path,
     above and below it, clamped so a very short or very long prompt never
     makes it absurdly tall or thin."""
     slide = _metro_blank(prs)
-    metro_frame(slide, title)
+    metro_frame(slide, title, position=position, total=total)
 
     inner_in = deckkit.CONTENT_W.inches
     top = STEP_TEXT_TOP
@@ -677,7 +722,7 @@ def render_speakers(prs, *, speakers, position, total, notes=()):
     per speaker, side by side. speakers is a tuple of (name, role) pairs.
     Neutral grey placeholder avatars until real photos arrive."""
     slide = _metro_blank(prs)
-    metro_frame(slide, "Your speakers")
+    metro_frame(slide, "Your speakers", position=position, total=total)
 
     n = len(speakers)
     col_w = deckkit.CONTENT_W.inches / n
@@ -709,7 +754,7 @@ def render_content_m(prs, s, *, position, total):
     muted caption) exactly like a Content slide's body always has, just
     without deckkit's own FEU chrome around it."""
     slide = _metro_blank(prs)
-    top = metro_frame(slide, s.title)
+    top = metro_frame(slide, s.title, position=position, total=total)
 
     inner_in = deckkit.CONTENT_W.inches
     if s.lines:
@@ -744,6 +789,29 @@ def render_content_m(prs, s, *, position, total):
                       ("both" if s.origin == "Both presenters" else s.origin))
     metro_footer(slide, position, total)
     deckkit._notes(slide, s.notes)
+
+
+def render_section_m(prs, *, number: int, title: str, position: int,
+                     total: int, notes=()) -> None:
+    """A numbered Metropolis section divider: a plain break between the
+    deck's parts (e.g. "1 Install Codex"), no frame-title bar, since
+    there is no frame title yet at a section break, the same way Beamer's
+    own \\section command draws one. Still carries the page number in the
+    corner, so numbering stays continuous with the rest of the deck."""
+    slide = _metro_blank(prs)
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(2.7),
+                             deckkit.CONTENT_W, Inches(1.1))
+    deckkit._para(frame, str(number), size=54, color=METRO_ACCENT, bold=True,
+                  font=METRO_SANS, first=True)
+    deckkit._rect(slide, deckkit.MARGIN, Inches(3.75), Inches(1.6), Pt(3),
+                  METRO_ACCENT)
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(4.05),
+                             deckkit.CONTENT_W, Inches(1.1))
+    deckkit._para(frame, title, size=36, color=METRO_DARK, font=METRO_SANS,
+                  first=True, line_spacing=1.05)
+
+    metro_footer(slide, position, total)
+    deckkit._notes(slide, notes)
 
 
 def render_title_m(prs, s):
@@ -813,9 +881,10 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
                        title: str, course: str, author: str,
                        edition: str) -> int:
     """``prs_slides`` is a list of (kind, data) pairs in reading order;
-    kind is one of title/content/shot/shot_text/step/speakers/closing. The
-    title slide (kind == "title") always counts as position 1, so the
-    on-slide marker matches a slide's actual position in the deck."""
+    kind is one of title/section/content/shot/shot_text/step/speakers/
+    closing. The title slide (kind == "title") always counts as position
+    1, so the on-slide marker matches a slide's actual position in the
+    deck."""
     prs = Presentation()
     prs.slide_width = deckkit.SLIDE_W
     prs.slide_height = deckkit.SLIDE_H
@@ -838,7 +907,11 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
             continue
         pos = position
         position += 1
-        if kind == "content":
+        if kind == "section":
+            render_section_m(prs, number=slide["number"], title=slide["title"],
+                            position=pos, total=total,
+                            notes=slide.get("notes", ()))
+        elif kind == "content":
             render_content_m(prs, slide, position=pos, total=total)
         elif kind == "shot":
             render_shot(prs, title=slide["title"], image_path=slide["path"],

@@ -108,17 +108,20 @@ def build(edition: str, out_path: Path) -> int:
     prs_slides: list[tuple[str, object]] = []
     prs_slides.append(("title", content.TITLE))
     prs_slides.append(("speakers", dict(speakers=content.SPEAKERS)))
+    prs_slides.append(("section", {"number": 1, "title": "Install Codex"}))
     prs_slides.append(("content", content.AI_CLI_INTRO))
     prs_slides.append(("step", content.MAC_INSTALL_STEP | {"path": mac_install_png}))
     prs_slides.append(("shot_text", content.MAC_ERROR_SHOT | {"path": mac_error_png}))
     prs_slides.append(("step", content.WIN_INSTALL_STEP | {"path": win_install_png}))
     prs_slides.append(("shot_text", content.WIN_ERROR_SHOT | {"path": win_error_png}))
     prs_slides.append(("step", content.SIGNIN_STEP | {"path": signin_png}))
+    prs_slides.append(("section", {"number": 2, "title": "Set up Git and GitHub"}))
     prs_slides.append(("content", content.TRANSITION))
     prs_slides.append(("shot", content.GIT_GITHUB_SHOT | {"path": git_github_png}))
     prs_slides.append(("content", content.WALKTHROUGH_INTRO))
     for step, image_path in zip(content.WALKTHROUGH, walkthrough_images):
         prs_slides.append(("step", {**step, "path": image_path}))
+    prs_slides.append(("section", {"number": 3, "title": "Working as a group"}))
     prs_slides.append(("content", content.COLLAB_RULES))
     prs_slides.append(("closing", content.CLOSING))
 

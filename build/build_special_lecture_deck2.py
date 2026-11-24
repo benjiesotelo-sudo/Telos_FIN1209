@@ -11,8 +11,11 @@ shared Metropolis-style rendering they all use.
 Every screenshot here is real, copied in from the firstmate home's
 data/stock-desk-guide/guide/png/ (step01 through step10), confirmed fixed
 (badges beside, not on; sharp 2x crops) by that guide's own 25 Nov
-revision note. Nothing in this script edits or regenerates them; it only
-places them, one per slide, with the guide's own plain-words caption.
+revision note. Three (the sign-in and sign-out cards, and the "pick a
+stock" dashboard) are cropped tighter here, per his 25 Nov fix request,
+to the part of the real screenshot the slide is actually about; nothing
+else about them changes. The rest are placed exactly as the guide drew
+them.
 """
 
 from __future__ import annotations
@@ -21,6 +24,8 @@ import argparse
 import shutil
 import sys
 from pathlib import Path
+
+from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -38,6 +43,18 @@ GUIDE_PNG = (Path.home() / ".treehouse" / "benjie-agent-workspace-8bf1b0"
             / "1" / "benjie-agent-workspace" / "data" / "stock-desk-guide"
             / "guide" / "png")
 
+# Three of the ten guide screenshots are full-page captures with most of
+# the frame empty (the sign-in/sign-out card) or showing far more than the
+# step names (the whole dashboard for a step about three small controls).
+# Crop boxes (left, top, right, bottom) in the source PNG's own pixels,
+# tightened by hand against each picture, per his 25 Nov fix request: step02
+# needs "a closer crop of the watchlist and the timeframe and view buttons".
+CROPS = {
+    "step01-signin.png": (870, 745, 1860, 1210),
+    "step02-pick-stock-timeframe-view.png": (0, 0, 2050, 800),
+    "step10-signout.png": (870, 745, 1860, 1210),
+}
+
 
 def build(edition: str, out_path: Path) -> int:
     deckkit.INCLUDE_NOTES = edition == deckkit.TEACHING
@@ -49,7 +66,11 @@ def build(edition: str, out_path: Path) -> int:
     for step in content.STEPS:
         src = GUIDE_PNG / step["image_file"]
         dst = kit.GENERATED / step["image_file"]
-        shutil.copyfile(src, dst)
+        crop = CROPS.get(step["image_file"])
+        if crop:
+            Image.open(src).crop(crop).save(dst)
+        else:
+            shutil.copyfile(src, dst)
         step_images.append(dst)
 
     prs_slides: list[tuple[str, object]] = []
@@ -64,7 +85,7 @@ def build(edition: str, out_path: Path) -> int:
             "title": step["title"],
             "path": image_path,
             "credit": credit,
-            "band_h": 4.6,
+            "band_h": 4.75,
         }))
     prs_slides.append(("closing", content.CLOSING))
 

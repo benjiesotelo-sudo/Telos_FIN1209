@@ -85,7 +85,7 @@ def _build_walkthrough_images() -> list[Path]:
 
 def build(edition: str, out_path: Path) -> int:
     deckkit.INCLUDE_NOTES = edition == deckkit.TEACHING
-    kit.apply_neutral_palette()
+    kit.apply_metropolis_style()
     kit.GENERATED = REPO / "build" / "generated" / "special-lecture" / "deck1"
 
     mac_install_png = kit.GENERATED / "mac-install.png"

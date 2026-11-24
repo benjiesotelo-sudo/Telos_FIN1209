@@ -68,22 +68,85 @@ def _generated_dir() -> Path:
 
 
 # --------------------------------------------------------------------------
-# The neutral palette: no FEU green or gold anywhere in these three decks
+# Metropolis: a LaTeX-Beamer-Metropolis-style look, recreated in pptx/PIL,
+# no FEU green or gold and no LaTeX installed (the captain's own words, 25
+# Nov: "like Latex theme like simple and organized... Metropolis"). A slim
+# dark frame-title bar, a thin accent progress line under it, a plain light
+# body, small page numbers, one accent colour (Metropolis's own orange).
 # --------------------------------------------------------------------------
 
+from pptx.dml.color import RGBColor
+from pptx.util import Pt
+from pptx.enum.text import PP_ALIGN
+
+METRO_BG = RGBColor(0xFA, 0xFA, 0xFA)
+METRO_DARK = RGBColor(0x23, 0x37, 0x3B)      # Metropolis's own dark teal-grey
+METRO_INK = RGBColor(0x3C, 0x3C, 0x3C)
+METRO_MUTED = RGBColor(0x8A, 0x8A, 0x8A)
+METRO_BORDER = RGBColor(0xDD, 0xDD, 0xDD)
+METRO_WHITE = RGBColor(0xFF, 0xFF, 0xFF)
+METRO_ACCENT_DEFAULT = RGBColor(0xEB, 0x81, 0x1B)  # Metropolis's own orange
+
+METRO_ACCENT = METRO_ACCENT_DEFAULT
+METRO_SANS = "Helvetica Neue"
+METRO_SANS_BOLD = "Helvetica Neue"
+
+BAR_H = 0.95
+PROGRESS_H = Pt(3)
+FOOTER_Y = deckkit.SLIDE_H.inches - 0.42
+
+
+def apply_metropolis_style(*, accent=None) -> None:
+    """Set the one chosen accent colour (Metropolis's orange by default)
+    and also override deckkit's own colour globals, in case any deckkit
+    primitive still reads them directly. Call this once, before rendering
+    any slide."""
+    global METRO_ACCENT
+    METRO_ACCENT = accent or METRO_ACCENT_DEFAULT
+    deckkit.GREEN = METRO_DARK
+    deckkit.GREEN_DEEP = METRO_DARK
+    deckkit.GOLD = METRO_ACCENT
+    deckkit.PAPER = METRO_BG
+    deckkit.BORDER = METRO_BORDER
+    deckkit.INK = METRO_INK
+    deckkit.MUTED = METRO_MUTED
+    deckkit.DISPLAY_FONT = METRO_SANS
+    deckkit.BODY_FONT = METRO_SANS
+
+
+# Kept for any call site that has not been updated yet; now just an alias.
 def apply_neutral_palette(*, accent=None) -> None:
-    """Override deckkit's colour globals in place: a clean neutral style
-    (white/soft-grey background, dark text, one accent colour) instead of
-    FEU's green and gold, since none of these three decks is FEU-branded.
-    Call this once, before rendering any slide. ``accent`` lets a deck pick
-    its own single accent colour; a calm blue by default."""
-    from pptx.dml.color import RGBColor
-    deckkit.GREEN = RGBColor(0x26, 0x29, 0x2E)       # dark slate: covers, title text
-    deckkit.GREEN_DEEP = RGBColor(0x17, 0x19, 0x1D)  # darker slate: cover accents
-    deckkit.GOLD = accent or RGBColor(0x2F, 0x6F, 0xED)  # one chosen accent: blue
-    deckkit.PAPER = RGBColor(0xF8, 0xF8, 0xF9)       # soft grey, not warm paper
-    deckkit.BORDER = RGBColor(0xDD, 0xDD, 0xE0)      # neutral grey, not FEU's sage
-    # INK, MUTED, WHITE were already neutral; left as deckkit has them.
+    apply_metropolis_style(accent=accent)
+
+
+def _metro_blank(prs):
+    slide = deckkit._blank(prs)
+    deckkit._rect(slide, 0, 0, deckkit.SLIDE_W, deckkit.SLIDE_H, METRO_BG)
+    return slide
+
+
+def metro_frame(slide, title: str) -> float:
+    """The Metropolis frame title: a slim dark bar with the title in it,
+    a thin accent rule under it. Returns the y (inches) content may start
+    at."""
+    deckkit._rect(slide, 0, 0, deckkit.SLIDE_W, Inches(BAR_H), METRO_DARK)
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(0.18),
+                             deckkit.CONTENT_W, Inches(BAR_H - 0.2),
+                             anchor=deckkit.MSO_ANCHOR.MIDDLE)
+    deckkit._para(frame, title, size=26, color=METRO_WHITE,
+                  font=METRO_SANS, first=True, line_spacing=1.05)
+    deckkit._rect(slide, 0, Inches(BAR_H), deckkit.SLIDE_W, PROGRESS_H,
+                  METRO_ACCENT)
+    return BAR_H + 0.25
+
+
+def metro_footer(slide, position: int, total: int) -> None:
+    """A small page number in the corner, Metropolis-style: just the
+    number, not a "Slide N of M" sentence."""
+    frame = deckkit._textbox(slide, deckkit.SLIDE_W - Inches(1.2),
+                             Inches(FOOTER_Y), Inches(1.0), Inches(0.3))
+    deckkit._para(frame, str(position), size=11, color=METRO_MUTED,
+                  font=METRO_SANS, align=PP_ALIGN.RIGHT, first=True)
 
 
 # --------------------------------------------------------------------------
@@ -255,7 +318,8 @@ def make_mac_dialog_png(path: Path, *, title: str, message: str,
     total_w = len(buttons) * btn_w + (len(buttons) - 1) * gap
     bx = (width - total_w) / 2
     for i, label in enumerate(buttons):
-        fill = (0, 110, 240) if i == len(buttons) - 1 else (222, 222, 225)
+        fill = ((METRO_ACCENT[0], METRO_ACCENT[1], METRO_ACCENT[2])
+               if i == len(buttons) - 1 else (222, 222, 225))
         text_color = (255, 255, 255) if i == len(buttons) - 1 else (30, 30, 30)
         draw.rounded_rectangle([bx, y, bx + btn_w, y + btn_h], radius=8,
                               fill=fill)
@@ -327,12 +391,14 @@ def make_git_github_flow_png(path: Path, *, width=1700, height=560) -> None:
 
     One simple picture for a "What are Git and GitHub?" slide: three
     boxes and two labelled arrows, each box naming what Git or GitHub does
-    there.
+    there. One accent colour only (the deck's own), on the GitHub box;
+    the other two use a neutral dark grey, matching the "one deliberate
+    colour" rule.
     """
     bg = (248, 248, 249)
     ink = (26, 26, 26)
-    accent1 = (47, 111, 237)
-    accent2 = (60, 200, 120)
+    accent = (METRO_ACCENT[0], METRO_ACCENT[1], METRO_ACCENT[2])
+    neutral_bar = (60, 70, 74)
     muted = (110, 110, 110)
 
     img = Image.new("RGB", (width, height), bg)
@@ -345,9 +411,9 @@ def make_git_github_flow_png(path: Path, *, width=1700, height=560) -> None:
     y = (height - box_h) // 2
     xs = [40, (width - box_w) // 2, width - box_w - 40]
     boxes = [
-        ("Your computer", "Git keeps the history\nof every change you\nmake here.", accent2),
-        ("GitHub", "Stores that history\nonline, so your group\ncan share it.", accent1),
-        ("Teammate's computer", "Pulls the shared\nhistory down to\nwork on it too.", accent2),
+        ("Your computer", "Git keeps the history\nof every change you\nmake here.", neutral_bar),
+        ("GitHub", "Stores that history\nonline, so your group\ncan share it.", accent),
+        ("Teammate's computer", "Pulls the shared\nhistory down to\nwork on it too.", neutral_bar),
     ]
     centers = []
     for x, (title, body, accent) in zip(xs, boxes):
@@ -403,8 +469,8 @@ def make_chart_panel_composite(src: Path, dst: Path, *, chart_crop, panel_crop,
 # chapter and none of these three decks is one
 # --------------------------------------------------------------------------
 
-FIGURE_TOP = deckkit.FIGURE_TOP
-FIGURE_H = deckkit.FIGURE_H
+FIGURE_TOP = 1.45
+FIGURE_H = 4.6
 FIGURE_CAPTION_Y = deckkit.FIGURE_CAPTION_Y
 
 
@@ -425,7 +491,7 @@ def draw_presenter(slide, presenter: str | None) -> None:
                   italic=True, align=deckkit.PP_ALIGN.RIGHT, first=True)
 
 
-def render_shot(prs, *, title, image_path, credit, marker, notes=(),
+def render_shot(prs, *, title, image_path, credit, position, total, notes=(),
                 band_top=None, band_h=None, caption_y=None, presenter=None,
                 **_ignored):
     """A screenshot or an illustration, one to a slide, with its own
@@ -435,8 +501,8 @@ def render_shot(prs, *, title, image_path, credit, marker, notes=(),
     height = FIGURE_H if band_h is None else band_h
     cap_y = FIGURE_CAPTION_Y if caption_y is None else caption_y
 
-    slide = deckkit._blank(prs)
-    deckkit._content_frame(slide, title, marker)
+    slide = _metro_blank(prs)
+    metro_frame(slide, title)
 
     band_w = deckkit.CONTENT_W.inches
     px_w, px_h = deckkit._png_size(image_path)
@@ -458,23 +524,24 @@ def render_shot(prs, *, title, image_path, credit, marker, notes=(),
                   first=True, line_spacing=1.15)
 
     draw_presenter(slide, presenter)
+    metro_footer(slide, position, total)
     deckkit._notes(slide, notes)
 
 
-ERROR_IMAGE_TOP = 1.95
+ERROR_IMAGE_TOP = 1.45
 ERROR_IMAGE_H = 1.35
-ERROR_TEXT_TOP = 3.45
+ERROR_TEXT_TOP = 2.95
 
 
-def render_shot_text(prs, *, title, image_path, lines, accent, marker,
+def render_shot_text(prs, *, title, image_path, lines, accent, position, total,
                      rare=None, presenter=None, notes=(), **_ignored):
     """An illustration slide with a large actual-text body under the
     picture, not a small caption: the picture is just the error, the fix is
     real slide text at the same size every other content slide uses.
     ``rare`` is an optional extra line, still large, for a rarer wording of
     the same error."""
-    slide = deckkit._blank(prs)
-    deckkit._content_frame(slide, title, marker)
+    slide = _metro_blank(prs)
+    metro_frame(slide, title)
 
     band_w = deckkit.CONTENT_W.inches
     px_w, px_h = deckkit._png_size(image_path)
@@ -519,10 +586,11 @@ def render_shot_text(prs, *, title, image_path, lines, accent, marker,
                       first=True, line_spacing=1.12)
 
     draw_presenter(slide, presenter)
+    metro_footer(slide, position, total)
     deckkit._notes(slide, notes)
 
 
-STEP_TEXT_TOP = 1.95
+STEP_TEXT_TOP = 1.45
 STEP_CREDIT_Y = 6.60
 STEP_FALLBACK_BOTTOM = 6.50
 STEP_IMAGE_MIN_H = 1.1
@@ -530,7 +598,8 @@ STEP_IMAGE_MAX_H = 3.1
 
 
 def render_prompt_step(prs, *, title, do_lines, do_accent, image_path,
-                       fallback, marker, fallback_label="If it did not work: ",
+                       fallback, position, total,
+                       fallback_label="If it did not work: ",
                        source_credit=None, presenter=None, notes=(),
                        **_ignored):
     """What to type/click (top), its real or documented result (the
@@ -540,8 +609,8 @@ def render_prompt_step(prs, *, title, do_lines, do_accent, image_path,
     needs one. The picture's height is whatever is left after the text
     above and below it, clamped so a very short or very long prompt never
     makes it absurdly tall or thin."""
-    slide = deckkit._blank(prs)
-    deckkit._content_frame(slide, title, marker)
+    slide = _metro_blank(prs)
+    metro_frame(slide, title)
 
     inner_in = deckkit.CONTENT_W.inches
     top = STEP_TEXT_TOP
@@ -599,15 +668,16 @@ def render_prompt_step(prs, *, title, do_lines, do_accent, image_path,
                       first=True)
 
     draw_presenter(slide, presenter)
+    metro_footer(slide, position, total)
     deckkit._notes(slide, notes)
 
 
-def render_speakers(prs, *, speakers, marker, notes=()):
+def render_speakers(prs, *, speakers, position, total, notes=()):
     """"Your speakers": one placeholder avatar, a name and a one-line role
     per speaker, side by side. speakers is a tuple of (name, role) pairs.
     Neutral grey placeholder avatars until real photos arrive."""
-    slide = deckkit._blank(prs)
-    deckkit._content_frame(slide, "Your speakers", marker)
+    slide = _metro_blank(prs)
+    metro_frame(slide, "Your speakers")
 
     n = len(speakers)
     col_w = deckkit.CONTENT_W.inches / n
@@ -629,7 +699,109 @@ def render_speakers(prs, *, speakers, marker, notes=()):
         deckkit._para(frame, role, size=15, color=deckkit.MUTED,
                       align=deckkit.PP_ALIGN.CENTER, first=True)
 
+    metro_footer(slide, position, total)
     deckkit._notes(slide, notes)
+
+
+def render_content_m(prs, s, *, position, total):
+    """A Metropolis-style content slide: the dark frame title, the accent
+    progress rule, then plain body text (lines, one gold-barred accent, a
+    muted caption) exactly like a Content slide's body always has, just
+    without deckkit's own FEU chrome around it."""
+    slide = _metro_blank(prs)
+    top = metro_frame(slide, s.title)
+
+    inner_in = deckkit.CONTENT_W.inches
+    if s.lines:
+        frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(top),
+                                 deckkit.CONTENT_W, Inches(3.4))
+        for i, line in enumerate(s.lines):
+            deckkit._para(frame, line, size=21, color=METRO_INK,
+                          first=(i == 0), space_after=13, line_spacing=1.18)
+        top += sum(deckkit._text_height(line, inner_in, 21, spacing=1.18) + 0.20
+                  for line in s.lines) + 0.34
+
+    if s.accent:
+        accent_h = deckkit._text_height(s.accent, inner_in - 0.32, 22, "bold") + 0.16
+        deckkit._rect(slide, deckkit.MARGIN, Inches(top), Inches(0.09),
+                     Inches(accent_h), METRO_ACCENT)
+        frame = deckkit._textbox(slide, deckkit.MARGIN + Inches(0.32),
+                                 Inches(top + 0.04),
+                                 deckkit.CONTENT_W - Inches(0.32), Inches(accent_h))
+        deckkit._para(frame, s.accent, size=22, color=METRO_INK, bold=True,
+                      first=True, line_spacing=1.15)
+        top += accent_h + 0.26
+
+    if s.caption:
+        frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(top),
+                                 deckkit.CONTENT_W, Inches(0.8))
+        deckkit._para(frame, s.caption, size=15, color=METRO_MUTED,
+                      italic=True, first=True, line_spacing=1.15)
+
+    if s.origin:
+        draw_presenter(slide, s.origin.replace("Presenter: ", "")
+                      if s.origin.startswith("Presenter: ") else
+                      ("both" if s.origin == "Both presenters" else s.origin))
+    metro_footer(slide, position, total)
+    deckkit._notes(slide, s.notes)
+
+
+def render_title_m(prs, s):
+    """A plain Metropolis title slide: no colour block, just the title,
+    subtitle and presenter on the light background, with a thin accent
+    rule under the title."""
+    slide = _metro_blank(prs)
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(1.5),
+                             deckkit.CONTENT_W, Inches(0.5))
+    deckkit._para(frame, s.course, size=15, color=METRO_ACCENT, bold=True,
+                  font=METRO_SANS, first=True)
+
+    deckkit._rect(slide, deckkit.MARGIN, Inches(2.15), Inches(1.6), Pt(3),
+                  METRO_ACCENT)
+
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(2.55),
+                             deckkit.CONTENT_W, Inches(2.4))
+    deckkit._para(frame, s.chapter, size=18, color=METRO_MUTED,
+                  font=METRO_SANS, first=True)
+    deckkit._para(frame, s.title, size=42, color=METRO_DARK,
+                  font=METRO_SANS, space_before=10, line_spacing=1.05)
+
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(5.25),
+                             deckkit.CONTENT_W, Inches(1.0))
+    deckkit._para(frame, s.subtitle, size=17, color=METRO_INK,
+                  font=METRO_SANS, first=True)
+    deckkit._para(frame, s.presenter, size=14, color=METRO_MUTED,
+                  font=METRO_SANS, space_before=8)
+
+    deckkit._notes(slide, s.notes)
+
+
+def render_closing_m(prs, s):
+    """A plain Metropolis closing slide, the same bookend style as the
+    title slide."""
+    slide = _metro_blank(prs)
+    deckkit._rect(slide, deckkit.MARGIN, Inches(1.65), Inches(1.6), Pt(3),
+                  METRO_ACCENT)
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(2.0),
+                             deckkit.CONTENT_W, Inches(1.1))
+    deckkit._para(frame, s.title, size=36, color=METRO_DARK,
+                  font=METRO_SANS, first=True, line_spacing=1.05)
+
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(3.2),
+                             deckkit.CONTENT_W, Inches(2.4))
+    for i, line in enumerate(s.lines):
+        deckkit._para(frame, line, size=19, color=METRO_INK,
+                      font=METRO_SANS, first=(i == 0), space_after=12,
+                      line_spacing=1.15)
+
+    if s.accent:
+        frame = deckkit._textbox(slide, deckkit.MARGIN,
+                                 deckkit.SLIDE_H - Inches(1.3),
+                                 deckkit.CONTENT_W, Inches(0.7))
+        deckkit._para(frame, s.accent, size=16, color=METRO_ACCENT, bold=True,
+                      font=METRO_SANS, first=True)
+
+    deckkit._notes(slide, s.notes)
 
 
 # --------------------------------------------------------------------------
@@ -661,18 +833,16 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
     position = 1
     for kind, slide in prs_slides:
         if kind == "title":
-            deckkit.render_title(prs, slide)
+            render_title_m(prs, slide)
             position += 1
             continue
-        marker = f"Slide {position} of {total}"
+        pos = position
         position += 1
         if kind == "content":
-            deckkit.render_content(prs, slide, marker)
-            if slide.origin:
-                deckkit._origin(prs, slide)
+            render_content_m(prs, slide, position=pos, total=total)
         elif kind == "shot":
             render_shot(prs, title=slide["title"], image_path=slide["path"],
-                       credit=slide["credit"], marker=marker,
+                       credit=slide["credit"], position=pos, total=total,
                        notes=slide.get("notes", ()),
                        band_top=slide.get("band_top"),
                        band_h=slide.get("band_h"),
@@ -681,7 +851,7 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
         elif kind == "shot_text":
             render_shot_text(prs, title=slide["title"],
                             image_path=slide["path"], lines=slide["lines"],
-                            accent=slide["accent"], marker=marker,
+                            accent=slide["accent"], position=pos, total=total,
                             rare=slide.get("rare"), notes=slide.get("notes", ()),
                             presenter=slide.get("presenter"))
         elif kind == "step":
@@ -691,15 +861,14 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
                 fallback=slide["fallback"],
                 fallback_label=slide.get("fallback_label",
                                         "If it did not work: "),
-                source_credit=slide.get("source_credit"), marker=marker,
+                source_credit=slide.get("source_credit"),
+                position=pos, total=total,
                 presenter=slide.get("presenter"), notes=slide.get("notes", ()))
         elif kind == "speakers":
-            render_speakers(prs, speakers=slide["speakers"], marker=marker,
-                           notes=slide.get("notes", ()))
+            render_speakers(prs, speakers=slide["speakers"], position=pos,
+                           total=total, notes=slide.get("notes", ()))
         elif kind == "closing":
-            deckkit.render_closing(prs, slide)
-            if slide.origin:
-                deckkit._origin(prs, slide)
+            render_closing_m(prs, slide)
         else:
             raise TypeError(kind)
 

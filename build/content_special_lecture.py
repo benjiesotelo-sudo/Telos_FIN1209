@@ -67,11 +67,13 @@ CONTENT = [
             "finish.",
         ),
         accent="curl -fsSL https://chatgpt.com/codex/install.sh | sh",
-        caption=("Source: OpenAI Codex CLI docs, learn.chatgpt.com/codex/"
-                 "cli, fetched 25 Nov 2026."),
+        caption=("Source: learn.chatgpt.com/codex/cli and github.com/openai/"
+                 "codex's README, both fetched 25 Nov 2026, same command."),
         notes=(
-            "Exact command quoted verbatim from learn.chatgpt.com/codex/cli "
-            "(macOS/Linux tab), fetched 25 Nov 2026.",
+            "Exact command quoted verbatim from both learn.chatgpt.com/"
+            "codex/cli (macOS/Linux tab) and the openai/codex GitHub "
+            "README, each fetched 25 Nov 2026 and showing the identical "
+            "command.",
             "No prerequisite install (no Node.js, no Homebrew) is required "
             "for this standalone installer; the docs state none.",
             "An npm alternative exists (npm install -g @openai/codex) for "
@@ -133,57 +135,59 @@ CONTENT = [
     ),
 ]
 
-# The one dedicated slide requested by name: the error expected right after
-# install, on both operating systems, with the exact fix for each. Rendered as a Shot (a terminal-mockup illustration showing both a
-# macOS and a Windows panel), not a Content slide, so the room sees the
-# actual wording of each error rather than a paraphrase.
-ERROR_SHOT = dict(
-    title="The error you will probably see",
+# The dedicated slides requested by name: the error expected right after
+# install, one per operating system so each reads from the back of the
+# room. The image is just the error itself, large; the fix is large actual
+# slide text, not small caption text, per the readability review.
+MAC_ERROR_SHOT = dict(
+    title="The error you will probably see: Mac",
     label="ILLUSTRATION",
-    mac_title="macOS (zsh)",
-    mac_lines=(
-        "~ % codex",
-        "zsh: command not found: codex",
-        "",
-        '~ % export PATH="$HOME/.local/bin:$PATH" && codex',
-        "Codex CLI: signed in as you",
-        "",
-        "New window still fails? Run once, then reopen:",
-        "~ % echo 'export PATH=\"$HOME/.local/bin:$PATH\"' >> ~/.zprofile",
+    term_lines=("~ % codex", "zsh: command not found: codex"),
+    lines=(
+        "Normal: PATH is not active in this terminal window yet.",
+        "New terminal still fails? Run once: echo 'export PATH=\"$HOME/"
+        ".local/bin:$PATH\"' >> ~/.zprofile",
     ),
-    win_title="Windows (PowerShell)",
-    win_lines=(
-        "PS> codex",
-        "codex : term 'codex' is not recognized",
-        "",
-        "Fix: close this window, open a NEW PowerShell window:",
-        "PS> codex",
-        "Codex CLI: signed in as you",
-    ),
-    credit=("not a real recording. Rare on macOS: zsh: no such file or "
-            "directory: codex means the install did not finish; rerun the "
-            "macOS install command."),
+    accent='Fix: export PATH="$HOME/.local/bin:$PATH" && codex',
+    rare=('Rare: "no such file or directory" instead of "command not '
+          'found" means the install did not finish; rerun the install '
+          "command."),
+    credit="not a real recording.",
     notes=(
-        "macOS: the installer adds Codex to your PATH by editing "
-        "~/.zprofile (read verbatim from releases.openai.com/codex/"
-        "install.sh, fetched 25 Nov 2026, its pick_profile function on "
-        "darwin with zsh), but a terminal window already open does not "
-        "re-read that file. The installer's own end-of-run message says "
-        'exactly this: "Current terminal: export PATH=... && codex" / '
-        '"Future terminals: open a new terminal and run: codex."',
-        "macOS, the rare wording: \"command not found\" means codex is not "
-        'yet on PATH (the normal case above); "no such file or directory" '
-        "would mean the symlink in ~/.local/bin points at nothing, which "
-        "only happens if the install itself did not finish; install.sh "
-        "never prints that wording itself, so it is this general shell "
-        "behaviour on a broken link, not a message the script prints.",
-        "Windows: install.ps1 (releases.openai.com/codex/install.ps1, "
-        "fetched 25 Nov 2026) does update PATH, but the usual install "
-        'command runs it as a child process via "-c", so the window the '
-        "student is actually looking at never has its PATH refreshed; "
-        "its own closing message only promises the NEXT PowerShell window, "
-        'never the current one: "Future PowerShell windows: open a new '
-        'PowerShell window and run: codex."',
+        "The installer adds Codex to your PATH by editing ~/.zprofile "
+        "(read verbatim from releases.openai.com/codex/install.sh, fetched "
+        "25 Nov 2026, its pick_profile function on darwin with zsh), but a "
+        "terminal window already open does not re-read that file. The "
+        'installer\'s own end-of-run message says exactly this: "Current '
+        'terminal: export PATH=... && codex" / "Future terminals: open a '
+        'new terminal and run: codex."',
+        "The rare wording: \"command not found\" means codex is not yet on "
+        'PATH (the normal case above); "no such file or directory" would '
+        "mean the symlink in ~/.local/bin points at nothing, which only "
+        "happens if the install itself did not finish; install.sh never "
+        "prints that wording itself, so it is this general shell behaviour "
+        "on a broken link, not a message the script prints.",
+    ),
+)
+
+WIN_ERROR_SHOT = dict(
+    title="The error you will probably see: Windows",
+    label="ILLUSTRATION",
+    term_lines=("PS> codex", "codex : term 'codex' is not recognized"),
+    lines=(
+        "The installer updates PATH in a CHILD PowerShell window; this "
+        "window never saw it.",
+    ),
+    accent="Fix: close this PowerShell window, open a brand-new one, then run: codex",
+    credit="not a real recording.",
+    notes=(
+        "install.ps1 (releases.openai.com/codex/install.ps1, fetched 25 "
+        'Nov 2026) does update PATH, but the usual install command runs '
+        'it as a child process via "-c", so the window the student is '
+        "actually looking at never has its PATH refreshed; its own closing "
+        "message only promises the NEXT PowerShell window, never the "
+        'current one: "Future PowerShell windows: open a new PowerShell '
+        'window and run: codex."',
     ),
 )
 
@@ -302,18 +306,20 @@ MORE_CONTENT_2 = [
     ),
 ]
 
-# The two screenshots, described in order, cropped (see CROPS in
-# build_special_lecture.py) to the chart, the signal panel and the position
-# card at large size, dropping the watchlist sidebar so they read from the
-# back of the room. Source files and the firstmate home evidence folder they
-# are pulled from are also in build_special_lecture.py.
+# The two screenshots, described in order. The first is a composite built
+# at build time from two crops of the same screenshot (the chart, and the
+# signal panel beside it), placed side by side so the combined picture is
+# wide enough to fill the slide; the second is a tight crop of the position
+# card alone, enlarged. See build_special_lecture.py for the exact crop
+# boxes and the firstmate home evidence folder they are pulled from.
 STOCK_DESK_SHOTS = [
     dict(
         title="Stock Desk: live prices and signals",
         label="SCREENSHOT",
-        shows=("The chart and signal panel: live prices, Chapter 8's "
-               "signal panel, fundamentals and a session replay."),
+        shows=("The chart and the signal panel: live prices, Chapter 8's "
+               "signal rule and a session replay."),
         source_file="deployed-final-ipad.png",
+        composite="chart_panel",
         credit=("My own tool, signed in with my own passphrase. Live Yahoo "
                 "prices, Chapter 8's five-day-high / RSI / MACD signal "
                 "rule, fundamentals from each company's own SEC filing, "
@@ -332,12 +338,23 @@ STOCK_DESK_SHOTS = [
     dict(
         title="Stock Desk: logging a position",
         label="SCREENSHOT",
-        shows=("The position card after logging a buy: bought price, "
-               "target, stop, and the running gain or loss."),
+        shows=("The position card alone, after logging a buy: bought "
+               "price, target, stop, and the running gain or loss."),
         source_file="deployed-position-card.png",
+        composite="position_card",
+        band_top=1.85,
+        band_h=4.55,
+        caption_y=6.45,
         credit=("My own tool. Logging a buy records the price, the stop "
                 "and the target; the tool never places a trade, it only "
                 "tracks one I decide to log myself."),
+        notes=(
+            "The buy shown (10 shares, 23 Nov 2026) was a test buy made "
+            "while checking this feature; it has since been deleted from "
+            "the real tool. The screenshot is kept because it is the only "
+            "capture of this card and still shows the real layout "
+            "correctly.",
+        ),
     ),
 ]
 

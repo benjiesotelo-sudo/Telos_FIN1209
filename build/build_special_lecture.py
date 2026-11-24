@@ -15,28 +15,28 @@ not.
 
 Pictures this deck places, neither a Lim Figure nor an invented Chart:
 
-  * Two terminal-mockup illustrations, one per operating system (the macOS
-    PATH/command-not-found error, the Windows "not recognized" error),
-    generated at build time with Pillow, since no real recording of either
-    error exists. Each image is just the error, large; the fix itself is
-    large actual slide text underneath, not image text or a small caption,
-    so it reads from the back of a room. Labelled ILLUSTRATION.
-  * A Git/GitHub flow diagram (your computer, push, GitHub, pull, a
-    teammate's computer), also generated at build time. Labelled
-    ILLUSTRATION.
-  * Two real Stock Desk pictures, my own live tool: the candlestick chart
-    and the signal panel, cropped from the same screenshot and composited
-    side by side so the result is wide enough to fill the slide; and the
-    position card alone, cropped and enlarged. Copied in from the
-    firstmate home's data/stock-desk-build/evidence/. Labelled SCREENSHOT.
+  * Terminal illustrations/screenshots: the macOS PATH error is a real,
+    verified-today shell error (SCREENSHOT); the Windows one has no
+    machine to run on (ILLUSTRATION). The walkthrough's own terminal
+    pictures are real captures of commands genuinely run today in a
+    throwaway local folder (SCREENSHOT), rendered the same way.
+  * Doc-card illustrations: a plain mockup of a GitHub or browser screen
+    for a step no local command can show (sign-up, invites, the pull
+    request pages), built from GitHub's and OpenAI's own current
+    documentation, fetched today and cited in that slide's notes. Always
+    labelled ILLUSTRATION, never presented as a live capture.
+  * A Git/GitHub flow diagram and two Stock Desk pictures (one a real
+    screenshot composite, one a made-up example), as before.
 
-These render through render_shot() and render_shot_text() below, written
-for this deck rather than added to deckkit.py, since deckkit "knows nothing
-about any chapter" and this is not one.
+These render through render_shot(), render_shot_text() and
+render_prompt_step() below, written for this deck rather than added to
+deckkit.py, since deckkit "knows nothing about any chapter" and this is not
+one.
 
-Every Codex CLI command this deck quotes was fetched today from OpenAI's own
-docs; see build/content_special_lecture.py's module docstring and each
-slide's speaker notes for the exact URL and date. Never taken from memory.
+Every command this deck shows was fetched or genuinely run today; see
+build/content_special_lecture.py's module docstring and each slide's
+speaker notes for the exact source or the exact command run. Never taken
+from memory and never staged as something it is not.
 """
 
 from __future__ import annotations
@@ -72,12 +72,10 @@ STOCK_DESK_EVIDENCE = (Path.home() / ".treehouse" / "benjie-agent-workspace-8bf1
                        / "stock-desk-build" / "evidence")
 
 # Crop boxes (left, top, right, bottom) in source pixels, picked by eye
-# against each screenshot. The chart and panel crops are composited side by
-# side at build time so the result is wide enough to fill the slide; the
-# position-card crop is used alone, enlarged.
+# against the screenshot. Composited side by side at build time so the
+# result is wide enough to fill the slide.
 CHART_CROP = (300, 395, 1018, 700)          # candlestick chart + legend
 PANEL_CROP = (1030, 230, 1366, 600)         # "Last signal fired" + scoreboard
-POSITION_CARD_CROP = (1030, 85, 1366, 330)  # "Your NVDA position" card alone
 
 
 # --------------------------------------------------------------------------
@@ -87,39 +85,148 @@ POSITION_CARD_CROP = (1030, 85, 1366, 330)  # "Your NVDA position" card alone
 MONO_FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
 
 
-def make_error_term_png(path: Path, lines: tuple[str, ...], *, width=1760,
-                        font_size=46, line_h=78) -> None:
-    """One terminal window, just the error itself, at full slide width and
-    large monospace text (readable from the back of a classroom).
+def make_terminal_png(path: Path, lines: tuple[str, ...], *, width=1760,
+                      font_size=34, line_h=54, diff_mode=False) -> None:
+    """One terminal window, large monospace text (readable from the back
+    of a classroom).
 
-    Not a real recording; render_shot_text() labels every slide that uses
-    this ILLUSTRATION, never SCREENSHOT, so it is never mistaken for one.
-    The fix itself is large actual slide text, not drawn into this image;
-    see render_shot_text().
+    Used for both kinds of terminal picture this deck places: the two
+    PATH-error illustrations (just the error, 2 lines, a bigger font) and
+    the walkthrough's real command transcripts (more lines, this smaller
+    default size so a ten-line transcript still fits one picture). Colour
+    carries meaning the same way a real terminal's does: red for an error,
+    cyan for a typed prompt line, green for an added diff line or a
+    successful result, exactly like `git diff` and a shell's own output.
     """
-    bar_h = 64
-    pad_top = 34
-    pad_bottom = 30
+    bar_h = 54
+    pad_top = 28
+    pad_bottom = 24
     height = bar_h + pad_top + len(lines) * line_h + pad_bottom
 
     img = Image.new("RGB", (width, height), (28, 28, 30))
     draw = ImageDraw.Draw(img)
     draw.rectangle([0, 0, width, bar_h], fill=(44, 44, 46))
-    for cx, dot_color in ((34, (255, 95, 86)), (74, (255, 189, 46)),
-                          (114, (39, 201, 63))):
-        draw.ellipse([cx - 11, bar_h / 2 - 11, cx + 11, bar_h / 2 + 11],
+    for cx, dot_color in ((30, (255, 95, 86)), (64, (255, 189, 46)),
+                          (98, (39, 201, 63))):
+        r = bar_h * 0.18
+        draw.ellipse([cx - r, bar_h / 2 - r, cx + r, bar_h / 2 + r],
                      fill=dot_color)
 
     font = ImageFont.truetype(MONO_FONT_PATH, font_size, index=0)
     y = bar_h + pad_top
     for line in lines:
-        color = (235, 235, 235)
-        if "not found" in line or "not recognized" in line:
+        color = (225, 225, 225)
+        if ("not found" in line or "not recognized" in line
+                or line.startswith("codex :")):
             color = (255, 110, 100)
-        elif line.startswith("~ %") or line.startswith("PS>"):
+        elif line.startswith("$") or line.startswith("~ %") or line.startswith("PS>"):
             color = (110, 210, 255)
-        draw.text((36, y), line, font=font, fill=color)
+        elif diff_mode and line.startswith("+") and not line.startswith("+++"):
+            color = (120, 220, 130)
+        elif diff_mode and line.startswith("-") and not line.startswith("---"):
+            color = (235, 120, 110)
+        elif line.startswith("codex") or line.startswith("exec") or line == "user":
+            color = (180, 180, 255)
+        draw.text((32, y), line, font=font, fill=color)
         y += line_h
+
+    GENERATED.mkdir(parents=True, exist_ok=True)
+    img.save(path)
+
+
+def make_doc_card_png(path: Path, *, site: str, lines: tuple[str, ...],
+                      width=1760, font_size=34, line_h=54) -> None:
+    """A plain browser-style mockup for a step no local command can show:
+    a light address bar naming the site, then the documented steps as
+    body text. Deliberately unlike make_terminal_png's dark terminal, so
+    the room can tell at a glance that this is a mockup of a web page,
+    not a captured command result, exactly as its ILLUSTRATION label
+    says."""
+    bar_h = 54
+    pad_top = 30
+    pad_bottom = 26
+    height = bar_h + pad_top + len(lines) * line_h + pad_bottom
+
+    img = Image.new("RGB", (width, height), (255, 255, 255))
+    draw = ImageDraw.Draw(img)
+    draw.rectangle([0, 0, width, bar_h], fill=(237, 237, 239))
+    for cx, dot_color in ((30, (255, 95, 86)), (64, (255, 189, 46)),
+                          (98, (39, 201, 63))):
+        r = bar_h * 0.18
+        draw.ellipse([cx - r, bar_h / 2 - r, cx + r, bar_h / 2 + r],
+                     fill=dot_color)
+    addr_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial.ttf", 26)
+    draw.rounded_rectangle([140, bar_h * 0.2, width - 24, bar_h * 0.8],
+                          radius=8, fill=(255, 255, 255),
+                          outline=(210, 210, 212))
+    draw.text((156, bar_h / 2), site, font=addr_font, fill=(80, 80, 80),
+              anchor="lm")
+
+    body_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial.ttf", font_size)
+    y = bar_h + pad_top
+    for line in lines:
+        draw.text((32, y), line, font=body_font, fill=(26, 26, 26))
+        y += line_h
+
+    GENERATED.mkdir(parents=True, exist_ok=True)
+    img.save(path)
+
+
+def make_example_position_png(path: Path, *, width=1200, height=560) -> None:
+    """A made-up Stock Desk position card: the same dark-UI look as the
+    real tool, invented numbers, clearly not a screenshot (no real buy
+    this small ever looked exactly like this; see the EXAMPLE banner
+    drawn onto the card itself, not only the slide's own label)."""
+    bg = (10, 10, 12)
+    card = (18, 20, 26)
+    ink = (235, 235, 235)
+    muted = (150, 155, 165)
+    green = (60, 200, 120)
+    gold = (230, 170, 40)
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    pad = 36
+    draw.rounded_rectangle([pad, pad, width - pad, height - pad], radius=16,
+                          fill=card, outline=(40, 44, 54), width=2)
+
+    title_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf", 34)
+    label_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial.ttf", 26)
+    value_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf", 30)
+    banner_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf", 24)
+
+    x = pad + 36
+    y = pad + 30
+    draw.text((x, y), "Your MSFT position", font=title_font, fill=ink)
+    draw.text((width - pad - 36, y), "EXAMPLE, NOT REAL", font=banner_font,
+              fill=gold, anchor="ra")
+    y += 56
+    draw.text((x, y), "HOLD", font=title_font, fill=green)
+    y += 56
+    draw.text((x, y), "Advice only: stop and target below; a sell signal",
+              font=label_font, fill=muted)
+    y += 32
+    draw.text((x, y), "never forces an exit. You decide.", font=label_font,
+              fill=muted)
+    y += 56
+
+    rows = [
+        ("Bought", "2026-11-18, 5 sh at $480.00"),
+        ("Now", "+3.40% since bought"),
+        ("Target", "$512.60"),
+        ("Stop", "$462.40"),
+    ]
+    for label, value in rows:
+        draw.text((x, y), label, font=label_font, fill=muted)
+        draw.text((width - pad - 36, y), value, font=value_font, fill=ink,
+                  anchor="ra")
+        y += 48
 
     GENERATED.mkdir(parents=True, exist_ok=True)
     img.save(path)
@@ -206,10 +313,6 @@ def make_chart_panel_composite(src: Path, dst: Path, *, gap=36) -> None:
     composite.save(dst)
 
 
-def make_position_card_crop(src: Path, dst: Path) -> None:
-    """The position card alone, cropped out of the full screenshot."""
-    GENERATED.mkdir(parents=True, exist_ok=True)
-    Image.open(src).crop(POSITION_CARD_CROP).save(dst)
 
 
 # --------------------------------------------------------------------------
@@ -335,54 +438,149 @@ def render_shot_text(prs, *, title, label, image_path, lines, accent,
     deckkit._notes(slide, notes)
 
 
+# A walkthrough step: what to type/click (top, large text, same size as a
+# Content slide's body), then its real or documented result (the picture),
+# then what to do if it did not work (smaller, italic), then a one-line
+# credit. The picture's height is whatever is left after the text above
+# and below it, clamped so a very short or very long prompt never makes it
+# absurdly tall or thin.
+STEP_TEXT_TOP = 1.95
+STEP_CREDIT_Y = 6.58
+STEP_FALLBACK_BOTTOM = 6.46
+STEP_IMAGE_MIN_H = 1.1
+STEP_IMAGE_MAX_H = 2.75
+
+
+def render_prompt_step(prs, *, title, label, do_lines, do_accent, image_path,
+                       fallback, credit, marker, notes=()):
+    slide = deckkit._blank(prs)
+    deckkit._content_frame(slide, title, marker)
+
+    inner_in = deckkit.CONTENT_W.inches
+    top = STEP_TEXT_TOP
+    lines_h = sum(deckkit._text_height(line, inner_in, 18, spacing=1.15)
+                 + 0.12 for line in do_lines)
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(top),
+                             deckkit.CONTENT_W, Inches(lines_h + 0.2))
+    for i, line in enumerate(do_lines):
+        deckkit._para(frame, line, size=18, color=deckkit.INK,
+                      first=(i == 0), space_after=8, line_spacing=1.15)
+    top += lines_h + 0.12
+
+    accent_h = deckkit._text_height(do_accent, inner_in - 0.32, 18, "bold") + 0.14
+    deckkit._rect(slide, deckkit.MARGIN, Inches(top), Inches(0.09),
+                  Inches(accent_h), deckkit.GOLD)
+    frame = deckkit._textbox(slide, deckkit.MARGIN + Inches(0.32),
+                             Inches(top + 0.03),
+                             deckkit.CONTENT_W - Inches(0.32), Inches(accent_h))
+    deckkit._para(frame, do_accent, size=18, color=deckkit.INK, bold=True,
+                  first=True, line_spacing=1.12)
+    top += accent_h + 0.2
+
+    fallback_h = deckkit._text_height(fallback, inner_in, 15, spacing=1.12)
+    fallback_top = STEP_FALLBACK_BOTTOM - fallback_h
+    image_top = top
+    image_h = max(STEP_IMAGE_MIN_H,
+                 min(STEP_IMAGE_MAX_H, fallback_top - 0.18 - image_top))
+
+    band_w = inner_in
+    px_w, px_h = deckkit._png_size(image_path)
+    pad = 0.13
+    scale = min((band_w - 2 * pad) / px_w, (image_h - 2 * pad) / px_h)
+    w, h = px_w * scale, px_h * scale
+    x = deckkit.MARGIN.inches + (band_w - w) / 2.0
+    y = image_top + (image_h - h) / 2.0
+
+    deckkit._rect(slide, Inches(x - pad), Inches(y - pad),
+                  Inches(w + 2 * pad), Inches(h + 2 * pad), deckkit.WHITE,
+                  line=deckkit.BORDER)
+    slide.shapes.add_picture(str(image_path), Inches(x), Inches(y),
+                             Inches(w), Inches(h))
+
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(fallback_top),
+                             deckkit.CONTENT_W, Inches(fallback_h + 0.1))
+    deckkit._para(frame, "If it did not work: " + fallback, size=15,
+                  color=deckkit.INK, italic=True, first=True,
+                  line_spacing=1.12)
+
+    frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(STEP_CREDIT_Y),
+                             deckkit.CONTENT_W, Inches(0.3))
+    deckkit._para(frame, f"{label} - {credit}", size=11, color=deckkit.MUTED,
+                  first=True)
+
+    deckkit._notes(slide, notes)
+
+
 # --------------------------------------------------------------------------
 # Assembling the deck
 # --------------------------------------------------------------------------
 
-def _build_stock_desk_shots() -> dict[str, Path]:
+def _build_stock_desk_shots() -> dict[int, Path]:
     out = {}
     GENERATED.mkdir(parents=True, exist_ok=True)
-    for shot in content.STOCK_DESK_SHOTS:
-        name = shot["source_file"]
-        src = STOCK_DESK_EVIDENCE / name
+    for i, shot in enumerate(content.STOCK_DESK_SHOTS):
         kind = shot["composite"]
         if kind == "chart_panel":
+            src = STOCK_DESK_EVIDENCE / shot["source_file"]
             dst = GENERATED / "stock-desk-chart-panel.png"
             make_chart_panel_composite(src, dst)
-        elif kind == "position_card":
-            dst = GENERATED / "stock-desk-position-card.png"
-            make_position_card_crop(src, dst)
+        elif kind == "example_position":
+            dst = GENERATED / "stock-desk-example-position.png"
+            make_example_position_png(dst)
         else:
             raise ValueError(kind)
-        out[name] = dst
+        out[i] = dst
     return out
+
+
+def _build_walkthrough_images() -> list[Path]:
+    paths = []
+    GENERATED.mkdir(parents=True, exist_ok=True)
+    for i, step in enumerate(content.WALKTHROUGH):
+        dst = GENERATED / f"walkthrough-{i:02d}.png"
+        if step["kind"] == "terminal":
+            make_terminal_png(dst, step["term_lines"],
+                              diff_mode=step.get("diff_mode", False))
+        elif step["kind"] == "doc":
+            make_doc_card_png(dst, site=step["doc_site"], lines=step["doc_lines"])
+        else:
+            raise ValueError(step["kind"])
+        paths.append(dst)
+    return paths
 
 
 def build(edition: str, out_path: Path) -> int:
     deckkit.INCLUDE_NOTES = edition == deckkit.TEACHING
 
     mac_error_png = GENERATED / "codex-path-error-mac.png"
-    make_error_term_png(mac_error_png, content.MAC_ERROR_SHOT["term_lines"])
+    make_terminal_png(mac_error_png, content.MAC_ERROR_SHOT["term_lines"],
+                      font_size=46, line_h=78)
     win_error_png = GENERATED / "codex-path-error-win.png"
-    make_error_term_png(win_error_png, content.WIN_ERROR_SHOT["term_lines"])
+    make_terminal_png(win_error_png, content.WIN_ERROR_SHOT["term_lines"],
+                      font_size=46, line_h=78)
     git_github_png = GENERATED / "git-github-flow.png"
     make_git_github_flow_png(git_github_png)
     shot_paths = _build_stock_desk_shots()
+    walkthrough_images = _build_walkthrough_images()
 
     prs_slides: list[tuple[str, object]] = []
     prs_slides.append(("title", content.TITLE))
-    for c in content.CONTENT:
-        prs_slides.append(("content", c))
+    prs_slides.append(("content", content.AI_CLI_INTRO))
+    prs_slides.append(("content", content.MAC_INSTALL))
     prs_slides.append(("shot_text", content.MAC_ERROR_SHOT | {"path": mac_error_png}))
+    prs_slides.append(("content", content.WIN_INSTALL))
     prs_slides.append(("shot_text", content.WIN_ERROR_SHOT | {"path": win_error_png}))
-    for c in content.MORE_CONTENT:
-        prs_slides.append(("content", c))
+    prs_slides.append(("content", content.SIGNIN))
+    prs_slides.append(("content", content.TRANSITION))
     prs_slides.append(("shot", content.GIT_GITHUB_SHOT | {"path": git_github_png}))
-    for c in content.MORE_CONTENT_2:
-        prs_slides.append(("content", c))
-    for shot in content.STOCK_DESK_SHOTS:
+    prs_slides.append(("content", content.WALKTHROUGH_INTRO))
+    for step, image_path in zip(content.WALKTHROUGH, walkthrough_images):
+        prs_slides.append(("step", {**step, "path": image_path}))
+    prs_slides.append(("content", content.COLLAB_RULES))
+    prs_slides.append(("content", content.STOCK_DESK_INTRO))
+    for i, shot in enumerate(content.STOCK_DESK_SHOTS):
         prs_slides.append(("shot", {
-            **shot, "path": shot_paths[shot["source_file"]],
+            **shot, "path": shot_paths[i],
         }))
     prs_slides.append(("closing", content.CLOSING))
 
@@ -435,6 +633,20 @@ def build(edition: str, out_path: Path) -> int:
                 credit=slide["credit"],
                 marker=marker,
                 rare=slide.get("rare"),
+                notes=slide.get("notes", ()),
+            )
+        elif kind == "step":
+            label = "SCREENSHOT" if slide["kind"] == "terminal" else "ILLUSTRATION"
+            render_prompt_step(
+                prs,
+                title=slide["title"],
+                label=label,
+                do_lines=slide["do_lines"],
+                do_accent=slide["do_accent"],
+                image_path=slide["path"],
+                fallback=slide["fallback"],
+                credit=slide["credit"],
+                marker=marker,
                 notes=slide.get("notes", ()),
             )
         elif kind == "closing":

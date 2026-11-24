@@ -12,9 +12,20 @@ Every terminal picture here is a mockup, but never an invented one: each
 carries a verbatim excerpt of the real transcript a scout worker recorded
 running this exact five-prompt sequence twice, in
 data/fin1209-deck3-run/screens/terminal-0N-*.txt (see
-content_special_lecture_deck3.py's module docstring). The two screenshots
-are that worker's own genuine captures of the page the server actually
+content_special_lecture_deck3.py's module docstring). The screenshots are
+that worker's own genuine captures of the page the server actually
 served, copied in unchanged.
+
+A sixth, optional prompt (a single stock ticker via Yahoo, as a bonus
+alongside the three required indexes) is built from a second scout's
+verification in data/fin1209-deck3-bonus/report.md, after his 25 Nov
+decision to keep both data paths. Its one real screenshot
+(browser-bonus-nvda-429.png) is used as copied; see that report for why
+no chart screenshot exists (Yahoo was rate-limiting the test network by
+the time of the dedicated screenshot attempt, after one real, verified
+BUY reading earlier in the same session). That report also surfaced an
+unrelated browser tab belonging to the real, production Stock Desk tool;
+this build does not use or reference that screenshot, deliberately.
 """
 
 from __future__ import annotations
@@ -41,6 +52,7 @@ DEFAULT_OUT = {deckkit.TEACHING: DECK_OUT, deckkit.STUDENT: STUDENT_OUT}
 DECK3_RUN = (Path.home() / ".treehouse" / "benjie-agent-workspace-8bf1b0"
             / "1" / "benjie-agent-workspace" / "data" / "fin1209-deck3-run")
 SCREENS = DECK3_RUN / "screens"
+BONUS_SCREENS = DECK3_RUN.parent / "fin1209-deck3-bonus" / "screens"
 
 
 def build(edition: str, out_path: Path) -> int:
@@ -82,6 +94,11 @@ def build(edition: str, out_path: Path) -> int:
                     "credit": shot["credit"],
                     "layout": "tall",
                 }))
+
+    bonus_path = kit.GENERATED / content.BONUS_STEP["image_file"]
+    shutil.copyfile(BONUS_SCREENS / content.BONUS_STEP["image_file"], bonus_path)
+    prs_slides.append(("step", {**content.BONUS_STEP, "path": bonus_path}))
+
     prs_slides.append(("closing", content.CLOSING))
 
     return kit.build_presentation(

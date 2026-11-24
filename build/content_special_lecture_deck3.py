@@ -203,6 +203,55 @@ STEPS = [
     ),
 ]
 
+# A sixth, optional prompt, added after his 25 Nov decision to keep both
+# data paths: FRED's three indexes stay the required main path; a single
+# stock ticker via Yahoo becomes this one bonus prompt at the end. Built
+# from data/fin1209-deck3-bonus/report.md: verified for real, twice over,
+# against a copy of the finished Stock Desk Mini (Yahoo's chart endpoint
+# returns 429 with no User-Agent header, 200 with an ordinary browser one;
+# NVDA returned a real BUY reading with its own three-line chart, once,
+# before the same network started answering 429 for the rest of that
+# session). The one real screenshot that exists shows that safe fallback,
+# not the chart; both outcomes are genuine, live Yahoo responses, not
+# simulated.
+BONUS_STEP = dict(
+    title="Bonus, optional: one stock, via Yahoo",
+    image_file="browser-bonus-nvda-429.png",
+    do_lines=(
+        "Optional, after the five prompts above, which already stand on "
+        "their own: type any single stock ticker, like NVDA, instead of "
+        "picking an index.",
+    ),
+    do_accent=('"Add one more option to Stock Desk Mini: type a single '
+              'stock ticker, like NVDA, and load it the same way, '
+              'fetching Yahoo\'s chart JSON with an ordinary browser '
+              'User-Agent header (a bare request gets 429; with one it '
+              'answers 200). If it still answers 429, show \'too many '
+              'requests, wait a minute and retry\' instead of a raw '
+              'error."'),
+    fallback=('with a whole class on one network, Yahoo may refuse '
+             'requests for a while, shown exactly as pictured: "too many '
+             'requests, wait a minute and retry," with a Try again '
+             'button. This run\'s own retries took longer than a minute '
+             'to clear (up to 13 minutes); test this once well before '
+             'class, and expect a few minutes, not one, if it fires '
+             'during the lecture. None of the five required prompts '
+             'depend on this working.'),
+    notes=(
+        "Added after his 25 Nov decision to keep both data paths: FRED's "
+        "three indexes stay the required main path; this is one optional "
+        "bonus prompt at the end.",
+        "Verified live, twice over, against a copy of the finished Stock "
+        "Desk Mini: NVDA returned a real BUY reading with its own "
+        "three-line chart once, early in the same session, before this "
+        "network started answering 429 for the rest of it. No screenshot "
+        "of that chart exists, since Yahoo was already limiting requests "
+        "by the time of the dedicated screenshot attempt; the pictured "
+        "429 state is the other real, verified outcome, not a failure.",
+        "Source: data/fin1209-deck3-bonus/report.md.",
+    ),
+)
+
 VIEW_SHOTS = [
     dict(
         title="View it: a HOLD reading",

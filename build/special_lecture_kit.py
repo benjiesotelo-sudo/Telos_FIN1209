@@ -681,99 +681,96 @@ def _bpmn_link_event(draw, cx, cy, label, *, outgoing, font):
               anchor="ma")
 
 
-def make_bpmn_signal_png(path: Path, *, width=2300, height=1500) -> None:
-    """The buy/sell decision process, two lanes (Stock Desk / You), proper
-    BPMN shapes: start/end events, tasks, one exclusive gateway, lanes,
-    drawn as two stacked display rows of the same pool (linked by a BPMN
-    link-event pair, "A"), since eleven steps do not fit one legible line.
-    His standing rules: a "+" marks a sub-process, horizontal bars on a
-    task's bottom border mark a once-per-item (sequential multi-instance)
-    step, and every task carries a dotted value annotation.
+def _bpmn_lanes(img, draw, lane_x0, lane_x1, top, mid, bot, labels, lane_font,
+                ink):
+    draw.rectangle([lane_x0, top, lane_x1, bot], outline=(190, 190, 195),
+                  width=2)
+    draw.line([(lane_x0, mid), (lane_x1, mid)], fill=(190, 190, 195), width=2)
+    for band_top, band_bot, label in ((top, mid, labels[0]),
+                                      (mid, bot, labels[1])):
+        band = Image.new("RGBA", (band_bot - band_top, 60), (0, 0, 0, 0))
+        bd = ImageDraw.Draw(band)
+        bd.text((band.width / 2, 30), label, font=lane_font, fill=ink,
+               anchor="mm")
+        band = band.rotate(90, expand=True)
+        img.paste(band, (lane_x0 - 64, band_top), band)
 
-    Checked against the real code (engine/signals.ts, worker/engine-run.ts,
-    worker/buys.ts): the gate is three checks (trend, RSI-or-MACD, the
-    5-bar trigger), not four. Volume is reported on the chart and
-    strengthens the reading's wording ("confirmed" vs "a weaker" reading)
-    but never gates the signal; that is drawn as a label inside the checks
-    task, not a fourth check box, and flagged in the deck's own notes as a
-    difference from the first draft."""
+
+def make_bpmn_signal_png_part1(path: Path, *, width=2500, height=1000) -> None:
+    """Part 1 of 2 (see make_bpmn_signal_png_part2): the Stock Desk lane
+    computing a signal and the You lane reading it, up to a BPMN link
+    event "A", continued on the next slide. Large type throughout, since
+    one slide now holds only six shapes instead of eleven.
+
+    Checked against the real code (engine/signals.ts): the gate is three
+    checks (trend, RSI-or-MACD, the 5-bar trigger), not four. Volume is
+    reported on the chart and strengthens the reading's wording but never
+    gates the signal; drawn as a label inside the checks task, not a
+    fourth check box, flagged in the deck's own notes as a difference
+    from the first draft."""
     bg = (250, 250, 250)
     ink = (26, 26, 26)
-    title_font = ImageFont.truetype(ARIAL_BOLD, 21)
-    body_font = ImageFont.truetype(ARIAL, 17)
-    lane_font = ImageFont.truetype(ARIAL_BOLD, 20)
-    small_font = ImageFont.truetype(ARIAL, 16)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 30)
+    body_font = ImageFont.truetype(ARIAL, 23)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 28)
+    small_font = ImageFont.truetype(ARIAL, 22)
     fonts = (title_font, body_font)
 
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
-    lane_x0, lane_x1 = 160, width - 40
-    task_w, task_h = 220, 130
+    lane_x0, lane_x1 = 190, width - 40
+    task_w, task_h = 300, 180
 
-    def lanes(top, mid, bot, labels):
-        draw.rectangle([lane_x0, top, lane_x1, bot], outline=(190, 190, 195),
-                      width=2)
-        draw.line([(lane_x0, mid), (lane_x1, mid)], fill=(190, 190, 195),
-                 width=2)
-        for band_top, band_bot, label in ((top, mid, labels[0]),
-                                          (mid, bot, labels[1])):
-            band = Image.new("RGBA", (band_bot - band_top, 50), (0, 0, 0, 0))
-            bd = ImageDraw.Draw(band)
-            bd.text((band.width / 2, 25), label, font=lane_font, fill=ink,
-                   anchor="mm")
-            band = band.rotate(90, expand=True)
-            img.paste(band, (lane_x0 - 54, band_top), band)
+    top, mid, bot = 50, 460, 790
+    _bpmn_lanes(img, draw, lane_x0, lane_x1, top, mid, bot,
+               ("STOCK DESK", "YOU"), lane_font, ink)
+    sd_y = top + 190
+    you_y = mid + 140
 
-    # Row A: Stock Desk lane on top, You lane below.
-    rowA_top, rowA_mid, rowA_bot = 50, 390, 610
-    lanes(rowA_top, rowA_mid, rowA_bot, ("STOCK DESK", "YOU"))
-    rA_sd_y = rowA_top + 150   # Stock Desk task row, row A
-    rA_you_y = rowA_mid + 110  # You task row, row A
-
-    ev_start = (250, rA_sd_y)
-    draw.ellipse([ev_start[0] - 30, ev_start[1] - 30, ev_start[0] + 30,
-                 ev_start[1] + 30], outline=ink, width=3, fill=(255, 255, 255))
-    draw.text((ev_start[0], ev_start[1] + 44), "New price", font=small_font,
+    ev_start = (290, sd_y)
+    draw.ellipse([ev_start[0] - 36, ev_start[1] - 36, ev_start[0] + 36,
+                 ev_start[1] + 36], outline=ink, width=4, fill=(255, 255, 255))
+    draw.text((ev_start[0], ev_start[1] + 52), "New price", font=small_font,
               fill=ink, anchor="ma")
 
-    c_ind = (560, rA_sd_y)
+    c_ind = (690, sd_y)
     _bpmn_task(draw, *c_ind, task_w, task_h, "Compute indicators",
               value="One shared formula, every stock, no arguing over the math",
               multi_instance=True, fonts=fonts)
 
-    c_chk = (900, rA_sd_y)
+    c_chk = (1120, sd_y)
     _bpmn_task(draw, *c_chk, task_w, task_h,
               "Three checks: trend, momentum, trigger",
               value="No signal fires on a hunch (volume is shown beside it, "
                     "not required to fire one)",
               multi_instance=True, fonts=fonts)
 
-    gw_cx, gw_cy = 1230, rA_sd_y
-    gw_size = 90
+    gw_cx, gw_cy = 1550, sd_y
+    gw_size = 110
     draw.polygon([(gw_cx, gw_cy - gw_size / 2), (gw_cx + gw_size / 2, gw_cy),
                  (gw_cx, gw_cy + gw_size / 2), (gw_cx - gw_size / 2, gw_cy)],
-                outline=ink, width=3, fill=(255, 255, 255))
-    draw.line([(gw_cx - 13, gw_cy - 13), (gw_cx + 13, gw_cy + 13)], fill=ink, width=3)
-    draw.line([(gw_cx - 13, gw_cy + 13), (gw_cx + 13, gw_cy - 13)], fill=ink, width=3)
-    draw.text((gw_cx, gw_cy - gw_size / 2 - 12), "All three pass?",
+                outline=ink, width=4, fill=(255, 255, 255))
+    draw.line([(gw_cx - 16, gw_cy - 16), (gw_cx + 16, gw_cy + 16)], fill=ink, width=4)
+    draw.line([(gw_cx - 16, gw_cy + 16), (gw_cx + 16, gw_cy - 16)], fill=ink, width=4)
+    draw.text((gw_cx, gw_cy - gw_size / 2 - 14), "All three pass?",
               font=small_font, fill=ink, anchor="mb")
 
-    c_sig = (1560, rA_sd_y)
+    c_sig = (1980, sd_y)
     _bpmn_task(draw, *c_sig, task_w, task_h, "Show BUY or SELL signal",
               value="You see it the moment it is real, never a stale page",
               fonts=fonts)
 
-    ev_hold = (gw_cx, rowA_mid - 40)
-    draw.ellipse([ev_hold[0] - 28, ev_hold[1] - 28, ev_hold[0] + 28,
-                 ev_hold[1] + 28], outline=ink, width=5, fill=(255, 255, 255))
-    draw.text((ev_hold[0], ev_hold[1] + 40), "No signal (HOLD)",
+    ev_hold = (gw_cx, mid - 55)
+    draw.ellipse([ev_hold[0] - 34, ev_hold[1] - 34, ev_hold[0] + 34,
+                 ev_hold[1] + 34], outline=ink, width=6, fill=(255, 255, 255))
+    draw.text((ev_hold[0], ev_hold[1] + 48), "No signal (HOLD)",
               font=small_font, fill=ink, anchor="ma")
 
-    c_decide = (1560, rA_you_y)
+    c_decide = (1980, you_y)
     _bpmn_task(draw, *c_decide, task_w, task_h, "You decide",
               value="Your money, your call, always", fonts=fonts)
 
-    _bpmn_elbow(draw, (ev_start[0] + 30, ev_start[1]),
+    _bpmn_elbow(draw, (ev_start[0] + 36, ev_start[1]),
                (c_ind[0] - task_w / 2, c_ind[1]))
     _bpmn_elbow(draw, (c_ind[0] + task_w / 2, c_ind[1]),
                (c_chk[0] - task_w / 2, c_chk[1]))
@@ -783,31 +780,61 @@ def make_bpmn_signal_png(path: Path, *, width=2300, height=1500) -> None:
                (c_sig[0] - task_w / 2, c_sig[1]), label="yes", font=small_font)
     _bpmn_elbow(draw, (gw_cx, gw_cy + gw_size / 2), ev_hold, label="no",
                font=small_font)
-    _bpmn_elbow(draw, (c_sig[0], c_sig[1] + task_h / 2 + 95),
+    _bpmn_elbow(draw, (c_sig[0], c_sig[1] + task_h / 2 + 120),
                (c_decide[0], c_decide[1] - task_h / 2))
 
-    link_a_out = (lane_x1 - 60, rA_you_y)
+    link_a_out = (lane_x1 - 70, you_y)
     _bpmn_link_event(draw, *link_a_out, "A", outgoing=True, font=small_font)
     _bpmn_elbow(draw, (c_decide[0] + task_w / 2, c_decide[1]),
-               (link_a_out[0] - 28, link_a_out[1]))
+               (link_a_out[0] - 34, link_a_out[1]))
 
-    # Row B: same lane order, continuing from link event "A".
-    rowB_top, rowB_mid, rowB_bot = 700, 1040, 1260
-    lanes(rowB_top, rowB_mid, rowB_bot, ("STOCK DESK", "YOU"))
-    rB_sd_y = rowB_top + 150
-    rB_you_y = rowB_mid + 110
+    draw.text((lane_x0, height - 50),
+             "Continued on the next slide (link “A”) →",
+             font=small_font, fill=(110, 110, 110))
 
-    link_a_in = (250, rB_you_y)
+    _generated_dir()
+    img.save(path)
+
+
+def make_bpmn_signal_png_part2(path: Path, *, width=2500, height=1000) -> None:
+    """Part 2 of 2 (see make_bpmn_signal_png_part1): from the "A" link
+    event, logging a buy, the advice-only stop and target, selling or
+    holding, and the scoreboard's own sub-process, 5 trading days later.
+    His standing rules: a "+" marks a sub-process, horizontal bars on a
+    task's bottom border mark a once-per-item (sequential multi-instance)
+    step, and every task carries a dotted value annotation."""
+    bg = (250, 250, 250)
+    ink = (26, 26, 26)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 30)
+    body_font = ImageFont.truetype(ARIAL, 23)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 28)
+    small_font = ImageFont.truetype(ARIAL, 22)
+    fonts = (title_font, body_font)
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    lane_x0, lane_x1 = 190, width - 40
+    task_w, task_h = 300, 180
+
+    top, mid, bot = 50, 460, 790
+    _bpmn_lanes(img, draw, lane_x0, lane_x1, top, mid, bot,
+               ("STOCK DESK", "YOU"), lane_font, ink)
+    sd_y = top + 190
+    you_y = mid + 140
+
+    link_a_in = (290, you_y)
     _bpmn_link_event(draw, *link_a_in, "A", outgoing=False, font=small_font)
+    draw.text((lane_x0, 12), "← Continued from the previous slide "
+             "(link “A”)", font=small_font, fill=(110, 110, 110))
 
-    c_buy = (560, rB_you_y)
+    c_buy = (690, you_y)
     _bpmn_task(draw, *c_buy, task_w, task_h, "Log a buy",
               value="One record, so the scoreboard can grade it later",
               fonts=fonts)
-    _bpmn_elbow(draw, (link_a_in[0] + 28, link_a_in[1]),
+    _bpmn_elbow(draw, (link_a_in[0] + 34, link_a_in[1]),
                (c_buy[0] - task_w / 2, c_buy[1]))
 
-    c_advice = (560, rB_sd_y)
+    c_advice = (690, sd_y)
     _bpmn_task(draw, *c_advice, task_w, task_h,
               "Stop and target shown, as advice", value_above=True,
               value="A number to check yourself against, never an auto-sell",
@@ -815,36 +842,35 @@ def make_bpmn_signal_png(path: Path, *, width=2300, height=1500) -> None:
     _bpmn_elbow(draw, (c_buy[0], c_buy[1] - task_h / 2),
                (c_advice[0], c_advice[1] + task_h / 2))
 
-    c_sellhold = (900, rB_you_y)
+    c_sellhold = (1120, you_y)
     _bpmn_task(draw, *c_sellhold, task_w, task_h, "You sell or hold",
               value="Still your call", fonts=fonts)
     _bpmn_elbow(draw, (c_buy[0] + task_w / 2, c_buy[1]),
                (c_sellhold[0] - task_w / 2, c_sellhold[1]))
 
-    c_logsell = (1230, rB_you_y)
+    c_logsell = (1550, you_y)
     _bpmn_task(draw, *c_logsell, task_w, task_h, "Log a sell",
               value="Closes the record the scoreboard will grade", fonts=fonts)
     _bpmn_elbow(draw, (c_sellhold[0] + task_w / 2, c_sellhold[1]),
                (c_logsell[0] - task_w / 2, c_logsell[1]), label="sell",
                font=small_font)
 
-    c_score = (1230, rB_sd_y)
+    c_score = (1550, sd_y)
     _bpmn_task(draw, *c_score, task_w, task_h,
               "Scoreboard checks the signal, 5 trading days later",
               value="Proof the rule works, or does not, in public",
               subprocess=True, value_above=True, fonts=fonts)
-    _bpmn_elbow(draw, (c_logsell[0] - 45, c_logsell[1] - task_h / 2),
-               (c_score[0] - 45, c_score[1] + task_h / 2))
+    _bpmn_elbow(draw, (c_logsell[0] - 60, c_logsell[1] - task_h / 2),
+               (c_score[0] - 60, c_score[1] + task_h / 2))
 
-    ev_end = (1560, rB_sd_y)
-    draw.ellipse([ev_end[0] - 30, ev_end[1] - 30, ev_end[0] + 30, ev_end[1] + 30],
-                outline=ink, width=5, fill=(255, 255, 255))
+    ev_end = (1980, sd_y)
+    draw.ellipse([ev_end[0] - 36, ev_end[1] - 36, ev_end[0] + 36, ev_end[1] + 36],
+                outline=ink, width=6, fill=(255, 255, 255))
     _bpmn_elbow(draw, (c_score[0] + task_w / 2, c_score[1]),
-               (ev_end[0] - 30, ev_end[1]))
+               (ev_end[0] - 36, ev_end[1]))
 
-    legend_y = height - 60
-    draw.text((lane_x0, legend_y), "+ sub-process    ||| once-per-item step "
-             "(sequential)    dotted box: what that step is worth",
+    draw.text((lane_x0, height - 50), "+ sub-process    ||| once-per-item "
+             "step (sequential)    dotted box: what that step is worth",
              font=small_font, fill=(110, 110, 110))
 
     _generated_dir()

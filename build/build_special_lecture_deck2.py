@@ -19,10 +19,16 @@ them.
 
 Two discussion diagrams close the deck (a plain data-flow picture and a
 BPMN diagram of the buy/sell decision process), added per his 25 Nov ask,
-drawn by special_lecture_kit.make_data_flow_png/make_bpmn_signal_png and
-checked read-only against the real stock-desk source before drawing
-either one; see content_special_lecture_deck2.py's own notes for exactly
-where the first draft differed from the code.
+drawn by special_lecture_kit.make_data_flow_png/make_bpmn_signal_png_
+part1/part2 and checked read-only against the real stock-desk source
+before drawing either one; see content_special_lecture_deck2.py's own
+notes for exactly where the first draft differed from the code.
+
+The BPMN diagram is two slides, not one (his own fix, 25 Nov: the single
+image was unreadable at normal size): a BPMN link event, "A", is the
+seam, the same one a paginated BPMN pool uses when a flow is too wide for
+one line, so nothing about the process itself is cut, only how it is
+printed.
 """
 
 from __future__ import annotations
@@ -99,14 +105,20 @@ def build(edition: str, out_path: Path) -> int:
     kit.make_data_flow_png(data_flow_png, content.DATA_FLOW_NODES,
                            accent_index=content.DATA_FLOW_ACCENT_INDEX)
     prs_slides.append(("shot", {**content.DATA_FLOW_SLIDE,
-                                "path": data_flow_png,
+                                "path": data_flow_png, "layout": "wide",
                                 "band_top": 1.3, "band_h": 5.2}))
 
-    bpmn_png = kit.GENERATED / "bpmn-signal-process.png"
-    kit.make_bpmn_signal_png(bpmn_png)
-    prs_slides.append(("shot", {**content.BPMN_SLIDE,
-                                "path": bpmn_png,
-                                "band_top": 1.2, "band_h": 5.4}))
+    bpmn1_png = kit.GENERATED / "bpmn-signal-process-1.png"
+    kit.make_bpmn_signal_png_part1(bpmn1_png)
+    bpmn2_png = kit.GENERATED / "bpmn-signal-process-2.png"
+    kit.make_bpmn_signal_png_part2(bpmn2_png)
+    for i, png in enumerate((bpmn1_png, bpmn2_png), start=1):
+        prs_slides.append(("shot", {
+            "title": f"{content.BPMN_SLIDE['title']} ({i} of 2)",
+            "path": png, "credit": "", "layout": "wide",
+            "band_top": 1.3, "band_h": 4.6,
+            "notes": content.BPMN_SLIDE["notes"] if i == 1 else (),
+        }))
 
     prs_slides.append(("closing", content.CLOSING))
 

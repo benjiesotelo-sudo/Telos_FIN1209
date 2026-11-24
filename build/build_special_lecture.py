@@ -13,13 +13,18 @@ same projector as every other FIN1209 deck, and it reuses the two-edition
 switch: the teaching edition carries speaker cues, the student edition does
 not.
 
-Two kinds of picture this deck places, neither a Lim Figure nor an invented
-Chart:
+Three kinds of picture this deck places, neither a Lim Figure nor an
+invented Chart:
 
-  * One terminal-mockup illustration (the PATH/command-not-found error and
-    its fix), generated at build time by this script with Pillow, since no
-    real recording of that error exists. Labelled ILLUSTRATION on the slide.
-  * Two real screenshots of Stock Desk, the captain's own live tool, copied
+  * A dual terminal-mockup illustration (the macOS PATH/command-not-found
+    error and the Windows "not recognized" error, each with its exact fix),
+    generated at build time by this script with Pillow, since no real
+    recording of either error exists. Labelled ILLUSTRATION.
+  * A Git/GitHub flow diagram (your computer, push, GitHub, pull, a
+    teammate's computer), also generated at build time. Labelled
+    ILLUSTRATION.
+  * Two real screenshots of Stock Desk, my own live tool, cropped to the
+    chart, the signal panel and the position card at large size and copied
     in from the firstmate home's data/stock-desk-build/evidence/. Labelled
     SCREENSHOT.
 
@@ -65,45 +70,137 @@ STOCK_DESK_EVIDENCE = (Path.home() / ".treehouse" / "benjie-agent-workspace-8bf1
                        / "1" / "benjie-agent-workspace" / "data"
                        / "stock-desk-build" / "evidence")
 
+# Crop box (left, top, right, bottom) in source pixels, dropping the
+# watchlist sidebar so the chart, the signal panel and the position card
+# read at large size on a projector. Picked by eye against each screenshot.
+CROPS = {
+    "deployed-final-ipad.png": (300, 95, 1366, 880),
+    "deployed-position-card.png": (300, 85, 1366, 870),
+}
+
 
 # --------------------------------------------------------------------------
-# The one terminal-mockup illustration this deck draws for itself
+# The illustrations this deck draws for itself
 # --------------------------------------------------------------------------
 
-def make_terminal_png(path: Path, lines: tuple[str, ...], *, width=1500) -> None:
-    """A plain terminal-window illustration: title bar, monospace lines.
+MONO_FONT_PATH = "/System/Library/Fonts/Menlo.ttc"
+
+
+def _terminal_panel_height(lines: tuple[str, ...], *, line_h=38) -> int:
+    bar_h = 44
+    pad_top = 28
+    pad_bottom = 22
+    return bar_h + pad_top + len(lines) * line_h + pad_bottom
+
+
+def _draw_terminal_panel(img, draw, x0, y0, width, lines, title, *,
+                         line_h=38, font_size=23) -> None:
+    """One terminal window, its title bar and monospace lines, at (x0, y0)."""
+    bar_h = 44
+    pad_top = 28
+    height = _terminal_panel_height(lines, line_h=line_h)
+
+    draw.rectangle([x0, y0, x0 + width, y0 + bar_h], fill=(44, 44, 46))
+    for cx, dot_color in ((x0 + 24, (255, 95, 86)), (x0 + 54, (255, 189, 46)),
+                          (x0 + 84, (39, 201, 63))):
+        draw.ellipse([cx - 8, y0 + bar_h / 2 - 8, cx + 8, y0 + bar_h / 2 + 8],
+                     fill=dot_color)
+    draw.rectangle([x0, y0 + bar_h, x0 + width, y0 + height],
+                   fill=(28, 28, 30))
+
+    label_font = ImageFont.truetype(MONO_FONT_PATH, 20, index=0)
+    draw.text((x0 + width - 10, y0 - 30), title, font=label_font,
+              fill=(90, 90, 90), anchor="ra")
+
+    font = ImageFont.truetype(MONO_FONT_PATH, font_size, index=0)
+    y = y0 + bar_h + pad_top
+    for line in lines:
+        color = (235, 235, 235)
+        if "not found" in line or "not recognized" in line:
+            color = (255, 110, 100)
+        elif line.startswith("~ %") or line.startswith("PS>") or line.startswith("›"):
+            color = (110, 210, 255)
+        elif line.startswith("Codex CLI") or "Fix:" in line or "New window" in line:
+            color = (140, 230, 140)
+        draw.text((x0 + 28, y), line, font=font, fill=color)
+        y += line_h
+
+
+def make_dual_terminal_png(path: Path, *, left_title, left_lines, right_title,
+                            right_lines, panel_width=980, gap=60) -> None:
+    """Two terminal-window illustrations side by side: macOS and Windows.
 
     Not a real recording; render_shot() labels every slide that uses this
     ILLUSTRATION, never SCREENSHOT, so it is never mistaken for one.
     """
-    bar_h = 54
-    line_h = 42
-    pad_top = 36
-    pad_bottom = 30
-    height = bar_h + pad_top + len(lines) * line_h + pad_bottom
+    left_h = _terminal_panel_height(left_lines)
+    right_h = _terminal_panel_height(right_lines)
+    top_pad = 40
+    height = top_pad + max(left_h, right_h) + 20
+    width = panel_width * 2 + gap
 
-    bg = (28, 28, 30)
+    img = Image.new("RGB", (width, height), (250, 248, 242))
+    draw = ImageDraw.Draw(img)
+    _draw_terminal_panel(img, draw, 0, top_pad, panel_width, left_lines,
+                         left_title)
+    _draw_terminal_panel(img, draw, panel_width + gap, top_pad, panel_width,
+                         right_lines, right_title)
+
+    GENERATED.mkdir(parents=True, exist_ok=True)
+    img.save(path)
+
+
+def make_git_github_flow_png(path: Path, *, width=1700, height=560) -> None:
+    """Your computer, push, GitHub, pull, a teammate's computer.
+
+    One simple picture for the "What are Git and GitHub?" slide: three
+    boxes and two labelled arrows, each box naming what Git or GitHub does
+    there.
+    """
+    bg = (250, 248, 242)
+    ink = (26, 26, 26)
+    green = (0, 122, 51)
+    gold = (242, 169, 0)
+    muted = (110, 110, 110)
+
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
-    draw.rectangle([0, 0, width, bar_h], fill=(44, 44, 46))
-    for cx, dot_color in ((28, (255, 95, 86)), (64, (255, 189, 46)),
-                          (100, (39, 201, 63))):
-        draw.ellipse([cx - 9, bar_h / 2 - 9, cx + 9, bar_h / 2 + 9],
-                     fill=dot_color)
+    title_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf", 34)
+    body_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial.ttf", 24)
+    label_font = ImageFont.truetype(
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf", 26)
 
-    font = ImageFont.truetype(
-        "/System/Library/Fonts/Menlo.ttc", 27, index=0)
-    y = bar_h + pad_top
-    for line in lines:
-        color = (235, 235, 235)
-        if line.startswith("zsh:"):
-            color = (255, 110, 100)
-        elif line.startswith("~ %") or line.startswith("›"):
-            color = (110, 210, 255)
-        elif line.startswith("Codex CLI"):
-            color = (140, 230, 140)
-        draw.text((36, y), line, font=font, fill=color)
-        y += line_h
+    box_w, box_h = 430, 230
+    y = (height - box_h) // 2
+    xs = [40, (width - box_w) // 2, width - box_w - 40]
+    boxes = [
+        ("Your computer", "Git keeps the history\nof every change you\nmake here.", green),
+        ("GitHub", "Stores that history\nonline, so your group\ncan share it.", gold),
+        ("Teammate's computer", "Pulls the shared\nhistory down to\nwork on it too.", green),
+    ]
+    centers = []
+    for x, (title, body, accent) in zip(xs, boxes):
+        draw.rounded_rectangle([x, y, x + box_w, y + box_h], radius=18,
+                               fill=(255, 255, 255), outline=(215, 224, 217),
+                               width=2)
+        draw.rectangle([x, y, x + box_w, y + 6], fill=accent)
+        draw.text((x + 24, y + 26), title, font=title_font, fill=ink)
+        draw.multiline_text((x + 24, y + 80), body, font=body_font,
+                            fill=muted, spacing=10)
+        centers.append((x + box_w // 2, y + box_h // 2))
+
+    arrow_y = y + box_h // 2
+    for (cx0, _), (cx1, _), label in zip(centers, centers[1:], ("push", "pull")):
+        x_start = cx0 + box_w // 2
+        x_end = cx1 - box_w // 2
+        draw.line([(x_start, arrow_y), (x_end, arrow_y)], fill=ink, width=4)
+        draw.polygon([(x_end, arrow_y), (x_end - 18, arrow_y - 11),
+                     (x_end - 18, arrow_y + 11)], fill=ink)
+        mid = (x_start + x_end) // 2
+        draw.text((mid, arrow_y - 44), label, font=label_font, fill=ink,
+                  anchor="ma")
 
     GENERATED.mkdir(parents=True, exist_ok=True)
     img.save(path)
@@ -159,12 +256,17 @@ def render_shot(prs, *, title, label, image_path, credit, marker, notes=()):
 
 def _copy_stock_desk_shots() -> dict[str, Path]:
     out = {}
+    GENERATED.mkdir(parents=True, exist_ok=True)
     for shot in content.STOCK_DESK_SHOTS:
-        src = STOCK_DESK_EVIDENCE / shot["source_file"]
-        dst = GENERATED / shot["source_file"]
-        GENERATED.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(src, dst)
-        out[shot["source_file"]] = dst
+        name = shot["source_file"]
+        src = STOCK_DESK_EVIDENCE / name
+        dst = GENERATED / name
+        box = CROPS.get(name)
+        if box:
+            Image.open(src).crop(box).save(dst)
+        else:
+            shutil.copyfile(src, dst)
+        out[name] = dst
     return out
 
 
@@ -172,7 +274,15 @@ def build(edition: str, out_path: Path) -> int:
     deckkit.INCLUDE_NOTES = edition == deckkit.TEACHING
 
     error_png = GENERATED / "codex-path-error.png"
-    make_terminal_png(error_png, content.ERROR_SHOT["lines"])
+    make_dual_terminal_png(
+        error_png,
+        left_title=content.ERROR_SHOT["mac_title"],
+        left_lines=content.ERROR_SHOT["mac_lines"],
+        right_title=content.ERROR_SHOT["win_title"],
+        right_lines=content.ERROR_SHOT["win_lines"],
+    )
+    git_github_png = GENERATED / "git-github-flow.png"
+    make_git_github_flow_png(git_github_png)
     shot_paths = _copy_stock_desk_shots()
 
     prs_slides: list[tuple[str, object]] = []
@@ -181,6 +291,9 @@ def build(edition: str, out_path: Path) -> int:
         prs_slides.append(("content", c))
     prs_slides.append(("shot", content.ERROR_SHOT | {"path": error_png}))
     for c in content.MORE_CONTENT:
+        prs_slides.append(("content", c))
+    prs_slides.append(("shot", content.GIT_GITHUB_SHOT | {"path": git_github_png}))
+    for c in content.MORE_CONTENT_2:
         prs_slides.append(("content", c))
     for shot in content.STOCK_DESK_SHOTS:
         prs_slides.append(("shot", {

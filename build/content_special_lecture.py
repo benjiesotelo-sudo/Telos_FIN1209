@@ -29,7 +29,7 @@ TITLE = deckkit.TitleSlide(
     chapter="Special lecture",
     title="AI Tools, Git and GitHub for Your Final Project",
     subtitle=("Setting up Codex, Git and GitHub so your group can build "
-              "Quiz 6 together"),
+              "your final project together"),
     presenter=("Benjamin C. Sotelo, with Tyrone Miguel Arriolado helping set "
                "up your computers today"),
     notes=(
@@ -89,14 +89,18 @@ CONTENT = [
         ),
         accent=('powershell -ExecutionPolicy ByPass -c "irm '
                 'https://chatgpt.com/codex/install.ps1 | iex"'),
-        caption=("No WSL needed; this installs Codex directly on Windows. "
-                 "Same source, fetched 25 Nov 2026."),
+        caption=("Windows 10 or 11: the PowerShell installer above. If it "
+                 "fails, Tyrone will set up WSL2 with you."),
         notes=(
-            "Exact command quoted verbatim from learn.chatgpt.com/codex/"
-            "cli.md (Windows section), fetched 25 Nov 2026.",
-            "The docs offer WSL (Windows Subsystem for Linux) only as an "
-            "option for Linux-native tooling, never as a requirement; a "
-            "native Windows install exists and this is it.",
+            "Exact command quoted verbatim from github.com/openai/codex's "
+            "README, fetched 25 Nov 2026 (a native Windows install, no "
+            "WSL): this is the one we lead with.",
+            "openai/codex's own docs/install.md, fetched 25 Nov 2026, lists "
+            '"Windows 11 via WSL2" in its system requirements table: the '
+            "project's own docs are not fully consistent on whether WSL is "
+            "required, which is exactly why today's fallback is Tyrone "
+            "setting up WSL2 by hand if the native installer fails for "
+            "anyone.",
         ),
     ),
     deckkit.Content(
@@ -106,8 +110,11 @@ CONTENT = [
             "The first time, Codex asks you to sign in.",
             'Choose "Sign in with ChatGPT" and finish in your browser.',
         ),
-        accent=("You need a ChatGPT account to sign in; it is free to "
-                "create one."),
+        accent=("Codex is included across ChatGPT plans, including Free "
+                "and Go."),
+        caption=("Usage limits vary by plan. Source: OpenAI help center, "
+                 '"Using Codex with your ChatGPT plan," fetched 25 Nov '
+                 "2026."),
         notes=(
             'learn.chatgpt.com/codex/cli, fetched 25 Nov 2026: "Open a '
             "project directory and run codex. The first time you run "
@@ -115,38 +122,68 @@ CONTENT = [
             'sign-in method."',
             "An API key is the other option the docs name; ChatGPT sign-in "
             "is simpler for this class and needs no separate key.",
+            "help.openai.com/en/articles/11369540-codex-in-chatgpt, fetched "
+            '25 Nov 2026, verbatim: "Codex is included across ChatGPT '
+            'plans, including Free and Go. Usage limits vary by plan." Its '
+            "Availability section adds one caveat: Codex Cloud specifically "
+            '(a separate, hosted feature, not the CLI we are using today) '
+            '"is not included with Free or Go." The CLI itself is on '
+            "every plan.",
         ),
     ),
 ]
 
-# The one dedicated slide the captain asked for by name: the error he expects
-# on a fresh Mac, right after install, with its exact fix. Rendered as a Shot
-# (a terminal-mockup illustration), not a Content slide, so the room sees the
-# actual wording of the error rather than a paraphrase.
+# The one dedicated slide requested by name: the error expected right after
+# install, on both operating systems, with the exact fix for each. Rendered as a Shot (a terminal-mockup illustration showing both a
+# macOS and a Windows panel), not a Content slide, so the room sees the
+# actual wording of each error rather than a paraphrase.
 ERROR_SHOT = dict(
     title="The error you will probably see",
     label="ILLUSTRATION",
-    shows=("A typical first terminal session right after installing Codex "
-           "on a fresh Mac."),
-    lines=(
+    mac_title="macOS (zsh)",
+    mac_lines=(
         "~ % codex",
         "zsh: command not found: codex",
         "",
         '~ % export PATH="$HOME/.local/bin:$PATH" && codex',
-        "Codex CLI - signed in as you",
-        "› ",
+        "Codex CLI: signed in as you",
+        "",
+        "New window still fails? Run once, then reopen:",
+        "~ % echo 'export PATH=\"$HOME/.local/bin:$PATH\"' >> ~/.zprofile",
     ),
-    credit=("Illustration, not a real recording. Fix: open a brand new "
-            "terminal window or tab, or run the export line above once, "
-            "exactly as the installer prints it."),
+    win_title="Windows (PowerShell)",
+    win_lines=(
+        "PS> codex",
+        "codex : term 'codex' is not recognized",
+        "",
+        "Fix: close this window, open a NEW PowerShell window:",
+        "PS> codex",
+        "Codex CLI: signed in as you",
+    ),
+    credit=("not a real recording. Rare on macOS: zsh: no such file or "
+            "directory: codex means the install did not finish; rerun the "
+            "macOS install command."),
     notes=(
-        "Why this happens: the installer adds Codex to your PATH by "
-        "editing ~/.zprofile (read verbatim from "
-        "releases.openai.com/codex/install.sh, fetched 25 Nov 2026), but a "
-        "terminal window already open does not re-read that file.",
-        "The installer's own end-of-run message says exactly this: "
-        '"Current terminal: export PATH=... && codex" / "Future '
-        'terminals: open a new terminal and run: codex."',
+        "macOS: the installer adds Codex to your PATH by editing "
+        "~/.zprofile (read verbatim from releases.openai.com/codex/"
+        "install.sh, fetched 25 Nov 2026, its pick_profile function on "
+        "darwin with zsh), but a terminal window already open does not "
+        "re-read that file. The installer's own end-of-run message says "
+        'exactly this: "Current terminal: export PATH=... && codex" / '
+        '"Future terminals: open a new terminal and run: codex."',
+        "macOS, the rare wording: \"command not found\" means codex is not "
+        'yet on PATH (the normal case above); "no such file or directory" '
+        "would mean the symlink in ~/.local/bin points at nothing, which "
+        "only happens if the install itself did not finish; install.sh "
+        "never prints that wording itself, so it is this general shell "
+        "behaviour on a broken link, not a message the script prints.",
+        "Windows: install.ps1 (releases.openai.com/codex/install.ps1, "
+        "fetched 25 Nov 2026) does update PATH, but the usual install "
+        'command runs it as a child process via "-c", so the window the '
+        "student is actually looking at never has its PATH refreshed; "
+        "its own closing message only promises the NEXT PowerShell window, "
+        'never the current one: "Future PowerShell windows: open a new '
+        'PowerShell window and run: codex."',
     ),
 )
 
@@ -164,6 +201,19 @@ MORE_CONTENT = [
         accent=("Type a prompt, read what Codex plans to do, then approve "
                 "it."),
     ),
+]
+
+# A dedicated picture slide, not a Content slide, so the flow itself is the
+# teaching: your computer, push, GitHub, pull, a teammate's computer.
+GIT_GITHUB_SHOT = dict(
+    title="What are Git and GitHub?",
+    label="ILLUSTRATION",
+    credit=("Git keeps the history of every change to your project's files "
+            "on your own computer; GitHub stores that history online so a "
+            "group can share it, review it and merge it."),
+)
+
+MORE_CONTENT_2 = [
     deckkit.Content(
         title="Prompt: install Git",
         lines=("Type this into Codex:",),
@@ -200,7 +250,7 @@ MORE_CONTENT = [
             "Type this into Codex:",
         ),
         accent=('"Create a new private GitHub repository for our group\'s '
-                'Quiz 6 project, and invite my teammates\' GitHub usernames '
+                'final project, and invite my teammates\' GitHub usernames '
                 'as collaborators."'),
         caption=("Everyone else waits for the leader's invite, then "
                  "accepts it on github.com."),
@@ -223,7 +273,7 @@ MORE_CONTENT = [
                  "into the group's shared project."),
     ),
     deckkit.Content(
-        title="How your group collaborates on Quiz 6",
+        title="How your group collaborates on your final project",
         lines=(
             "The leader creates the repository and invites the co-leader "
             "and members.",
@@ -252,25 +302,29 @@ MORE_CONTENT = [
     ),
 ]
 
-# The two screenshots, described in order. See build_special_lecture.py for
-# the source files and the firstmate home evidence folder they are pulled
-# from.
+# The two screenshots, described in order, cropped (see CROPS in
+# build_special_lecture.py) to the chart, the signal panel and the position
+# card at large size, dropping the watchlist sidebar so they read from the
+# back of the room. Source files and the firstmate home evidence folder they
+# are pulled from are also in build_special_lecture.py.
 STOCK_DESK_SHOTS = [
     dict(
         title="Stock Desk: live prices and signals",
         label="SCREENSHOT",
-        shows=("The main Stock Desk screen: live prices, Chapter 8's "
+        shows=("The chart and signal panel: live prices, Chapter 8's "
                "signal panel, fundamentals and a session replay."),
         source_file="deployed-final-ipad.png",
-        credit=("Stock Desk, the captain's own tool, signed in "
-                "with his own passphrase. Live Yahoo prices, Chapter 8's "
-                "five-day-high / RSI / MACD signal rule, fundamentals from "
-                "each company's own SEC filing, and a session replay."),
+        credit=("My own tool, signed in with my own passphrase. Live Yahoo "
+                "prices, Chapter 8's five-day-high / RSI / MACD signal "
+                "rule, fundamentals from each company's own SEC filing, "
+                "and a session replay."),
         notes=(
-            "How he uses it, for his own reference (not shown to the "
-            "class): sign in with his passphrase, pick a stock from the "
-            "watchlist, read the signal panel (trend, signal, trigger, "
-            "volume), then log a buy only if he decides to act on it.",
+            "How I use it, for my own reference (not shown to the class): "
+            "sign in with my passphrase, pick a stock from the watchlist, "
+            'read "Last signal fired" and the live reading below it, then '
+            "log a buy only if I decide to act on it; replay the last "
+            "session to see the signals fire again. Full how-to: the "
+            "firstmate home's data/stock-desk-answers/report.md section 2.",
             "Students never get the passphrase or access; this is a "
             "demonstration, never a class assignment.",
         ),
@@ -281,10 +335,9 @@ STOCK_DESK_SHOTS = [
         shows=("The position card after logging a buy: bought price, "
                "target, stop, and the running gain or loss."),
         source_file="deployed-position-card.png",
-        credit=("Stock Desk, the captain's own tool. Logging a "
-                "buy records the price, the stop and the target; the tool "
-                "never places a trade, it only tracks one he decides to "
-                "log himself."),
+        credit=("My own tool. Logging a buy records the price, the stop "
+                "and the target; the tool never places a trade, it only "
+                "tracks one I decide to log myself."),
     ),
 ]
 

@@ -8,12 +8,17 @@ sequence twice from an empty folder, on a real machine, with no sign-in,
 no repository, and no paid key, and recorded the real terminal transcripts
 and two real browser screenshots that prove it. Nothing here is invented;
 every terminal excerpt is copied verbatim from that worker's own
-screens/terminal-*.txt, and the two screenshots are its own
-screens/browser-04-*.png, genuine captures of the page the server actually
-served.
+screens/terminal-*.txt, and the screenshots are its own genuine captures
+of the page the server actually served.
 
 Every "If it did not work" line is that worker's own account of what
 actually went wrong running this twice, not a guess.
+
+Each prompt is shown in full, never truncated (his own fix, 25 Nov: a
+student cannot type a truncated prompt): one slide for the exact words to
+type, a second for the real result. The same full text is also written,
+verbatim, to data/fin1209-special-lecture/deck3-prompts.txt by the build
+script, as a handout he can share.
 
 Neutral Metropolis visual style, not FEU's; see special_lecture_kit.py.
 """
@@ -38,8 +43,8 @@ TITLE = deckkit.TitleSlide(
         "Verified twice end to end by a scout worker before this deck was "
         "built: once finding and fixing one real problem, once clean as "
         "written, in about 6 minutes of Codex working time.",
-        "Nothing here is staged; every terminal excerpt and both "
-        "screenshots are genuine, from that worker's own run.",
+        "Nothing here is staged; every terminal excerpt and every "
+        "screenshot is genuine, from that worker's own run.",
     ),
 )
 
@@ -55,43 +60,64 @@ INTRO = deckkit.Content(
         "working time; comfortably inside 30 minutes in class.",
     ),
     accent=("Prerequisite: python3 --version must already work with no "
-            "popup; have that run once before class on a fresh Mac."),
+            "popup; have that run once before class on a fresh Mac (deck "
+            "1 now has this same step, next to the Git check)."),
 )
 
+# Rewritten per his 25 Nov fix: say the decision plainly, no internal
+# "flagged rather than decided" framing; he already decided (indexes as
+# the main path, one stock as the bonus).
 SCOPE_NOTE = deckkit.Content(
-    title="One decision worth a second look",
+    title="Why indexes, with one stock as a bonus",
     lines=(
-        "This tool offers three broad market indexes (S&P 500, Nasdaq "
-        "Composite, Dow Jones) rather than individual stock tickers.",
-        "Every individual-ticker source free enough to need no account "
-        "either rate-limited or required solving a bot challenge; "
-        "FRED's index series are confirmed free, keyless and public "
-        "domain, so the tool uses those instead.",
+        "This tool's main path is three broad market indexes (S&P 500, "
+        "Nasdaq Composite, Dow Jones): free, no account, no key, and "
+        "reliable, every time this was tested.",
         "Chapter 8's trend, RSI and five-bar rule apply identically to an "
         "index's closing price; nothing about the rule changes.",
+        "A bonus prompt at the end lets you load one individual stock "
+        "instead, such as NVDA, the same way; it can be slower to answer "
+        "with a whole class on one network, so it is optional.",
     ),
-    accent=("Real individual tickers would need a keyed data source "
-            "instead; that is a scope change, not a fix, and is flagged "
-            "here rather than decided alone."),
+    accent=("The three indexes always work. The bonus stock is a nice "
+            "extra, not something to depend on in front of the class."),
 )
 
-# Five prompts, typed one at a time into a single Codex session, waiting for
-# each to finish before the next. term_lines in every step is a verbatim
-# excerpt of that prompt's own real transcript (screens/terminal-0N-*.txt),
-# trimmed to what fits a slide, never invented.
-STEPS = [
+# Six prompts in all (five required, one optional bonus), each now a pair
+# of slides: the exact words to type, in full, never truncated (his own
+# 25 Nov fix), then the real result. prompt_text is copied verbatim from
+# that prompt's own report; term_lines, where present, is a verbatim
+# excerpt of the real transcript (screens/terminal-0N-*.txt or
+# terminal-bonus-codex.txt), trimmed to what fits the result slide, never
+# invented. image_file, where present, is a real screenshot instead of a
+# generated terminal mockup.
+PROMPTS = [
     dict(
+        number=1,
         title="Prompt 1: the plan, no code yet",
-        do_lines=(
-            "Goal: a short, checkable plan before any code exists, "
-            "naming the real Chapter 8 rule rather than inventing one.",
+        goal=("Goal: a short, checkable plan before any code exists, "
+              "naming the real Chapter 8 rule rather than inventing one."),
+        prompt_text=(
+            "Write a short PLAN.md in this empty folder for a tiny local "
+            "web app called Stock Desk Mini. Rules: only Python 3 "
+            "standard library, no pip installs, no npm, no other "
+            "packages. One web page: pick one of three indexes (S&P 500, "
+            "Nasdaq Composite, Dow Jones Industrial Average), see a line "
+            "chart of its last 6 months of daily closing prices with its "
+            "20-day and 50-day moving averages, and one reading of BUY, "
+            "SELL, or HOLD. Trend is price versus the 50-day average, "
+            "momentum is 14-day RSI versus 50, and the trigger is the "
+            "day's close breaking above the prior 5 trading days' high or "
+            "below the prior 5 trading days' low. Data must be free, need "
+            "no account and no API key: use the FRED fredgraph.csv "
+            "endpoint, for example https://fred.stlouisfed.org/graph/"
+            "fredgraph.csv?id=SP500 for the S&P 500, id=NASDAQCOM for "
+            "Nasdaq, id=DJIA for Dow. A browser page cannot fetch that "
+            "URL directly, so a small Python server must fetch the CSV "
+            "itself and hand the page JSON. List the exact files you "
+            "will create and how the BUY, SELL, HOLD reading is "
+            "computed. Do not write any code yet, only the plan."
         ),
-        do_accent=('"Write a short PLAN.md ... no pip installs, no npm... '
-                   'Trend is price versus the 50-day average, momentum is '
-                   '14-day RSI versus 50, and the trigger is the day\'s '
-                   'close breaking above the prior 5 trading days\' high '
-                   'or below the prior 5 trading days\' low... Do not '
-                   'write any code yet, only the plan."'),
         term_lines=(
             "codex",
             "Created PLAN.md with exact files, FRED data flow, chart",
@@ -104,18 +130,24 @@ STEPS = [
                  "happen in either real run."),
     ),
     dict(
+        number=2,
         title="Prompt 2: the data and the math, checked by eye",
-        do_lines=(
-            "Goal: the server logic working and checked on numbers a "
-            "student can sanity-check themselves, before any page exists "
-            "to hide a bug behind.",
+        goal=("Goal: the server logic working and checked on numbers a "
+              "student can sanity-check themselves, before any page "
+              "exists to hide a bug behind."),
+        prompt_text=(
+            "Build server.py from the plan. Fetch the FRED CSV by "
+            "running the system curl command (not Python's urllib, "
+            "which hangs on this network) with a 15 second timeout, and "
+            "raise a clear error if curl is missing or fails. Compute "
+            "the 20-day and 50-day moving averages, the 14-day RSI, and "
+            "the BUY, SELL, or HOLD reading. Before building anything "
+            "else, run the data function directly from the command line "
+            "for the S&P 500, with up to 3 retries if the network call "
+            "fails, and print the latest date, close, 20-day average, "
+            "50-day average, RSI, and reading so I can check the math by "
+            "eye."
         ),
-        do_accent=('"Build server.py from the plan. Fetch the FRED CSV by '
-                   'running the system curl command (not Python\'s '
-                   'urllib, which hangs on this network)... run the data '
-                   'function directly from the command line for the S&P '
-                   '500... print the latest date, close, 20-day average, '
-                   '50-day average, RSI, and reading."'),
         term_lines=(
             "Latest date: 2026-11-23",
             "Close: 7237.170000",
@@ -131,17 +163,22 @@ STEPS = [
                  "is to fetch with curl from the start."),
     ),
     dict(
+        number=3,
         title="Prompt 3: the actual page",
-        do_lines=(
-            "Goal: turn the working server logic into something a "
-            "student can look at and read a signal off of.",
+        goal=("Goal: turn the working server logic into something a "
+              "student can look at and read a signal off of."),
+        prompt_text=(
+            "Now build index.html, app.js, and style.css so the page is "
+            "actually usable: a dropdown for the three indexes, a chart "
+            "of the daily close with the 20-day and 50-day averages "
+            "drawn on top in different colors with a small legend, the "
+            "latest close and date, and a clear BUY, SELL, or HOLD "
+            "reading in large text with the three conditions (trend, "
+            "momentum, trigger) shown as pass or fail under it. Wire it "
+            "to server.py's /api/prices endpoint. Keep it on one page, "
+            "plain HTML, CSS, and JavaScript, no build step, no "
+            "frameworks."
         ),
-        do_accent=('"Now build index.html, app.js, and style.css... a '
-                   'dropdown for the three indexes, a chart of the daily '
-                   'close with the 20-day and 50-day averages... and a '
-                   'clear BUY, SELL, or HOLD reading in large text with '
-                   'the three conditions shown as pass or fail under it. '
-                   'Wire it to server.py\'s /api/prices endpoint."'),
         term_lines=(
             "codex",
             "Built the page with the index dropdown, three-color chart",
@@ -155,21 +192,22 @@ STEPS = [
                  "exactly; ask Codex to check the request URL."),
     ),
     dict(
+        number=4,
         title="Prompt 4: start it",
-        do_lines=(
-            "Goal: the \"see it\" moment, on this computer and, if time "
-            "allows, on a phone on the same Wi-Fi.",
+        goal=("Goal: the \"see it\" moment, on this computer and, if "
+              "time allows, on a phone on the same Wi-Fi."),
+        prompt_text=(
+            "Make server.py listen on all local network addresses "
+            "(0.0.0.0), not only this Mac, then tell me the exact "
+            "command to start it so it keeps running, the exact address "
+            "to open in a browser on this same Mac, and this Mac's "
+            "local Wi-Fi address so I can open the same page on my "
+            "phone on the same Wi-Fi."
         ),
-        do_accent=('"Make server.py listen on all local network '
-                   'addresses (0.0.0.0)... then tell me the exact command '
-                   'to start it so it keeps running, the exact address to '
-                   'open in a browser on this same Mac, and this Mac\'s '
-                   'local Wi-Fi address so I can open the same page on my '
-                   'phone."'),
         term_lines=(
             "codex",
             "Updated server.py to listen on 0.0.0.0. Verified it",
-            "responds through localhost and 192.168.1.127.",
+            "responds through localhost and 192.168.x.x.",
             "nohup python3 -u server.py --port 8000 > server.log &",
         ),
         fallback=("on the test machine, macOS reported Wi-Fi as \"off\" "
@@ -179,16 +217,16 @@ STEPS = [
                  "Mac's firewall is not blocking incoming connections."),
     ),
     dict(
+        number=5,
         title="Prompt 5: one last check, across all three indexes",
-        do_lines=(
-            "Goal: a fast confidence check immediately before using the "
-            "tool live in front of the class.",
+        goal=("Goal: a fast confidence check immediately before using "
+              "the tool live in front of the class."),
+        prompt_text=(
+            "Quickly check all three indexes once more by requesting "
+            "/api/prices for each from the running server, and tell me "
+            "in one line whether each one returns a reading of BUY, "
+            "SELL, or HOLD with no errors."
         ),
-        do_accent=('"Quickly check all three indexes once more by '
-                   'requesting /api/prices for each from the running '
-                   'server, and tell me in one line whether each one '
-                   'returns a reading of BUY, SELL, or HOLD with no '
-                   'errors."'),
         term_lines=(
             "codex",
             "S&P 500: HOLD; Nasdaq Composite: SELL; Dow Jones",
@@ -205,30 +243,41 @@ STEPS = [
 
 # A sixth, optional prompt, added after his 25 Nov decision to keep both
 # data paths: FRED's three indexes stay the required main path; a single
-# stock ticker via Yahoo becomes this one bonus prompt at the end. Built
-# from data/fin1209-deck3-bonus/report.md: verified for real, twice over,
-# against a copy of the finished Stock Desk Mini (Yahoo's chart endpoint
-# returns 429 with no User-Agent header, 200 with an ordinary browser one;
-# NVDA returned a real BUY reading with its own three-line chart, once,
-# before the same network started answering 429 for the rest of that
-# session). The one real screenshot that exists shows that safe fallback,
-# not the chart; both outcomes are genuine, live Yahoo responses, not
-# simulated.
-BONUS_STEP = dict(
-    title="Bonus, optional: one stock, via Yahoo",
-    image_file="browser-bonus-nvda-429.png",
-    do_lines=(
-        "Optional, after the five prompts above, which already stand on "
-        "their own: type any single stock ticker, like NVDA, instead of "
-        "picking an index.",
+# stock ticker via an external source becomes this one bonus prompt at
+# the end. Built from data/fin1209-deck3-bonus/report.md: verified for
+# real, twice over, against a copy of the finished Stock Desk Mini. The
+# one real screenshot that exists shows the safe rate-limit fallback, not
+# a chart; both outcomes are genuine, live responses, not simulated.
+BONUS = dict(
+    number=6,
+    title="Bonus, optional: one stock ticker",
+    goal=("Optional, after the five required prompts above, which "
+          "already stand on their own: type any single stock ticker, "
+          "like NVDA, instead of picking an index."),
+    prompt_text=(
+        "Add one more data option to Stock Desk Mini, as a bonus "
+        "alongside the three indexes: let the student type a single "
+        "stock ticker (for example NVDA) and load it the same way. "
+        "Fetch the ticker's last 6 months of daily closes from Yahoo "
+        "Finance's chart JSON endpoint using the same curl-based "
+        "approach as the FRED fetch, for example https://query1."
+        "finance.yahoo.com/v8/finance/chart/NVDA?range=6mo&interval=1d. "
+        "Yahoo's chart endpoint returns 429 Too Many Requests for a "
+        "request sent with no User-Agent header, but returns 200 for "
+        "the exact same request sent with an ordinary desktop browser "
+        "User-Agent string, so send one. Parse the JSON into the same "
+        "daily close series the index path already uses, and compute "
+        "the same 20-day and 50-day moving averages, 14-day RSI, and "
+        "BUY/SELL/HOLD reading for it, exactly as for the indexes. Add "
+        "a small text box on the page where the student can type a "
+        "ticker, with a button to load it, next to the existing index "
+        "dropdown. If Yahoo still answers 429 even with the browser "
+        "User-Agent, show the message \"too many requests, wait a "
+        "minute and retry\" on the page instead of a stack trace or raw "
+        "error. Keep everything to the Python standard library, no pip "
+        "installs, no npm, no other packages."
     ),
-    do_accent=('"Add one more option to Stock Desk Mini: type a single '
-              'stock ticker, like NVDA, and load it the same way, '
-              'fetching Yahoo\'s chart JSON with an ordinary browser '
-              'User-Agent header (a bare request gets 429; with one it '
-              'answers 200). If it still answers 429, show \'too many '
-              'requests, wait a minute and retry\' instead of a raw '
-              'error."'),
+    image_file="browser-bonus-nvda-429.png",
     fallback=('with a whole class on one network, Yahoo may refuse '
              'requests for a while, shown exactly as pictured: "too many '
              'requests, wait a minute and retry," with a Try again '
@@ -242,12 +291,13 @@ BONUS_STEP = dict(
         "three indexes stay the required main path; this is one optional "
         "bonus prompt at the end.",
         "Verified live, twice over, against a copy of the finished Stock "
-        "Desk Mini: NVDA returned a real BUY reading with its own "
+        "Desk Mini: the ticker returned a real BUY reading with its own "
         "three-line chart once, early in the same session, before this "
-        "network started answering 429 for the rest of it. No screenshot "
-        "of that chart exists, since Yahoo was already limiting requests "
-        "by the time of the dedicated screenshot attempt; the pictured "
-        "429 state is the other real, verified outcome, not a failure.",
+        "network started answering 429 for the rest of it. No "
+        "screenshot of that chart exists, since the rate limit was "
+        "already in effect by the time of the dedicated screenshot "
+        "attempt; the pictured state is the other real, verified "
+        "outcome, not a failure.",
         "Source: data/fin1209-deck3-bonus/report.md.",
     ),
 )
@@ -256,19 +306,22 @@ VIEW_SHOTS = [
     dict(
         title="View it: a HOLD reading",
         image_file="browser-04-sp500-hold.png",
-        credit=("S&P 500, the real page, real FRED data through Nov 23, "
-               "2026: close below its 50-day average and RSI below 50, "
-               "but the five-bar trigger has not fired either way, so "
-               "the rule correctly withholds a signal rather than "
-               "forcing one."),
+        credit="S&P 500, the real page, real FRED data through Nov 23, 2026.",
+        notes=(
+            "Close below its 50-day average and RSI below 50, but the "
+            "five-bar trigger has not fired either way, so the rule "
+            "correctly withholds a signal rather than forcing one.",
+        ),
     ),
     dict(
         title="View it: a SELL reading",
         image_file="browser-04-nasdaq-sell.png",
-        credit=("Nasdaq Composite, the same real page: all three SELL "
-               "conditions pass at once. A good second example to show "
-               "in class, since it demonstrates both outcomes without "
-               "waiting for the market to move."),
+        credit="Nasdaq Composite, the same real page: all three SELL conditions pass.",
+        notes=(
+            "A good second example to show in class, since it "
+            "demonstrates both outcomes without waiting for the market "
+            "to move.",
+        ),
     ),
 ]
 

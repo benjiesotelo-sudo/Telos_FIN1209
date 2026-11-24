@@ -1163,6 +1163,50 @@ def render_content_m(prs, s, *, position, total):
     deckkit._notes(slide, s.notes)
 
 
+def render_prompt_text_m(prs, *, title, goal, prompt_text, position, total,
+                         notes=()) -> None:
+    """A prompt shown whole, never truncated: a short goal line, then the
+    exact words to type in a bordered box, sized down a step (19pt, plain
+    weight, not bold) so the longest of these prompts still fits one
+    slide without clipping. Plain weight on purpose: a long paragraph set
+    bold is harder to read, the same reason this kit never bolds a long
+    wrapped line elsewhere."""
+    slide = _metro_blank(prs)
+    top = metro_frame(slide, title, position=position, total=total)
+    inner_in = deckkit.CONTENT_W.inches
+
+    if goal:
+        frame = deckkit._textbox(slide, deckkit.MARGIN, Inches(top),
+                                 deckkit.CONTENT_W, Inches(0.8))
+        deckkit._para(frame, goal, size=17, color=METRO_MUTED, italic=True,
+                      first=True, line_spacing=1.15)
+        top += deckkit._text_height(goal, inner_in, 17, spacing=1.15) + 0.3
+
+    pad = 0.28
+    safe_bottom = deckkit.SAFE_BOTTOM - 0.1
+    # The longest of these prompts can still overflow a fixed font size;
+    # step the size down rather than let the box run into the footer. A
+    # small fudge margin on top of the estimate, since _text_height's own
+    # wrap estimate can run a touch short of the actual render.
+    for size in (19, 17, 15):
+        text_h = deckkit._text_height(prompt_text, inner_in - 2 * pad, size,
+                                      spacing=1.3) + 0.15
+        box_h = text_h + 2 * pad
+        if top + box_h <= safe_bottom or size == 15:
+            break
+    deckkit._rect(slide, deckkit.MARGIN, Inches(top), deckkit.CONTENT_W,
+                 Inches(box_h), METRO_WHITE, line=METRO_BORDER)
+    frame = deckkit._textbox(slide, deckkit.MARGIN + Inches(pad),
+                             Inches(top + pad),
+                             deckkit.CONTENT_W - Inches(2 * pad),
+                             Inches(text_h))
+    deckkit._para(frame, prompt_text, size=size, color=METRO_INK, first=True,
+                  line_spacing=1.3)
+
+    metro_footer(slide, position, total)
+    deckkit._notes(slide, notes)
+
+
 def render_section_m(prs, *, number: int, title: str, position: int,
                      total: int, notes=()) -> None:
     """A numbered Metropolis section divider: a plain break between the
@@ -1253,8 +1297,8 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
                        title: str, course: str, author: str,
                        edition: str) -> int:
     """``prs_slides`` is a list of (kind, data) pairs in reading order;
-    kind is one of title/section/content/shot/shot_text/step/speakers/
-    closing. The title slide (kind == "title") always counts as position
+    kind is one of title/section/content/prompt_text/shot/shot_text/step/
+    speakers/closing. The title slide (kind == "title") always counts as position
     1, so the on-slide marker matches a slide's actual position in the
     deck."""
     prs = Presentation()
@@ -1285,6 +1329,11 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
                             notes=slide.get("notes", ()))
         elif kind == "content":
             render_content_m(prs, slide, position=pos, total=total)
+        elif kind == "prompt_text":
+            render_prompt_text_m(prs, title=slide["title"], goal=slide.get("goal", ""),
+                                prompt_text=slide["prompt_text"],
+                                position=pos, total=total,
+                                notes=slide.get("notes", ()))
         elif kind == "shot":
             render_shot(prs, title=slide["title"], image_path=slide["path"],
                        credit=slide["credit"], position=pos, total=total,
@@ -1292,7 +1341,8 @@ def build_presentation(prs_slides: list[tuple[str, object]], *, out_path: Path,
                        band_top=slide.get("band_top"),
                        band_h=slide.get("band_h"),
                        caption_y=slide.get("caption_y"),
-                       presenter=slide.get("presenter"))
+                       presenter=slide.get("presenter"),
+                       layout=slide.get("layout"))
         elif kind == "shot_text":
             render_shot_text(prs, title=slide["title"],
                             image_path=slide["path"], lines=slide["lines"],

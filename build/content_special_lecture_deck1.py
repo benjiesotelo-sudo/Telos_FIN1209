@@ -327,6 +327,37 @@ WALKTHROUGH_INTRO = deckkit.Content(
 
 WALKTHROUGH = [
     dict(
+        title="Prompt: check python3 works",
+        kind="dialog",
+        do_lines=(
+            "Type this into Codex, before anything else today:",
+        ),
+        do_accent=('"Check whether python3 works on this computer. If '
+                    'macOS asks to install the command line developer '
+                    'tools, install them."'),
+        dialog_title="Command Line Tools",
+        dialog_message=('The "python3" command requires the command line '
+                        "developer tools. Would you like to install the "
+                        "tools now?"),
+        dialog_buttons=("Not Now", "Install"),
+        fallback=("the very first time anyone runs python3 (or git, next) "
+                  "on a truly fresh Mac, macOS offers this same install, "
+                  "which takes a few minutes and needs a mouse click; "
+                  "Codex cannot click through it by itself. Doing this "
+                  "once, before the lecture starts, means Codex is not "
+                  "blocked waiting on it mid-class, including for deck 3's "
+                  "tool, which needs python3 working."),
+        credit="Apple's documented Command Line Tools prompt.",
+        notes=(
+            "Added per the captain's own fix: deck 3 already says python3 "
+            "must work before class; this is that same step, in deck 1, "
+            "next to the Git check it shares one dialog with.",
+            "Real behaviour on a fresh Mac: this dialog, not an instant "
+            "answer; this build machine already has the tools installed, "
+            "so python3 --version here returns instantly.",
+        ),
+    ),
+    dict(
         title="Prompt: check Git is installed",
         kind="dialog",
         do_lines=(

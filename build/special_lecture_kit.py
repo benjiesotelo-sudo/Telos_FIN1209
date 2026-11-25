@@ -347,14 +347,16 @@ def make_mac_dialog_png(path: Path, *, title: str, message: str,
 
 
 def make_step_list_png(path: Path, *, heading: str, steps: tuple[str, ...],
-                       note: str | None = None, width=1700, height=900) -> None:
+                       note: str | None = None, width=2000, height=620) -> None:
     """A plain numbered-step illustration, for a real-world step this
     build can neither screenshot live (blocked by a bot check) nor cite
     a documentation screenshot for (none exists): a clean card with a
     small "Illustration" tag baked into the picture itself, a plain-text
     heading (a site name, never a logo or any recreated branding), and
-    a numbered list. No visual element here recreates another site's own
-    design; only the plain words are its own."""
+    a numbered list, each step set at roughly the same size as this
+    deck's own body text, filling the card rather than leaving it mostly
+    empty. No visual element here recreates another site's own design;
+    only the plain words are its own."""
     bg = (248, 248, 249)
     ink = (26, 26, 26)
     muted = (110, 110, 110)
@@ -362,39 +364,39 @@ def make_step_list_png(path: Path, *, heading: str, steps: tuple[str, ...],
 
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
-    pad = 48
+    pad = 40
     draw.rounded_rectangle([pad, pad, width - pad, height - pad], radius=18,
                            fill=(255, 255, 255), outline=(222, 224, 228),
                            width=2)
 
-    heading_font = ImageFont.truetype(ARIAL_BOLD, 34)
-    tag_font = ImageFont.truetype(ARIAL_BOLD, 22)
-    num_font = ImageFont.truetype(ARIAL_BOLD, 30)
-    step_font = ImageFont.truetype(ARIAL, 32)
-    note_font = ImageFont.truetype(ARIAL, 24)
+    heading_font = ImageFont.truetype(ARIAL_BOLD, 36)
+    tag_font = ImageFont.truetype(ARIAL_BOLD, 24)
+    num_font = ImageFont.truetype(ARIAL_BOLD, 38)
+    step_font = ImageFont.truetype(ARIAL, 46)
+    note_font = ImageFont.truetype(ARIAL, 30)
 
-    inner_x = pad + 54
-    y = pad + 46
+    inner_x = pad + 50
+    y = pad + 36
     draw.text((inner_x, y), heading, font=heading_font, fill=muted)
     tag = "ILLUSTRATION"
     tag_w = draw.textlength(tag, font=tag_font)
-    draw.text((width - pad - 36 - tag_w, y + 4), tag, font=tag_font,
+    draw.text((width - pad - 40 - tag_w, y + 6), tag, font=tag_font,
               fill=accent)
-    y += 70
-    draw.line([(inner_x, y), (width - pad - 36, y)], fill=(222, 224, 228),
+    y += 58
+    draw.line([(inner_x, y), (width - pad - 40, y)], fill=(222, 224, 228),
              width=2)
-    y += 46
+    y += 40
 
     for i, step in enumerate(steps, start=1):
-        r = 22
+        r = 28
         cy = y + r
         draw.ellipse([inner_x, y, inner_x + 2 * r, y + 2 * r],
                     outline=accent, width=3, fill=(255, 255, 255))
         draw.text((inner_x + r, cy), str(i), font=num_font, fill=accent,
                   anchor="mm")
-        draw.text((inner_x + 2 * r + 24, cy), step, font=step_font,
+        draw.text((inner_x + 2 * r + 28, cy), step, font=step_font,
                   fill=ink, anchor="lm")
-        y += 2 * r + 30
+        y += 2 * r + 22
 
     if note:
         y += 10
@@ -558,18 +560,17 @@ def make_chart_panel_composite(src: Path, dst: Path, *, chart_crop, panel_crop,
 
 def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
                        accent_index: int | None = None,
-                       width=2300, height=1100) -> None:
+                       width=2300, height=440) -> None:
     """A plain "how it works" picture: boxes in a row, one arrow between
     each pair, no code names. ``nodes`` is (title, body) pairs, left to
     right; ``accent_index`` picks the one box (if any) drawn in the deck's
     own accent colour, the rest in the neutral dark bar used elsewhere in
     this kit, matching the "one deliberate colour" rule.
 
-    The canvas is taller than it is wide-looking (aspect just under 2.2)
-    on purpose: a slide's own body is itself taller than it is wide by
-    about that much, so this image lands height-bound when placed with
-    layout="wide", filling the slide's full body height instead of
-    shrinking to fit a much shorter, wider box first."""
+    Each card's height hugs its own text (worst case two title lines, up
+    to three body lines, at this kit's own body-text-sized fonts) rather
+    than some tall fixed box with empty space under the words; the arrows
+    land centred on that same short card, not on a mostly blank one."""
     bg = (248, 248, 249)
     ink = (26, 26, 26)
     muted = (110, 110, 110)
@@ -580,7 +581,7 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
     margin = 40
     gap = 54
     box_w = (width - 2 * margin - (n - 1) * gap) // n
-    box_h = height - 100
+    box_h = height - 60
     y = (height - box_h) // 2
 
     img = Image.new("RGB", (width, height), bg)

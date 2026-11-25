@@ -241,10 +241,10 @@ SIGNIN_STEP = dict(
     title="Sign in to Codex",
     kind="terminal",
     do_lines=(
-        "In the same terminal, type: codex",
+        "In the same terminal, type: codex login",
         "The first time, Codex asks you to sign in.",
     ),
-    do_accent='Choose "Sign in with ChatGPT"; a browser tab opens to finish it.',
+    do_accent="A browser tab opens: sign in with your ChatGPT account.",
     term_lines=(
         "$ codex login",
         "Starting local login server on http://localhost:1455.",
@@ -253,11 +253,11 @@ SIGNIN_STEP = dict(
     ),
     fallback=("Browser did not open by itself? Codex prints a link; "
               "copy it into any browser yourself."),
-    source_credit=("A real capture: an isolated, empty CODEX_HOME, "
-                   "stopped the instant this printed, before any "
-                   "sign-in completed."),
+    source_credit=None,
     presenter="both",
     notes=(
+        "The on-slide wording now matches the captured command exactly "
+        "(codex login); the earlier text said plain codex.",
         "Captured for real, 25 Nov 2026: CODEX_HOME pointed at a fresh, "
         "empty scratch folder (never the real machine's own config), "
         "ran codex login, captured this real output, then the process "
@@ -437,12 +437,10 @@ WALKTHROUGH = [
             "Verify your email",
             "Choose the Free plan",
         ),
-        illustration_note=("Codex then offers to install GitHub's own "
-                           "CLI (gh) and runs gh auth login, which opens "
-                           "a browser tab to finish signing in."),
+        illustration_note=None,
         fallback=('If signup is refused ("This email can\'t be used" or '
-                  '"We couldn\'t create your account"), the docs say to '
-                  "try another browser or network."),
+                  '"We couldn\'t create your account"), try another '
+                  "browser or network."),
         credit=("No real screenshot exists for this step: GitHub Docs "
                "has none for its own sign-up page, and a live capture "
                "of github.com/signup is blocked by a bot check neither "

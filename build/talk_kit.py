@@ -48,7 +48,9 @@ def render_line(prs, *, label=None, line, sub=None, mono=False,
     monospace for a command), an optional short line under it. Centred
     in the upper-middle of the slide, generous empty space around it."""
     slide = _blank(prs)
-    y = 2.7
+    safe_bottom = 6.9
+    y0 = 2.7 if not label else 2.0
+    y = y0
 
     if label:
         frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
@@ -58,17 +60,23 @@ def render_line(prs, *, label=None, line, sub=None, mono=False,
         y += 0.65
 
     line_font = MONO if mono else SANS
-    size = 30 if mono else 40
-    # A long command (a URL with no break points) can measure a touch
-    # short of its real wrapped height; a fixed safety margin on top of
-    # the estimate keeps a short line under it from overlapping.
-    line_h = deckkit._text_height(line, CONTENT_W.inches, size, spacing=1.2) + 0.35
+    # A long command or prompt can run well past a fixed font size; step
+    # the size down until it fits the slide rather than clip at the
+    # bottom edge. A fixed safety margin on top of the text-height
+    # estimate, since a long line with few break points (a URL) can
+    # measure a touch short of its real wrapped height.
+    max_size = 30 if mono else 40
+    for size in range(max_size, 15, -2):
+        line_h = deckkit._text_height(line, CONTENT_W.inches, size,
+                                      spacing=1.2) + 0.35
+        if y + line_h + 0.2 <= safe_bottom or size <= 17:
+            break
     frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
                              Inches(line_h + 0.2))
     deckkit._para(frame, line, size=size, color=INK, font=line_font,
                   bold=not mono, align=deckkit.PP_ALIGN.CENTER, first=True,
                   line_spacing=1.2)
-    y += line_h + 0.55
+    y += line_h + 0.4
 
     if sub:
         frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,

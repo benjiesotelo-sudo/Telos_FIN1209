@@ -1033,7 +1033,7 @@ def _bpmn_parallel_gateway(draw, cx, cy, size, ink, bg):
     draw.line([(cx, cy - arm), (cx, cy + arm)], fill=ink, width=5)
 
 
-def make_bpmn_vision_png_part1(path: Path, *, width=3950, height=2000) -> None:
+def make_bpmn_vision_png_part1(path: Path, *, width=4150, height=2000) -> None:
     """The vision (1 of 2): live prices, a chosen bar size, a parallel
     split into six rule checks (each with its own metrics as a second,
     smaller line), a parallel join, an agreement score, and a drawn
@@ -1050,7 +1050,7 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3950, height=2000) -> None:
     bg = (234, 241, 248)
     ink = (26, 26, 26)
     title_font = ImageFont.truetype(ARIAL_BOLD, 40)
-    body_font = ImageFont.truetype(ARIAL, 24)
+    body_font = ImageFont.truetype(ARIAL, 30)  # a rule's metrics: ~75% of the title
     lane_font = ImageFont.truetype(ARIAL_BOLD, 32)
     small_font = ImageFont.truetype(ARIAL, 28)
     fonts = (title_font, body_font)
@@ -1083,13 +1083,13 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3950, height=2000) -> None:
 
     gw_fork = (1140, row_y)
     _bpmn_parallel_gateway(draw, *gw_fork, gw_size, ink, bg)
-    draw.text((gw_fork[0] - 55, gw_fork[1] - gw_size / 2 - 14), "Rules vote",
+    draw.text((gw_fork[0] - 55, gw_fork[1] - gw_size / 2 - 34), "Rules vote",
               font=small_font, fill=ink, anchor="rb")
     _bpmn_elbow(draw, (c_bar[0] + task_w / 2, c_bar[1]),
                (gw_fork[0] - gw_size / 2, gw_fork[1]))
 
-    box_w, box_h = 600, 240
-    box_x = 1860
+    box_w, box_h = 760, 250
+    box_x = 1920
     rules = [
         ("Trend", "SMA 20/50, EMA 9/21, ADX"),
         ("Momentum", "RSI 14, MACD, Stochastic"),

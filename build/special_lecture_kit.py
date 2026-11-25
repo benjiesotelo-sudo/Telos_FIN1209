@@ -560,17 +560,21 @@ def make_chart_panel_composite(src: Path, dst: Path, *, chart_crop, panel_crop,
 
 def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
                        accent_index: int | None = None,
-                       width=2300, height=440) -> None:
+                       width=2300) -> None:
     """A plain "how it works" picture: boxes in a row, one arrow between
     each pair, no code names. ``nodes`` is (title, body) pairs, left to
     right; ``accent_index`` picks the one box (if any) drawn in the deck's
     own accent colour, the rest in the neutral dark bar used elsewhere in
     this kit, matching the "one deliberate colour" rule.
 
-    Each card's height hugs its own text (worst case two title lines, up
-    to three body lines, at this kit's own body-text-sized fonts) rather
-    than some tall fixed box with empty space under the words; the arrows
-    land centred on that same short card, not on a mostly blank one."""
+    More than 3 nodes wrap onto a second row (the first ceil(n/2), then
+    the rest), connected by an elbowed arrow that drops down and back
+    left, since text this large does not read in one row across the full
+    width. Each card's height still hugs its own text (worst case two
+    title lines, up to three body lines) rather than a fixed box with
+    empty space under the words, and the canvas as a whole is shaped so
+    the picture lands height-bound on its slide, filling the full
+    content area top to bottom instead of a thin band across the middle."""
     bg = (248, 248, 249)
     ink = (26, 26, 26)
     muted = (110, 110, 110)
@@ -578,16 +582,23 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
     neutral_bar = (60, 70, 74)
 
     n = len(nodes)
+    row1_n = -(-n // 2) if n > 3 else n  # ceil(n/2) once wrapped
+    row2_n = n - row1_n
     margin = 40
     gap = 54
-    box_w = (width - 2 * margin - (n - 1) * gap) // n
-    box_h = height - 60
-    y = (height - box_h) // 2
+    cols = max(row1_n, row2_n)
+    box_w = (width - 2 * margin - (cols - 1) * gap) // cols
+
+    title_font = ImageFont.truetype(ARIAL_BOLD, 69)
+    body_font = ImageFont.truetype(ARIAL, 51)
+    title_line_h, body_line_h, pad = 87, 66, 48
+    box_h = pad * 2 + 2 * title_line_h + 27 + 3 * body_line_h
+
+    row_gap = 150 if row2_n else 0
+    height = margin * 2 + box_h * (2 if row2_n else 1) + row_gap
 
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
-    title_font = ImageFont.truetype(ARIAL_BOLD, 46)
-    body_font = ImageFont.truetype(ARIAL, 34)
 
     def wrap(text, font, max_w):
         words = text.split()
@@ -604,29 +615,65 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
             lines.append(cur)
         return lines
 
-    centers = []
-    for i, (title, body) in enumerate(nodes):
-        x = margin + i * (box_w + gap)
+    def draw_card(i, title, body, x, y):
         bar = accent if i == accent_index else neutral_bar
         draw.rounded_rectangle([x, y, x + box_w, y + box_h], radius=18,
                                fill=(255, 255, 255), outline=(220, 222, 226),
                                width=2)
-        draw.rectangle([x, y, x + box_w, y + 10], fill=bar)
-        pad = 32
-        ty = y + 50
+        draw.rectangle([x, y, x + box_w, y + 14], fill=bar)
+        ty = y + pad + 10
         for line in wrap(title, title_font, box_w - 2 * pad):
             draw.text((x + pad, ty), line, font=title_font, fill=ink)
-            ty += 58
-        ty += 18
+            ty += title_line_h
+        ty += 27
         for line in wrap(body, body_font, box_w - 2 * pad):
             draw.text((x + pad, ty), line, font=body_font, fill=muted)
-            ty += 44
-        centers.append((x + box_w, x + box_w + gap, y + box_h // 2))
+            ty += body_line_h
 
-    for x_start, x_end, ay in centers[:-1]:
-        draw.line([(x_start, ay), (x_end, ay)], fill=ink, width=4)
-        draw.polygon([(x_end, ay), (x_end - 16, ay - 10),
-                     (x_end - 16, ay + 10)], fill=ink)
+    centers = []
+    for i in range(row1_n):
+        x = margin + i * (box_w + gap)
+        y = margin
+        draw_card(i, nodes[i][0], nodes[i][1], x, y)
+        centers.append((x, x + box_w, y + box_h // 2))
+    for j in range(row2_n):
+        i = row1_n + j
+        x = margin + j * (box_w + gap)
+        y = margin + box_h + row_gap
+        draw_card(i, nodes[i][0], nodes[i][1], x, y)
+        centers.append((x, x + box_w, y + box_h // 2))
+
+    for k in range(row1_n - 1):
+        _, x_end_prev, ay = centers[k]
+        x_start_next, _, _ = centers[k + 1]
+        draw.line([(x_end_prev, ay), (x_start_next, ay)], fill=ink, width=5)
+        draw.polygon([(x_start_next, ay), (x_start_next - 18, ay - 12),
+                     (x_start_next - 18, ay + 12)], fill=ink)
+    for k in range(row1_n, n - 1):
+        _, x_end_prev, ay = centers[k]
+        x_start_next, _, _ = centers[k + 1]
+        draw.line([(x_end_prev, ay), (x_start_next, ay)], fill=ink, width=5)
+        draw.polygon([(x_start_next, ay), (x_start_next - 18, ay - 12),
+                     (x_start_next - 18, ay + 12)], fill=ink)
+    if row2_n:
+        # The elbow from the end of row 1 down to the start of row 2,
+        # routed entirely through the empty gap band between the two
+        # rows (never across a card): down from row 1's last card, left
+        # to row 2's first card's own column, then down into its top.
+        row1_bottom = margin + box_h
+        row2_top = margin + box_h + row_gap
+        gap_mid = (row1_bottom + row2_top) // 2
+        x_last_row1 = margin + (row1_n - 1) * (box_w + gap) + box_w // 2
+        x_first_row2 = margin + box_w // 2
+        draw.line([(x_last_row1, row1_bottom), (x_last_row1, gap_mid)],
+                 fill=ink, width=5)
+        draw.line([(x_last_row1, gap_mid), (x_first_row2, gap_mid)],
+                 fill=ink, width=5)
+        draw.line([(x_first_row2, gap_mid), (x_first_row2, row2_top)],
+                 fill=ink, width=5)
+        draw.polygon([(x_first_row2, row2_top),
+                     (x_first_row2 - 12, row2_top - 18),
+                     (x_first_row2 + 12, row2_top - 18)], fill=ink)
 
     _generated_dir()
     img.save(path)

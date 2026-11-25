@@ -41,17 +41,20 @@ def build() -> int:
     kit.make_flow_png(data_flow_png, tuple(t for t, _ in content.DATA_FLOW_NODES))
 
     bpmn1_png = GENERATED / "bpmn-1.png"
-    slk.make_bpmn_signal_png_part1(bpmn1_png)
+    slk.make_bpmn_vision_png_part1(bpmn1_png)
     bpmn2_png = GENERATED / "bpmn-2.png"
-    slk.make_bpmn_signal_png_part2(bpmn2_png)
+    slk.make_bpmn_vision_png_part2(bpmn2_png)
 
     slides: list[tuple[str, dict]] = [
         ("title", dict(
             course=COURSE,
-            title="The Stock Desk",
+            title="Stock Desk",
+            subtitle="working name",
             notes=("Presenter: Benjamin C. Sotelo. Captain handles the "
                   "discussion live; these slides are the two diagrams "
-                  "only, the live tool is demonstrated separately.",),
+                  "only, the live tool is demonstrated separately. "
+                  "\"Stock Desk\" is not the final name; no other slide "
+                  "uses it as a brand.",),
         )),
         ("speakers", dict(speakers=(
             ("Benjamin C. Sotelo", PHOTOS / "benjamin-sotelo.jpg"),
@@ -77,28 +80,36 @@ def build() -> int:
             ),
         )),
         ("picture", dict(
-            label="The decision process (1 of 2)",
+            label="The vision (1 of 2)",
             image_path=bpmn1_png,
-            notes=content.BPMN_SLIDE["notes"] + (
-                "What each step is worth: Compute indicators, one shared "
-                "formula, every stock, no arguing over the math. Three "
-                "checks, no signal fires on a hunch (volume is shown "
-                "beside it, not required to fire one). Show signal, you "
-                "see it the moment it is real, never a stale page. You "
-                "decide, your money, your call, always.",
+            notes=(
+                "This is the VISION, not today's build: where this could "
+                "go, not the current code. Captain discusses live.",
+                "Live prices, every minute. Choose a bar size, 5 minutes "
+                "to weekly. Rules vote: a parallel split, all six run at "
+                "once, every time (trend, momentum via RSI/MACD, "
+                "breakout, volume, trendlines, support and resistance).",
+                "Agreement score: e.g. \"4 of 6 agree: bullish.\" Never "
+                "called a probability, only a count.",
+                "Draw what's next: a projected trendline, zones, a stop "
+                "and target, then handed to you (link A, continued on "
+                "the next slide).",
+                "Link B, entering the same parallel split: the feedback "
+                "loop from part 2, once real outcomes are in.",
             ),
         )),
         ("picture", dict(
-            label="The decision process (2 of 2)",
+            label="The vision (2 of 2)",
             image_path=bpmn2_png,
             notes=(
-                "What each step is worth: Log a buy, one record, so the "
-                "scoreboard can grade it later. Stop, target: advice, a "
-                "number to check yourself against, never an auto-sell. "
-                "Sell or hold, still your call. Log a sell, closes the "
-                "record the scoreboard will grade. Scoreboard, +5 days "
-                "(a sub-process, runs on the close cron, not inline): "
-                "proof the rule works, or does not, in public.",
+                "This is the VISION, not today's build. Captain discusses "
+                "live.",
+                "You read the call, then a gateway: Buy, Sell, or Wait. "
+                "Whatever you choose, you log it.",
+                "Later, the tool checks the real outcome and learns which "
+                "rules actually worked (data for a future machine "
+                "learning pass), feeding that back (link B) into part "
+                "1's parallel split, so the vote itself can improve.",
             ),
         )),
         ("closing", dict(line="Thank you", notes=())),
@@ -106,7 +117,7 @@ def build() -> int:
 
     return kit.build_presentation(
         slides, out_path=OUT,
-        title="FIN1209 Special Lecture 2 - The Stock Desk",
+        title="FIN1209 Special Lecture 2 - Stock Desk",
         course=COURSE, author="Benjamin C. Sotelo",
     )
 

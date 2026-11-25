@@ -995,6 +995,186 @@ def make_bpmn_signal_png_part2(path: Path, *, width=2500, height=1000) -> None:
     img.save(path)
 
 
+def _bpmn_parallel_gateway(draw, cx, cy, size, ink, bg):
+    """A BPMN parallel gateway: a diamond with a bold plus sign, for a
+    fork (several branches all happen at once) or the matching join."""
+    draw.polygon([(cx, cy - size / 2), (cx + size / 2, cy),
+                 (cx, cy + size / 2), (cx - size / 2, cy)],
+                outline=ink, width=4, fill=bg)
+    arm = size * 0.28
+    draw.line([(cx - arm, cy), (cx + arm, cy)], fill=ink, width=5)
+    draw.line([(cx, cy - arm), (cx, cy + arm)], fill=ink, width=5)
+
+
+def make_bpmn_vision_png_part1(path: Path, *, width=3300, height=1400) -> None:
+    """The vision (1 of 2): live prices, a chosen bar size, a parallel
+    split into six rule checks, a parallel join, an agreement score, and
+    a drawn projection, handed off to "You" on the next slide (link A).
+    A second link, B, re-enters here from the feedback loop on part 2,
+    into the same parallel split: this is the vision, not the current
+    build, and is drawn and labelled plainly as such.
+
+    The six rule checks stack in a single column, each at its own
+    unique height, entered and exited through two vertical spines (one
+    on each side of the column). Every connector either travels at a
+    box's own unique height or at the shared gateway height, in the
+    empty gap, so no connector is ever drawn across another box."""
+    bg = (234, 241, 248)
+    ink = (26, 26, 26)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 34)
+    body_font = ImageFont.truetype(ARIAL, 21)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 30)
+    small_font = ImageFont.truetype(ARIAL, 26)
+    fonts = (title_font, body_font)
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    lane_x0, lane_x1 = 190, width - 40
+    top, bot = 50, height - 70
+    draw.rectangle([lane_x0, top, lane_x1, bot], outline=(190, 190, 195), width=2)
+    band = Image.new("RGBA", (bot - top, 60), (0, 0, 0, 0))
+    bd = ImageDraw.Draw(band)
+    bd.text((band.width / 2, 30), "THE TOOL", font=lane_font, fill=ink, anchor="mm")
+    band = band.rotate(90, expand=True)
+    img.paste(band, (lane_x0 - 64, top), band)
+
+    row_y = (top + bot) // 2
+    task_w, task_h = 280, 150
+    gw_size = 110
+
+    ev_start = (280, row_y)
+    draw.ellipse([ev_start[0] - 34, ev_start[1] - 34, ev_start[0] + 34,
+                 ev_start[1] + 34], outline=ink, width=4, fill=bg)
+    draw.text((ev_start[0], ev_start[1] + 48), "Live prices", font=small_font,
+              fill=ink, anchor="ma")
+
+    c_bar = (650, row_y)
+    _bpmn_task(draw, *c_bar, task_w, task_h, "Choose bar size", fonts=fonts)
+    _bpmn_elbow(draw, (ev_start[0] + 34, ev_start[1]),
+               (c_bar[0] - task_w / 2, c_bar[1]))
+
+    gw_fork = (1010, row_y)
+    _bpmn_parallel_gateway(draw, *gw_fork, gw_size, ink, bg)
+    draw.text((gw_fork[0], gw_fork[1] - gw_size / 2 - 14), "Rules vote",
+              font=small_font, fill=ink, anchor="mb")
+    _bpmn_elbow(draw, (c_bar[0] + task_w / 2, c_bar[1]),
+               (gw_fork[0] - gw_size / 2, gw_fork[1]))
+
+    box_w, box_h = 440, 150
+    box_x = 1700
+    rules = ["Trend", "Momentum", "Breakout", "Volume", "Trendlines",
+            "Support, resistance"]
+    step = 190
+    offsets = [(i - (len(rules) - 1) / 2) * step for i in range(len(rules))]
+    box_ys = [row_y + o for o in offsets]
+
+    for label, by in zip(rules, box_ys):
+        _bpmn_task(draw, box_x, by, box_w, box_h, label, fonts=fonts)
+        # Vertical first, at the gateway's own x, then horizontal at the
+        # box's own unique height: this box is the only thing at that
+        # height, so the line crosses nothing else.
+        _bpmn_elbow(draw, (gw_fork[0] + gw_size / 2, gw_fork[1]),
+                   (box_x - box_w / 2, by), via="v")
+
+    gw_join = (box_x + 650, row_y)
+    _bpmn_parallel_gateway(draw, *gw_join, gw_size, ink, bg)
+    for by in box_ys:
+        # Horizontal first, at the box's own unique height, then
+        # vertical at the join's x: same guarantee, mirrored.
+        _bpmn_elbow(draw, (box_x + box_w / 2, by),
+                   (gw_join[0] - gw_size / 2, gw_join[1]))
+
+    c_agree = (gw_join[0] + 320, row_y)
+    _bpmn_task(draw, *c_agree, task_w, task_h, "Agreement score", fonts=fonts)
+    _bpmn_elbow(draw, (gw_join[0] + gw_size / 2, gw_join[1]),
+               (c_agree[0] - task_w / 2, c_agree[1]))
+
+    c_draw = (c_agree[0] + 420, row_y)
+    _bpmn_task(draw, *c_draw, task_w, task_h, "Draw what's next", fonts=fonts)
+    _bpmn_elbow(draw, (c_agree[0] + task_w / 2, c_agree[1]),
+               (c_draw[0] - task_w / 2, c_draw[1]))
+
+    link_a_out = (c_draw[0] + 260, row_y)
+    _bpmn_link_event(draw, *link_a_out, "A", outgoing=True, font=small_font)
+    _bpmn_elbow(draw, (c_draw[0] + task_w / 2, c_draw[1]),
+               (link_a_out[0] - 34, link_a_out[1]))
+
+    link_b_in = (lane_x0 + 70, bot - 70)
+    _bpmn_link_event(draw, *link_b_in, "B", outgoing=False, font=small_font)
+    draw.text((link_b_in[0], link_b_in[1] + 86), "feedback loop",
+             font=small_font, fill=(90, 90, 90), anchor="ma")
+    _bpmn_elbow(draw, (link_b_in[0] + 34, link_b_in[1]),
+               (gw_fork[0], gw_fork[1] + gw_size / 2), via="v")
+
+    _generated_dir()
+    img.save(path)
+
+
+def make_bpmn_vision_png_part2(path: Path, *, width=2600, height=1000) -> None:
+    """The vision (2 of 2): the You lane picks up from link A (Draw
+    what's next, on part 1), reads the call, decides Buy, Sell, or Wait,
+    and logs it; the tool checks the outcome later and learns which
+    rules work, feeding back (link B) into part 1's parallel split."""
+    bg = (234, 241, 248)
+    ink = (26, 26, 26)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 40)
+    body_font = ImageFont.truetype(ARIAL, 23)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 32)
+    small_font = ImageFont.truetype(ARIAL, 28)
+    fonts = (title_font, body_font)
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    lane_x0, lane_x1 = 190, width - 40
+    task_w, task_h = 360, 220
+
+    top, mid, bot = 50, 500, 870
+    _bpmn_lanes(img, draw, lane_x0, lane_x1, top, mid, bot,
+               ("THE TOOL", "YOU"), lane_font, ink)
+    sd_y = top + 210
+    you_y = mid + 155
+
+    link_a_in = (300, you_y)
+    _bpmn_link_event(draw, *link_a_in, "A", outgoing=False, font=small_font)
+
+    c_read = (720, you_y)
+    _bpmn_task(draw, *c_read, task_w, task_h, "Read the call", fonts=fonts)
+    _bpmn_elbow(draw, (link_a_in[0] + 38, link_a_in[1]),
+               (c_read[0] - task_w / 2, c_read[1]))
+
+    gw_cx, gw_cy = 1260, you_y
+    gw_size = 120
+    draw.polygon([(gw_cx, gw_cy - gw_size / 2), (gw_cx + gw_size / 2, gw_cy),
+                 (gw_cx, gw_cy + gw_size / 2), (gw_cx - gw_size / 2, gw_cy)],
+                outline=ink, width=4, fill=bg)
+    draw.line([(gw_cx - 17, gw_cy - 17), (gw_cx + 17, gw_cy + 17)], fill=ink, width=4)
+    draw.line([(gw_cx - 17, gw_cy + 17), (gw_cx + 17, gw_cy - 17)], fill=ink, width=4)
+    draw.text((gw_cx, gw_cy - gw_size / 2 - 16), "Buy, Sell, Wait",
+              font=small_font, fill=ink, anchor="mb")
+    _bpmn_elbow(draw, (c_read[0] + task_w / 2, c_read[1]),
+               (gw_cx - gw_size / 2, gw_cy))
+
+    c_log = (1740, you_y)
+    _bpmn_task(draw, *c_log, task_w, task_h, "Log it", fonts=fonts)
+    _bpmn_elbow(draw, (gw_cx + gw_size / 2, gw_cy),
+               (c_log[0] - task_w / 2, c_log[1]))
+
+    c_outcome = (2180, sd_y)
+    _bpmn_task(draw, *c_outcome, task_w, task_h, "Outcome checked", fonts=fonts)
+    _bpmn_elbow(draw, (c_log[0] + 60, c_log[1] - task_h / 2),
+               (c_outcome[0] + 60, c_outcome[1] + task_h / 2))
+
+    link_b_out = (lane_x1 - 70, sd_y)
+    _bpmn_link_event(draw, *link_b_out, "B", outgoing=True, font=small_font)
+    draw.text((link_b_out[0], link_b_out[1] + 90), "Learn which\nrules work",
+             font=small_font, fill=ink, anchor="ma", align="center")
+    _bpmn_elbow(draw, (c_outcome[0] + task_w / 2, c_outcome[1]),
+               (link_b_out[0] - 34, link_b_out[1]))
+
+    _generated_dir()
+    img.save(path)
+
+
 # --------------------------------------------------------------------------
 # Slide renderers not in deckkit, since deckkit knows nothing about any
 # chapter and none of these three decks is one

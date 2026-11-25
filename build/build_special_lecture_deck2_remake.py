@@ -112,6 +112,45 @@ def build() -> int:
                 "1's parallel split, so the vote itself can improve.",
             ),
         )),
+        ("groups", dict(
+            label="What you see",
+            groups=(
+                ("Candlesticks", "5 min to weekly"),
+                ("Volume bars", None),
+                ("Moving averages and Bollinger Bands", None),
+                ("Trendlines", "projected forward"),
+                ("Support and resistance zones", None),
+                ("RSI, MACD, Stochastic panels", None),
+                ("Replay", "bar by bar"),
+            ),
+            notes=("Every chart element a user can actually look at on "
+                  "the page, grouped by what it is, not by rule.",),
+        )),
+        ("groups", dict(
+            label="What it measures",
+            groups=(
+                ("Trend", "SMA, EMA, ADX/DMI"),
+                ("Momentum", "RSI, MACD, Stochastic"),
+                ("Volume", "OBV, VWAP"),
+                ("Risk", "ATR stop and target"),
+                ("Market", "strength vs S&P 500"),
+                ("Company", "P/E, EPS, price to book, debt to equity, "
+                           "revenue growth (SEC filings)"),
+            ),
+            notes=("Same six-way vote as the BPMN, plus market and "
+                  "company context the rules vote does not use directly.",),
+        )),
+        ("groups", dict(
+            label="Where it goes",
+            groups=(
+                ("Agreement score", None),
+                ("Measured hit rate", "logged outcomes, over time"),
+                ("Machine learning", "which rules actually worked"),
+            ),
+            notes=("The same feedback loop as the BPMN's link B, said "
+                  "plainly in three words: count, then measure, then "
+                  "learn.",),
+        )),
         ("closing", dict(line="Thank you", notes=())),
     ]
 

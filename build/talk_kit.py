@@ -99,6 +99,62 @@ def render_line(prs, *, label=None, line, sub=None, mono=False, size=None,
     deckkit._notes(slide, notes)
 
 
+def render_groups(prs, *, label=None, groups, notes=()) -> None:
+    """Several short groups, words only: each a bold header line and a
+    smaller, muted detail line under it (e.g. "Trend" / "SMA, EMA, ADX").
+    A detail-less group is just its header. The whole block is centred
+    vertically, same as every other slide in this kit; no boxes, no
+    bullets, no cards."""
+    slide = _blank(prs)
+    budget = SLIDE_H.inches - 0.8
+
+    # Try progressively smaller sizes until the whole block fits: with
+    # anywhere from three to seven groups, and detail lines of very
+    # different lengths, no single fixed size fits them all.
+    for header_size, detail_size, header_gap, group_gap in (
+        (36, 24, 0.10, 0.40),
+        (32, 22, 0.08, 0.32),
+        (28, 19, 0.07, 0.26),
+        (24, 17, 0.06, 0.20),
+        (20, 15, 0.05, 0.16),
+    ):
+        heights = []
+        for header, detail in groups:
+            h = deckkit._text_height(header, CONTENT_W.inches, header_size,
+                                     spacing=1.1)
+            if detail:
+                h += header_gap + deckkit._text_height(
+                    detail, CONTENT_W.inches, detail_size, spacing=1.1)
+            heights.append(h)
+        total_h = sum(heights) + group_gap * (len(groups) - 1)
+        if label:
+            total_h += LABEL_H + GAP
+        if total_h <= budget:
+            break
+
+    y = (SLIDE_H.inches - total_h) / 2.0
+
+    if label:
+        frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
+                                 Inches(LABEL_H))
+        deckkit._para(frame, label, size=LABEL_SIZE, color=MUTED, italic=True,
+                      font=SERIF, align=deckkit.PP_ALIGN.CENTER, first=True)
+        y += LABEL_H + GAP
+
+    for (header, detail), h in zip(groups, heights):
+        frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
+                                 Inches(h + 0.1))
+        deckkit._para(frame, header, size=header_size, color=INK, font=SANS,
+                      bold=True, align=deckkit.PP_ALIGN.CENTER, first=True)
+        if detail:
+            deckkit._para(frame, detail, size=detail_size, color=MUTED,
+                          font=SANS, align=deckkit.PP_ALIGN.CENTER,
+                          space_before=int(header_gap * 72))
+        y += h + group_gap
+
+    deckkit._notes(slide, notes)
+
+
 def render_prose(prs, *, label=None, text, size=28, notes=()) -> None:
     """A prompt or other long sentence, wrapped automatically, at a
     fixed size never smaller than any other prompt in the deck. The
@@ -346,6 +402,8 @@ def build_presentation(slides: list[tuple[str, dict]], *, out_path: Path,
             render_prose(prs, **data)
         elif kind == "speakers":
             render_speakers(prs, **data)
+        elif kind == "groups":
+            render_groups(prs, **data)
         elif kind == "picture":
             render_picture(prs, **data)
         elif kind == "closing":

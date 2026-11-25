@@ -680,14 +680,16 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
 
 
 def _bpmn_task(draw, cx, cy, w, h, title, *, value=None, multi_instance=False,
-              subprocess=False, fonts=None, value_above=False):
+              subprocess=False, fonts=None, value_above=False, sub=None):
     """One BPMN task box centered at (cx, cy): a rounded rectangle, an
     optional sequential multi-instance marker (three small horizontal
     bars sitting on the bottom border, his standing rule for a
     once-per-item step), an optional "+" sub-process marker on the same
     border, and an optional dotted-border value annotation connected by a
-    line. Returns (x, y, w, h) of the box in case a caller needs its
-    exact edges."""
+    line. ``sub``, if given, is a second, smaller line under the title
+    (e.g. the metrics a rule actually uses), wrapped in the body font.
+    Returns (x, y, w, h) of the box in case a caller needs its exact
+    edges."""
     title_font, body_font = fonts
     x, y = cx - w / 2, cy - h / 2
     draw.rounded_rectangle([x, y, x + w, y + h], radius=10,
@@ -708,12 +710,37 @@ def _bpmn_task(draw, cx, cy, w, h, title, *, value=None, multi_instance=False,
     # font (as the BPMN diagrams now use) needs more room between wrapped
     # lines, or they print on top of each other.
     line_h = int(title_font.size * 1.25)
+
+    sub_lines = []
+    sub_line_h = int(body_font.size * 1.25)
+    if sub:
+        words = sub.split()
+        cur = ""
+        for word in words:
+            trial = f"{cur} {word}".strip()
+            if draw.textlength(trial, font=body_font) <= w - 28:
+                cur = trial
+            else:
+                if cur:
+                    sub_lines.append(cur)
+                cur = word
+        if cur:
+            sub_lines.append(cur)
+
     text_zone_h = h - (34 if (multi_instance or subprocess) else 8)
-    ty = y + 10 + max(0, (text_zone_h - len(lines) * line_h) / 2)
+    total_text_h = len(lines) * line_h
+    total_text_h += (12 + len(sub_lines) * sub_line_h) if sub_lines else 0
+    ty = y + 10 + max(0, (text_zone_h - total_text_h) / 2)
     for line in lines:
         draw.text((cx, ty), line, font=title_font, fill=(26, 26, 26),
                   anchor="ma")
         ty += line_h
+    if sub_lines:
+        ty += 12
+        for line in sub_lines:
+            draw.text((cx, ty), line, font=body_font, fill=(90, 90, 90),
+                      anchor="ma")
+            ty += sub_line_h
 
     if multi_instance:
         bar_w, bar_gap = 20, 5
@@ -1006,11 +1033,12 @@ def _bpmn_parallel_gateway(draw, cx, cy, size, ink, bg):
     draw.line([(cx, cy - arm), (cx, cy + arm)], fill=ink, width=5)
 
 
-def make_bpmn_vision_png_part1(path: Path, *, width=3500, height=1400) -> None:
+def make_bpmn_vision_png_part1(path: Path, *, width=3950, height=2000) -> None:
     """The vision (1 of 2): live prices, a chosen bar size, a parallel
-    split into six rule checks, a parallel join, an agreement score, and
-    a drawn projection, handed off to "You" on the next slide (link A).
-    A second link, B, re-enters here from the feedback loop on part 2,
+    split into six rule checks (each with its own metrics as a second,
+    smaller line), a parallel join, an agreement score, and a drawn
+    projection, handed off to "You" on the next slide (link A). A
+    second link, B, re-enters here from the feedback loop on part 2,
     into the same parallel split: this is the vision, not the current
     build, and is drawn and labelled plainly as such.
 
@@ -1021,10 +1049,10 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3500, height=1400) -> None:
     empty gap, so no connector is ever drawn across another box."""
     bg = (234, 241, 248)
     ink = (26, 26, 26)
-    title_font = ImageFont.truetype(ARIAL_BOLD, 34)
-    body_font = ImageFont.truetype(ARIAL, 21)
-    lane_font = ImageFont.truetype(ARIAL_BOLD, 30)
-    small_font = ImageFont.truetype(ARIAL, 26)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 40)
+    body_font = ImageFont.truetype(ARIAL, 24)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 32)
+    small_font = ImageFont.truetype(ARIAL, 28)
     fonts = (title_font, body_font)
 
     img = Image.new("RGB", (width, height), bg)
@@ -1039,32 +1067,38 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3500, height=1400) -> None:
     img.paste(band, (lane_x0 - 64, top), band)
 
     row_y = (top + bot) // 2
-    task_w, task_h = 280, 150
-    gw_size = 110
+    task_w, task_h = 400, 230
+    gw_size = 120
 
-    ev_start = (280, row_y)
-    draw.ellipse([ev_start[0] - 34, ev_start[1] - 34, ev_start[0] + 34,
-                 ev_start[1] + 34], outline=ink, width=4, fill=bg)
-    draw.text((ev_start[0], ev_start[1] + 48), "Live prices", font=small_font,
+    ev_start = (300, row_y)
+    draw.ellipse([ev_start[0] - 36, ev_start[1] - 36, ev_start[0] + 36,
+                 ev_start[1] + 36], outline=ink, width=4, fill=bg)
+    draw.text((ev_start[0], ev_start[1] + 50), "Live prices", font=small_font,
               fill=ink, anchor="ma")
 
-    c_bar = (650, row_y)
-    _bpmn_task(draw, *c_bar, task_w, task_h, "Choose bar size", fonts=fonts)
-    _bpmn_elbow(draw, (ev_start[0] + 34, ev_start[1]),
+    c_bar = (770, row_y)
+    _bpmn_task(draw, *c_bar, task_w, task_h, "5 min to weekly", fonts=fonts)
+    _bpmn_elbow(draw, (ev_start[0] + 36, ev_start[1]),
                (c_bar[0] - task_w / 2, c_bar[1]))
 
-    gw_fork = (1010, row_y)
+    gw_fork = (1140, row_y)
     _bpmn_parallel_gateway(draw, *gw_fork, gw_size, ink, bg)
-    draw.text((gw_fork[0] - 50, gw_fork[1] - gw_size / 2 - 14), "Rules vote",
+    draw.text((gw_fork[0] - 55, gw_fork[1] - gw_size / 2 - 14), "Rules vote",
               font=small_font, fill=ink, anchor="rb")
     _bpmn_elbow(draw, (c_bar[0] + task_w / 2, c_bar[1]),
                (gw_fork[0] - gw_size / 2, gw_fork[1]))
 
-    box_w, box_h = 440, 150
-    box_x = 1700
-    rules = ["Trend", "Momentum", "Breakout", "Volume", "Trendlines",
-            "Support, resistance"]
-    step = 190
+    box_w, box_h = 600, 240
+    box_x = 1860
+    rules = [
+        ("Trend", "SMA 20/50, EMA 9/21, ADX"),
+        ("Momentum", "RSI 14, MACD, Stochastic"),
+        ("Breakout", "5-bar high/low, Bollinger 20/2"),
+        ("Volume", "vs 20-day avg, OBV, VWAP"),
+        ("Trendlines", "swing highs/lows, projected next bar"),
+        ("Support, resistance", "zones by touches"),
+    ]
+    step = 310
     offsets = [(i - (len(rules) - 1) / 2) * step for i in range(len(rules))]
     box_ys = [row_y + o for o in offsets]
 
@@ -1072,18 +1106,19 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3500, height=1400) -> None:
     # "Rules vote" label (which sits above the gateway's own width),
     # then each box's connector fans out from that turn point, not from
     # the gateway's own edge, so none of them cross under the label.
-    turn_x_fork = gw_fork[0] + gw_size / 2 + 90
+    turn_x_fork = gw_fork[0] + gw_size / 2 + 100
     draw.line([(gw_fork[0] + gw_size / 2, row_y), (turn_x_fork, row_y)],
              fill=ink, width=3)
-    for label, by in zip(rules, box_ys):
-        _bpmn_task(draw, box_x, by, box_w, box_h, label, fonts=fonts)
+    for title, metric, by in ((t, m, y) for (t, m), y in zip(rules, box_ys)):
+        _bpmn_task(draw, box_x, by, box_w, box_h, title, sub=metric,
+                  fonts=fonts)
         # Vertical first, at the turn point, then horizontal at the
         # box's own unique height: this box is the only thing at that
         # height, so the line crosses nothing else.
         _bpmn_elbow(draw, (turn_x_fork, row_y),
                    (box_x - box_w / 2, by), via="v")
 
-    gw_join = (box_x + 650, row_y)
+    gw_join = (box_x + box_w / 2 + 420, row_y)
     _bpmn_parallel_gateway(draw, *gw_join, gw_size, ink, bg)
     for by in box_ys:
         # Horizontal first, at the box's own unique height, then
@@ -1091,17 +1126,19 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3500, height=1400) -> None:
         _bpmn_elbow(draw, (box_x + box_w / 2, by),
                    (gw_join[0] - gw_size / 2, gw_join[1]))
 
-    c_agree = (gw_join[0] + 320, row_y)
-    _bpmn_task(draw, *c_agree, task_w, task_h, "Agreement score", fonts=fonts)
+    c_agree = (gw_join[0] + 360, row_y)
+    _bpmn_task(draw, *c_agree, task_w, task_h, "Agreement: 4 of 6 bullish",
+              fonts=fonts)
     _bpmn_elbow(draw, (gw_join[0] + gw_size / 2, gw_join[1]),
                (c_agree[0] - task_w / 2, c_agree[1]))
 
-    c_draw = (c_agree[0] + 420, row_y)
-    _bpmn_task(draw, *c_draw, task_w, task_h, "Draw what's next", fonts=fonts)
+    c_draw = (c_agree[0] + 480, row_y)
+    _bpmn_task(draw, *c_draw, task_w, task_h,
+              "Draw what's next: trendline, zones, stop/target", fonts=fonts)
     _bpmn_elbow(draw, (c_agree[0] + task_w / 2, c_agree[1]),
                (c_draw[0] - task_w / 2, c_draw[1]))
 
-    link_a_out = (c_draw[0] + 260, row_y)
+    link_a_out = (c_draw[0] + task_w / 2 + 150, row_y)
     _bpmn_link_event(draw, *link_a_out, "A", outgoing=True, font=small_font)
     _bpmn_elbow(draw, (c_draw[0] + task_w / 2, c_draw[1]),
                (link_a_out[0] - 34, link_a_out[1]))
@@ -1171,13 +1208,18 @@ def make_bpmn_vision_png_part2(path: Path, *, width=3100, height=1000) -> None:
     # decision rather than one unlabelled line.
     choice_x0 = gw_cx + gw_size / 2
     choice_x1 = c_log[0] - task_w / 2
-    for choice, dy in (("Buy", -70), ("Sell", 0), ("Wait", 70)):
+    # Labelled near the box end, not the midpoint: the three lines all
+    # start from the same gateway point, so they are still close
+    # together at the midpoint and a label there crowds its neighbours.
+    label_t = 0.78
+    for choice, dy in (("Buy", -95), ("Sell", 0), ("Wait", 95)):
         y = gw_cy + dy
         draw.line([(choice_x0, gw_cy), (choice_x1, y)], fill=ink, width=3)
         draw.polygon([(choice_x1, y), (choice_x1 - 11, y - 7),
                      (choice_x1 - 11, y + 7)], fill=ink)
-        mid_y = (gw_cy + y) / 2
-        draw.text(((choice_x0 + choice_x1) / 2, mid_y - 24), choice,
+        label_x = choice_x0 + label_t * (choice_x1 - choice_x0)
+        label_y = gw_cy + label_t * dy
+        draw.text((label_x, label_y - 20), choice,
                   font=small_font, fill=(90, 90, 90), anchor="mb")
 
     c_outcome = (2180, sd_y)

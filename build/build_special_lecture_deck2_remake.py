@@ -25,6 +25,7 @@ import content_special_lecture_deck2 as content  # noqa: E402
 import talk_kit as kit  # noqa: E402
 
 REPO = Path(__file__).resolve().parent.parent
+PHOTOS = REPO / "build" / "assets" / "speaker-photos"
 OUT = REPO / "special-lecture" / "FIN1209-Special-Lecture-2-StockDesk.pptx"
 GENERATED = REPO / "build" / "generated" / "special-lecture" / "deck2-remake"
 
@@ -37,8 +38,7 @@ def build() -> int:
     slk.apply_metropolis_style()  # sets METRO_ACCENT used by the diagrams
 
     data_flow_png = GENERATED / "data-flow.png"
-    slk.make_data_flow_png(data_flow_png, content.DATA_FLOW_NODES,
-                           accent_index=content.DATA_FLOW_ACCENT_INDEX)
+    kit.make_flow_png(data_flow_png, tuple(t for t, _ in content.DATA_FLOW_NODES))
 
     bpmn1_png = GENERATED / "bpmn-1.png"
     slk.make_bpmn_signal_png_part1(bpmn1_png)
@@ -53,25 +53,53 @@ def build() -> int:
                   "discussion live; these slides are the two diagrams "
                   "only, the live tool is demonstrated separately.",),
         )),
-        ("speakers", dict(speakers=(("Benjamin C. Sotelo", None),))),
+        ("speakers", dict(speakers=(
+            ("Benjamin C. Sotelo", PHOTOS / "benjamin-sotelo.jpg"),
+        ))),
         ("picture", dict(
             label="How it works",
             image_path=data_flow_png,
-            notes=("Checked read-only against the real code: three Cloudflare "
-                  "crons (price/minute, close, SEC one-per-minute), the "
-                  "database stores candles/indicators/signals/outcomes/buys, "
-                  "the rule gates on three checks only (volume is reported, "
-                  "not a gate, a correction from an earlier draft).",),
+            notes=(
+                "Yahoo prices + SEC filings: live quotes and company "
+                "financial filings, both free sources.",
+                "An automatic job: three Cloudflare crons in the real "
+                "code (price every minute in market hours, once at the "
+                "close, and SEC fundamentals one company per minute), "
+                "simplified to one box here.",
+                "The database: prices, indicators, signals, outcomes, "
+                "and your buys.",
+                "Chapter 8's rule: trend, momentum, the five-day "
+                "trigger. Checked read-only against the real code: the "
+                "gate is three checks only, volume is reported but "
+                "never gates the signal (a correction from an earlier "
+                "draft).",
+                "Your page: behind your own passphrase.",
+            ),
         )),
         ("picture", dict(
             label="The decision process (1 of 2)",
             image_path=bpmn1_png,
-            notes=content.BPMN_SLIDE["notes"],
+            notes=content.BPMN_SLIDE["notes"] + (
+                "What each step is worth: Compute indicators, one shared "
+                "formula, every stock, no arguing over the math. Three "
+                "checks, no signal fires on a hunch (volume is shown "
+                "beside it, not required to fire one). Show signal, you "
+                "see it the moment it is real, never a stale page. You "
+                "decide, your money, your call, always.",
+            ),
         )),
         ("picture", dict(
             label="The decision process (2 of 2)",
             image_path=bpmn2_png,
-            notes=(),
+            notes=(
+                "What each step is worth: Log a buy, one record, so the "
+                "scoreboard can grade it later. Stop, target: advice, a "
+                "number to check yourself against, never an auto-sell. "
+                "Sell or hold, still your call. Log a sell, closes the "
+                "record the scoreboard will grade. Scoreboard, +5 days "
+                "(a sub-process, runs on the close cron, not inline): "
+                "proof the rule works, or does not, in public.",
+            ),
         )),
         ("closing", dict(line="Thank you", notes=())),
     ]

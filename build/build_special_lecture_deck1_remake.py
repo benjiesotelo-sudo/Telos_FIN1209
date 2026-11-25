@@ -4,12 +4,12 @@
     .venv/bin/python build/build_special_lecture_deck1_remake.py
 
 Last-minute remake per the captain's own 25 Nov words: too cluttered,
-too long, too wordy; wants a plain conference-talk look (one soft
-background, one large line, almost nothing else), far fewer slides, and
-no sentences of explanation anywhere on a slide; he handles the
-discussion live. Every slide is a few words, one command, or one
-prompt. Speaker detail (who presents which part, verification notes)
-lives only in speaker notes.
+too long, too wordy; then, on a second pass, commands too small and
+content pinned to the top third. Plain conference-talk style (one soft
+background, one large line, almost nothing else), content vertically
+centred, commands set large enough to fill the slide width, wrapped by
+hand at a real word boundary rather than shrunk. No sentences of
+explanation anywhere on a slide; he handles the discussion live.
 """
 
 from __future__ import annotations
@@ -56,8 +56,9 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Install Codex: macOS",
-        line='curl -fsSL https://chatgpt.com/codex/install.sh | sh',
+        line=("curl -fsSL https://chatgpt.com/codex/install.sh", "| sh"),
         mono=True,
+        size=34,
         notes=(
             "Benjamin presents this one.",
             "Verified today: installer's own real end-of-run message, "
@@ -68,8 +69,10 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Install Codex: Windows",
-        line='powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"',
+        line=('powershell -ExecutionPolicy ByPass -c "irm',
+             'https://chatgpt.com/codex/install.ps1 | iex"'),
         mono=True,
+        size=30,
         notes=(
             f"{TYRONE} presents this one.",
             "Exact command quoted verbatim from github.com/openai/"
@@ -85,6 +88,7 @@ SLIDES: list[tuple[str, dict]] = [
         label="Sign in",
         line="codex login",
         mono=True,
+        size=48,
         notes=(
             "Both presenters. A browser tab opens: sign in with your "
             "ChatGPT account.",
@@ -98,16 +102,17 @@ SLIDES: list[tuple[str, dict]] = [
         label="What we set up",
         line="Python. Git. GitHub.",
         notes=("Both presenters. Codex sets up each one from a prompt; "
-              "captain discusses live, next four slides are the exact "
+              "captain discusses live, next three slides are the exact "
               "prompts.",),
     )),
     ("line", dict(
         label="Prompt",
-        line='"Check whether python3 works on this computer. If macOS '
-             'asks to install the command line developer tools, '
-             'install them."',
+        size=26,
+        line='"Check whether Python 3 is installed on this computer. '
+             'If it is not, install it, then tell me how to confirm '
+             'it worked."',
         notes=(
-            "Both presenters.",
+            "Both presenters. Same prompt on Mac and Windows.",
             "On a genuinely fresh Mac this triggers a real Command Line "
             "Tools install dialog, which takes a few minutes and needs "
             "a mouse click; Codex cannot click through it alone. Doing "
@@ -117,12 +122,13 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Prompt",
+        size=26,
         line='"Check whether Git is installed on this computer. If it '
              'is not, install it, then tell me how to confirm it '
              'worked."',
         notes=(
             "Both presenters.",
-            "Same real Command Line Tools dialog as the python3 check "
+            "Same real Command Line Tools dialog as the python check "
             "on a fresh Mac; already handled if that step ran first.",
             "Verified real answer on an already-set-up Mac: git version "
             "2.50.1 (Apple Git-155).",
@@ -130,6 +136,7 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Prompt",
+        size=26,
         line='"I just created a GitHub account. Help me sign in to '
              'GitHub from this terminal."',
         notes=(
@@ -145,6 +152,7 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Prompt",
+        size=26,
         line='"Set my Git name to [your name] and my email to [your '
              'email], for every project on this computer."',
         notes=(

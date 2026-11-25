@@ -42,67 +42,135 @@ def _blank(prs):
     return slide
 
 
-def render_line(prs, *, label=None, line, sub=None, mono=False,
+LABEL_SIZE = 20
+LABEL_H = 0.5
+GAP = 0.45
+
+
+def render_line(prs, *, label=None, line, sub=None, mono=False, size=None,
                 notes=()) -> None:
     """One idea: an optional small serif label, one large line (sans or
-    monospace for a command), an optional short line under it. Centred
-    in the upper-middle of the slide, generous empty space around it."""
+    monospace for a command, which may be given as a tuple of strings
+    for a deliberate, caller-chosen line break), an optional short line
+    under it. The whole block is centred vertically on the slide, never
+    pinned to the top third. Font size is fixed, never auto-shrunk: a
+    command that needs breaking should be passed pre-broken (a tuple),
+    at a size large enough to fill the slide width."""
     slide = _blank(prs)
-    safe_bottom = 6.9
-    y0 = 2.7 if not label else 2.0
-    y = y0
+    line_font = MONO if mono else SANS
+    size = size or (44 if mono else 40)
+    hard_lines = line if isinstance(line, tuple) else (line,)
+    line_h_each = deckkit._text_height(hard_lines[0], CONTENT_W.inches, size,
+                                       spacing=1.15)
+    block_h = sum(deckkit._text_height(hl, CONTENT_W.inches, size,
+                                       spacing=1.15) + 0.08
+                 for hl in hard_lines) - 0.08
+
+    total_h = block_h
+    if label:
+        total_h += LABEL_H + GAP
+    if sub:
+        total_h += GAP + 0.4
+
+    y = (SLIDE_H.inches - total_h) / 2.0
 
     if label:
         frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
-                                 Inches(0.5))
-        deckkit._para(frame, label, size=18, color=MUTED, italic=True,
+                                 Inches(LABEL_H))
+        deckkit._para(frame, label, size=LABEL_SIZE, color=MUTED, italic=True,
                       font=SERIF, align=deckkit.PP_ALIGN.CENTER, first=True)
-        y += 0.65
+        y += LABEL_H + GAP
 
-    line_font = MONO if mono else SANS
-    # A long command or prompt can run well past a fixed font size; step
-    # the size down until it fits the slide rather than clip at the
-    # bottom edge. A fixed safety margin on top of the text-height
-    # estimate, since a long line with few break points (a URL) can
-    # measure a touch short of its real wrapped height.
-    max_size = 30 if mono else 40
-    for size in range(max_size, 15, -2):
-        line_h = deckkit._text_height(line, CONTENT_W.inches, size,
-                                      spacing=1.2) + 0.35
-        if y + line_h + 0.2 <= safe_bottom or size <= 17:
-            break
     frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
-                             Inches(line_h + 0.2))
-    deckkit._para(frame, line, size=size, color=INK, font=line_font,
-                  bold=not mono, align=deckkit.PP_ALIGN.CENTER, first=True,
-                  line_spacing=1.2)
-    y += line_h + 0.4
+                             Inches(block_h + 0.2))
+    for i, hl in enumerate(hard_lines):
+        deckkit._para(frame, hl, size=size, color=INK, font=line_font,
+                      bold=not mono, align=deckkit.PP_ALIGN.CENTER,
+                      first=(i == 0), space_after=6, line_spacing=1.15)
+    y += block_h
 
     if sub:
+        y += GAP
         frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
-                                 Inches(0.6))
+                                 Inches(0.4))
         deckkit._para(frame, sub, size=18, color=MUTED, font=SANS,
                       align=deckkit.PP_ALIGN.CENTER, first=True)
 
     deckkit._notes(slide, notes)
 
 
+def render_prose(prs, *, label=None, text, size=28, notes=()) -> None:
+    """A prompt or other long sentence, wrapped automatically, at a
+    fixed size never smaller than any other prompt in the deck. The
+    caller is responsible for splitting text too long for one slide at
+    this size into two calls (not this function shrinking it)."""
+    slide = _blank(prs)
+    text_h = deckkit._text_height(text, CONTENT_W.inches, size, spacing=1.25)
+    total_h = text_h
+    if label:
+        total_h += LABEL_H + GAP
+    y = (SLIDE_H.inches - total_h) / 2.0
+
+    if label:
+        frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
+                                 Inches(LABEL_H))
+        deckkit._para(frame, label, size=LABEL_SIZE, color=MUTED, italic=True,
+                      font=SERIF, align=deckkit.PP_ALIGN.CENTER, first=True)
+        y += LABEL_H + GAP
+
+    frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
+                             Inches(text_h + 0.3))
+    deckkit._para(frame, text, size=size, color=INK, font=SANS, bold=True,
+                  align=deckkit.PP_ALIGN.CENTER, first=True, line_spacing=1.25)
+
+    deckkit._notes(slide, notes)
+
+
+def fits(text: str, size: int, *, max_h: float = 5.6) -> bool:
+    """Whether ``text`` rendered at ``size`` fits comfortably on one
+    slide, used to decide whether a prompt needs splitting rather than
+    shrinking."""
+    return deckkit._text_height(text, CONTENT_W.inches, size, spacing=1.25) <= max_h
+
+
+def split_at_sentence(text: str) -> tuple[str, str]:
+    """Split ``text`` into two roughly even halves at a sentence
+    boundary (after a period followed by a space), for a prompt too
+    long for one slide at the deck's common font size."""
+    midpoint = len(text) // 2
+    best_i = None
+    for i, ch in enumerate(text):
+        if ch == "." and i + 1 < len(text) and text[i + 1] == " ":
+            if best_i is None or abs(i - midpoint) < abs(best_i - midpoint):
+                best_i = i
+    if best_i is None:
+        return text, ""
+    return text[:best_i + 1].strip(), text[best_i + 1:].strip()
+
+
 def render_title(prs, *, course, title, subtitle=None, notes=()) -> None:
     slide = _blank(prs)
-    frame = deckkit._textbox(slide, MARGIN, Inches(1.9), CONTENT_W,
-                             Inches(0.5))
+    title_h = deckkit._text_height(title, CONTENT_W.inches, 48, spacing=1.1)
+    total_h = 0.5 + GAP + title_h
+    if subtitle:
+        total_h += GAP + 0.4
+    y = (SLIDE_H.inches - total_h) / 2.0
+
+    frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W, Inches(0.5))
     deckkit._para(frame, course, size=18, color=MUTED, font=SERIF,
                   italic=True, align=deckkit.PP_ALIGN.CENTER, first=True)
+    y += 0.5 + GAP
 
-    title_h = deckkit._text_height(title, CONTENT_W.inches, 48, spacing=1.1)
-    frame = deckkit._textbox(slide, MARGIN, Inches(2.6), CONTENT_W,
+    frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
                              Inches(title_h + 0.2))
     deckkit._para(frame, title, size=48, color=INK, font=SANS, bold=True,
                   align=deckkit.PP_ALIGN.CENTER, first=True, line_spacing=1.1)
+    y += title_h
 
     if subtitle:
-        frame = deckkit._textbox(slide, MARGIN, Inches(2.6 + title_h + 0.5),
-                                 CONTENT_W, Inches(0.6))
+        y += GAP
+        frame = deckkit._textbox(slide, MARGIN, Inches(y), CONTENT_W,
+                                 Inches(0.4))
         deckkit._para(frame, subtitle, size=20, color=MUTED, font=SANS,
                       align=deckkit.PP_ALIGN.CENTER, first=True)
 
@@ -110,30 +178,90 @@ def render_title(prs, *, course, title, subtitle=None, notes=()) -> None:
 
 
 def render_speakers(prs, *, speakers, notes=()) -> None:
-    """speakers: a tuple of (name, photo_path) pairs. Photo, name under
-    it; nothing else, no role labels, no tags."""
+    """speakers: a tuple of (name, photo_path) pairs. Every photo is the
+    same equal portrait rectangle (4:5, the captain's own ready-made
+    800x1000 head-and-shoulders crops, placed exactly as given: no
+    further cropping, resizing out of shape, or stretching), same size,
+    same top edge, side by side, with its name centred under it; nothing
+    else, no role labels, no tags."""
     slide = _blank(prs)
     n = len(speakers)
     col_w = CONTENT_W.inches / n
-    photo_h = 3.0
-    top = 1.9
+    photo_w = min(2.6, col_w - 0.8)
+    photo_h = photo_w * 1.25  # the captain's own crops are 800x1000, 4:5
+    top = (SLIDE_H.inches - (photo_h + 0.75)) / 2.0
+
     for i, (name, photo_path) in enumerate(speakers):
         cx = MARGIN.inches + col_w * (i + 0.5)
-        px_w, px_h = Image.open(photo_path).size if photo_path else (1, 1)
-        photo_w = photo_h * px_w / px_h
-        photo_w = min(photo_w, col_w - 0.6)
-        photo_h_eff = photo_w * px_h / px_w
         x = cx - photo_w / 2
         if photo_path:
             slide.shapes.add_picture(str(photo_path), Inches(x), Inches(top),
-                                     Inches(photo_w), Inches(photo_h_eff))
+                                     Inches(photo_w), Inches(photo_h))
+        else:
+            deckkit._rect(slide, Inches(x), Inches(top), Inches(photo_w),
+                         Inches(photo_h), RGBColor(0xD8, 0xE0, 0xE8))
         frame = deckkit._textbox(slide, Inches(cx - col_w / 2 + 0.2),
-                                 Inches(top + photo_h_eff + 0.3),
+                                 Inches(top + photo_h + 0.25),
                                  Inches(col_w - 0.4), Inches(0.5))
-        deckkit._para(frame, name, size=24, color=INK, font=SANS, bold=True,
+        deckkit._para(frame, name, size=22, color=INK, font=SANS, bold=True,
                       align=deckkit.PP_ALIGN.CENTER, first=True)
 
     deckkit._notes(slide, notes)
+
+
+def make_flow_png(path, labels: tuple[str, ...], *, width=2400) -> None:
+    """A plain "how it works" picture: short labels only, large, joined
+    by simple arrows, no boxes or cards. Wraps onto a second row (first
+    ceil(n/2), then the rest) when more than 3 labels, with an elbowed
+    arrow dropping through the gap between rows."""
+    from PIL import ImageDraw, ImageFont
+
+    n = len(labels)
+    row1_n = -(-n // 2) if n > 3 else n
+    row2_n = n - row1_n
+    font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 72)
+    ink = (0x24, 0x2B, 0x33)
+    accent = (0xC2, 0x55, 0x2E)
+    bg = (0xEA, 0xF1, 0xF8)
+
+    row_h = 220
+    height = row_h * (2 if row2_n else 1) + (160 if row2_n else 0) + 100
+    img = __import__("PIL.Image", fromlist=["Image"]).new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+
+    def row_labels(items, y):
+        widths = [draw.textlength(t, font=font) for t in items]
+        gap = 140
+        total_w = sum(widths) + gap * (len(items) - 1)
+        x = (width - total_w) / 2
+        centers = []
+        for t, w in zip(items, widths):
+            draw.text((x, y), t, font=font, fill=ink, anchor="lm")
+            centers.append((x, x + w))
+            x += w + gap
+        for (_, x_end), (x_start, _) in zip(centers, centers[1:]):
+            mid_y = y
+            ax0, ax1 = x_end + 24, x_start - 24
+            draw.line([(ax0, mid_y), (ax1, mid_y)], fill=accent, width=6)
+            draw.polygon([(ax1, mid_y), (ax1 - 20, mid_y - 14),
+                         (ax1 - 20, mid_y + 14)], fill=accent)
+        return centers
+
+    y1 = 50 + row_h // 2
+    c1 = row_labels(labels[:row1_n], y1)
+    if row2_n:
+        y2 = y1 + row_h + 160
+        c2 = row_labels(labels[row1_n:], y2)
+        x_last = (c1[-1][0] + c1[-1][1]) / 2
+        x_first = (c2[0][0] + c2[0][1]) / 2
+        mid_y = (y1 + y2) / 2
+        draw.line([(x_last, y1 + 20), (x_last, mid_y)], fill=accent, width=6)
+        draw.line([(x_last, mid_y), (x_first, mid_y)], fill=accent, width=6)
+        draw.line([(x_first, mid_y), (x_first, y2 - 20)], fill=accent, width=6)
+        draw.polygon([(x_first, y2 - 20), (x_first - 16, y2 - 44),
+                     (x_first + 16, y2 - 44)], fill=accent)
+
+    img.save(path)
 
 
 def render_picture(prs, *, label=None, image_path, caption=None,
@@ -201,6 +329,8 @@ def build_presentation(slides: list[tuple[str, dict]], *, out_path: Path,
             render_title(prs, **data)
         elif kind == "line":
             render_line(prs, **data)
+        elif kind == "prose":
+            render_prose(prs, **data)
         elif kind == "speakers":
             render_speakers(prs, **data)
         elif kind == "picture":

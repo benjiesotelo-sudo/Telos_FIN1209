@@ -77,6 +77,10 @@ def _build_walkthrough_images() -> list[Path]:
                                     buttons=step["dialog_buttons"])
         elif step["kind"] == "image":
             dst = GH_DOCS_ASSETS / step["image_file"]
+        elif step["kind"] == "illustration":
+            kit.make_step_list_png(dst, heading=step["illustration_heading"],
+                                   steps=step["illustration_steps"],
+                                   note=step.get("illustration_note"))
         else:
             raise ValueError(step["kind"])
         paths.append(dst)
@@ -99,8 +103,8 @@ def build(edition: str, out_path: Path) -> int:
     kit.make_terminal_png(win_error_png, content.WIN_ERROR_SHOT["term_lines"],
                           font_size=46, line_h=78)
     signin_png = kit.GENERATED / "signin.png"
-    kit.make_doc_card_png(signin_png, site=content.SIGNIN_STEP["doc_site"],
-                          lines=content.SIGNIN_STEP["doc_lines"])
+    kit.make_terminal_png(signin_png, content.SIGNIN_STEP["term_lines"],
+                          font_size=42, line_h=66)
     git_github_png = kit.GENERATED / "git-github-flow.png"
     kit.make_git_github_flow_png(git_github_png)
     walkthrough_images = _build_walkthrough_images()

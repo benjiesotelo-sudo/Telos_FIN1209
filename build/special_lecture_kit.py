@@ -346,6 +346,83 @@ def make_mac_dialog_png(path: Path, *, title: str, message: str,
     img.save(path)
 
 
+def make_step_list_png(path: Path, *, heading: str, steps: tuple[str, ...],
+                       note: str | None = None, width=1700, height=900) -> None:
+    """A plain numbered-step illustration, for a real-world step this
+    build can neither screenshot live (blocked by a bot check) nor cite
+    a documentation screenshot for (none exists): a clean card with a
+    small "Illustration" tag baked into the picture itself, a plain-text
+    heading (a site name, never a logo or any recreated branding), and
+    a numbered list. No visual element here recreates another site's own
+    design; only the plain words are its own."""
+    bg = (248, 248, 249)
+    ink = (26, 26, 26)
+    muted = (110, 110, 110)
+    accent = (METRO_ACCENT[0], METRO_ACCENT[1], METRO_ACCENT[2])
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    pad = 48
+    draw.rounded_rectangle([pad, pad, width - pad, height - pad], radius=18,
+                           fill=(255, 255, 255), outline=(222, 224, 228),
+                           width=2)
+
+    heading_font = ImageFont.truetype(ARIAL_BOLD, 34)
+    tag_font = ImageFont.truetype(ARIAL_BOLD, 22)
+    num_font = ImageFont.truetype(ARIAL_BOLD, 30)
+    step_font = ImageFont.truetype(ARIAL, 32)
+    note_font = ImageFont.truetype(ARIAL, 24)
+
+    inner_x = pad + 54
+    y = pad + 46
+    draw.text((inner_x, y), heading, font=heading_font, fill=muted)
+    tag = "ILLUSTRATION"
+    tag_w = draw.textlength(tag, font=tag_font)
+    draw.text((width - pad - 36 - tag_w, y + 4), tag, font=tag_font,
+              fill=accent)
+    y += 70
+    draw.line([(inner_x, y), (width - pad - 36, y)], fill=(222, 224, 228),
+             width=2)
+    y += 46
+
+    for i, step in enumerate(steps, start=1):
+        r = 22
+        cy = y + r
+        draw.ellipse([inner_x, y, inner_x + 2 * r, y + 2 * r],
+                    outline=accent, width=3, fill=(255, 255, 255))
+        draw.text((inner_x + r, cy), str(i), font=num_font, fill=accent,
+                  anchor="mm")
+        draw.text((inner_x + 2 * r + 24, cy), step, font=step_font,
+                  fill=ink, anchor="lm")
+        y += 2 * r + 30
+
+    if note:
+        y += 10
+        draw.line([(inner_x, y), (width - pad - 36, y)], fill=(222, 224, 228),
+                 width=2)
+        y += 30
+        tmp = Image.new("RGB", (10, 10))
+        tmp_draw = ImageDraw.Draw(tmp)
+        words, lines, cur = note.split(), [], ""
+        max_w = width - pad - 36 - inner_x
+        for w in words:
+            trial = f"{cur} {w}".strip()
+            if tmp_draw.textlength(trial, font=note_font) <= max_w:
+                cur = trial
+            else:
+                if cur:
+                    lines.append(cur)
+                cur = w
+        if cur:
+            lines.append(cur)
+        for line in lines:
+            draw.text((inner_x, y), line, font=note_font, fill=muted)
+            y += 34
+
+    _generated_dir()
+    img.save(path)
+
+
 def make_example_position_png(path: Path, *, ticker="MSFT",
                               width=1200, height=560) -> None:
     """A made-up Stock Desk position card: the same dark-UI look as the

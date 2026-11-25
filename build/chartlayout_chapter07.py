@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from contextlib import contextmanager
 from functools import lru_cache
+import importlib
 import math
 import re
 
@@ -21,6 +22,17 @@ from matplotlib.patches import Circle
 from matplotlib.lines import Line2D
 from matplotlib.textpath import TextPath
 from matplotlib.transforms import Bbox
+
+# Chapter 8 reuses this layout by setting these three names (see
+# chartlayout_chapter08); Chapter 7's own values are the defaults.
+CHAPTER_DIR = 'chapter-07'
+DATA_MODULE = 'charts_chapter07'
+CONTENT_MODULE = 'content_chapter07'
+
+
+def _data():
+    return importlib.import_module(DATA_MODULE).DATA
+
 
 WIDTH, HEIGHT = ck.FIG_W, ck.FIG_H
 FONT = 16.5
@@ -62,7 +74,7 @@ def book_crop(number, window, shows, marks=(), masks=()):
     on a gridded render of the artwork."""
     import json
     from pathlib import Path
-    sizes = json.loads((Path(__file__).resolve().parents[1] / 'chapter-07' /
+    sizes = json.loads((Path(__file__).resolve().parents[1] / CHAPTER_DIR /
                         'figure-sizes.json').read_text())['figures']
     major, minor = number.split('.')
     w, h = sizes[f'figure-{major}-{int(minor):02d}.png']
@@ -108,7 +120,7 @@ def _paint_masks(slide, figure):
 def chart_slides(asset, title, lines, *, figure=None, notes=(), origin=''):
     """A chart's teaching text and the chart, written as the text slide and
     the chart slide that expand_chart_pages folds into one."""
-    from charts_chapter07 import DATA
+    DATA = _data()
     text = dk.Content(title=title, lines=tuple(lines), notes=tuple(notes), origin=origin)
     chart = course_chart(asset, title=title, letter=DATA[asset]['letter'],
                          shows=DATA[asset]['items'][0].name, tier='core',
@@ -163,7 +175,7 @@ def _place(asset, paragraphs):
     sentence stays with a marked sentence earlier in its own paragraph,
     else goes with the next marked sentence, else the last.
     """
-    from charts_chapter07 import DATA
+    DATA = _data()
     numbers = [{m.number for m in layout(asset, page)[1]}
                for page in range(len(page_specs(DATA[asset])))]
     sentences = [s for paragraph in paragraphs for s in paragraph]
@@ -247,7 +259,7 @@ def expand_chart_pages(chapter):
     The text slide written in front of a chart is folded onto the chart's
     own slides, so a sentence that names a mark is read where the mark is.
     """
-    from charts_chapter07 import DATA
+    DATA = _data()
     serial = 0
     def expand(slides):
         nonlocal serial
@@ -723,7 +735,7 @@ def course_slide_renderer():
         frame=dk._textbox(slide,dk.MARGIN,Inches(1.33),dk.CONTENT_W,Inches(TEXT_H))
         refs={mark.number: mark.rgb for mark in s.marks}
         dk._para(frame,' '.join(s.teaching),size=17,color=dk.INK,first=True,line_spacing=1.0,refs=refs)
-        from charts_chapter07 import DATA
+        DATA = _data()
         width=chart_width(DATA[s.asset])
         y=2.62
         if s.figure is None:
@@ -932,7 +944,7 @@ def _target_specs(key, spec):
 
 @lru_cache(maxsize=128)
 def layout(key, page=0):
-    from charts_chapter07 import DATA
+    DATA = _data()
     spec = DATA[key]
     W = chart_width(spec)
     fig = plt.figure(figsize=(W, HEIGHT), dpi=ck.DPI)
@@ -1355,8 +1367,8 @@ def audit_pptx(path, charts_dir):
     import hashlib
     from pathlib import Path
     from pptx import Presentation
-    from charts_chapter07 import DATA
-    from content_chapter07 import CHAPTER
+    DATA = _data()
+    CHAPTER = importlib.import_module(CONTENT_MODULE).CHAPTER
     placed={s.asset for section in CHAPTER.sections for s in section.slides if isinstance(s,CourseChart)}
     assets={hashlib.sha256((Path(charts_dir)/f'chart-{key}-{page}.png').read_bytes()).hexdigest(): (key,page)
             for key,spec in DATA.items() if key in placed for page in range(len(page_specs(spec)))}

@@ -312,7 +312,7 @@ WALKTHROUGH_INTRO = deckkit.Content(
         "Three people play a part: you lead; Alex and Jun are your "
         "teammates.",
     ),
-    accent="One new thing happens per slide; what's new reads in green.",
+    accent="One new thing happens per slide.",
     origin="Both presenters",
 )
 

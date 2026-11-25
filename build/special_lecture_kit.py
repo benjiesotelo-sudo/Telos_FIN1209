@@ -481,12 +481,18 @@ def make_chart_panel_composite(src: Path, dst: Path, *, chart_crop, panel_crop,
 
 def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
                        accent_index: int | None = None,
-                       width=2300, height=460) -> None:
+                       width=2300, height=1100) -> None:
     """A plain "how it works" picture: boxes in a row, one arrow between
     each pair, no code names. ``nodes`` is (title, body) pairs, left to
     right; ``accent_index`` picks the one box (if any) drawn in the deck's
     own accent colour, the rest in the neutral dark bar used elsewhere in
-    this kit, matching the "one deliberate colour" rule."""
+    this kit, matching the "one deliberate colour" rule.
+
+    The canvas is taller than it is wide-looking (aspect just under 2.2)
+    on purpose: a slide's own body is itself taller than it is wide by
+    about that much, so this image lands height-bound when placed with
+    layout="wide", filling the slide's full body height instead of
+    shrinking to fit a much shorter, wider box first."""
     bg = (248, 248, 249)
     ink = (26, 26, 26)
     muted = (110, 110, 110)
@@ -497,13 +503,13 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
     margin = 40
     gap = 54
     box_w = (width - 2 * margin - (n - 1) * gap) // n
-    box_h = 260
+    box_h = height - 100
     y = (height - box_h) // 2
 
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
-    title_font = ImageFont.truetype(ARIAL_BOLD, 30)
-    body_font = ImageFont.truetype(ARIAL, 23)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 46)
+    body_font = ImageFont.truetype(ARIAL, 34)
 
     def wrap(text, font, max_w):
         words = text.split()
@@ -527,16 +533,16 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
         draw.rounded_rectangle([x, y, x + box_w, y + box_h], radius=18,
                                fill=(255, 255, 255), outline=(220, 222, 226),
                                width=2)
-        draw.rectangle([x, y, x + box_w, y + 6], fill=bar)
-        pad = 22
-        ty = y + 28
+        draw.rectangle([x, y, x + box_w, y + 10], fill=bar)
+        pad = 32
+        ty = y + 50
         for line in wrap(title, title_font, box_w - 2 * pad):
             draw.text((x + pad, ty), line, font=title_font, fill=ink)
-            ty += 38
-        ty += 10
+            ty += 58
+        ty += 18
         for line in wrap(body, body_font, box_w - 2 * pad):
             draw.text((x + pad, ty), line, font=body_font, fill=muted)
-            ty += 32
+            ty += 44
         centers.append((x + box_w, x + box_w + gap, y + box_h // 2))
 
     for x_start, x_end, ay in centers[:-1]:

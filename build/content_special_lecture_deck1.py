@@ -239,32 +239,38 @@ WIN_ERROR_SHOT = dict(
 
 SIGNIN_STEP = dict(
     title="Sign in to Codex",
-    kind="doc",
+    kind="terminal",
     do_lines=(
-        "In the same terminal, type: codex",
+        "In the same terminal, type: codex login",
         "The first time, Codex asks you to sign in.",
     ),
-    do_accent='Choose "Sign in with ChatGPT" and finish in your browser.',
-    doc_site="chatgpt.com/codex/auth",
-    doc_lines=(
-        'learn.chatgpt.com/codex/cli: "the first time you run Codex, '
-        'choose Sign in with ChatGPT or another available sign-in '
-        'method."',
-        "Codex is included across ChatGPT plans, including Free and "
-        "Go; usage limits vary by plan.",
+    do_accent="A browser tab opens: sign in with your ChatGPT account.",
+    term_lines=(
+        "$ codex login",
+        "Starting local login server on http://localhost:1455.",
+        "If your browser did not open, navigate to this URL",
+        "to authenticate: https://auth.openai.com/oauth/authorize",
     ),
     fallback=("Browser did not open by itself? Codex prints a link; "
               "copy it into any browser yourself."),
     source_credit=None,
     presenter="both",
-    credit="OpenAI's own docs, fetched today; not re-run live.",
     notes=(
-        'learn.chatgpt.com/codex/cli, fetched 25 Nov 2026: "Open a '
-        "project directory and run codex. The first time you run "
-        'Codex, choose Sign in with ChatGPT or another available '
-        'sign-in method."',
-        "An API key is the other option the docs name; ChatGPT sign-in "
-        "is simpler for this class and needs no separate key.",
+        "The on-slide wording now matches the captured command exactly "
+        "(codex login); the earlier text said plain codex.",
+        "Captured for real, 25 Nov 2026: CODEX_HOME pointed at a fresh, "
+        "empty scratch folder (never the real machine's own config), "
+        "ran codex login, captured this real output, then the process "
+        "was stopped immediately, before the browser page ever loaded "
+        "and before any sign-in completed. The real machine's own "
+        "signed-in session was never touched.",
+        "The real URL continues with a code_challenge, state and scope "
+        "beyond what is shown; trimmed here for the slide, not altered.",
+        "learn.chatgpt.com/codex/cli, fetched 25 Nov 2026: \"the first "
+        "time you run Codex, choose Sign in with ChatGPT or another "
+        "available sign-in method.\" Typing plain `codex` triggers the "
+        "same flow interactively; `codex login` run directly, as "
+        "captured here, is the same real command.",
         "help.openai.com/en/articles/11369540-codex-in-chatgpt, fetched "
         '25 Nov 2026, verbatim: "Codex is included across ChatGPT '
         'plans, including Free and Go. Usage limits vary by plan." Its '
@@ -272,10 +278,6 @@ SIGNIN_STEP = dict(
         '(a separate, hosted feature, not the CLI we are using today) '
         '"is not included with Free or Go." The CLI itself is on '
         "every plan.",
-        "Not re-run live: this machine's Codex is already signed in and "
-        "must stay that way (no sign-in or sign-out performed for this "
-        "build), so the picture is a mockup of the described flow, not "
-        "a captured browser screen.",
     ),
 )
 
@@ -312,7 +314,7 @@ WALKTHROUGH_INTRO = deckkit.Content(
         "Three people play a part: you lead; Alex and Jun are your "
         "teammates.",
     ),
-    accent="One new thing happens per slide; what's new reads in green.",
+    accent="One new thing happens per slide.",
     origin="Both presenters",
 )
 
@@ -418,7 +420,7 @@ WALKTHROUGH = [
     ),
     dict(
         title="Prompt: create a GitHub account and sign in",
-        kind="doc",
+        kind="illustration",
         do_lines=(
             "Creating the account itself happens in your browser, not "
             "inside Codex.",
@@ -427,19 +429,24 @@ WALKTHROUGH = [
         ),
         do_accent=('"I just created a GitHub account. Help me sign in to '
                     'GitHub from this terminal."'),
-        doc_site="github.com/signup",
-        doc_lines=(
-            "Enter an email, a password and a username; verify the "
-            "email GitHub sends you.",
-            "You do not have GitHub's own CLI yet; Codex offers to "
-            "install it (gh) first. Approve it.",
-            "Codex then runs gh auth login, which opens a browser tab "
-            "to finish signing in.",
+        illustration_heading="github.com/signup",
+        illustration_steps=(
+            "Enter an email address",
+            "Create a password",
+            "Choose a username",
+            "Verify your email",
+            "Choose the Free plan",
         ),
+        illustration_note=None,
         fallback=('If signup is refused ("This email can\'t be used" or '
-                  '"We couldn\'t create your account"), the docs say to '
-                  "try another browser or network."),
-        credit="GitHub's own docs, fetched today, not a live capture.",
+                  '"We couldn\'t create your account"), try another '
+                  "browser or network."),
+        credit=("No real screenshot exists for this step: GitHub Docs "
+               "has none for its own sign-up page, and a live capture "
+               "of github.com/signup is blocked by a bot check neither "
+               "attempt tried to bypass. The steps above are real, from "
+               "GitHub's own docs, drawn as a plain illustration rather "
+               "than left as an empty frame."),
         notes=(
             "docs.github.com/en/get-started/start-your-journey/"
             "creating-an-account-on-github, fetched 25 Nov 2026: create "

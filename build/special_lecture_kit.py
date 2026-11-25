@@ -346,6 +346,85 @@ def make_mac_dialog_png(path: Path, *, title: str, message: str,
     img.save(path)
 
 
+def make_step_list_png(path: Path, *, heading: str, steps: tuple[str, ...],
+                       note: str | None = None, width=2000, height=620) -> None:
+    """A plain numbered-step illustration, for a real-world step this
+    build can neither screenshot live (blocked by a bot check) nor cite
+    a documentation screenshot for (none exists): a clean card with a
+    small "Illustration" tag baked into the picture itself, a plain-text
+    heading (a site name, never a logo or any recreated branding), and
+    a numbered list, each step set at roughly the same size as this
+    deck's own body text, filling the card rather than leaving it mostly
+    empty. No visual element here recreates another site's own design;
+    only the plain words are its own."""
+    bg = (248, 248, 249)
+    ink = (26, 26, 26)
+    muted = (110, 110, 110)
+    accent = (METRO_ACCENT[0], METRO_ACCENT[1], METRO_ACCENT[2])
+
+    img = Image.new("RGB", (width, height), bg)
+    draw = ImageDraw.Draw(img)
+    pad = 40
+    draw.rounded_rectangle([pad, pad, width - pad, height - pad], radius=18,
+                           fill=(255, 255, 255), outline=(222, 224, 228),
+                           width=2)
+
+    heading_font = ImageFont.truetype(ARIAL_BOLD, 36)
+    tag_font = ImageFont.truetype(ARIAL_BOLD, 24)
+    num_font = ImageFont.truetype(ARIAL_BOLD, 38)
+    step_font = ImageFont.truetype(ARIAL, 46)
+    note_font = ImageFont.truetype(ARIAL, 30)
+
+    inner_x = pad + 50
+    y = pad + 36
+    draw.text((inner_x, y), heading, font=heading_font, fill=muted)
+    tag = "ILLUSTRATION"
+    tag_w = draw.textlength(tag, font=tag_font)
+    draw.text((width - pad - 40 - tag_w, y + 6), tag, font=tag_font,
+              fill=accent)
+    y += 58
+    draw.line([(inner_x, y), (width - pad - 40, y)], fill=(222, 224, 228),
+             width=2)
+    y += 40
+
+    for i, step in enumerate(steps, start=1):
+        r = 28
+        cy = y + r
+        draw.ellipse([inner_x, y, inner_x + 2 * r, y + 2 * r],
+                    outline=accent, width=3, fill=(255, 255, 255))
+        draw.text((inner_x + r, cy), str(i), font=num_font, fill=accent,
+                  anchor="mm")
+        draw.text((inner_x + 2 * r + 28, cy), step, font=step_font,
+                  fill=ink, anchor="lm")
+        y += 2 * r + 22
+
+    if note:
+        y += 10
+        draw.line([(inner_x, y), (width - pad - 36, y)], fill=(222, 224, 228),
+                 width=2)
+        y += 30
+        tmp = Image.new("RGB", (10, 10))
+        tmp_draw = ImageDraw.Draw(tmp)
+        words, lines, cur = note.split(), [], ""
+        max_w = width - pad - 36 - inner_x
+        for w in words:
+            trial = f"{cur} {w}".strip()
+            if tmp_draw.textlength(trial, font=note_font) <= max_w:
+                cur = trial
+            else:
+                if cur:
+                    lines.append(cur)
+                cur = w
+        if cur:
+            lines.append(cur)
+        for line in lines:
+            draw.text((inner_x, y), line, font=note_font, fill=muted)
+            y += 34
+
+    _generated_dir()
+    img.save(path)
+
+
 def make_example_position_png(path: Path, *, ticker="MSFT",
                               width=1200, height=560) -> None:
     """A made-up Stock Desk position card: the same dark-UI look as the
@@ -481,12 +560,21 @@ def make_chart_panel_composite(src: Path, dst: Path, *, chart_crop, panel_crop,
 
 def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
                        accent_index: int | None = None,
-                       width=2300, height=460) -> None:
+                       width=2300) -> None:
     """A plain "how it works" picture: boxes in a row, one arrow between
     each pair, no code names. ``nodes`` is (title, body) pairs, left to
     right; ``accent_index`` picks the one box (if any) drawn in the deck's
     own accent colour, the rest in the neutral dark bar used elsewhere in
-    this kit, matching the "one deliberate colour" rule."""
+    this kit, matching the "one deliberate colour" rule.
+
+    More than 3 nodes wrap onto a second row (the first ceil(n/2), then
+    the rest), connected by an elbowed arrow that drops down and back
+    left, since text this large does not read in one row across the full
+    width. Each card's height still hugs its own text (worst case two
+    title lines, up to three body lines) rather than a fixed box with
+    empty space under the words, and the canvas as a whole is shaped so
+    the picture lands height-bound on its slide, filling the full
+    content area top to bottom instead of a thin band across the middle."""
     bg = (248, 248, 249)
     ink = (26, 26, 26)
     muted = (110, 110, 110)
@@ -494,16 +582,23 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
     neutral_bar = (60, 70, 74)
 
     n = len(nodes)
+    row1_n = -(-n // 2) if n > 3 else n  # ceil(n/2) once wrapped
+    row2_n = n - row1_n
     margin = 40
     gap = 54
-    box_w = (width - 2 * margin - (n - 1) * gap) // n
-    box_h = 260
-    y = (height - box_h) // 2
+    cols = max(row1_n, row2_n)
+    box_w = (width - 2 * margin - (cols - 1) * gap) // cols
+
+    title_font = ImageFont.truetype(ARIAL_BOLD, 69)
+    body_font = ImageFont.truetype(ARIAL, 51)
+    title_line_h, body_line_h, pad = 87, 66, 48
+    box_h = pad * 2 + 2 * title_line_h + 27 + 3 * body_line_h
+
+    row_gap = 150 if row2_n else 0
+    height = margin * 2 + box_h * (2 if row2_n else 1) + row_gap
 
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
-    title_font = ImageFont.truetype(ARIAL_BOLD, 30)
-    body_font = ImageFont.truetype(ARIAL, 23)
 
     def wrap(text, font, max_w):
         words = text.split()
@@ -520,29 +615,65 @@ def make_data_flow_png(path: Path, nodes: list[tuple[str, str]], *,
             lines.append(cur)
         return lines
 
-    centers = []
-    for i, (title, body) in enumerate(nodes):
-        x = margin + i * (box_w + gap)
+    def draw_card(i, title, body, x, y):
         bar = accent if i == accent_index else neutral_bar
         draw.rounded_rectangle([x, y, x + box_w, y + box_h], radius=18,
                                fill=(255, 255, 255), outline=(220, 222, 226),
                                width=2)
-        draw.rectangle([x, y, x + box_w, y + 6], fill=bar)
-        pad = 22
-        ty = y + 28
+        draw.rectangle([x, y, x + box_w, y + 14], fill=bar)
+        ty = y + pad + 10
         for line in wrap(title, title_font, box_w - 2 * pad):
             draw.text((x + pad, ty), line, font=title_font, fill=ink)
-            ty += 38
-        ty += 10
+            ty += title_line_h
+        ty += 27
         for line in wrap(body, body_font, box_w - 2 * pad):
             draw.text((x + pad, ty), line, font=body_font, fill=muted)
-            ty += 32
-        centers.append((x + box_w, x + box_w + gap, y + box_h // 2))
+            ty += body_line_h
 
-    for x_start, x_end, ay in centers[:-1]:
-        draw.line([(x_start, ay), (x_end, ay)], fill=ink, width=4)
-        draw.polygon([(x_end, ay), (x_end - 16, ay - 10),
-                     (x_end - 16, ay + 10)], fill=ink)
+    centers = []
+    for i in range(row1_n):
+        x = margin + i * (box_w + gap)
+        y = margin
+        draw_card(i, nodes[i][0], nodes[i][1], x, y)
+        centers.append((x, x + box_w, y + box_h // 2))
+    for j in range(row2_n):
+        i = row1_n + j
+        x = margin + j * (box_w + gap)
+        y = margin + box_h + row_gap
+        draw_card(i, nodes[i][0], nodes[i][1], x, y)
+        centers.append((x, x + box_w, y + box_h // 2))
+
+    for k in range(row1_n - 1):
+        _, x_end_prev, ay = centers[k]
+        x_start_next, _, _ = centers[k + 1]
+        draw.line([(x_end_prev, ay), (x_start_next, ay)], fill=ink, width=5)
+        draw.polygon([(x_start_next, ay), (x_start_next - 18, ay - 12),
+                     (x_start_next - 18, ay + 12)], fill=ink)
+    for k in range(row1_n, n - 1):
+        _, x_end_prev, ay = centers[k]
+        x_start_next, _, _ = centers[k + 1]
+        draw.line([(x_end_prev, ay), (x_start_next, ay)], fill=ink, width=5)
+        draw.polygon([(x_start_next, ay), (x_start_next - 18, ay - 12),
+                     (x_start_next - 18, ay + 12)], fill=ink)
+    if row2_n:
+        # The elbow from the end of row 1 down to the start of row 2,
+        # routed entirely through the empty gap band between the two
+        # rows (never across a card): down from row 1's last card, left
+        # to row 2's first card's own column, then down into its top.
+        row1_bottom = margin + box_h
+        row2_top = margin + box_h + row_gap
+        gap_mid = (row1_bottom + row2_top) // 2
+        x_last_row1 = margin + (row1_n - 1) * (box_w + gap) + box_w // 2
+        x_first_row2 = margin + box_w // 2
+        draw.line([(x_last_row1, row1_bottom), (x_last_row1, gap_mid)],
+                 fill=ink, width=5)
+        draw.line([(x_last_row1, gap_mid), (x_first_row2, gap_mid)],
+                 fill=ink, width=5)
+        draw.line([(x_first_row2, gap_mid), (x_first_row2, row2_top)],
+                 fill=ink, width=5)
+        draw.polygon([(x_first_row2, row2_top),
+                     (x_first_row2 - 12, row2_top - 18),
+                     (x_first_row2 + 12, row2_top - 18)], fill=ink)
 
     _generated_dir()
     img.save(path)

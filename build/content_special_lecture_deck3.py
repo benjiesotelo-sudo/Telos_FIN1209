@@ -126,8 +126,9 @@ PROMPTS = [
         ),
         fallback=("if Codex writes code anyway, just say \"that was "
                  "supposed to be a plan only, please remove the code and "
-                 "only write PLAN.md\"; it corrects itself. Did not "
-                 "happen in either real run."),
+                 "only write PLAN.md\" and it will remove the code."),
+        notes=("Verified twice, start to finish: Codex did not write code "
+              "early in either real run.",),
     ),
     dict(
         number=2,
@@ -156,11 +157,15 @@ PROMPTS = [
             "14-day RSI: 41.337146",
             "Reading: HOLD",
         ),
-        fallback=("this is the one real failure across both runs: "
-                 "Python's own urllib timed out fetching FRED on that "
-                 "network every time, while curl on the same URL "
-                 "succeeded instantly; the fix, now in the prompt above, "
-                 "is to fetch with curl from the start."),
+        fallback=("if Codex seems stuck and never prints the readout, "
+                 "the fetch may be hanging; say \"use curl instead of "
+                 "urllib to fetch the data\" and it will recover."),
+        notes=("The one real failure across both verification runs: "
+              "Python's own urllib timed out fetching FRED on that "
+              "network every time, while curl on the same URL succeeded "
+              "instantly; the fix is now in the prompt text itself, so "
+              "this should not come up, but the recovery line is there "
+              "if it does.",),
     ),
     dict(
         number=3,
@@ -186,10 +191,10 @@ PROMPTS = [
             "BUY/SELL pass/fail conditions. Running at",
             "http://127.0.0.1:8765.",
         ),
-        fallback=("did not fail in either run. If the page loads but the "
-                 "chart is blank, the likely cause is the dropdown's "
-                 "value not matching the server's three index keys "
-                 "exactly; ask Codex to check the request URL."),
+        fallback=("if the page loads but the chart is blank, ask Codex "
+                 "to check that the dropdown's value matches the "
+                 "server's three index keys exactly."),
+        notes=("Did not fail in either verification run.",),
     ),
     dict(
         number=4,
@@ -210,11 +215,16 @@ PROMPTS = [
             "responds through localhost and 192.168.x.x.",
             "nohup python3 -u server.py --port 8000 > server.log &",
         ),
-        fallback=("on the test machine, macOS reported Wi-Fi as \"off\" "
-                 "even though the interface still carried an address; if "
-                 "a phone cannot reach the page, check Wi-Fi is genuinely "
-                 "on, both devices share the exact same network, and the "
-                 "Mac's firewall is not blocking incoming connections."),
+        fallback=("if a phone cannot reach the page, check that Wi-Fi is "
+                 "genuinely turned on (not just an Ethernet connection), "
+                 "that both devices are on the exact same network, and "
+                 "that the Mac's firewall is not blocking incoming "
+                 "connections."),
+        notes=("On the machine this was verified on, macOS reported "
+              "Wi-Fi as \"off\" even though the interface still carried "
+              "an address; a classroom Mac mini should not have this "
+              "problem, but it is worth a quick glance at System "
+              "Settings beforehand.",),
     ),
     dict(
         number=5,
@@ -233,11 +243,12 @@ PROMPTS = [
             "Industrial Average: HOLD -- all three endpoints",
             "returned HTTP 200 with no errors.",
         ),
-        fallback=("did not fail in either run. If one index errors, it is "
-                 "almost always FRED briefly rate-limiting a burst of "
-                 "three requests; the server caches each result for 5 "
-                 "minutes once it succeeds, so waiting a few seconds and "
-                 "retrying that one index resolves it."),
+        fallback=("if one index errors, wait a few seconds and ask Codex "
+                 "to retry just that one; it is almost always FRED "
+                 "briefly rate-limiting a burst of three requests, and "
+                 "the server caches each result for 5 minutes once it "
+                 "succeeds."),
+        notes=("Did not fail in either verification run.",),
     ),
 ]
 
@@ -278,14 +289,13 @@ BONUS = dict(
         "installs, no npm, no other packages."
     ),
     image_file="browser-bonus-nvda-429.png",
-    fallback=('with a whole class on one network, Yahoo may refuse '
-             'requests for a while, shown exactly as pictured: "too many '
-             'requests, wait a minute and retry," with a Try again '
-             'button. This run\'s own retries took longer than a minute '
-             'to clear (up to 13 minutes); test this once well before '
-             'class, and expect a few minutes, not one, if it fires '
-             'during the lecture. None of the five required prompts '
-             'depend on this working.'),
+    fallback=('with a whole class on one network, you may see exactly '
+             'this message instead of a chart: "too many requests, wait '
+             'a minute and retry," with a Try again button. Test this '
+             'once well before class; if it fires during the lecture, '
+             'expect to wait a few minutes, not one, before trying '
+             'again. None of the five required prompts depend on this '
+             'working.'),
     notes=(
         "Added after his 25 Nov decision to keep both data paths: FRED's "
         "three indexes stay the required main path; this is one optional "
@@ -293,8 +303,9 @@ BONUS = dict(
         "Verified live, twice over, against a copy of the finished Stock "
         "Desk Mini: the ticker returned a real BUY reading with its own "
         "three-line chart once, early in the same session, before this "
-        "network started answering 429 for the rest of it. No "
-        "screenshot of that chart exists, since the rate limit was "
+        "network started answering 429 for the rest of it; those "
+        "retries took longer than a minute to clear, up to 13 minutes. "
+        "No screenshot of that chart exists, since the rate limit was "
         "already in effect by the time of the dedicated screenshot "
         "attempt; the pictured state is the other real, verified "
         "outcome, not a failure.",

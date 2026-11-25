@@ -704,7 +704,10 @@ def _bpmn_task(draw, cx, cy, w, h, title, *, value=None, multi_instance=False,
             cur = word
     if cur:
         lines.append(cur)
-    line_h = 26
+    # Scaled to the title font itself, not a fixed pixel value: a bigger
+    # font (as the BPMN diagrams now use) needs more room between wrapped
+    # lines, or they print on top of each other.
+    line_h = int(title_font.size * 1.25)
     text_zone_h = h - (34 if (multi_instance or subprocess) else 8)
     ty = y + 10 + max(0, (text_zone_h - len(lines) * line_h) / 2)
     for line in lines:
@@ -793,7 +796,14 @@ def _bpmn_elbow(draw, p0, p1, *, label=None, font=None, via="auto"):
     if label:
         a, b = segs[0]
         lx, ly = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
-        draw.text((lx, ly - 18), label, font=font, fill=(90, 90, 90), anchor="mm")
+        if a[0] == b[0]:
+            # A vertical segment: the label sits beside the line, not on
+            # top of it.
+            draw.text((lx + 26, ly), label, font=font, fill=(90, 90, 90),
+                      anchor="lm")
+        else:
+            draw.text((lx, ly - 18), label, font=font, fill=(90, 90, 90),
+                      anchor="mm")
 
 
 def _bpmn_link_event(draw, cx, cy, label, *, outgoing, font):
@@ -839,62 +849,63 @@ def make_bpmn_signal_png_part1(path: Path, *, width=2500, height=1000) -> None:
     gates the signal; drawn as a label inside the checks task, not a
     fourth check box, flagged in the deck's own notes as a difference
     from the first draft."""
-    bg = (250, 250, 250)
+    bg = (234, 241, 248)  # matches talk_kit's own slide background exactly,
+                          # so no visible panel edge shows against the slide
     ink = (26, 26, 26)
-    title_font = ImageFont.truetype(ARIAL_BOLD, 40)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 44)
     body_font = ImageFont.truetype(ARIAL, 23)
-    lane_font = ImageFont.truetype(ARIAL_BOLD, 32)
-    small_font = ImageFont.truetype(ARIAL, 26)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 34)
+    small_font = ImageFont.truetype(ARIAL, 28)
     fonts = (title_font, body_font)
 
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
     lane_x0, lane_x1 = 190, width - 40
-    task_w, task_h = 320, 200
+    task_w, task_h = 380, 230
 
-    top, mid, bot = 50, 460, 790
+    top, mid, bot = 50, 500, 870
     _bpmn_lanes(img, draw, lane_x0, lane_x1, top, mid, bot,
                ("STOCK DESK", "YOU"), lane_font, ink)
-    sd_y = top + 190
-    you_y = mid + 140
+    sd_y = top + 210
+    you_y = mid + 155
 
-    ev_start = (290, sd_y)
-    draw.ellipse([ev_start[0] - 36, ev_start[1] - 36, ev_start[0] + 36,
-                 ev_start[1] + 36], outline=ink, width=4, fill=(255, 255, 255))
-    draw.text((ev_start[0], ev_start[1] + 52), "New price", font=small_font,
+    ev_start = (310, sd_y)
+    draw.ellipse([ev_start[0] - 38, ev_start[1] - 38, ev_start[0] + 38,
+                 ev_start[1] + 38], outline=ink, width=4, fill=(255, 255, 255))
+    draw.text((ev_start[0], ev_start[1] + 54), "New price", font=small_font,
               fill=ink, anchor="ma")
 
-    c_ind = (700, sd_y)
+    c_ind = (740, sd_y)
     _bpmn_task(draw, *c_ind, task_w, task_h, "Compute indicators",
               multi_instance=True, fonts=fonts)
 
-    c_chk = (1150, sd_y)
+    c_chk = (1220, sd_y)
     _bpmn_task(draw, *c_chk, task_w, task_h, "Three checks",
               multi_instance=True, fonts=fonts)
 
-    gw_cx, gw_cy = 1580, sd_y
-    gw_size = 110
+    gw_cx, gw_cy = 1700, sd_y
+    gw_size = 120
     draw.polygon([(gw_cx, gw_cy - gw_size / 2), (gw_cx + gw_size / 2, gw_cy),
                  (gw_cx, gw_cy + gw_size / 2), (gw_cx - gw_size / 2, gw_cy)],
                 outline=ink, width=4, fill=(255, 255, 255))
-    draw.line([(gw_cx - 16, gw_cy - 16), (gw_cx + 16, gw_cy + 16)], fill=ink, width=4)
-    draw.line([(gw_cx - 16, gw_cy + 16), (gw_cx + 16, gw_cy - 16)], fill=ink, width=4)
-    draw.text((gw_cx, gw_cy - gw_size / 2 - 14), "All pass?",
+    draw.line([(gw_cx - 17, gw_cy - 17), (gw_cx + 17, gw_cy + 17)], fill=ink, width=4)
+    draw.line([(gw_cx - 17, gw_cy + 17), (gw_cx + 17, gw_cy - 17)], fill=ink, width=4)
+    draw.text((gw_cx, gw_cy - gw_size / 2 - 16), "All pass?",
               font=small_font, fill=ink, anchor="mb")
 
-    c_sig = (2020, sd_y)
+    c_sig = (2180, sd_y)
     _bpmn_task(draw, *c_sig, task_w, task_h, "Show signal", fonts=fonts)
 
-    ev_hold = (gw_cx, mid - 55)
-    draw.ellipse([ev_hold[0] - 34, ev_hold[1] - 34, ev_hold[0] + 34,
-                 ev_hold[1] + 34], outline=ink, width=6, fill=(255, 255, 255))
-    draw.text((ev_hold[0], ev_hold[1] + 48), "HOLD",
+    ev_hold = (gw_cx, mid - 65)
+    draw.ellipse([ev_hold[0] - 36, ev_hold[1] - 36, ev_hold[0] + 36,
+                 ev_hold[1] + 36], outline=ink, width=6, fill=(255, 255, 255))
+    draw.text((ev_hold[0], ev_hold[1] + 52), "HOLD",
               font=small_font, fill=ink, anchor="ma")
 
-    c_decide = (2020, you_y)
+    c_decide = (2180, you_y)
     _bpmn_task(draw, *c_decide, task_w, task_h, "You decide", fonts=fonts)
 
-    _bpmn_elbow(draw, (ev_start[0] + 36, ev_start[1]),
+    _bpmn_elbow(draw, (ev_start[0] + 38, ev_start[1]),
                (c_ind[0] - task_w / 2, c_ind[1]))
     _bpmn_elbow(draw, (c_ind[0] + task_w / 2, c_ind[1]),
                (c_chk[0] - task_w / 2, c_chk[1]))
@@ -904,16 +915,13 @@ def make_bpmn_signal_png_part1(path: Path, *, width=2500, height=1000) -> None:
                (c_sig[0] - task_w / 2, c_sig[1]), label="yes", font=small_font)
     _bpmn_elbow(draw, (gw_cx, gw_cy + gw_size / 2), ev_hold, label="no",
                font=small_font)
-    _bpmn_elbow(draw, (c_sig[0], c_sig[1] + task_h / 2 + 120),
+    _bpmn_elbow(draw, (c_sig[0], c_sig[1] + task_h / 2 + 140),
                (c_decide[0], c_decide[1] - task_h / 2))
 
     link_a_out = (lane_x1 - 70, you_y)
     _bpmn_link_event(draw, *link_a_out, "A", outgoing=True, font=small_font)
     _bpmn_elbow(draw, (c_decide[0] + task_w / 2, c_decide[1]),
                (link_a_out[0] - 34, link_a_out[1]))
-
-    draw.text((lane_x0, height - 50), "Continued on the next slide (A) →",
-             font=small_font, fill=(110, 110, 110))
 
     _generated_dir()
     img.save(path)
@@ -927,63 +935,61 @@ def make_bpmn_signal_png_part2(path: Path, *, width=2500, height=1000) -> None:
     task's bottom border mark a once-per-item (sequential multi-instance)
     step. Labels are 2-3 words only, no dotted value annotations; what
     each step is worth lives in speaker notes instead."""
-    bg = (250, 250, 250)
+    bg = (234, 241, 248)  # matches talk_kit's own slide background exactly
     ink = (26, 26, 26)
-    title_font = ImageFont.truetype(ARIAL_BOLD, 40)
+    title_font = ImageFont.truetype(ARIAL_BOLD, 44)
     body_font = ImageFont.truetype(ARIAL, 23)
-    lane_font = ImageFont.truetype(ARIAL_BOLD, 32)
-    small_font = ImageFont.truetype(ARIAL, 26)
+    lane_font = ImageFont.truetype(ARIAL_BOLD, 34)
+    small_font = ImageFont.truetype(ARIAL, 28)
     fonts = (title_font, body_font)
 
     img = Image.new("RGB", (width, height), bg)
     draw = ImageDraw.Draw(img)
     lane_x0, lane_x1 = 190, width - 40
-    task_w, task_h = 320, 200
+    task_w, task_h = 380, 230
 
-    top, mid, bot = 50, 460, 790
+    top, mid, bot = 50, 500, 870
     _bpmn_lanes(img, draw, lane_x0, lane_x1, top, mid, bot,
                ("STOCK DESK", "YOU"), lane_font, ink)
-    sd_y = top + 190
-    you_y = mid + 140
+    sd_y = top + 210
+    you_y = mid + 155
 
-    link_a_in = (290, you_y)
+    link_a_in = (310, you_y)
     _bpmn_link_event(draw, *link_a_in, "A", outgoing=False, font=small_font)
-    draw.text((lane_x0, 12), "← Continued from the previous slide (A)",
-             font=small_font, fill=(110, 110, 110))
 
-    c_buy = (700, you_y)
+    c_buy = (740, you_y)
     _bpmn_task(draw, *c_buy, task_w, task_h, "Log a buy", fonts=fonts)
-    _bpmn_elbow(draw, (link_a_in[0] + 34, link_a_in[1]),
+    _bpmn_elbow(draw, (link_a_in[0] + 38, link_a_in[1]),
                (c_buy[0] - task_w / 2, c_buy[1]))
 
-    c_advice = (700, sd_y)
-    _bpmn_task(draw, *c_advice, task_w, task_h, "Stop, target: advice",
+    c_advice = (740, sd_y)
+    _bpmn_task(draw, *c_advice, task_w, task_h, "Stop and target",
               fonts=fonts)
     _bpmn_elbow(draw, (c_buy[0], c_buy[1] - task_h / 2),
                (c_advice[0], c_advice[1] + task_h / 2))
 
-    c_sellhold = (1150, you_y)
+    c_sellhold = (1220, you_y)
     _bpmn_task(draw, *c_sellhold, task_w, task_h, "Sell or hold", fonts=fonts)
     _bpmn_elbow(draw, (c_buy[0] + task_w / 2, c_buy[1]),
                (c_sellhold[0] - task_w / 2, c_sellhold[1]))
 
-    c_logsell = (1600, you_y)
+    c_logsell = (1700, you_y)
     _bpmn_task(draw, *c_logsell, task_w, task_h, "Log a sell", fonts=fonts)
     _bpmn_elbow(draw, (c_sellhold[0] + task_w / 2, c_sellhold[1]),
                (c_logsell[0] - task_w / 2, c_logsell[1]), label="sell",
                font=small_font)
 
-    c_score = (1600, sd_y)
-    _bpmn_task(draw, *c_score, task_w, task_h, "Scoreboard, +5 days",
+    c_score = (1700, sd_y)
+    _bpmn_task(draw, *c_score, task_w, task_h, "Scoreboard",
               subprocess=True, fonts=fonts)
-    _bpmn_elbow(draw, (c_logsell[0] - 60, c_logsell[1] - task_h / 2),
-               (c_score[0] - 60, c_score[1] + task_h / 2))
+    _bpmn_elbow(draw, (c_logsell[0] - 70, c_logsell[1] - task_h / 2),
+               (c_score[0] - 70, c_score[1] + task_h / 2))
 
-    ev_end = (2050, sd_y)
-    draw.ellipse([ev_end[0] - 36, ev_end[1] - 36, ev_end[0] + 36, ev_end[1] + 36],
+    ev_end = (2180, sd_y)
+    draw.ellipse([ev_end[0] - 38, ev_end[1] - 38, ev_end[0] + 38, ev_end[1] + 38],
                 outline=ink, width=6, fill=(255, 255, 255))
     _bpmn_elbow(draw, (c_score[0] + task_w / 2, c_score[1]),
-               (ev_end[0] - 36, ev_end[1]))
+               (ev_end[0] - 38, ev_end[1]))
 
     _generated_dir()
     img.save(path)

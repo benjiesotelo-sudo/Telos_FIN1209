@@ -107,7 +107,7 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Prompt",
-        size=26,
+        size=40,
         line='"Check whether Python 3 is installed on this computer. '
              'If it is not, install it, then tell me how to confirm '
              'it worked."',
@@ -122,7 +122,7 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Prompt",
-        size=26,
+        size=40,
         line='"Check whether Git is installed on this computer. If it '
              'is not, install it, then tell me how to confirm it '
              'worked."',
@@ -136,7 +136,7 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Prompt",
-        size=26,
+        size=40,
         line='"I just created a GitHub account. Help me sign in to '
              'GitHub from this terminal."',
         notes=(
@@ -152,7 +152,7 @@ SLIDES: list[tuple[str, dict]] = [
     )),
     ("line", dict(
         label="Prompt",
-        size=26,
+        size=40,
         line='"Set my Git name to [your name] and my email to [your '
              'email], for every project on this computer."',
         notes=(

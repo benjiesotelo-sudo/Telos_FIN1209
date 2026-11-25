@@ -247,6 +247,12 @@ def make_flow_png(path, labels: tuple[str, ...], *, width=2400) -> None:
                          (ax1 - 20, mid_y + 14)], fill=accent)
         return centers
 
+    # Real clearance below/above a label's own glyph box (its descender),
+    # not a small fixed offset, so the connector never touches a letter.
+    bbox = draw.textbbox((0, 0), "Ag", font=font)
+    half_text_h = (bbox[3] - bbox[1]) / 2.0
+    clearance = half_text_h + 36
+
     y1 = 50 + row_h // 2
     c1 = row_labels(labels[:row1_n], y1)
     if row2_n:
@@ -255,42 +261,49 @@ def make_flow_png(path, labels: tuple[str, ...], *, width=2400) -> None:
         x_last = (c1[-1][0] + c1[-1][1]) / 2
         x_first = (c2[0][0] + c2[0][1]) / 2
         mid_y = (y1 + y2) / 2
-        draw.line([(x_last, y1 + 20), (x_last, mid_y)], fill=accent, width=6)
+        draw.line([(x_last, y1 + clearance), (x_last, mid_y)],
+                 fill=accent, width=6)
         draw.line([(x_last, mid_y), (x_first, mid_y)], fill=accent, width=6)
-        draw.line([(x_first, mid_y), (x_first, y2 - 20)], fill=accent, width=6)
-        draw.polygon([(x_first, y2 - 20), (x_first - 16, y2 - 44),
-                     (x_first + 16, y2 - 44)], fill=accent)
+        draw.line([(x_first, mid_y), (x_first, y2 - clearance)],
+                 fill=accent, width=6)
+        draw.polygon([(x_first, y2 - clearance),
+                     (x_first - 16, y2 - clearance - 24),
+                     (x_first + 16, y2 - clearance - 24)], fill=accent)
 
     img.save(path)
 
 
 def render_picture(prs, *, label=None, image_path, caption=None,
                    notes=()) -> None:
-    """One picture, large, centred, with an optional small label above
-    and a short caption below. No border, no card, no frame."""
+    """One picture, as large as the slide allows, with an optional small
+    label above and a short caption below. No border, no card, no
+    frame. Uses almost the full slide, not just the text column, since a
+    diagram benefits from every inch a line of text does not need."""
     slide = _blank(prs)
-    top = 1.5
-    bottom = 6.8
+    pic_margin = Inches(0.35)
+    pic_w = Emu(SLIDE_W - 2 * pic_margin)
+    top = 1.3
+    bottom = 7.15
     if label:
-        frame = deckkit._textbox(slide, MARGIN, Inches(1.0), CONTENT_W,
+        frame = deckkit._textbox(slide, MARGIN, Inches(0.85), CONTENT_W,
                                  Inches(0.45))
         deckkit._para(frame, label, size=18, color=MUTED, italic=True,
                       font=SERIF, align=deckkit.PP_ALIGN.CENTER, first=True)
-        top = 1.55
+        top = 1.35
     if caption:
-        bottom = 6.5
+        bottom = 6.7
 
     px_w, px_h = deckkit._png_size(image_path)
-    avail_w, avail_h = CONTENT_W.inches, bottom - top
+    avail_w, avail_h = pic_w.inches, bottom - top
     scale = min(avail_w / px_w, avail_h / px_h)
     w, h = px_w * scale, px_h * scale
-    x = MARGIN.inches + (avail_w - w) / 2.0
+    x = pic_margin.inches + (avail_w - w) / 2.0
     y = top + (avail_h - h) / 2.0
     slide.shapes.add_picture(str(image_path), Inches(x), Inches(y),
                              Inches(w), Inches(h))
 
     if caption:
-        frame = deckkit._textbox(slide, MARGIN, Inches(6.6), CONTENT_W,
+        frame = deckkit._textbox(slide, MARGIN, Inches(6.8), CONTENT_W,
                                  Inches(0.5))
         deckkit._para(frame, caption, size=16, color=MUTED, font=SANS,
                       align=deckkit.PP_ALIGN.CENTER, first=True)

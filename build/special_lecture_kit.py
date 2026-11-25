@@ -1006,7 +1006,7 @@ def _bpmn_parallel_gateway(draw, cx, cy, size, ink, bg):
     draw.line([(cx, cy - arm), (cx, cy + arm)], fill=ink, width=5)
 
 
-def make_bpmn_vision_png_part1(path: Path, *, width=3300, height=1400) -> None:
+def make_bpmn_vision_png_part1(path: Path, *, width=3500, height=1400) -> None:
     """The vision (1 of 2): live prices, a chosen bar size, a parallel
     split into six rule checks, a parallel join, an agreement score, and
     a drawn projection, handed off to "You" on the next slide (link A).
@@ -1055,8 +1055,8 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3300, height=1400) -> None:
 
     gw_fork = (1010, row_y)
     _bpmn_parallel_gateway(draw, *gw_fork, gw_size, ink, bg)
-    draw.text((gw_fork[0], gw_fork[1] - gw_size / 2 - 14), "Rules vote",
-              font=small_font, fill=ink, anchor="mb")
+    draw.text((gw_fork[0] - 50, gw_fork[1] - gw_size / 2 - 14), "Rules vote",
+              font=small_font, fill=ink, anchor="rb")
     _bpmn_elbow(draw, (c_bar[0] + task_w / 2, c_bar[1]),
                (gw_fork[0] - gw_size / 2, gw_fork[1]))
 
@@ -1068,12 +1068,19 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3300, height=1400) -> None:
     offsets = [(i - (len(rules) - 1) / 2) * step for i in range(len(rules))]
     box_ys = [row_y + o for o in offsets]
 
+    # A short stem from the gateway to a turn point clear of its own
+    # "Rules vote" label (which sits above the gateway's own width),
+    # then each box's connector fans out from that turn point, not from
+    # the gateway's own edge, so none of them cross under the label.
+    turn_x_fork = gw_fork[0] + gw_size / 2 + 90
+    draw.line([(gw_fork[0] + gw_size / 2, row_y), (turn_x_fork, row_y)],
+             fill=ink, width=3)
     for label, by in zip(rules, box_ys):
         _bpmn_task(draw, box_x, by, box_w, box_h, label, fonts=fonts)
-        # Vertical first, at the gateway's own x, then horizontal at the
+        # Vertical first, at the turn point, then horizontal at the
         # box's own unique height: this box is the only thing at that
         # height, so the line crosses nothing else.
-        _bpmn_elbow(draw, (gw_fork[0] + gw_size / 2, gw_fork[1]),
+        _bpmn_elbow(draw, (turn_x_fork, row_y),
                    (box_x - box_w / 2, by), via="v")
 
     gw_join = (box_x + 650, row_y)
@@ -1099,18 +1106,23 @@ def make_bpmn_vision_png_part1(path: Path, *, width=3300, height=1400) -> None:
     _bpmn_elbow(draw, (c_draw[0] + task_w / 2, c_draw[1]),
                (link_a_out[0] - 34, link_a_out[1]))
 
-    link_b_in = (lane_x0 + 70, bot - 70)
+    # Directly under the gateway, so the straight vertical return touches
+    # no other box or label (nothing else sits at the gateway's own x).
+    link_b_in = (gw_fork[0], bot - 90)
     _bpmn_link_event(draw, *link_b_in, "B", outgoing=False, font=small_font)
     draw.text((link_b_in[0], link_b_in[1] + 86), "feedback loop",
              font=small_font, fill=(90, 90, 90), anchor="ma")
-    _bpmn_elbow(draw, (link_b_in[0] + 34, link_b_in[1]),
-               (gw_fork[0], gw_fork[1] + gw_size / 2), via="v")
+    draw.line([(link_b_in[0], link_b_in[1] - 28),
+              (gw_fork[0], gw_fork[1] + gw_size / 2)], fill=ink, width=3)
+    tip_y = gw_fork[1] + gw_size / 2
+    draw.polygon([(gw_fork[0], tip_y), (gw_fork[0] - 7, tip_y + 11),
+                 (gw_fork[0] + 7, tip_y + 11)], fill=ink)
 
     _generated_dir()
     img.save(path)
 
 
-def make_bpmn_vision_png_part2(path: Path, *, width=2600, height=1000) -> None:
+def make_bpmn_vision_png_part2(path: Path, *, width=3100, height=1000) -> None:
     """The vision (2 of 2): the You lane picks up from link A (Draw
     what's next, on part 1), reads the call, decides Buy, Sell, or Wait,
     and logs it; the tool checks the outcome later and learns which
@@ -1149,26 +1161,39 @@ def make_bpmn_vision_png_part2(path: Path, *, width=2600, height=1000) -> None:
                 outline=ink, width=4, fill=bg)
     draw.line([(gw_cx - 17, gw_cy - 17), (gw_cx + 17, gw_cy + 17)], fill=ink, width=4)
     draw.line([(gw_cx - 17, gw_cy + 17), (gw_cx + 17, gw_cy - 17)], fill=ink, width=4)
-    draw.text((gw_cx, gw_cy - gw_size / 2 - 16), "Buy, Sell, Wait",
-              font=small_font, fill=ink, anchor="mb")
     _bpmn_elbow(draw, (c_read[0] + task_w / 2, c_read[1]),
                (gw_cx - gw_size / 2, gw_cy))
 
     c_log = (1740, you_y)
     _bpmn_task(draw, *c_log, task_w, task_h, "Log it", fonts=fonts)
-    _bpmn_elbow(draw, (gw_cx + gw_size / 2, gw_cy),
-               (c_log[0] - task_w / 2, c_log[1]))
+    # The gateway's three choices as three short, separately labelled
+    # arrows, all landing on Log it, so the decision itself reads as a
+    # decision rather than one unlabelled line.
+    choice_x0 = gw_cx + gw_size / 2
+    choice_x1 = c_log[0] - task_w / 2
+    for choice, dy in (("Buy", -70), ("Sell", 0), ("Wait", 70)):
+        y = gw_cy + dy
+        draw.line([(choice_x0, gw_cy), (choice_x1, y)], fill=ink, width=3)
+        draw.polygon([(choice_x1, y), (choice_x1 - 11, y - 7),
+                     (choice_x1 - 11, y + 7)], fill=ink)
+        mid_y = (gw_cy + y) / 2
+        draw.text(((choice_x0 + choice_x1) / 2, mid_y - 24), choice,
+                  font=small_font, fill=(90, 90, 90), anchor="mb")
 
     c_outcome = (2180, sd_y)
     _bpmn_task(draw, *c_outcome, task_w, task_h, "Outcome checked", fonts=fonts)
-    _bpmn_elbow(draw, (c_log[0] + 60, c_log[1] - task_h / 2),
-               (c_outcome[0] + 60, c_outcome[1] + task_h / 2))
+    _bpmn_elbow(draw, (c_log[0] + task_w / 2, c_log[1]),
+               (c_outcome[0] - task_w / 2, c_outcome[1]), via="v")
 
-    link_b_out = (lane_x1 - 70, sd_y)
-    _bpmn_link_event(draw, *link_b_out, "B", outgoing=True, font=small_font)
-    draw.text((link_b_out[0], link_b_out[1] + 90), "Learn which\nrules work",
-             font=small_font, fill=ink, anchor="ma", align="center")
+    c_learn = (c_outcome[0] + 420, sd_y)
+    _bpmn_task(draw, *c_learn, task_w, task_h, "Learn which rules work",
+              fonts=fonts)
     _bpmn_elbow(draw, (c_outcome[0] + task_w / 2, c_outcome[1]),
+               (c_learn[0] - task_w / 2, c_learn[1]))
+
+    link_b_out = (c_learn[0] + 280, sd_y)
+    _bpmn_link_event(draw, *link_b_out, "B", outgoing=True, font=small_font)
+    _bpmn_elbow(draw, (c_learn[0] + task_w / 2, c_learn[1]),
                (link_b_out[0] - 34, link_b_out[1]))
 
     _generated_dir()
